@@ -17,7 +17,6 @@
 package com.echothree.model.control.search.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.search.common.choice.SearchCheckSpellingActionTypeChoicesBean;
 import com.echothree.model.control.search.common.choice.SearchDefaultOperatorChoicesBean;
 import com.echothree.model.control.search.common.choice.SearchKindChoicesBean;
@@ -156,8 +155,103 @@ import com.echothree.model.data.search.server.value.SearchTypeDetailValue;
 import com.echothree.model.data.search.server.value.SearchUseTypeDescriptionValue;
 import com.echothree.model.data.search.server.value.SearchUseTypeDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.COMPONENT_VENDORS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_INSTANCES_ENTITY_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK;
+import static com.echothree.model.jooq.server.keys.index.IndexForeignKeys.INDEXES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.index.IndexForeignKeys.INDEX_FIELDS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTIES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.CACHED_EXECUTED_SEARCH_RESULTS_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.CACHED_SEARCHES_INDEX_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.CACHED_SEARCHES_SEARCH_DEFAULT_OPERATOR_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.CACHED_SEARCHES_SEARCH_SORT_DIRECTION_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.CACHED_SEARCHES_SEARCH_SORT_ORDER_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.CACHED_SEARCH_INDEX_FIELDS_CACHED_SEARCH_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.CACHED_SEARCH_INDEX_FIELDS_INDEX_FIELD_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.PARTY_SEARCH_TYPE_PREFERENCES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCHES_PARTY_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCHES_SEARCH_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCHES_SEARCH_USE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_CHECK_SPELLING_ACTION_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_CHECK_SPELLING_ACTION_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_DEFAULT_OPERATORS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_DEFAULT_OPERATORS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_DEFAULT_OPERATOR_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_KINDS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_KIND_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_RESULTS_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_RESULT_ACTIONS_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_RESULT_ACTIONS_SEARCH_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_RESULT_ACTIONS_SEARCH_RESULT_ACTION_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_RESULT_ACTION_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_RESULT_ACTION_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_RESULT_ACTION_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_SORT_DIRECTIONS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_SORT_DIRECTIONS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_SORT_DIRECTION_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_SORT_ORDERS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_SORT_ORDERS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_SORT_ORDER_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_USE_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_USE_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_USE_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.USER_VISIT_SEARCHES_SEARCH_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.USER_VISIT_SEARCHES_USER_VISIT_FK;
+import static com.echothree.model.jooq.server.tables.core.ComponentVendorDetails.ComponentVendorDetails;
+import static com.echothree.model.jooq.server.tables.core.ComponentVendors.ComponentVendors;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.core.EntityTypeDetails.EntityTypeDetails;
+import static com.echothree.model.jooq.server.tables.core.EntityTypes.EntityTypes;
+import static com.echothree.model.jooq.server.tables.index.IndexDetails.IndexDetails;
+import static com.echothree.model.jooq.server.tables.index.IndexFieldDetails.IndexFieldDetails;
+import static com.echothree.model.jooq.server.tables.index.IndexFields.IndexFields;
+import static com.echothree.model.jooq.server.tables.index.Indexes.Indexes;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.party.Parties.Parties;
+import static com.echothree.model.jooq.server.tables.party.PartyDetails.PartyDetails;
+import static com.echothree.model.jooq.server.tables.search.CachedExecutedSearchResults.CachedExecutedSearchResults;
+import static com.echothree.model.jooq.server.tables.search.CachedExecutedSearches.CachedExecutedSearches;
+import static com.echothree.model.jooq.server.tables.search.CachedSearchIndexFields.CachedSearchIndexFields;
+import static com.echothree.model.jooq.server.tables.search.CachedSearchStatuses.CachedSearchStatuses;
+import static com.echothree.model.jooq.server.tables.search.CachedSearches.CachedSearches;
+import static com.echothree.model.jooq.server.tables.search.PartySearchTypePreferenceDetails.PartySearchTypePreferenceDetails;
+import static com.echothree.model.jooq.server.tables.search.PartySearchTypePreferences.PartySearchTypePreferences;
+import static com.echothree.model.jooq.server.tables.search.SearchCheckSpellingActionTypeDescriptions.SearchCheckSpellingActionTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.search.SearchCheckSpellingActionTypeDetails.SearchCheckSpellingActionTypeDetails;
+import static com.echothree.model.jooq.server.tables.search.SearchCheckSpellingActionTypes.SearchCheckSpellingActionTypes;
+import static com.echothree.model.jooq.server.tables.search.SearchDefaultOperatorDescriptions.SearchDefaultOperatorDescriptions;
+import static com.echothree.model.jooq.server.tables.search.SearchDefaultOperatorDetails.SearchDefaultOperatorDetails;
+import static com.echothree.model.jooq.server.tables.search.SearchDefaultOperators.SearchDefaultOperators;
+import static com.echothree.model.jooq.server.tables.search.SearchKindDescriptions.SearchKindDescriptions;
+import static com.echothree.model.jooq.server.tables.search.SearchKindDetails.SearchKindDetails;
+import static com.echothree.model.jooq.server.tables.search.SearchKinds.SearchKinds;
+import static com.echothree.model.jooq.server.tables.search.SearchResultActionTypeDescriptions.SearchResultActionTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.search.SearchResultActionTypeDetails.SearchResultActionTypeDetails;
+import static com.echothree.model.jooq.server.tables.search.SearchResultActionTypes.SearchResultActionTypes;
+import static com.echothree.model.jooq.server.tables.search.SearchResultActions.SearchResultActions;
+import static com.echothree.model.jooq.server.tables.search.SearchResults.SearchResults;
+import static com.echothree.model.jooq.server.tables.search.SearchSortDirectionDescriptions.SearchSortDirectionDescriptions;
+import static com.echothree.model.jooq.server.tables.search.SearchSortDirectionDetails.SearchSortDirectionDetails;
+import static com.echothree.model.jooq.server.tables.search.SearchSortDirections.SearchSortDirections;
+import static com.echothree.model.jooq.server.tables.search.SearchSortOrderDescriptions.SearchSortOrderDescriptions;
+import static com.echothree.model.jooq.server.tables.search.SearchSortOrderDetails.SearchSortOrderDetails;
+import static com.echothree.model.jooq.server.tables.search.SearchSortOrders.SearchSortOrders;
+import static com.echothree.model.jooq.server.tables.search.SearchTypeDescriptions.SearchTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.search.SearchTypeDetails.SearchTypeDetails;
+import static com.echothree.model.jooq.server.tables.search.SearchTypes.SearchTypes;
+import static com.echothree.model.jooq.server.tables.search.SearchUseTypeDescriptions.SearchUseTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.search.SearchUseTypeDetails.SearchUseTypeDetails;
+import static com.echothree.model.jooq.server.tables.search.SearchUseTypes.SearchUseTypes;
+import static com.echothree.model.jooq.server.tables.search.Searches.Searches;
+import static com.echothree.model.jooq.server.tables.search.UserVisitSearches.UserVisitSearches;
+import static com.echothree.model.jooq.server.tables.user.UserVisits.UserVisits;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -166,13 +260,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
+import org.jooq.Select;
 
 @CommandScope
 public class SearchControl
@@ -185,66 +276,17 @@ public class SearchControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Search Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    @Inject
-    SearchKindTransferCache searchKindTransferCache;
-
-    @Inject
-    SearchKindDescriptionTransferCache searchKindDescriptionTransferCache;
-
-    @Inject
-    SearchTypeTransferCache searchTypeTransferCache;
-
-    @Inject
-    SearchTypeDescriptionTransferCache searchTypeDescriptionTransferCache;
-
-    @Inject
-    SearchSortOrderTransferCache searchSortOrderTransferCache;
-
-    @Inject
-    SearchSortOrderDescriptionTransferCache searchSortOrderDescriptionTransferCache;
-
-    @Inject
-    SearchSortDirectionTransferCache searchSortDirectionTransferCache;
-
-    @Inject
-    SearchSortDirectionDescriptionTransferCache searchSortDirectionDescriptionTransferCache;
-
-    @Inject
-    SearchDefaultOperatorTransferCache searchDefaultOperatorTransferCache;
-
-    @Inject
-    SearchDefaultOperatorDescriptionTransferCache searchDefaultOperatorDescriptionTransferCache;
-
-    @Inject
-    SearchUseTypeTransferCache searchUseTypeTransferCache;
-
-    @Inject
-    SearchUseTypeDescriptionTransferCache searchUseTypeDescriptionTransferCache;
-
-    @Inject
-    SearchResultActionTypeTransferCache searchResultActionTypeTransferCache;
-
-    @Inject
-    SearchResultActionTypeDescriptionTransferCache searchResultActionTypeDescriptionTransferCache;
-
-    @Inject
-    SearchCheckSpellingActionTypeTransferCache searchCheckSpellingActionTypeTransferCache;
-
-    @Inject
-    SearchCheckSpellingActionTypeDescriptionTransferCache searchCheckSpellingActionTypeDescriptionTransferCache;
-
-    // --------------------------------------------------------------------------------
     //   Search Use Types
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected SearchUseTypeDetailFactory searchUseTypeDetailFactory;
 
     @Inject
     protected SearchUseTypeFactory searchUseTypeFactory;
 
     @Inject
-    protected SearchUseTypeDetailFactory searchUseTypeDetailFactory;
+    private SearchUseTypeTransferCache searchUseTypeTransferCache;
 
     public SearchUseType createSearchUseType(String searchUseTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultSearchUseType = getDefaultSearchUseType();
@@ -290,38 +332,27 @@ public class SearchControl
     }
 
     public long countSearchUseTypes() {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM searchusetypes, searchusetypedetails
-                    WHERE srchutyp_activedetailid = srchutypdt_searchusetypedetailid
-                    """);
-    }
-
-    private static final Map<EntityPermission, String> getSearchUseTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchusetypes, searchusetypedetails
-                WHERE srchutyp_activedetailid = srchutypdt_searchusetypedetailid
-                AND srchutypdt_searchusetypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchusetypes, searchusetypedetails
-                WHERE srchutyp_activedetailid = srchutypdt_searchusetypedetailid
-                AND srchutypdt_searchusetypename = ?
-                FOR UPDATE
-                """);
-        getSearchUseTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(SearchUseTypes)
+                .join(SearchUseTypeDetails).onKey(SEARCH_USE_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public SearchUseType getSearchUseTypeByName(String searchUseTypeName, EntityPermission entityPermission) {
-        return searchUseTypeFactory.getEntityFromQuery(entityPermission, getSearchUseTypeByNameQueries, searchUseTypeName);
+        var baseQuery = session.getDslContext()
+                .select(SearchUseTypes.fields())
+                .from(SearchUseTypes)
+                .join(SearchUseTypeDetails).onKey(SEARCH_USE_TYPES_ACTIVE_DETAIL_FK)
+                .where(SearchUseTypeDetails.SEARCH_USE_TYPE_NAME.eq(searchUseTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchUseTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SearchUseType getSearchUseTypeByName(String searchUseTypeName) {
@@ -340,31 +371,19 @@ public class SearchControl
         return getSearchUseTypeDetailValueForUpdate(getSearchUseTypeByNameForUpdate(searchUseTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultSearchUseTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchusetypes, searchusetypedetails
-                WHERE srchutyp_activedetailid = srchutypdt_searchusetypedetailid
-                AND srchutypdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchusetypes, searchusetypedetails
-                WHERE srchutyp_activedetailid = srchutypdt_searchusetypedetailid
-                AND srchutypdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultSearchUseTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public SearchUseType getDefaultSearchUseType(EntityPermission entityPermission) {
-        return searchUseTypeFactory.getEntityFromQuery(entityPermission, getDefaultSearchUseTypeQueries);
+        var baseQuery = session.getDslContext()
+                .select(SearchUseTypes.fields())
+                .from(SearchUseTypes)
+                .join(SearchUseTypeDetails).onKey(SEARCH_USE_TYPES_ACTIVE_DETAIL_FK)
+                .where(SearchUseTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchUseTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SearchUseType getDefaultSearchUseType() {
@@ -379,31 +398,20 @@ public class SearchControl
         return getDefaultSearchUseTypeForUpdate().getLastDetailForUpdate().getSearchUseTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getSearchUseTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchusetypes, searchusetypedetails
-                WHERE srchutyp_activedetailid = srchutypdt_searchusetypedetailid
-                ORDER BY srchutypdt_sortorder, srchutypdt_searchusetypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchusetypes, searchusetypedetails
-                WHERE srchutyp_activedetailid = srchutypdt_searchusetypedetailid
-                FOR UPDATE
-                """);
-        getSearchUseTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<SearchUseType> getSearchUseTypes(EntityPermission entityPermission) {
-        return searchUseTypeFactory.getEntitiesFromQuery(entityPermission, getSearchUseTypesQueries);
+        var baseQuery = session.getDslContext()
+                .select(SearchUseTypes.fields())
+                .from(SearchUseTypes)
+                .join(SearchUseTypeDetails).onKey(SEARCH_USE_TYPES_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SearchUseTypeDetails.SORT_ORDER, SearchUseTypeDetails.SEARCH_USE_TYPE_NAME),
+                    SearchUseTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchUseTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<SearchUseType> getSearchUseTypes() {
@@ -562,6 +570,9 @@ public class SearchControl
     @Inject
     protected SearchUseTypeDescriptionFactory searchUseTypeDescriptionFactory;
 
+    @Inject
+    private SearchUseTypeDescriptionTransferCache searchUseTypeDescriptionTransferCache;
+
     public SearchUseTypeDescription createSearchUseTypeDescription(SearchUseType searchUseType, Language language, String description, BasePK createdBy) {
         var searchUseTypeDescription = searchUseTypeDescriptionFactory.create(searchUseType, language, description,
                 session.getStartTime(), Session.MAX_TIME);
@@ -571,30 +582,20 @@ public class SearchControl
         return searchUseTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getSearchUseTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchusetypedescriptions
-                WHERE srchutypd_srchutyp_searchusetypeid = ? AND srchutypd_lang_languageid = ? AND srchutypd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchusetypedescriptions
-                WHERE srchutypd_srchutyp_searchusetypeid = ? AND srchutypd_lang_languageid = ? AND srchutypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getSearchUseTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private SearchUseTypeDescription getSearchUseTypeDescription(SearchUseType searchUseType, Language language, EntityPermission entityPermission) {
-        return searchUseTypeDescriptionFactory.getEntityFromQuery(entityPermission, getSearchUseTypeDescriptionQueries,
-                searchUseType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(SearchUseTypeDescriptions.fields())
+                .from(SearchUseTypeDescriptions)
+                .where(SearchUseTypeDescriptions.SEARCH_USE_TYPE.eq(searchUseType.getPrimaryKey()),
+                        SearchUseTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        SearchUseTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchUseTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SearchUseTypeDescription getSearchUseTypeDescription(SearchUseType searchUseType, Language language) {
@@ -613,32 +614,25 @@ public class SearchControl
         return getSearchUseTypeDescriptionValue(getSearchUseTypeDescriptionForUpdate(searchUseType, language));
     }
 
-    private static final Map<EntityPermission, String> getSearchUseTypeDescriptionsBySearchUseTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchusetypedescriptions, languages
-                WHERE srchutypd_srchutyp_searchusetypeid = ? AND srchutypd_thrutime = ? AND srchutypd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchusetypedescriptions
-                WHERE srchutypd_srchutyp_searchusetypeid = ? AND srchutypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getSearchUseTypeDescriptionsBySearchUseTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<SearchUseTypeDescription> getSearchUseTypeDescriptionsBySearchUseType(SearchUseType searchUseType, EntityPermission entityPermission) {
-        return searchUseTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getSearchUseTypeDescriptionsBySearchUseTypeQueries,
-                searchUseType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(SearchUseTypeDescriptions.fields())
+                    .from(SearchUseTypeDescriptions)
+                    .join(Languages).onKey(SEARCH_USE_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(SearchUseTypeDescriptions.SEARCH_USE_TYPE.eq(searchUseType.getPrimaryKey()),
+                            SearchUseTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    SearchUseTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(SearchUseTypeDescriptions.fields())
+                    .from(SearchUseTypeDescriptions)
+                    .where(SearchUseTypeDescriptions.SEARCH_USE_TYPE.eq(searchUseType.getPrimaryKey()),
+                            SearchUseTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return searchUseTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<SearchUseTypeDescription> getSearchUseTypeDescriptionsBySearchUseType(SearchUseType searchUseType) {
@@ -720,10 +714,13 @@ public class SearchControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected SearchResultActionTypeDetailFactory searchResultActionTypeDetailFactory;
+
+    @Inject
     protected SearchResultActionTypeFactory searchResultActionTypeFactory;
 
     @Inject
-    protected SearchResultActionTypeDetailFactory searchResultActionTypeDetailFactory;
+    private SearchResultActionTypeTransferCache searchResultActionTypeTransferCache;
 
     public SearchResultActionType createSearchResultActionType(String searchResultActionTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultSearchResultActionType = getDefaultSearchResultActionType();
@@ -774,39 +771,27 @@ public class SearchControl
     }
 
     public long countSearchResultActionTypes() {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM searchresultactiontypes, searchresultactiontypedetails
-                WHERE srchracttyp_activedetailid = srchracttypdt_searchresultactiontypedetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(SearchResultActionTypes)
+                .join(SearchResultActionTypeDetails).onKey(SEARCH_RESULT_ACTION_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
     
-    private static final Map<EntityPermission, String> getSearchResultActionTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchresultactiontypes, searchresultactiontypedetails
-                WHERE srchracttyp_activedetailid = srchracttypdt_searchresultactiontypedetailid
-                AND srchracttypdt_searchresultactiontypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchresultactiontypes, searchresultactiontypedetails
-                WHERE srchracttyp_activedetailid = srchracttypdt_searchresultactiontypedetailid
-                AND srchracttypdt_searchresultactiontypename = ?
-                FOR UPDATE
-                """);
-        getSearchResultActionTypeByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public SearchResultActionType getSearchResultActionTypeByName(String searchResultActionTypeName, EntityPermission entityPermission) {
-        return searchResultActionTypeFactory.getEntityFromQuery(entityPermission, getSearchResultActionTypeByNameQueries, searchResultActionTypeName);
+        var baseQuery = session.getDslContext()
+                .select(SearchResultActionTypes.fields())
+                .from(SearchResultActionTypes)
+                .join(SearchResultActionTypeDetails).onKey(SEARCH_RESULT_ACTION_TYPES_ACTIVE_DETAIL_FK)
+                .where(SearchResultActionTypeDetails.SEARCH_RESULT_ACTION_TYPE_NAME.eq(searchResultActionTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchResultActionTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SearchResultActionType getSearchResultActionTypeByName(String searchResultActionTypeName) {
@@ -825,31 +810,19 @@ public class SearchControl
         return getSearchResultActionTypeDetailValueForUpdate(getSearchResultActionTypeByNameForUpdate(searchResultActionTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultSearchResultActionTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchresultactiontypes, searchresultactiontypedetails
-                WHERE srchracttyp_activedetailid = srchracttypdt_searchresultactiontypedetailid
-                AND srchracttypdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchresultactiontypes, searchresultactiontypedetails
-                WHERE srchracttyp_activedetailid = srchracttypdt_searchresultactiontypedetailid
-                AND srchracttypdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultSearchResultActionTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public SearchResultActionType getDefaultSearchResultActionType(EntityPermission entityPermission) {
-        return searchResultActionTypeFactory.getEntityFromQuery(entityPermission, getDefaultSearchResultActionTypeQueries);
+        var baseQuery = session.getDslContext()
+                .select(SearchResultActionTypes.fields())
+                .from(SearchResultActionTypes)
+                .join(SearchResultActionTypeDetails).onKey(SEARCH_RESULT_ACTION_TYPES_ACTIVE_DETAIL_FK)
+                .where(SearchResultActionTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchResultActionTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SearchResultActionType getDefaultSearchResultActionType() {
@@ -864,31 +837,20 @@ public class SearchControl
         return getDefaultSearchResultActionTypeForUpdate().getLastDetailForUpdate().getSearchResultActionTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getSearchResultActionTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchresultactiontypes, searchresultactiontypedetails
-                WHERE srchracttyp_activedetailid = srchracttypdt_searchresultactiontypedetailid
-                ORDER BY srchracttypdt_sortorder, srchracttypdt_searchresultactiontypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchresultactiontypes, searchresultactiontypedetails
-                WHERE srchracttyp_activedetailid = srchracttypdt_searchresultactiontypedetailid
-                FOR UPDATE
-                """);
-        getSearchResultActionTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<SearchResultActionType> getSearchResultActionTypes(EntityPermission entityPermission) {
-        return searchResultActionTypeFactory.getEntitiesFromQuery(entityPermission, getSearchResultActionTypesQueries);
+        var baseQuery = session.getDslContext()
+                .select(SearchResultActionTypes.fields())
+                .from(SearchResultActionTypes)
+                .join(SearchResultActionTypeDetails).onKey(SEARCH_RESULT_ACTION_TYPES_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SearchResultActionTypeDetails.SORT_ORDER, SearchResultActionTypeDetails.SEARCH_RESULT_ACTION_TYPE_NAME),
+                    SearchResultActionTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchResultActionTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<SearchResultActionType> getSearchResultActionTypes() {
@@ -1047,6 +1009,9 @@ public class SearchControl
     @Inject
     protected SearchResultActionTypeDescriptionFactory searchResultActionTypeDescriptionFactory;
 
+    @Inject
+    private SearchResultActionTypeDescriptionTransferCache searchResultActionTypeDescriptionTransferCache;
+
     public SearchResultActionTypeDescription createSearchResultActionTypeDescription(SearchResultActionType searchResultActionType, Language language, String description, BasePK createdBy) {
         var searchResultActionTypeDescription = searchResultActionTypeDescriptionFactory.create(searchResultActionType, language, description,
                 session.getStartTime(), Session.MAX_TIME);
@@ -1056,30 +1021,20 @@ public class SearchControl
         return searchResultActionTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getSearchResultActionTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchresultactiontypedescriptions
-                WHERE srchracttypd_srchracttyp_searchresultactiontypeid = ? AND srchracttypd_lang_languageid = ? AND srchracttypd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchresultactiontypedescriptions
-                WHERE srchracttypd_srchracttyp_searchresultactiontypeid = ? AND srchracttypd_lang_languageid = ? AND srchracttypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getSearchResultActionTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private SearchResultActionTypeDescription getSearchResultActionTypeDescription(SearchResultActionType searchResultActionType, Language language, EntityPermission entityPermission) {
-        return searchResultActionTypeDescriptionFactory.getEntityFromQuery(entityPermission, getSearchResultActionTypeDescriptionQueries,
-                searchResultActionType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(SearchResultActionTypeDescriptions.fields())
+                .from(SearchResultActionTypeDescriptions)
+                .where(SearchResultActionTypeDescriptions.SEARCH_RESULT_ACTION_TYPE.eq(searchResultActionType.getPrimaryKey()),
+                        SearchResultActionTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        SearchResultActionTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchResultActionTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SearchResultActionTypeDescription getSearchResultActionTypeDescription(SearchResultActionType searchResultActionType, Language language) {
@@ -1098,32 +1053,25 @@ public class SearchControl
         return getSearchResultActionTypeDescriptionValue(getSearchResultActionTypeDescriptionForUpdate(searchResultActionType, language));
     }
 
-    private static final Map<EntityPermission, String> getSearchResultActionTypeDescriptionsBySearchResultActionTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchresultactiontypedescriptions, languages
-                WHERE srchracttypd_srchracttyp_searchresultactiontypeid = ? AND srchracttypd_thrutime = ? AND srchracttypd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchresultactiontypedescriptions
-                WHERE srchracttypd_srchracttyp_searchresultactiontypeid = ? AND srchracttypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getSearchResultActionTypeDescriptionsBySearchResultActionTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<SearchResultActionTypeDescription> getSearchResultActionTypeDescriptionsBySearchResultActionType(SearchResultActionType searchResultActionType, EntityPermission entityPermission) {
-        return searchResultActionTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getSearchResultActionTypeDescriptionsBySearchResultActionTypeQueries,
-                searchResultActionType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(SearchResultActionTypeDescriptions.fields())
+                    .from(SearchResultActionTypeDescriptions)
+                    .join(Languages).onKey(SEARCH_RESULT_ACTION_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(SearchResultActionTypeDescriptions.SEARCH_RESULT_ACTION_TYPE.eq(searchResultActionType.getPrimaryKey()),
+                            SearchResultActionTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    SearchResultActionTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(SearchResultActionTypeDescriptions.fields())
+                    .from(SearchResultActionTypeDescriptions)
+                    .where(SearchResultActionTypeDescriptions.SEARCH_RESULT_ACTION_TYPE.eq(searchResultActionType.getPrimaryKey()),
+                            SearchResultActionTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return searchResultActionTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<SearchResultActionTypeDescription> getSearchResultActionTypeDescriptionsBySearchResultActionType(SearchResultActionType searchResultActionType) {
@@ -1205,10 +1153,13 @@ public class SearchControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected SearchCheckSpellingActionTypeDetailFactory searchCheckSpellingActionTypeDetailFactory;
+
+    @Inject
     protected SearchCheckSpellingActionTypeFactory searchCheckSpellingActionTypeFactory;
 
     @Inject
-    protected SearchCheckSpellingActionTypeDetailFactory searchCheckSpellingActionTypeDetailFactory;
+    private SearchCheckSpellingActionTypeTransferCache searchCheckSpellingActionTypeTransferCache;
 
     public SearchCheckSpellingActionType createSearchCheckSpellingActionType(String searchCheckSpellingActionTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultSearchCheckSpellingActionType = getDefaultSearchCheckSpellingActionType();
@@ -1239,11 +1190,12 @@ public class SearchControl
     }
 
     public long countSearchCheckSpellingActionTypes() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM searchcheckspellingactiontypes, searchcheckspellingactiontypedetails
-                WHERE srchcksacttyp_activedetailid = srchcksacttypdt_searchcheckspellingactiontypedetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(SearchCheckSpellingActionTypes)
+                .join(SearchCheckSpellingActionTypeDetails).onKey(SEARCH_CHECK_SPELLING_ACTION_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.SearchCheckSpellingActionType */
@@ -1261,27 +1213,19 @@ public class SearchControl
         return getSearchCheckSpellingActionTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getSearchCheckSpellingActionTypeByNameQueries;
-
-    static {
-        getSearchCheckSpellingActionTypeByNameQueries = Map.of(
-                EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM searchcheckspellingactiontypes, searchcheckspellingactiontypedetails
-                WHERE srchcksacttyp_activedetailid = srchcksacttypdt_searchcheckspellingactiontypedetailid
-                AND srchcksacttypdt_searchcheckspellingactiontypename = ?
-                """,
-                EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM searchcheckspellingactiontypes, searchcheckspellingactiontypedetails
-                WHERE srchcksacttyp_activedetailid = srchcksacttypdt_searchcheckspellingactiontypedetailid
-                AND srchcksacttypdt_searchcheckspellingactiontypename = ?
-                FOR UPDATE
-                """);
-    }
-
     public SearchCheckSpellingActionType getSearchCheckSpellingActionTypeByName(String searchCheckSpellingActionTypeName, EntityPermission entityPermission) {
-        return searchCheckSpellingActionTypeFactory.getEntityFromQuery(entityPermission, getSearchCheckSpellingActionTypeByNameQueries, searchCheckSpellingActionTypeName);
+        var baseQuery = session.getDslContext()
+                .select(SearchCheckSpellingActionTypes.fields())
+                .from(SearchCheckSpellingActionTypes)
+                .join(SearchCheckSpellingActionTypeDetails).onKey(SEARCH_CHECK_SPELLING_ACTION_TYPES_ACTIVE_DETAIL_FK)
+                .where(SearchCheckSpellingActionTypeDetails.SEARCH_CHECK_SPELLING_ACTION_TYPE_NAME.eq(searchCheckSpellingActionTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchCheckSpellingActionTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SearchCheckSpellingActionType getSearchCheckSpellingActionTypeByName(String searchCheckSpellingActionTypeName) {
@@ -1300,27 +1244,19 @@ public class SearchControl
         return getSearchCheckSpellingActionTypeDetailValueForUpdate(getSearchCheckSpellingActionTypeByNameForUpdate(searchCheckSpellingActionTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultSearchCheckSpellingActionTypeQueries;
-
-    static {
-        getDefaultSearchCheckSpellingActionTypeQueries = Map.of(
-                EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM searchcheckspellingactiontypes, searchcheckspellingactiontypedetails
-                WHERE srchcksacttyp_activedetailid = srchcksacttypdt_searchcheckspellingactiontypedetailid
-                AND srchcksacttypdt_isdefault = 1
-                """,
-                EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM searchcheckspellingactiontypes, searchcheckspellingactiontypedetails
-                WHERE srchcksacttyp_activedetailid = srchcksacttypdt_searchcheckspellingactiontypedetailid
-                AND srchcksacttypdt_isdefault = 1
-                FOR UPDATE
-                """);
-    }
-
     private SearchCheckSpellingActionType getDefaultSearchCheckSpellingActionType(EntityPermission entityPermission) {
-        return searchCheckSpellingActionTypeFactory.getEntityFromQuery(entityPermission, getDefaultSearchCheckSpellingActionTypeQueries);
+        var baseQuery = session.getDslContext()
+                .select(SearchCheckSpellingActionTypes.fields())
+                .from(SearchCheckSpellingActionTypes)
+                .join(SearchCheckSpellingActionTypeDetails).onKey(SEARCH_CHECK_SPELLING_ACTION_TYPES_ACTIVE_DETAIL_FK)
+                .where(SearchCheckSpellingActionTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchCheckSpellingActionTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SearchCheckSpellingActionType getDefaultSearchCheckSpellingActionType() {
@@ -1335,27 +1271,20 @@ public class SearchControl
         return getDefaultSearchCheckSpellingActionTypeForUpdate().getLastDetailForUpdate().getSearchCheckSpellingActionTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getSearchCheckSpellingActionTypesQueries;
-
-    static {
-        getSearchCheckSpellingActionTypesQueries = Map.of(
-                EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM searchcheckspellingactiontypes, searchcheckspellingactiontypedetails
-                WHERE srchcksacttyp_activedetailid = srchcksacttypdt_searchcheckspellingactiontypedetailid
-                ORDER BY srchcksacttypdt_sortorder, srchcksacttypdt_searchcheckspellingactiontypename
-                _LIMIT_
-                """,
-                EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM searchcheckspellingactiontypes, searchcheckspellingactiontypedetails
-                WHERE srchcksacttyp_activedetailid = srchcksacttypdt_searchcheckspellingactiontypedetailid
-                FOR UPDATE
-                """);
-    }
-
     private List<SearchCheckSpellingActionType> getSearchCheckSpellingActionTypes(EntityPermission entityPermission) {
-        return searchCheckSpellingActionTypeFactory.getEntitiesFromQuery(entityPermission, getSearchCheckSpellingActionTypesQueries);
+        var baseQuery = session.getDslContext()
+                .select(SearchCheckSpellingActionTypes.fields())
+                .from(SearchCheckSpellingActionTypes)
+                .join(SearchCheckSpellingActionTypeDetails).onKey(SEARCH_CHECK_SPELLING_ACTION_TYPES_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SearchCheckSpellingActionTypeDetails.SORT_ORDER, SearchCheckSpellingActionTypeDetails.SEARCH_CHECK_SPELLING_ACTION_TYPE_NAME),
+                    SearchCheckSpellingActionTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchCheckSpellingActionTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<SearchCheckSpellingActionType> getSearchCheckSpellingActionTypes() {
@@ -1513,6 +1442,9 @@ public class SearchControl
     @Inject
     protected SearchCheckSpellingActionTypeDescriptionFactory searchCheckSpellingActionTypeDescriptionFactory;
 
+    @Inject
+    private SearchCheckSpellingActionTypeDescriptionTransferCache searchCheckSpellingActionTypeDescriptionTransferCache;
+
     public SearchCheckSpellingActionTypeDescription createSearchCheckSpellingActionTypeDescription(SearchCheckSpellingActionType searchCheckSpellingActionType, Language language, String description, BasePK createdBy) {
         var searchCheckSpellingActionTypeDescription = searchCheckSpellingActionTypeDescriptionFactory.create(searchCheckSpellingActionType, language, description,
                 session.getStartTime(), Session.MAX_TIME);
@@ -1522,30 +1454,20 @@ public class SearchControl
         return searchCheckSpellingActionTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getSearchCheckSpellingActionTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchcheckspellingactiontypedescriptions
-                WHERE srchcksacttypd_srchcksacttyp_searchcheckspellingactiontypeid = ? AND srchcksacttypd_lang_languageid = ? AND srchcksacttypd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchcheckspellingactiontypedescriptions
-                WHERE srchcksacttypd_srchcksacttyp_searchcheckspellingactiontypeid = ? AND srchcksacttypd_lang_languageid = ? AND srchcksacttypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getSearchCheckSpellingActionTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private SearchCheckSpellingActionTypeDescription getSearchCheckSpellingActionTypeDescription(SearchCheckSpellingActionType searchCheckSpellingActionType, Language language, EntityPermission entityPermission) {
-        return searchCheckSpellingActionTypeDescriptionFactory.getEntityFromQuery(entityPermission, getSearchCheckSpellingActionTypeDescriptionQueries,
-                searchCheckSpellingActionType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(SearchCheckSpellingActionTypeDescriptions.fields())
+                .from(SearchCheckSpellingActionTypeDescriptions)
+                .where(SearchCheckSpellingActionTypeDescriptions.SEARCH_CHECK_SPELLING_ACTION_TYPE.eq(searchCheckSpellingActionType.getPrimaryKey()),
+                        SearchCheckSpellingActionTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        SearchCheckSpellingActionTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchCheckSpellingActionTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SearchCheckSpellingActionTypeDescription getSearchCheckSpellingActionTypeDescription(SearchCheckSpellingActionType searchCheckSpellingActionType, Language language) {
@@ -1564,32 +1486,25 @@ public class SearchControl
         return getSearchCheckSpellingActionTypeDescriptionValue(getSearchCheckSpellingActionTypeDescriptionForUpdate(searchCheckSpellingActionType, language));
     }
 
-    private static final Map<EntityPermission, String> getSearchCheckSpellingActionTypeDescriptionsBySearchCheckSpellingActionTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchcheckspellingactiontypedescriptions, languages
-                WHERE srchcksacttypd_srchcksacttyp_searchcheckspellingactiontypeid = ? AND srchcksacttypd_thrutime = ? AND srchcksacttypd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchcheckspellingactiontypedescriptions
-                WHERE srchcksacttypd_srchcksacttyp_searchcheckspellingactiontypeid = ? AND srchcksacttypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getSearchCheckSpellingActionTypeDescriptionsBySearchCheckSpellingActionTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<SearchCheckSpellingActionTypeDescription> getSearchCheckSpellingActionTypeDescriptionsBySearchCheckSpellingActionType(SearchCheckSpellingActionType searchCheckSpellingActionType, EntityPermission entityPermission) {
-        return searchCheckSpellingActionTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getSearchCheckSpellingActionTypeDescriptionsBySearchCheckSpellingActionTypeQueries,
-                searchCheckSpellingActionType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(SearchCheckSpellingActionTypeDescriptions.fields())
+                    .from(SearchCheckSpellingActionTypeDescriptions)
+                    .join(Languages).onKey(SEARCH_CHECK_SPELLING_ACTION_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(SearchCheckSpellingActionTypeDescriptions.SEARCH_CHECK_SPELLING_ACTION_TYPE.eq(searchCheckSpellingActionType.getPrimaryKey()),
+                            SearchCheckSpellingActionTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    SearchCheckSpellingActionTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(SearchCheckSpellingActionTypeDescriptions.fields())
+                    .from(SearchCheckSpellingActionTypeDescriptions)
+                    .where(SearchCheckSpellingActionTypeDescriptions.SEARCH_CHECK_SPELLING_ACTION_TYPE.eq(searchCheckSpellingActionType.getPrimaryKey()),
+                            SearchCheckSpellingActionTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return searchCheckSpellingActionTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<SearchCheckSpellingActionTypeDescription> getSearchCheckSpellingActionTypeDescriptionsBySearchCheckSpellingActionType(SearchCheckSpellingActionType searchCheckSpellingActionType) {
@@ -1671,10 +1586,13 @@ public class SearchControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected SearchDefaultOperatorDetailFactory searchDefaultOperatorDetailFactory;
+
+    @Inject
     protected SearchDefaultOperatorFactory searchDefaultOperatorFactory;
 
     @Inject
-    protected SearchDefaultOperatorDetailFactory searchDefaultOperatorDetailFactory;
+    private SearchDefaultOperatorTransferCache searchDefaultOperatorTransferCache;
 
     public SearchDefaultOperator createSearchDefaultOperator(String searchDefaultOperatorName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultSearchDefaultOperator = getDefaultSearchDefaultOperator();
@@ -1720,38 +1638,27 @@ public class SearchControl
     }
 
     public long countSearchDefaultOperators() {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM searchdefaultoperators, searchdefaultoperatordetails
-                    WHERE srchdefop_activedetailid = srchdefopdt_searchdefaultoperatordetailid
-                    """);
-    }
-
-    private static final Map<EntityPermission, String> getSearchDefaultOperatorByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchdefaultoperators, searchdefaultoperatordetails
-                WHERE srchdefop_activedetailid = srchdefopdt_searchdefaultoperatordetailid
-                AND srchdefopdt_searchdefaultoperatorname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchdefaultoperators, searchdefaultoperatordetails
-                WHERE srchdefop_activedetailid = srchdefopdt_searchdefaultoperatordetailid
-                AND srchdefopdt_searchdefaultoperatorname = ?
-                FOR UPDATE
-                """);
-        getSearchDefaultOperatorByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(SearchDefaultOperators)
+                .join(SearchDefaultOperatorDetails).onKey(SEARCH_DEFAULT_OPERATORS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public SearchDefaultOperator getSearchDefaultOperatorByName(String searchDefaultOperatorName, EntityPermission entityPermission) {
-        return searchDefaultOperatorFactory.getEntityFromQuery(entityPermission, getSearchDefaultOperatorByNameQueries, searchDefaultOperatorName);
+        var baseQuery = session.getDslContext()
+                .select(SearchDefaultOperators.fields())
+                .from(SearchDefaultOperators)
+                .join(SearchDefaultOperatorDetails).onKey(SEARCH_DEFAULT_OPERATORS_ACTIVE_DETAIL_FK)
+                .where(SearchDefaultOperatorDetails.SEARCH_DEFAULT_OPERATOR_NAME.eq(searchDefaultOperatorName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchDefaultOperatorFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SearchDefaultOperator getSearchDefaultOperatorByName(String searchDefaultOperatorName) {
@@ -1770,31 +1677,19 @@ public class SearchControl
         return getSearchDefaultOperatorDetailValueForUpdate(getSearchDefaultOperatorByNameForUpdate(searchDefaultOperatorName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultSearchDefaultOperatorQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchdefaultoperators, searchdefaultoperatordetails
-                WHERE srchdefop_activedetailid = srchdefopdt_searchdefaultoperatordetailid
-                AND srchdefopdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchdefaultoperators, searchdefaultoperatordetails
-                WHERE srchdefop_activedetailid = srchdefopdt_searchdefaultoperatordetailid
-                AND srchdefopdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultSearchDefaultOperatorQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public SearchDefaultOperator getDefaultSearchDefaultOperator(EntityPermission entityPermission) {
-        return searchDefaultOperatorFactory.getEntityFromQuery(entityPermission, getDefaultSearchDefaultOperatorQueries);
+        var baseQuery = session.getDslContext()
+                .select(SearchDefaultOperators.fields())
+                .from(SearchDefaultOperators)
+                .join(SearchDefaultOperatorDetails).onKey(SEARCH_DEFAULT_OPERATORS_ACTIVE_DETAIL_FK)
+                .where(SearchDefaultOperatorDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchDefaultOperatorFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SearchDefaultOperator getDefaultSearchDefaultOperator() {
@@ -1809,31 +1704,20 @@ public class SearchControl
         return getDefaultSearchDefaultOperatorForUpdate().getLastDetailForUpdate().getSearchDefaultOperatorDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getSearchDefaultOperatorsQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchdefaultoperators, searchdefaultoperatordetails
-                WHERE srchdefop_activedetailid = srchdefopdt_searchdefaultoperatordetailid
-                ORDER BY srchdefopdt_sortorder, srchdefopdt_searchdefaultoperatorname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchdefaultoperators, searchdefaultoperatordetails
-                WHERE srchdefop_activedetailid = srchdefopdt_searchdefaultoperatordetailid
-                FOR UPDATE
-                """);
-        getSearchDefaultOperatorsQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<SearchDefaultOperator> getSearchDefaultOperators(EntityPermission entityPermission) {
-        return searchDefaultOperatorFactory.getEntitiesFromQuery(entityPermission, getSearchDefaultOperatorsQueries);
+        var baseQuery = session.getDslContext()
+                .select(SearchDefaultOperators.fields())
+                .from(SearchDefaultOperators)
+                .join(SearchDefaultOperatorDetails).onKey(SEARCH_DEFAULT_OPERATORS_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SearchDefaultOperatorDetails.SORT_ORDER, SearchDefaultOperatorDetails.SEARCH_DEFAULT_OPERATOR_NAME),
+                    SearchDefaultOperatorFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchDefaultOperatorFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<SearchDefaultOperator> getSearchDefaultOperators() {
@@ -1993,6 +1877,9 @@ public class SearchControl
     @Inject
     protected SearchDefaultOperatorDescriptionFactory searchDefaultOperatorDescriptionFactory;
 
+    @Inject
+    private SearchDefaultOperatorDescriptionTransferCache searchDefaultOperatorDescriptionTransferCache;
+
     public SearchDefaultOperatorDescription createSearchDefaultOperatorDescription(SearchDefaultOperator searchDefaultOperator, Language language, String description, BasePK createdBy) {
         var searchDefaultOperatorDescription = searchDefaultOperatorDescriptionFactory.create(searchDefaultOperator, language, description,
                 session.getStartTime(), Session.MAX_TIME);
@@ -2002,30 +1889,20 @@ public class SearchControl
         return searchDefaultOperatorDescription;
     }
 
-    private static final Map<EntityPermission, String> getSearchDefaultOperatorDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchdefaultoperatordescriptions
-                WHERE srchdefopd_srchdefop_searchdefaultoperatorid = ? AND srchdefopd_lang_languageid = ? AND srchdefopd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchdefaultoperatordescriptions
-                WHERE srchdefopd_srchdefop_searchdefaultoperatorid = ? AND srchdefopd_lang_languageid = ? AND srchdefopd_thrutime = ?
-                FOR UPDATE
-                """);
-        getSearchDefaultOperatorDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private SearchDefaultOperatorDescription getSearchDefaultOperatorDescription(SearchDefaultOperator searchDefaultOperator, Language language, EntityPermission entityPermission) {
-        return searchDefaultOperatorDescriptionFactory.getEntityFromQuery(entityPermission, getSearchDefaultOperatorDescriptionQueries,
-                searchDefaultOperator, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(SearchDefaultOperatorDescriptions.fields())
+                .from(SearchDefaultOperatorDescriptions)
+                .where(SearchDefaultOperatorDescriptions.SEARCH_DEFAULT_OPERATOR.eq(searchDefaultOperator.getPrimaryKey()),
+                        SearchDefaultOperatorDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        SearchDefaultOperatorDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchDefaultOperatorDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SearchDefaultOperatorDescription getSearchDefaultOperatorDescription(SearchDefaultOperator searchDefaultOperator, Language language) {
@@ -2044,32 +1921,25 @@ public class SearchControl
         return getSearchDefaultOperatorDescriptionValue(getSearchDefaultOperatorDescriptionForUpdate(searchDefaultOperator, language));
     }
 
-    private static final Map<EntityPermission, String> getSearchDefaultOperatorDescriptionsBySearchDefaultOperatorQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchdefaultoperatordescriptions, languages
-                WHERE srchdefopd_srchdefop_searchdefaultoperatorid = ? AND srchdefopd_thrutime = ? AND srchdefopd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchdefaultoperatordescriptions
-                WHERE srchdefopd_srchdefop_searchdefaultoperatorid = ? AND srchdefopd_thrutime = ?
-                FOR UPDATE
-                """);
-        getSearchDefaultOperatorDescriptionsBySearchDefaultOperatorQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<SearchDefaultOperatorDescription> getSearchDefaultOperatorDescriptionsBySearchDefaultOperator(SearchDefaultOperator searchDefaultOperator, EntityPermission entityPermission) {
-        return searchDefaultOperatorDescriptionFactory.getEntitiesFromQuery(entityPermission, getSearchDefaultOperatorDescriptionsBySearchDefaultOperatorQueries,
-                searchDefaultOperator, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(SearchDefaultOperatorDescriptions.fields())
+                    .from(SearchDefaultOperatorDescriptions)
+                    .join(Languages).onKey(SEARCH_DEFAULT_OPERATOR_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(SearchDefaultOperatorDescriptions.SEARCH_DEFAULT_OPERATOR.eq(searchDefaultOperator.getPrimaryKey()),
+                            SearchDefaultOperatorDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    SearchDefaultOperatorDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(SearchDefaultOperatorDescriptions.fields())
+                    .from(SearchDefaultOperatorDescriptions)
+                    .where(SearchDefaultOperatorDescriptions.SEARCH_DEFAULT_OPERATOR.eq(searchDefaultOperator.getPrimaryKey()),
+                            SearchDefaultOperatorDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return searchDefaultOperatorDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<SearchDefaultOperatorDescription> getSearchDefaultOperatorDescriptionsBySearchDefaultOperator(SearchDefaultOperator searchDefaultOperator) {
@@ -2151,10 +2021,13 @@ public class SearchControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected SearchSortDirectionDetailFactory searchSortDirectionDetailFactory;
+
+    @Inject
     protected SearchSortDirectionFactory searchSortDirectionFactory;
 
     @Inject
-    protected SearchSortDirectionDetailFactory searchSortDirectionDetailFactory;
+    private SearchSortDirectionTransferCache searchSortDirectionTransferCache;
 
     public SearchSortDirection createSearchSortDirection(String searchSortDirectionName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultSearchSortDirection = getDefaultSearchSortDirection();
@@ -2200,38 +2073,27 @@ public class SearchControl
     }
 
     public long countSearchSortDirections() {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM searchusetypes, searchusetypedetails
-                    WHERE srchutyp_activedetailid = srchutypdt_searchusetypedetailid
-                    """);
-    }
-
-    private static final Map<EntityPermission, String> getSearchSortDirectionByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchsortdirections, searchsortdirectiondetails
-                WHERE srchsrtdir_activedetailid = srchsrtdirdt_searchsortdirectiondetailid
-                AND srchsrtdirdt_searchsortdirectionname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchsortdirections, searchsortdirectiondetails
-                WHERE srchsrtdir_activedetailid = srchsrtdirdt_searchsortdirectiondetailid
-                AND srchsrtdirdt_searchsortdirectionname = ?
-                FOR UPDATE
-                """);
-        getSearchSortDirectionByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(SearchUseTypes)
+                .join(SearchUseTypeDetails).onKey(SEARCH_USE_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public SearchSortDirection getSearchSortDirectionByName(String searchSortDirectionName, EntityPermission entityPermission) {
-        return searchSortDirectionFactory.getEntityFromQuery(entityPermission, getSearchSortDirectionByNameQueries, searchSortDirectionName);
+        var baseQuery = session.getDslContext()
+                .select(SearchSortDirections.fields())
+                .from(SearchSortDirections)
+                .join(SearchSortDirectionDetails).onKey(SEARCH_SORT_DIRECTIONS_ACTIVE_DETAIL_FK)
+                .where(SearchSortDirectionDetails.SEARCH_SORT_DIRECTION_NAME.eq(searchSortDirectionName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchSortDirectionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SearchSortDirection getSearchSortDirectionByName(String searchSortDirectionName) {
@@ -2250,31 +2112,19 @@ public class SearchControl
         return getSearchSortDirectionDetailValueForUpdate(getSearchSortDirectionByNameForUpdate(searchSortDirectionName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultSearchSortDirectionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchsortdirections, searchsortdirectiondetails
-                WHERE srchsrtdir_activedetailid = srchsrtdirdt_searchsortdirectiondetailid
-                AND srchsrtdirdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchsortdirections, searchsortdirectiondetails
-                WHERE srchsrtdir_activedetailid = srchsrtdirdt_searchsortdirectiondetailid
-                AND srchsrtdirdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultSearchSortDirectionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public SearchSortDirection getDefaultSearchSortDirection(EntityPermission entityPermission) {
-        return searchSortDirectionFactory.getEntityFromQuery(entityPermission, getDefaultSearchSortDirectionQueries);
+        var baseQuery = session.getDslContext()
+                .select(SearchSortDirections.fields())
+                .from(SearchSortDirections)
+                .join(SearchSortDirectionDetails).onKey(SEARCH_SORT_DIRECTIONS_ACTIVE_DETAIL_FK)
+                .where(SearchSortDirectionDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchSortDirectionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SearchSortDirection getDefaultSearchSortDirection() {
@@ -2289,31 +2139,20 @@ public class SearchControl
         return getDefaultSearchSortDirectionForUpdate().getLastDetailForUpdate().getSearchSortDirectionDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getSearchSortDirectionsQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchsortdirections, searchsortdirectiondetails
-                WHERE srchsrtdir_activedetailid = srchsrtdirdt_searchsortdirectiondetailid
-                ORDER BY srchsrtdirdt_sortorder, srchsrtdirdt_searchsortdirectionname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchsortdirections, searchsortdirectiondetails
-                WHERE srchsrtdir_activedetailid = srchsrtdirdt_searchsortdirectiondetailid
-                FOR UPDATE
-                """);
-        getSearchSortDirectionsQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<SearchSortDirection> getSearchSortDirections(EntityPermission entityPermission) {
-        return searchSortDirectionFactory.getEntitiesFromQuery(entityPermission, getSearchSortDirectionsQueries);
+        var baseQuery = session.getDslContext()
+                .select(SearchSortDirections.fields())
+                .from(SearchSortDirections)
+                .join(SearchSortDirectionDetails).onKey(SEARCH_SORT_DIRECTIONS_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SearchSortDirectionDetails.SORT_ORDER, SearchSortDirectionDetails.SEARCH_SORT_DIRECTION_NAME),
+                    SearchSortDirectionFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchSortDirectionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<SearchSortDirection> getSearchSortDirections() {
@@ -2473,6 +2312,9 @@ public class SearchControl
     @Inject
     protected SearchSortDirectionDescriptionFactory searchSortDirectionDescriptionFactory;
 
+    @Inject
+    private SearchSortDirectionDescriptionTransferCache searchSortDirectionDescriptionTransferCache;
+
     public SearchSortDirectionDescription createSearchSortDirectionDescription(SearchSortDirection searchSortDirection, Language language, String description, BasePK createdBy) {
         var searchSortDirectionDescription = searchSortDirectionDescriptionFactory.create(searchSortDirection, language, description,
                 session.getStartTime(), Session.MAX_TIME);
@@ -2482,30 +2324,20 @@ public class SearchControl
         return searchSortDirectionDescription;
     }
 
-    private static final Map<EntityPermission, String> getSearchSortDirectionDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchsortdirectiondescriptions
-                WHERE srchsrtdird_srchsrtdir_searchsortdirectionid = ? AND srchsrtdird_lang_languageid = ? AND srchsrtdird_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchsortdirectiondescriptions
-                WHERE srchsrtdird_srchsrtdir_searchsortdirectionid = ? AND srchsrtdird_lang_languageid = ? AND srchsrtdird_thrutime = ?
-                FOR UPDATE
-                """);
-        getSearchSortDirectionDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private SearchSortDirectionDescription getSearchSortDirectionDescription(SearchSortDirection searchSortDirection, Language language, EntityPermission entityPermission) {
-        return searchSortDirectionDescriptionFactory.getEntityFromQuery(entityPermission, getSearchSortDirectionDescriptionQueries,
-                searchSortDirection, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(SearchSortDirectionDescriptions.fields())
+                .from(SearchSortDirectionDescriptions)
+                .where(SearchSortDirectionDescriptions.SEARCH_SORT_DIRECTION.eq(searchSortDirection.getPrimaryKey()),
+                        SearchSortDirectionDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        SearchSortDirectionDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchSortDirectionDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SearchSortDirectionDescription getSearchSortDirectionDescription(SearchSortDirection searchSortDirection, Language language) {
@@ -2524,32 +2356,25 @@ public class SearchControl
         return getSearchSortDirectionDescriptionValue(getSearchSortDirectionDescriptionForUpdate(searchSortDirection, language));
     }
 
-    private static final Map<EntityPermission, String> getSearchSortDirectionDescriptionsBySearchSortDirectionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchsortdirectiondescriptions, languages
-                WHERE srchsrtdird_srchsrtdir_searchsortdirectionid = ? AND srchsrtdird_thrutime = ? AND srchsrtdird_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchsortdirectiondescriptions
-                WHERE srchsrtdird_srchsrtdir_searchsortdirectionid = ? AND srchsrtdird_thrutime = ?
-                FOR UPDATE
-                """);
-        getSearchSortDirectionDescriptionsBySearchSortDirectionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<SearchSortDirectionDescription> getSearchSortDirectionDescriptionsBySearchSortDirection(SearchSortDirection searchSortDirection, EntityPermission entityPermission) {
-        return searchSortDirectionDescriptionFactory.getEntitiesFromQuery(entityPermission, getSearchSortDirectionDescriptionsBySearchSortDirectionQueries,
-                searchSortDirection, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(SearchSortDirectionDescriptions.fields())
+                    .from(SearchSortDirectionDescriptions)
+                    .join(Languages).onKey(SEARCH_SORT_DIRECTION_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(SearchSortDirectionDescriptions.SEARCH_SORT_DIRECTION.eq(searchSortDirection.getPrimaryKey()),
+                            SearchSortDirectionDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    SearchSortDirectionDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(SearchSortDirectionDescriptions.fields())
+                    .from(SearchSortDirectionDescriptions)
+                    .where(SearchSortDirectionDescriptions.SEARCH_SORT_DIRECTION.eq(searchSortDirection.getPrimaryKey()),
+                            SearchSortDirectionDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return searchSortDirectionDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<SearchSortDirectionDescription> getSearchSortDirectionDescriptionsBySearchSortDirection(SearchSortDirection searchSortDirection) {
@@ -2631,10 +2456,13 @@ public class SearchControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected SearchKindDetailFactory searchKindDetailFactory;
+
+    @Inject
     protected SearchKindFactory searchKindFactory;
 
     @Inject
-    protected SearchKindDetailFactory searchKindDetailFactory;
+    private SearchKindTransferCache searchKindTransferCache;
 
     public SearchKind createSearchKind(String searchKindName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultSearchKind = getDefaultSearchKind();
@@ -2681,37 +2509,27 @@ public class SearchControl
     }
 
     public long countSearchKinds() {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM searchkinds, searchkinddetails
-                    WHERE srchk_activedetailid = srchkdt_searchkinddetailid
-                    """);
-    }
-
-    private static final Map<EntityPermission, String> getSearchKindByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchkinds, searchkinddetails
-                WHERE srchk_activedetailid = srchkdt_searchkinddetailid AND srchkdt_searchkindname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchkinds, searchkinddetails
-                WHERE srchk_activedetailid = srchkdt_searchkinddetailid AND srchkdt_searchkindname = ?
-                FOR UPDATE
-                """);
-        getSearchKindByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(SearchKinds)
+                .join(SearchKindDetails).onKey(SEARCH_KINDS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public SearchKind getSearchKindByName(String searchKindName, EntityPermission entityPermission) {
-        return searchKindFactory.getEntityFromQuery(entityPermission, getSearchKindByNameQueries,
-                searchKindName);
+        var baseQuery = session.getDslContext()
+                .select(SearchKinds.fields())
+                .from(SearchKinds)
+                .join(SearchKindDetails).onKey(SEARCH_KINDS_ACTIVE_DETAIL_FK)
+                .where(SearchKindDetails.SEARCH_KIND_NAME.eq(searchKindName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchKindFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SearchKind getSearchKindByName(String searchKindName) {
@@ -2730,29 +2548,19 @@ public class SearchControl
         return getSearchKindDetailValueForUpdate(getSearchKindByNameForUpdate(searchKindName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultSearchKindQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchkinds, searchkinddetails
-                WHERE srchk_activedetailid = srchkdt_searchkinddetailid AND srchkdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchkinds, searchkinddetails
-                WHERE srchk_activedetailid = srchkdt_searchkinddetailid AND srchkdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultSearchKindQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public SearchKind getDefaultSearchKind(EntityPermission entityPermission) {
-        return searchKindFactory.getEntityFromQuery(entityPermission, getDefaultSearchKindQueries);
+        var baseQuery = session.getDslContext()
+                .select(SearchKinds.fields())
+                .from(SearchKinds)
+                .join(SearchKindDetails).onKey(SEARCH_KINDS_ACTIVE_DETAIL_FK)
+                .where(SearchKindDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchKindFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SearchKind getDefaultSearchKind() {
@@ -2767,31 +2575,20 @@ public class SearchControl
         return getDefaultSearchKind(EntityPermission.READ_WRITE).getLastDetailForUpdate().getSearchKindDetailValue();
     }
 
-    private static final Map<EntityPermission, String> getSearchKindsQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchkinds, searchkinddetails
-                WHERE srchk_activedetailid = srchkdt_searchkinddetailid
-                ORDER BY srchkdt_sortorder, srchkdt_searchkindname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchkinds, searchkinddetails
-                WHERE srchk_activedetailid = srchkdt_searchkinddetailid
-                FOR UPDATE
-                """);
-        getSearchKindsQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<SearchKind> getSearchKinds(EntityPermission entityPermission) {
-        return searchKindFactory.getEntitiesFromQuery(entityPermission, getSearchKindsQueries);
+        var baseQuery = session.getDslContext()
+                .select(SearchKinds.fields())
+                .from(SearchKinds)
+                .join(SearchKindDetails).onKey(SEARCH_KINDS_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SearchKindDetails.SORT_ORDER, SearchKindDetails.SEARCH_KIND_NAME),
+                    SearchKindFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchKindFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<SearchKind> getSearchKinds() {
@@ -2948,6 +2745,9 @@ public class SearchControl
     @Inject
     protected SearchKindDescriptionFactory searchKindDescriptionFactory;
 
+    @Inject
+    private SearchKindDescriptionTransferCache searchKindDescriptionTransferCache;
+
     public SearchKindDescription createSearchKindDescription(SearchKind searchKind, Language language, String description,
             BasePK createdBy) {
         var searchKindDescription = searchKindDescriptionFactory.create(searchKind,
@@ -2958,30 +2758,20 @@ public class SearchControl
         return searchKindDescription;
     }
 
-    private static final Map<EntityPermission, String> getSearchKindDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchkinddescriptions
-                WHERE srchkd_srchk_searchkindid = ? AND srchkd_lang_languageid = ? AND srchkd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchkinddescriptions
-                WHERE srchkd_srchk_searchkindid = ? AND srchkd_lang_languageid = ? AND srchkd_thrutime = ?
-                FOR UPDATE
-                """);
-        getSearchKindDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private SearchKindDescription getSearchKindDescription(SearchKind searchKind, Language language, EntityPermission entityPermission) {
-        return searchKindDescriptionFactory.getEntityFromQuery(entityPermission, getSearchKindDescriptionQueries,
-                searchKind, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(SearchKindDescriptions.fields())
+                .from(SearchKindDescriptions)
+                .where(SearchKindDescriptions.SEARCH_KIND.eq(searchKind.getPrimaryKey()),
+                        SearchKindDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        SearchKindDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchKindDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SearchKindDescription getSearchKindDescription(SearchKind searchKind, Language language) {
@@ -3000,32 +2790,25 @@ public class SearchControl
         return getSearchKindDescriptionValue(getSearchKindDescriptionForUpdate(searchKind, language));
     }
 
-    private static final Map<EntityPermission, String> getSearchKindDescriptionsBySearchKindQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchkinddescriptions, languages
-                WHERE srchkd_srchk_searchkindid = ? AND srchkd_thrutime = ? AND srchkd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchkinddescriptions
-                WHERE srchkd_srchk_searchkindid = ? AND srchkd_thrutime = ?
-                FOR UPDATE
-                """);
-        getSearchKindDescriptionsBySearchKindQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<SearchKindDescription> getSearchKindDescriptionsBySearchKind(SearchKind searchKind, EntityPermission entityPermission) {
-        return searchKindDescriptionFactory.getEntitiesFromQuery(entityPermission, getSearchKindDescriptionsBySearchKindQueries,
-                searchKind, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(SearchKindDescriptions.fields())
+                    .from(SearchKindDescriptions)
+                    .join(Languages).onKey(SEARCH_KIND_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(SearchKindDescriptions.SEARCH_KIND.eq(searchKind.getPrimaryKey()),
+                            SearchKindDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    SearchKindDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(SearchKindDescriptions.fields())
+                    .from(SearchKindDescriptions)
+                    .where(SearchKindDescriptions.SEARCH_KIND.eq(searchKind.getPrimaryKey()),
+                            SearchKindDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return searchKindDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<SearchKindDescription> getSearchKindDescriptionsBySearchKind(SearchKind searchKind) {
@@ -3107,10 +2890,13 @@ public class SearchControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected SearchTypeDetailFactory searchTypeDetailFactory;
+
+    @Inject
     protected SearchTypeFactory searchTypeFactory;
 
     @Inject
-    protected SearchTypeDetailFactory searchTypeDetailFactory;
+    private SearchTypeTransferCache searchTypeTransferCache;
 
     public SearchType createSearchType(SearchKind searchKind, String searchTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultSearchType = getDefaultSearchType(searchKind);
@@ -3157,39 +2943,30 @@ public class SearchControl
     }
 
     public long countSearchTypesBySearchKind(SearchKind searchKind) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM searchtypes, searchtypedetails
-                        WHERE srchtyp_activedetailid = srchtypdt_searchtypedetailid AND srchtypdt_srchk_searchkindid = ?
-                        """, searchKind);
-    }
-
-    private static final Map<EntityPermission, String> getSearchTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchtypes, searchtypedetails
-                WHERE srchtyp_activedetailid = srchtypdt_searchtypedetailid AND srchtypdt_srchk_searchkindid = ?
-                ORDER BY srchtypdt_sortorder, srchtypdt_searchtypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchtypes, searchtypedetails
-                WHERE srchtyp_activedetailid = srchtypdt_searchtypedetailid AND srchtypdt_srchk_searchkindid = ?
-                FOR UPDATE
-                """);
-        getSearchTypesQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(SearchTypes)
+                .join(SearchTypeDetails).onKey(SEARCH_TYPES_ACTIVE_DETAIL_FK)
+                .where(SearchTypeDetails.SEARCH_KIND.eq(searchKind.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<SearchType> getSearchTypes(SearchKind searchKind, EntityPermission entityPermission) {
-        return searchTypeFactory.getEntitiesFromQuery(entityPermission, getSearchTypesQueries,
-                searchKind);
+        var baseQuery = session.getDslContext()
+                .select(SearchTypes.fields())
+                .from(SearchTypes)
+                .join(SearchTypeDetails).onKey(SEARCH_TYPES_ACTIVE_DETAIL_FK)
+                .where(SearchTypeDetails.SEARCH_KIND.eq(searchKind.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SearchTypeDetails.SORT_ORDER, SearchTypeDetails.SEARCH_TYPE_NAME),
+                    SearchTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<SearchType> getSearchTypes(SearchKind searchKind) {
@@ -3200,32 +2977,20 @@ public class SearchControl
         return getSearchTypes(searchKind, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getDefaultSearchTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchtypes, searchtypedetails
-                WHERE srchtyp_activedetailid = srchtypdt_searchtypedetailid
-                AND srchtypdt_srchk_searchkindid = ? AND srchtypdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchtypes, searchtypedetails
-                WHERE srchtyp_activedetailid = srchtypdt_searchtypedetailid
-                AND srchtypdt_srchk_searchkindid = ? AND srchtypdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultSearchTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public SearchType getDefaultSearchType(SearchKind searchKind, EntityPermission entityPermission) {
-        return searchTypeFactory.getEntityFromQuery(entityPermission, getDefaultSearchTypeQueries,
-                searchKind);
+        var baseQuery = session.getDslContext()
+                .select(SearchTypes.fields())
+                .from(SearchTypes)
+                .join(SearchTypeDetails).onKey(SEARCH_TYPES_ACTIVE_DETAIL_FK)
+                .where(SearchTypeDetails.SEARCH_KIND.eq(searchKind.getPrimaryKey()),
+                        SearchTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SearchType getDefaultSearchType(SearchKind searchKind) {
@@ -3240,32 +3005,20 @@ public class SearchControl
         return getDefaultSearchTypeForUpdate(searchKind).getLastDetailForUpdate().getSearchTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getSearchTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchtypes, searchtypedetails
-                WHERE srchtyp_activedetailid = srchtypdt_searchtypedetailid
-                AND srchtypdt_srchk_searchkindid = ? AND srchtypdt_searchtypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchtypes, searchtypedetails
-                WHERE srchtyp_activedetailid = srchtypdt_searchtypedetailid
-                AND srchtypdt_srchk_searchkindid = ? AND srchtypdt_searchtypename = ?
-                FOR UPDATE
-                """);
-        getSearchTypeByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public SearchType getSearchTypeByName(SearchKind searchKind, String searchTypeName, EntityPermission entityPermission) {
-        return searchTypeFactory.getEntityFromQuery(entityPermission, getSearchTypeByNameQueries,
-                searchKind, searchTypeName);
+        var baseQuery = session.getDslContext()
+                .select(SearchTypes.fields())
+                .from(SearchTypes)
+                .join(SearchTypeDetails).onKey(SEARCH_TYPES_ACTIVE_DETAIL_FK)
+                .where(SearchTypeDetails.SEARCH_KIND.eq(searchKind.getPrimaryKey()),
+                        SearchTypeDetails.SEARCH_TYPE_NAME.eq(searchTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SearchType getSearchTypeByName(SearchKind searchKind, String searchTypeName) {
@@ -3431,6 +3184,9 @@ public class SearchControl
     @Inject
     protected SearchTypeDescriptionFactory searchTypeDescriptionFactory;
 
+    @Inject
+    private SearchTypeDescriptionTransferCache searchTypeDescriptionTransferCache;
+
     public SearchTypeDescription createSearchTypeDescription(SearchType searchType, Language language, String description,
             BasePK createdBy) {
         var searchTypeDescription = searchTypeDescriptionFactory.create(searchType,
@@ -3441,30 +3197,20 @@ public class SearchControl
         return searchTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getSearchTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchtypedescriptions
-                WHERE srchtypd_srchtyp_searchtypeid = ? AND srchtypd_lang_languageid = ? AND srchtypd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchtypedescriptions
-                WHERE srchtypd_srchtyp_searchtypeid = ? AND srchtypd_lang_languageid = ? AND srchtypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getSearchTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private SearchTypeDescription getSearchTypeDescription(SearchType searchType, Language language, EntityPermission entityPermission) {
-        return searchTypeDescriptionFactory.getEntityFromQuery(entityPermission, getSearchTypeDescriptionQueries,
-                searchType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(SearchTypeDescriptions.fields())
+                .from(SearchTypeDescriptions)
+                .where(SearchTypeDescriptions.SEARCH_TYPE.eq(searchType.getPrimaryKey()),
+                        SearchTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        SearchTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SearchTypeDescription getSearchTypeDescription(SearchType searchType, Language language) {
@@ -3483,32 +3229,25 @@ public class SearchControl
         return getSearchTypeDescriptionValue(getSearchTypeDescriptionForUpdate(searchType, language));
     }
 
-    private static final Map<EntityPermission, String> getSearchTypeDescriptionsBySearchTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchtypedescriptions, languages
-                WHERE srchtypd_srchtyp_searchtypeid = ? AND srchtypd_thrutime = ? AND srchtypd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchtypedescriptions
-                WHERE srchtypd_srchtyp_searchtypeid = ? AND srchtypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getSearchTypeDescriptionsBySearchTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<SearchTypeDescription> getSearchTypeDescriptionsBySearchType(SearchType searchType, EntityPermission entityPermission) {
-        return searchTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getSearchTypeDescriptionsBySearchTypeQueries,
-                searchType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(SearchTypeDescriptions.fields())
+                    .from(SearchTypeDescriptions)
+                    .join(Languages).onKey(SEARCH_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(SearchTypeDescriptions.SEARCH_TYPE.eq(searchType.getPrimaryKey()),
+                            SearchTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    SearchTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(SearchTypeDescriptions.fields())
+                    .from(SearchTypeDescriptions)
+                    .where(SearchTypeDescriptions.SEARCH_TYPE.eq(searchType.getPrimaryKey()),
+                            SearchTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return searchTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<SearchTypeDescription> getSearchTypeDescriptionsBySearchType(SearchType searchType) {
@@ -3590,10 +3329,13 @@ public class SearchControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected SearchSortOrderDetailFactory searchSortOrderDetailFactory;
+
+    @Inject
     protected SearchSortOrderFactory searchSortOrderFactory;
 
     @Inject
-    protected SearchSortOrderDetailFactory searchSortOrderDetailFactory;
+    private SearchSortOrderTransferCache searchSortOrderTransferCache;
 
     public SearchSortOrder createSearchSortOrder(SearchKind searchKind, String searchSortOrderName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultSearchSortOrder = getDefaultSearchSortOrder(searchKind);
@@ -3640,39 +3382,30 @@ public class SearchControl
     }
 
     public long countSearchSortOrdersBySearchKind(SearchKind searchKind) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM searchsortorders, searchsortorderdetails
-                        WHERE srchsrtord_activedetailid = srchsrtorddt_searchsortorderdetailid AND srchsrtorddt_srchk_searchkindid = ?
-                        """, searchKind);
-    }
-
-    private static final Map<EntityPermission, String> getSearchSortOrdersQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchsortorders, searchsortorderdetails
-                WHERE srchsrtord_activedetailid = srchsrtorddt_searchsortorderdetailid AND srchsrtorddt_srchk_searchkindid = ?
-                ORDER BY srchsrtorddt_sortorder, srchsrtorddt_searchsortordername
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchsortorders, searchsortorderdetails
-                WHERE srchsrtord_activedetailid = srchsrtorddt_searchsortorderdetailid AND srchsrtorddt_srchk_searchkindid = ?
-                FOR UPDATE
-                """);
-        getSearchSortOrdersQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(SearchSortOrders)
+                .join(SearchSortOrderDetails).onKey(SEARCH_SORT_ORDERS_ACTIVE_DETAIL_FK)
+                .where(SearchSortOrderDetails.SEARCH_KIND.eq(searchKind.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<SearchSortOrder> getSearchSortOrders(SearchKind searchKind, EntityPermission entityPermission) {
-        return searchSortOrderFactory.getEntitiesFromQuery(entityPermission, getSearchSortOrdersQueries,
-                searchKind);
+        var baseQuery = session.getDslContext()
+                .select(SearchSortOrders.fields())
+                .from(SearchSortOrders)
+                .join(SearchSortOrderDetails).onKey(SEARCH_SORT_ORDERS_ACTIVE_DETAIL_FK)
+                .where(SearchSortOrderDetails.SEARCH_KIND.eq(searchKind.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SearchSortOrderDetails.SORT_ORDER, SearchSortOrderDetails.SEARCH_SORT_ORDER_NAME),
+                    SearchSortOrderFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchSortOrderFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<SearchSortOrder> getSearchSortOrders(SearchKind searchKind) {
@@ -3683,32 +3416,20 @@ public class SearchControl
         return getSearchSortOrders(searchKind, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getDefaultSearchSortOrderQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchsortorders, searchsortorderdetails
-                WHERE srchsrtord_activedetailid = srchsrtorddt_searchsortorderdetailid
-                AND srchsrtorddt_srchk_searchkindid = ? AND srchsrtorddt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchsortorders, searchsortorderdetails
-                WHERE srchsrtord_activedetailid = srchsrtorddt_searchsortorderdetailid
-                AND srchsrtorddt_srchk_searchkindid = ? AND srchsrtorddt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultSearchSortOrderQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public SearchSortOrder getDefaultSearchSortOrder(SearchKind searchKind, EntityPermission entityPermission) {
-        return searchSortOrderFactory.getEntityFromQuery(entityPermission, getDefaultSearchSortOrderQueries,
-                searchKind);
+        var baseQuery = session.getDslContext()
+                .select(SearchSortOrders.fields())
+                .from(SearchSortOrders)
+                .join(SearchSortOrderDetails).onKey(SEARCH_SORT_ORDERS_ACTIVE_DETAIL_FK)
+                .where(SearchSortOrderDetails.SEARCH_KIND.eq(searchKind.getPrimaryKey()),
+                        SearchSortOrderDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchSortOrderFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SearchSortOrder getDefaultSearchSortOrder(SearchKind searchKind) {
@@ -3723,32 +3444,20 @@ public class SearchControl
         return getDefaultSearchSortOrderForUpdate(searchKind).getLastDetailForUpdate().getSearchSortOrderDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getSearchSortOrderByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchsortorders, searchsortorderdetails
-                WHERE srchsrtord_activedetailid = srchsrtorddt_searchsortorderdetailid
-                AND srchsrtorddt_srchk_searchkindid = ? AND srchsrtorddt_searchsortordername = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchsortorders, searchsortorderdetails
-                WHERE srchsrtord_activedetailid = srchsrtorddt_searchsortorderdetailid
-                AND srchsrtorddt_srchk_searchkindid = ? AND srchsrtorddt_searchsortordername = ?
-                FOR UPDATE
-                """);
-        getSearchSortOrderByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public SearchSortOrder getSearchSortOrderByName(SearchKind searchKind, String searchSortOrderName, EntityPermission entityPermission) {
-        return searchSortOrderFactory.getEntityFromQuery(entityPermission, getSearchSortOrderByNameQueries,
-                searchKind, searchSortOrderName);
+        var baseQuery = session.getDslContext()
+                .select(SearchSortOrders.fields())
+                .from(SearchSortOrders)
+                .join(SearchSortOrderDetails).onKey(SEARCH_SORT_ORDERS_ACTIVE_DETAIL_FK)
+                .where(SearchSortOrderDetails.SEARCH_KIND.eq(searchKind.getPrimaryKey()),
+                        SearchSortOrderDetails.SEARCH_SORT_ORDER_NAME.eq(searchSortOrderName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchSortOrderFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SearchSortOrder getSearchSortOrderByName(SearchKind searchKind, String searchSortOrderName) {
@@ -3912,6 +3621,9 @@ public class SearchControl
     @Inject
     protected SearchSortOrderDescriptionFactory searchSortOrderDescriptionFactory;
 
+    @Inject
+    private SearchSortOrderDescriptionTransferCache searchSortOrderDescriptionTransferCache;
+
     public SearchSortOrderDescription createSearchSortOrderDescription(SearchSortOrder searchSortOrder, Language language, String description,
             BasePK createdBy) {
         var searchSortOrderDescription = searchSortOrderDescriptionFactory.create(searchSortOrder,
@@ -3922,30 +3634,20 @@ public class SearchControl
         return searchSortOrderDescription;
     }
 
-    private static final Map<EntityPermission, String> getSearchSortOrderDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchsortorderdescriptions
-                WHERE srchsrtordd_srchsrtord_searchsortorderid = ? AND srchsrtordd_lang_languageid = ? AND srchsrtordd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchsortorderdescriptions
-                WHERE srchsrtordd_srchsrtord_searchsortorderid = ? AND srchsrtordd_lang_languageid = ? AND srchsrtordd_thrutime = ?
-                FOR UPDATE
-                """);
-        getSearchSortOrderDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private SearchSortOrderDescription getSearchSortOrderDescription(SearchSortOrder searchSortOrder, Language language, EntityPermission entityPermission) {
-        return searchSortOrderDescriptionFactory.getEntityFromQuery(entityPermission, getSearchSortOrderDescriptionQueries,
-                searchSortOrder, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(SearchSortOrderDescriptions.fields())
+                .from(SearchSortOrderDescriptions)
+                .where(SearchSortOrderDescriptions.SEARCH_SORT_ORDER.eq(searchSortOrder.getPrimaryKey()),
+                        SearchSortOrderDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        SearchSortOrderDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchSortOrderDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SearchSortOrderDescription getSearchSortOrderDescription(SearchSortOrder searchSortOrder, Language language) {
@@ -3964,32 +3666,25 @@ public class SearchControl
         return getSearchSortOrderDescriptionValue(getSearchSortOrderDescriptionForUpdate(searchSortOrder, language));
     }
 
-    private static final Map<EntityPermission, String> getSearchSortOrderDescriptionsBySearchSortOrderQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchsortorderdescriptions, languages
-                WHERE srchsrtordd_srchsrtord_searchsortorderid = ? AND srchsrtordd_thrutime = ? AND srchsrtordd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchsortorderdescriptions
-                WHERE srchsrtordd_srchsrtord_searchsortorderid = ? AND srchsrtordd_thrutime = ?
-                FOR UPDATE
-                """);
-        getSearchSortOrderDescriptionsBySearchSortOrderQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<SearchSortOrderDescription> getSearchSortOrderDescriptionsBySearchSortOrder(SearchSortOrder searchSortOrder, EntityPermission entityPermission) {
-        return searchSortOrderDescriptionFactory.getEntitiesFromQuery(entityPermission, getSearchSortOrderDescriptionsBySearchSortOrderQueries,
-                searchSortOrder, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(SearchSortOrderDescriptions.fields())
+                    .from(SearchSortOrderDescriptions)
+                    .join(Languages).onKey(SEARCH_SORT_ORDER_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(SearchSortOrderDescriptions.SEARCH_SORT_ORDER.eq(searchSortOrder.getPrimaryKey()),
+                            SearchSortOrderDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    SearchSortOrderDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(SearchSortOrderDescriptions.fields())
+                    .from(SearchSortOrderDescriptions)
+                    .where(SearchSortOrderDescriptions.SEARCH_SORT_ORDER.eq(searchSortOrder.getPrimaryKey()),
+                            SearchSortOrderDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return searchSortOrderDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<SearchSortOrderDescription> getSearchSortOrderDescriptionsBySearchSortOrder(SearchSortOrder searchSortOrder) {
@@ -4083,31 +3778,29 @@ public class SearchControl
         return search;
     }
     
-    private static final Map<EntityPermission, String> getSearchesByPartyQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searches
-                WHERE srch_par_partyid = ? AND srch_thrutime = ?
-                _LIMIT_
-                """); // TODO: ORDER BY needed.
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searches
-                WHERE srch_par_partyid = ? AND srch_thrutime = ?
-                FOR UPDATE
-                """);
-        getSearchesByPartyQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<Search> getSearchesByParty(Party party, EntityPermission entityPermission) {
-        return searchFactory.getEntitiesFromQuery(entityPermission, getSearchesByPartyQueries,
-                party, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(Searches.fields())
+                .from(Searches)
+                .where(Searches.PARTY.eq(party.getPrimaryKey()),
+                        Searches.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(Searches.fields())
+                    .from(Searches)
+                    .join(SearchTypes).onKey(SEARCHES_SEARCH_TYPE_FK)
+                    .join(SearchTypeDetails).onKey(SEARCH_TYPES_LAST_DETAIL_FK)
+                    .leftJoin(SearchUseTypes).onKey(SEARCHES_SEARCH_USE_TYPE_FK)
+                    .leftJoin(SearchUseTypeDetails).onKey(SEARCH_USE_TYPES_LAST_DETAIL_FK)
+                    .where(Searches.PARTY.eq(party.getPrimaryKey()),
+                            Searches.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(SearchTypeDetails.SORT_ORDER, SearchTypeDetails.SEARCH_TYPE_NAME, SearchUseTypeDetails.SORT_ORDER, SearchUseTypeDetails.SEARCH_USE_TYPE_NAME, Searches.EXECUTED_TIME),
+                    SearchFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Search> getSearchesByParty(Party party) {
@@ -4118,31 +3811,29 @@ public class SearchControl
         return getSearchesByParty(party, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getSearchesBySearchTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searches
-                WHERE srch_srchtyp_searchtypeid = ? AND srch_thrutime = ?
-                _LIMIT_
-                """); // TODO: ORDER BY needed.
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searches
-                WHERE srch_srchtyp_searchtypeid = ? AND srch_thrutime = ?
-                FOR UPDATE
-                """);
-        getSearchesBySearchTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<Search> getSearchesBySearchType(SearchType searchType, EntityPermission entityPermission) {
-        return searchFactory.getEntitiesFromQuery(entityPermission, getSearchesBySearchTypeQueries,
-                searchType, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(Searches.fields())
+                .from(Searches)
+                .where(Searches.SEARCH_TYPE.eq(searchType.getPrimaryKey()),
+                        Searches.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(Searches.fields())
+                    .from(Searches)
+                    .leftJoin(Parties).onKey(SEARCHES_PARTY_FK)
+                    .leftJoin(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .leftJoin(SearchUseTypes).onKey(SEARCHES_SEARCH_USE_TYPE_FK)
+                    .leftJoin(SearchUseTypeDetails).onKey(SEARCH_USE_TYPES_LAST_DETAIL_FK)
+                    .where(Searches.SEARCH_TYPE.eq(searchType.getPrimaryKey()),
+                            Searches.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PartyDetails.PARTY_NAME, SearchUseTypeDetails.SORT_ORDER, SearchUseTypeDetails.SEARCH_USE_TYPE_NAME, Searches.EXECUTED_TIME),
+                    SearchFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Search> getSearchesBySearchType(SearchType searchType) {
@@ -4153,31 +3844,29 @@ public class SearchControl
         return getSearchesBySearchType(searchType, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getSearchesBySearchUseTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searches
-                WHERE srch_srchutyp_searchusetypeid = ? AND srch_thrutime = ?
-                _LIMIT_
-                """); // TODO: ORDER BY needed.
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searches
-                WHERE srch_srchutyp_searchusetypeid = ? AND srch_thrutime = ?
-                FOR UPDATE
-                """);
-        getSearchesBySearchUseTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<Search> getSearchesBySearchUseType(SearchUseType searchUseType, EntityPermission entityPermission) {
-        return searchFactory.getEntitiesFromQuery(entityPermission, getSearchesBySearchUseTypeQueries,
-                searchUseType, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(Searches.fields())
+                .from(Searches)
+                .where(Searches.SEARCH_USE_TYPE.eq(searchUseType.getPrimaryKey()),
+                        Searches.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(Searches.fields())
+                    .from(Searches)
+                    .join(SearchTypes).onKey(SEARCHES_SEARCH_TYPE_FK)
+                    .join(SearchTypeDetails).onKey(SEARCH_TYPES_LAST_DETAIL_FK)
+                    .leftJoin(Parties).onKey(SEARCHES_PARTY_FK)
+                    .leftJoin(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .where(Searches.SEARCH_USE_TYPE.eq(searchUseType.getPrimaryKey()),
+                            Searches.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(SearchTypeDetails.SORT_ORDER, SearchTypeDetails.SEARCH_TYPE_NAME, PartyDetails.PARTY_NAME, Searches.EXECUTED_TIME),
+                    SearchFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Search> getSearchesBySearchUseType(SearchUseType searchUseType) {
@@ -4188,31 +3877,31 @@ public class SearchControl
         return getSearchesBySearchUseType(searchUseType, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getSearchesByCachedSearchQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searches
-                WHERE srch_csrch_cachedsearchid = ? AND srch_thrutime = ?
-                _LIMIT_
-                """); // TODO: ORDER BY needed.
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searches
-                WHERE srch_csrch_cachedsearchid = ? AND srch_thrutime = ?
-                FOR UPDATE
-                """);
-        getSearchesByCachedSearchQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<Search> getSearchesByCachedSearch(CachedSearch cachedSearch, EntityPermission entityPermission) {
-        return searchFactory.getEntitiesFromQuery(entityPermission, getSearchesByCachedSearchQueries,
-                cachedSearch, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(Searches.fields())
+                .from(Searches)
+                .where(Searches.CACHED_SEARCH.eq(cachedSearch.getPrimaryKey()),
+                        Searches.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(Searches.fields())
+                    .from(Searches)
+                    .join(SearchTypes).onKey(SEARCHES_SEARCH_TYPE_FK)
+                    .join(SearchTypeDetails).onKey(SEARCH_TYPES_LAST_DETAIL_FK)
+                    .leftJoin(Parties).onKey(SEARCHES_PARTY_FK)
+                    .leftJoin(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .leftJoin(SearchUseTypes).onKey(SEARCHES_SEARCH_USE_TYPE_FK)
+                    .leftJoin(SearchUseTypeDetails).onKey(SEARCH_USE_TYPES_LAST_DETAIL_FK)
+                    .where(Searches.CACHED_SEARCH.eq(cachedSearch.getPrimaryKey()),
+                            Searches.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(SearchTypeDetails.SORT_ORDER, SearchTypeDetails.SEARCH_TYPE_NAME, PartyDetails.PARTY_NAME, SearchUseTypeDetails.SORT_ORDER, SearchUseTypeDetails.SEARCH_USE_TYPE_NAME, Searches.EXECUTED_TIME),
+                    SearchFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Search> getSearchesByCachedSearch(CachedSearch cachedSearch) {
@@ -4276,41 +3965,29 @@ public class SearchControl
     }
     
     public boolean searchResultExists(Search search, EntityInstance entityInstance) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM searchresults
-                WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = ?
-                """,
-                search, entityInstance) == 1;
+        return session.getDslContext()
+                .selectCount()
+                .from(SearchResults)
+                .where(SearchResults.SEARCH.eq(search.getPrimaryKey()),
+                        SearchResults.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L) == 1L;
     }
     
-    private static final Map<EntityPermission, String> getSearchResultsBySearchQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM searchresults
-                WHERE srchr_srch_searchid = ?
-                ORDER BY srchr_sortorder
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchresults
-                WHERE srchr_srch_searchid = ?
-                FOR UPDATE
-                """);
-        getSearchResultsBySearchQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<SearchResult> getSearchResultsBySearch(Search search, EntityPermission entityPermission) {
-        return searchResultFactory.getEntitiesFromQuery(entityPermission, getSearchResultsBySearchQueries,
-                search);
+        var baseQuery = session.getDslContext()
+                .select(SearchResults.fields())
+                .from(SearchResults)
+                .where(SearchResults.SEARCH.eq(search.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SearchResults.SORT_ORDER),
+                    SearchResultFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchResultFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<SearchResult> getSearchResultsBySearch(Search search) {
@@ -4322,13 +3999,12 @@ public class SearchControl
     }
     
     public long countSearchResults(Search search) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM searchresults
-                WHERE srchr_srch_searchid = ?
-                """,
-                search);
+        return session.getDslContext()
+                .selectCount()
+                .from(SearchResults)
+                .where(SearchResults.SEARCH.eq(search.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public void removeSearchResultsBySearch(Search search) {
@@ -4366,35 +4042,25 @@ public class SearchControl
         return cachedSearch;
     }
     
-    private static final Map<EntityPermission, String> getCachedSearchQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM cachedsearches
-                WHERE csrch_idx_indexid = ? AND csrch_querysha1hash = ? AND csrch_parsedquerysha1hash = ?
-                AND csrch_srchdefop_searchdefaultoperatorid = ? AND csrch_srchsrtord_searchsortorderid = ? AND csrch_srchsrtdir_searchsortdirectionid = ?
-                AND csrch_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM cachedsearches
-                WHERE csrch_idx_indexid = ? AND csrch_querysha1hash = ? AND csrch_parsedquerysha1hash = ?
-                AND csrch_srchdefop_searchdefaultoperatorid = ? AND csrch_srchsrtord_searchsortorderid = ? AND csrch_srchsrtdir_searchsortdirectionid = ?
-                AND csrch_thrutime = ?
-                FOR UPDATE
-                """);
-        getCachedSearchQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private CachedSearch getCachedSearch(Index index, String querySha1Hash, String parsedQuerySha1Hash, SearchDefaultOperator searchDefaultOperator,
             SearchSortOrder searchSortOrder, SearchSortDirection searchSortDirection, EntityPermission entityPermission) {
-        return cachedSearchFactory.getEntityFromQuery(entityPermission, getCachedSearchQueries,
-                index, querySha1Hash, parsedQuerySha1Hash, searchDefaultOperator, searchSortOrder, searchSortDirection, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(CachedSearches.fields())
+                .from(CachedSearches)
+                .where(CachedSearches.INDEX.eq(index.getPrimaryKey()),
+                        CachedSearches.QUERY_SHA1_HASH.eq(querySha1Hash),
+                        CachedSearches.PARSED_QUERY_SHA1_HASH.eq(parsedQuerySha1Hash),
+                        CachedSearches.SEARCH_DEFAULT_OPERATOR.eq(searchDefaultOperator.getPrimaryKey()),
+                        CachedSearches.SEARCH_SORT_ORDER.eq(searchSortOrder.getPrimaryKey()),
+                        CachedSearches.SEARCH_SORT_DIRECTION.eq(searchSortDirection.getPrimaryKey()),
+                        CachedSearches.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cachedSearchFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public CachedSearch getCachedSearch(Index index, String querySha1Hash, String parsedQuerySha1Hash, SearchDefaultOperator searchDefaultOperator,
@@ -4409,96 +4075,124 @@ public class SearchControl
                 EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getCachedSearchesByIndexQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM cachedsearches
-                WHERE csrch_idx_indexid = ? AND csrch_thrutime = ?
-                FOR UPDATE
-                """);
-        getCachedSearchesByIndexQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<CachedSearch> getCachedSearchesByIndex(Index index, EntityPermission entityPermission) {
-        return cachedSearchFactory.getEntitiesFromQuery(entityPermission, getCachedSearchesByIndexQueries,
-                index, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(CachedSearches.fields())
+                .from(CachedSearches)
+                .where(CachedSearches.INDEX.eq(index.getPrimaryKey()),
+                        CachedSearches.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CachedSearches.fields())
+                    .from(CachedSearches)
+                    .join(SearchDefaultOperators).onKey(CACHED_SEARCHES_SEARCH_DEFAULT_OPERATOR_FK)
+                    .join(SearchDefaultOperatorDetails).onKey(SEARCH_DEFAULT_OPERATORS_LAST_DETAIL_FK)
+                    .join(SearchSortOrders).onKey(CACHED_SEARCHES_SEARCH_SORT_ORDER_FK)
+                    .join(SearchSortOrderDetails).onKey(SEARCH_SORT_ORDERS_LAST_DETAIL_FK)
+                    .join(SearchSortDirections).onKey(CACHED_SEARCHES_SEARCH_SORT_DIRECTION_FK)
+                    .join(SearchSortDirectionDetails).onKey(SEARCH_SORT_DIRECTIONS_LAST_DETAIL_FK)
+                    .where(CachedSearches.INDEX.eq(index.getPrimaryKey()),
+                            CachedSearches.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(SearchDefaultOperatorDetails.SORT_ORDER, SearchDefaultOperatorDetails.SEARCH_DEFAULT_OPERATOR_NAME, SearchSortOrderDetails.SORT_ORDER, SearchSortOrderDetails.SEARCH_SORT_ORDER_NAME, SearchSortDirectionDetails.SORT_ORDER, SearchSortDirectionDetails.SEARCH_SORT_DIRECTION_NAME, CachedSearches.QUERY_SHA1_HASH),
+                    CachedSearchFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cachedSearchFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<CachedSearch> getCachedSearchesByIndexForUpdate(Index index) {
         return getCachedSearchesByIndex(index, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getCachedSearchQueriesBySearchDefaultOperator;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM cachedsearches
-                WHERE csrch_srchdefop_searchdefaultoperatorid = ? AND csrch_thrutime = ?
-                FOR UPDATE
-                """);
-        getCachedSearchQueriesBySearchDefaultOperator = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<CachedSearch> getCachedSearchesBySearchDefaultOperator(SearchDefaultOperator searchDefaultOperator, EntityPermission entityPermission) {
-        return cachedSearchFactory.getEntitiesFromQuery(entityPermission, getCachedSearchQueriesBySearchDefaultOperator,
-                searchDefaultOperator, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(CachedSearches.fields())
+                .from(CachedSearches)
+                .where(CachedSearches.SEARCH_DEFAULT_OPERATOR.eq(searchDefaultOperator.getPrimaryKey()),
+                        CachedSearches.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CachedSearches.fields())
+                    .from(CachedSearches)
+                    .join(Indexes).onKey(CACHED_SEARCHES_INDEX_FK)
+                    .join(IndexDetails).onKey(INDEXES_LAST_DETAIL_FK)
+                    .join(SearchSortOrders).onKey(CACHED_SEARCHES_SEARCH_SORT_ORDER_FK)
+                    .join(SearchSortOrderDetails).onKey(SEARCH_SORT_ORDERS_LAST_DETAIL_FK)
+                    .join(SearchSortDirections).onKey(CACHED_SEARCHES_SEARCH_SORT_DIRECTION_FK)
+                    .join(SearchSortDirectionDetails).onKey(SEARCH_SORT_DIRECTIONS_LAST_DETAIL_FK)
+                    .where(CachedSearches.SEARCH_DEFAULT_OPERATOR.eq(searchDefaultOperator.getPrimaryKey()),
+                            CachedSearches.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(IndexDetails.SORT_ORDER, IndexDetails.INDEX_NAME, SearchSortOrderDetails.SORT_ORDER, SearchSortOrderDetails.SEARCH_SORT_ORDER_NAME, SearchSortDirectionDetails.SORT_ORDER, SearchSortDirectionDetails.SEARCH_SORT_DIRECTION_NAME, CachedSearches.QUERY_SHA1_HASH),
+                    CachedSearchFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cachedSearchFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<CachedSearch> getCachedSearchesBySearchDefaultOperatorForUpdate(SearchDefaultOperator searchDefaultOperator) {
         return getCachedSearchesBySearchDefaultOperator(searchDefaultOperator, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getCachedSearchQueriesBySearchSortOrder;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM cachedsearches
-                WHERE csrch_srchsrtord_searchsortorderid = ? AND csrch_thrutime = ?
-                FOR UPDATE
-                """);
-        getCachedSearchQueriesBySearchSortOrder = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<CachedSearch> getCachedSearchesBySearchSortOrder(SearchSortOrder searchSortOrder, EntityPermission entityPermission) {
-        return cachedSearchFactory.getEntitiesFromQuery(entityPermission, getCachedSearchQueriesBySearchSortOrder,
-                searchSortOrder, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(CachedSearches.fields())
+                .from(CachedSearches)
+                .where(CachedSearches.SEARCH_SORT_ORDER.eq(searchSortOrder.getPrimaryKey()),
+                        CachedSearches.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CachedSearches.fields())
+                    .from(CachedSearches)
+                    .join(Indexes).onKey(CACHED_SEARCHES_INDEX_FK)
+                    .join(IndexDetails).onKey(INDEXES_LAST_DETAIL_FK)
+                    .join(SearchDefaultOperators).onKey(CACHED_SEARCHES_SEARCH_DEFAULT_OPERATOR_FK)
+                    .join(SearchDefaultOperatorDetails).onKey(SEARCH_DEFAULT_OPERATORS_LAST_DETAIL_FK)
+                    .join(SearchSortDirections).onKey(CACHED_SEARCHES_SEARCH_SORT_DIRECTION_FK)
+                    .join(SearchSortDirectionDetails).onKey(SEARCH_SORT_DIRECTIONS_LAST_DETAIL_FK)
+                    .where(CachedSearches.SEARCH_SORT_ORDER.eq(searchSortOrder.getPrimaryKey()),
+                            CachedSearches.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(IndexDetails.SORT_ORDER, IndexDetails.INDEX_NAME, SearchDefaultOperatorDetails.SORT_ORDER, SearchDefaultOperatorDetails.SEARCH_DEFAULT_OPERATOR_NAME, SearchSortDirectionDetails.SORT_ORDER, SearchSortDirectionDetails.SEARCH_SORT_DIRECTION_NAME, CachedSearches.QUERY_SHA1_HASH),
+                    CachedSearchFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cachedSearchFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<CachedSearch> getCachedSearchesBySearchSortOrderForUpdate(SearchSortOrder searchSortOrder) {
         return getCachedSearchesBySearchSortOrder(searchSortOrder, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getCachedSearchQueriesBySearchSortDirection;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM cachedsearches
-                WHERE csrch_srchsrtdir_searchsortdirectionid = ? AND csrch_thrutime = ?
-                FOR UPDATE
-                """);
-        getCachedSearchQueriesBySearchSortDirection = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<CachedSearch> getCachedSearchesBySearchSortDirection(SearchSortDirection searchSortDirection, EntityPermission entityPermission) {
-        return cachedSearchFactory.getEntitiesFromQuery(entityPermission, getCachedSearchQueriesBySearchSortDirection,
-                searchSortDirection, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(CachedSearches.fields())
+                .from(CachedSearches)
+                .where(CachedSearches.SEARCH_SORT_DIRECTION.eq(searchSortDirection.getPrimaryKey()),
+                        CachedSearches.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CachedSearches.fields())
+                    .from(CachedSearches)
+                    .join(Indexes).onKey(CACHED_SEARCHES_INDEX_FK)
+                    .join(IndexDetails).onKey(INDEXES_LAST_DETAIL_FK)
+                    .join(SearchDefaultOperators).onKey(CACHED_SEARCHES_SEARCH_DEFAULT_OPERATOR_FK)
+                    .join(SearchDefaultOperatorDetails).onKey(SEARCH_DEFAULT_OPERATORS_LAST_DETAIL_FK)
+                    .join(SearchSortOrders).onKey(CACHED_SEARCHES_SEARCH_SORT_ORDER_FK)
+                    .join(SearchSortOrderDetails).onKey(SEARCH_SORT_ORDERS_LAST_DETAIL_FK)
+                    .where(CachedSearches.SEARCH_SORT_DIRECTION.eq(searchSortDirection.getPrimaryKey()),
+                            CachedSearches.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(IndexDetails.SORT_ORDER, IndexDetails.INDEX_NAME, SearchDefaultOperatorDetails.SORT_ORDER, SearchDefaultOperatorDetails.SEARCH_DEFAULT_OPERATOR_NAME, SearchSortOrderDetails.SORT_ORDER, SearchSortOrderDetails.SEARCH_SORT_ORDER_NAME, CachedSearches.QUERY_SHA1_HASH),
+                    CachedSearchFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cachedSearchFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<CachedSearch> getCachedSearchesBySearchSortDirectionForUpdate(SearchSortDirection searchSortDirection) {
@@ -4554,29 +4248,18 @@ public class SearchControl
         return cachedSearchStatusFactory.create(cachedSearch, true);
     }
 
-    private static final Map<EntityPermission, String> getCachedSearchStatusQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM cachedsearchstatuses
-                WHERE csrchst_csrch_cachedsearchid = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM cachedsearchstatuses
-                WHERE csrchst_csrch_cachedsearchid = ?
-                FOR UPDATE
-                """);
-        getCachedSearchStatusQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private CachedSearchStatus getCachedSearchStatus(CachedSearch cachedSearch, EntityPermission entityPermission) {
-        return cachedSearchStatusFactory.getEntityFromQuery(entityPermission, getCachedSearchStatusQueries, cachedSearch);
+        var baseQuery = session.getDslContext()
+                .select(CachedSearchStatuses.fields())
+                .from(CachedSearchStatuses)
+                .where(CachedSearchStatuses.CACHED_SEARCH.eq(cachedSearch.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cachedSearchStatusFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public CachedSearchStatus getCachedSearchStatus(CachedSearch cachedSearch) {
@@ -4609,71 +4292,81 @@ public class SearchControl
         return cachedSearchIndexField;
     }
     
-    private static final Map<EntityPermission, String> getCachedSearchIndexFieldQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM cachedsearchindexfields
-                WHERE csrchidxfld_csrch_cachedsearchid = ? AND csrchidxfld_idxfld_indexfieldid = ? AND csrchidxfld_thrutime = ?
-                """);
-        getCachedSearchIndexFieldQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private CachedSearchIndexField getCachedSearchIndexField(CachedSearch cachedSearch, IndexField indexField, EntityPermission entityPermission) {
-        return cachedSearchIndexFieldFactory.getEntityFromQuery(entityPermission, getCachedSearchIndexFieldQueries,
-                cachedSearch, indexField, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(CachedSearchIndexFields.fields())
+                .from(CachedSearchIndexFields)
+                .where(CachedSearchIndexFields.CACHED_SEARCH.eq(cachedSearch.getPrimaryKey()),
+                        CachedSearchIndexFields.INDEX_FIELD.eq(indexField.getPrimaryKey()),
+                        CachedSearchIndexFields.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cachedSearchIndexFieldFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public CachedSearchIndexField getCachedSearchIndexField(CachedSearch cachedSearch, IndexField indexField) {
         return getCachedSearchIndexField(cachedSearch, indexField, EntityPermission.READ_ONLY);
     }
 
-    private static final Map<EntityPermission, String> getCachedSearchIndexFieldsByCachedSearchQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM cachedsearchindexfields
-                WHERE csrchidxfld_csrch_cachedsearchid = ? AND csrchidxfld_thrutime = ?
-                FOR UPDATE
-                """);
-        getCachedSearchIndexFieldsByCachedSearchQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<CachedSearchIndexField> getCachedSearchIndexFieldsByCachedSearch(CachedSearch cachedSearch, EntityPermission entityPermission) {
-        return cachedSearchIndexFieldFactory.getEntitiesFromQuery(entityPermission, getCachedSearchIndexFieldsByCachedSearchQueries,
-                cachedSearch, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(CachedSearchIndexFields.fields())
+                .from(CachedSearchIndexFields)
+                .where(CachedSearchIndexFields.CACHED_SEARCH.eq(cachedSearch.getPrimaryKey()),
+                        CachedSearchIndexFields.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CachedSearchIndexFields.fields())
+                    .from(CachedSearchIndexFields)
+                    .join(IndexFields).onKey(CACHED_SEARCH_INDEX_FIELDS_INDEX_FIELD_FK)
+                    .join(IndexFieldDetails).onKey(INDEX_FIELDS_LAST_DETAIL_FK)
+                    .where(CachedSearchIndexFields.CACHED_SEARCH.eq(cachedSearch.getPrimaryKey()),
+                            CachedSearchIndexFields.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(IndexFieldDetails.SORT_ORDER, IndexFieldDetails.INDEX_FIELD_NAME),
+                    CachedSearchIndexFieldFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cachedSearchIndexFieldFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<CachedSearchIndexField> getCachedSearchIndexFieldsByCachedSearchForUpdate(CachedSearch cachedSearch) {
         return getCachedSearchIndexFieldsByCachedSearch(cachedSearch, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getCachedSearchIndexFieldsBySearchIndexFieldTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM cachedsearchindexfields
-                WHERE csrchidxfld_idxfld_indexfieldid = ? AND csrchidxfld_thrutime = ?
-                FOR UPDATE
-                """);
-        getCachedSearchIndexFieldsBySearchIndexFieldTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<CachedSearchIndexField> getCachedSearchIndexFieldsByIndexField(IndexField indexField, EntityPermission entityPermission) {
-        return cachedSearchIndexFieldFactory.getEntitiesFromQuery(entityPermission, getCachedSearchIndexFieldsBySearchIndexFieldTypeQueries,
-                indexField, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(CachedSearchIndexFields.fields())
+                .from(CachedSearchIndexFields)
+                .where(CachedSearchIndexFields.INDEX_FIELD.eq(indexField.getPrimaryKey()),
+                        CachedSearchIndexFields.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CachedSearchIndexFields.fields())
+                    .from(CachedSearchIndexFields)
+                    .join(CachedSearches).onKey(CACHED_SEARCH_INDEX_FIELDS_CACHED_SEARCH_FK)
+                    .join(Indexes).onKey(CACHED_SEARCHES_INDEX_FK)
+                    .join(IndexDetails).onKey(INDEXES_LAST_DETAIL_FK)
+                    .join(SearchDefaultOperators).onKey(CACHED_SEARCHES_SEARCH_DEFAULT_OPERATOR_FK)
+                    .join(SearchDefaultOperatorDetails).onKey(SEARCH_DEFAULT_OPERATORS_LAST_DETAIL_FK)
+                    .join(SearchSortOrders).onKey(CACHED_SEARCHES_SEARCH_SORT_ORDER_FK)
+                    .join(SearchSortOrderDetails).onKey(SEARCH_SORT_ORDERS_LAST_DETAIL_FK)
+                    .join(SearchSortDirections).onKey(CACHED_SEARCHES_SEARCH_SORT_DIRECTION_FK)
+                    .join(SearchSortDirectionDetails).onKey(SEARCH_SORT_DIRECTIONS_LAST_DETAIL_FK)
+                    .where(CachedSearchIndexFields.INDEX_FIELD.eq(indexField.getPrimaryKey()),
+                            CachedSearchIndexFields.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(IndexDetails.SORT_ORDER, IndexDetails.INDEX_NAME, SearchDefaultOperatorDetails.SORT_ORDER, SearchDefaultOperatorDetails.SEARCH_DEFAULT_OPERATOR_NAME, SearchSortOrderDetails.SORT_ORDER, SearchSortOrderDetails.SEARCH_SORT_ORDER_NAME, SearchSortDirectionDetails.SORT_ORDER, SearchSortDirectionDetails.SEARCH_SORT_DIRECTION_NAME, CachedSearches.QUERY_SHA1_HASH),
+                    CachedSearchIndexFieldFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cachedSearchIndexFieldFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<CachedSearchIndexField> getCachedSearchIndexFieldsByIndexFieldForUpdate(IndexField indexField) {
@@ -4718,30 +4411,19 @@ public class SearchControl
         return cachedExecutedSearch;
     }
     
-    private static final Map<EntityPermission, String> getCachedExecutedSearchQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM cachedexecutedsearches
-                WHERE cxsrch_csrch_cachedsearchid = ? AND cxsrch_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM cachedexecutedsearches
-                WHERE cxsrch_csrch_cachedsearchid = ? AND cxsrch_thrutime = ?
-                FOR UPDATE
-                """);
-        getCachedExecutedSearchQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private CachedExecutedSearch getCachedExecutedSearch(CachedSearch cachedSearch, EntityPermission entityPermission) {
-        return cachedExecutedSearchFactory.getEntityFromQuery(entityPermission, getCachedExecutedSearchQueries,
-                cachedSearch, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(CachedExecutedSearches.fields())
+                .from(CachedExecutedSearches)
+                .where(CachedExecutedSearches.CACHED_SEARCH.eq(cachedSearch.getPrimaryKey()),
+                        CachedExecutedSearches.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cachedExecutedSearchFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public CachedExecutedSearch getCachedExecutedSearch(CachedSearch cachedSearch) {
@@ -4773,41 +4455,29 @@ public class SearchControl
     }
     
     public boolean cachedExecutedSearchResultExists(CachedExecutedSearch cachedExecutedSearch, EntityInstance entityInstance) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM cachedexecutedsearchresults
-                WHERE cxsrchr_cxsrch_cachedexecutedsearchid = ? AND cxsrchr_eni_entityinstanceid = ?
-                """,
-                cachedExecutedSearch, entityInstance) == 1;
+        return session.getDslContext()
+                .selectCount()
+                .from(CachedExecutedSearchResults)
+                .where(CachedExecutedSearchResults.CACHED_EXECUTED_SEARCH.eq(cachedExecutedSearch.getPrimaryKey()),
+                        CachedExecutedSearchResults.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L) == 1L;
     }
     
-    private static final Map<EntityPermission, String> getCachedExecutedSearchResultsByCachedExecutedSearchQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM cachedexecutedsearchresults
-                WHERE cxsrchr_cxsrch_cachedexecutedsearchid = ?
-                ORDER BY cxsrchr_sortorder
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM cachedexecutedsearchresults
-                WHERE cxsrchr_cxsrch_cachedexecutedsearchid = ?
-                FOR UPDATE
-                """);
-        getCachedExecutedSearchResultsByCachedExecutedSearchQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<CachedExecutedSearchResult> getCachedExecutedSearchResultsByCachedExecutedSearch(CachedExecutedSearch cachedExecutedSearch, EntityPermission entityPermission) {
-        return cachedExecutedSearchResultFactory.getEntitiesFromQuery(entityPermission, getCachedExecutedSearchResultsByCachedExecutedSearchQueries,
-                cachedExecutedSearch);
+        var baseQuery = session.getDslContext()
+                .select(CachedExecutedSearchResults.fields())
+                .from(CachedExecutedSearchResults)
+                .where(CachedExecutedSearchResults.CACHED_EXECUTED_SEARCH.eq(cachedExecutedSearch.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(CachedExecutedSearchResults.SORT_ORDER),
+                    CachedExecutedSearchResultFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cachedExecutedSearchResultFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<CachedExecutedSearchResult> getCachedExecutedSearchResultsByCachedExecutedSearch(CachedExecutedSearch cachedExecutedSearch) {
@@ -4819,13 +4489,12 @@ public class SearchControl
     }
     
     public long countCachedExecutedSearchResults(CachedExecutedSearch cachedExecutedSearch) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM cachedexecutedsearchresults
-                WHERE cxsrchr_cxsrch_cachedexecutedsearchid = ?
-                """,
-                cachedExecutedSearch);
+        return session.getDslContext()
+                .selectCount()
+                .from(CachedExecutedSearchResults)
+                .where(CachedExecutedSearchResults.CACHED_EXECUTED_SEARCH.eq(cachedExecutedSearch.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public void removeCachedExecutedSearchResultsByCachedExecutedSearch(CachedExecutedSearch cachedExecutedSearch) {
@@ -4857,30 +4526,19 @@ public class SearchControl
         return userVisitSearchFactory.create(userVisit, searchType, search);
     }
     
-    private static final Map<EntityPermission, String> getUserVisitSearchQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM uservisitsearches
-                WHERE uvissrch_uvis_uservisitid = ? AND uvissrch_srchtyp_searchtypeid = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM uservisitsearches
-                WHERE uvissrch_uvis_uservisitid = ? AND uvissrch_srchtyp_searchtypeid = ?
-                FOR UPDATE
-                """);
-        getUserVisitSearchQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private UserVisitSearch getUserVisitSearch(UserVisit userVisit, SearchType searchType, EntityPermission entityPermission) {
-        return userVisitSearchFactory.getEntityFromQuery(entityPermission, getUserVisitSearchQueries,
-                userVisit, searchType);
+        var baseQuery = session.getDslContext()
+                .select(UserVisitSearches.fields())
+                .from(UserVisitSearches)
+                .where(UserVisitSearches.USER_VISIT.eq(userVisit.getPrimaryKey()),
+                        UserVisitSearches.SEARCH_TYPE.eq(searchType.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return userVisitSearchFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public UserVisitSearch getUserVisitSearch(UserVisit userVisit, SearchType searchType) {
@@ -4891,31 +4549,25 @@ public class SearchControl
         return getUserVisitSearch(userVisit, searchType, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getUserVisitSearchesByUserVisitQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM uservisitsearches
-                WHERE uvissrch_uvis_uservisitid = ?
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM uservisitsearches
-                WHERE uvissrch_uvis_uservisitid = ?
-                FOR UPDATE
-                """);
-        getUserVisitSearchesByUserVisitQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<UserVisitSearch> getUserVisitSearchesByUserVisit(UserVisit userVisit, EntityPermission entityPermission) {
-        return userVisitSearchFactory.getEntitiesFromQuery(entityPermission, getUserVisitSearchesByUserVisitQueries,
-                userVisit);
+        var baseQuery = session.getDslContext()
+                .select(UserVisitSearches.fields())
+                .from(UserVisitSearches)
+                .where(UserVisitSearches.USER_VISIT.eq(userVisit.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(UserVisitSearches.fields())
+                    .from(UserVisitSearches)
+                    .join(SearchTypes).onKey(USER_VISIT_SEARCHES_SEARCH_TYPE_FK)
+                    .join(SearchTypeDetails).onKey(SEARCH_TYPES_LAST_DETAIL_FK)
+                    .where(UserVisitSearches.USER_VISIT.eq(userVisit.getPrimaryKey()))
+                    .orderBy(SearchTypeDetails.SORT_ORDER, SearchTypeDetails.SEARCH_TYPE_NAME),
+                    UserVisitSearchFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return userVisitSearchFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<UserVisitSearch> getUserVisitSearchesByUserVisit(UserVisit userVisit) {
@@ -4926,31 +4578,24 @@ public class SearchControl
         return getUserVisitSearchesByUserVisit(userVisit, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getUserVisitSearchesBySearchTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM uservisitsearches
-                WHERE uvissrch_srchtyp_searchtypeid = ?
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM uservisitsearches
-                WHERE uvissrch_srchtyp_searchtypeid = ?
-                FOR UPDATE
-                """);
-        getUserVisitSearchesBySearchTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<UserVisitSearch> getUserVisitSearchesBySearchType(SearchType searchType, EntityPermission entityPermission) {
-        return userVisitSearchFactory.getEntitiesFromQuery(entityPermission, getUserVisitSearchesBySearchTypeQueries,
-                searchType);
+        var baseQuery = session.getDslContext()
+                .select(UserVisitSearches.fields())
+                .from(UserVisitSearches)
+                .where(UserVisitSearches.SEARCH_TYPE.eq(searchType.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(UserVisitSearches.fields())
+                    .from(UserVisitSearches)
+                    .join(UserVisits).onKey(USER_VISIT_SEARCHES_USER_VISIT_FK)
+                    .where(UserVisitSearches.SEARCH_TYPE.eq(searchType.getPrimaryKey()))
+                    .orderBy(UserVisits.FROM_TIME),
+                    UserVisitSearchFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return userVisitSearchFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<UserVisitSearch> getUserVisitSearchesBySearchType(SearchType searchType) {
@@ -4961,31 +4606,26 @@ public class SearchControl
         return getUserVisitSearchesBySearchType(searchType, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getUserVisitSearchesBySearchQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM uservisitsearches
-                WHERE uvissrch_srch_searchid = ?
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM uservisitsearches
-                WHERE uvissrch_srch_searchid = ?
-                FOR UPDATE
-                """);
-        getUserVisitSearchesBySearchQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<UserVisitSearch> getUserVisitSearchesBySearch(Search search, EntityPermission entityPermission) {
-        return userVisitSearchFactory.getEntitiesFromQuery(entityPermission, getUserVisitSearchesBySearchQueries,
-                search);
+        var baseQuery = session.getDslContext()
+                .select(UserVisitSearches.fields())
+                .from(UserVisitSearches)
+                .where(UserVisitSearches.SEARCH.eq(search.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(UserVisitSearches.fields())
+                    .from(UserVisitSearches)
+                    .join(SearchTypes).onKey(USER_VISIT_SEARCHES_SEARCH_TYPE_FK)
+                    .join(SearchTypeDetails).onKey(SEARCH_TYPES_LAST_DETAIL_FK)
+                    .join(UserVisits).onKey(USER_VISIT_SEARCHES_USER_VISIT_FK)
+                    .where(UserVisitSearches.SEARCH.eq(search.getPrimaryKey()))
+                    .orderBy(SearchTypeDetails.SORT_ORDER, SearchTypeDetails.SEARCH_TYPE_NAME, UserVisits.FROM_TIME),
+                    UserVisitSearchFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return userVisitSearchFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<UserVisitSearch> getUserVisitSearchesBySearch(Search search) {
@@ -5030,10 +4670,10 @@ public class SearchControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PartySearchTypePreferenceFactory partySearchTypePreferenceFactory;
+    protected PartySearchTypePreferenceDetailFactory partySearchTypePreferenceDetailFactory;
 
     @Inject
-    protected PartySearchTypePreferenceDetailFactory partySearchTypePreferenceDetailFactory;
+    protected PartySearchTypePreferenceFactory partySearchTypePreferenceFactory;
 
     public PartySearchTypePreference createPartySearchTypePreference(Party party, SearchType searchType, SearchDefaultOperator searchDefaultOperator,
             SearchSortOrder searchSortOrder, SearchSortDirection searchSortDirection, BasePK createdBy) {
@@ -5060,31 +4700,20 @@ public class SearchControl
         return partySearchTypePreference;
     }
 
-    private static final Map<EntityPermission, String> getPartySearchTypePreferenceQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM partysearchtypepreferences, partysearchtypepreferencedetails
-                WHERE parsrchtypprf_activedetailid = parsrchtypprfdt_partysearchtypepreferencedetailid
-                AND parsrchtypprfdt_par_partyid = ? AND parsrchtypprfdt_srchtyp_searchtypeid = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM partysearchtypepreferences, partysearchtypepreferencedetails
-                WHERE parsrchtypprf_activedetailid = parsrchtypprfdt_partysearchtypepreferencedetailid
-                AND parsrchtypprfdt_par_partyid = ? AND parsrchtypprfdt_srchtyp_searchtypeid = ?
-                FOR UPDATE
-                """);
-        getPartySearchTypePreferenceQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private PartySearchTypePreference getPartySearchTypePreference(Party party, SearchType searchType, EntityPermission entityPermission) {
-        return partySearchTypePreferenceFactory.getEntityFromQuery(entityPermission, getPartySearchTypePreferenceQueries, party, searchType);
+        var baseQuery = session.getDslContext()
+                .select(PartySearchTypePreferences.fields())
+                .from(PartySearchTypePreferences)
+                .join(PartySearchTypePreferenceDetails).onKey(PARTY_SEARCH_TYPE_PREFERENCES_ACTIVE_DETAIL_FK)
+                .where(PartySearchTypePreferenceDetails.PARTY.eq(party.getPrimaryKey()),
+                        PartySearchTypePreferenceDetails.SEARCH_TYPE.eq(searchType.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partySearchTypePreferenceFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PartySearchTypePreference getPartySearchTypePreference(Party party, SearchType searchType) {
@@ -5095,109 +4724,59 @@ public class SearchControl
         return getPartySearchTypePreference(party, searchType, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getPartySearchTypePreferencesByPartyForUpdateQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM partysearchtypepreferences, partysearchtypepreferencedetails
-                WHERE parsrchtypprf_activedetailid = parsrchtypprfdt_partysearchtypepreferencedetailid
-                AND parsrchtypprfdt_par_partyid = ?
-                FOR UPDATE
-                """);
-        getPartySearchTypePreferencesByPartyForUpdateQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public List<PartySearchTypePreference> getPartySearchTypePreferencesByPartyForUpdate(Party party) {
-        return partySearchTypePreferenceFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, getPartySearchTypePreferencesByPartyForUpdateQueries,
-                party);
-    }
+        var query = session.getDslContext()
+                .select(PartySearchTypePreferences.fields())
+                .from(PartySearchTypePreferences)
+                .join(PartySearchTypePreferenceDetails).onKey(PARTY_SEARCH_TYPE_PREFERENCES_ACTIVE_DETAIL_FK)
+                .where(PartySearchTypePreferenceDetails.PARTY.eq(party.getPrimaryKey()))
+                .forUpdate();
 
-    private static final Map<EntityPermission, String> getPartySearchTypePreferencesBySearchTypeForUpdateQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM partysearchtypepreferences, partysearchtypepreferencedetails
-                WHERE parsrchtypprf_activedetailid = parsrchtypprfdt_partysearchtypepreferencedetailid
-                AND parsrchtypprfdt_srchtyp_searchtypeid = ?
-                FOR UPDATE
-                """);
-        getPartySearchTypePreferencesBySearchTypeForUpdateQueries = Collections.unmodifiableMap(queryMap);
+        return partySearchTypePreferenceFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
 
     public List<PartySearchTypePreference> getPartySearchTypePreferencesBySearchTypeForUpdate(SearchType searchType) {
-        return partySearchTypePreferenceFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, getPartySearchTypePreferencesBySearchTypeForUpdateQueries,
-                searchType);
-    }
+        var query = session.getDslContext()
+                .select(PartySearchTypePreferences.fields())
+                .from(PartySearchTypePreferences)
+                .join(PartySearchTypePreferenceDetails).onKey(PARTY_SEARCH_TYPE_PREFERENCES_ACTIVE_DETAIL_FK)
+                .where(PartySearchTypePreferenceDetails.SEARCH_TYPE.eq(searchType.getPrimaryKey()))
+                .forUpdate();
 
-    private static final Map<EntityPermission, String> getPartySearchTypePreferencesBySearchDefaultOperatorForUpdateQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM partysearchtypepreferences, partysearchtypepreferencedetails
-                WHERE parsrchtypprf_activedetailid = parsrchtypprfdt_partysearchtypepreferencedetailid
-                AND parsrchtypprfdt_srchdefop_searchdefaultoperatorid = ?
-                FOR UPDATE
-                """);
-        getPartySearchTypePreferencesBySearchDefaultOperatorForUpdateQueries = Collections.unmodifiableMap(queryMap);
+        return partySearchTypePreferenceFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
 
     public List<PartySearchTypePreference> getPartySearchTypePreferencesBySearchDefaultOperatorForUpdate(SearchDefaultOperator searchDefaultOperator) {
-        return partySearchTypePreferenceFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, getPartySearchTypePreferencesBySearchDefaultOperatorForUpdateQueries,
-                searchDefaultOperator);
-    }
+        var query = session.getDslContext()
+                .select(PartySearchTypePreferences.fields())
+                .from(PartySearchTypePreferences)
+                .join(PartySearchTypePreferenceDetails).onKey(PARTY_SEARCH_TYPE_PREFERENCES_ACTIVE_DETAIL_FK)
+                .where(PartySearchTypePreferenceDetails.SEARCH_DEFAULT_OPERATOR.eq(searchDefaultOperator.getPrimaryKey()))
+                .forUpdate();
 
-    private static final Map<EntityPermission, String> getPartySearchTypePreferencesBySearchSortOrderForUpdateQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM partysearchtypepreferences, partysearchtypepreferencedetails
-                WHERE parsrchtypprf_activedetailid = parsrchtypprfdt_partysearchtypepreferencedetailid
-                AND parsrchtypprfdt_srchsrtord_searchsortorderid = ?
-                FOR UPDATE
-                """);
-        getPartySearchTypePreferencesBySearchSortOrderForUpdateQueries = Collections.unmodifiableMap(queryMap);
+        return partySearchTypePreferenceFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
 
     public List<PartySearchTypePreference> getPartySearchTypePreferencesBySearchSortOrderForUpdate(SearchSortOrder searchSortOrder) {
-        return partySearchTypePreferenceFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, getPartySearchTypePreferencesBySearchSortOrderForUpdateQueries,
-                searchSortOrder);
-    }
+        var query = session.getDslContext()
+                .select(PartySearchTypePreferences.fields())
+                .from(PartySearchTypePreferences)
+                .join(PartySearchTypePreferenceDetails).onKey(PARTY_SEARCH_TYPE_PREFERENCES_ACTIVE_DETAIL_FK)
+                .where(PartySearchTypePreferenceDetails.SEARCH_SORT_ORDER.eq(searchSortOrder.getPrimaryKey()))
+                .forUpdate();
 
-    private static final Map<EntityPermission, String> getPartySearchTypePreferencesBySearchSortDirectionForUpdateQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM partysearchtypepreferences, partysearchtypepreferencedetails
-                WHERE parsrchtypprf_activedetailid = parsrchtypprfdt_partysearchtypepreferencedetailid
-                AND parsrchtypprfdt_srchsrtdir_searchsortdirectionid = ?
-                FOR UPDATE
-                """);
-        getPartySearchTypePreferencesBySearchSortDirectionForUpdateQueries = Collections.unmodifiableMap(queryMap);
+        return partySearchTypePreferenceFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
 
     public List<PartySearchTypePreference> getPartySearchTypePreferencesBySearchSortDirectionForUpdate(SearchSortDirection searchSortDirection) {
-        return partySearchTypePreferenceFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, getPartySearchTypePreferencesBySearchSortDirectionForUpdateQueries,
-                searchSortDirection);
+        var query = session.getDslContext()
+                .select(PartySearchTypePreferences.fields())
+                .from(PartySearchTypePreferences)
+                .join(PartySearchTypePreferenceDetails).onKey(PARTY_SEARCH_TYPE_PREFERENCES_ACTIVE_DETAIL_FK)
+                .where(PartySearchTypePreferenceDetails.SEARCH_SORT_DIRECTION.eq(searchSortDirection.getPrimaryKey()))
+                .forUpdate();
+
+        return partySearchTypePreferenceFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
 
     public PartySearchTypePreferenceDetailValue getPartySearchTypePreferenceDetailValueForUpdate(PartySearchTypePreference partySearchTypePreference) {
@@ -5288,82 +4867,114 @@ public class SearchControl
     }
     
     public boolean searchResultActionExists(Search search, SearchResultActionType searchResultActionType, EntityInstance entityInstance) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM searchresultactions
-                WHERE srchract_srch_searchid = ? AND srchract_srchracttyp_searchresultactiontypeid = ? AND srchract_eni_entityinstanceid = ?
-                AND srchract_thrutime = ?
-                """,
-                search, searchResultActionType, entityInstance, Session.MAX_TIME) == 1;
+        return session.getDslContext()
+                .selectCount()
+                .from(SearchResultActions)
+                .where(SearchResultActions.SEARCH.eq(search.getPrimaryKey()),
+                        SearchResultActions.SEARCH_RESULT_ACTION_TYPE.eq(searchResultActionType.getPrimaryKey()),
+                        SearchResultActions.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        SearchResultActions.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L) == 1L;
     }
     
-    private static final Map<EntityPermission, String> getSearchResultActionsBySearchQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchresultactions
-                WHERE srchract_srch_searchid = ? AND srchract_thrutime = ?
-                FOR UPDATE
-                """);
-        getSearchResultActionsBySearchQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<SearchResultAction> getSearchResultActionsBySearch(Search search, EntityPermission entityPermission) {
-        return searchResultActionFactory.getEntitiesFromQuery(entityPermission, getSearchResultActionsBySearchQueries,
-                search, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(SearchResultActions.fields())
+                .from(SearchResultActions)
+                .where(SearchResultActions.SEARCH.eq(search.getPrimaryKey()),
+                        SearchResultActions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(SearchResultActions.fields())
+                    .from(SearchResultActions)
+                    .join(SearchResultActionTypes).onKey(SEARCH_RESULT_ACTIONS_SEARCH_RESULT_ACTION_TYPE_FK)
+                    .join(SearchResultActionTypeDetails).onKey(SEARCH_RESULT_ACTION_TYPES_LAST_DETAIL_FK)
+                    .join(EntityInstances).onKey(SEARCH_RESULT_ACTIONS_ENTITY_INSTANCE_FK)
+                    .join(EntityTypes).onKey(ENTITY_INSTANCES_ENTITY_TYPE_FK)
+                    .join(EntityTypeDetails).onKey(ENTITY_TYPES_LAST_DETAIL_FK)
+                    .join(ComponentVendors).onKey(ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK)
+                    .join(ComponentVendorDetails).onKey(COMPONENT_VENDORS_LAST_DETAIL_FK)
+                    .where(SearchResultActions.SEARCH.eq(search.getPrimaryKey()),
+                            SearchResultActions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(SearchResultActionTypeDetails.SORT_ORDER, SearchResultActionTypeDetails.SEARCH_RESULT_ACTION_TYPE_NAME, ComponentVendorDetails.COMPONENT_VENDOR_NAME, EntityTypeDetails.SORT_ORDER, EntityTypeDetails.ENTITY_TYPE_NAME, EntityInstances.ENTITY_UNIQUE, SearchResultActions.ACTION_TIME),
+                    SearchResultActionFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchResultActionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<SearchResultAction> getSearchResultActionsBySearchForUpdate(Search search) {
         return getSearchResultActionsBySearch(search, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getSearchResultActionsBySearchResultActionTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchresultactions
-                WHERE srchract_srchracttyp_searchresultactiontypeid = ? AND srchract_thrutime = ?
-                FOR UPDATE
-                """);
-        getSearchResultActionsBySearchResultActionTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<SearchResultAction> getSearchResultActionsBySearchResultActionType(SearchResultActionType searchResultActionType, EntityPermission entityPermission) {
-        return searchResultActionFactory.getEntitiesFromQuery(entityPermission, getSearchResultActionsBySearchResultActionTypeQueries,
-                searchResultActionType, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(SearchResultActions.fields())
+                .from(SearchResultActions)
+                .where(SearchResultActions.SEARCH_RESULT_ACTION_TYPE.eq(searchResultActionType.getPrimaryKey()),
+                        SearchResultActions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(SearchResultActions.fields())
+                    .from(SearchResultActions)
+                    .join(Searches).onKey(SEARCH_RESULT_ACTIONS_SEARCH_FK)
+                    .join(SearchTypes).onKey(SEARCHES_SEARCH_TYPE_FK)
+                    .join(SearchTypeDetails).onKey(SEARCH_TYPES_LAST_DETAIL_FK)
+                    .leftJoin(Parties).onKey(SEARCHES_PARTY_FK)
+                    .leftJoin(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .leftJoin(SearchUseTypes).onKey(SEARCHES_SEARCH_USE_TYPE_FK)
+                    .leftJoin(SearchUseTypeDetails).onKey(SEARCH_USE_TYPES_LAST_DETAIL_FK)
+                    .join(EntityInstances).onKey(SEARCH_RESULT_ACTIONS_ENTITY_INSTANCE_FK)
+                    .join(EntityTypes).onKey(ENTITY_INSTANCES_ENTITY_TYPE_FK)
+                    .join(EntityTypeDetails).onKey(ENTITY_TYPES_LAST_DETAIL_FK)
+                    .join(ComponentVendors).onKey(ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK)
+                    .join(ComponentVendorDetails).onKey(COMPONENT_VENDORS_LAST_DETAIL_FK)
+                    .where(SearchResultActions.SEARCH_RESULT_ACTION_TYPE.eq(searchResultActionType.getPrimaryKey()),
+                            SearchResultActions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(SearchTypeDetails.SORT_ORDER, SearchTypeDetails.SEARCH_TYPE_NAME, PartyDetails.PARTY_NAME, SearchUseTypeDetails.SORT_ORDER, SearchUseTypeDetails.SEARCH_USE_TYPE_NAME, Searches.EXECUTED_TIME, ComponentVendorDetails.COMPONENT_VENDOR_NAME, EntityTypeDetails.SORT_ORDER, EntityTypeDetails.ENTITY_TYPE_NAME, EntityInstances.ENTITY_UNIQUE, SearchResultActions.ACTION_TIME),
+                    SearchResultActionFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchResultActionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<SearchResultAction> getSearchResultActionsBySearchResultActionTypeForUpdate(SearchResultActionType searchResultActionType) {
         return getSearchResultActionsBySearchResultActionType(searchResultActionType, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getSearchResultActionsByEntityInstanceQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM searchresultactions
-                WHERE srchract_eni_entityinstanceid = ? AND srchract_thrutime = ?
-                FOR UPDATE
-                """);
-        getSearchResultActionsByEntityInstanceQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<SearchResultAction> getSearchResultActionsByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        return searchResultActionFactory.getEntitiesFromQuery(entityPermission, getSearchResultActionsByEntityInstanceQueries,
-                entityInstance, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(SearchResultActions.fields())
+                .from(SearchResultActions)
+                .where(SearchResultActions.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        SearchResultActions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(SearchResultActions.fields())
+                    .from(SearchResultActions)
+                    .join(Searches).onKey(SEARCH_RESULT_ACTIONS_SEARCH_FK)
+                    .join(SearchTypes).onKey(SEARCHES_SEARCH_TYPE_FK)
+                    .join(SearchTypeDetails).onKey(SEARCH_TYPES_LAST_DETAIL_FK)
+                    .leftJoin(Parties).onKey(SEARCHES_PARTY_FK)
+                    .leftJoin(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .leftJoin(SearchUseTypes).onKey(SEARCHES_SEARCH_USE_TYPE_FK)
+                    .leftJoin(SearchUseTypeDetails).onKey(SEARCH_USE_TYPES_LAST_DETAIL_FK)
+                    .join(SearchResultActionTypes).onKey(SEARCH_RESULT_ACTIONS_SEARCH_RESULT_ACTION_TYPE_FK)
+                    .join(SearchResultActionTypeDetails).onKey(SEARCH_RESULT_ACTION_TYPES_LAST_DETAIL_FK)
+                    .where(SearchResultActions.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                            SearchResultActions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(SearchTypeDetails.SORT_ORDER, SearchTypeDetails.SEARCH_TYPE_NAME, PartyDetails.PARTY_NAME, SearchUseTypeDetails.SORT_ORDER, SearchUseTypeDetails.SEARCH_USE_TYPE_NAME, Searches.EXECUTED_TIME, SearchResultActionTypeDetails.SORT_ORDER, SearchResultActionTypeDetails.SEARCH_RESULT_ACTION_TYPE_NAME, SearchResultActions.ACTION_TIME),
+                    SearchResultActionFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return searchResultActionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<SearchResultAction> getSearchResultActionsByEntityInstanceForUpdate(EntityInstance entityInstance) {
@@ -5405,45 +5016,30 @@ public class SearchControl
     public ResultSet getUserVisitSearchResultSet(final UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
         var cachedSearch = search.getCachedSearch();
-        ResultSet rs;
+        Select<?> query;
 
-        try {
-            if(cachedSearch == null) {
-                var ps = searchResultFactory.prepareStatement(
-                        """
-                        SELECT eni_entityinstanceid, eni_entityuniqueid
-                        FROM searchresults, entityinstances
-                        WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid
-                        ORDER BY srchr_sortorder, srchr_eni_entityinstanceid
-                        _LIMIT_
-                        """);
+        if(cachedSearch == null) {
+            query = session.applyLimit(session.getDslContext()
+                    .select(EntityInstances.ENTITY_INSTANCE, EntityInstances.ENTITY_UNIQUE)
+                    .from(SearchResults)
+                    .join(EntityInstances).onKey(SEARCH_RESULTS_ENTITY_INSTANCE_FK)
+                    .where(SearchResults.SEARCH.eq(search.getPrimaryKey()))
+                    .orderBy(SearchResults.SORT_ORDER, SearchResults.ENTITY_INSTANCE), SearchResultFactory.class);
+        } else {
+            var cachedExecutedSearch = getCachedExecutedSearch(cachedSearch);
 
-                ps.setLong(1, userVisitSearch.getSearch().getPrimaryKey().getEntityId());
+            session.copyLimit(SearchResultConstants.ENTITY_TYPE_NAME, CachedExecutedSearchResultConstants.ENTITY_TYPE_NAME);
 
-                rs = ps.executeQuery();
-            } else {
-                var cachedExecutedSearch = getCachedExecutedSearch(cachedSearch);
-
-                session.copyLimit(SearchResultConstants.ENTITY_TYPE_NAME, CachedExecutedSearchResultConstants.ENTITY_TYPE_NAME);
-
-                var ps = cachedExecutedSearchResultFactory.prepareStatement(
-                        """
-                        SELECT eni_entityinstanceid, eni_entityuniqueid
-                        FROM cachedexecutedsearchresults, entityinstances
-                        WHERE cxsrchr_cxsrch_cachedexecutedsearchid = ? AND cxsrchr_eni_entityinstanceid = eni_entityinstanceid
-                        ORDER BY cxsrchr_sortorder, cxsrchr_eni_entityinstanceid
-                        _LIMIT_
-                        """);
-
-                ps.setLong(1, cachedExecutedSearch.getPrimaryKey().getEntityId());
-
-                rs = ps.executeQuery();
-            }
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
+            query = session.applyLimit(session.getDslContext()
+                    .select(EntityInstances.ENTITY_INSTANCE, EntityInstances.ENTITY_UNIQUE)
+                    .from(CachedExecutedSearchResults)
+                    .join(EntityInstances).onKey(CACHED_EXECUTED_SEARCH_RESULTS_ENTITY_INSTANCE_FK)
+                    .where(CachedExecutedSearchResults.CACHED_EXECUTED_SEARCH.eq(cachedExecutedSearch.getPrimaryKey()))
+                    .orderBy(CachedExecutedSearchResults.SORT_ORDER, CachedExecutedSearchResults.ENTITY_INSTANCE),
+                    CachedExecutedSearchResultFactory.class);
         }
 
-        return rs;
+        return query.fetchResultSet();
     }
 
     // Takes into account if it's a Search or CachedSearch.
