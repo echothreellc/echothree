@@ -16,23 +16,29 @@
 
 package com.echothree.model.control.core.server.database;
 
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_LIST_ITEMS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_LIST_ITEM_ATTRIBUTES_ENTITY_LIST_ITEM_FK;
+import static com.echothree.model.jooq.server.tables.core.EntityListItemAttributes.EntityListItemAttributes;
+import static com.echothree.model.jooq.server.tables.core.EntityListItemDetails.EntityListItemDetails;
+import static com.echothree.model.jooq.server.tables.core.EntityListItems.EntityListItems;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
 
 public class EntityInstancePKsByListItemEntityAttributeQuery
         extends BaseEntityInstancePKQuery<EntityInstancePKResult> {
-    
-    public EntityInstancePKsByListItemEntityAttributeQuery() {
-        super("SELECT ela_eni_entityinstanceid AS EntityInstancePK "
-                + "FROM entitylistitems, entitylistitemdetails, entitylistitemattributes "
-                + "WHERE eli_activedetailid = elidt_entitylistitemdetailid AND elidt_ena_entityattributeid = ? "
-                + "AND eli_entitylistitemid = ela_eli_entitylistitemid AND ela_thrutime = ?");
-    }
-    
+
     @Override
     public List<EntityInstancePKResult> execute(final EntityAttribute entityAttribute) {
-        return super.execute(entityAttribute, Session.MAX_TIME);
+        var query = getDslContext()
+                .select(EntityListItemAttributes.ENTITY_INSTANCE.as("EntityInstancePK"))
+                .from(EntityListItems)
+                .join(EntityListItemDetails).onKey(ENTITY_LIST_ITEMS_ACTIVE_DETAIL_FK)
+                .join(EntityListItemAttributes).onKey(ENTITY_LIST_ITEM_ATTRIBUTES_ENTITY_LIST_ITEM_FK)
+                .where(EntityListItemDetails.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityListItemAttributes.THRU_TIME.eq(Session.MAX_TIME));
+
+        return super.execute(query);
     }
     
 }

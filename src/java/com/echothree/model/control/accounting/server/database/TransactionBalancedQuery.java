@@ -16,27 +16,33 @@
 
 package com.echothree.model.control.accounting.server.database;
 
+import static com.echothree.model.jooq.server.tables.accounting.TransactionGlEntries.TransactionGlEntries;
+import static org.jooq.impl.DSL.sum;
 import com.echothree.model.data.accounting.server.entity.Transaction;
 import com.echothree.util.server.persistence.BaseDatabaseQuery;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import java.math.BigDecimal;
 import java.util.List;
 
 public class TransactionBalancedQuery
         extends BaseDatabaseQuery<TransactionBalancedResult> {
 
     public TransactionBalancedQuery() {
-        super("""
-                SELECT SUM(trxglent_originalcredit) - SUM(trxglent_originaldebit) AS OriginalDifference,
-                SUM(trxglent_credit) - SUM(trxglent_debit) AS Difference
-                FROM transactionglentries
-                WHERE trxglent_trx_transactionid = ?
-                AND trxglent_thrutime = ?
-                """, EntityPermission.READ_ONLY);
+        super(EntityPermission.READ_ONLY);
     }
 
     public List<TransactionBalancedResult> execute(final Transaction transaction) {
-        return super.execute(transaction, Session.MAX_TIME);
+        var query = getDslContext()
+                .select(sum(TransactionGlEntries.ORIGINAL_CREDIT).coalesce(BigDecimal.ZERO)
+                        .sub(sum(TransactionGlEntries.ORIGINAL_DEBIT).coalesce(BigDecimal.ZERO)).as("OriginalDifference"),
+                        sum(TransactionGlEntries.CREDIT).coalesce(BigDecimal.ZERO)
+                        .sub(sum(TransactionGlEntries.DEBIT).coalesce(BigDecimal.ZERO)).as("Difference"))
+                .from(TransactionGlEntries)
+                .where(TransactionGlEntries.TRANSACTION.eq(transaction.getPrimaryKey()),
+                        TransactionGlEntries.THRU_TIME.eq(Session.MAX_TIME));
+
+        return super.execute(query);
     }
 
 }

@@ -24,14 +24,15 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.jooq.ResultQuery;
+import org.jooq.exception.DataAccessException;
 
 public abstract class BaseDatabaseQuery<R extends BaseDatabaseResult> {
     
-    protected final String sql;
     protected final EntityPermission entityPermission;
     
     protected final Class<R> baseDatabaseResultClass;
@@ -39,8 +40,7 @@ public abstract class BaseDatabaseQuery<R extends BaseDatabaseResult> {
     List<DatabaseResultMethod> databaseResultMethods;
     
     @SuppressWarnings("unchecked")
-    protected BaseDatabaseQuery(final String sql, final EntityPermission entityPermission) {
-        this.sql = sql;
+    protected BaseDatabaseQuery(final EntityPermission entityPermission) {
         this.entityPermission = entityPermission;
         
         this.baseDatabaseResultClass = (Class<R>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
@@ -115,84 +115,68 @@ public abstract class BaseDatabaseQuery<R extends BaseDatabaseResult> {
         return databaseResultMethod;
     }
 
-    private List<DatabaseResultMethod> getDatabaseResultMethods(final ResultSet rs) {
-        if(databaseResultMethods == null) {
-            try {
-                final var rsmd = rs.getMetaData();
+    protected DSLContext getDslContext() {
+        return ThreadSession.currentSession().getDslContext();
+    }
 
-                databaseResultMethods = new ArrayList<>();
-                for(var columnIndex = 1; columnIndex <= rsmd.getColumnCount(); columnIndex++) {
-                    databaseResultMethods.add(getDatabaseResultMethod(rsmd.getColumnLabel(columnIndex)));
-                }
-            } catch(SQLException se) {
-                throw new PersistenceDatabaseException(se);
+    private List<DatabaseResultMethod> getDatabaseResultMethods(final Record record) {
+        if(databaseResultMethods == null) {
+            databaseResultMethods = new ArrayList<>();
+            for(var field : record.fields()) {
+                databaseResultMethods.add(getDatabaseResultMethod(field.getName()));
             }
         }
 
         return databaseResultMethods;
     }
-    
-    protected List<R> execute(final Object... params) {
+
+    protected List<R> execute(final ResultQuery<?> query) {
         final var results = new ArrayList<R>();
-        final var session = ThreadSession.currentSession();
-        final var ps = session.prepareStatement(sql);
 
-        Session.setQueryParams(ps, params);
-
-        try {
-            ps.execute();
-            
-            try(final var rs = ps.getResultSet()) {
-                while(rs.next()) {
+        try(final var cursor = query.fetchLazy()) {
+            for(var record : cursor) {
+                try {
+                    final var result = baseDatabaseResultClass.getDeclaredConstructor().newInstance();
                     var columnIndex = 0;
 
-                    try {
-                        final var baseDatabaseResult = baseDatabaseResultClass.getDeclaredConstructor().newInstance();
+                    for(var method : getDatabaseResultMethods(record)) {
+                        final var type = method.type;
+                        Object value;
 
-                        for(var databaseResultMethod : getDatabaseResultMethods(rs)) {
-                            final var type = databaseResultMethod.type;
-                            Object param = null;
-
-                            columnIndex++;
-                            if(type.equals(Long.class)) {
-                                param = rs.getLong(columnIndex);
-                            } else if(type.equals(Integer.class)) {
-                                param = rs.getInt(columnIndex);
-                            } else if(type.equals(String.class)) {
-                                param = rs.getString(columnIndex);
+                        if(type.equals(Long.class)) {
+                            value = record.get(columnIndex, Long.class);
+                        } else if(type.equals(Integer.class)) {
+                            value = record.get(columnIndex, Integer.class);
+                        } else if(type.equals(String.class)) {
+                            value = record.get(columnIndex, String.class);
+                        } else {
+                            var key = record.get(columnIndex);
+                            if(key == null) {
+                                value = null;
                             } else {
-                                final var superclass = type.getSuperclass();
-
-                                if(superclass != null) {
-                                    if(superclass.equals(BasePK.class)) {
-                                        param = databaseResultMethod.pkConstructor.newInstance(rs.getLong(columnIndex));
-                                    } else if(superclass.equals(BaseEntity.class)) {
-                                        var pk = databaseResultMethod.pkConstructor.newInstance(rs.getLong(columnIndex));
-
-                                        param = databaseResultMethod.getEntityFromPkMethod.invoke(databaseResultMethod.factoryInstance, entityPermission, pk);
-                                    }
+                                if(!(key instanceof BasePK)) {
+                                    var id = record.get(columnIndex, Long.class);
+                                    key = method.pkConstructor.newInstance(id);
                                 }
-
-                                if(param == null) {
-                                    throw new PersistenceDatabaseException("unsupported Class in execute, " + type);
-                                }
+                                value = type.getSuperclass().equals(BasePK.class) ? key
+                                        : method.getEntityFromPkMethod.invoke(method.factoryInstance, entityPermission, key);
                             }
-
-                            databaseResultMethod.setMethod.invoke(baseDatabaseResult, param);
                         }
 
-                        results.add(baseDatabaseResult);
-                    } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
-                             InvocationTargetException ex) {
-                        throw new PersistenceDatabaseException(ex);
+                        method.setMethod.invoke(result, value);
+                        columnIndex++;
                     }
+
+                    results.add(result);
+                } catch(NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException ex) {
+                    throw new PersistenceDatabaseException(ex);
                 }
             }
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
+        } catch(DataAccessException ex) {
+            throw new PersistenceDatabaseException(ex);
         }
-        
+
         return results;
     }
-    
+
 }

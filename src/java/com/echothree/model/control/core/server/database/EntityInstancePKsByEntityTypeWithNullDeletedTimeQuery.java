@@ -16,6 +16,9 @@
 
 package com.echothree.model.control.core.server.database;
 
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TIMES_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.core.EntityTimes.EntityTimes;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.util.server.persistence.BaseDatabaseQuery;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -25,15 +28,18 @@ public class EntityInstancePKsByEntityTypeWithNullDeletedTimeQuery
         extends BaseDatabaseQuery<EntityInstancePKResult> {
 
     public EntityInstancePKsByEntityTypeWithNullDeletedTimeQuery() {
-        super("SELECT eni_entityinstanceid AS EntityInstancePK "
-                        + "FROM entityinstances, entitytimes "
-                        + "WHERE eni_ent_entitytypeid = ? AND eni_entityinstanceid = etim_eni_entityinstanceid "
-                        + "AND etim_deletedtime IS NULL",
-                EntityPermission.READ_ONLY);
+        super(EntityPermission.READ_ONLY);
     }
 
     public List<EntityInstancePKResult> execute(final EntityType entityType) {
-        return super.execute(entityType);
+        var query = getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE.as("EntityInstancePK"))
+                .from(EntityInstances)
+                .join(EntityTimes).onKey(ENTITY_TIMES_ENTITY_INSTANCE_FK)
+                .where(EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                        EntityTimes.DELETED_TIME.isNull());
+
+        return super.execute(query);
     }
 
 }

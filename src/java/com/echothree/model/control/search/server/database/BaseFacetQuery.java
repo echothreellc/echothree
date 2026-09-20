@@ -42,8 +42,8 @@ public abstract class BaseFacetQuery<R extends BaseDatabaseResult>
         } 
     }
     
-    protected BaseFacetQuery(final String sql, UserVisitSearch userVisitSearch) {
-        super(sql, EntityPermission.READ_ONLY);
+    protected BaseFacetQuery(UserVisitSearch userVisitSearch) {
+        super(EntityPermission.READ_ONLY);
         
         init(userVisitSearch);
     }

@@ -16,8 +16,20 @@
 
 package com.echothree.model.control.item.server.database;
 
-import com.echothree.model.control.core.common.ComponentVendors;
-import com.echothree.model.control.core.common.EntityTypes;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.COMPONENT_VENDORS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_INSTANCES_ENTITY_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_ALIASES_ITEM_ALIAS_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEM_ALIAS_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.core.ComponentVendorDetails.ComponentVendorDetails;
+import static com.echothree.model.jooq.server.tables.core.ComponentVendors.ComponentVendors;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.core.EntityTypeDetails.EntityTypeDetails;
+import static com.echothree.model.jooq.server.tables.core.EntityTypes.EntityTypes;
+import static com.echothree.model.jooq.server.tables.item.ItemAliasTypeDetails.ItemAliasTypeDetails;
+import static com.echothree.model.jooq.server.tables.item.ItemAliasTypes.ItemAliasTypes;
+import static com.echothree.model.jooq.server.tables.item.ItemAliases.ItemAliases;
 import com.echothree.model.data.item.common.pk.ItemAliasTypePK;
 import com.echothree.util.server.persistence.BaseDatabaseQuery;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -28,19 +40,26 @@ public class ItemEntityInstancesByItemAliasTypeQuery
         extends BaseDatabaseQuery<ItemEntityInstanceResult> {
 
     public ItemEntityInstancesByItemAliasTypeQuery() {
-        super("""
-                SELECT eni_entityinstanceid AS EntityInstancePK
-                FROM itemaliastypes, itemaliastypedetails, itemaliases, componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances
-                WHERE iat_itemaliastypeid = ? AND iat_activedetailid = iatdt_itemaliastypedetailid
-                AND iat_itemaliastypeid = itmal_iat_itemaliastypeid AND itmal_thrutime = ?
-                AND cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ?
-                AND ent_activedetailid = entdt_entitytypedetailid AND cvnd_componentvendorid = entdt_cvnd_componentvendorid AND entdt_entitytypename = ?
-                AND eni_ent_entitytypeid = ent_entitytypeid AND eni_entityuniqueid = itmal_itm_itemid
-                """, EntityPermission.READ_ONLY);
+        super(EntityPermission.READ_ONLY);
     }
     
     public List<ItemEntityInstanceResult> execute(final ItemAliasTypePK itemAliasTypePK) {
-        return super.execute(itemAliasTypePK, Session.MAX_TIME, ComponentVendors.ECHO_THREE.name(), EntityTypes.Item.name());
+        var query = getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE.as("EntityInstancePK"))
+                .from(ItemAliasTypes)
+                .join(ItemAliasTypeDetails).onKey(ITEM_ALIAS_TYPES_ACTIVE_DETAIL_FK)
+                .join(ItemAliases).onKey(ITEM_ALIASES_ITEM_ALIAS_TYPE_FK)
+                .join(EntityInstances).on(EntityInstances.ENTITY_UNIQUE.eq(ItemAliases.ITEM.cast(Long.class)))
+                .join(EntityTypes).onKey(ENTITY_INSTANCES_ENTITY_TYPE_FK)
+                .join(EntityTypeDetails).onKey(ENTITY_TYPES_ACTIVE_DETAIL_FK)
+                .join(ComponentVendors).onKey(ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK)
+                .join(ComponentVendorDetails).onKey(COMPONENT_VENDORS_ACTIVE_DETAIL_FK)
+                .where(ItemAliasTypes.ITEM_ALIAS_TYPE.eq(itemAliasTypePK),
+                        ItemAliases.THRU_TIME.eq(Session.MAX_TIME),
+                        ComponentVendorDetails.COMPONENT_VENDOR_NAME.eq(com.echothree.model.control.core.common.ComponentVendors.ECHO_THREE.name()),
+                        EntityTypeDetails.ENTITY_TYPE_NAME.eq(com.echothree.model.control.core.common.EntityTypes.Item.name()));
+
+        return super.execute(query);
     }
 
 }

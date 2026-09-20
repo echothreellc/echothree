@@ -16,6 +16,10 @@
 
 package com.echothree.model.control.search.server.database;
 
+import static com.echothree.model.jooq.server.tables.core.EntityLongAttributes.EntityLongAttributes;
+import static com.echothree.model.jooq.server.tables.search.CachedExecutedSearchResults.CachedExecutedSearchResults;
+import static com.echothree.model.jooq.server.tables.search.SearchResults.SearchResults;
+import static org.jooq.impl.DSL.count;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.util.server.persistence.Session;
@@ -25,22 +29,31 @@ public class EntityLongAttributeFacetQuery
         extends BaseFacetQuery<EntityLongAttributeFacetResult> {
     
     public EntityLongAttributeFacetQuery(UserVisitSearch userVisitSearch) {
-        super(userVisitSearch.getSearch().getCachedSearch() == null
-                ? "SELECT enla_longattribute AS LongAttribute, COUNT(*) AS Count "
-                + "FROM searchresults, entitylongattributes "
-                + "WHERE srchr_srch_searchid = ? "
-                + "AND srchr_eni_entityinstanceid = enla_eni_entityinstanceid AND enla_ena_entityattributeid = ? AND enla_thrutime = ? "
-                + "GROUP BY enla_longattribute"
-                : "SELECT enla_longattribute AS LongAttribute, COUNT(*) AS Count "
-                + "FROM cachedexecutedsearchresults, entitylongattributes "
-                + "WHERE cxsrchr_cxsrch_cachedexecutedsearchid = ? "
-                + "AND cxsrchr_eni_entityinstanceid = enla_eni_entityinstanceid AND enla_ena_entityattributeid = ? AND enla_thrutime = ? "
-                + "GROUP BY enla_longattribute",
-                userVisitSearch);
+        super(userVisitSearch);
     }
     
     public List<EntityLongAttributeFacetResult> execute(EntityAttribute entityAttribute) {
-        return super.execute(cachedExecutedSearch == null ? search : cachedExecutedSearch, entityAttribute, Session.MAX_TIME);
+        var query = cachedExecutedSearch == null
+                ? getDslContext()
+                    .select(EntityLongAttributes.LONG_ATTRIBUTE.as("LongAttribute"),
+                            count().as("Count"))
+                    .from(SearchResults)
+                    .join(EntityLongAttributes).on(SearchResults.ENTITY_INSTANCE.eq(EntityLongAttributes.ENTITY_INSTANCE))
+                    .where(SearchResults.SEARCH.eq(search.getPrimaryKey()),
+                            EntityLongAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                            EntityLongAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                    .groupBy(EntityLongAttributes.LONG_ATTRIBUTE)
+                : getDslContext()
+                    .select(EntityLongAttributes.LONG_ATTRIBUTE.as("LongAttribute"),
+                            count().as("Count"))
+                    .from(CachedExecutedSearchResults)
+                    .join(EntityLongAttributes).on(CachedExecutedSearchResults.ENTITY_INSTANCE.eq(EntityLongAttributes.ENTITY_INSTANCE))
+                    .where(CachedExecutedSearchResults.CACHED_EXECUTED_SEARCH.eq(cachedExecutedSearch.getPrimaryKey()),
+                            EntityLongAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                            EntityLongAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                    .groupBy(EntityLongAttributes.LONG_ATTRIBUTE);
+
+        return super.execute(query);
     }
     
 }

@@ -16,22 +16,23 @@
 
 package com.echothree.model.control.core.server.database;
 
+import static com.echothree.model.jooq.server.tables.core.EntityTimeAttributes.EntityTimeAttributes;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
 
 public class EntityInstancePKsByTimeEntityAttributeQuery
         extends BaseEntityInstancePKQuery<EntityInstancePKResult> {
-    
-    public EntityInstancePKsByTimeEntityAttributeQuery() {
-        super("SELECT enta_eni_entityinstanceid AS EntityInstancePK "
-                + "FROM entitytimeattributes "
-                + "WHERE enta_ena_entityattributeid = ? AND enta_thrutime = ?");
-    }
-    
+
     @Override
     public List<EntityInstancePKResult> execute(final EntityAttribute entityAttribute) {
-        return super.execute(entityAttribute, Session.MAX_TIME);
+        var query = getDslContext()
+                .select(EntityTimeAttributes.ENTITY_INSTANCE.as("EntityInstancePK"))
+                .from(EntityTimeAttributes)
+                .where(EntityTimeAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityTimeAttributes.THRU_TIME.eq(Session.MAX_TIME));
+
+        return super.execute(query);
     }
     
 }

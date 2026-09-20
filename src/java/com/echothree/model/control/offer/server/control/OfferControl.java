@@ -1192,9 +1192,6 @@ public class OfferControl
     //   Offer Searches
     // --------------------------------------------------------------------------------
 
-    @Inject
-    private SearchResultFactory searchResultFactory;
-
     private List<Long> getOfferIdsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
         var cachedSearch = search.getCachedSearch();

@@ -16,6 +16,9 @@
 
 package com.echothree.model.control.search.server.database;
 
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.CACHED_SEARCH_STATUSES_CACHED_SEARCH_FK;
+import static com.echothree.model.jooq.server.tables.search.CachedSearchStatuses.CachedSearchStatuses;
+import static com.echothree.model.jooq.server.tables.search.CachedSearches.CachedSearches;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.util.server.persistence.BaseDatabaseQuery;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -26,15 +29,19 @@ public class CachedSearchToInvalidateQuery
         extends BaseDatabaseQuery<CachedSearchToInvalidateResult> {
     
     public CachedSearchToInvalidateQuery() {
-        super("SELECT csrchst_cachedsearchstatusid AS CachedSearchStatus "
-                + "FROM cachedsearches, cachedsearchstatuses "
-                + "WHERE csrch_idx_indexid = ? AND csrch_thrutime = ? "
-                + "AND csrch_cachedsearchid = csrchst_csrch_cachedsearchid AND csrchst_isconsistent = 1",
-                EntityPermission.READ_WRITE);
+        super(EntityPermission.READ_WRITE);
     }
     
     public List<CachedSearchToInvalidateResult> execute(Index index) {
-        return super.execute(index, Session.MAX_TIME);
+        var query = getDslContext()
+                .select(CachedSearchStatuses.CACHED_SEARCH_STATUS.as("CachedSearchStatus"))
+                .from(CachedSearches)
+                .join(CachedSearchStatuses).onKey(CACHED_SEARCH_STATUSES_CACHED_SEARCH_FK)
+                .where(CachedSearches.INDEX.eq(index.getPrimaryKey()),
+                        CachedSearches.THRU_TIME.eq(Session.MAX_TIME),
+                        CachedSearchStatuses.IS_CONSISTENT.eq(true));
+
+        return super.execute(query);
     }
     
 }

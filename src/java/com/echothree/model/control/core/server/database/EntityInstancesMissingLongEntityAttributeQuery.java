@@ -16,6 +16,13 @@
 
 package com.echothree.model.control.core.server.database;
 
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_ATTRIBUTES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TIMES_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.tables.core.EntityAttributeDetails.EntityAttributeDetails;
+import static com.echothree.model.jooq.server.tables.core.EntityAttributes.EntityAttributes;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.core.EntityLongAttributes.EntityLongAttributes;
+import static com.echothree.model.jooq.server.tables.core.EntityTimes.EntityTimes;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.util.server.persistence.BaseDatabaseQuery;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -26,22 +33,25 @@ public class EntityInstancesMissingLongEntityAttributeQuery
         extends BaseDatabaseQuery<EntityInstanceResult> {
 
     public EntityInstancesMissingLongEntityAttributeQuery() {
-        super("""
-                SELECT eni_entityinstanceid AS EntityInstance
-                FROM entityattributes
-                JOIN entityattributedetails ON ena_activedetailid = enadt_entityattributedetailid
-                JOIN entityinstances ON enadt_ent_entitytypeid = eni_ent_entitytypeid
-                JOIN entitytimes ON eni_entityinstanceid = etim_eni_entityinstanceid
-                WHERE ena_entityattributeid = ? AND etim_deletedtime IS NULL
-                AND eni_entityinstanceid NOT IN
-                    (SELECT enla_eni_entityinstanceid
-                     FROM entitylongattributes
-                     WHERE enla_ena_entityattributeid = ? AND enla_thrutime = ?)
-                """, EntityPermission.READ_ONLY);
+        super(EntityPermission.READ_ONLY);
     }
     
     public List<EntityInstanceResult> execute(final EntityAttribute entityAttribute) {
-        return super.execute(entityAttribute, entityAttribute, Session.MAX_TIME);
+        var query = getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE.as("EntityInstance"))
+                .from(EntityAttributes)
+                .join(EntityAttributeDetails).onKey(ENTITY_ATTRIBUTES_ACTIVE_DETAIL_FK)
+                .join(EntityInstances).on(EntityAttributeDetails.ENTITY_TYPE.eq(EntityInstances.ENTITY_TYPE))
+                .join(EntityTimes).onKey(ENTITY_TIMES_ENTITY_INSTANCE_FK)
+                .where(EntityAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityTimes.DELETED_TIME.isNull())
+                .and(EntityInstances.ENTITY_INSTANCE.notIn(getDslContext()
+                        .select(EntityLongAttributes.ENTITY_INSTANCE)
+                        .from(EntityLongAttributes)
+                        .where(EntityLongAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                                EntityLongAttributes.THRU_TIME.eq(Session.MAX_TIME))));
+
+        return super.execute(query);
     }
     
 }
