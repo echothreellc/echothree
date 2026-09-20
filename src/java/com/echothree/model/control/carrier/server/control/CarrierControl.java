@@ -84,19 +84,46 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.carrier.CarrierForeignKeys.CARRIER_OPTIONS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.carrier.CarrierForeignKeys.CARRIER_OPTION_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.carrier.CarrierForeignKeys.CARRIER_SERVICES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.carrier.CarrierForeignKeys.CARRIER_SERVICE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.carrier.CarrierForeignKeys.CARRIER_SERVICE_OPTIONS_CARRIER_OPTION_FK;
+import static com.echothree.model.jooq.server.keys.carrier.CarrierForeignKeys.CARRIER_SERVICE_OPTIONS_CARRIER_SERVICE_FK;
+import static com.echothree.model.jooq.server.keys.carrier.CarrierForeignKeys.CARRIER_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.carrier.CarrierForeignKeys.CARRIER_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.carrier.CarrierForeignKeys.PARTY_CARRIERS_PARTY_FK;
+import static com.echothree.model.jooq.server.keys.carrier.CarrierForeignKeys.PARTY_CARRIER_ACCOUNTS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.carrier.CarrierForeignKeys.PARTY_CARRIER_ACCOUNT_DETAILS_CARRIER_PARTY_FK;
+import static com.echothree.model.jooq.server.keys.carrier.CarrierForeignKeys.PARTY_CARRIER_ACCOUNT_DETAILS_PARTY_FK;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTIES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTIES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.campaign.Campaigns.Campaigns;
+import static com.echothree.model.jooq.server.tables.carrier.CarrierOptionDescriptions.CarrierOptionDescriptions;
+import static com.echothree.model.jooq.server.tables.carrier.CarrierOptionDetails.CarrierOptionDetails;
+import static com.echothree.model.jooq.server.tables.carrier.CarrierOptions.CarrierOptions;
+import static com.echothree.model.jooq.server.tables.carrier.CarrierServiceDescriptions.CarrierServiceDescriptions;
+import static com.echothree.model.jooq.server.tables.carrier.CarrierServiceDetails.CarrierServiceDetails;
+import static com.echothree.model.jooq.server.tables.carrier.CarrierServiceOptions.CarrierServiceOptions;
+import static com.echothree.model.jooq.server.tables.carrier.CarrierServices.CarrierServices;
+import static com.echothree.model.jooq.server.tables.carrier.CarrierTypeDescriptions.CarrierTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.carrier.CarrierTypeDetails.CarrierTypeDetails;
+import static com.echothree.model.jooq.server.tables.carrier.CarrierTypes.CarrierTypes;
+import static com.echothree.model.jooq.server.tables.carrier.Carriers.Carriers;
+import static com.echothree.model.jooq.server.tables.carrier.PartyCarrierAccountDetails.PartyCarrierAccountDetails;
+import static com.echothree.model.jooq.server.tables.carrier.PartyCarrierAccounts.PartyCarrierAccounts;
+import static com.echothree.model.jooq.server.tables.carrier.PartyCarriers.PartyCarriers;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.party.Parties.Parties;
+import static com.echothree.model.jooq.server.tables.party.PartyDetails.PartyDetails;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 
@@ -113,48 +140,17 @@ public class CarrierControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Carrier Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    @Inject
-    CarrierTransferCache carrierTransferCache;
-
-    @Inject
-    CarrierTypeTransferCache carrierTypeTransferCache;
-
-    @Inject
-    CarrierTypeDescriptionTransferCache carrierTypeDescriptionTransferCache;
-
-    @Inject
-    CarrierServiceDescriptionTransferCache carrierServiceDescriptionTransferCache;
-
-    @Inject
-    CarrierServiceTransferCache carrierServiceTransferCache;
-
-    @Inject
-    CarrierOptionDescriptionTransferCache carrierOptionDescriptionTransferCache;
-
-    @Inject
-    CarrierOptionTransferCache carrierOptionTransferCache;
-
-    @Inject
-    PartyCarrierTransferCache partyCarrierTransferCache;
-
-    @Inject
-    PartyCarrierAccountTransferCache partyCarrierAccountTransferCache;
-
-    @Inject
-    CarrierServiceOptionTransferCache carrierServiceOptionTransferCache;
-
-    // --------------------------------------------------------------------------------
     //   Carrier Types
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected CarrierTypeDetailFactory carrierTypeDetailFactory;
 
     @Inject
     protected CarrierTypeFactory carrierTypeFactory;
 
     @Inject
-    protected CarrierTypeDetailFactory carrierTypeDetailFactory;
+    CarrierTypeTransferCache carrierTypeTransferCache;
 
     public CarrierType createCarrierType(String carrierTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultCarrierType = getDefaultCarrierType();
@@ -201,36 +197,27 @@ public class CarrierControl
     }
 
     public long countCarrierTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM carriertypes
-                        JOIN carriertypedetails ON crrtypdt_carriertypedetailid = crrtyp_activedetailid
-                        """);
-    }
-
-    private static final Map<EntityPermission, String> getCarrierTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM carriertypes, carriertypedetails
-                WHERE crrtyp_activedetailid = crrtypdt_carriertypedetailid
-                AND crrtypdt_carriertypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM carriertypes, carriertypedetails
-                WHERE crrtyp_activedetailid = crrtypdt_carriertypedetailid
-                AND crrtypdt_carriertypename = ?
-                FOR UPDATE
-                """);
-        getCarrierTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(CarrierTypes)
+                .join(CarrierTypeDetails).onKey(CARRIER_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private CarrierType getCarrierTypeByName(String carrierTypeName, EntityPermission entityPermission) {
-        return carrierTypeFactory.getEntityFromQuery(entityPermission, getCarrierTypeByNameQueries, carrierTypeName);
+        var baseQuery = session.getDslContext()
+                .select(CarrierTypes.fields())
+                .from(CarrierTypes)
+                .join(CarrierTypeDetails).onKey(CARRIER_TYPES_ACTIVE_DETAIL_FK)
+                .where(CarrierTypeDetails.CARRIER_TYPE_NAME.eq(carrierTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return carrierTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public CarrierType getCarrierTypeByName(String carrierTypeName) {
@@ -249,29 +236,19 @@ public class CarrierControl
         return getCarrierTypeDetailValueForUpdate(getCarrierTypeByNameForUpdate(carrierTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultCarrierTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM carriertypes, carriertypedetails
-                WHERE crrtyp_activedetailid = crrtypdt_carriertypedetailid
-                AND crrtypdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM carriertypes, carriertypedetails
-                WHERE crrtyp_activedetailid = crrtypdt_carriertypedetailid
-                AND crrtypdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultCarrierTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private CarrierType getDefaultCarrierType(EntityPermission entityPermission) {
-        return carrierTypeFactory.getEntityFromQuery(entityPermission, getDefaultCarrierTypeQueries);
+        var baseQuery = session.getDslContext()
+                .select(CarrierTypes.fields())
+                .from(CarrierTypes)
+                .join(CarrierTypeDetails).onKey(CARRIER_TYPES_ACTIVE_DETAIL_FK)
+                .where(CarrierTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return carrierTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public CarrierType getDefaultCarrierType() {
@@ -286,29 +263,20 @@ public class CarrierControl
         return getDefaultCarrierTypeForUpdate().getLastDetailForUpdate().getCarrierTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getCarrierTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM carriertypes, carriertypedetails
-                WHERE crrtyp_activedetailid = crrtypdt_carriertypedetailid
-                ORDER BY crrtypdt_sortorder, crrtypdt_carriertypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM carriertypes, carriertypedetails
-                WHERE crrtyp_activedetailid = crrtypdt_carriertypedetailid
-                FOR UPDATE
-                """);
-        getCarrierTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<CarrierType> getCarrierTypes(EntityPermission entityPermission) {
-        return carrierTypeFactory.getEntitiesFromQuery(entityPermission, getCarrierTypesQueries);
+        var baseQuery = session.getDslContext()
+                .select(CarrierTypes.fields())
+                .from(CarrierTypes)
+                .join(CarrierTypeDetails).onKey(CARRIER_TYPES_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(CarrierTypeDetails.SORT_ORDER, CarrierTypeDetails.CARRIER_TYPE_NAME),
+                    CarrierTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return carrierTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<CarrierType> getCarrierTypes() {
@@ -319,39 +287,11 @@ public class CarrierControl
         return getCarrierTypes(EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getCarrierTypesByParentCarrierTypeQueries;
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM carriertypes, carriertypedetails
-                WHERE crrtyp_activedetailid = crrtypdt_carriertypedetailid AND crrtypdt_parentcarriertypeid = ?
-                ORDER BY crrtypdt_sortorder, crrtypdt_carriertypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM carriertypes, carriertypedetails
-                WHERE crrtyp_activedetailid = crrtypdt_carriertypedetailid AND crrtypdt_parentcarriertypeid = ?
-                FOR UPDATE
-                """);
-        getCarrierTypesByParentCarrierTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
 
-    private List<CarrierType> getCarrierTypesByParentCarrierType(CarrierType parentCarrierType, EntityPermission entityPermission) {
-        return carrierTypeFactory.getEntitiesFromQuery(entityPermission, getCarrierTypesByParentCarrierTypeQueries,
-                parentCarrierType);
-    }
 
-    public List<CarrierType> getCarrierTypesByParentCarrierType(CarrierType parentCarrierType) {
-        return getCarrierTypesByParentCarrierType(parentCarrierType, EntityPermission.READ_ONLY);
-    }
 
-    public List<CarrierType> getCarrierTypesByParentCarrierTypeForUpdate(CarrierType parentCarrierType) {
-        return getCarrierTypesByParentCarrierType(parentCarrierType, EntityPermission.READ_WRITE);
-    }
 
     public CarrierTypeTransfer getCarrierTypeTransfer(UserVisit userVisit, CarrierType carrierType) {
         return carrierTypeTransferCache.getCarrierTypeTransfer(userVisit, carrierType);
@@ -371,10 +311,7 @@ public class CarrierControl
         return getCarrierTypeTransfers(userVisit, getCarrierTypes());
     }
 
-    public List<CarrierTypeTransfer> getCarrierTypeTransfersByParentCarrierType(UserVisit userVisit,
-            CarrierType parentCarrierType) {
-        return getCarrierTypeTransfers(userVisit, getCarrierTypesByParentCarrierType(parentCarrierType));
-    }
+
 
     public CarrierTypeChoicesBean getCarrierTypeChoices(String defaultCarrierTypeChoice, Language language, boolean allowNullChoice) {
         var carrierTypes = getCarrierTypes();
@@ -491,6 +428,9 @@ public class CarrierControl
     @Inject
     protected CarrierTypeDescriptionFactory carrierTypeDescriptionFactory;
 
+    @Inject
+    CarrierTypeDescriptionTransferCache carrierTypeDescriptionTransferCache;
+
     public CarrierTypeDescription createCarrierTypeDescription(CarrierType carrierType,
             Language language, String description, BasePK createdBy) {
         var carrierTypeDescription = carrierTypeDescriptionFactory.create(carrierType,
@@ -501,29 +441,21 @@ public class CarrierControl
         return carrierTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getCarrierTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM carriertypedescriptions
-                WHERE crrtypd_crrtyp_carriertypeid = ? AND crrtypd_lang_languageid = ? AND crrtypd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM carriertypedescriptions
-                WHERE crrtypd_crrtyp_carriertypeid = ? AND crrtypd_lang_languageid = ? AND crrtypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getCarrierTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private CarrierTypeDescription getCarrierTypeDescription(CarrierType carrierType,
             Language language, EntityPermission entityPermission) {
-        return carrierTypeDescriptionFactory.getEntityFromQuery(entityPermission, getCarrierTypeDescriptionQueries,
-                carrierType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(CarrierTypeDescriptions.fields())
+                .from(CarrierTypeDescriptions)
+                .where(CarrierTypeDescriptions.CARRIER_TYPE.eq(carrierType.getPrimaryKey()),
+                        CarrierTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        CarrierTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return carrierTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public CarrierTypeDescription getCarrierTypeDescription(CarrierType carrierType, Language language) {
@@ -542,31 +474,26 @@ public class CarrierControl
         return getCarrierTypeDescriptionValue(getCarrierTypeDescriptionForUpdate(carrierType, language));
     }
 
-    private static final Map<EntityPermission, String> getCarrierTypeDescriptionsByCarrierTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM carriertypedescriptions, languages
-                WHERE crrtypd_crrtyp_carriertypeid = ? AND crrtypd_thrutime = ? AND crrtypd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM carriertypedescriptions
-                WHERE crrtypd_crrtyp_carriertypeid = ? AND crrtypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getCarrierTypeDescriptionsByCarrierTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<CarrierTypeDescription> getCarrierTypeDescriptionsByCarrierType(CarrierType carrierType,
             EntityPermission entityPermission) {
-        return carrierTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getCarrierTypeDescriptionsByCarrierTypeQueries,
-                carrierType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CarrierTypeDescriptions.fields())
+                    .from(CarrierTypeDescriptions)
+                    .join(Languages).onKey(CARRIER_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(CarrierTypeDescriptions.CARRIER_TYPE.eq(carrierType.getPrimaryKey()),
+                            CarrierTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    CarrierTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(CarrierTypeDescriptions.fields())
+                    .from(CarrierTypeDescriptions)
+                    .where(CarrierTypeDescriptions.CARRIER_TYPE.eq(carrierType.getPrimaryKey()),
+                            CarrierTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return carrierTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<CarrierTypeDescription> getCarrierTypeDescriptionsByCarrierType(CarrierType carrierType) {
@@ -650,6 +577,9 @@ public class CarrierControl
     @Inject
     protected CarrierFactory carrierFactory;
 
+    @Inject
+    CarrierTransferCache carrierTransferCache;
+
     public Carrier createCarrier(Party party, String carrierName, CarrierType carrierType, Selector geoCodeSelector, Selector itemSelector,
             String accountValidationPattern, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultCarrier = getDefaultCarrier();
@@ -673,69 +603,57 @@ public class CarrierControl
     }
 
     public long countCarriers() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM carriers
-                        WHERE crr_thrutime = ?
-                        """, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(Carriers)
+                .where(Carriers.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countCarriersByCarrierType(final CarrierType carrierType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM campaigns
-                        WHERE crr_crrtyp_carriertypeid = ? AND crr_thrutime = ?
-                        """, carrierType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(Campaigns)
+                .where(Carriers.CARRIER_TYPE.eq(carrierType.getPrimaryKey()),
+                        Carriers.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countCarriersByGeoCodeSelector(final Selector geoCodeSelector) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM campaigns
-                        WHERE crr_geocodeselectorid = ? AND crr_thrutime = ?
-                        """, geoCodeSelector, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(Campaigns)
+                .where(Carriers.GEO_CODE_SELECTOR.eq(geoCodeSelector.getPrimaryKey()),
+                        Carriers.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countCarriersByItemSelector(final Selector itemSelector) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM campaigns
-                        WHERE crr_itemselectorid = ? AND crr_thrutime = ?
-                        """, itemSelector, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(Campaigns)
+                .where(Carriers.ITEM_SELECTOR.eq(itemSelector.getPrimaryKey()),
+                        Carriers.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private Carrier getCarrier(Party party, EntityPermission entityPermission) {
-        Carrier carrier;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carriers
-                        WHERE crr_par_partyid = ? AND crr_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carriers
-                        WHERE crr_par_partyid = ? AND crr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Carriers.fields())
+                .from(Carriers)
+                .where(Carriers.PARTY.eq(party.getPrimaryKey()),
+                        Carriers.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = carrierFactory.prepareStatement(query);
-            
-            ps.setLong(1, party.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            carrier = carrierFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return carrier;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return carrierFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Carrier getCarrier(Party party) {
@@ -751,37 +669,18 @@ public class CarrierControl
     }
     
     private Carrier getCarrierByName(String carrierName, EntityPermission entityPermission) {
-        Carrier carrier;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carriers
-                        WHERE crr_carriername = ? AND crr_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carriers
-                        WHERE crr_carriername = ? AND crr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Carriers.fields())
+                .from(Carriers)
+                .where(Carriers.CARRIER_NAME.eq(carrierName),
+                        Carriers.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = carrierFactory.prepareStatement(query);
-            
-            ps.setString(1, carrierName);
-            ps.setLong(2, Session.MAX_TIME);
-            
-            carrier = carrierFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return carrier;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return carrierFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Carrier getCarrierByName(String carrierName) {
@@ -797,36 +696,18 @@ public class CarrierControl
     }
     
     private Carrier getDefaultCarrier(EntityPermission entityPermission) {
-        Carrier carrier;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carriers
-                        WHERE crr_isdefault = 1 AND crr_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carriers
-                        WHERE crr_isdefault = 1 AND crr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Carriers.fields())
+                .from(Carriers)
+                .where(Carriers.IS_DEFAULT.eq(true),
+                        Carriers.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = carrierFactory.prepareStatement(query);
-            
-            ps.setLong(1, Session.MAX_TIME);
-            
-            carrier = carrierFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return carrier;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return carrierFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Carrier getDefaultCarrier() {
@@ -842,38 +723,19 @@ public class CarrierControl
     }
     
     private List<Carrier> getCarriers(EntityPermission entityPermission) {
-        List<Carrier> carriers;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carriers
-                        WHERE crr_thrutime = ?
-                        ORDER BY crr_sortorder, crr_carriername
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carriers
-                        WHERE crr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Carriers.fields())
+                .from(Carriers)
+                .where(Carriers.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = carrierFactory.prepareStatement(query);
-            
-            ps.setLong(1, Session.MAX_TIME);
-            
-            carriers = carrierFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return carriers;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(Carriers.SORT_ORDER, Carriers.CARRIER_NAME),
+                    CarrierFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return carrierFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<Carrier> getCarriers() {
@@ -1028,10 +890,13 @@ public class CarrierControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected CarrierServiceDetailFactory carrierServiceDetailFactory;
+
+    @Inject
     protected CarrierServiceFactory carrierServiceFactory;
 
     @Inject
-    protected CarrierServiceDetailFactory carrierServiceDetailFactory;
+    CarrierServiceTransferCache carrierServiceTransferCache;
 
     public CarrierService createCarrierService(Party carrierParty, String carrierServiceName, Selector geoCodeSelector, Selector itemSelector,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -1080,65 +945,50 @@ public class CarrierControl
     }
 
     public long countCarrierServicesByCarrierParty(final Party carrierParty) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM carrierservices
-                        JOIN carrierservicedetails ON crrsrvdt_carrierservicedetailid = crrsrv_activedetailid
-                        WHERE crrsrvdt_carrierpartyid = ?
-                        """, carrierParty);
+        return session.getDslContext()
+                .selectCount()
+                .from(CarrierServices)
+                .join(CarrierServiceDetails).onKey(CARRIER_SERVICES_ACTIVE_DETAIL_FK)
+                .where(CarrierServiceDetails.CARRIER_PARTY.eq(carrierParty.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countCarrierServicesByGeoCodeSelector(final Selector geoCodeSelector) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM carrierservices
-                        JOIN carrierservicedetails ON crrsrvdt_carrierservicedetailid = crrsrv_activedetailid
-                        WHERE crrsrvdt_geocodeselectorid = ?
-                        """, geoCodeSelector);
+        return session.getDslContext()
+                .selectCount()
+                .from(CarrierServices)
+                .join(CarrierServiceDetails).onKey(CARRIER_SERVICES_ACTIVE_DETAIL_FK)
+                .where(CarrierServiceDetails.GEO_CODE_SELECTOR.eq(geoCodeSelector.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countCarrierServicesByItemSelector(final Selector itemSelector) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM carrierservices
-                        JOIN carrierservicedetails ON crrsrvdt_carrierservicedetailid = crrsrv_activedetailid
-                        WHERE crrsrvdt_itemselectorid = ?
-                        """, itemSelector);
+        return session.getDslContext()
+                .selectCount()
+                .from(CarrierServices)
+                .join(CarrierServiceDetails).onKey(CARRIER_SERVICES_ACTIVE_DETAIL_FK)
+                .where(CarrierServiceDetails.ITEM_SELECTOR.eq(itemSelector.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<CarrierService> getCarrierServices(Party carrierParty, EntityPermission entityPermission) {
-        List<CarrierService> carrierPartyPriorities;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carrierservices, carrierservicedetails
-                        WHERE crrsrv_activedetailid = crrsrvdt_carrierservicedetailid AND crrsrvdt_carrierpartyid = ?
-                        ORDER BY crrsrvdt_sortorder, crrsrvdt_carrierservicename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carrierservices, carrierservicedetails
-                        WHERE crrsrv_activedetailid = crrsrvdt_carrierservicedetailid AND crrsrvdt_carrierpartyid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CarrierServices.fields())
+                .from(CarrierServices)
+                .join(CarrierServiceDetails).onKey(CARRIER_SERVICES_ACTIVE_DETAIL_FK)
+                .where(CarrierServiceDetails.CARRIER_PARTY.eq(carrierParty.getPrimaryKey()));
 
-            var ps = carrierServiceFactory.prepareStatement(query);
-            
-            ps.setLong(1, carrierParty.getPrimaryKey().getEntityId());
-            
-            carrierPartyPriorities = carrierServiceFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return carrierPartyPriorities;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(CarrierServiceDetails.SORT_ORDER, CarrierServiceDetails.CARRIER_SERVICE_NAME),
+                    CarrierServiceFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return carrierServiceFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<CarrierService> getCarrierServices(Party carrierParty) {
@@ -1150,38 +1000,19 @@ public class CarrierControl
     }
     
     private CarrierService getDefaultCarrierService(Party carrierParty, EntityPermission entityPermission) {
-        CarrierService carrierService;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carrierservices, carrierservicedetails
-                        WHERE crrsrv_activedetailid = crrsrvdt_carrierservicedetailid
-                        AND crrsrvdt_carrierpartyid = ? AND crrsrvdt_isdefault = 1
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carrierservices, carrierservicedetails
-                        WHERE crrsrv_activedetailid = crrsrvdt_carrierservicedetailid
-                        AND crrsrvdt_carrierpartyid = ? AND crrsrvdt_isdefault = 1
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CarrierServices.fields())
+                .from(CarrierServices)
+                .join(CarrierServiceDetails).onKey(CARRIER_SERVICES_ACTIVE_DETAIL_FK)
+                .where(CarrierServiceDetails.CARRIER_PARTY.eq(carrierParty.getPrimaryKey()),
+                        CarrierServiceDetails.IS_DEFAULT.eq(true));
 
-            var ps = carrierServiceFactory.prepareStatement(query);
-            
-            ps.setLong(1, carrierParty.getPrimaryKey().getEntityId());
-            
-            carrierService = carrierServiceFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return carrierService;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return carrierServiceFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public CarrierService getDefaultCarrierService(Party carrierParty) {
@@ -1197,39 +1028,19 @@ public class CarrierControl
     }
     
     private CarrierService getCarrierServiceByName(Party carrierParty, String carrierServiceName, EntityPermission entityPermission) {
-        CarrierService carrierService;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carrierservices, carrierservicedetails
-                        WHERE crrsrv_activedetailid = crrsrvdt_carrierservicedetailid
-                        AND crrsrvdt_carrierpartyid = ? AND crrsrvdt_carrierservicename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carrierservices, carrierservicedetails
-                        WHERE crrsrv_activedetailid = crrsrvdt_carrierservicedetailid
-                        AND crrsrvdt_carrierpartyid = ? AND crrsrvdt_carrierservicename = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CarrierServices.fields())
+                .from(CarrierServices)
+                .join(CarrierServiceDetails).onKey(CARRIER_SERVICES_ACTIVE_DETAIL_FK)
+                .where(CarrierServiceDetails.CARRIER_PARTY.eq(carrierParty.getPrimaryKey()),
+                        CarrierServiceDetails.CARRIER_SERVICE_NAME.eq(carrierServiceName));
 
-            var ps = carrierServiceFactory.prepareStatement(query);
-            
-            ps.setLong(1, carrierParty.getPrimaryKey().getEntityId());
-            ps.setString(2, carrierServiceName);
-            
-            carrierService = carrierServiceFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return carrierService;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return carrierServiceFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public CarrierService getCarrierServiceByName(Party carrierParty, String carrierServiceName) {
@@ -1405,6 +1216,9 @@ public class CarrierControl
     @Inject
     protected CarrierServiceDescriptionFactory carrierServiceDescriptionFactory;
 
+    @Inject
+    CarrierServiceDescriptionTransferCache carrierServiceDescriptionTransferCache;
+
     public CarrierServiceDescription createCarrierServiceDescription(CarrierService carrierService, Language language, String description,
             BasePK createdBy) {
         var carrierServiceDescription = carrierServiceDescriptionFactory.create(carrierService,
@@ -1417,38 +1231,19 @@ public class CarrierControl
     }
     
     private CarrierServiceDescription getCarrierServiceDescription(CarrierService carrierService, Language language, EntityPermission entityPermission) {
-        CarrierServiceDescription carrierServiceDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carrierservicedescriptions
-                        WHERE crrsrvd_crrsrv_carrierserviceid = ? AND crrsrvd_lang_languageid = ? AND crrsrvd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carrierservicedescriptions
-                        WHERE crrsrvd_crrsrv_carrierserviceid = ? AND crrsrvd_lang_languageid = ? AND crrsrvd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CarrierServiceDescriptions.fields())
+                .from(CarrierServiceDescriptions)
+                .where(CarrierServiceDescriptions.CARRIER_SERVICE.eq(carrierService.getPrimaryKey()),
+                        CarrierServiceDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        CarrierServiceDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = carrierServiceDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, carrierService.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            carrierServiceDescription = carrierServiceDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return carrierServiceDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return carrierServiceDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public CarrierServiceDescription getCarrierServiceDescription(CarrierService carrierService, Language language) {
@@ -1468,39 +1263,24 @@ public class CarrierControl
     }
     
     private List<CarrierServiceDescription> getCarrierServiceDescriptionsByCarrierService(CarrierService carrierService, EntityPermission entityPermission) {
-        List<CarrierServiceDescription> carrierServiceDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carrierservicedescriptions, languages
-                        WHERE crrsrvd_crrsrv_carrierserviceid = ? AND crrsrvd_thrutime = ? AND crrsrvd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carrierservicedescriptions
-                        WHERE crrsrvd_crrsrv_carrierserviceid = ? AND crrsrvd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CarrierServiceDescriptions.fields())
+                    .from(CarrierServiceDescriptions)
+                    .join(Languages).onKey(CARRIER_SERVICE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(CarrierServiceDescriptions.CARRIER_SERVICE.eq(carrierService.getPrimaryKey()),
+                            CarrierServiceDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    CarrierServiceDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(CarrierServiceDescriptions.fields())
+                    .from(CarrierServiceDescriptions)
+                    .where(CarrierServiceDescriptions.CARRIER_SERVICE.eq(carrierService.getPrimaryKey()),
+                            CarrierServiceDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = carrierServiceDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, carrierService.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            carrierServiceDescriptions = carrierServiceDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return carrierServiceDescriptions;
+        return carrierServiceDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<CarrierServiceDescription> getCarrierServiceDescriptionsByCarrierService(CarrierService carrierService) {
@@ -1583,10 +1363,13 @@ public class CarrierControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected CarrierOptionDetailFactory carrierOptionDetailFactory;
+
+    @Inject
     protected CarrierOptionFactory carrierOptionFactory;
 
     @Inject
-    protected CarrierOptionDetailFactory carrierOptionDetailFactory;
+    CarrierOptionTransferCache carrierOptionTransferCache;
 
     public CarrierOption createCarrierOption(Party carrierParty, String carrierOptionName, Boolean isRecommended, Boolean isRequired,
             Selector recommendedGeoCodeSelector, Selector requiredGeoCodeSelector, Selector recommendedItemSelector, Selector requiredItemSelector,
@@ -1637,119 +1420,110 @@ public class CarrierControl
     }
 
     public long countCarrierOptionsByCarrierParty(final Party carrierParty) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM carrieroptions
-                        JOIN carrieroptiondetails ON crroptdt_carrieroptiondetailid = crropt_activedetailid
-                        WHERE crroptdt_carrierpartyid = ?
-                        """, carrierParty);
+        return session.getDslContext()
+                .selectCount()
+                .from(CarrierOptions)
+                .join(CarrierOptionDetails).onKey(CARRIER_OPTIONS_ACTIVE_DETAIL_FK)
+                .where(CarrierOptionDetails.CARRIER_PARTY.eq(carrierParty.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countCarrierOptionsByRecommendedGeoCodeSelector(final Selector recommendedGeoCodeSelector) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM carrieroptions
-                        JOIN carrieroptiondetails ON crroptdt_carrieroptiondetailid = crropt_activedetailid
-                        WHERE crroptdt_recommendedgeocodeselectorid = ?
-                        """, recommendedGeoCodeSelector);
+        return session.getDslContext()
+                .selectCount()
+                .from(CarrierOptions)
+                .join(CarrierOptionDetails).onKey(CARRIER_OPTIONS_ACTIVE_DETAIL_FK)
+                .where(CarrierOptionDetails.RECOMMENDED_GEO_CODE_SELECTOR.eq(recommendedGeoCodeSelector.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countCarrierOptionsByRequiredGeoCodeSelector(final Selector requiredGeoCodeSelector) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM carrieroptions
-                        JOIN carrieroptiondetails ON crroptdt_carrieroptiondetailid = crropt_activedetailid
-                        WHERE crroptdt_requiredgeocodeselectorid = ?
-                        """, requiredGeoCodeSelector);
+        return session.getDslContext()
+                .selectCount()
+                .from(CarrierOptions)
+                .join(CarrierOptionDetails).onKey(CARRIER_OPTIONS_ACTIVE_DETAIL_FK)
+                .where(CarrierOptionDetails.REQUIRED_GEO_CODE_SELECTOR.eq(requiredGeoCodeSelector.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countCarrierOptionsByRecommendedItemSelector(final Selector recommendedItemSelector) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM carrieroptions
-                        JOIN carrieroptiondetails ON crroptdt_carrieroptiondetailid = crropt_activedetailid
-                        WHERE crroptdt_recommendeditemselectorid = ?
-                        """, recommendedItemSelector);
+        return session.getDslContext()
+                .selectCount()
+                .from(CarrierOptions)
+                .join(CarrierOptionDetails).onKey(CARRIER_OPTIONS_ACTIVE_DETAIL_FK)
+                .where(CarrierOptionDetails.RECOMMENDED_ITEM_SELECTOR.eq(recommendedItemSelector.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countCarrierOptionsByRequiredItemSelector(final Selector requiredItemSelector) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM carrieroptions
-                        JOIN carrieroptiondetails ON crroptdt_carrieroptiondetailid = crropt_activedetailid
-                        WHERE crroptdt_requireditemselectorid = ?
-                        """, requiredItemSelector);
+        return session.getDslContext()
+                .selectCount()
+                .from(CarrierOptions)
+                .join(CarrierOptionDetails).onKey(CARRIER_OPTIONS_ACTIVE_DETAIL_FK)
+                .where(CarrierOptionDetails.REQUIRED_ITEM_SELECTOR.eq(requiredItemSelector.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countCarrierOptionsByRecommendedOrderSelector(final Selector recommendedOrderSelector) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM carrieroptions
-                        JOIN carrieroptiondetails ON crroptdt_carrieroptiondetailid = crropt_activedetailid
-                        WHERE crroptdt_recommendedorderselectorid = ?
-                        """, recommendedOrderSelector);
+        return session.getDslContext()
+                .selectCount()
+                .from(CarrierOptions)
+                .join(CarrierOptionDetails).onKey(CARRIER_OPTIONS_ACTIVE_DETAIL_FK)
+                .where(CarrierOptionDetails.RECOMMENDED_ORDER_SELECTOR.eq(recommendedOrderSelector.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countCarrierOptionsByRequiredOrderSelector(final Selector requiredOrderSelector) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM carrieroptions
-                        JOIN carrieroptiondetails ON crroptdt_carrieroptiondetailid = crropt_activedetailid
-                        WHERE crroptdt_requiredorderselectorid = ?
-                        """, requiredOrderSelector);
+        return session.getDslContext()
+                .selectCount()
+                .from(CarrierOptions)
+                .join(CarrierOptionDetails).onKey(CARRIER_OPTIONS_ACTIVE_DETAIL_FK)
+                .where(CarrierOptionDetails.REQUIRED_ORDER_SELECTOR.eq(requiredOrderSelector.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countCarrierOptionsByRecommendedShipmentSelector(final Selector recommendedShipmentSelector) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM carrieroptions
-                        JOIN carrieroptiondetails ON crroptdt_carrieroptiondetailid = crropt_activedetailid
-                        WHERE crroptdt_recommendedshipmentselectorid = ?
-                        """, recommendedShipmentSelector);
+        return session.getDslContext()
+                .selectCount()
+                .from(CarrierOptions)
+                .join(CarrierOptionDetails).onKey(CARRIER_OPTIONS_ACTIVE_DETAIL_FK)
+                .where(CarrierOptionDetails.RECOMMENDED_SHIPMENT_SELECTOR.eq(recommendedShipmentSelector.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countCarrierOptionsByRequiredShipmentSelector(final Selector requiredShipmentSelector) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM carrieroptions
-                        JOIN carrieroptiondetails ON crroptdt_carrieroptiondetailid = crropt_activedetailid
-                        WHERE crroptdt_requiredshipmentselectorid = ?
-                        """, requiredShipmentSelector);
+        return session.getDslContext()
+                .selectCount()
+                .from(CarrierOptions)
+                .join(CarrierOptionDetails).onKey(CARRIER_OPTIONS_ACTIVE_DETAIL_FK)
+                .where(CarrierOptionDetails.REQUIRED_SHIPMENT_SELECTOR.eq(requiredShipmentSelector.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<CarrierOption> getCarrierOptions(Party carrierParty, EntityPermission entityPermission) {
-        List<CarrierOption> carrierPartyPriorities;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carrieroptions, carrieroptiondetails
-                        WHERE crropt_activedetailid = crroptdt_carrieroptiondetailid AND crroptdt_carrierpartyid = ?
-                        ORDER BY crroptdt_sortorder, crroptdt_carrieroptionname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carrieroptions, carrieroptiondetails
-                        WHERE crropt_activedetailid = crroptdt_carrieroptiondetailid AND crroptdt_carrierpartyid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CarrierOptions.fields())
+                .from(CarrierOptions)
+                .join(CarrierOptionDetails).onKey(CARRIER_OPTIONS_ACTIVE_DETAIL_FK)
+                .where(CarrierOptionDetails.CARRIER_PARTY.eq(carrierParty.getPrimaryKey()));
 
-            var ps = carrierOptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, carrierParty.getPrimaryKey().getEntityId());
-            
-            carrierPartyPriorities = carrierOptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return carrierPartyPriorities;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(CarrierOptionDetails.SORT_ORDER, CarrierOptionDetails.CARRIER_OPTION_NAME),
+                    CarrierOptionFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return carrierOptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<CarrierOption> getCarrierOptions(Party carrierParty) {
@@ -1761,38 +1535,19 @@ public class CarrierControl
     }
     
     private CarrierOption getDefaultCarrierOption(Party carrierParty, EntityPermission entityPermission) {
-        CarrierOption carrierOption;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carrieroptions, carrieroptiondetails
-                        WHERE crropt_activedetailid = crroptdt_carrieroptiondetailid
-                        AND crroptdt_carrierpartyid = ? AND crroptdt_isdefault = 1
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carrieroptions, carrieroptiondetails
-                        WHERE crropt_activedetailid = crroptdt_carrieroptiondetailid
-                        AND crroptdt_carrierpartyid = ? AND crroptdt_isdefault = 1
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CarrierOptions.fields())
+                .from(CarrierOptions)
+                .join(CarrierOptionDetails).onKey(CARRIER_OPTIONS_ACTIVE_DETAIL_FK)
+                .where(CarrierOptionDetails.CARRIER_PARTY.eq(carrierParty.getPrimaryKey()),
+                        CarrierOptionDetails.IS_DEFAULT.eq(true));
 
-            var ps = carrierOptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, carrierParty.getPrimaryKey().getEntityId());
-            
-            carrierOption = carrierOptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return carrierOption;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return carrierOptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public CarrierOption getDefaultCarrierOption(Party carrierParty) {
@@ -1808,39 +1563,19 @@ public class CarrierControl
     }
     
     private CarrierOption getCarrierOptionByName(Party carrierParty, String carrierOptionName, EntityPermission entityPermission) {
-        CarrierOption carrierOption;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carrieroptions, carrieroptiondetails
-                        WHERE crropt_activedetailid = crroptdt_carrieroptiondetailid
-                        AND crroptdt_carrierpartyid = ? AND crroptdt_carrieroptionname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carrieroptions, carrieroptiondetails
-                        WHERE crropt_activedetailid = crroptdt_carrieroptiondetailid
-                        AND crroptdt_carrierpartyid = ? AND crroptdt_carrieroptionname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CarrierOptions.fields())
+                .from(CarrierOptions)
+                .join(CarrierOptionDetails).onKey(CARRIER_OPTIONS_ACTIVE_DETAIL_FK)
+                .where(CarrierOptionDetails.CARRIER_PARTY.eq(carrierParty.getPrimaryKey()),
+                        CarrierOptionDetails.CARRIER_OPTION_NAME.eq(carrierOptionName));
 
-            var ps = carrierOptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, carrierParty.getPrimaryKey().getEntityId());
-            ps.setString(2, carrierOptionName);
-            
-            carrierOption = carrierOptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return carrierOption;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return carrierOptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public CarrierOption getCarrierOptionByName(Party carrierParty, String carrierOptionName) {
@@ -2024,6 +1759,9 @@ public class CarrierControl
     @Inject
     protected CarrierOptionDescriptionFactory carrierOptionDescriptionFactory;
 
+    @Inject
+    CarrierOptionDescriptionTransferCache carrierOptionDescriptionTransferCache;
+
     public CarrierOptionDescription createCarrierOptionDescription(CarrierOption carrierOption, Language language, String description,
             BasePK createdBy) {
         var carrierOptionDescription = carrierOptionDescriptionFactory.create(carrierOption,
@@ -2036,38 +1774,19 @@ public class CarrierControl
     }
     
     private CarrierOptionDescription getCarrierOptionDescription(CarrierOption carrierOption, Language language, EntityPermission entityPermission) {
-        CarrierOptionDescription carrierOptionDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carrieroptiondescriptions
-                        WHERE crroptd_crropt_carrieroptionid = ? AND crroptd_lang_languageid = ? AND crroptd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carrieroptiondescriptions
-                        WHERE crroptd_crropt_carrieroptionid = ? AND crroptd_lang_languageid = ? AND crroptd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CarrierOptionDescriptions.fields())
+                .from(CarrierOptionDescriptions)
+                .where(CarrierOptionDescriptions.CARRIER_OPTION.eq(carrierOption.getPrimaryKey()),
+                        CarrierOptionDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        CarrierOptionDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = carrierOptionDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, carrierOption.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            carrierOptionDescription = carrierOptionDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return carrierOptionDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return carrierOptionDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public CarrierOptionDescription getCarrierOptionDescription(CarrierOption carrierOption, Language language) {
@@ -2087,39 +1806,24 @@ public class CarrierControl
     }
     
     private List<CarrierOptionDescription> getCarrierOptionDescriptionsByCarrierOption(CarrierOption carrierOption, EntityPermission entityPermission) {
-        List<CarrierOptionDescription> carrierOptionDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carrieroptiondescriptions, languages
-                        WHERE crroptd_crropt_carrieroptionid = ? AND crroptd_thrutime = ? AND crroptd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carrieroptiondescriptions
-                        WHERE crroptd_crropt_carrieroptionid = ? AND crroptd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CarrierOptionDescriptions.fields())
+                    .from(CarrierOptionDescriptions)
+                    .join(Languages).onKey(CARRIER_OPTION_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(CarrierOptionDescriptions.CARRIER_OPTION.eq(carrierOption.getPrimaryKey()),
+                            CarrierOptionDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    CarrierOptionDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(CarrierOptionDescriptions.fields())
+                    .from(CarrierOptionDescriptions)
+                    .where(CarrierOptionDescriptions.CARRIER_OPTION.eq(carrierOption.getPrimaryKey()),
+                            CarrierOptionDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = carrierOptionDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, carrierOption.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            carrierOptionDescriptions = carrierOptionDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return carrierOptionDescriptions;
+        return carrierOptionDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<CarrierOptionDescription> getCarrierOptionDescriptionsByCarrierOption(CarrierOption carrierOption) {
@@ -2204,6 +1908,9 @@ public class CarrierControl
     @Inject
     protected CarrierServiceOptionFactory carrierServiceOptionFactory;
 
+    @Inject
+    CarrierServiceOptionTransferCache carrierServiceOptionTransferCache;
+
     public CarrierServiceOption createCarrierServiceOption(CarrierService carrierService, CarrierOption carrierOption, Boolean isRecommended,
             Boolean isRequired, Selector recommendedGeoCodeSelector, Selector requiredGeoCodeSelector, Selector recommendedItemSelector,
             Selector requiredItemSelector, Selector recommendedOrderSelector, Selector requiredOrderSelector, Selector recommendedShipmentSelector,
@@ -2220,119 +1927,120 @@ public class CarrierControl
     }
 
     public long countCarrierServiceOptionsByCarrierService(final CarrierService carrierService) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM carrierserviceoptions
-                        WHERE crrsrvopt_crrsrv_carrierserviceid = ? AND crrsrvopt_thrutime = ?
-                        """, carrierService, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(CarrierServiceOptions)
+                .where(CarrierServiceOptions.CARRIER_SERVICE.eq(carrierService.getPrimaryKey()),
+                        CarrierServiceOptions.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countCarrierServiceOptionsByCarrierOption(final CarrierOption carrierOption) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM carrierserviceoptions
-                        WHERE crrsrvopt_crropt_carrieroptionid = ? AND crrsrvopt_thrutime = ?
-                        """, carrierOption, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(CarrierServiceOptions)
+                .where(CarrierServiceOptions.CARRIER_OPTION.eq(carrierOption.getPrimaryKey()),
+                        CarrierServiceOptions.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countCarrierServiceOptionsByRecommendedGeoCodeSelector(final Selector recommendedGeoCodeSelector) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM carrierserviceoptions
-                        WHERE crrsrvopt_recommendedgeocodeselectorid = ? AND crrsrvopt_thrutime = ?
-                        """, recommendedGeoCodeSelector, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(CarrierServiceOptions)
+                .where(CarrierServiceOptions.RECOMMENDED_GEO_CODE_SELECTOR.eq(recommendedGeoCodeSelector.getPrimaryKey()),
+                        CarrierServiceOptions.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countCarrierServiceOptionsByRequiredGeoCodeSelector(final Selector requiredGeoCodeSelector) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM carrierserviceoptions
-                        WHERE crrsrvopt_requiredgeocodeselectorid = ? AND crrsrvopt_thrutime = ?
-                        """, requiredGeoCodeSelector, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(CarrierServiceOptions)
+                .where(CarrierServiceOptions.REQUIRED_GEO_CODE_SELECTOR.eq(requiredGeoCodeSelector.getPrimaryKey()),
+                        CarrierServiceOptions.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countCarrierServiceOptionsByRecommendedItemSelector(final Selector recommendedItemSelector) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM carrierserviceoptions
-                        WHERE crrsrvopt_recommendeditemselectorid = ? AND crrsrvopt_thrutime = ?
-                        """, recommendedItemSelector, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(CarrierServiceOptions)
+                .where(CarrierServiceOptions.RECOMMENDED_ITEM_SELECTOR.eq(recommendedItemSelector.getPrimaryKey()),
+                        CarrierServiceOptions.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countCarrierServiceOptionsByRequiredItemSelector(final Selector requiredItemSelector) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM carrierserviceoptions
-                        WHERE crrsrvopt_requireditemselectorid = ? AND crrsrvopt_thrutime = ?
-                        """, requiredItemSelector, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(CarrierServiceOptions)
+                .where(CarrierServiceOptions.REQUIRED_ITEM_SELECTOR.eq(requiredItemSelector.getPrimaryKey()),
+                        CarrierServiceOptions.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countCarrierServiceOptionsByRecommendedOrderSelector(final Selector recommendedOrderSelector) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM carrierserviceoptions
-                        WHERE crrsrvopt_recommendedorderselectorid = ? AND crrsrvopt_thrutime = ?
-                        """, recommendedOrderSelector, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(CarrierServiceOptions)
+                .where(CarrierServiceOptions.RECOMMENDED_ORDER_SELECTOR.eq(recommendedOrderSelector.getPrimaryKey()),
+                        CarrierServiceOptions.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countCarrierServiceOptionsByRequiredOrderSelector(final Selector requiredOrderSelector) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM carrierserviceoptions
-                        WHERE crrsrvopt_requiredorderselectorid = ? AND crrsrvopt_thrutime = ?
-                        """, requiredOrderSelector, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(CarrierServiceOptions)
+                .where(CarrierServiceOptions.REQUIRED_ORDER_SELECTOR.eq(requiredOrderSelector.getPrimaryKey()),
+                        CarrierServiceOptions.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countCarrierServiceOptionsByRecommendedShipmentSelector(final Selector recommendedShipmentSelector) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM carrierserviceoptions
-                        WHERE crrsrvopt_recommendedshipmentselectorid = ? AND crrsrvopt_thrutime = ?
-                        """, recommendedShipmentSelector, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(CarrierServiceOptions)
+                .where(CarrierServiceOptions.RECOMMENDED_SHIPMENT_SELECTOR.eq(recommendedShipmentSelector.getPrimaryKey()),
+                        CarrierServiceOptions.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countCarrierServiceOptionsByRequiredShipmentSelector(final Selector requiredShipmentSelector) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM carrierserviceoptions
-                        WHERE crrsrvopt_requiredshipmentselectorid = ? AND crrsrvopt_thrutime = ?
-                        """, requiredShipmentSelector, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(CarrierServiceOptions)
+                .where(CarrierServiceOptions.REQUIRED_SHIPMENT_SELECTOR.eq(requiredShipmentSelector.getPrimaryKey()),
+                        CarrierServiceOptions.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private CarrierServiceOption getCarrierServiceOption(CarrierService carrierService, CarrierOption carrierOption,
             EntityPermission entityPermission) {
-        CarrierServiceOption carrierServiceOption;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carrierserviceoptions
-                        WHERE crrsrvopt_crrsrv_carrierserviceid = ? AND crrsrvopt_crropt_carrieroptionid = ? AND crrsrvopt_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carrierserviceoptions
-                        WHERE crrsrvopt_crrsrv_carrierserviceid = ? AND crrsrvopt_crropt_carrieroptionid = ? AND crrsrvopt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CarrierServiceOptions.fields())
+                .from(CarrierServiceOptions)
+                .where(CarrierServiceOptions.CARRIER_SERVICE.eq(carrierService.getPrimaryKey()),
+                        CarrierServiceOptions.CARRIER_OPTION.eq(carrierOption.getPrimaryKey()),
+                        CarrierServiceOptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = carrierServiceOptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, carrierService.getPrimaryKey().getEntityId());
-            ps.setLong(2, carrierOption.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            carrierServiceOption = carrierServiceOptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return carrierServiceOption;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return carrierServiceOptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public CarrierServiceOption getCarrierServiceOption(CarrierService carrierService, CarrierOption carrierOption) {
@@ -2352,40 +2060,25 @@ public class CarrierControl
     }
     
     private List<CarrierServiceOption> getCarrierServiceOptionsByCarrierService(CarrierService carrierService, EntityPermission entityPermission) {
-        List<CarrierServiceOption> carrierServiceOptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carrierserviceoptions, carrieroptions, carrieroptiondetails
-                        WHERE crrsrvopt_crrsrv_carrierserviceid = ? AND crrsrvopt_thrutime = ?
-                        AND crrsrvopt_crropt_carrieroptionid = crropt_carrieroptionid AND crropt_activedetailid = crroptdt_carrieroptiondetailid
-                        ORDER BY crroptdt_sortorder, crroptdt_carrieroptionname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carrierserviceoptions
-                        WHERE crrsrvopt_crrsrv_carrierserviceid = ? AND crrsrvopt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CarrierServiceOptions.fields())
+                    .from(CarrierServiceOptions)
+                    .join(CarrierOptions).onKey(CARRIER_SERVICE_OPTIONS_CARRIER_OPTION_FK)
+                    .join(CarrierOptionDetails).onKey(CARRIER_OPTIONS_ACTIVE_DETAIL_FK)
+                    .where(CarrierServiceOptions.CARRIER_SERVICE.eq(carrierService.getPrimaryKey()),
+                            CarrierServiceOptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(CarrierOptionDetails.SORT_ORDER, CarrierOptionDetails.CARRIER_OPTION_NAME),
+                    CarrierServiceOptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(CarrierServiceOptions.fields())
+                    .from(CarrierServiceOptions)
+                    .where(CarrierServiceOptions.CARRIER_SERVICE.eq(carrierService.getPrimaryKey()),
+                            CarrierServiceOptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = carrierServiceOptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, carrierService.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            carrierServiceOptions = carrierServiceOptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return carrierServiceOptions;
+        return carrierServiceOptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<CarrierServiceOption> getCarrierServiceOptionsByCarrierService(CarrierService carrierService) {
@@ -2397,40 +2090,25 @@ public class CarrierControl
     }
     
     private List<CarrierServiceOption> getCarrierServiceOptionsByCarrierOption(CarrierOption carrierOption, EntityPermission entityPermission) {
-        List<CarrierServiceOption> carrierServiceOptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carrierserviceoptions, carrierservices, carrierservicedetails
-                        WHERE crrsrvopt_crropt_carrieroptionid = ? AND crrsrvopt_thrutime = ?
-                        AND crrsrvopt_crrsrv_carrierserviceid = crrsrv_carrierserviceid AND crrsrv_activedetailid = crrsrvdt_carrierservicedetailid
-                        ORDER BY crrsrvdt_sortorder, crrsrvdt_carrierservicename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM carrierserviceoptions
-                        WHERE crrsrvopt_crropt_carrieroptionid = ? AND crrsrvopt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CarrierServiceOptions.fields())
+                    .from(CarrierServiceOptions)
+                    .join(CarrierServices).onKey(CARRIER_SERVICE_OPTIONS_CARRIER_SERVICE_FK)
+                    .join(CarrierServiceDetails).onKey(CARRIER_SERVICES_ACTIVE_DETAIL_FK)
+                    .where(CarrierServiceOptions.CARRIER_OPTION.eq(carrierOption.getPrimaryKey()),
+                            CarrierServiceOptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(CarrierServiceDetails.SORT_ORDER, CarrierServiceDetails.CARRIER_SERVICE_NAME),
+                    CarrierServiceOptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(CarrierServiceOptions.fields())
+                    .from(CarrierServiceOptions)
+                    .where(CarrierServiceOptions.CARRIER_OPTION.eq(carrierOption.getPrimaryKey()),
+                            CarrierServiceOptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = carrierServiceOptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, carrierOption.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            carrierServiceOptions = carrierServiceOptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return carrierServiceOptions;
+        return carrierServiceOptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<CarrierServiceOption> getCarrierServiceOptionsByCarrierOption(CarrierOption carrierOption) {
@@ -2522,6 +2200,9 @@ public class CarrierControl
     @Inject
     protected PartyCarrierFactory partyCarrierFactory;
 
+    @Inject
+    PartyCarrierTransferCache partyCarrierTransferCache;
+
     public PartyCarrier createPartyCarrier(Party party, Party carrierParty, BasePK createdBy) {
         var partyCarrier = partyCarrierFactory.create(party, carrierParty, session.getStartTime(), Session.MAX_TIME);
         
@@ -2531,54 +2212,39 @@ public class CarrierControl
     }
 
     public long countPartyCarriersByParty(final Party party) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partycarriers
-                        WHERE pcrr_par_partyid = ? AND pcrr_thrutime = ?
-                        """, party, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyCarriers)
+                .where(PartyCarriers.PARTY.eq(party.getPrimaryKey()),
+                        PartyCarriers.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyCarriersByCarrierParty(final Party carrierParty) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partycarriers
-                        WHERE pcrr_carrierpartyid = ? AND pcrr_thrutime = ?
-                        """, carrierParty, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyCarriers)
+                .where(PartyCarriers.CARRIER_PARTY.eq(carrierParty.getPrimaryKey()),
+                        PartyCarriers.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private PartyCarrier getPartyCarrier(Party party, Party carrierParty, EntityPermission entityPermission) {
-        PartyCarrier partyCarrier;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partycarriers
-                        WHERE pcrr_par_partyid = ? AND pcrr_carrierpartyid = ? AND pcrr_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partycarriers
-                        WHERE pcrr_par_partyid = ? AND pcrr_carrierpartyid = ? AND pcrr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(PartyCarriers.fields())
+                .from(PartyCarriers)
+                .where(PartyCarriers.PARTY.eq(party.getPrimaryKey()),
+                        PartyCarriers.CARRIER_PARTY.eq(carrierParty.getPrimaryKey()),
+                        PartyCarriers.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = partyCarrierFactory.prepareStatement(query);
-            
-            ps.setLong(1, party.getPrimaryKey().getEntityId());
-            ps.setLong(2, carrierParty.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            partyCarrier = partyCarrierFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return partyCarrier;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyCarrierFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PartyCarrier getPartyCarrier(Party party, Party carrierParty) {
@@ -2590,40 +2256,25 @@ public class CarrierControl
     }
     
     private List<PartyCarrier> getPartyCarriersByParty(Party party, EntityPermission entityPermission) {
-        List<PartyCarrier> partyCarriers;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partycarriers, parties, partydetails
-                        WHERE pcrr_par_partyid = ? AND pcrr_thrutime = ? AND pcrr_par_partyid = par_partyid
-                        AND par_activedetailid = pardt_partydetailid
-                        ORDER BY pardt_partyname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partycarriers
-                        WHERE pcrr_par_partyid = ? AND pcrr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyCarriers.fields())
+                    .from(PartyCarriers)
+                    .join(Parties).onKey(PARTY_CARRIERS_PARTY_FK)
+                    .join(PartyDetails).onKey(PARTIES_ACTIVE_DETAIL_FK)
+                    .where(PartyCarriers.PARTY.eq(party.getPrimaryKey()),
+                            PartyCarriers.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PartyDetails.PARTY_NAME),
+                    PartyCarrierFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyCarriers.fields())
+                    .from(PartyCarriers)
+                    .where(PartyCarriers.PARTY.eq(party.getPrimaryKey()),
+                            PartyCarriers.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = partyCarrierFactory.prepareStatement(query);
-            
-            ps.setLong(1, party.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            partyCarriers = partyCarrierFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return partyCarriers;
+        return partyCarrierFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PartyCarrier> getPartyCarriersByParty(Party party) {
@@ -2635,43 +2286,25 @@ public class CarrierControl
     }
     
     private List<PartyCarrier> getPartyCarriersByCarrierParty(Party carrierParty, EntityPermission entityPermission) {
-        List<PartyCarrier> partyCarriers;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partycarriers, carriers
-                        WHERE pcrr_carrierpartyid = ? AND pcrr_thrutime = ? AND pcrr_carrierpartyid = crr_par_partyid
-                        AND crr_thrutime = ?
-                        ORDER BY pardt_partyname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partycarriers
-                        WHERE pcrr_par_partyid = ? AND pcrr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyCarriers.fields())
+                    .from(PartyCarriers)
+                    .join(Carriers).on(PartyCarriers.CARRIER_PARTY.eq(Carriers.PARTY))
+                    .where(PartyCarriers.CARRIER_PARTY.eq(carrierParty.getPrimaryKey()),
+                            PartyCarriers.THRU_TIME.eq(Session.MAX_TIME),
+                            Carriers.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PartyDetails.PARTY_NAME),
+                    PartyCarrierFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyCarriers.fields())
+                    .from(PartyCarriers)
+                    .where(PartyCarriers.PARTY.eq(carrierParty.getPrimaryKey()),
+                            PartyCarriers.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = partyCarrierFactory.prepareStatement(query);
-            
-            ps.setLong(1, carrierParty.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                ps.setLong(3, Session.MAX_TIME);
-            }
-            
-            partyCarriers = partyCarrierFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return partyCarriers;
+        return partyCarrierFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PartyCarrier> getPartyCarriersByCarrierParty(Party carrierParty) {
@@ -2733,10 +2366,13 @@ public class CarrierControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected PartyCarrierAccountDetailFactory partyCarrierAccountDetailFactory;
+
+    @Inject
     protected PartyCarrierAccountFactory partyCarrierAccountFactory;
 
     @Inject
-    protected PartyCarrierAccountDetailFactory partyCarrierAccountDetailFactory;
+    PartyCarrierAccountTransferCache partyCarrierAccountTransferCache;
 
     public PartyCarrierAccount createPartyCarrierAccount(Party party, Party carrierParty, String account, Boolean alwaysUseThirdPartyBilling, BasePK createdBy) {
         var partyCarrierAccount = partyCarrierAccountFactory.create();
@@ -2770,48 +2406,39 @@ public class CarrierControl
     }
 
     public long countPartyCarrierAccountsByParty(final Party party) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partycarrieraccounts
-                        JOIN partycarrieraccountdetails ON pcrractdt_partycarrieraccountdetailid = pcrract_activedetailid
-                        WHERE pcrractdt_par_partyid = ?
-                        """, party);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyCarrierAccounts)
+                .join(PartyCarrierAccountDetails).onKey(PARTY_CARRIER_ACCOUNTS_ACTIVE_DETAIL_FK)
+                .where(PartyCarrierAccountDetails.PARTY.eq(party.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyCarrierAccountsByCarrierParty(final Party carrierParty) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partycarrieraccounts
-                        JOIN partycarrieraccountdetails ON pcrractdt_partycarrieraccountdetailid = pcrract_activedetailid
-                        WHERE pcrractdt_carrierpartyid = ?
-                        """, carrierParty);
-    }
-
-    private static final Map<EntityPermission, String> getPartyCarrierAccountQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partycarrieraccounts, partycarrieraccountdetails
-                WHERE pcrract_activedetailid = pcrractdt_partycarrieraccountdetailid
-                AND pcrractdt_par_partyid = ? AND pcrractdt_carrierpartyid = ?
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partycarrieraccounts, partycarrieraccountdetails
-                WHERE pcrract_activedetailid = pcrractdt_partycarrieraccountdetailid
-                AND pcrractdt_par_partyid = ? AND pcrractdt_carrierpartyid = ?
-                FOR UPDATE
-                """);
-        getPartyCarrierAccountQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyCarrierAccounts)
+                .join(PartyCarrierAccountDetails).onKey(PARTY_CARRIER_ACCOUNTS_ACTIVE_DETAIL_FK)
+                .where(PartyCarrierAccountDetails.CARRIER_PARTY.eq(carrierParty.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private PartyCarrierAccount getPartyCarrierAccount(Party party, Party carrierParty, EntityPermission entityPermission) {
-        return partyCarrierAccountFactory.getEntityFromQuery(entityPermission, getPartyCarrierAccountQueries,
-                party, carrierParty);
+        var baseQuery = session.getDslContext()
+                .select(PartyCarrierAccounts.fields())
+                .from(PartyCarrierAccounts)
+                .join(PartyCarrierAccountDetails).onKey(PARTY_CARRIER_ACCOUNTS_ACTIVE_DETAIL_FK)
+                .where(PartyCarrierAccountDetails.PARTY.eq(party.getPrimaryKey()),
+                        PartyCarrierAccountDetails.CARRIER_PARTY.eq(carrierParty.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyCarrierAccountFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PartyCarrierAccount getPartyCarrierAccount(Party party, Party carrierParty) {
@@ -2830,33 +2457,26 @@ public class CarrierControl
         return getPartyCarrierAccountDetailValueForUpdate(getPartyCarrierAccountForUpdate(party, carrierParty));
     }
 
-    private static final Map<EntityPermission, String> getPartyCarrierAccountsByPartyQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partycarrieraccounts, partycarrieraccountdetails, parties, partydetails
-                WHERE pcrract_activedetailid = pcrractdt_partycarrieraccountdetailid
-                AND pcrractdt_par_partyid = ?
-                AND pcrractdt_carrierpartyid = par_partyid AND par_lastdetailid = pardt_partydetailid
-                ORDER BY pardt_partyname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partycarrieraccounts, partycarrieraccountdetails
-                WHERE pcrract_activedetailid = pcrractdt_partycarrieraccountdetailid
-                AND pcrractdt_par_partyid = ?
-                FOR UPDATE
-                """);
-        getPartyCarrierAccountsByPartyQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PartyCarrierAccount> getPartyCarrierAccountsByParty(Party party, EntityPermission entityPermission) {
-        return partyCarrierAccountFactory.getEntitiesFromQuery(entityPermission, getPartyCarrierAccountsByPartyQueries,
-                party);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyCarrierAccounts.fields())
+                    .from(PartyCarrierAccounts)
+                    .join(PartyCarrierAccountDetails).onKey(PARTY_CARRIER_ACCOUNTS_ACTIVE_DETAIL_FK)
+                    .join(Parties).onKey(PARTY_CARRIER_ACCOUNT_DETAILS_CARRIER_PARTY_FK)
+                    .join(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .where(PartyCarrierAccountDetails.PARTY.eq(party.getPrimaryKey()))
+                    .orderBy(PartyDetails.PARTY_NAME),
+                    PartyCarrierAccountFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyCarrierAccounts.fields())
+                    .from(PartyCarrierAccounts)
+                    .join(PartyCarrierAccountDetails).onKey(PARTY_CARRIER_ACCOUNTS_ACTIVE_DETAIL_FK)
+                    .where(PartyCarrierAccountDetails.PARTY.eq(party.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return partyCarrierAccountFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyCarrierAccount> getPartyCarrierAccountsByParty(Party party) {
@@ -2867,33 +2487,26 @@ public class CarrierControl
         return getPartyCarrierAccountsByParty(party, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getPartyCarrierAccountsByCarrierPartyQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partycarrieraccounts, partycarrieraccountdetails, parties, partydetails
-                WHERE pcrract_activedetailid = pcrractdt_partycarrieraccountdetailid
-                AND pcrractdt_carrierpartyid = ?
-                AND pcrractdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
-                ORDER BY pardt_partyname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partycarrieraccounts, partycarrieraccountdetails
-                WHERE pcrract_activedetailid = pcrractdt_partycarrieraccountdetailid
-                AND pcrractdt_carrierpartyid = ?
-                FOR UPDATE
-                """);
-        getPartyCarrierAccountsByCarrierPartyQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PartyCarrierAccount> getPartyCarrierAccountsByCarrierParty(Party carrierParty, EntityPermission entityPermission) {
-        return partyCarrierAccountFactory.getEntitiesFromQuery(entityPermission, getPartyCarrierAccountsByCarrierPartyQueries,
-                carrierParty);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyCarrierAccounts.fields())
+                    .from(PartyCarrierAccounts)
+                    .join(PartyCarrierAccountDetails).onKey(PARTY_CARRIER_ACCOUNTS_ACTIVE_DETAIL_FK)
+                    .join(Parties).onKey(PARTY_CARRIER_ACCOUNT_DETAILS_PARTY_FK)
+                    .join(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .where(PartyCarrierAccountDetails.CARRIER_PARTY.eq(carrierParty.getPrimaryKey()))
+                    .orderBy(PartyDetails.PARTY_NAME),
+                    PartyCarrierAccountFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyCarrierAccounts.fields())
+                    .from(PartyCarrierAccounts)
+                    .join(PartyCarrierAccountDetails).onKey(PARTY_CARRIER_ACCOUNTS_ACTIVE_DETAIL_FK)
+                    .where(PartyCarrierAccountDetails.CARRIER_PARTY.eq(carrierParty.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return partyCarrierAccountFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyCarrierAccount> getPartyCarrierAccountsByCarrierParty(Party carrierParty) {
