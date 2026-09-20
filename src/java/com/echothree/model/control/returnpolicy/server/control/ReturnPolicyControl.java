@@ -17,7 +17,6 @@
 package com.echothree.model.control.returnpolicy.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.returnpolicy.common.choice.ReturnKindChoicesBean;
 import com.echothree.model.control.returnpolicy.common.choice.ReturnPolicyChoicesBean;
 import com.echothree.model.control.returnpolicy.common.choice.ReturnReasonChoicesBean;
@@ -98,19 +97,58 @@ import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTIES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.returnpolicy.ReturnPolicyForeignKeys.PARTY_RETURN_POLICIES_PARTY_FK;
+import static com.echothree.model.jooq.server.keys.returnpolicy.ReturnPolicyForeignKeys.PARTY_RETURN_POLICIES_RETURN_POLICY_FK;
+import static com.echothree.model.jooq.server.keys.returnpolicy.ReturnPolicyForeignKeys.RETURN_KINDS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.returnpolicy.ReturnPolicyForeignKeys.RETURN_KINDS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.returnpolicy.ReturnPolicyForeignKeys.RETURN_KIND_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.returnpolicy.ReturnPolicyForeignKeys.RETURN_POLICIES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.returnpolicy.ReturnPolicyForeignKeys.RETURN_POLICIES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.returnpolicy.ReturnPolicyForeignKeys.RETURN_POLICY_REASONS_RETURN_POLICY_FK;
+import static com.echothree.model.jooq.server.keys.returnpolicy.ReturnPolicyForeignKeys.RETURN_POLICY_REASONS_RETURN_REASON_FK;
+import static com.echothree.model.jooq.server.keys.returnpolicy.ReturnPolicyForeignKeys.RETURN_POLICY_TRANSLATIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.returnpolicy.ReturnPolicyForeignKeys.RETURN_REASONS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.returnpolicy.ReturnPolicyForeignKeys.RETURN_REASONS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.returnpolicy.ReturnPolicyForeignKeys.RETURN_REASON_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.returnpolicy.ReturnPolicyForeignKeys.RETURN_REASON_TYPES_RETURN_REASON_FK;
+import static com.echothree.model.jooq.server.keys.returnpolicy.ReturnPolicyForeignKeys.RETURN_REASON_TYPES_RETURN_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.returnpolicy.ReturnPolicyForeignKeys.RETURN_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.returnpolicy.ReturnPolicyForeignKeys.RETURN_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.returnpolicy.ReturnPolicyForeignKeys.RETURN_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.returnpolicy.ReturnPolicyForeignKeys.RETURN_TYPE_DETAILS_RETURN_KIND_FK;
+import static com.echothree.model.jooq.server.keys.returnpolicy.ReturnPolicyForeignKeys.RETURN_TYPE_SHIPPING_METHODS_RETURN_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.returnpolicy.ReturnPolicyForeignKeys.RETURN_TYPE_SHIPPING_METHODS_SHIPPING_METHOD_FK;
+import static com.echothree.model.jooq.server.keys.shipping.ShippingForeignKeys.SHIPPING_METHODS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.party.Parties.Parties;
+import static com.echothree.model.jooq.server.tables.party.PartyDetails.PartyDetails;
+import static com.echothree.model.jooq.server.tables.returnpolicy.PartyReturnPolicies.PartyReturnPolicies;
+import static com.echothree.model.jooq.server.tables.returnpolicy.ReturnKindDescriptions.ReturnKindDescriptions;
+import static com.echothree.model.jooq.server.tables.returnpolicy.ReturnKindDetails.ReturnKindDetails;
+import static com.echothree.model.jooq.server.tables.returnpolicy.ReturnKinds.ReturnKinds;
+import static com.echothree.model.jooq.server.tables.returnpolicy.ReturnPolicies.ReturnPolicies;
+import static com.echothree.model.jooq.server.tables.returnpolicy.ReturnPolicyDetails.ReturnPolicyDetails;
+import static com.echothree.model.jooq.server.tables.returnpolicy.ReturnPolicyReasons.ReturnPolicyReasons;
+import static com.echothree.model.jooq.server.tables.returnpolicy.ReturnPolicyTranslations.ReturnPolicyTranslations;
+import static com.echothree.model.jooq.server.tables.returnpolicy.ReturnReasonDescriptions.ReturnReasonDescriptions;
+import static com.echothree.model.jooq.server.tables.returnpolicy.ReturnReasonDetails.ReturnReasonDetails;
+import static com.echothree.model.jooq.server.tables.returnpolicy.ReturnReasonTypes.ReturnReasonTypes;
+import static com.echothree.model.jooq.server.tables.returnpolicy.ReturnReasons.ReturnReasons;
+import static com.echothree.model.jooq.server.tables.returnpolicy.ReturnTypeDescriptions.ReturnTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.returnpolicy.ReturnTypeDetails.ReturnTypeDetails;
+import static com.echothree.model.jooq.server.tables.returnpolicy.ReturnTypeShippingMethods.ReturnTypeShippingMethods;
+import static com.echothree.model.jooq.server.tables.returnpolicy.ReturnTypes.ReturnTypes;
+import static com.echothree.model.jooq.server.tables.shipping.ShippingMethodDetails.ShippingMethodDetails;
+import static com.echothree.model.jooq.server.tables.shipping.ShippingMethods.ShippingMethods;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 
@@ -125,51 +163,14 @@ public class ReturnPolicyControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Return Policy Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    @Inject
-    ReturnPolicyTransferCache returnPolicyTransferCache;
-
-    @Inject
-    ReturnPolicyTranslationTransferCache returnPolicyTranslationTransferCache;
-
-    @Inject
-    PartyReturnPolicyTransferCache partyReturnPolicyTransferCache;
-
-    @Inject
-    ReturnKindDescriptionTransferCache returnKindDescriptionTransferCache;
-
-    @Inject
-    ReturnReasonDescriptionTransferCache returnReasonDescriptionTransferCache;
-
-    @Inject
-    ReturnTypeDescriptionTransferCache returnTypeDescriptionTransferCache;
-
-    @Inject
-    ReturnKindTransferCache returnKindTransferCache;
-
-    @Inject
-    ReturnReasonTransferCache returnReasonTransferCache;
-
-    @Inject
-    ReturnTypeTransferCache returnTypeTransferCache;
-
-    @Inject
-    ReturnPolicyReasonTransferCache returnPolicyReasonTransferCache;
-
-    @Inject
-    ReturnReasonTypeTransferCache returnReasonTypeTransferCache;
-
-    @Inject
-    ReturnTypeShippingMethodTransferCache returnTypeShippingMethodTransferCache;
-
-    // --------------------------------------------------------------------------------
     //   Party Return Policies
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PartyReturnPolicyFactory partyReturnPolicyFactory;
+    private PartyReturnPolicyFactory partyReturnPolicyFactory;
+
+    @Inject
+    private PartyReturnPolicyTransferCache partyReturnPolicyTransferCache;
 
     public PartyReturnPolicy createPartyReturnPolicy(Party party, ReturnPolicy returnPolicy, BasePK createdBy) {
         var partyReturnPolicy = partyReturnPolicyFactory.create(party, returnPolicy, session.getStartTime(), Session.MAX_TIME);
@@ -180,51 +181,50 @@ public class ReturnPolicyControl
     }
 
     public long countPartyReturnPoliciesByParty(Party party) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM partyreturnpolicies
-                WHERE prtnplcy_par_partyid = ? AND prtnplcy_thrutime = ?
-                """, party, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyReturnPolicies)
+                .where(PartyReturnPolicies.PARTY.eq(party.getPrimaryKey()),
+                        PartyReturnPolicies.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyReturnPoliciesByReturnPolicy(ReturnPolicy returnPolicy) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM partyreturnpolicies
-                WHERE prtnplcy_rtnplcy_returnpolicyid = ? AND prtnplcy_thrutime = ?
-                """, returnPolicy, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyReturnPolicies)
+                .where(PartyReturnPolicies.RETURN_POLICY.eq(returnPolicy.getPrimaryKey()),
+                        PartyReturnPolicies.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyReturnPoliciesByPartyAndReturnPolicy(Party party, ReturnPolicy returnPolicy) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM partyreturnpolicies
-                WHERE prtnplcy_par_partyid = ? AND prtnplcy_rtnplcy_returnpolicyid = ? AND prtnplcy_thrutime = ?
-                """, party, returnPolicy, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getPartyReturnPolicyQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partyreturnpolicies
-                WHERE prtnplcy_par_partyid = ? AND prtnplcy_rtnplcy_returnpolicyid = ? AND prtnplcy_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partyreturnpolicies
-                WHERE prtnplcy_par_partyid = ? AND prtnplcy_rtnplcy_returnpolicyid = ? AND prtnplcy_thrutime = ?
-                FOR UPDATE
-                """);
-        getPartyReturnPolicyQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyReturnPolicies)
+                .where(PartyReturnPolicies.PARTY.eq(party.getPrimaryKey()),
+                        PartyReturnPolicies.RETURN_POLICY.eq(returnPolicy.getPrimaryKey()),
+                        PartyReturnPolicies.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private PartyReturnPolicy getPartyReturnPolicy(Party party, ReturnPolicy returnPolicy, EntityPermission entityPermission) {
-        return partyReturnPolicyFactory.getEntityFromQuery(entityPermission, getPartyReturnPolicyQueries,
-                party, returnPolicy, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(PartyReturnPolicies.fields())
+                .from(PartyReturnPolicies)
+                .where(PartyReturnPolicies.PARTY.eq(party.getPrimaryKey()),
+                        PartyReturnPolicies.RETURN_POLICY.eq(returnPolicy.getPrimaryKey()),
+                        PartyReturnPolicies.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyReturnPolicyFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PartyReturnPolicy getPartyReturnPolicy(Party party, ReturnPolicy returnPolicy) {
@@ -239,31 +239,26 @@ public class ReturnPolicyControl
         return partyReturnPolicy == null? null: partyReturnPolicy.getPartyReturnPolicyValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getPartyReturnPoliciesByReturnPolicyQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partyreturnpolicies, returnpolicies, returnpolicydetails
-                WHERE prtnplcy_rtnplcy_returnpolicyid = ? AND prtnplcy_thrutime = ?
-                AND prtnplcy_rtnplcy_returnpolicyid = rtnplcy_returnpolicyid AND rtnplcy_lastdetailid = rtnplcydt_returnpolicydetailid
-                ORDER BY rtnplcydt_sortorder, rtnplcydt_returnpolicyname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partyreturnpolicies
-                WHERE prtnplcy_rtnplcy_returnpolicyid = ? AND prtnplcy_thrutime = ?
-                FOR UPDATE
-                """);
-        getPartyReturnPoliciesByReturnPolicyQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PartyReturnPolicy> getPartyReturnPoliciesByReturnPolicy(ReturnPolicy returnPolicy, EntityPermission entityPermission) {
-        return partyReturnPolicyFactory.getEntitiesFromQuery(entityPermission, getPartyReturnPoliciesByReturnPolicyQueries,
-                returnPolicy, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyReturnPolicies.fields())
+                    .from(PartyReturnPolicies)
+                    .join(Parties).onKey(PARTY_RETURN_POLICIES_PARTY_FK)
+                    .join(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .where(PartyReturnPolicies.RETURN_POLICY.eq(returnPolicy.getPrimaryKey()),
+                            PartyReturnPolicies.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PartyDetails.PARTY_NAME),
+                    PartyReturnPolicyFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyReturnPolicies.fields())
+                    .from(PartyReturnPolicies)
+                    .where(PartyReturnPolicies.RETURN_POLICY.eq(returnPolicy.getPrimaryKey()),
+                            PartyReturnPolicies.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return partyReturnPolicyFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyReturnPolicy> getPartyReturnPoliciesByReturnPolicy(ReturnPolicy returnPolicy) {
@@ -274,31 +269,26 @@ public class ReturnPolicyControl
         return getPartyReturnPoliciesByReturnPolicy(returnPolicy, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getPartyReturnPoliciesByPartyQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partyreturnpolicies, parties, partydetails
-                WHERE prtnplcy_par_partyid = ? AND prtnplcy_thrutime = ?
-                AND prtnplcy_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
-                ORDER BY pardt_partyname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partyreturnpolicies
-                WHERE prtnplcy_par_partyid = ? AND prtnplcy_thrutime = ?
-                FOR UPDATE
-                """);
-        getPartyReturnPoliciesByPartyQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PartyReturnPolicy> getPartyReturnPoliciesByParty(Party party, EntityPermission entityPermission) {
-        return partyReturnPolicyFactory.getEntitiesFromQuery(entityPermission, getPartyReturnPoliciesByPartyQueries,
-                party, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyReturnPolicies.fields())
+                    .from(PartyReturnPolicies)
+                    .join(ReturnPolicies).onKey(PARTY_RETURN_POLICIES_RETURN_POLICY_FK)
+                    .join(ReturnPolicyDetails).onKey(RETURN_POLICIES_LAST_DETAIL_FK)
+                    .where(PartyReturnPolicies.PARTY.eq(party.getPrimaryKey()),
+                            PartyReturnPolicies.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ReturnPolicyDetails.SORT_ORDER, ReturnPolicyDetails.RETURN_POLICY_NAME),
+                    PartyReturnPolicyFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyReturnPolicies.fields())
+                    .from(PartyReturnPolicies)
+                    .where(PartyReturnPolicies.PARTY.eq(party.getPrimaryKey()),
+                            PartyReturnPolicies.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return partyReturnPolicyFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyReturnPolicy> getPartyReturnPoliciesByParty(Party party) {
@@ -360,10 +350,13 @@ public class ReturnPolicyControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected ReturnKindFactory returnKindFactory;
+    protected ReturnKindDetailFactory returnKindDetailFactory;
 
     @Inject
-    protected ReturnKindDetailFactory returnKindDetailFactory;
+    private ReturnKindFactory returnKindFactory;
+
+    @Inject
+    private ReturnKindTransferCache returnKindTransferCache;
 
     public ReturnKind createReturnKind(String returnKindName, SequenceType returnSequenceType, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -396,11 +389,12 @@ public class ReturnPolicyControl
     }
 
     public long countReturnKinds() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM returnkinds, returnkinddetails
-                WHERE rtnk_activedetailid = rtnkdt_returnkinddetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ReturnKinds)
+                .join(ReturnKindDetails).onKey(RETURN_KINDS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ReturnKind */
@@ -418,28 +412,19 @@ public class ReturnPolicyControl
         return getReturnKindByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getReturnKindByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM returnkinds, returnkinddetails
-                WHERE rtnk_activedetailid = rtnkdt_returnkinddetailid AND rtnkdt_returnkindname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM returnkinds, returnkinddetails
-                WHERE rtnk_activedetailid = rtnkdt_returnkinddetailid AND rtnkdt_returnkindname = ?
-                FOR UPDATE
-                """);
-        getReturnKindByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public ReturnKind getReturnKindByName(String returnKindName, EntityPermission entityPermission) {
-        return returnKindFactory.getEntityFromQuery(entityPermission, getReturnKindByNameQueries,
-                returnKindName);
+        var baseQuery = session.getDslContext()
+                .select(ReturnKinds.fields())
+                .from(ReturnKinds)
+                .join(ReturnKindDetails).onKey(RETURN_KINDS_ACTIVE_DETAIL_FK)
+                .where(ReturnKindDetails.RETURN_KIND_NAME.eq(returnKindName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return returnKindFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ReturnKind getReturnKindByName(String returnKindName) {
@@ -458,27 +443,19 @@ public class ReturnPolicyControl
         return getReturnKindDetailValueForUpdate(getReturnKindByNameForUpdate(returnKindName));
     }
     
-    private static final Map<EntityPermission, String> getDefaultReturnKindQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM returnkinds, returnkinddetails
-                WHERE rtnk_activedetailid = rtnkdt_returnkinddetailid AND rtnkdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM returnkinds, returnkinddetails
-                WHERE rtnk_activedetailid = rtnkdt_returnkinddetailid AND rtnkdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultReturnKindQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public ReturnKind getDefaultReturnKind(EntityPermission entityPermission) {
-        return returnKindFactory.getEntityFromQuery(entityPermission, getDefaultReturnKindQueries);
+        var baseQuery = session.getDslContext()
+                .select(ReturnKinds.fields())
+                .from(ReturnKinds)
+                .join(ReturnKindDetails).onKey(RETURN_KINDS_ACTIVE_DETAIL_FK)
+                .where(ReturnKindDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return returnKindFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ReturnKind getDefaultReturnKind() {
@@ -493,29 +470,20 @@ public class ReturnPolicyControl
         return getDefaultReturnKind(EntityPermission.READ_WRITE).getLastDetailForUpdate().getReturnKindDetailValue();
     }
     
-    private static final Map<EntityPermission, String> getReturnKindsQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM returnkinds, returnkinddetails
-                WHERE rtnk_activedetailid = rtnkdt_returnkinddetailid
-                ORDER BY rtnkdt_sortorder, rtnkdt_returnkindname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM returnkinds, returnkinddetails
-                WHERE rtnk_activedetailid = rtnkdt_returnkinddetailid
-                FOR UPDATE
-                """);
-        getReturnKindsQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ReturnKind> getReturnKinds(EntityPermission entityPermission) {
-        return returnKindFactory.getEntitiesFromQuery(entityPermission, getReturnKindsQueries);
+        var baseQuery = session.getDslContext()
+                .select(ReturnKinds.fields())
+                .from(ReturnKinds)
+                .join(ReturnKindDetails).onKey(RETURN_KINDS_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ReturnKindDetails.SORT_ORDER, ReturnKindDetails.RETURN_KIND_NAME),
+                    ReturnKindFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return returnKindFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ReturnKind> getReturnKinds() {
@@ -655,7 +623,10 @@ public class ReturnPolicyControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected ReturnKindDescriptionFactory returnKindDescriptionFactory;
+    private ReturnKindDescriptionFactory returnKindDescriptionFactory;
+
+    @Inject
+    private ReturnKindDescriptionTransferCache returnKindDescriptionTransferCache;
 
     public ReturnKindDescription createReturnKindDescription(ReturnKind returnKind, Language language, String description,
             BasePK createdBy) {
@@ -667,28 +638,20 @@ public class ReturnPolicyControl
         return returnKindDescription;
     }
     
-    private static final Map<EntityPermission, String> getReturnKindDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM returnkinddescriptions
-                WHERE rtnkd_rtnk_returnkindid = ? AND rtnkd_lang_languageid = ? AND rtnkd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM returnkinddescriptions
-                WHERE rtnkd_rtnk_returnkindid = ? AND rtnkd_lang_languageid = ? AND rtnkd_thrutime = ?
-                FOR UPDATE
-                """);
-        getReturnKindDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ReturnKindDescription getReturnKindDescription(ReturnKind returnKind, Language language, EntityPermission entityPermission) {
-        return returnKindDescriptionFactory.getEntityFromQuery(entityPermission, getReturnKindDescriptionQueries,
-                returnKind, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ReturnKindDescriptions.fields())
+                .from(ReturnKindDescriptions)
+                .where(ReturnKindDescriptions.RETURN_KIND.eq(returnKind.getPrimaryKey()),
+                        ReturnKindDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ReturnKindDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return returnKindDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ReturnKindDescription getReturnKindDescription(ReturnKind returnKind, Language language) {
@@ -707,30 +670,25 @@ public class ReturnPolicyControl
         return getReturnKindDescriptionValue(getReturnKindDescriptionForUpdate(returnKind, language));
     }
     
-    private static final Map<EntityPermission, String> getReturnKindDescriptionsByReturnKindQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM returnkinddescriptions, languages
-                WHERE rtnkd_rtnk_returnkindid = ? AND rtnkd_thrutime = ? AND rtnkd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM returnkinddescriptions
-                WHERE rtnkd_rtnk_returnkindid = ? AND rtnkd_thrutime = ?
-                FOR UPDATE
-                """);
-        getReturnKindDescriptionsByReturnKindQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ReturnKindDescription> getReturnKindDescriptionsByReturnKind(ReturnKind returnKind, EntityPermission entityPermission) {
-        return returnKindDescriptionFactory.getEntitiesFromQuery(entityPermission, getReturnKindDescriptionsByReturnKindQueries,
-                returnKind, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ReturnKindDescriptions.fields())
+                    .from(ReturnKindDescriptions)
+                    .join(Languages).onKey(RETURN_KIND_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ReturnKindDescriptions.RETURN_KIND.eq(returnKind.getPrimaryKey()),
+                            ReturnKindDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ReturnKindDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ReturnKindDescriptions.fields())
+                    .from(ReturnKindDescriptions)
+                    .where(ReturnKindDescriptions.RETURN_KIND.eq(returnKind.getPrimaryKey()),
+                            ReturnKindDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return returnKindDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ReturnKindDescription> getReturnKindDescriptionsByReturnKind(ReturnKind returnKind) {
@@ -812,10 +770,13 @@ public class ReturnPolicyControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected ReturnPolicyFactory returnPolicyFactory;
+    protected ReturnPolicyDetailFactory returnPolicyDetailFactory;
 
     @Inject
-    protected ReturnPolicyDetailFactory returnPolicyDetailFactory;
+    private ReturnPolicyFactory returnPolicyFactory;
+
+    @Inject
+    private ReturnPolicyTransferCache returnPolicyTransferCache;
 
     public ReturnPolicy createReturnPolicy(ReturnKind returnKind, String returnPolicyName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -849,11 +810,13 @@ public class ReturnPolicyControl
     }
 
     public long countReturnPoliciesByReturnKind(ReturnKind returnKind) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM returnpolicies, returnpolicydetails
-                WHERE rtnplcy_activedetailid = rtnplcydt_returnpolicydetailid AND rtnplcydt_rtnk_returnkindid = ?
-                """, returnKind);
+        return session.getDslContext()
+                .selectCount()
+                .from(ReturnPolicies)
+                .join(ReturnPolicyDetails).onKey(RETURN_POLICIES_ACTIVE_DETAIL_FK)
+                .where(ReturnPolicyDetails.RETURN_KIND.eq(returnKind.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ReturnPolicy */
@@ -872,38 +835,20 @@ public class ReturnPolicyControl
     }
 
     private List<ReturnPolicy> getReturnPolicies(ReturnKind returnKind, EntityPermission entityPermission) {
-        List<ReturnPolicy> returnPolicies;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnpolicies, returnpolicydetails
-                        WHERE rtnplcy_activedetailid = rtnplcydt_returnpolicydetailid AND rtnplcydt_rtnk_returnkindid = ?
-                        ORDER BY rtnplcydt_sortorder, rtnplcydt_returnpolicyname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnpolicies, returnpolicydetails
-                        WHERE rtnplcy_activedetailid = rtnplcydt_returnpolicydetailid AND rtnplcydt_rtnk_returnkindid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ReturnPolicies.fields())
+                .from(ReturnPolicies)
+                .join(ReturnPolicyDetails).onKey(RETURN_POLICIES_ACTIVE_DETAIL_FK)
+                .where(ReturnPolicyDetails.RETURN_KIND.eq(returnKind.getPrimaryKey()));
 
-            var ps = returnPolicyFactory.prepareStatement(query);
-            
-            ps.setLong(1, returnKind.getPrimaryKey().getEntityId());
-            
-            returnPolicies = returnPolicyFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return returnPolicies;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ReturnPolicyDetails.SORT_ORDER, ReturnPolicyDetails.RETURN_POLICY_NAME),
+                    ReturnPolicyFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return returnPolicyFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ReturnPolicy> getReturnPolicies(ReturnKind returnKind) {
@@ -915,38 +860,19 @@ public class ReturnPolicyControl
     }
     
     public ReturnPolicy getDefaultReturnPolicy(ReturnKind returnKind, EntityPermission entityPermission) {
-        ReturnPolicy returnPolicy;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnpolicies, returnpolicydetails
-                        WHERE rtnplcy_activedetailid = rtnplcydt_returnpolicydetailid
-                        AND rtnplcydt_rtnk_returnkindid = ? AND rtnplcydt_isdefault = 1
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnpolicies, returnpolicydetails
-                        WHERE rtnplcy_activedetailid = rtnplcydt_returnpolicydetailid
-                        AND rtnplcydt_rtnk_returnkindid = ? AND rtnplcydt_isdefault = 1
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ReturnPolicies.fields())
+                .from(ReturnPolicies)
+                .join(ReturnPolicyDetails).onKey(RETURN_POLICIES_ACTIVE_DETAIL_FK)
+                .where(ReturnPolicyDetails.RETURN_KIND.eq(returnKind.getPrimaryKey()),
+                        ReturnPolicyDetails.IS_DEFAULT.eq(true));
 
-            var ps = returnPolicyFactory.prepareStatement(query);
-            
-            ps.setLong(1, returnKind.getPrimaryKey().getEntityId());
-            
-            returnPolicy = returnPolicyFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return returnPolicy;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return returnPolicyFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ReturnPolicy getDefaultReturnPolicy(ReturnKind returnKind) {
@@ -962,39 +888,19 @@ public class ReturnPolicyControl
     }
     
     public ReturnPolicy getReturnPolicyByName(ReturnKind returnKind, String returnPolicyName, EntityPermission entityPermission) {
-        ReturnPolicy returnPolicy;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnpolicies, returnpolicydetails
-                        WHERE rtnplcy_activedetailid = rtnplcydt_returnpolicydetailid
-                        AND rtnplcydt_rtnk_returnkindid = ? AND rtnplcydt_returnpolicyname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnpolicies, returnpolicydetails
-                        WHERE rtnplcy_activedetailid = rtnplcydt_returnpolicydetailid
-                        AND rtnplcydt_rtnk_returnkindid = ? AND rtnplcydt_returnpolicyname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ReturnPolicies.fields())
+                .from(ReturnPolicies)
+                .join(ReturnPolicyDetails).onKey(RETURN_POLICIES_ACTIVE_DETAIL_FK)
+                .where(ReturnPolicyDetails.RETURN_KIND.eq(returnKind.getPrimaryKey()),
+                        ReturnPolicyDetails.RETURN_POLICY_NAME.eq(returnPolicyName));
 
-            var ps = returnPolicyFactory.prepareStatement(query);
-            
-            ps.setLong(1, returnKind.getPrimaryKey().getEntityId());
-            ps.setString(2, returnPolicyName);
-            
-            returnPolicy = returnPolicyFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return returnPolicy;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return returnPolicyFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ReturnPolicy getReturnPolicyByName(ReturnKind returnKind, String returnPolicyName) {
@@ -1159,7 +1065,10 @@ public class ReturnPolicyControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected ReturnPolicyTranslationFactory returnPolicyTranslationFactory;
+    private ReturnPolicyTranslationFactory returnPolicyTranslationFactory;
+
+    @Inject
+    private ReturnPolicyTranslationTransferCache returnPolicyTranslationTransferCache;
 
     public ReturnPolicyTranslation createReturnPolicyTranslation(ReturnPolicy returnPolicy, Language language,
             String description, MimeType overviewMimeType, String overview, BasePK createdBy) {
@@ -1171,28 +1080,20 @@ public class ReturnPolicyControl
         return returnPolicyTranslation;
     }
 
-    private static final Map<EntityPermission, String> getReturnPolicyTranslationQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM returnpolicytranslations
-                WHERE rtnplcytr_rtnplcy_returnpolicyid = ? AND rtnplcytr_lang_languageid = ? AND rtnplcytr_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM returnpolicytranslations
-                WHERE rtnplcytr_rtnplcy_returnpolicyid = ? AND rtnplcytr_lang_languageid = ? AND rtnplcytr_thrutime = ?
-                FOR UPDATE
-                """);
-        getReturnPolicyTranslationQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ReturnPolicyTranslation getReturnPolicyTranslation(ReturnPolicy returnPolicy, Language language, EntityPermission entityPermission) {
-        return returnPolicyTranslationFactory.getEntityFromQuery(entityPermission, getReturnPolicyTranslationQueries, returnPolicy, language,
-                Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ReturnPolicyTranslations.fields())
+                .from(ReturnPolicyTranslations)
+                .where(ReturnPolicyTranslations.RETURN_POLICY.eq(returnPolicy.getPrimaryKey()),
+                        ReturnPolicyTranslations.LANGUAGE.eq(language.getPrimaryKey()),
+                        ReturnPolicyTranslations.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return returnPolicyTranslationFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ReturnPolicyTranslation getReturnPolicyTranslation(ReturnPolicy returnPolicy, Language language) {
@@ -1211,30 +1112,25 @@ public class ReturnPolicyControl
         return getReturnPolicyTranslationValue(getReturnPolicyTranslationForUpdate(returnPolicy, language));
     }
 
-    private static final Map<EntityPermission, String> getReturnPolicyTranslationsByReturnPolicyQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM returnpolicytranslations, languages
-                WHERE rtnplcytr_rtnplcy_returnpolicyid = ? AND rtnplcytr_thrutime = ? AND rtnplcytr_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM returnpolicytranslations
-                WHERE rtnplcytr_rtnplcy_returnpolicyid = ? AND rtnplcytr_thrutime = ?
-                FOR UPDATE
-                """);
-        getReturnPolicyTranslationsByReturnPolicyQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ReturnPolicyTranslation> getReturnPolicyTranslationsByReturnPolicy(ReturnPolicy returnPolicy, EntityPermission entityPermission) {
-        return returnPolicyTranslationFactory.getEntitiesFromQuery(entityPermission, getReturnPolicyTranslationsByReturnPolicyQueries,
-                returnPolicy, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ReturnPolicyTranslations.fields())
+                    .from(ReturnPolicyTranslations)
+                    .join(Languages).onKey(RETURN_POLICY_TRANSLATIONS_LANGUAGE_FK)
+                    .where(ReturnPolicyTranslations.RETURN_POLICY.eq(returnPolicy.getPrimaryKey()),
+                            ReturnPolicyTranslations.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ReturnPolicyTranslationFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ReturnPolicyTranslations.fields())
+                    .from(ReturnPolicyTranslations)
+                    .where(ReturnPolicyTranslations.RETURN_POLICY.eq(returnPolicy.getPrimaryKey()),
+                            ReturnPolicyTranslations.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return returnPolicyTranslationFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ReturnPolicyTranslation> getReturnPolicyTranslationsByReturnPolicy(ReturnPolicy returnPolicy) {
@@ -1311,7 +1207,10 @@ public class ReturnPolicyControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected ReturnPolicyReasonFactory returnPolicyReasonFactory;
+    private ReturnPolicyReasonFactory returnPolicyReasonFactory;
+
+    @Inject
+    private ReturnPolicyReasonTransferCache returnPolicyReasonTransferCache;
 
     public ReturnPolicyReason createReturnPolicyReason(ReturnPolicy returnPolicy, ReturnReason returnReason, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
@@ -1336,54 +1235,39 @@ public class ReturnPolicyControl
     }
 
     public long countReturnPolicyReasonByReturnPolicy(final ReturnPolicy returnPolicy) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM returnpolicyreasons
-                        WHERE rtnplcyrsn_rtnplcy_returnpolicyid = ? AND rtnplcyrsn_thrutime = ?
-                        """, returnPolicy, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ReturnPolicyReasons)
+                .where(ReturnPolicyReasons.RETURN_POLICY.eq(returnPolicy.getPrimaryKey()),
+                        ReturnPolicyReasons.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countReturnPolicyReasonByReturnReason(final ReturnReason returnReason) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM returnpolicyreasons
-                        WHERE AND rtnplcyrsn_rtnrsn_returnreasonid = ? AND rtnplcyrsn_thrutime = ?
-                        """, returnReason, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ReturnPolicyReasons)
+                .where(ReturnPolicyReasons.RETURN_REASON.eq(returnReason.getPrimaryKey()),
+                        ReturnPolicyReasons.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ReturnPolicyReason getReturnPolicyReason(ReturnPolicy returnPolicy, ReturnReason returnReason, EntityPermission entityPermission) {
-        ReturnPolicyReason returnPolicyReason;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnpolicyreasons
-                        WHERE rtnplcyrsn_rtnplcy_returnpolicyid = ? AND rtnplcyrsn_rtnrsn_returnreasonid = ? AND rtnplcyrsn_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnpolicyreasons
-                        WHERE rtnplcyrsn_rtnplcy_returnpolicyid = ? AND rtnplcyrsn_rtnrsn_returnreasonid = ? AND rtnplcyrsn_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ReturnPolicyReasons.fields())
+                .from(ReturnPolicyReasons)
+                .where(ReturnPolicyReasons.RETURN_POLICY.eq(returnPolicy.getPrimaryKey()),
+                        ReturnPolicyReasons.RETURN_REASON.eq(returnReason.getPrimaryKey()),
+                        ReturnPolicyReasons.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = returnPolicyReasonFactory.prepareStatement(query);
-            
-            ps.setLong(1, returnPolicy.getPrimaryKey().getEntityId());
-            ps.setLong(2, returnReason.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            returnPolicyReason = returnPolicyReasonFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return returnPolicyReason;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return returnPolicyReasonFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ReturnPolicyReason getReturnPolicyReason(ReturnPolicy returnPolicy, ReturnReason returnReason) {
@@ -1401,37 +1285,19 @@ public class ReturnPolicyControl
     }
     
     private ReturnPolicyReason getDefaultReturnPolicyReason(ReturnPolicy returnPolicy, EntityPermission entityPermission) {
-        ReturnPolicyReason returnPolicyReason;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnpolicyreasons
-                        WHERE rtnplcyrsn_rtnplcy_returnpolicyid = ? AND rtnplcyrsn_isdefault = 1 AND rtnplcyrsn_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnpolicyreasons
-                        WHERE rtnplcyrsn_rtnplcy_returnpolicyid = ? AND rtnplcyrsn_isdefault = 1 AND rtnplcyrsn_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ReturnPolicyReasons.fields())
+                .from(ReturnPolicyReasons)
+                .where(ReturnPolicyReasons.RETURN_POLICY.eq(returnPolicy.getPrimaryKey()),
+                        ReturnPolicyReasons.IS_DEFAULT.eq(true),
+                        ReturnPolicyReasons.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = returnPolicyReasonFactory.prepareStatement(query);
-            
-            ps.setLong(1, returnPolicy.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            returnPolicyReason = returnPolicyReasonFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return returnPolicyReason;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return returnPolicyReasonFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ReturnPolicyReason getDefaultReturnPolicyReason(ReturnPolicy returnPolicy) {
@@ -1449,40 +1315,25 @@ public class ReturnPolicyControl
     }
     
     private List<ReturnPolicyReason> getReturnPolicyReasonsByReturnPolicy(ReturnPolicy returnPolicy, EntityPermission entityPermission) {
-        List<ReturnPolicyReason> returnPolicyReasons;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnpolicyreasons, returnreasons, returnreasondetails
-                        WHERE rtnplcyrsn_rtnplcy_returnpolicyid = ? AND rtnplcyrsn_thrutime = ?
-                        AND rtnplcyrsn_rtnrsn_returnreasonid = rtnrsn_returnreasonid AND rtnrsn_lastdetailid = rtnrsndt_returnreasondetailid
-                        ORDER BY rtnrsndt_sortorder, rtnrsndt_returnreasonname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnpolicyreasons
-                        WHERE rtnplcyrsn_rtnplcy_returnpolicyid = ? AND rtnplcyrsn_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ReturnPolicyReasons.fields())
+                    .from(ReturnPolicyReasons)
+                    .join(ReturnReasons).onKey(RETURN_POLICY_REASONS_RETURN_REASON_FK)
+                    .join(ReturnReasonDetails).onKey(RETURN_REASONS_LAST_DETAIL_FK)
+                    .where(ReturnPolicyReasons.RETURN_POLICY.eq(returnPolicy.getPrimaryKey()),
+                            ReturnPolicyReasons.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ReturnReasonDetails.SORT_ORDER, ReturnReasonDetails.RETURN_REASON_NAME),
+                    ReturnPolicyReasonFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ReturnPolicyReasons.fields())
+                    .from(ReturnPolicyReasons)
+                    .where(ReturnPolicyReasons.RETURN_POLICY.eq(returnPolicy.getPrimaryKey()),
+                            ReturnPolicyReasons.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = returnPolicyReasonFactory.prepareStatement(query);
-            
-            ps.setLong(1, returnPolicy.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            returnPolicyReasons = returnPolicyReasonFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return returnPolicyReasons;
+        return returnPolicyReasonFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ReturnPolicyReason> getReturnPolicyReasonsByReturnPolicy(ReturnPolicy returnPolicy) {
@@ -1494,40 +1345,25 @@ public class ReturnPolicyControl
     }
     
     private List<ReturnPolicyReason> getReturnPolicyReasonsByReturnReason(ReturnReason returnReason, EntityPermission entityPermission) {
-        List<ReturnPolicyReason> returnPolicyReasons;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnpolicyreasons, returnpolicies, returnpolicydetails
-                        WHERE rtnplcyrsn_rtnrsn_returnreasonid = ? AND rtnplcyrsn_thrutime = ?
-                        AND rtnplcyrsn_rtnplcy_returnpolicyid = rtnplcy_returnpolicyid AND rtnplcy_lastdetailid = rtnplcydt_returnpolicydetailid
-                        ORDER BY rtnplcydt_sortorder, rtnplcydt_returnpolicyname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnpolicyreasons
-                        WHERE rtnplcyrsn_rtnrsn_returnreasonid = ? AND rtnplcyrsn_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ReturnPolicyReasons.fields())
+                    .from(ReturnPolicyReasons)
+                    .join(ReturnPolicies).onKey(RETURN_POLICY_REASONS_RETURN_POLICY_FK)
+                    .join(ReturnPolicyDetails).onKey(RETURN_POLICIES_LAST_DETAIL_FK)
+                    .where(ReturnPolicyReasons.RETURN_REASON.eq(returnReason.getPrimaryKey()),
+                            ReturnPolicyReasons.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ReturnPolicyDetails.SORT_ORDER, ReturnPolicyDetails.RETURN_POLICY_NAME),
+                    ReturnPolicyReasonFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ReturnPolicyReasons.fields())
+                    .from(ReturnPolicyReasons)
+                    .where(ReturnPolicyReasons.RETURN_REASON.eq(returnReason.getPrimaryKey()),
+                            ReturnPolicyReasons.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = returnPolicyReasonFactory.prepareStatement(query);
-            
-            ps.setLong(1, returnReason.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            returnPolicyReasons = returnPolicyReasonFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return returnPolicyReasons;
+        return returnPolicyReasonFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ReturnPolicyReason> getReturnPolicyReasonsByReturnReason(ReturnReason returnReason) {
@@ -1645,10 +1481,13 @@ public class ReturnPolicyControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected ReturnReasonFactory returnReasonFactory;
+    protected ReturnReasonDetailFactory returnReasonDetailFactory;
 
     @Inject
-    protected ReturnReasonDetailFactory returnReasonDetailFactory;
+    private ReturnReasonFactory returnReasonFactory;
+
+    @Inject
+    private ReturnReasonTransferCache returnReasonTransferCache;
 
     public ReturnReason createReturnReason(ReturnKind returnKind, String returnReasonName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -1697,47 +1536,30 @@ public class ReturnPolicyControl
     }
 
     public long countReturnReasonsByReturnKind(final ReturnKind returnKind) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM returnreasons
-                        JOIN returnreasondetails ON rtnrsndt_returnreasondetailid = rtnrsn_activedetailid
-                        WHERE rtnrsndt_rtnk_returnkindid = ?
-                        """, returnKind);
+        return session.getDslContext()
+                .selectCount()
+                .from(ReturnReasons)
+                .join(ReturnReasonDetails).onKey(RETURN_REASONS_ACTIVE_DETAIL_FK)
+                .where(ReturnReasonDetails.RETURN_KIND.eq(returnKind.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<ReturnReason> getReturnReasons(ReturnKind returnKind, EntityPermission entityPermission) {
-        List<ReturnReason> returnReasons;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnreasons, returnreasondetails
-                        WHERE rtnrsn_activedetailid = rtnrsndt_returnreasondetailid AND rtnrsndt_rtnk_returnkindid = ?
-                        ORDER BY rtnrsndt_sortorder, rtnrsndt_returnreasonname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnreasons, returnreasondetails
-                        WHERE rtnrsn_activedetailid = rtnrsndt_returnreasondetailid AND rtnrsndt_rtnk_returnkindid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ReturnReasons.fields())
+                .from(ReturnReasons)
+                .join(ReturnReasonDetails).onKey(RETURN_REASONS_ACTIVE_DETAIL_FK)
+                .where(ReturnReasonDetails.RETURN_KIND.eq(returnKind.getPrimaryKey()));
 
-            var ps = returnReasonFactory.prepareStatement(query);
-            
-            ps.setLong(1, returnKind.getPrimaryKey().getEntityId());
-            
-            returnReasons = returnReasonFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return returnReasons;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ReturnReasonDetails.SORT_ORDER, ReturnReasonDetails.RETURN_REASON_NAME),
+                    ReturnReasonFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return returnReasonFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ReturnReason> getReturnReasons(ReturnKind returnKind) {
@@ -1749,38 +1571,19 @@ public class ReturnPolicyControl
     }
     
     private ReturnReason getDefaultReturnReason(ReturnKind returnKind, EntityPermission entityPermission) {
-        ReturnReason returnReason;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnreasons, returnreasondetails
-                        WHERE rtnrsn_activedetailid = rtnrsndt_returnreasondetailid
-                        AND rtnrsndt_rtnk_returnkindid = ? AND rtnrsndt_isdefault = 1
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnreasons, returnreasondetails
-                        WHERE rtnrsn_activedetailid = rtnrsndt_returnreasondetailid
-                        AND rtnrsndt_rtnk_returnkindid = ? AND rtnrsndt_isdefault = 1
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ReturnReasons.fields())
+                .from(ReturnReasons)
+                .join(ReturnReasonDetails).onKey(RETURN_REASONS_ACTIVE_DETAIL_FK)
+                .where(ReturnReasonDetails.RETURN_KIND.eq(returnKind.getPrimaryKey()),
+                        ReturnReasonDetails.IS_DEFAULT.eq(true));
 
-            var ps = returnReasonFactory.prepareStatement(query);
-            
-            ps.setLong(1, returnKind.getPrimaryKey().getEntityId());
-            
-            returnReason = returnReasonFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return returnReason;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return returnReasonFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ReturnReason getDefaultReturnReason(ReturnKind returnKind) {
@@ -1796,39 +1599,19 @@ public class ReturnPolicyControl
     }
     
     private ReturnReason getReturnReasonByName(ReturnKind returnKind, String returnReasonName, EntityPermission entityPermission) {
-        ReturnReason returnReason;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnreasons, returnreasondetails
-                        WHERE rtnrsn_activedetailid = rtnrsndt_returnreasondetailid
-                        AND rtnrsndt_rtnk_returnkindid = ? AND rtnrsndt_returnreasonname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnreasons, returnreasondetails
-                        WHERE rtnrsn_activedetailid = rtnrsndt_returnreasondetailid
-                        AND rtnrsndt_rtnk_returnkindid = ? AND rtnrsndt_returnreasonname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ReturnReasons.fields())
+                .from(ReturnReasons)
+                .join(ReturnReasonDetails).onKey(RETURN_REASONS_ACTIVE_DETAIL_FK)
+                .where(ReturnReasonDetails.RETURN_KIND.eq(returnKind.getPrimaryKey()),
+                        ReturnReasonDetails.RETURN_REASON_NAME.eq(returnReasonName));
 
-            var ps = returnReasonFactory.prepareStatement(query);
-            
-            ps.setLong(1, returnKind.getPrimaryKey().getEntityId());
-            ps.setString(2, returnReasonName);
-            
-            returnReason = returnReasonFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return returnReason;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return returnReasonFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ReturnReason getReturnReasonByName(ReturnKind returnKind, String returnReasonName) {
@@ -1990,7 +1773,10 @@ public class ReturnPolicyControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected ReturnReasonDescriptionFactory returnReasonDescriptionFactory;
+    private ReturnReasonDescriptionFactory returnReasonDescriptionFactory;
+
+    @Inject
+    private ReturnReasonDescriptionTransferCache returnReasonDescriptionTransferCache;
 
     public ReturnReasonDescription createReturnReasonDescription(ReturnReason returnReason, Language language, String description,
             BasePK createdBy) {
@@ -2003,38 +1789,19 @@ public class ReturnPolicyControl
     }
     
     private ReturnReasonDescription getReturnReasonDescription(ReturnReason returnReason, Language language, EntityPermission entityPermission) {
-        ReturnReasonDescription returnReasonDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnreasondescriptions
-                        WHERE rtnrsnd_rtnrsn_returnreasonid = ? AND rtnrsnd_lang_languageid = ? AND rtnrsnd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnreasondescriptions
-                        WHERE rtnrsnd_rtnrsn_returnreasonid = ? AND rtnrsnd_lang_languageid = ? AND rtnrsnd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ReturnReasonDescriptions.fields())
+                .from(ReturnReasonDescriptions)
+                .where(ReturnReasonDescriptions.RETURN_REASON.eq(returnReason.getPrimaryKey()),
+                        ReturnReasonDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ReturnReasonDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = returnReasonDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, returnReason.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            returnReasonDescription = returnReasonDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return returnReasonDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return returnReasonDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ReturnReasonDescription getReturnReasonDescription(ReturnReason returnReason, Language language) {
@@ -2054,39 +1821,24 @@ public class ReturnPolicyControl
     }
     
     private List<ReturnReasonDescription> getReturnReasonDescriptionsByReturnReason(ReturnReason returnReason, EntityPermission entityPermission) {
-        List<ReturnReasonDescription> returnReasonDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnreasondescriptions, languages
-                        WHERE rtnrsnd_rtnrsn_returnreasonid = ? AND rtnrsnd_thrutime = ? AND rtnrsnd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnreasondescriptions
-                        WHERE rtnrsnd_rtnrsn_returnreasonid = ? AND rtnrsnd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ReturnReasonDescriptions.fields())
+                    .from(ReturnReasonDescriptions)
+                    .join(Languages).onKey(RETURN_REASON_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ReturnReasonDescriptions.RETURN_REASON.eq(returnReason.getPrimaryKey()),
+                            ReturnReasonDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ReturnReasonDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ReturnReasonDescriptions.fields())
+                    .from(ReturnReasonDescriptions)
+                    .where(ReturnReasonDescriptions.RETURN_REASON.eq(returnReason.getPrimaryKey()),
+                            ReturnReasonDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = returnReasonDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, returnReason.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            returnReasonDescriptions = returnReasonDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return returnReasonDescriptions;
+        return returnReasonDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ReturnReasonDescription> getReturnReasonDescriptionsByReturnReason(ReturnReason returnReason) {
@@ -2168,7 +1920,10 @@ public class ReturnPolicyControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected ReturnReasonTypeFactory returnReasonTypeFactory;
+    private ReturnReasonTypeFactory returnReasonTypeFactory;
+
+    @Inject
+    private ReturnReasonTypeTransferCache returnReasonTypeTransferCache;
 
     public ReturnReasonType createReturnReasonType(ReturnReason returnReason, ReturnType returnType, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
@@ -2193,54 +1948,39 @@ public class ReturnPolicyControl
     }
 
     public long countReturnReasonTypesByReturnReason(final ReturnReason returnReason) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM returnreasontypes
-                        WHERE rtnrsntyp_rtnrsn_returnreasonid = ? AND rtnrsntyp_thrutime = ?
-                        """, returnReason, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ReturnReasonTypes)
+                .where(ReturnReasonTypes.RETURN_REASON.eq(returnReason.getPrimaryKey()),
+                        ReturnReasonTypes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countReturnReasonTypesByReturnType(final ReturnType returnType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM returnreasontypes
-                        WHERE rtnrsntyp_rtntyp_returntypeid = ? AND rtnrsntyp_thrutime = ?
-                        """, returnType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ReturnReasonTypes)
+                .where(ReturnReasonTypes.RETURN_TYPE.eq(returnType.getPrimaryKey()),
+                        ReturnReasonTypes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ReturnReasonType getReturnReasonType(ReturnReason returnReason, ReturnType returnType, EntityPermission entityPermission) {
-        ReturnReasonType returnReasonType;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnreasontypes
-                        WHERE rtnrsntyp_rtnrsn_returnreasonid = ? AND rtnrsntyp_rtntyp_returntypeid = ? AND rtnrsntyp_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnreasontypes
-                        WHERE rtnrsntyp_rtnrsn_returnreasonid = ? AND rtnrsntyp_rtntyp_returntypeid = ? AND rtnrsntyp_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ReturnReasonTypes.fields())
+                .from(ReturnReasonTypes)
+                .where(ReturnReasonTypes.RETURN_REASON.eq(returnReason.getPrimaryKey()),
+                        ReturnReasonTypes.RETURN_TYPE.eq(returnType.getPrimaryKey()),
+                        ReturnReasonTypes.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = returnReasonTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, returnReason.getPrimaryKey().getEntityId());
-            ps.setLong(2, returnType.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            returnReasonType = returnReasonTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return returnReasonType;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return returnReasonTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ReturnReasonType getReturnReasonType(ReturnReason returnReason, ReturnType returnType) {
@@ -2258,37 +1998,19 @@ public class ReturnPolicyControl
     }
     
     private ReturnReasonType getDefaultReturnReasonType(ReturnReason returnReason, EntityPermission entityPermission) {
-        ReturnReasonType returnReasonType;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnreasontypes
-                        WHERE rtnrsntyp_rtnrsn_returnreasonid = ? AND rtnrsntyp_isdefault = 1 AND rtnrsntyp_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnreasontypes
-                        WHERE rtnrsntyp_rtnrsn_returnreasonid = ? AND rtnrsntyp_isdefault = 1 AND rtnrsntyp_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ReturnReasonTypes.fields())
+                .from(ReturnReasonTypes)
+                .where(ReturnReasonTypes.RETURN_REASON.eq(returnReason.getPrimaryKey()),
+                        ReturnReasonTypes.IS_DEFAULT.eq(true),
+                        ReturnReasonTypes.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = returnReasonTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, returnReason.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            returnReasonType = returnReasonTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return returnReasonType;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return returnReasonTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ReturnReasonType getDefaultReturnReasonType(ReturnReason returnReason) {
@@ -2306,41 +2028,27 @@ public class ReturnPolicyControl
     }
     
     private List<ReturnReasonType> getReturnReasonTypesByReturnReason(ReturnReason returnReason, EntityPermission entityPermission) {
-        List<ReturnReasonType> returnReasonTypes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnreasontypes, returntypes, returntypedetails, returnkinds, returnkinddetails
-                        WHERE rtnrsntyp_rtnrsn_returnreasonid = ? AND rtnrsntyp_thrutime = ?
-                        AND rtnrsntyp_rtntyp_returntypeid = rtntyp_returntypeid AND rtntyp_lastdetailid = rtntypdt_returntypedetailid
-                        AND rtntypdt_rtnk_returnkindid = rtnk_returnkindid AND rtnk_lastdetailid = rtnkdt_returnkinddetailid
-                        ORDER BY rtntypdt_sortorder, rtntypdt_returntypename, rtnkdt_sortorder, rtnkdt_returnkindname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnreasontypes
-                        WHERE rtnrsntyp_rtnrsn_returnreasonid = ? AND rtnrsntyp_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ReturnReasonTypes.fields())
+                    .from(ReturnReasonTypes)
+                    .join(ReturnTypes).onKey(RETURN_REASON_TYPES_RETURN_TYPE_FK)
+                    .join(ReturnTypeDetails).onKey(RETURN_TYPES_LAST_DETAIL_FK)
+                    .join(ReturnKinds).onKey(RETURN_TYPE_DETAILS_RETURN_KIND_FK)
+                    .join(ReturnKindDetails).onKey(RETURN_KINDS_LAST_DETAIL_FK)
+                    .where(ReturnReasonTypes.RETURN_REASON.eq(returnReason.getPrimaryKey()),
+                            ReturnReasonTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ReturnTypeDetails.SORT_ORDER, ReturnTypeDetails.RETURN_TYPE_NAME, ReturnKindDetails.SORT_ORDER, ReturnKindDetails.RETURN_KIND_NAME),
+                    ReturnReasonTypeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ReturnReasonTypes.fields())
+                    .from(ReturnReasonTypes)
+                    .where(ReturnReasonTypes.RETURN_REASON.eq(returnReason.getPrimaryKey()),
+                            ReturnReasonTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = returnReasonTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, returnReason.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            returnReasonTypes = returnReasonTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return returnReasonTypes;
+        return returnReasonTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ReturnReasonType> getReturnReasonTypesByReturnReason(ReturnReason returnReason) {
@@ -2352,40 +2060,25 @@ public class ReturnPolicyControl
     }
     
     private List<ReturnReasonType> getReturnReasonTypesByReturnType(ReturnType returnType, EntityPermission entityPermission) {
-        List<ReturnReasonType> returnReasonTypes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnreasontypes, returnreasons, returnreasondetails
-                        WHERE rtnrsntyp_rtntyp_returntypeid = ? AND rtnrsntyp_thrutime = ?
-                        AND rtnrsntyp_rtnrsn_returnreasonid = rtnrsn_returnreasonid AND rtnrsn_lastdetailid = rtnrsndt_returnreasondetailid
-                        ORDER BY rtnrsndt_sortorder, rtnrsndt_returnreasonname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returnreasontypes
-                        WHERE rtnrsntyp_rtntyp_returntypeid = ? AND rtnrsntyp_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ReturnReasonTypes.fields())
+                    .from(ReturnReasonTypes)
+                    .join(ReturnReasons).onKey(RETURN_REASON_TYPES_RETURN_REASON_FK)
+                    .join(ReturnReasonDetails).onKey(RETURN_REASONS_LAST_DETAIL_FK)
+                    .where(ReturnReasonTypes.RETURN_TYPE.eq(returnType.getPrimaryKey()),
+                            ReturnReasonTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ReturnReasonDetails.SORT_ORDER, ReturnReasonDetails.RETURN_REASON_NAME),
+                    ReturnReasonTypeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ReturnReasonTypes.fields())
+                    .from(ReturnReasonTypes)
+                    .where(ReturnReasonTypes.RETURN_TYPE.eq(returnType.getPrimaryKey()),
+                            ReturnReasonTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = returnReasonTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, returnType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            returnReasonTypes = returnReasonTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return returnReasonTypes;
+        return returnReasonTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ReturnReasonType> getReturnReasonTypesByReturnType(ReturnType returnType) {
@@ -2503,10 +2196,13 @@ public class ReturnPolicyControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected ReturnTypeFactory returnTypeFactory;
+    protected ReturnTypeDetailFactory returnTypeDetailFactory;
 
     @Inject
-    protected ReturnTypeDetailFactory returnTypeDetailFactory;
+    private ReturnTypeFactory returnTypeFactory;
+
+    @Inject
+    private ReturnTypeTransferCache returnTypeTransferCache;
 
     public ReturnType createReturnType(ReturnKind returnKind, String returnTypeName, Sequence returnSequence, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
@@ -2540,21 +2236,23 @@ public class ReturnPolicyControl
     }
 
     public long countReturnTypesByReturnKind(final ReturnKind returnKind) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM returntypes
-                        JOIN returntypedetails ON rtntyp_activedetailid = rtntypdt_returntypedetailid
-                        WHERE rtntypdt_rtnk_returnkindid = ?
-                        """, returnKind);
+        return session.getDslContext()
+                .selectCount()
+                .from(ReturnTypes)
+                .join(ReturnTypeDetails).onKey(RETURN_TYPES_ACTIVE_DETAIL_FK)
+                .where(ReturnTypeDetails.RETURN_KIND.eq(returnKind.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countReturnTypesByReturnSequence(final Sequence returnSequence) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM returntypes
-                        JOIN returntypedetails ON rtntyp_activedetailid = rtntypdt_returntypedetailid
-                        WHERE rtntypdt_returnsequenceid = ?
-                        """, returnSequence);
+        return session.getDslContext()
+                .selectCount()
+                .from(ReturnTypes)
+                .join(ReturnTypeDetails).onKey(RETURN_TYPES_ACTIVE_DETAIL_FK)
+                .where(ReturnTypeDetails.RETURN_SEQUENCE.eq(returnSequence.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ReturnType */
@@ -2572,30 +2270,21 @@ public class ReturnPolicyControl
         return getReturnTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getReturnTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM returntypes, returntypedetails
-                WHERE rtntyp_activedetailid = rtntypdt_returntypedetailid AND rtntypdt_rtnk_returnkindid = ?
-                ORDER BY rtntypdt_sortorder, rtntypdt_returntypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM returntypes, returntypedetails
-                WHERE rtntyp_activedetailid = rtntypdt_returntypedetailid AND rtntypdt_rtnk_returnkindid = ?
-                FOR UPDATE
-                """);
-        getReturnTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ReturnType> getReturnTypes(ReturnKind returnKind, EntityPermission entityPermission) {
-        return returnTypeFactory.getEntitiesFromQuery(entityPermission, getReturnTypesQueries,
-                returnKind);
+        var baseQuery = session.getDslContext()
+                .select(ReturnTypes.fields())
+                .from(ReturnTypes)
+                .join(ReturnTypeDetails).onKey(RETURN_TYPES_ACTIVE_DETAIL_FK)
+                .where(ReturnTypeDetails.RETURN_KIND.eq(returnKind.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ReturnTypeDetails.SORT_ORDER, ReturnTypeDetails.RETURN_TYPE_NAME),
+                    ReturnTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return returnTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ReturnType> getReturnTypes(ReturnKind returnKind) {
@@ -2606,30 +2295,20 @@ public class ReturnPolicyControl
         return getReturnTypes(returnKind, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getDefaultReturnTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM returntypes, returntypedetails
-                WHERE rtntyp_activedetailid = rtntypdt_returntypedetailid
-                AND rtntypdt_rtnk_returnkindid = ? AND rtntypdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM returntypes, returntypedetails
-                WHERE rtntyp_activedetailid = rtntypdt_returntypedetailid
-                AND rtntypdt_rtnk_returnkindid = ? AND rtntypdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultReturnTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ReturnType getDefaultReturnType(ReturnKind returnKind, EntityPermission entityPermission) {
-        return returnTypeFactory.getEntityFromQuery(entityPermission, getDefaultReturnTypeQueries,
-                returnKind);
+        var baseQuery = session.getDslContext()
+                .select(ReturnTypes.fields())
+                .from(ReturnTypes)
+                .join(ReturnTypeDetails).onKey(RETURN_TYPES_ACTIVE_DETAIL_FK)
+                .where(ReturnTypeDetails.RETURN_KIND.eq(returnKind.getPrimaryKey()),
+                        ReturnTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return returnTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ReturnType getDefaultReturnType(ReturnKind returnKind) {
@@ -2644,30 +2323,20 @@ public class ReturnPolicyControl
         return getDefaultReturnTypeForUpdate(returnKind).getLastDetailForUpdate().getReturnTypeDetailValue().clone();
     }
     
-    private static final Map<EntityPermission, String> getReturnTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM returntypes, returntypedetails
-                WHERE rtntyp_activedetailid = rtntypdt_returntypedetailid
-                AND rtntypdt_rtnk_returnkindid = ? AND rtntypdt_returntypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM returntypes, returntypedetails
-                WHERE rtntyp_activedetailid = rtntypdt_returntypedetailid
-                AND rtntypdt_rtnk_returnkindid = ? AND rtntypdt_returntypename = ?
-                FOR UPDATE
-                """);
-        getReturnTypeByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ReturnType getReturnTypeByName(ReturnKind returnKind, String returnTypeName, EntityPermission entityPermission) {
-        return returnTypeFactory.getEntityFromQuery(entityPermission, getReturnTypeByNameQueries,
-                returnKind, returnTypeName);
+        var baseQuery = session.getDslContext()
+                .select(ReturnTypes.fields())
+                .from(ReturnTypes)
+                .join(ReturnTypeDetails).onKey(RETURN_TYPES_ACTIVE_DETAIL_FK)
+                .where(ReturnTypeDetails.RETURN_KIND.eq(returnKind.getPrimaryKey()),
+                        ReturnTypeDetails.RETURN_TYPE_NAME.eq(returnTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return returnTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ReturnType getReturnTypeByName(ReturnKind returnKind, String returnTypeName) {
@@ -2827,7 +2496,10 @@ public class ReturnPolicyControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected ReturnTypeDescriptionFactory returnTypeDescriptionFactory;
+    private ReturnTypeDescriptionFactory returnTypeDescriptionFactory;
+
+    @Inject
+    private ReturnTypeDescriptionTransferCache returnTypeDescriptionTransferCache;
 
     public ReturnTypeDescription createReturnTypeDescription(ReturnType returnType, Language language, String description,
             BasePK createdBy) {
@@ -2839,28 +2511,20 @@ public class ReturnPolicyControl
         return returnTypeDescription;
     }
     
-    private static final Map<EntityPermission, String> getReturnTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM returntypedescriptions
-                WHERE rtntypd_rtntyp_returntypeid = ? AND rtntypd_lang_languageid = ? AND rtntypd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM returntypedescriptions
-                WHERE rtntypd_rtntyp_returntypeid = ? AND rtntypd_lang_languageid = ? AND rtntypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getReturnTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ReturnTypeDescription getReturnTypeDescription(ReturnType returnType, Language language, EntityPermission entityPermission) {
-        return returnTypeDescriptionFactory.getEntityFromQuery(entityPermission, getReturnTypeDescriptionQueries,
-                returnType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ReturnTypeDescriptions.fields())
+                .from(ReturnTypeDescriptions)
+                .where(ReturnTypeDescriptions.RETURN_TYPE.eq(returnType.getPrimaryKey()),
+                        ReturnTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ReturnTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return returnTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ReturnTypeDescription getReturnTypeDescription(ReturnType returnType, Language language) {
@@ -2879,30 +2543,25 @@ public class ReturnPolicyControl
         return getReturnTypeDescriptionValue(getReturnTypeDescriptionForUpdate(returnType, language));
     }
     
-    private static final Map<EntityPermission, String> getReturnTypeDescriptionsByReturnTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM returntypedescriptions, languages
-                WHERE rtntypd_rtntyp_returntypeid = ? AND rtntypd_thrutime = ? AND rtntypd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM returntypedescriptions
-                WHERE rtntypd_rtntyp_returntypeid = ? AND rtntypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getReturnTypeDescriptionsByReturnTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ReturnTypeDescription> getReturnTypeDescriptionsByReturnType(ReturnType returnType, EntityPermission entityPermission) {
-        return returnTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getReturnTypeDescriptionsByReturnTypeQueries,
-                returnType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ReturnTypeDescriptions.fields())
+                    .from(ReturnTypeDescriptions)
+                    .join(Languages).onKey(RETURN_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ReturnTypeDescriptions.RETURN_TYPE.eq(returnType.getPrimaryKey()),
+                            ReturnTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ReturnTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ReturnTypeDescriptions.fields())
+                    .from(ReturnTypeDescriptions)
+                    .where(ReturnTypeDescriptions.RETURN_TYPE.eq(returnType.getPrimaryKey()),
+                            ReturnTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return returnTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ReturnTypeDescription> getReturnTypeDescriptionsByReturnType(ReturnType returnType) {
@@ -2984,7 +2643,10 @@ public class ReturnPolicyControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected ReturnTypeShippingMethodFactory returnTypeShippingMethodFactory;
+    private ReturnTypeShippingMethodFactory returnTypeShippingMethodFactory;
+
+    @Inject
+    private ReturnTypeShippingMethodTransferCache returnTypeShippingMethodTransferCache;
 
     public ReturnTypeShippingMethod createReturnTypeShippingMethod(ReturnType returnType, ShippingMethod shippingMethod, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
@@ -3009,38 +2671,19 @@ public class ReturnPolicyControl
     }
     
     private ReturnTypeShippingMethod getReturnTypeShippingMethod(ReturnType returnType, ShippingMethod shippingMethod, EntityPermission entityPermission) {
-        ReturnTypeShippingMethod returnTypeShippingMethod;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returntypeshippingmethods
-                        WHERE rtntypshm_rtntyp_returntypeid = ? AND rtntypshm_shm_shippingmethodid = ? AND rtntypshm_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returntypeshippingmethods
-                        WHERE rtntypshm_rtntyp_returntypeid = ? AND rtntypshm_shm_shippingmethodid = ? AND rtntypshm_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ReturnTypeShippingMethods.fields())
+                .from(ReturnTypeShippingMethods)
+                .where(ReturnTypeShippingMethods.RETURN_TYPE.eq(returnType.getPrimaryKey()),
+                        ReturnTypeShippingMethods.SHIPPING_METHOD.eq(shippingMethod.getPrimaryKey()),
+                        ReturnTypeShippingMethods.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = returnTypeShippingMethodFactory.prepareStatement(query);
-            
-            ps.setLong(1, returnType.getPrimaryKey().getEntityId());
-            ps.setLong(2, shippingMethod.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            returnTypeShippingMethod = returnTypeShippingMethodFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return returnTypeShippingMethod;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return returnTypeShippingMethodFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ReturnTypeShippingMethod getReturnTypeShippingMethod(ReturnType returnType, ShippingMethod shippingMethod) {
@@ -3058,37 +2701,19 @@ public class ReturnPolicyControl
     }
     
     private ReturnTypeShippingMethod getDefaultReturnTypeShippingMethod(ReturnType returnType, EntityPermission entityPermission) {
-        ReturnTypeShippingMethod returnTypeShippingMethod;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returntypeshippingmethods
-                        WHERE rtntypshm_rtntyp_returntypeid = ? AND rtntypshm_isdefault = 1 AND rtntypshm_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returntypeshippingmethods
-                        WHERE rtntypshm_rtntyp_returntypeid = ? AND rtntypshm_isdefault = 1 AND rtntypshm_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ReturnTypeShippingMethods.fields())
+                .from(ReturnTypeShippingMethods)
+                .where(ReturnTypeShippingMethods.RETURN_TYPE.eq(returnType.getPrimaryKey()),
+                        ReturnTypeShippingMethods.IS_DEFAULT.eq(true),
+                        ReturnTypeShippingMethods.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = returnTypeShippingMethodFactory.prepareStatement(query);
-            
-            ps.setLong(1, returnType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            returnTypeShippingMethod = returnTypeShippingMethodFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return returnTypeShippingMethod;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return returnTypeShippingMethodFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ReturnTypeShippingMethod getDefaultReturnTypeShippingMethod(ReturnType returnType) {
@@ -3106,40 +2731,25 @@ public class ReturnPolicyControl
     }
     
     private List<ReturnTypeShippingMethod> getReturnTypeShippingMethodsByReturnType(ReturnType returnType, EntityPermission entityPermission) {
-        List<ReturnTypeShippingMethod> returnTypeShippingMethods;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returntypeshippingmethods, shippingmethods, shippingmethoddetails
-                        WHERE rtntypshm_rtntyp_returntypeid = ? AND rtntypshm_thrutime = ?
-                        AND rtntypshm_shm_shippingmethodid = shm_shippingmethodid AND shm_lastdetailid = shmdt_shippingmethoddetailid
-                        ORDER BY shmdt_sortorder, shmdt_shippingmethodname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returntypeshippingmethods
-                        WHERE rtntypshm_rtntyp_returntypeid = ? AND rtntypshm_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ReturnTypeShippingMethods.fields())
+                    .from(ReturnTypeShippingMethods)
+                    .join(ShippingMethods).onKey(RETURN_TYPE_SHIPPING_METHODS_SHIPPING_METHOD_FK)
+                    .join(ShippingMethodDetails).onKey(SHIPPING_METHODS_LAST_DETAIL_FK)
+                    .where(ReturnTypeShippingMethods.RETURN_TYPE.eq(returnType.getPrimaryKey()),
+                            ReturnTypeShippingMethods.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ShippingMethodDetails.SORT_ORDER, ShippingMethodDetails.SHIPPING_METHOD_NAME),
+                    ReturnTypeShippingMethodFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ReturnTypeShippingMethods.fields())
+                    .from(ReturnTypeShippingMethods)
+                    .where(ReturnTypeShippingMethods.RETURN_TYPE.eq(returnType.getPrimaryKey()),
+                            ReturnTypeShippingMethods.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = returnTypeShippingMethodFactory.prepareStatement(query);
-            
-            ps.setLong(1, returnType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            returnTypeShippingMethods = returnTypeShippingMethodFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return returnTypeShippingMethods;
+        return returnTypeShippingMethodFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ReturnTypeShippingMethod> getReturnTypeShippingMethodsByReturnType(ReturnType returnType) {
@@ -3151,41 +2761,27 @@ public class ReturnPolicyControl
     }
     
     private List<ReturnTypeShippingMethod> getReturnTypeShippingMethodsByShippingMethod(ShippingMethod shippingMethod, EntityPermission entityPermission) {
-        List<ReturnTypeShippingMethod> returnTypeShippingMethods;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returntypeshippingmethods, returntypes, returntypedetails, returnkinds, returnkinddetails
-                        WHERE rtntypshm_shm_shippingmethodid = ? AND rtntypshm_thrutime = ?
-                        AND rtntypshm_rtntyp_returntypeid = rtntyp_returntypeid AND rtntyp_lastdetailid = rtntypdt_returntypedetailid
-                        AND rtntypdt_rtnk_returnkindid = rtnk_returnkindid AND rtnk_lastdetailid = rtnkdt_returnkinddetailid
-                        ORDER BY rtntypdt_sortorder, rtntypdt_returntypename, rtnkdt_sortorder, rtnkdt_returnkindname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM returntypeshippingmethods
-                        WHERE rtntypshm_shm_shippingmethodid = ? AND rtntypshm_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ReturnTypeShippingMethods.fields())
+                    .from(ReturnTypeShippingMethods)
+                    .join(ReturnTypes).onKey(RETURN_TYPE_SHIPPING_METHODS_RETURN_TYPE_FK)
+                    .join(ReturnTypeDetails).onKey(RETURN_TYPES_LAST_DETAIL_FK)
+                    .join(ReturnKinds).onKey(RETURN_TYPE_DETAILS_RETURN_KIND_FK)
+                    .join(ReturnKindDetails).onKey(RETURN_KINDS_LAST_DETAIL_FK)
+                    .where(ReturnTypeShippingMethods.SHIPPING_METHOD.eq(shippingMethod.getPrimaryKey()),
+                            ReturnTypeShippingMethods.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ReturnTypeDetails.SORT_ORDER, ReturnTypeDetails.RETURN_TYPE_NAME, ReturnKindDetails.SORT_ORDER, ReturnKindDetails.RETURN_KIND_NAME),
+                    ReturnTypeShippingMethodFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ReturnTypeShippingMethods.fields())
+                    .from(ReturnTypeShippingMethods)
+                    .where(ReturnTypeShippingMethods.SHIPPING_METHOD.eq(shippingMethod.getPrimaryKey()),
+                            ReturnTypeShippingMethods.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = returnTypeShippingMethodFactory.prepareStatement(query);
-            
-            ps.setLong(1, shippingMethod.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            returnTypeShippingMethods = returnTypeShippingMethodFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return returnTypeShippingMethods;
+        return returnTypeShippingMethodFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ReturnTypeShippingMethod> getReturnTypeShippingMethodsByShippingMethod(ShippingMethod shippingMethod) {
@@ -3197,19 +2793,23 @@ public class ReturnPolicyControl
     }
     
     public long countReturnTypeShippingMethodsByReturnType(ReturnType returnType) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM returntypeshippingmethods
-                WHERE rtntypshm_rtntyp_returntypeid = ? AND rtntypshm_thrutime = ?
-                """, returnType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ReturnTypeShippingMethods)
+                .where(ReturnTypeShippingMethods.RETURN_TYPE.eq(returnType.getPrimaryKey()),
+                        ReturnTypeShippingMethods.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countReturnTypeShippingMethodsByShippingMethod(ShippingMethod shippingMethod) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM returntypeshippingmethods
-                WHERE rtntypshm_shm_shippingmethodid = ? AND rtntypshm_thrutime = ?
-                """, shippingMethod, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ReturnTypeShippingMethods)
+                .where(ReturnTypeShippingMethods.SHIPPING_METHOD.eq(shippingMethod.getPrimaryKey()),
+                        ReturnTypeShippingMethods.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<ReturnTypeShippingMethodTransfer> getReturnTypeShippingMethodTransfers(UserVisit userVisit, Collection<ReturnTypeShippingMethod> returnTypeShippingMethods) {
