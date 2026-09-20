@@ -121,20 +121,65 @@ import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.geo.GeoForeignKeys.GEO_CODES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.geo.GeoForeignKeys.GEO_CODES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.geo.GeoForeignKeys.GEO_CODE_ALIASES_GEO_CODE_ALIAS_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.geo.GeoForeignKeys.GEO_CODE_ALIASES_GEO_CODE_SCOPE_FK;
+import static com.echothree.model.jooq.server.keys.geo.GeoForeignKeys.GEO_CODE_ALIAS_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.geo.GeoForeignKeys.GEO_CODE_ALIAS_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.geo.GeoForeignKeys.GEO_CODE_ALIAS_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.geo.GeoForeignKeys.GEO_CODE_CURRENCIES_CURRENCY_FK;
+import static com.echothree.model.jooq.server.keys.geo.GeoForeignKeys.GEO_CODE_CURRENCIES_GEO_CODE_FK;
+import static com.echothree.model.jooq.server.keys.geo.GeoForeignKeys.GEO_CODE_DATE_TIME_FORMATS_DATE_TIME_FORMAT_FK;
+import static com.echothree.model.jooq.server.keys.geo.GeoForeignKeys.GEO_CODE_DATE_TIME_FORMATS_GEO_CODE_FK;
+import static com.echothree.model.jooq.server.keys.geo.GeoForeignKeys.GEO_CODE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.geo.GeoForeignKeys.GEO_CODE_LANGUAGES_GEO_CODE_FK;
+import static com.echothree.model.jooq.server.keys.geo.GeoForeignKeys.GEO_CODE_LANGUAGES_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.geo.GeoForeignKeys.GEO_CODE_RELATIONSHIPS_FROM_GEO_CODE_FK;
+import static com.echothree.model.jooq.server.keys.geo.GeoForeignKeys.GEO_CODE_RELATIONSHIPS_TO_GEO_CODE_FK;
+import static com.echothree.model.jooq.server.keys.geo.GeoForeignKeys.GEO_CODE_SCOPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.geo.GeoForeignKeys.GEO_CODE_SCOPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.geo.GeoForeignKeys.GEO_CODE_SCOPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.geo.GeoForeignKeys.GEO_CODE_TIME_ZONES_GEO_CODE_FK;
+import static com.echothree.model.jooq.server.keys.geo.GeoForeignKeys.GEO_CODE_TIME_ZONES_TIME_ZONE_FK;
+import static com.echothree.model.jooq.server.keys.geo.GeoForeignKeys.GEO_CODE_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.geo.GeoForeignKeys.GEO_CODE_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.DATE_TIME_FORMATS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.TIME_ZONES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.accounting.Currencies.Currencies;
+import static com.echothree.model.jooq.server.tables.geo.GeoCodeAliasTypeDescriptions.GeoCodeAliasTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.geo.GeoCodeAliasTypeDetails.GeoCodeAliasTypeDetails;
+import static com.echothree.model.jooq.server.tables.geo.GeoCodeAliasTypes.GeoCodeAliasTypes;
+import static com.echothree.model.jooq.server.tables.geo.GeoCodeAliases.GeoCodeAliases;
+import static com.echothree.model.jooq.server.tables.geo.GeoCodeCountries.GeoCodeCountries;
+import static com.echothree.model.jooq.server.tables.geo.GeoCodeCurrencies.GeoCodeCurrencies;
+import static com.echothree.model.jooq.server.tables.geo.GeoCodeDateTimeFormats.GeoCodeDateTimeFormats;
+import static com.echothree.model.jooq.server.tables.geo.GeoCodeDescriptions.GeoCodeDescriptions;
+import static com.echothree.model.jooq.server.tables.geo.GeoCodeDetails.GeoCodeDetails;
+import static com.echothree.model.jooq.server.tables.geo.GeoCodeLanguages.GeoCodeLanguages;
+import static com.echothree.model.jooq.server.tables.geo.GeoCodeRelationships.GeoCodeRelationships;
+import static com.echothree.model.jooq.server.tables.geo.GeoCodeScopeDescriptions.GeoCodeScopeDescriptions;
+import static com.echothree.model.jooq.server.tables.geo.GeoCodeScopeDetails.GeoCodeScopeDetails;
+import static com.echothree.model.jooq.server.tables.geo.GeoCodeScopes.GeoCodeScopes;
+import static com.echothree.model.jooq.server.tables.geo.GeoCodeTimeZones.GeoCodeTimeZones;
+import static com.echothree.model.jooq.server.tables.geo.GeoCodeTypeDescriptions.GeoCodeTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.geo.GeoCodeTypeDetails.GeoCodeTypeDetails;
+import static com.echothree.model.jooq.server.tables.geo.GeoCodeTypes.GeoCodeTypes;
+import static com.echothree.model.jooq.server.tables.geo.GeoCodes.GeoCodes;
+import static com.echothree.model.jooq.server.tables.party.DateTimeFormatDetails.DateTimeFormatDetails;
+import static com.echothree.model.jooq.server.tables.party.DateTimeFormats.DateTimeFormats;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.party.TimeZoneDetails.TimeZoneDetails;
+import static com.echothree.model.jooq.server.tables.party.TimeZones.TimeZones;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -153,7 +198,7 @@ public class GeoControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Geo Transfer Caches
+    //   Transfer Object Utilities
     // --------------------------------------------------------------------------------
 
     @Inject
@@ -171,52 +216,6 @@ public class GeoControl
     @Inject
     StateTransferCache stateTransferCache;
 
-    @Inject
-    GeoCodeTransferCache geoCodeTransferCache;
-
-    @Inject
-    GeoCodeAliasTransferCache geoCodeAliasTransferCache;
-
-    @Inject
-    GeoCodeAliasTypeTransferCache geoCodeAliasTypeTransferCache;
-
-    @Inject
-    GeoCodeScopeTransferCache geoCodeScopeTransferCache;
-
-    @Inject
-    GeoCodeTypeTransferCache geoCodeTypeTransferCache;
-
-    @Inject
-    GeoCodeRelationshipTransferCache geoCodeRelationshipTransferCache;
-
-    @Inject
-    GeoCodeCurrencyTransferCache geoCodeCurrencyTransferCache;
-
-    @Inject
-    GeoCodeLanguageTransferCache geoCodeLanguageTransferCache;
-
-    @Inject
-    GeoCodeTimeZoneTransferCache geoCodeTimeZoneTransferCache;
-
-    @Inject
-    GeoCodeDateTimeFormatTransferCache geoCodeDateTimeFormatTransferCache;
-
-    @Inject
-    GeoCodeDescriptionTransferCache geoCodeDescriptionTransferCache;
-
-    @Inject
-    GeoCodeScopeDescriptionTransferCache geoCodeScopeDescriptionTransferCache;
-
-    @Inject
-    GeoCodeAliasTypeDescriptionTransferCache geoCodeAliasTypeDescriptionTransferCache;
-
-    @Inject
-    GeoCodeTypeDescriptionTransferCache geoCodeTypeDescriptionTransferCache;
-
-    // --------------------------------------------------------------------------------
-    //   Transfer Object Utilities
-    // --------------------------------------------------------------------------------
-    
     public CountryTransfer getCountryTransfer(UserVisit userVisit, GeoCode geoCode) {
         return countryTransferCache.getCountryTransfer(userVisit, geoCode);
     }
@@ -232,7 +231,7 @@ public class GeoControl
     }
 
     public GeoCodeScope getCountriesGeoCodeScope() {
-        return getGeoCodeScopeByName(GeoCodeScopes.COUNTRIES.name());
+        return getGeoCodeScopeByName(com.echothree.model.control.geo.common.GeoCodeScopes.COUNTRIES.name());
     }
     
     public List<GeoCode> getCountries(GeoCodeScope countriesGeoCodeScope) {
@@ -254,7 +253,7 @@ public class GeoControl
     }
 
     public GeoCodeScope getStatesGeoCodeScope(GeoCode countryGeoCode) {
-        var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoCodeAliasTypes.ISO_2_LETTER.name());
+        var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), com.echothree.model.control.geo.common.GeoCodeAliasTypes.ISO_2_LETTER.name());
         var countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
         var countryIso2Letter = countryGeoCodeAlias.getAlias();
         var geoCodeScopeName = countryIso2Letter + "_STATES";
@@ -289,11 +288,11 @@ public class GeoControl
     }
 
     public GeoCodeScope getCountiesGeoCodeScope(GeoCode stateGeoCode) {
-        var stateGeoCodeAliasType = getGeoCodeAliasTypeByName(stateGeoCode.getLastDetail().getGeoCodeType(), GeoCodeAliasTypes.POSTAL_2_LETTER.name());
+        var stateGeoCodeAliasType = getGeoCodeAliasTypeByName(stateGeoCode.getLastDetail().getGeoCodeType(), com.echothree.model.control.geo.common.GeoCodeAliasTypes.POSTAL_2_LETTER.name());
         var stateGeoCodeAlias = getGeoCodeAlias(stateGeoCode, stateGeoCodeAliasType);
         var statePostal2Letter = stateGeoCodeAlias.getAlias();
 
-        var countryGeoCodeType = getGeoCodeTypeByName(GeoCodeTypes.COUNTRY.name());
+        var countryGeoCodeType = getGeoCodeTypeByName(com.echothree.model.control.geo.common.GeoCodeTypes.COUNTRY.name());
         var stateRelationships = getGeoCodeRelationshipsByFromGeoCode(stateGeoCode);
         GeoCode countryGeoCode = null;
         for(var geoCodeRelationship : stateRelationships) {
@@ -305,7 +304,7 @@ public class GeoControl
             }
         }
 
-        var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoCodeAliasTypes.ISO_2_LETTER.name());
+        var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), com.echothree.model.control.geo.common.GeoCodeAliasTypes.ISO_2_LETTER.name());
         var countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
         var countryIso2Letter = countryGeoCodeAlias.getAlias();
 
@@ -341,11 +340,11 @@ public class GeoControl
     }
 
     public GeoCodeScope getCitiesGeoCodeScope(GeoCode stateGeoCode) {
-        var stateGeoCodeAliasType = getGeoCodeAliasTypeByName(stateGeoCode.getLastDetail().getGeoCodeType(), GeoCodeAliasTypes.POSTAL_2_LETTER.name());
+        var stateGeoCodeAliasType = getGeoCodeAliasTypeByName(stateGeoCode.getLastDetail().getGeoCodeType(), com.echothree.model.control.geo.common.GeoCodeAliasTypes.POSTAL_2_LETTER.name());
         var stateGeoCodeAlias = getGeoCodeAlias(stateGeoCode, stateGeoCodeAliasType);
         var statePostal2Letter = stateGeoCodeAlias.getAlias();
 
-        var countryGeoCodeType = getGeoCodeTypeByName(GeoCodeTypes.COUNTRY.name());
+        var countryGeoCodeType = getGeoCodeTypeByName(com.echothree.model.control.geo.common.GeoCodeTypes.COUNTRY.name());
         var stateRelationships = getGeoCodeRelationshipsByFromGeoCode(stateGeoCode);
         GeoCode countryGeoCode = null;
         for(var geoCodeRelationship : stateRelationships) {
@@ -357,7 +356,7 @@ public class GeoControl
             }
         }
 
-        var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoCodeAliasTypes.ISO_2_LETTER.name());
+        var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), com.echothree.model.control.geo.common.GeoCodeAliasTypes.ISO_2_LETTER.name());
         var countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
         var countryIso2Letter = countryGeoCodeAlias.getAlias();
 
@@ -393,7 +392,7 @@ public class GeoControl
     }
 
     public GeoCodeScope getPostalCodesGeoCodeScope(GeoCode countryGeoCode) {
-        var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoCodeAliasTypes.ISO_2_LETTER.name());
+        var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), com.echothree.model.control.geo.common.GeoCodeAliasTypes.ISO_2_LETTER.name());
         var countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
         var countryIso2Letter = countryGeoCodeAlias.getAlias();
         var geoCodeScopeName = countryIso2Letter + "_ZIP_CODES";
@@ -418,9 +417,9 @@ public class GeoControl
     // --------------------------------------------------------------------------------
     
     public CountryChoicesBean getCountryChoices(String defaultCountryChoice, Language language, boolean allowNullChoice) {
-        var geoCodeType = getGeoCodeTypeByName(GeoCodeTypes.COUNTRY.name());
+        var geoCodeType = getGeoCodeTypeByName(com.echothree.model.control.geo.common.GeoCodeTypes.COUNTRY.name());
         var geoCodeAliasType = getDefaultGeoCodeAliasType(geoCodeType);
-        var geoCodeScope = getGeoCodeScopeByName(GeoCodeScopes.COUNTRIES.name());
+        var geoCodeScope = getGeoCodeScopeByName(com.echothree.model.control.geo.common.GeoCodeScopes.COUNTRIES.name());
         var geoCodes = getGeoCodesByGeoCodeScope(geoCodeScope);
         var size = geoCodes.size();
         var labels = new ArrayList<String>(size);
@@ -457,10 +456,13 @@ public class GeoControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected GeoCodeTypeDetailFactory geoCodeTypeDetailFactory;
+
+    @Inject
     protected GeoCodeTypeFactory geoCodeTypeFactory;
 
     @Inject
-    protected GeoCodeTypeDetailFactory geoCodeTypeDetailFactory;
+    GeoCodeTypeTransferCache geoCodeTypeTransferCache;
 
     public GeoCodeType createGeoCodeType(String geoCodeTypeName, GeoCodeType parentGeoCodeType, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
@@ -493,20 +495,22 @@ public class GeoControl
     }
 
     public long countGeoCodeTypes() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM geocodetypes, geocodetypedetails
-                WHERE geot_activedetailid = geotdt_geocodetypedetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(GeoCodeTypes)
+                .join(GeoCodeTypeDetails).onKey(GEO_CODE_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countGeoCodeTypesByParentGeoCodeType(GeoCodeType parentGeoCodeType) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM geocodetypes, geocodetypedetails
-                WHERE geot_activedetailid = geotdt_geocodetypedetailid
-                AND geotdt_parentgeocodetypeid = ?
-                """, parentGeoCodeType);
+        return session.getDslContext()
+                .selectCount()
+                .from(GeoCodeTypes)
+                .join(GeoCodeTypeDetails).onKey(GEO_CODE_TYPES_ACTIVE_DETAIL_FK)
+                .where(GeoCodeTypeDetails.PARENT_GEO_CODE_TYPE.eq(parentGeoCodeType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.GeoCodeType */
@@ -520,31 +524,19 @@ public class GeoControl
         return getGeoCodeTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
     }
 
-    private static final Map<EntityPermission, String> getGeoCodeTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM geocodetypes, geocodetypedetails
-                WHERE geot_activedetailid = geotdt_geocodetypedetailid
-                AND geotdt_geocodetypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM geocodetypes, geocodetypedetails
-                WHERE geot_activedetailid = geotdt_geocodetypedetailid
-                AND geotdt_geocodetypename = ?
-                FOR UPDATE
-                """);
-        getGeoCodeTypeByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public GeoCodeType getGeoCodeTypeByName(String geoCodeTypeName, EntityPermission entityPermission) {
-        return geoCodeTypeFactory.getEntityFromQuery(entityPermission, getGeoCodeTypeByNameQueries, geoCodeTypeName);
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeTypes.fields())
+                .from(GeoCodeTypes)
+                .join(GeoCodeTypeDetails).onKey(GEO_CODE_TYPES_ACTIVE_DETAIL_FK)
+                .where(GeoCodeTypeDetails.GEO_CODE_TYPE_NAME.eq(geoCodeTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public GeoCodeType getGeoCodeTypeByName(String geoCodeTypeName) {
@@ -563,31 +555,19 @@ public class GeoControl
         return getGeoCodeTypeDetailValueForUpdate(getGeoCodeTypeByNameForUpdate(geoCodeTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultGeoCodeTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM geocodetypes, geocodetypedetails
-                WHERE geot_activedetailid = geotdt_geocodetypedetailid
-                AND geotdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM geocodetypes, geocodetypedetails
-                WHERE geot_activedetailid = geotdt_geocodetypedetailid
-                AND geotdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultGeoCodeTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public GeoCodeType getDefaultGeoCodeType(EntityPermission entityPermission) {
-        return geoCodeTypeFactory.getEntityFromQuery(entityPermission, getDefaultGeoCodeTypeQueries);
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeTypes.fields())
+                .from(GeoCodeTypes)
+                .join(GeoCodeTypeDetails).onKey(GEO_CODE_TYPES_ACTIVE_DETAIL_FK)
+                .where(GeoCodeTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public GeoCodeType getDefaultGeoCodeType() {
@@ -602,31 +582,20 @@ public class GeoControl
         return getDefaultGeoCodeTypeForUpdate().getLastDetailForUpdate().getGeoCodeTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getGeoCodeTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM geocodetypes, geocodetypedetails
-                WHERE geot_activedetailid = geotdt_geocodetypedetailid
-                ORDER BY geotdt_sortorder, geotdt_geocodetypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM geocodetypes, geocodetypedetails
-                WHERE geot_activedetailid = geotdt_geocodetypedetailid
-                FOR UPDATE
-                """);
-        getGeoCodeTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<GeoCodeType> getGeoCodeTypes(EntityPermission entityPermission) {
-        return geoCodeTypeFactory.getEntitiesFromQuery(entityPermission, getGeoCodeTypesQueries);
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeTypes.fields())
+                .from(GeoCodeTypes)
+                .join(GeoCodeTypeDetails).onKey(GEO_CODE_TYPES_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(GeoCodeTypeDetails.SORT_ORDER, GeoCodeTypeDetails.GEO_CODE_TYPE_NAME),
+                    GeoCodeTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<GeoCodeType> getGeoCodeTypes() {
@@ -637,33 +606,22 @@ public class GeoControl
         return getGeoCodeTypes(EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getGeoCodeTypesByParentGeoCodeTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM geocodetypes, geocodetypedetails
-                WHERE geot_activedetailid = geotdt_geocodetypedetailid AND geotdt_parentgeocodetypeid = ?
-                ORDER BY geotdt_sortorder, geotdt_geocodetypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM geocodetypes, geocodetypedetails
-                WHERE geot_activedetailid = geotdt_geocodetypedetailid AND geotdt_parentgeocodetypeid = ?
-                FOR UPDATE
-                """);
-        getGeoCodeTypesByParentGeoCodeTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<GeoCodeType> getGeoCodeTypesByParentGeoCodeType(GeoCodeType parentGeoCodeType,
             EntityPermission entityPermission) {
-        return geoCodeTypeFactory.getEntitiesFromQuery(entityPermission, getGeoCodeTypesByParentGeoCodeTypeQueries,
-                parentGeoCodeType);
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeTypes.fields())
+                .from(GeoCodeTypes)
+                .join(GeoCodeTypeDetails).onKey(GEO_CODE_TYPES_ACTIVE_DETAIL_FK)
+                .where(GeoCodeTypeDetails.PARENT_GEO_CODE_TYPE.eq(parentGeoCodeType.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(GeoCodeTypeDetails.SORT_ORDER, GeoCodeTypeDetails.GEO_CODE_TYPE_NAME),
+                    GeoCodeTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<GeoCodeType> getGeoCodeTypesByParentGeoCodeType(GeoCodeType parentGeoCodeType) {
@@ -852,6 +810,9 @@ public class GeoControl
     @Inject
     protected GeoCodeTypeDescriptionFactory geoCodeTypeDescriptionFactory;
 
+    @Inject
+    GeoCodeTypeDescriptionTransferCache geoCodeTypeDescriptionTransferCache;
+
     public GeoCodeTypeDescription createGeoCodeTypeDescription(GeoCodeType geoCodeType, Language language, String description, BasePK createdBy) {
         var geoCodeTypeDescription = geoCodeTypeDescriptionFactory.create(geoCodeType,
                 language, description, session.getStartTime(), Session.MAX_TIME);
@@ -862,38 +823,19 @@ public class GeoControl
     }
     
     private GeoCodeTypeDescription getGeoCodeTypeDescription(GeoCodeType geoCodeType, Language language, EntityPermission entityPermission) {
-        GeoCodeTypeDescription geoCodeTypeDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodetypedescriptions
-                        WHERE geotd_geot_geocodetypeid = ? AND geotd_lang_languageid = ? AND geotd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodetypedescriptions
-                        WHERE geotd_geot_geocodetypeid = ? AND geotd_lang_languageid = ? AND geotd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeTypeDescriptions.fields())
+                .from(GeoCodeTypeDescriptions)
+                .where(GeoCodeTypeDescriptions.GEO_CODE_TYPE.eq(geoCodeType.getPrimaryKey()),
+                        GeoCodeTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        GeoCodeTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = geoCodeTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, geoCodeType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            geoCodeTypeDescription = geoCodeTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeTypeDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public GeoCodeTypeDescription getGeoCodeTypeDescription(GeoCodeType geoCodeType, Language language) {
@@ -914,39 +856,24 @@ public class GeoControl
     
     
     private List<GeoCodeTypeDescription> getGeoCodeTypeDescriptionsByGeoCodeType(GeoCodeType geoCodeType, EntityPermission entityPermission) {
-        List<GeoCodeTypeDescription> geoCodeTypeDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodetypedescriptions, languages
-                        WHERE geotd_geot_geocodetypeid = ? AND geotd_thrutime = ? AND geotd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodetypedescriptions
-                        WHERE geotd_geot_geocodetypeid = ? AND geotd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(GeoCodeTypeDescriptions.fields())
+                    .from(GeoCodeTypeDescriptions)
+                    .join(Languages).onKey(GEO_CODE_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(GeoCodeTypeDescriptions.GEO_CODE_TYPE.eq(geoCodeType.getPrimaryKey()),
+                            GeoCodeTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    GeoCodeTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(GeoCodeTypeDescriptions.fields())
+                    .from(GeoCodeTypeDescriptions)
+                    .where(GeoCodeTypeDescriptions.GEO_CODE_TYPE.eq(geoCodeType.getPrimaryKey()),
+                            GeoCodeTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = geoCodeTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, geoCodeType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            geoCodeTypeDescriptions = geoCodeTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeTypeDescriptions;
+        return geoCodeTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<GeoCodeTypeDescription> getGeoCodeTypeDescriptionsByGeoCodeType(GeoCodeType geoCodeType) {
@@ -1026,10 +953,13 @@ public class GeoControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected GeoCodeScopeDetailFactory geoCodeScopeDetailFactory;
+
+    @Inject
     protected GeoCodeScopeFactory geoCodeScopeFactory;
 
     @Inject
-    protected GeoCodeScopeDetailFactory geoCodeScopeDetailFactory;
+    GeoCodeScopeTransferCache geoCodeScopeTransferCache;
 
     public GeoCodeScope createGeoCodeScope(String geoCodeScopeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultGeoCodeScope = getDefaultGeoCodeScope();
@@ -1062,11 +992,12 @@ public class GeoControl
     }
 
     public long countGeoCodeScopes() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM geocodescopes, geocodescopedetails
-                WHERE geos_activedetailid = geosdt_geocodescopedetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(GeoCodeScopes)
+                .join(GeoCodeScopeDetails).onKey(GEO_CODE_SCOPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.GeoCodeScope */
@@ -1081,36 +1012,18 @@ public class GeoControl
     }
 
     public GeoCodeScope getGeoCodeScopeByName(String geoCodeScopeName, EntityPermission entityPermission) {
-        GeoCodeScope geoCodeScope;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodescopes, geocodescopedetails
-                        WHERE geos_activedetailid = geosdt_geocodescopedetailid AND geosdt_geocodescopename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodescopes, geocodescopedetails
-                        WHERE geos_activedetailid = geosdt_geocodescopedetailid AND geosdt_geocodescopename = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeScopes.fields())
+                .from(GeoCodeScopes)
+                .join(GeoCodeScopeDetails).onKey(GEO_CODE_SCOPES_ACTIVE_DETAIL_FK)
+                .where(GeoCodeScopeDetails.GEO_CODE_SCOPE_NAME.eq(geoCodeScopeName));
 
-            var ps = geoCodeScopeFactory.prepareStatement(query);
-            
-            ps.setString(1, geoCodeScopeName);
-            
-            geoCodeScope = geoCodeScopeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeScope;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeScopeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public GeoCodeScope getGeoCodeScopeByName(String geoCodeScopeName) {
@@ -1130,26 +1043,18 @@ public class GeoControl
     }
     
     public GeoCodeScope getDefaultGeoCodeScope(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM geocodescopes, geocodescopedetails
-                    WHERE geos_activedetailid = geosdt_geocodescopedetailid AND geosdt_isdefault = 1
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM geocodescopes, geocodescopedetails
-                    WHERE geos_activedetailid = geosdt_geocodescopedetailid AND geosdt_isdefault = 1
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeScopes.fields())
+                .from(GeoCodeScopes)
+                .join(GeoCodeScopeDetails).onKey(GEO_CODE_SCOPES_ACTIVE_DETAIL_FK)
+                .where(GeoCodeScopeDetails.IS_DEFAULT.eq(true));
 
-        var ps = geoCodeScopeFactory.prepareStatement(query);
-        
-        return geoCodeScopeFactory.getEntityFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeScopeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public GeoCodeScope getDefaultGeoCodeScope() {
@@ -1165,28 +1070,19 @@ public class GeoControl
     }
     
     private List<GeoCodeScope> getGeoCodeScopes(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM geocodescopes, geocodescopedetails
-                    WHERE geos_activedetailid = geosdt_geocodescopedetailid
-                    ORDER BY geosdt_sortorder, geosdt_geocodescopename
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM geocodescopes, geocodescopedetails
-                    WHERE geos_activedetailid = geosdt_geocodescopedetailid
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeScopes.fields())
+                .from(GeoCodeScopes)
+                .join(GeoCodeScopeDetails).onKey(GEO_CODE_SCOPES_ACTIVE_DETAIL_FK);
 
-        var ps = geoCodeScopeFactory.prepareStatement(query);
-        
-        return geoCodeScopeFactory.getEntitiesFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(GeoCodeScopeDetails.SORT_ORDER, GeoCodeScopeDetails.GEO_CODE_SCOPE_NAME),
+                    GeoCodeScopeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeScopeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<GeoCodeScope> getGeoCodeScopes() {
@@ -1332,6 +1228,9 @@ public class GeoControl
     @Inject
     protected GeoCodeScopeDescriptionFactory geoCodeScopeDescriptionFactory;
 
+    @Inject
+    GeoCodeScopeDescriptionTransferCache geoCodeScopeDescriptionTransferCache;
+
     public GeoCodeScopeDescription createGeoCodeScopeDescription(GeoCodeScope geoCodeScope, Language language, String description, BasePK createdBy) {
         var geoCodeScopeDescription = geoCodeScopeDescriptionFactory.create(geoCodeScope, language, description, session.getStartTime(),
                 Session.MAX_TIME);
@@ -1342,38 +1241,19 @@ public class GeoControl
     }
     
     private GeoCodeScopeDescription getGeoCodeScopeDescription(GeoCodeScope geoCodeScope, Language language, EntityPermission entityPermission) {
-        GeoCodeScopeDescription geoCodeScopeDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodescopedescriptions
-                        WHERE geosd_geos_geocodescopeid = ? AND geosd_lang_languageid = ? AND geosd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodescopedescriptions
-                        WHERE geosd_geos_geocodescopeid = ? AND geosd_lang_languageid = ? AND geosd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeScopeDescriptions.fields())
+                .from(GeoCodeScopeDescriptions)
+                .where(GeoCodeScopeDescriptions.GEO_CODE_SCOPE.eq(geoCodeScope.getPrimaryKey()),
+                        GeoCodeScopeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        GeoCodeScopeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = geoCodeScopeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, geoCodeScope.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            geoCodeScopeDescription = geoCodeScopeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeScopeDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeScopeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public GeoCodeScopeDescription getGeoCodeScopeDescription(GeoCodeScope geoCodeScope, Language language) {
@@ -1394,39 +1274,24 @@ public class GeoControl
     
     
     private List<GeoCodeScopeDescription> getGeoCodeScopeDescriptionsByGeoCodeScope(GeoCodeScope geoCodeScope, EntityPermission entityPermission) {
-        List<GeoCodeScopeDescription> geoCodeScopeDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodescopedescriptions, languages
-                        WHERE geosd_geos_geocodescopeid = ? AND geosd_thrutime = ? AND geosd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodescopedescriptions
-                        WHERE geosd_geos_geocodescopeid = ? AND geosd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(GeoCodeScopeDescriptions.fields())
+                    .from(GeoCodeScopeDescriptions)
+                    .join(Languages).onKey(GEO_CODE_SCOPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(GeoCodeScopeDescriptions.GEO_CODE_SCOPE.eq(geoCodeScope.getPrimaryKey()),
+                            GeoCodeScopeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    GeoCodeScopeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(GeoCodeScopeDescriptions.fields())
+                    .from(GeoCodeScopeDescriptions)
+                    .where(GeoCodeScopeDescriptions.GEO_CODE_SCOPE.eq(geoCodeScope.getPrimaryKey()),
+                            GeoCodeScopeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = geoCodeScopeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, geoCodeScope.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            geoCodeScopeDescriptions = geoCodeScopeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeScopeDescriptions;
+        return geoCodeScopeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<GeoCodeScopeDescription> getGeoCodeScopeDescriptionsByGeoCodeScope(GeoCodeScope geoCodeScope) {
@@ -1506,10 +1371,13 @@ public class GeoControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected GeoCodeAliasTypeDetailFactory geoCodeAliasTypeDetailFactory;
+
+    @Inject
     protected GeoCodeAliasTypeFactory geoCodeAliasTypeFactory;
 
     @Inject
-    protected GeoCodeAliasTypeDetailFactory geoCodeAliasTypeDetailFactory;
+    GeoCodeAliasTypeTransferCache geoCodeAliasTypeTransferCache;
 
     public GeoCodeAliasType createGeoCodeAliasType(GeoCodeType geoCodeType, String geoCodeAliasTypeName, String validationPattern, Boolean isRequired,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -1542,49 +1410,29 @@ public class GeoControl
     }
 
     public long countGeoCodeAliasTypesByGeoCodeType(GeoCodeType geoCodeType) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM geocodealiastypes, geocodealiastypedetails
-                WHERE geoat_activedetailid = geoatdt_geocodealiastypedetailid AND geoatdt_geot_geocodetypeid = ?
-                """,
-                geoCodeType);
+        return session.getDslContext()
+                .selectCount()
+                .from(GeoCodeAliasTypes)
+                .join(GeoCodeAliasTypeDetails).onKey(GEO_CODE_ALIAS_TYPES_ACTIVE_DETAIL_FK)
+                .where(GeoCodeAliasTypeDetails.GEO_CODE_TYPE.eq(geoCodeType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private GeoCodeAliasType getGeoCodeAliasTypeByName(GeoCodeType geoCodeType, String geoCodeAliasTypeName, EntityPermission entityPermission) {
-        GeoCodeAliasType geoCodeAliasType;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodealiastypes, geocodealiastypedetails
-                        WHERE geoat_activedetailid = geoatdt_geocodealiastypedetailid AND geoatdt_geot_geocodetypeid = ?
-                        AND geoatdt_geocodealiastypename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodealiastypes, geocodealiastypedetails
-                        WHERE geoat_activedetailid = geoatdt_geocodealiastypedetailid AND geoatdt_geot_geocodetypeid = ?
-                        AND geoatdt_geocodealiastypename = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeAliasTypes.fields())
+                .from(GeoCodeAliasTypes)
+                .join(GeoCodeAliasTypeDetails).onKey(GEO_CODE_ALIAS_TYPES_ACTIVE_DETAIL_FK)
+                .where(GeoCodeAliasTypeDetails.GEO_CODE_TYPE.eq(geoCodeType.getPrimaryKey()),
+                        GeoCodeAliasTypeDetails.GEO_CODE_ALIAS_TYPE_NAME.eq(geoCodeAliasTypeName));
 
-            var ps = geoCodeAliasTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, geoCodeType.getPrimaryKey().getEntityId());
-            ps.setString(2, geoCodeAliasTypeName);
-            
-            geoCodeAliasType = geoCodeAliasTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeAliasType;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeAliasTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public GeoCodeAliasType getGeoCodeAliasTypeByName(GeoCodeType geoCodeType, String geoCodeAliasTypeName) {
@@ -1605,38 +1453,19 @@ public class GeoControl
     }
     
     private GeoCodeAliasType getDefaultGeoCodeAliasType(GeoCodeType geoCodeType, EntityPermission entityPermission) {
-        GeoCodeAliasType geoCodeAliasType;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodealiastypes, geocodealiastypedetails
-                        WHERE geoat_activedetailid = geoatdt_geocodealiastypedetailid AND geoatdt_geot_geocodetypeid = ?
-                        AND geoatdt_isdefault = 1
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodealiastypes, geocodealiastypedetails
-                        WHERE geoat_activedetailid = geoatdt_geocodealiastypedetailid AND geoatdt_geot_geocodetypeid = ?
-                        AND geoatdt_isdefault = 1
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeAliasTypes.fields())
+                .from(GeoCodeAliasTypes)
+                .join(GeoCodeAliasTypeDetails).onKey(GEO_CODE_ALIAS_TYPES_ACTIVE_DETAIL_FK)
+                .where(GeoCodeAliasTypeDetails.GEO_CODE_TYPE.eq(geoCodeType.getPrimaryKey()),
+                        GeoCodeAliasTypeDetails.IS_DEFAULT.eq(true));
 
-            var ps = geoCodeAliasTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, geoCodeType.getPrimaryKey().getEntityId());
-            
-            geoCodeAliasType = geoCodeAliasTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeAliasType;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeAliasTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public GeoCodeAliasType getDefaultGeoCodeAliasType(GeoCodeType geoCodeType) {
@@ -1652,38 +1481,20 @@ public class GeoControl
     }
     
     private List<GeoCodeAliasType> getGeoCodeAliasTypes(GeoCodeType geoCodeType, EntityPermission entityPermission) {
-        List<GeoCodeAliasType> geoCodeAliasTypes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodealiastypes, geocodealiastypedetails
-                        WHERE geoat_activedetailid = geoatdt_geocodealiastypedetailid AND geoatdt_geot_geocodetypeid = ?
-                        ORDER BY geoatdt_sortorder, geoatdt_geocodealiastypename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodealiastypes, geocodealiastypedetails
-                        WHERE geoat_activedetailid = geoatdt_geocodealiastypedetailid AND geoatdt_geot_geocodetypeid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeAliasTypes.fields())
+                .from(GeoCodeAliasTypes)
+                .join(GeoCodeAliasTypeDetails).onKey(GEO_CODE_ALIAS_TYPES_ACTIVE_DETAIL_FK)
+                .where(GeoCodeAliasTypeDetails.GEO_CODE_TYPE.eq(geoCodeType.getPrimaryKey()));
 
-            var ps = geoCodeAliasTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, geoCodeType.getPrimaryKey().getEntityId());
-            
-            geoCodeAliasTypes = geoCodeAliasTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeAliasTypes;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(GeoCodeAliasTypeDetails.SORT_ORDER, GeoCodeAliasTypeDetails.GEO_CODE_ALIAS_TYPE_NAME),
+                    GeoCodeAliasTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeAliasTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<GeoCodeAliasType> getGeoCodeAliasTypes(GeoCodeType geoCodeType) {
@@ -1695,40 +1506,21 @@ public class GeoControl
     }
     
     private List<GeoCodeAliasType> getGeoCodeAliasTypesExceptDefault(GeoCodeType geoCodeType, EntityPermission entityPermission) {
-        List<GeoCodeAliasType> geoCodeAliasTypes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodealiastypes, geocodealiastypedetails
-                        WHERE geoat_activedetailid = geoatdt_geocodealiastypedetailid AND geoatdt_geot_geocodetypeid = ?
-                        AND geoatdt_isdefault = 0
-                        ORDER BY geoatdt_sortorder, geoatdt_geocodealiastypename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodealiastypes, geocodealiastypedetails
-                        WHERE geoat_activedetailid = geoatdt_geocodealiastypedetailid AND geoatdt_geot_geocodetypeid = ?
-                        AND geoatdt_isdefault = 0
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeAliasTypes.fields())
+                .from(GeoCodeAliasTypes)
+                .join(GeoCodeAliasTypeDetails).onKey(GEO_CODE_ALIAS_TYPES_ACTIVE_DETAIL_FK)
+                .where(GeoCodeAliasTypeDetails.GEO_CODE_TYPE.eq(geoCodeType.getPrimaryKey()),
+                        GeoCodeAliasTypeDetails.IS_DEFAULT.eq(false));
 
-            var ps = geoCodeAliasTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, geoCodeType.getPrimaryKey().getEntityId());
-            
-            geoCodeAliasTypes = geoCodeAliasTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeAliasTypes;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(GeoCodeAliasTypeDetails.SORT_ORDER, GeoCodeAliasTypeDetails.GEO_CODE_ALIAS_TYPE_NAME),
+                    GeoCodeAliasTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeAliasTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<GeoCodeAliasType> getGeoCodeAliasTypesExceptDefault(GeoCodeType geoCodeType) {
@@ -1878,6 +1670,9 @@ public class GeoControl
     @Inject
     protected GeoCodeAliasTypeDescriptionFactory geoCodeAliasTypeDescriptionFactory;
 
+    @Inject
+    GeoCodeAliasTypeDescriptionTransferCache geoCodeAliasTypeDescriptionTransferCache;
+
     public GeoCodeAliasTypeDescription createGeoCodeAliasTypeDescription(GeoCodeAliasType geoCodeAliasType, Language language, String description, BasePK createdBy) {
         var geoCodeAliasTypeDescription = geoCodeAliasTypeDescriptionFactory.create(geoCodeAliasType, language, description,
                 session.getStartTime(), Session.MAX_TIME);
@@ -1888,38 +1683,19 @@ public class GeoControl
     }
     
     private GeoCodeAliasTypeDescription getGeoCodeAliasTypeDescription(GeoCodeAliasType geoCodeAliasType, Language language, EntityPermission entityPermission) {
-        GeoCodeAliasTypeDescription geoCodeAliasTypeDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodealiastypedescriptions
-                        WHERE geoatd_geoat_geocodealiastypeid = ? AND geoatd_lang_languageid = ? AND geoatd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodealiastypedescriptions
-                        WHERE geoatd_geoat_geocodealiastypeid = ? AND geoatd_lang_languageid = ? AND geoatd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeAliasTypeDescriptions.fields())
+                .from(GeoCodeAliasTypeDescriptions)
+                .where(GeoCodeAliasTypeDescriptions.GEO_CODE_ALIAS_TYPE.eq(geoCodeAliasType.getPrimaryKey()),
+                        GeoCodeAliasTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        GeoCodeAliasTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = geoCodeAliasTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, geoCodeAliasType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            geoCodeAliasTypeDescription = geoCodeAliasTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeAliasTypeDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeAliasTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public GeoCodeAliasTypeDescription getGeoCodeAliasTypeDescription(GeoCodeAliasType geoCodeAliasType, Language language) {
@@ -1939,39 +1715,24 @@ public class GeoControl
     }
     
     private List<GeoCodeAliasTypeDescription> getGeoCodeAliasTypeDescriptionsByGeoCodeAliasType(GeoCodeAliasType geoCodeAliasType, EntityPermission entityPermission) {
-        List<GeoCodeAliasTypeDescription> geoCodeAliasTypeDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodealiastypedescriptions, languages
-                        WHERE geoatd_geoat_geocodealiastypeid = ? AND geoatd_thrutime = ? AND geoatd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodealiastypedescriptions
-                        WHERE geoatd_geoat_geocodealiastypeid = ? AND geoatd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(GeoCodeAliasTypeDescriptions.fields())
+                    .from(GeoCodeAliasTypeDescriptions)
+                    .join(Languages).onKey(GEO_CODE_ALIAS_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(GeoCodeAliasTypeDescriptions.GEO_CODE_ALIAS_TYPE.eq(geoCodeAliasType.getPrimaryKey()),
+                            GeoCodeAliasTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    GeoCodeAliasTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(GeoCodeAliasTypeDescriptions.fields())
+                    .from(GeoCodeAliasTypeDescriptions)
+                    .where(GeoCodeAliasTypeDescriptions.GEO_CODE_ALIAS_TYPE.eq(geoCodeAliasType.getPrimaryKey()),
+                            GeoCodeAliasTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = geoCodeAliasTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, geoCodeAliasType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            geoCodeAliasTypeDescriptions = geoCodeAliasTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeAliasTypeDescriptions;
+        return geoCodeAliasTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<GeoCodeAliasTypeDescription> getGeoCodeAliasTypeDescriptionsByGeoCodeAliasType(GeoCodeAliasType geoCodeAliasType) {
@@ -2051,10 +1812,13 @@ public class GeoControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected GeoCodeDetailFactory geoCodeDetailFactory;
+
+    @Inject
     protected GeoCodeFactory geoCodeFactory;
 
     @Inject
-    protected GeoCodeDetailFactory geoCodeDetailFactory;
+    GeoCodeTransferCache geoCodeTransferCache;
 
     public GeoCode createGeoCode(String geoCodeName, GeoCodeType geoCodeType, GeoCodeScope geoCodeScope, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
@@ -2097,29 +1861,32 @@ public class GeoControl
     }
 
     public long countGeoCodes() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM geocodes, geocodedetails
-                WHERE geo_activedetailid = geodt_geocodedetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(GeoCodes)
+                .join(GeoCodeDetails).onKey(GEO_CODES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countGeoCodesByGeoCodeType(GeoCodeType geoCodeType) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM geocodes, geocodedetails
-                WHERE geo_activedetailid = geodt_geocodedetailid
-                AND geodt_geot_geocodetypeid = ?
-                """, geoCodeType);
+        return session.getDslContext()
+                .selectCount()
+                .from(GeoCodes)
+                .join(GeoCodeDetails).onKey(GEO_CODES_ACTIVE_DETAIL_FK)
+                .where(GeoCodeDetails.GEO_CODE_TYPE.eq(geoCodeType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countGeoCodesByGeoCodeScope(GeoCodeScope geoCodeScope) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM geocodes, geocodedetails
-                WHERE geo_activedetailid = geodt_geocodedetailid
-                AND geodt_geos_geocodescopeid = ?
-                """, geoCodeScope);
+        return session.getDslContext()
+                .selectCount()
+                .from(GeoCodes)
+                .join(GeoCodeDetails).onKey(GEO_CODES_ACTIVE_DETAIL_FK)
+                .where(GeoCodeDetails.GEO_CODE_SCOPE.eq(geoCodeScope.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public GeoCodeDetailValue getGeoCodeDetailValueForUpdate(GeoCode geoCode) {
@@ -2127,36 +1894,19 @@ public class GeoControl
     }
     
     private GeoCode getDefaultGeoCode(GeoCodeScope geoCodeScope, EntityPermission entityPermission) {
-        GeoCode geoCode;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodes, geocodedetails
-                        WHERE geo_activedetailid = geodt_geocodedetailid AND geodt_geos_geocodescopeid = ? AND geodt_isdefault = 1
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodes, geocodedetails
-                        WHERE geo_activedetailid = geodt_geocodedetailid AND geodt_geos_geocodescopeid = ? AND geodt_isdefault = 1
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(GeoCodes.fields())
+                .from(GeoCodes)
+                .join(GeoCodeDetails).onKey(GEO_CODES_ACTIVE_DETAIL_FK)
+                .where(GeoCodeDetails.GEO_CODE_SCOPE.eq(geoCodeScope.getPrimaryKey()),
+                        GeoCodeDetails.IS_DEFAULT.eq(true));
 
-            var ps = geoCodeFactory.prepareStatement(query);
-            
-            ps.setLong(1, geoCodeScope.getPrimaryKey().getEntityId());
-            
-            geoCode = geoCodeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCode;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public GeoCode getDefaultGeoCode(GeoCodeScope geoCodeScope) {
@@ -2172,36 +1922,18 @@ public class GeoControl
     }
     
     public GeoCode getGeoCodeByName(String geoCodeName, EntityPermission entityPermission) {
-        GeoCode geoCode;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodes, geocodedetails
-                        WHERE geo_activedetailid = geodt_geocodedetailid AND geodt_geocodename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodes, geocodedetails
-                        WHERE geo_activedetailid = geodt_geocodedetailid AND geodt_geocodename = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(GeoCodes.fields())
+                .from(GeoCodes)
+                .join(GeoCodeDetails).onKey(GEO_CODES_ACTIVE_DETAIL_FK)
+                .where(GeoCodeDetails.GEO_CODE_NAME.eq(geoCodeName));
 
-            var ps = geoCodeFactory.prepareStatement(query);
-            
-            ps.setString(1, geoCodeName);
-            
-            geoCode = geoCodeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCode;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public GeoCode getGeoCodeByName(String geoCodeName) {
@@ -2217,38 +1949,20 @@ public class GeoControl
     }
     
     private List<GeoCode> getGeoCodesByGeoCodeScope(GeoCodeScope geoCodeScope, EntityPermission entityPermission) {
-        List<GeoCode> geoCode;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodes, geocodedetails
-                        WHERE geo_activedetailid = geodt_geocodedetailid AND geodt_geos_geocodescopeid = ?
-                        ORDER BY geodt_sortorder, geodt_geocodename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodes, geocodedetails
-                        WHERE geo_activedetailid = geodt_geocodedetailid AND geodt_geos_geocodescopeid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(GeoCodes.fields())
+                .from(GeoCodes)
+                .join(GeoCodeDetails).onKey(GEO_CODES_ACTIVE_DETAIL_FK)
+                .where(GeoCodeDetails.GEO_CODE_SCOPE.eq(geoCodeScope.getPrimaryKey()));
 
-            var ps = geoCodeFactory.prepareStatement(query);
-            
-            ps.setLong(1, geoCodeScope.getPrimaryKey().getEntityId());
-            
-            geoCode = geoCodeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCode;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(GeoCodeDetails.SORT_ORDER, GeoCodeDetails.GEO_CODE_NAME),
+                    GeoCodeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<GeoCode> getGeoCodesByGeoCodeScope(GeoCodeScope geoCodeScope) {
@@ -2335,7 +2049,7 @@ public class GeoControl
         deleteGeoCodeTimeZonesByGeoCode(geoCode, deletedBy);
         deleteGeoCodeDateTimeFormatsByGeoCode(geoCode, deletedBy);
 
-        if(geoCodeDetail.getGeoCodeType().getLastDetail().getGeoCodeTypeName().equals(GeoCodeTypes.COUNTRY.name())) {
+        if(geoCodeDetail.getGeoCodeType().getLastDetail().getGeoCodeTypeName().equals(com.echothree.model.control.geo.common.GeoCodeTypes.COUNTRY.name())) {
             
             itemControl.deleteHarmonizedTariffScheduleCodesByCountryGeoCode(geoCode, deletedBy);
             itemControl.deleteItemHarmonizedTariffScheduleCodesByCountryGeoCode(geoCode, deletedBy);
@@ -2375,6 +2089,9 @@ public class GeoControl
     @Inject
     protected GeoCodeDescriptionFactory geoCodeDescriptionFactory;
 
+    @Inject
+    GeoCodeDescriptionTransferCache geoCodeDescriptionTransferCache;
+
     public GeoCodeDescription createGeoCodeDescription(GeoCode geoCode, Language language, String description, BasePK createdBy) {
         var geoCodeDescription = geoCodeDescriptionFactory.create(geoCode, language, description, session.getStartTime(),
                 Session.MAX_TIME);
@@ -2385,38 +2102,19 @@ public class GeoControl
     }
     
     private GeoCodeDescription getGeoCodeDescription(GeoCode geoCode, Language language, EntityPermission entityPermission) {
-        GeoCodeDescription geoCodeDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodedescriptions
-                        WHERE geod_geo_geocodeid = ? AND geod_lang_languageid = ? AND geod_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodedescriptions
-                        WHERE geod_geo_geocodeid = ? AND geod_lang_languageid = ? AND geod_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeDescriptions.fields())
+                .from(GeoCodeDescriptions)
+                .where(GeoCodeDescriptions.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                        GeoCodeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        GeoCodeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = geoCodeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            geoCodeDescription = geoCodeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public GeoCodeDescription getGeoCodeDescription(GeoCode geoCode, Language language) {
@@ -2437,39 +2135,24 @@ public class GeoControl
     
     
     private List<GeoCodeDescription> getGeoCodeDescriptionsByGeoCode(GeoCode geoCode, EntityPermission entityPermission) {
-        List<GeoCodeDescription> geoCodeDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodedescriptions, languages
-                        WHERE geod_geo_geocodeid = ? AND geod_thrutime = ? AND geod_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodedescriptions
-                        WHERE geod_geo_geocodeid = ? AND geod_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(GeoCodeDescriptions.fields())
+                    .from(GeoCodeDescriptions)
+                    .join(Languages).onKey(GEO_CODE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(GeoCodeDescriptions.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                            GeoCodeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    GeoCodeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(GeoCodeDescriptions.fields())
+                    .from(GeoCodeDescriptions)
+                    .where(GeoCodeDescriptions.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                            GeoCodeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = geoCodeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            geoCodeDescriptions = geoCodeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeDescriptions;
+        return geoCodeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<GeoCodeDescription> getGeoCodeDescriptionsByGeoCode(GeoCode geoCode) {
@@ -2551,6 +2234,9 @@ public class GeoControl
     @Inject
     protected GeoCodeAliasFactory geoCodeAliasFactory;
 
+    @Inject
+    GeoCodeAliasTransferCache geoCodeAliasTransferCache;
+
     public GeoCodeAlias createGeoCodeAlias(GeoCode geoCode, GeoCodeAliasType geoCodeAliasType, String alias, BasePK createdBy) {
         var geoCodeAlias = geoCodeAliasFactory.create(geoCode, geoCode.getLastDetail().getGeoCodeScope(), geoCodeAliasType, alias,
                 session.getStartTime(), Session.MAX_TIME);
@@ -2561,49 +2247,39 @@ public class GeoControl
     }
 
     public long countGeoCodeAliasesByGeoCode(GeoCode geoCode) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM geocodealiases
-                WHERE geoa_geo_geocodeid = ? AND geoa_thrutime = ?
-                """,
-                geoCode, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(GeoCodeAliases)
+                .where(GeoCodeAliases.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                        GeoCodeAliases.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countGeoCodeAliasesByGeoCodeAliasType(GeoCodeAliasType geoCodeAliasType) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM geocodealiases
-                WHERE geoa_geoat_geocodealiastypeid = ? AND geoa_thrutime = ?
-                """,
-                geoCodeAliasType, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getGeoCodeAliasQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM geocodealiases
-                WHERE geoa_geo_geocodeid = ? AND geoa_geoat_geocodealiastypeid = ? AND geoa_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM geocodealiases
-                WHERE geoa_geo_geocodeid = ? AND geoa_geoat_geocodealiastypeid = ? AND geoa_thrutime = ?
-                FOR UPDATE
-                """);
-        getGeoCodeAliasQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(GeoCodeAliases)
+                .where(GeoCodeAliases.GEO_CODE_ALIAS_TYPE.eq(geoCodeAliasType.getPrimaryKey()),
+                        GeoCodeAliases.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private GeoCodeAlias getGeoCodeAlias(GeoCode geoCode, GeoCodeAliasType geoCodeAliasType, EntityPermission entityPermission) {
-        return geoCodeAliasFactory.getEntityFromQuery(entityPermission, getGeoCodeAliasQueries,
-                geoCode, geoCodeAliasType, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeAliases.fields())
+                .from(GeoCodeAliases)
+                .where(GeoCodeAliases.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                        GeoCodeAliases.GEO_CODE_ALIAS_TYPE.eq(geoCodeAliasType.getPrimaryKey()),
+                        GeoCodeAliases.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeAliasFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public GeoCodeAlias getGeoCodeAlias(GeoCode geoCode, GeoCodeAliasType geoCodeAliasType) {
@@ -2622,30 +2298,21 @@ public class GeoControl
         return getGeoCodeAliasValue(getGeoCodeAliasForUpdate(geoCode, geoCodeAliasType));
     }
 
-    private static final Map<EntityPermission, String> getGeoCodeAliasByAliasWithinScopeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM geocodealiases
-                WHERE geoa_geos_geocodescopeid = ? AND geoa_geoat_geocodealiastypeid = ? AND geoa_alias = ? AND geoa_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM geocodealiases
-                WHERE geoa_geos_geocodescopeid = ? AND geoa_geoat_geocodealiastypeid = ? AND geoa_alias = ? AND geoa_thrutime = ?
-                FOR UPDATE
-                """);
-        getGeoCodeAliasByAliasWithinScopeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private GeoCodeAlias getGeoCodeAliasByAliasWithinScope(GeoCodeScope geoCodeScope, GeoCodeAliasType geoCodeAliasType, String alias, EntityPermission entityPermission) {
-        return geoCodeAliasFactory.getEntityFromQuery(entityPermission, getGeoCodeAliasByAliasWithinScopeQueries,
-                geoCodeScope, geoCodeAliasType, alias, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeAliases.fields())
+                .from(GeoCodeAliases)
+                .where(GeoCodeAliases.GEO_CODE_SCOPE.eq(geoCodeScope.getPrimaryKey()),
+                        GeoCodeAliases.GEO_CODE_ALIAS_TYPE.eq(geoCodeAliasType.getPrimaryKey()),
+                        GeoCodeAliases.ALIAS.eq(alias),
+                        GeoCodeAliases.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeAliasFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public GeoCodeAlias getGeoCodeAliasByAliasWithinScope(GeoCodeScope geoCodeScope, GeoCodeAliasType geoCodeAliasType, String alias) {
@@ -2656,34 +2323,23 @@ public class GeoControl
         return getGeoCodeAliasByAliasWithinScope(geoCodeScope, geoCodeAliasType, alias, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getGeoCodeAliasesByGeoCodeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM geocodealiases, geocodealiastypes, geocodealiastypedetails
-                WHERE geoa_geo_geocodeid = ? AND geoa_thrutime = ?
-                AND geoa_geoat_geocodealiastypeid = geoat_geocodealiastypeid AND geoat_lastdetailid = geoatdt_geocodealiastypedetailid
-                ORDER BY geoatdt_sortorder, geoatdt_geocodealiastypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM geocodealiases, geocodealiastypes, geocodealiastypedetails
-                WHERE geoa_geo_geocodeid = ? AND geoa_thrutime = ?
-                AND geoa_geoat_geocodealiastypeid = geoat_geocodealiastypeid AND geoat_lastdetailid = geoatdt_geocodealiastypedetailid
-                FOR UPDATE
-                """);
-        getGeoCodeAliasesByGeoCodeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<GeoCodeAlias> getGeoCodeAliasesByGeoCode(GeoCode geoCode, EntityPermission entityPermission) {
-        return geoCodeAliasFactory.getEntitiesFromQuery(entityPermission, getGeoCodeAliasesByGeoCodeQueries,
-                geoCode, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeAliases.fields())
+                .from(GeoCodeAliases)
+                .join(GeoCodeAliasTypes).onKey(GEO_CODE_ALIASES_GEO_CODE_ALIAS_TYPE_FK)
+                .join(GeoCodeAliasTypeDetails).onKey(GEO_CODE_ALIAS_TYPES_LAST_DETAIL_FK)
+                .where(GeoCodeAliases.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                        GeoCodeAliases.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(GeoCodeAliasTypeDetails.SORT_ORDER, GeoCodeAliasTypeDetails.GEO_CODE_ALIAS_TYPE_NAME),
+                    GeoCodeAliasFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeAliasFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<GeoCodeAlias> getGeoCodeAliasesByGeoCode(GeoCode geoCode) {
@@ -2694,31 +2350,27 @@ public class GeoControl
         return getGeoCodeAliasesByGeoCode(geoCode, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getGeoCodeAliasesByGeoCodeScopeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM geocodealiases
-                WHERE geoa_geos_geocodescopeid = ? AND geoa_thrutime = ?
-                _LIMIT_
-                """); // TODO: ORDER BY needed.
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM geocodealiases
-                WHERE geoa_geos_geocodescopeid = ? AND geoa_thrutime = ?
-                FOR UPDATE
-                """);
-        getGeoCodeAliasesByGeoCodeScopeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<GeoCodeAlias> getGeoCodeAliasesByGeoCodeScope(GeoCodeScope geoCodeScope, EntityPermission entityPermission) {
-        return geoCodeAliasFactory.getEntitiesFromQuery(entityPermission, getGeoCodeAliasesByGeoCodeScopeQueries,
-                geoCodeScope, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeAliases.fields())
+                .from(GeoCodeAliases)
+                .where(GeoCodeAliases.GEO_CODE_SCOPE.eq(geoCodeScope.getPrimaryKey()),
+                        GeoCodeAliases.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(GeoCodeAliases.fields())
+                    .from(GeoCodeAliases)
+                    .join(GeoCodeAliasTypes).onKey(GEO_CODE_ALIASES_GEO_CODE_ALIAS_TYPE_FK)
+                    .join(GeoCodeAliasTypeDetails).onKey(GEO_CODE_ALIAS_TYPES_LAST_DETAIL_FK)
+                    .where(GeoCodeAliases.GEO_CODE_SCOPE.eq(geoCodeScope.getPrimaryKey()),
+                            GeoCodeAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(GeoCodeAliasTypeDetails.SORT_ORDER, GeoCodeAliasTypeDetails.GEO_CODE_ALIAS_TYPE_NAME, GeoCodeAliases.ALIAS),
+                    GeoCodeAliasFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeAliasFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<GeoCodeAlias> getGeoCodeAliasesByGeoCodeScope(GeoCodeScope geoCodeScope) {
@@ -2729,31 +2381,27 @@ public class GeoControl
         return getGeoCodeAliasesByGeoCodeScope(geoCodeScope, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getGeoCodeAliasesByGeoCodeAliasTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM geocodealiases
-                WHERE geoa_geoat_geocodealiastypeid = ? AND geoa_thrutime = ?
-                _LIMIT_
-                """); // TODO: ORDER BY needed.
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM geocodealiases
-                WHERE geoa_geoat_geocodealiastypeid = ? AND geoa_thrutime = ?
-                FOR UPDATE
-                """);
-        getGeoCodeAliasesByGeoCodeAliasTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<GeoCodeAlias> getGeoCodeAliasesByGeoCodeAliasType(GeoCodeAliasType geoCodeAliasType, EntityPermission entityPermission) {
-        return geoCodeAliasFactory.getEntitiesFromQuery(entityPermission, getGeoCodeAliasesByGeoCodeAliasTypeQueries,
-                geoCodeAliasType, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeAliases.fields())
+                .from(GeoCodeAliases)
+                .where(GeoCodeAliases.GEO_CODE_ALIAS_TYPE.eq(geoCodeAliasType.getPrimaryKey()),
+                        GeoCodeAliases.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(GeoCodeAliases.fields())
+                    .from(GeoCodeAliases)
+                    .join(GeoCodeScopes).onKey(GEO_CODE_ALIASES_GEO_CODE_SCOPE_FK)
+                    .join(GeoCodeScopeDetails).onKey(GEO_CODE_SCOPES_LAST_DETAIL_FK)
+                    .where(GeoCodeAliases.GEO_CODE_ALIAS_TYPE.eq(geoCodeAliasType.getPrimaryKey()),
+                            GeoCodeAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(GeoCodeScopeDetails.SORT_ORDER, GeoCodeScopeDetails.GEO_CODE_SCOPE_NAME, GeoCodeAliases.ALIAS),
+                    GeoCodeAliasFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeAliasFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<GeoCodeAlias> getGeoCodeAliasesByGeoCodeAliasType(GeoCodeAliasType geoCodeAliasType) {
@@ -2833,6 +2481,9 @@ public class GeoControl
     @Inject
     protected GeoCodeRelationshipFactory geoCodeRelationshipFactory;
 
+    @Inject
+    GeoCodeRelationshipTransferCache geoCodeRelationshipTransferCache;
+
     public GeoCodeRelationship createGeoCodeRelationship(GeoCode fromGeoCode, GeoCode toGeoCode, BasePK createdBy) {
         var geoCodeRelationship = geoCodeRelationshipFactory.create(fromGeoCode, toGeoCode,
                 session.getStartTime(), Session.MAX_TIME);
@@ -2843,73 +2494,57 @@ public class GeoControl
     }
     
     public long countGeoCodeRelationshipsByFromGeoCode(GeoCode fromGeoCode) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM geocoderelationships
-                WHERE geor_fromgeocodeid = ? AND geor_thrutime = ?
-                """,
-                fromGeoCode, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(GeoCodeRelationships)
+                .where(GeoCodeRelationships.FROM_GEO_CODE.eq(fromGeoCode.getPrimaryKey()),
+                        GeoCodeRelationships.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countGeoCodeRelationshipsByToGeoCode(GeoCode toGeoCode) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM geocoderelationships
-                WHERE geor_togeocodeid = ? AND geor_thrutime = ?
-                """,
-                toGeoCode, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(GeoCodeRelationships)
+                .where(GeoCodeRelationships.TO_GEO_CODE.eq(toGeoCode.getPrimaryKey()),
+                        GeoCodeRelationships.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public GeoCodeRelationship getGeoCodeRelationship(GeoCode fromGeoCode, GeoCode toGeoCode) {
-        GeoCodeRelationship geoCodeRelationship;
-        
-        try {
-            var ps = geoCodeRelationshipFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM geocoderelationships
-                    WHERE geor_fromgeocodeid = ? AND geor_togeocodeid = ? AND geor_thrutime = ?
-                    """);
-            
-            ps.setLong(1, fromGeoCode.getPrimaryKey().getEntityId());
-            ps.setLong(2, toGeoCode.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            geoCodeRelationship = geoCodeRelationshipFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeRelationship;
-    }
-    
-    private static final Map<EntityPermission, String> getGeoCodeRelationshipsByFromGeoCodeQueries;
+        var query = session.getDslContext()
+                .select(GeoCodeRelationships.fields())
+                .from(GeoCodeRelationships)
+                .where(GeoCodeRelationships.FROM_GEO_CODE.eq(fromGeoCode.getPrimaryKey()),
+                        GeoCodeRelationships.TO_GEO_CODE.eq(toGeoCode.getPrimaryKey()),
+                        GeoCodeRelationships.THRU_TIME.eq(Session.MAX_TIME));
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM geocoderelationships
-                WHERE geor_fromgeocodeid = ? AND geor_thrutime = ?
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM geocoderelationships
-                WHERE geor_fromgeocodeid = ? AND geor_thrutime = ?
-                FOR UPDATE
-                """);
-        getGeoCodeRelationshipsByFromGeoCodeQueries = Collections.unmodifiableMap(queryMap);
+        return geoCodeRelationshipFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     private List<GeoCodeRelationship> getGeoCodeRelationshipsByFromGeoCode(GeoCode fromGeoCode, EntityPermission entityPermission) {
-        return geoCodeRelationshipFactory.getEntitiesFromQuery(entityPermission, getGeoCodeRelationshipsByFromGeoCodeQueries,
-                fromGeoCode, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeRelationships.fields())
+                .from(GeoCodeRelationships)
+                .where(GeoCodeRelationships.FROM_GEO_CODE.eq(fromGeoCode.getPrimaryKey()),
+                        GeoCodeRelationships.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(GeoCodeRelationships.fields())
+                    .from(GeoCodeRelationships)
+                    .join(GeoCodes).onKey(GEO_CODE_RELATIONSHIPS_TO_GEO_CODE_FK)
+                    .join(GeoCodeDetails).onKey(GEO_CODES_LAST_DETAIL_FK)
+                    .where(GeoCodeRelationships.FROM_GEO_CODE.eq(fromGeoCode.getPrimaryKey()),
+                            GeoCodeRelationships.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(GeoCodeDetails.SORT_ORDER, GeoCodeDetails.GEO_CODE_NAME),
+                    GeoCodeRelationshipFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeRelationshipFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<GeoCodeRelationship> getGeoCodeRelationshipsByFromGeoCode(GeoCode fromGeoCode) {
@@ -2921,55 +2556,41 @@ public class GeoControl
     }
 
     public List<GeoCodeRelationship> getGeoCodeRelationshipsByFromGeoCodeAndGeoCodeType(GeoCode fromGeoCode, GeoCodeType geoCodeType) {
-        List<GeoCodeRelationship> geoCodeRelationships;
-        
-        try {
-            var ps = geoCodeRelationshipFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM geocoderelationships, geocodes, geocodedetails
-                    WHERE geor_fromgeocodeid = ? AND geor_thrutime = ?
-                    AND geor_togeocodeid = geo_geocodeid AND geo_lastdetailid = geodt_geocodedetailid
-                    AND geodt_geot_geocodetypeid = ?
-                    """);
-            
-            ps.setLong(1, fromGeoCode.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            ps.setLong(3, geoCodeType.getPrimaryKey().getEntityId());
-            
-            geoCodeRelationships = geoCodeRelationshipFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeRelationships;
-    }
-    
-    private static final Map<EntityPermission, String> getGeoCodeRelationshipsByToGeoCodeQueries;
+        var query = session.applyLimit(session.getDslContext()
+                .select(GeoCodeRelationships.fields())
+                .from(GeoCodeRelationships)
+                .join(GeoCodes).onKey(GEO_CODE_RELATIONSHIPS_TO_GEO_CODE_FK)
+                .join(GeoCodeDetails).onKey(GEO_CODES_LAST_DETAIL_FK)
+                .where(GeoCodeRelationships.FROM_GEO_CODE.eq(fromGeoCode.getPrimaryKey()),
+                        GeoCodeRelationships.THRU_TIME.eq(Session.MAX_TIME),
+                        GeoCodeDetails.GEO_CODE_TYPE.eq(geoCodeType.getPrimaryKey()))
+                .orderBy(GeoCodeDetails.SORT_ORDER, GeoCodeDetails.GEO_CODE_NAME),
+                GeoCodeRelationshipFactory.class);
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM geocoderelationships
-                WHERE geor_togeocodeid = ? AND geor_thrutime = ?
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM geocoderelationships
-                WHERE geor_togeocodeid = ? AND geor_thrutime = ?
-                FOR UPDATE
-                """);
-        getGeoCodeRelationshipsByToGeoCodeQueries = Collections.unmodifiableMap(queryMap);
+        return geoCodeRelationshipFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     private List<GeoCodeRelationship> getGeoCodeRelationshipsByToGeoCode(GeoCode toGeoCode, EntityPermission entityPermission) {
-        return geoCodeRelationshipFactory.getEntitiesFromQuery(entityPermission, getGeoCodeRelationshipsByToGeoCodeQueries,
-                toGeoCode, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeRelationships.fields())
+                .from(GeoCodeRelationships)
+                .where(GeoCodeRelationships.TO_GEO_CODE.eq(toGeoCode.getPrimaryKey()),
+                        GeoCodeRelationships.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(GeoCodeRelationships.fields())
+                    .from(GeoCodeRelationships)
+                    .join(GeoCodes).onKey(GEO_CODE_RELATIONSHIPS_FROM_GEO_CODE_FK)
+                    .join(GeoCodeDetails).onKey(GEO_CODES_LAST_DETAIL_FK)
+                    .where(GeoCodeRelationships.TO_GEO_CODE.eq(toGeoCode.getPrimaryKey()),
+                            GeoCodeRelationships.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(GeoCodeDetails.SORT_ORDER, GeoCodeDetails.GEO_CODE_NAME),
+                    GeoCodeRelationshipFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeRelationshipFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<GeoCodeRelationship> getGeoCodeRelationshipsByToGeoCode(GeoCode toGeoCode) {
@@ -3015,6 +2636,9 @@ public class GeoControl
     @Inject
     protected GeoCodeLanguageFactory geoCodeLanguageFactory;
 
+    @Inject
+    GeoCodeLanguageTransferCache geoCodeLanguageTransferCache;
+
     public GeoCodeLanguage createGeoCodeLanguage(GeoCode geoCode, Language language, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultGeoCodeLanguage = getDefaultGeoCodeLanguage(geoCode);
         var defaultFound = defaultGeoCodeLanguage != null;
@@ -3037,58 +2661,39 @@ public class GeoControl
     }
 
     public long countGeoCodeLanguagesByGeoCode(GeoCode geoCode) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM geocodelanguages
-                WHERE geol_geo_geocodeid = ? AND geol_thrutime = ?
-                """,
-                geoCode, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(GeoCodeLanguages)
+                .where(GeoCodeLanguages.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                        GeoCodeLanguages.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countGeoCodeLanguagesByLanguage(Language language) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM geocodelanguages
-                WHERE geol_lang_languageid = ? AND geol_thrutime = ?
-                """,
-                language, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(GeoCodeLanguages)
+                .where(GeoCodeLanguages.LANGUAGE.eq(language.getPrimaryKey()),
+                        GeoCodeLanguages.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private GeoCodeLanguage getGeoCodeLanguage(GeoCode geoCode, Language language, EntityPermission entityPermission) {
-        GeoCodeLanguage geoCodeLanguage;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodelanguages
-                        WHERE geol_geo_geocodeid = ? AND geol_lang_languageid = ? AND geol_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodelanguages
-                        WHERE geol_geo_geocodeid = ? AND geol_lang_languageid = ? AND geol_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeLanguages.fields())
+                .from(GeoCodeLanguages)
+                .where(GeoCodeLanguages.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                        GeoCodeLanguages.LANGUAGE.eq(language.getPrimaryKey()),
+                        GeoCodeLanguages.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = geoCodeLanguageFactory.prepareStatement(query);
-            
-            ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            geoCodeLanguage = geoCodeLanguageFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeLanguage;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeLanguageFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public GeoCodeLanguage getGeoCodeLanguage(GeoCode geoCode, Language language) {
@@ -3108,37 +2713,19 @@ public class GeoControl
     }
     
     private GeoCodeLanguage getDefaultGeoCodeLanguage(GeoCode geoCode, EntityPermission entityPermission) {
-        GeoCodeLanguage geoCodeLanguage;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodelanguages
-                        WHERE geol_geo_geocodeid = ? AND geol_isdefault = 1 AND geol_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodelanguages
-                        WHERE geol_geo_geocodeid = ? AND geol_isdefault = 1 AND geol_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeLanguages.fields())
+                .from(GeoCodeLanguages)
+                .where(GeoCodeLanguages.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                        GeoCodeLanguages.IS_DEFAULT.eq(true),
+                        GeoCodeLanguages.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = geoCodeLanguageFactory.prepareStatement(query);
-            
-            ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            geoCodeLanguage = geoCodeLanguageFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeLanguage;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeLanguageFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public GeoCodeLanguage getDefaultGeoCodeLanguage(GeoCode geoCode) {
@@ -3156,40 +2743,24 @@ public class GeoControl
     }
     
     private List<GeoCodeLanguage> getGeoCodeLanguagesByGeoCode(GeoCode geoCode, EntityPermission entityPermission) {
-        List<GeoCodeLanguage> geoCodeLanguages;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodelanguages, languages
-                        WHERE geol_geo_geocodeid = ? AND geol_thrutime = ?
-                        AND geol_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodelanguages
-                        WHERE geol_geo_geocodeid = ? AND geol_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(GeoCodeLanguages.fields())
+                    .from(GeoCodeLanguages)
+                    .join(Languages).onKey(GEO_CODE_LANGUAGES_LANGUAGE_FK)
+                    .where(GeoCodeLanguages.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                            GeoCodeLanguages.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    GeoCodeLanguageFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(GeoCodeLanguages.fields())
+                    .from(GeoCodeLanguages)
+                    .where(GeoCodeLanguages.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                            GeoCodeLanguages.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = geoCodeLanguageFactory.prepareStatement(query);
-            
-            ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            geoCodeLanguages = geoCodeLanguageFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeLanguages;
+        return geoCodeLanguageFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<GeoCodeLanguage> getGeoCodeLanguagesByGeoCode(GeoCode geoCode) {
@@ -3201,40 +2772,25 @@ public class GeoControl
     }
     
     private List<GeoCodeLanguage> getGeoCodeLanguagesByLanguage(Language language, EntityPermission entityPermission) {
-        List<GeoCodeLanguage> geoCodeLanguages;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodelanguages, geocodes, geocodedetails
-                        WHERE geol_lang_languageid = ? AND geol_thrutime = ?
-                        AND geol_geo_geocodeid = geo_geocodeid AND geo_lastdetailid = geodt_geocodedetailid
-                        ORDER BY geodt_sortorder, geodt_geocodename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodelanguages
-                        WHERE geol_lang_languageid = ? AND geol_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(GeoCodeLanguages.fields())
+                    .from(GeoCodeLanguages)
+                    .join(GeoCodes).onKey(GEO_CODE_LANGUAGES_GEO_CODE_FK)
+                    .join(GeoCodeDetails).onKey(GEO_CODES_LAST_DETAIL_FK)
+                    .where(GeoCodeLanguages.LANGUAGE.eq(language.getPrimaryKey()),
+                            GeoCodeLanguages.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(GeoCodeDetails.SORT_ORDER, GeoCodeDetails.GEO_CODE_NAME),
+                    GeoCodeLanguageFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(GeoCodeLanguages.fields())
+                    .from(GeoCodeLanguages)
+                    .where(GeoCodeLanguages.LANGUAGE.eq(language.getPrimaryKey()),
+                            GeoCodeLanguages.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = geoCodeLanguageFactory.prepareStatement(query);
-            
-            ps.setLong(1, language.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            geoCodeLanguages = geoCodeLanguageFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeLanguages;
+        return geoCodeLanguageFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<GeoCodeLanguage> getGeoCodeLanguagesByLanguage(Language language) {
@@ -3354,6 +2910,9 @@ public class GeoControl
     @Inject
     protected GeoCodeCurrencyFactory geoCodeCurrencyFactory;
 
+    @Inject
+    GeoCodeCurrencyTransferCache geoCodeCurrencyTransferCache;
+
     public GeoCodeCurrency createGeoCodeCurrency(GeoCode geoCode, Currency currency, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var defaultGeoCodeCurrency = getDefaultGeoCodeCurrency(geoCode);
@@ -3377,58 +2936,39 @@ public class GeoControl
     }
 
     public long countGeoCodeCurrenciesByGeoCode(GeoCode geoCode) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM geocodecurrencies
-                WHERE geocur_geo_geocodeid = ? AND geocur_thrutime = ?
-                """,
-                geoCode, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(GeoCodeCurrencies)
+                .where(GeoCodeCurrencies.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                        GeoCodeCurrencies.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countGeoCodeCurrenciesByCurrency(Currency currency) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM geocodecurrencies
-                WHERE geocur_cur_currencyid = ? AND geocur_thrutime = ?
-                """,
-                currency, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(GeoCodeCurrencies)
+                .where(GeoCodeCurrencies.CURRENCY.eq(currency.getPrimaryKey()),
+                        GeoCodeCurrencies.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private GeoCodeCurrency getGeoCodeCurrency(GeoCode geoCode, Currency currency, EntityPermission entityPermission) {
-        GeoCodeCurrency geoCodeCurrency;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodecurrencies
-                        WHERE geocur_geo_geocodeid = ? AND geocur_cur_currencyid = ? AND geocur_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodecurrencies
-                        WHERE geocur_geo_geocodeid = ? AND geocur_cur_currencyid = ? AND geocur_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeCurrencies.fields())
+                .from(GeoCodeCurrencies)
+                .where(GeoCodeCurrencies.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                        GeoCodeCurrencies.CURRENCY.eq(currency.getPrimaryKey()),
+                        GeoCodeCurrencies.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = geoCodeCurrencyFactory.prepareStatement(query);
-            
-            ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
-            ps.setLong(2, currency.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            geoCodeCurrency = geoCodeCurrencyFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeCurrency;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeCurrencyFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public GeoCodeCurrency getGeoCodeCurrency(GeoCode geoCode, Currency currency) {
@@ -3448,37 +2988,19 @@ public class GeoControl
     }
     
     private GeoCodeCurrency getDefaultGeoCodeCurrency(GeoCode geoCode, EntityPermission entityPermission) {
-        GeoCodeCurrency geoCodeCurrency;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodecurrencies
-                        WHERE geocur_geo_geocodeid = ? AND geocur_isdefault = 1 AND geocur_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodecurrencies
-                        WHERE geocur_geo_geocodeid = ? AND geocur_isdefault = 1 AND geocur_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeCurrencies.fields())
+                .from(GeoCodeCurrencies)
+                .where(GeoCodeCurrencies.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                        GeoCodeCurrencies.IS_DEFAULT.eq(true),
+                        GeoCodeCurrencies.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = geoCodeCurrencyFactory.prepareStatement(query);
-            
-            ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            geoCodeCurrency = geoCodeCurrencyFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeCurrency;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeCurrencyFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public GeoCodeCurrency getDefaultGeoCodeCurrency(GeoCode geoCode) {
@@ -3495,40 +3017,24 @@ public class GeoControl
         return geoCodeCurrency == null? null: geoCodeCurrency.getGeoCodeCurrencyValue().clone();
     }
     private List<GeoCodeCurrency> getGeoCodeCurrenciesByGeoCode(GeoCode geoCode, EntityPermission entityPermission) {
-        List<GeoCodeCurrency> geoCodeCurrencies;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodecurrencies, currencies
-                        WHERE geocur_geo_geocodeid = ? AND geocur_thrutime = ?
-                        AND geocur_cur_currencyid = cur_currencyid
-                        ORDER BY cur_sortorder, cur_currencyisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodecurrencies
-                        WHERE geocur_geo_geocodeid = ? AND geocur_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(GeoCodeCurrencies.fields())
+                    .from(GeoCodeCurrencies)
+                    .join(Currencies).onKey(GEO_CODE_CURRENCIES_CURRENCY_FK)
+                    .where(GeoCodeCurrencies.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                            GeoCodeCurrencies.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Currencies.SORT_ORDER, Currencies.CURRENCY_ISO_NAME),
+                    GeoCodeCurrencyFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(GeoCodeCurrencies.fields())
+                    .from(GeoCodeCurrencies)
+                    .where(GeoCodeCurrencies.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                            GeoCodeCurrencies.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = geoCodeCurrencyFactory.prepareStatement(query);
-            
-            ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            geoCodeCurrencies = geoCodeCurrencyFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeCurrencies;
+        return geoCodeCurrencyFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<GeoCodeCurrency> getGeoCodeCurrenciesByGeoCode(GeoCode geoCode) {
@@ -3540,40 +3046,25 @@ public class GeoControl
     }
     
     private List<GeoCodeCurrency> getGeoCodeCurrenciesByCurrency(Currency currency, EntityPermission entityPermission) {
-        List<GeoCodeCurrency> geoCodeCurrencies;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodecurrencies, geocodes, geocodedetails
-                        WHERE geocur_cur_currencyid = ? AND geocur_thrutime = ?
-                        AND geocur_geo_geocodeid = geo_geocodeid AND geo_lastdetailid = geodt_geocodedetailid
-                        ORDER BY geodt_sortorder, geodt_geocodename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodecurrencies
-                        WHERE geocur_cur_currencyid = ? AND geocur_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(GeoCodeCurrencies.fields())
+                    .from(GeoCodeCurrencies)
+                    .join(GeoCodes).onKey(GEO_CODE_CURRENCIES_GEO_CODE_FK)
+                    .join(GeoCodeDetails).onKey(GEO_CODES_LAST_DETAIL_FK)
+                    .where(GeoCodeCurrencies.CURRENCY.eq(currency.getPrimaryKey()),
+                            GeoCodeCurrencies.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(GeoCodeDetails.SORT_ORDER, GeoCodeDetails.GEO_CODE_NAME),
+                    GeoCodeCurrencyFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(GeoCodeCurrencies.fields())
+                    .from(GeoCodeCurrencies)
+                    .where(GeoCodeCurrencies.CURRENCY.eq(currency.getPrimaryKey()),
+                            GeoCodeCurrencies.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = geoCodeCurrencyFactory.prepareStatement(query);
-            
-            ps.setLong(1, currency.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            geoCodeCurrencies = geoCodeCurrencyFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeCurrencies;
+        return geoCodeCurrencyFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<GeoCodeCurrency> getGeoCodeCurrenciesByCurrency(Currency currency) {
@@ -3693,6 +3184,9 @@ public class GeoControl
     @Inject
     protected GeoCodeTimeZoneFactory geoCodeTimeZoneFactory;
 
+    @Inject
+    GeoCodeTimeZoneTransferCache geoCodeTimeZoneTransferCache;
+
     public GeoCodeTimeZone createGeoCodeTimeZone(GeoCode geoCode, TimeZone timeZone, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var defaultGeoCodeTimeZone = getDefaultGeoCodeTimeZone(geoCode);
@@ -3716,58 +3210,39 @@ public class GeoControl
     }
 
     public long countGeoCodeTimeZonesByGeoCode(GeoCode geoCode) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM geocodetimezones
-                WHERE geotz_geo_geocodeid = ? AND geotz_thrutime = ?
-                """,
-                geoCode, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(GeoCodeTimeZones)
+                .where(GeoCodeTimeZones.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                        GeoCodeTimeZones.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countGeoCodeTimeZonesByTimeZone(TimeZone timeZone) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM geocodetimezones
-                WHERE geotz_tz_timezoneid = ? AND geotz_thrutime = ?
-                """,
-                timeZone, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(GeoCodeTimeZones)
+                .where(GeoCodeTimeZones.TIME_ZONE.eq(timeZone.getPrimaryKey()),
+                        GeoCodeTimeZones.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private GeoCodeTimeZone getGeoCodeTimeZone(GeoCode geoCode, TimeZone timeZone, EntityPermission entityPermission) {
-        GeoCodeTimeZone geoCodeTimeZone;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodetimezones
-                        WHERE geotz_geo_geocodeid = ? AND geotz_tz_timeZoneid = ? AND geotz_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodetimezones
-                        WHERE geotz_geo_geocodeid = ? AND geotz_tz_timeZoneid = ? AND geotz_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeTimeZones.fields())
+                .from(GeoCodeTimeZones)
+                .where(GeoCodeTimeZones.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                        GeoCodeTimeZones.TIME_ZONE.eq(timeZone.getPrimaryKey()),
+                        GeoCodeTimeZones.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = geoCodeTimeZoneFactory.prepareStatement(query);
-            
-            ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
-            ps.setLong(2, timeZone.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            geoCodeTimeZone = geoCodeTimeZoneFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeTimeZone;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeTimeZoneFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public GeoCodeTimeZone getGeoCodeTimeZone(GeoCode geoCode, TimeZone timeZone) {
@@ -3787,37 +3262,19 @@ public class GeoControl
     }
     
     private GeoCodeTimeZone getDefaultGeoCodeTimeZone(GeoCode geoCode, EntityPermission entityPermission) {
-        GeoCodeTimeZone geoCodeTimeZone;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodetimezones
-                        WHERE geotz_geo_geocodeid = ? AND geotz_isdefault = 1 AND geotz_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodetimezones
-                        WHERE geotz_geo_geocodeid = ? AND geotz_isdefault = 1 AND geotz_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeTimeZones.fields())
+                .from(GeoCodeTimeZones)
+                .where(GeoCodeTimeZones.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                        GeoCodeTimeZones.IS_DEFAULT.eq(true),
+                        GeoCodeTimeZones.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = geoCodeTimeZoneFactory.prepareStatement(query);
-            
-            ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            geoCodeTimeZone = geoCodeTimeZoneFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeTimeZone;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeTimeZoneFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public GeoCodeTimeZone getDefaultGeoCodeTimeZone(GeoCode geoCode) {
@@ -3835,40 +3292,25 @@ public class GeoControl
     }
     
     private List<GeoCodeTimeZone> getGeoCodeTimeZonesByGeoCode(GeoCode geoCode, EntityPermission entityPermission) {
-        List<GeoCodeTimeZone> geoCodeTimeZones;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodetimezones, timezones, timezonedetails
-                        WHERE geotz_geo_geocodeid = ? AND geotz_thrutime = ?
-                        AND geotz_tz_timezoneid = tz_timezoneid AND tz_lastdetailid = tzdt_timezonedetailid
-                        ORDER BY tzdt_sortorder, tzdt_javatimezonename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodetimezones
-                        WHERE geotz_geo_geocodeid = ? AND geotz_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(GeoCodeTimeZones.fields())
+                    .from(GeoCodeTimeZones)
+                    .join(TimeZones).onKey(GEO_CODE_TIME_ZONES_TIME_ZONE_FK)
+                    .join(TimeZoneDetails).onKey(TIME_ZONES_LAST_DETAIL_FK)
+                    .where(GeoCodeTimeZones.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                            GeoCodeTimeZones.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(TimeZoneDetails.SORT_ORDER, TimeZoneDetails.JAVA_TIME_ZONE_NAME),
+                    GeoCodeTimeZoneFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(GeoCodeTimeZones.fields())
+                    .from(GeoCodeTimeZones)
+                    .where(GeoCodeTimeZones.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                            GeoCodeTimeZones.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = geoCodeTimeZoneFactory.prepareStatement(query);
-            
-            ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            geoCodeTimeZones = geoCodeTimeZoneFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeTimeZones;
+        return geoCodeTimeZoneFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<GeoCodeTimeZone> getGeoCodeTimeZonesByGeoCode(GeoCode geoCode) {
@@ -3880,40 +3322,25 @@ public class GeoControl
     }
     
     private List<GeoCodeTimeZone> getGeoCodeTimeZonesByTimeZone(TimeZone timeZone, EntityPermission entityPermission) {
-        List<GeoCodeTimeZone> geoCodeTimeZones;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodetimezones, geocodes, geocodedetails
-                        WHERE geotz_tz_timeZoneid = ? AND geotz_thrutime = ?
-                        AND geotz_geo_geocodeid = geo_geocodeid AND geo_lastdetailid = geodt_geocodedetailid
-                        ORDER BY geodt_sortorder, geodt_geocodename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodetimezones
-                        WHERE geotz_tz_timeZoneid = ? AND geotz_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(GeoCodeTimeZones.fields())
+                    .from(GeoCodeTimeZones)
+                    .join(GeoCodes).onKey(GEO_CODE_TIME_ZONES_GEO_CODE_FK)
+                    .join(GeoCodeDetails).onKey(GEO_CODES_LAST_DETAIL_FK)
+                    .where(GeoCodeTimeZones.TIME_ZONE.eq(timeZone.getPrimaryKey()),
+                            GeoCodeTimeZones.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(GeoCodeDetails.SORT_ORDER, GeoCodeDetails.GEO_CODE_NAME),
+                    GeoCodeTimeZoneFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(GeoCodeTimeZones.fields())
+                    .from(GeoCodeTimeZones)
+                    .where(GeoCodeTimeZones.TIME_ZONE.eq(timeZone.getPrimaryKey()),
+                            GeoCodeTimeZones.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = geoCodeTimeZoneFactory.prepareStatement(query);
-            
-            ps.setLong(1, timeZone.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            geoCodeTimeZones = geoCodeTimeZoneFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeTimeZones;
+        return geoCodeTimeZoneFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<GeoCodeTimeZone> getGeoCodeTimeZonesByTimeZone(TimeZone timeZone) {
@@ -4033,6 +3460,9 @@ public class GeoControl
     @Inject
     protected GeoCodeDateTimeFormatFactory geoCodeDateTimeFormatFactory;
 
+    @Inject
+    GeoCodeDateTimeFormatTransferCache geoCodeDateTimeFormatTransferCache;
+
     public GeoCodeDateTimeFormat createGeoCodeDateTimeFormat(GeoCode geoCode, DateTimeFormat dateTimeFormat, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
         var defaultGeoCodeDateTimeFormat = getDefaultGeoCodeDateTimeFormat(geoCode);
@@ -4056,58 +3486,39 @@ public class GeoControl
     }
 
     public long countGeoCodeDateTimeFormatsByGeoCode(GeoCode geoCode) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM geocodedatetimeformats
-                WHERE geodtf_geo_geocodeid = ? AND geodtf_thrutime = ?
-                """,
-                geoCode, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(GeoCodeDateTimeFormats)
+                .where(GeoCodeDateTimeFormats.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                        GeoCodeDateTimeFormats.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countGeoCodeDateTimeFormatsByDateTimeFormat(DateTimeFormat dateTimeFormat) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM geocodedatetimeformats
-                WHERE geodtf_dtf_datetimeformatid = ? AND geodtf_thrutime = ?
-                """,
-                dateTimeFormat, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(GeoCodeDateTimeFormats)
+                .where(GeoCodeDateTimeFormats.DATE_TIME_FORMAT.eq(dateTimeFormat.getPrimaryKey()),
+                        GeoCodeDateTimeFormats.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private GeoCodeDateTimeFormat getGeoCodeDateTimeFormat(GeoCode geoCode, DateTimeFormat dateTimeFormat, EntityPermission entityPermission) {
-        GeoCodeDateTimeFormat geoCodeDateTimeFormat;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodedatetimeformats
-                        WHERE geodtf_geo_geocodeid = ? AND geodtf_dtf_datetimeformatid = ? AND geodtf_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodedatetimeformats
-                        WHERE geodtf_geo_geocodeid = ? AND geodtf_dtf_datetimeformatid = ? AND geodtf_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeDateTimeFormats.fields())
+                .from(GeoCodeDateTimeFormats)
+                .where(GeoCodeDateTimeFormats.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                        GeoCodeDateTimeFormats.DATE_TIME_FORMAT.eq(dateTimeFormat.getPrimaryKey()),
+                        GeoCodeDateTimeFormats.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = geoCodeDateTimeFormatFactory.prepareStatement(query);
-            
-            ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
-            ps.setLong(2, dateTimeFormat.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            geoCodeDateTimeFormat = geoCodeDateTimeFormatFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeDateTimeFormat;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeDateTimeFormatFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public GeoCodeDateTimeFormat getGeoCodeDateTimeFormat(GeoCode geoCode, DateTimeFormat dateTimeFormat) {
@@ -4127,37 +3538,19 @@ public class GeoControl
     }
     
     private GeoCodeDateTimeFormat getDefaultGeoCodeDateTimeFormat(GeoCode geoCode, EntityPermission entityPermission) {
-        GeoCodeDateTimeFormat geoCodeDateTimeFormat;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodedatetimeformats
-                        WHERE geodtf_geo_geocodeid = ? AND geodtf_isdefault = 1 AND geodtf_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodedatetimeformats
-                        WHERE geodtf_geo_geocodeid = ? AND geodtf_isdefault = 1 AND geodtf_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeDateTimeFormats.fields())
+                .from(GeoCodeDateTimeFormats)
+                .where(GeoCodeDateTimeFormats.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                        GeoCodeDateTimeFormats.IS_DEFAULT.eq(true),
+                        GeoCodeDateTimeFormats.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = geoCodeDateTimeFormatFactory.prepareStatement(query);
-            
-            ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            geoCodeDateTimeFormat = geoCodeDateTimeFormatFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeDateTimeFormat;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeDateTimeFormatFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public GeoCodeDateTimeFormat getDefaultGeoCodeDateTimeFormat(GeoCode geoCode) {
@@ -4175,40 +3568,25 @@ public class GeoControl
     }
     
     private List<GeoCodeDateTimeFormat> getGeoCodeDateTimeFormatsByGeoCode(GeoCode geoCode, EntityPermission entityPermission) {
-        List<GeoCodeDateTimeFormat> geoCodeDateTimeFormats;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodedatetimeformats, datetimeformats, datetimeformatdetails
-                        WHERE geodtf_geo_geocodeid = ? AND geodtf_thrutime = ?
-                        AND geodtf_dtf_datetimeformatid = dtf_datetimeformatid AND dtf_lastdetailid = dtfdt_datetimeformatdetailid
-                        ORDER BY dtfdt_sortorder, dtfdt_datetimeformatname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodedatetimeformats
-                        WHERE geodtf_geo_geocodeid = ? AND geodtf_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(GeoCodeDateTimeFormats.fields())
+                    .from(GeoCodeDateTimeFormats)
+                    .join(DateTimeFormats).onKey(GEO_CODE_DATE_TIME_FORMATS_DATE_TIME_FORMAT_FK)
+                    .join(DateTimeFormatDetails).onKey(DATE_TIME_FORMATS_LAST_DETAIL_FK)
+                    .where(GeoCodeDateTimeFormats.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                            GeoCodeDateTimeFormats.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(DateTimeFormatDetails.SORT_ORDER, DateTimeFormatDetails.DATE_TIME_FORMAT_NAME),
+                    GeoCodeDateTimeFormatFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(GeoCodeDateTimeFormats.fields())
+                    .from(GeoCodeDateTimeFormats)
+                    .where(GeoCodeDateTimeFormats.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                            GeoCodeDateTimeFormats.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = geoCodeDateTimeFormatFactory.prepareStatement(query);
-            
-            ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            geoCodeDateTimeFormats = geoCodeDateTimeFormatFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeDateTimeFormats;
+        return geoCodeDateTimeFormatFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<GeoCodeDateTimeFormat> getGeoCodeDateTimeFormatsByGeoCode(GeoCode geoCode) {
@@ -4220,40 +3598,25 @@ public class GeoControl
     }
     
     private List<GeoCodeDateTimeFormat> getGeoCodeDateTimeFormatsByDateTimeFormat(DateTimeFormat dateTimeFormat, EntityPermission entityPermission) {
-        List<GeoCodeDateTimeFormat> geoCodeDateTimeFormats;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodedatetimeformats, geocodes, geocodedetails
-                        WHERE geodtf_dtf_datetimeformatid = ? AND geodtf_thrutime = ?
-                        AND geodtf_geo_geocodeid = geo_geocodeid AND geo_lastdetailid = geodt_geocodedetailid
-                        ORDER BY geodt_sortorder, geodt_geocodename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodedatetimeformats
-                        WHERE geodtf_dtf_datetimeformatid = ? AND geodtf_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(GeoCodeDateTimeFormats.fields())
+                    .from(GeoCodeDateTimeFormats)
+                    .join(GeoCodes).onKey(GEO_CODE_DATE_TIME_FORMATS_GEO_CODE_FK)
+                    .join(GeoCodeDetails).onKey(GEO_CODES_LAST_DETAIL_FK)
+                    .where(GeoCodeDateTimeFormats.DATE_TIME_FORMAT.eq(dateTimeFormat.getPrimaryKey()),
+                            GeoCodeDateTimeFormats.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(GeoCodeDetails.SORT_ORDER, GeoCodeDetails.GEO_CODE_NAME),
+                    GeoCodeDateTimeFormatFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(GeoCodeDateTimeFormats.fields())
+                    .from(GeoCodeDateTimeFormats)
+                    .where(GeoCodeDateTimeFormats.DATE_TIME_FORMAT.eq(dateTimeFormat.getPrimaryKey()),
+                            GeoCodeDateTimeFormats.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = geoCodeDateTimeFormatFactory.prepareStatement(query);
-            
-            ps.setLong(1, dateTimeFormat.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            geoCodeDateTimeFormats = geoCodeDateTimeFormatFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeDateTimeFormats;
+        return geoCodeDateTimeFormatFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<GeoCodeDateTimeFormat> getGeoCodeDateTimeFormatsByDateTimeFormat(DateTimeFormat dateTimeFormat) {
@@ -4394,37 +3757,18 @@ public class GeoControl
     }
     
     private GeoCodeCountry getGeoCodeCountry(GeoCode geoCode, EntityPermission entityPermission) {
-        GeoCodeCountry geoCodeCountry;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodecountries
-                        WHERE geoc_geo_geocodeid = ? AND geoc_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM geocodecountries
-                        WHERE geoc_geo_geocodeid = ? AND geoc_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(GeoCodeCountries.fields())
+                .from(GeoCodeCountries)
+                .where(GeoCodeCountries.GEO_CODE.eq(geoCode.getPrimaryKey()),
+                        GeoCodeCountries.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = geoCodeCountryFactory.prepareStatement(query);
-            
-            ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            geoCodeCountry = geoCodeCountryFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return geoCodeCountry;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return geoCodeCountryFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public GeoCodeCountry getGeoCodeCountry(GeoCode geoCode) {
@@ -4569,7 +3913,7 @@ public class GeoControl
      * @return GeoCode, if a match was found, otherwise null
      */
     public GeoCode getCountryByAlias(String countryAlias) {
-        return getGeoCodeByTypeScopeAndAlias(GeoCodeTypes.COUNTRY.name(), GeoCodeScopes.COUNTRIES.name(), countryAlias);
+        return getGeoCodeByTypeScopeAndAlias(com.echothree.model.control.geo.common.GeoCodeTypes.COUNTRY.name(), com.echothree.model.control.geo.common.GeoCodeScopes.COUNTRIES.name(), countryAlias);
     }
     
     private String getAliasForCountry(GeoCode countryGeoCode, GeoCodeType geoCodeType, GeoCodeAliasType geoCodeAliasType) {
@@ -4601,12 +3945,12 @@ public class GeoControl
     
     public GeoCode getPostalCodeByAlias(GeoCode countryGeoCode, String postalCodeAlias) {
         var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(),
-                GeoCodeAliasTypes.ISO_2_LETTER.name());
+                com.echothree.model.control.geo.common.GeoCodeAliasTypes.ISO_2_LETTER.name());
         var countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
         var countryIso2Letter = countryGeoCodeAlias.getAlias();
         var geoCodeScopeName = countryIso2Letter + "_ZIP_CODES";
         
-        return getGeoCodeByTypeScopeAndAlias(GeoCodeTypes.ZIP_CODE.name(), geoCodeScopeName, postalCodeAlias);
+        return getGeoCodeByTypeScopeAndAlias(com.echothree.model.control.geo.common.GeoCodeTypes.ZIP_CODE.name(), geoCodeScopeName, postalCodeAlias);
     }
     
     public String getAliasForPostalCode(GeoCode postalCodeGeoCode) {
@@ -4633,12 +3977,12 @@ public class GeoControl
     
     public GeoCode getStateByAlias(GeoCode countryGeoCode, String stateAlias) {
         var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(),
-                GeoCodeAliasTypes.ISO_2_LETTER.name());
+                com.echothree.model.control.geo.common.GeoCodeAliasTypes.ISO_2_LETTER.name());
         var countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
         var countryIso2Letter = countryGeoCodeAlias.getAlias();
         var geoCodeScopeName = countryIso2Letter + "_STATES";
         
-        return getGeoCodeByTypeScopeAndAlias(GeoCodeTypes.STATE.name(), geoCodeScopeName, stateAlias);
+        return getGeoCodeByTypeScopeAndAlias(com.echothree.model.control.geo.common.GeoCodeTypes.STATE.name(), geoCodeScopeName, stateAlias);
     }
     
     public String getAliasForState(GeoCode stateGeoCode) {
@@ -4665,11 +4009,11 @@ public class GeoControl
     
     public GeoCode getCityByAlias(GeoCode stateGeoCode, String cityAlias) {
         var stateGeoCodeAliasType = getGeoCodeAliasTypeByName(stateGeoCode.getLastDetail().getGeoCodeType(),
-                GeoCodeAliasTypes.POSTAL_2_LETTER.name());
+                com.echothree.model.control.geo.common.GeoCodeAliasTypes.POSTAL_2_LETTER.name());
         var stateGeoCodeAlias = getGeoCodeAlias(stateGeoCode, stateGeoCodeAliasType);
         var statePostal2Letter = stateGeoCodeAlias.getAlias();
 
-        var countryGeoCodeType = getGeoCodeTypeByName(GeoCodeTypes.COUNTRY.name());
+        var countryGeoCodeType = getGeoCodeTypeByName(com.echothree.model.control.geo.common.GeoCodeTypes.COUNTRY.name());
         var stateRelationships = getGeoCodeRelationshipsByFromGeoCodeAndGeoCodeType(stateGeoCode, countryGeoCodeType);
         if(stateRelationships.size() != 1) {
             getLog().error("non-1 stateRelationships.size()");
@@ -4677,13 +4021,13 @@ public class GeoControl
         var countryGeoCode = stateRelationships.iterator().next().getToGeoCode();
 
         var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(),
-                GeoCodeAliasTypes.ISO_2_LETTER.name());
+                com.echothree.model.control.geo.common.GeoCodeAliasTypes.ISO_2_LETTER.name());
         var countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
         var countryIso2Letter = countryGeoCodeAlias.getAlias();
 
         var geoCodeScopeName = countryIso2Letter + "_" + statePostal2Letter + "_CITIES";
         
-        return getGeoCodeByTypeScopeAndAlias(GeoCodeTypes.CITY.name(), geoCodeScopeName, cityAlias);
+        return getGeoCodeByTypeScopeAndAlias(com.echothree.model.control.geo.common.GeoCodeTypes.CITY.name(), geoCodeScopeName, cityAlias);
     }
     
     public String getAliasForCity(GeoCode cityGeoCode) {
