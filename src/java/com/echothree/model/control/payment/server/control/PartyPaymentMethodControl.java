@@ -22,6 +22,8 @@ import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.common.choice.PartyPaymentMethodChoicesBean;
 import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodContactMechanismTransfer;
 import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodTransfer;
+import com.echothree.model.control.payment.server.transfer.PartyPaymentMethodContactMechanismTransferCache;
+import com.echothree.model.control.payment.server.transfer.PartyPaymentMethodTransferCache;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
@@ -47,34 +49,51 @@ import com.echothree.model.data.payment.server.value.PartyPaymentMethodCreditCar
 import com.echothree.model.data.payment.server.value.PartyPaymentMethodCreditCardValue;
 import com.echothree.model.data.payment.server.value.PartyPaymentMethodDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.contact.ContactForeignKeys.PARTY_CONTACT_MECHANISM_PURPOSES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.contact.ContactForeignKeys.PARTY_CONTACT_MECHANISM_PURPOSE_DETAILS_CONTACT_MECHANISM_PURPOSE_FK;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTIES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTY_DETAILS_PARTY_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.payment.PaymentForeignKeys.PARTY_PAYMENT_METHODS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.payment.PaymentForeignKeys.PARTY_PAYMENT_METHODS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.payment.PaymentForeignKeys.PARTY_PAYMENT_METHOD_CONTACT_MECHANISMS_PARTY_CONTACT_MECHANISM_PURPOSE_FK;
+import static com.echothree.model.jooq.server.keys.payment.PaymentForeignKeys.PARTY_PAYMENT_METHOD_CONTACT_MECHANISMS_PARTY_PAYMENT_METHOD_FK;
+import static com.echothree.model.jooq.server.keys.payment.PaymentForeignKeys.PARTY_PAYMENT_METHOD_CREDIT_CARDS_PARTY_PAYMENT_METHOD_FK;
+import static com.echothree.model.jooq.server.keys.payment.PaymentForeignKeys.PARTY_PAYMENT_METHOD_DETAILS_PARTY_FK;
+import static com.echothree.model.jooq.server.tables.contact.ContactMechanismPurposes.ContactMechanismPurposes;
+import static com.echothree.model.jooq.server.tables.contact.PartyContactMechanismPurposeDetails.PartyContactMechanismPurposeDetails;
+import static com.echothree.model.jooq.server.tables.contact.PartyContactMechanismPurposes.PartyContactMechanismPurposes;
+import static com.echothree.model.jooq.server.tables.party.Parties.Parties;
+import static com.echothree.model.jooq.server.tables.party.PartyDetails.PartyDetails;
+import static com.echothree.model.jooq.server.tables.party.PartyTypes.PartyTypes;
+import static com.echothree.model.jooq.server.tables.payment.PartyPaymentMethodContactMechanisms.PartyPaymentMethodContactMechanisms;
+import static com.echothree.model.jooq.server.tables.payment.PartyPaymentMethodCreditCardSecurityCodes.PartyPaymentMethodCreditCardSecurityCodes;
+import static com.echothree.model.jooq.server.tables.payment.PartyPaymentMethodCreditCards.PartyPaymentMethodCreditCards;
+import static com.echothree.model.jooq.server.tables.payment.PartyPaymentMethodDetails.PartyPaymentMethodDetails;
+import static com.echothree.model.jooq.server.tables.payment.PartyPaymentMethods.PartyPaymentMethods;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EncryptionUtils;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 
 @CommandScope
 public class PartyPaymentMethodControl
-        extends BasePaymentControl {
+        extends BaseModelControl {
 
     @Inject
-    protected OrderPaymentPreferenceControl orderPaymentPreferenceControl;
+    private OrderPaymentPreferenceControl orderPaymentPreferenceControl;
 
     @Inject
     protected SequenceControl sequenceControl;
 
     @Inject
-    protected SequenceGeneratorLogic sequenceGeneratorLogic;
+    private SequenceGeneratorLogic sequenceGeneratorLogic;
 
     /** Creates a new instance of PartyPaymentMethodControl */
     protected PartyPaymentMethodControl() {
@@ -86,10 +105,13 @@ public class PartyPaymentMethodControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PartyPaymentMethodFactory partyPaymentMethodFactory;
+    protected PartyPaymentMethodDetailFactory partyPaymentMethodDetailFactory;
 
     @Inject
-    protected PartyPaymentMethodDetailFactory partyPaymentMethodDetailFactory;
+    private PartyPaymentMethodFactory partyPaymentMethodFactory;
+
+    @Inject
+    private PartyPaymentMethodTransferCache partyPaymentMethodTransferCache;
 
     public PartyPaymentMethod createPartyPaymentMethod(Party party, String description, PaymentMethod paymentMethod,
             Boolean deleteWhenUnused, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -146,47 +168,38 @@ public class PartyPaymentMethodControl
     }
 
     public long countPartyPaymentMethodsByParty(final Party party) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partypaymentmethods
-                        JOIN partypaymentmethoddetails ON parpmdt_partypaymentmethoddetailid = parpm_activedetailid
-                        AND parpmdt_par_partyid = ?
-                        """, party);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyPaymentMethods)
+                .join(PartyPaymentMethodDetails).onKey(PARTY_PAYMENT_METHODS_ACTIVE_DETAIL_FK)
+                .where(PartyPaymentMethodDetails.PARTY.eq(party.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyPaymentMethodsByPaymentMethod(final PaymentMethod paymentMethod) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partypaymentmethods
-                        JOIN partypaymentmethoddetails ON parpmdt_partypaymentmethoddetailid = parpm_activedetailid
-                        AND parpmdt_pm_paymentmethodid = ?
-                        """, paymentMethod);
-    }
-
-    private static final Map<EntityPermission, String> getPartyPaymentMethodByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM partypaymentmethods, partypaymentmethoddetails
-                WHERE parpm_activedetailid = parpmdt_partypaymentmethoddetailid AND parpmdt_partypaymentmethodname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM partypaymentmethods, partypaymentmethoddetails
-                WHERE parpm_activedetailid = parpmdt_partypaymentmethoddetailid AND parpmdt_partypaymentmethodname = ?
-                FOR UPDATE
-                """);
-        getPartyPaymentMethodByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyPaymentMethods)
+                .join(PartyPaymentMethodDetails).onKey(PARTY_PAYMENT_METHODS_ACTIVE_DETAIL_FK)
+                .where(PartyPaymentMethodDetails.PAYMENT_METHOD.eq(paymentMethod.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public PartyPaymentMethod getPartyPaymentMethodByName(String partyPaymentMethodName, EntityPermission entityPermission) {
-        return partyPaymentMethodFactory.getEntityFromQuery(entityPermission, getPartyPaymentMethodByNameQueries,
-                partyPaymentMethodName);
+        var baseQuery = session.getDslContext()
+                .select(PartyPaymentMethods.fields())
+                .from(PartyPaymentMethods)
+                .join(PartyPaymentMethodDetails).onKey(PARTY_PAYMENT_METHODS_ACTIVE_DETAIL_FK)
+                .where(PartyPaymentMethodDetails.PARTY_PAYMENT_METHOD_NAME.eq(partyPaymentMethodName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyPaymentMethodFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PartyPaymentMethod getPartyPaymentMethodByName(String partyPaymentMethodName) {
@@ -205,32 +218,20 @@ public class PartyPaymentMethodControl
         return getPartyPaymentMethodDetailValueForUpdate(getPartyPaymentMethodByNameForUpdate(partyPaymentMethodName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultPartyPaymentMethodQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM partypaymentmethods, partypaymentmethoddetails
-                WHERE parpm_activedetailid = parpmdt_partypaymentmethoddetailid
-                AND parpmdt_par_partyid = ? AND parpmdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM partypaymentmethods, partypaymentmethoddetails
-                WHERE parpm_activedetailid = parpmdt_partypaymentmethoddetailid
-                AND parpmdt_par_partyid = ? AND parpmdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultPartyPaymentMethodQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private PartyPaymentMethod getDefaultPartyPaymentMethod(Party party, EntityPermission entityPermission) {
-        return partyPaymentMethodFactory.getEntityFromQuery(entityPermission, getDefaultPartyPaymentMethodQueries,
-                party);
+        var baseQuery = session.getDslContext()
+                .select(PartyPaymentMethods.fields())
+                .from(PartyPaymentMethods)
+                .join(PartyPaymentMethodDetails).onKey(PARTY_PAYMENT_METHODS_ACTIVE_DETAIL_FK)
+                .where(PartyPaymentMethodDetails.PARTY.eq(party.getPrimaryKey()),
+                        PartyPaymentMethodDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyPaymentMethodFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PartyPaymentMethod getDefaultPartyPaymentMethod(Party party) {
@@ -245,32 +246,21 @@ public class PartyPaymentMethodControl
         return getDefaultPartyPaymentMethodForUpdate(party).getLastDetailForUpdate().getPartyPaymentMethodDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getPartyPaymentMethodsByPartyQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM partypaymentmethods, partypaymentmethoddetails
-                WHERE parpm_activedetailid = parpmdt_partypaymentmethoddetailid AND parpmdt_par_partyid = ?
-                ORDER BY parpmdt_sortorder, parpmdt_partypaymentmethodname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM partypaymentmethods, partypaymentmethoddetails
-                WHERE parpm_activedetailid = parpmdt_partypaymentmethoddetailid AND parpmdt_par_partyid = ?
-                FOR UPDATE
-                """);
-        getPartyPaymentMethodsByPartyQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PartyPaymentMethod> getPartyPaymentMethodsByParty(Party party, EntityPermission entityPermission) {
-        return partyPaymentMethodFactory.getEntitiesFromQuery(entityPermission, getPartyPaymentMethodsByPartyQueries,
-                party);
+        var baseQuery = session.getDslContext()
+                .select(PartyPaymentMethods.fields())
+                .from(PartyPaymentMethods)
+                .join(PartyPaymentMethodDetails).onKey(PARTY_PAYMENT_METHODS_ACTIVE_DETAIL_FK)
+                .where(PartyPaymentMethodDetails.PARTY.eq(party.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(PartyPaymentMethodDetails.SORT_ORDER, PartyPaymentMethodDetails.PARTY_PAYMENT_METHOD_NAME),
+                    PartyPaymentMethodFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyPaymentMethodFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyPaymentMethod> getPartyPaymentMethodsByParty(Party party) {
@@ -281,32 +271,21 @@ public class PartyPaymentMethodControl
         return getPartyPaymentMethodsByParty(party, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getPartyPaymentMethodsByPaymentMethodQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM partypaymentmethods, partypaymentmethoddetails
-                WHERE parpm_activedetailid = parpmdt_partypaymentmethoddetailid AND parpmdt_pm_paymentmethodid = ?
-                ORDER BY parpmdt_sortorder, parpmdt_partypaymentmethodname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM partypaymentmethods, partypaymentmethoddetails
-                WHERE parpm_activedetailid = parpmdt_partypaymentmethoddetailid AND parpmdt_pm_paymentmethodid = ?
-                FOR UPDATE
-                """);
-        getPartyPaymentMethodsByPaymentMethodQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PartyPaymentMethod> getPartyPaymentMethodsByPaymentMethod(PaymentMethod paymentMethod, EntityPermission entityPermission) {
-        return partyPaymentMethodFactory.getEntitiesFromQuery(entityPermission, getPartyPaymentMethodsByPaymentMethodQueries,
-                paymentMethod);
+        var baseQuery = session.getDslContext()
+                .select(PartyPaymentMethods.fields())
+                .from(PartyPaymentMethods)
+                .join(PartyPaymentMethodDetails).onKey(PARTY_PAYMENT_METHODS_ACTIVE_DETAIL_FK)
+                .where(PartyPaymentMethodDetails.PAYMENT_METHOD.eq(paymentMethod.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(PartyPaymentMethodDetails.SORT_ORDER, PartyPaymentMethodDetails.PARTY_PAYMENT_METHOD_NAME),
+                    PartyPaymentMethodFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyPaymentMethodFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyPaymentMethod> getPartyPaymentMethodsByPaymentMethod(PaymentMethod paymentMethod) {
@@ -479,7 +458,7 @@ public class PartyPaymentMethodControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PartyPaymentMethodCreditCardFactory partyPaymentMethodCreditCardFactory;
+    private PartyPaymentMethodCreditCardFactory partyPaymentMethodCreditCardFactory;
 
     public PartyPaymentMethodCreditCard createPartyPaymentMethodCreditCard(PartyPaymentMethod partyPaymentMethod, String number,
             Integer expirationMonth, Integer expirationYear, PersonalTitle personalTitle, String firstName, String firstNameSdx,
@@ -498,79 +477,59 @@ public class PartyPaymentMethodControl
     }
 
     public long countPartyPaymentMethodCreditCardsByPersonalTitle(PersonalTitle personalTitle) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM partypaymentmethodcreditcards
-                WHERE parpmcc_pert_personaltitleid = ? AND parpmcc_thrutime = ?
-                """,
-                personalTitle, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyPaymentMethodCreditCards)
+                .where(PartyPaymentMethodCreditCards.PERSONAL_TITLE.eq(personalTitle.getPrimaryKey()),
+                        PartyPaymentMethodCreditCards.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyPaymentMethodCreditCardsByNameSuffix(NameSuffix nameSuffix) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM partypaymentmethodcreditcards
-                WHERE parpmcc_nsfx_namesuffixid = ? AND parpmcc_thrutime = ?
-                """,
-                nameSuffix, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyPaymentMethodCreditCards)
+                .where(PartyPaymentMethodCreditCards.NAME_SUFFIX.eq(nameSuffix.getPrimaryKey()),
+                        PartyPaymentMethodCreditCards.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyPaymentMethodCreditCardsByBillingPartyContactMechanism(PartyContactMechanism billingPartyContactMechanism) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM partypaymentmethodcreditcards
-                WHERE parpmcc_billingpartycontactmechanismid = ? AND parpmcc_thrutime = ?
-                """,
-                billingPartyContactMechanism, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyPaymentMethodCreditCards)
+                .where(PartyPaymentMethodCreditCards.BILLING_PARTY_CONTACT_MECHANISM.eq(billingPartyContactMechanism.getPrimaryKey()),
+                        PartyPaymentMethodCreditCards.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyPaymentMethodCreditCardsByIssuerPartyContactMechanism(PartyContactMechanism issuerPartyContactMechanism) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM partypaymentmethodcreditcards
-                WHERE parpmcc_issuerpartycontactmechanismid = ? AND parpmcc_thrutime = ?
-                """,
-                issuerPartyContactMechanism, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyPaymentMethodCreditCards)
+                .where(PartyPaymentMethodCreditCards.ISSUER_PARTY_CONTACT_MECHANISM.eq(issuerPartyContactMechanism.getPrimaryKey()),
+                        PartyPaymentMethodCreditCards.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private PartyPaymentMethodCreditCard getPartyPaymentMethodCreditCard(PartyPaymentMethod partyPaymentMethod,
             EntityPermission entityPermission) {
-        PartyPaymentMethodCreditCard partyPaymentMethodCreditCard;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partypaymentmethodcreditcards
-                        WHERE parpmcc_parpm_partypaymentmethodid = ? AND parpmcc_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partypaymentmethodcreditcards
-                        WHERE parpmcc_parpm_partypaymentmethodid = ? AND parpmcc_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(PartyPaymentMethodCreditCards.fields())
+                .from(PartyPaymentMethodCreditCards)
+                .where(PartyPaymentMethodCreditCards.PARTY_PAYMENT_METHOD.eq(partyPaymentMethod.getPrimaryKey()),
+                        PartyPaymentMethodCreditCards.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = partyPaymentMethodCreditCardFactory.prepareStatement(query);
-            
-            ps.setLong(1, partyPaymentMethod.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            partyPaymentMethodCreditCard = partyPaymentMethodCreditCardFactory.getEntityFromQuery(
-                    entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return partyPaymentMethodCreditCard;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyPaymentMethodCreditCardFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PartyPaymentMethodCreditCard getPartyPaymentMethodCreditCard(PartyPaymentMethod partyPaymentMethod) {
@@ -583,43 +542,28 @@ public class PartyPaymentMethodControl
     
     private List<PartyPaymentMethodCreditCard> getPartyPaymentMethodCreditCardsByBillingPartyContactMechanism(PartyContactMechanism billingPartyContactMechanism,
             EntityPermission entityPermission) {
-        List<PartyPaymentMethodCreditCard> partyPaymentMethodCreditCards;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partypaymentmethodcreditcards, partypaymentmethods, partypaymentmethoddetails, parties, partydetails, partytypes
-                        WHERE parpmcc_billingpartycontactmechanismid = ? AND parpmcc_thrutime = ?
-                        AND parpmcc_parpm_partypaymentmethodid = parpm_partypaymentmethodid AND parpm_lastdetailid = parpmdt_partypaymentmethoddetailid
-                        AND parpmdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
-                        AND pardt_ptyp_partytypeid = ptyp_partytypeid
-                        ORDER BY parpmdt_partypaymentmethodname, pardt_partyname, ptyp_sortorder, ptyp_partytypename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partypaymentmethodcreditcards
-                        WHERE parpmcc_billingpartycontactmechanismid = ? AND parpmcc_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyPaymentMethodCreditCards.fields())
+                    .from(PartyPaymentMethodCreditCards)
+                    .join(PartyPaymentMethods).onKey(PARTY_PAYMENT_METHOD_CREDIT_CARDS_PARTY_PAYMENT_METHOD_FK)
+                    .join(PartyPaymentMethodDetails).onKey(PARTY_PAYMENT_METHODS_LAST_DETAIL_FK)
+                    .join(Parties).onKey(PARTY_PAYMENT_METHOD_DETAILS_PARTY_FK)
+                    .join(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .join(PartyTypes).onKey(PARTY_DETAILS_PARTY_TYPE_FK)
+                    .where(PartyPaymentMethodCreditCards.BILLING_PARTY_CONTACT_MECHANISM.eq(billingPartyContactMechanism.getPrimaryKey()),
+                            PartyPaymentMethodCreditCards.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PartyPaymentMethodDetails.PARTY_PAYMENT_METHOD_NAME, PartyDetails.PARTY_NAME, PartyTypes.SORT_ORDER, PartyTypes.PARTY_TYPE_NAME),
+                    PartyPaymentMethodCreditCardFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyPaymentMethodCreditCards.fields())
+                    .from(PartyPaymentMethodCreditCards)
+                    .where(PartyPaymentMethodCreditCards.BILLING_PARTY_CONTACT_MECHANISM.eq(billingPartyContactMechanism.getPrimaryKey()),
+                            PartyPaymentMethodCreditCards.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = partyPaymentMethodCreditCardFactory.prepareStatement(query);
-            
-            ps.setLong(1, billingPartyContactMechanism.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            partyPaymentMethodCreditCards = partyPaymentMethodCreditCardFactory.getEntitiesFromQuery(
-                    entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return partyPaymentMethodCreditCards;
+        return partyPaymentMethodCreditCardFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PartyPaymentMethodCreditCard> getPartyPaymentMethodCreditCardsByBillingPartyContactMechanism(PartyContactMechanism billingPartyContactMechanism) {
@@ -632,43 +576,28 @@ public class PartyPaymentMethodControl
     
     private List<PartyPaymentMethodCreditCard> getPartyPaymentMethodCreditCardsByIssuerPartyContactMechanism(PartyContactMechanism issuerPartyContactMechanism,
             EntityPermission entityPermission) {
-        List<PartyPaymentMethodCreditCard> partyPaymentMethodCreditCards;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partypaymentmethodcreditcards, partypaymentmethods, partypaymentmethoddetails, parties, partydetails, partytypes
-                        WHERE parpmcc_issuerpartycontactmechanismid = ? AND parpmcc_thrutime = ?
-                        AND parpmcc_parpm_partypaymentmethodid = parpm_partypaymentmethodid AND parpm_lastdetailid = parpmdt_partypaymentmethoddetailid
-                        AND parpmdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
-                        AND pardt_ptyp_partytypeid = ptyp_partytypeid
-                        ORDER BY parpmdt_partypaymentmethodname, pardt_partyname, ptyp_sortorder, ptyp_partytypename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partypaymentmethodcreditcards
-                        WHERE parpmcc_issuerpartycontactmechanismid = ? AND parpmcc_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyPaymentMethodCreditCards.fields())
+                    .from(PartyPaymentMethodCreditCards)
+                    .join(PartyPaymentMethods).onKey(PARTY_PAYMENT_METHOD_CREDIT_CARDS_PARTY_PAYMENT_METHOD_FK)
+                    .join(PartyPaymentMethodDetails).onKey(PARTY_PAYMENT_METHODS_LAST_DETAIL_FK)
+                    .join(Parties).onKey(PARTY_PAYMENT_METHOD_DETAILS_PARTY_FK)
+                    .join(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .join(PartyTypes).onKey(PARTY_DETAILS_PARTY_TYPE_FK)
+                    .where(PartyPaymentMethodCreditCards.ISSUER_PARTY_CONTACT_MECHANISM.eq(issuerPartyContactMechanism.getPrimaryKey()),
+                            PartyPaymentMethodCreditCards.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PartyPaymentMethodDetails.PARTY_PAYMENT_METHOD_NAME, PartyDetails.PARTY_NAME, PartyTypes.SORT_ORDER, PartyTypes.PARTY_TYPE_NAME),
+                    PartyPaymentMethodCreditCardFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyPaymentMethodCreditCards.fields())
+                    .from(PartyPaymentMethodCreditCards)
+                    .where(PartyPaymentMethodCreditCards.ISSUER_PARTY_CONTACT_MECHANISM.eq(issuerPartyContactMechanism.getPrimaryKey()),
+                            PartyPaymentMethodCreditCards.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = partyPaymentMethodCreditCardFactory.prepareStatement(query);
-            
-            ps.setLong(1, issuerPartyContactMechanism.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            partyPaymentMethodCreditCards = partyPaymentMethodCreditCardFactory.getEntitiesFromQuery(
-                    entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return partyPaymentMethodCreditCards;
+        return partyPaymentMethodCreditCardFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PartyPaymentMethodCreditCard> getPartyPaymentMethodCreditCardsByIssuerPartyContactMechanism(PartyContactMechanism issuerPartyContactMechanism) {
@@ -769,7 +698,7 @@ public class PartyPaymentMethodControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PartyPaymentMethodCreditCardSecurityCodeFactory partyPaymentMethodCreditCardSecurityCodeFactory;
+    private PartyPaymentMethodCreditCardSecurityCodeFactory partyPaymentMethodCreditCardSecurityCodeFactory;
 
     public PartyPaymentMethodCreditCardSecurityCode createPartyPaymentMethodCreditCardSecurityCode(PartyPaymentMethod partyPaymentMethod,
             String securityCode, BasePK createdBy) {
@@ -785,38 +714,18 @@ public class PartyPaymentMethodControl
     
     private PartyPaymentMethodCreditCardSecurityCode getPartyPaymentMethodCreditCardSecurityCode(PartyPaymentMethod partyPaymentMethod,
             EntityPermission entityPermission) {
-        PartyPaymentMethodCreditCardSecurityCode partyPaymentMethodCreditCardSecurityCode;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partypaymentmethodcreditcardsecuritycodes
-                        WHERE parpmccsc_parpm_partypaymentmethodid = ? AND parpmccsc_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partypaymentmethodcreditcardsecuritycodes
-                        WHERE parpmccsc_parpm_partypaymentmethodid = ? AND parpmccsc_thrutime= ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(PartyPaymentMethodCreditCardSecurityCodes.fields())
+                .from(PartyPaymentMethodCreditCardSecurityCodes)
+                .where(PartyPaymentMethodCreditCardSecurityCodes.PARTY_PAYMENT_METHOD.eq(partyPaymentMethod.getPrimaryKey()),
+                        PartyPaymentMethodCreditCardSecurityCodes.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = partyPaymentMethodCreditCardSecurityCodeFactory.prepareStatement(query);
-            
-            ps.setLong(1, partyPaymentMethod.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            partyPaymentMethodCreditCardSecurityCode = partyPaymentMethodCreditCardSecurityCodeFactory.getEntityFromQuery(
-                    entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return partyPaymentMethodCreditCardSecurityCode;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyPaymentMethodCreditCardSecurityCodeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PartyPaymentMethodCreditCardSecurityCode getPartyPaymentMethodCreditCardSecurityCode(PartyPaymentMethod partyPaymentMethod) {
@@ -888,7 +797,10 @@ public class PartyPaymentMethodControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PartyPaymentMethodContactMechanismFactory partyPaymentMethodContactMechanismFactory;
+    private PartyPaymentMethodContactMechanismFactory partyPaymentMethodContactMechanismFactory;
+
+    @Inject
+    private PartyPaymentMethodContactMechanismTransferCache partyPaymentMethodContactMechanismTransferCache;
 
     public PartyPaymentMethodContactMechanism createPartyPaymentMethodContactMechanism(PartyPaymentMethod partyPaymentMethod,
             PartyContactMechanismPurpose partyContactMechanismPurpose, BasePK createdBy) {
@@ -902,41 +814,19 @@ public class PartyPaymentMethodControl
     
     private PartyPaymentMethodContactMechanism getPartyPaymentMethodContactMechanism(PartyPaymentMethod partyPaymentMethod,
             PartyContactMechanismPurpose partyContactMechanismPurpose, EntityPermission entityPermission) {
-        PartyPaymentMethodContactMechanism partyPaymentMethodContactMechanism;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partypaymentmethodcontactmechanisms
-                        WHERE parpmcmch_parpm_partypaymentmethodid = ? AND parpmcmch_pcmp_partycontactmechanismpurposeid = ?
-                        AND parpmcmch_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partypaymentmethodcontactmechanisms
-                        WHERE parpmcmch_parpm_partypaymentmethodid = ? AND parpmcmch_pcmp_partycontactmechanismpurposeid = ?
-                        AND parpmcmch_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(PartyPaymentMethodContactMechanisms.fields())
+                .from(PartyPaymentMethodContactMechanisms)
+                .where(PartyPaymentMethodContactMechanisms.PARTY_PAYMENT_METHOD.eq(partyPaymentMethod.getPrimaryKey()),
+                        PartyPaymentMethodContactMechanisms.PARTY_CONTACT_MECHANISM_PURPOSE.eq(partyContactMechanismPurpose.getPrimaryKey()),
+                        PartyPaymentMethodContactMechanisms.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = partyPaymentMethodContactMechanismFactory.prepareStatement(query);
-            
-            ps.setLong(1, partyPaymentMethod.getPrimaryKey().getEntityId());
-            ps.setLong(2, partyContactMechanismPurpose.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            partyPaymentMethodContactMechanism = partyPaymentMethodContactMechanismFactory.getEntityFromQuery(
-                    entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return partyPaymentMethodContactMechanism;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyPaymentMethodContactMechanismFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PartyPaymentMethodContactMechanism getPartyPaymentMethodContactMechanism(PartyPaymentMethod partyPaymentMethod,
@@ -951,38 +841,27 @@ public class PartyPaymentMethodControl
     
     private List<PartyPaymentMethodContactMechanism> getPartyPaymentMethodContactMechanismsByPartyPaymentMethod(PartyPaymentMethod partyPaymentMethod,
             EntityPermission entityPermission) {
-        List<PartyPaymentMethodContactMechanism> partyPaymentMethodContactMechanisms;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partypaymentmethodcontactmechanisms
-                        WHERE parpmcmch_parpm_partypaymentmethodid = ? AND parpmcmch_thrutime = ?
-                        """; // TODO: ORDER BY
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partypaymentmethodcontactmechanisms
-                        WHERE parpmcmch_parpm_partypaymentmethodid = ? AND parpmcmch_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(PartyPaymentMethodContactMechanisms.fields())
+                .from(PartyPaymentMethodContactMechanisms)
+                .where(PartyPaymentMethodContactMechanisms.PARTY_PAYMENT_METHOD.eq(partyPaymentMethod.getPrimaryKey()),
+                        PartyPaymentMethodContactMechanisms.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = partyPaymentMethodContactMechanismFactory.prepareStatement(query);
-            
-            ps.setLong(1, partyPaymentMethod.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            partyPaymentMethodContactMechanisms = partyPaymentMethodContactMechanismFactory.getEntitiesFromQuery(
-                    entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return partyPaymentMethodContactMechanisms;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyPaymentMethodContactMechanisms.fields())
+                    .from(PartyPaymentMethodContactMechanisms)
+                    .join(PartyContactMechanismPurposes).onKey(PARTY_PAYMENT_METHOD_CONTACT_MECHANISMS_PARTY_CONTACT_MECHANISM_PURPOSE_FK)
+                    .join(PartyContactMechanismPurposeDetails).onKey(PARTY_CONTACT_MECHANISM_PURPOSES_LAST_DETAIL_FK)
+                    .join(ContactMechanismPurposes).onKey(PARTY_CONTACT_MECHANISM_PURPOSE_DETAILS_CONTACT_MECHANISM_PURPOSE_FK)
+                    .where(PartyPaymentMethodContactMechanisms.PARTY_PAYMENT_METHOD.eq(partyPaymentMethod.getPrimaryKey()),
+                            PartyPaymentMethodContactMechanisms.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ContactMechanismPurposes.SORT_ORDER, ContactMechanismPurposes.CONTACT_MECHANISM_PURPOSE_NAME),
+                    PartyPaymentMethodContactMechanismFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyPaymentMethodContactMechanismFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PartyPaymentMethodContactMechanism> getPartyPaymentMethodContactMechanismsByPartyPaymentMethod(PartyPaymentMethod partyPaymentMethod) {
@@ -995,38 +874,26 @@ public class PartyPaymentMethodControl
     
     private List<PartyPaymentMethodContactMechanism> getPartyPaymentMethodContactMechanismsByPartyContactMechanismPurpose(PartyContactMechanismPurpose partyContactMechanismPurpose,
             EntityPermission entityPermission) {
-        List<PartyPaymentMethodContactMechanism> partyPaymentMethodContactMechanisms;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partypaymentmethodcontactmechanisms
-                        WHERE parpmcmch_pcmp_partycontactmechanismpurposeid = ? AND parpmcmch_thrutime = ?
-                        """; // TODO: ORDER BY
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partypaymentmethodcontactmechanisms
-                        WHERE parpmcmch_pcmp_partycontactmechanismpurposeid = ? AND parpmcmch_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(PartyPaymentMethodContactMechanisms.fields())
+                .from(PartyPaymentMethodContactMechanisms)
+                .where(PartyPaymentMethodContactMechanisms.PARTY_CONTACT_MECHANISM_PURPOSE.eq(partyContactMechanismPurpose.getPrimaryKey()),
+                        PartyPaymentMethodContactMechanisms.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = partyPaymentMethodContactMechanismFactory.prepareStatement(query);
-            
-            ps.setLong(1, partyContactMechanismPurpose.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            partyPaymentMethodContactMechanisms = partyPaymentMethodContactMechanismFactory.getEntitiesFromQuery(
-                    entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return partyPaymentMethodContactMechanisms;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyPaymentMethodContactMechanisms.fields())
+                    .from(PartyPaymentMethodContactMechanisms)
+                    .join(PartyPaymentMethods).onKey(PARTY_PAYMENT_METHOD_CONTACT_MECHANISMS_PARTY_PAYMENT_METHOD_FK)
+                    .join(PartyPaymentMethodDetails).onKey(PARTY_PAYMENT_METHODS_LAST_DETAIL_FK)
+                    .where(PartyPaymentMethodContactMechanisms.PARTY_CONTACT_MECHANISM_PURPOSE.eq(partyContactMechanismPurpose.getPrimaryKey()),
+                            PartyPaymentMethodContactMechanisms.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PartyPaymentMethodDetails.SORT_ORDER, PartyPaymentMethodDetails.PARTY_PAYMENT_METHOD_NAME),
+                    PartyPaymentMethodContactMechanismFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyPaymentMethodContactMechanismFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PartyPaymentMethodContactMechanism> getPartyPaymentMethodContactMechanismsByPartyContactMechanismPurpose(PartyContactMechanismPurpose partyContactMechanismPurpose) {

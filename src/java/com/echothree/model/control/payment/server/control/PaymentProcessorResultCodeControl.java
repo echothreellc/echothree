@@ -20,6 +20,8 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.payment.common.choice.PaymentProcessorResultCodeChoicesBean;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorResultCodeDescriptionTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorResultCodeTransfer;
+import com.echothree.model.control.payment.server.transfer.PaymentProcessorResultCodeDescriptionTransferCache;
+import com.echothree.model.control.payment.server.transfer.PaymentProcessorResultCodeTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.payment.common.pk.PaymentProcessorResultCodePK;
@@ -31,23 +33,29 @@ import com.echothree.model.data.payment.server.factory.PaymentProcessorResultCod
 import com.echothree.model.data.payment.server.value.PaymentProcessorResultCodeDescriptionValue;
 import com.echothree.model.data.payment.server.value.PaymentProcessorResultCodeDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import static com.echothree.model.jooq.server.keys.payment.PaymentForeignKeys.PAYMENT_PROCESSOR_RESULT_CODES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.payment.PaymentForeignKeys.PAYMENT_PROCESSOR_RESULT_CODE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.payment.PaymentProcessorResultCodeDescriptions.PaymentProcessorResultCodeDescriptions;
+import static com.echothree.model.jooq.server.tables.payment.PaymentProcessorResultCodeDetails.PaymentProcessorResultCodeDetails;
+import static com.echothree.model.jooq.server.tables.payment.PaymentProcessorResultCodes.PaymentProcessorResultCodes;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
 public class PaymentProcessorResultCodeControl
-        extends BasePaymentControl {
+        extends BaseModelControl {
 
     @Inject
-    protected PaymentProcessorTransactionControl paymentProcessorTransactionControl;
+    private PaymentProcessorTransactionControl paymentProcessorTransactionControl;
 
     /** Creates a new instance of PaymentProcessorResultCodeControl */
     protected PaymentProcessorResultCodeControl() {
@@ -59,10 +67,13 @@ public class PaymentProcessorResultCodeControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PaymentProcessorResultCodeFactory paymentProcessorResultCodeFactory;
+    protected PaymentProcessorResultCodeDetailFactory paymentProcessorResultCodeDetailFactory;
 
     @Inject
-    protected PaymentProcessorResultCodeDetailFactory paymentProcessorResultCodeDetailFactory;
+    private PaymentProcessorResultCodeFactory paymentProcessorResultCodeFactory;
+
+    @Inject
+    private PaymentProcessorResultCodeTransferCache paymentProcessorResultCodeTransferCache;
 
     public PaymentProcessorResultCode createPaymentProcessorResultCode(final String paymentProcessorResultCodeName, Boolean isDefault,
             final Integer sortOrder, final BasePK createdBy) {
@@ -110,31 +121,28 @@ public class PaymentProcessorResultCodeControl
     }
 
     public long countPaymentProcessorResultCodes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM paymentprocessorresultcodes
-                        JOIN paymentprocessorresultcodedetails ON pprcrcdt_paymentprocessorresultcodedetailid = pprcrc_activedetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(PaymentProcessorResultCodes)
+                .join(PaymentProcessorResultCodeDetails).onKey(PAYMENT_PROCESSOR_RESULT_CODES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
-    private static final Map<EntityPermission, String> getPaymentProcessorResultCodeByNameQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            """
-            SELECT _ALL_
-            FROM paymentprocessorresultcodes, paymentprocessorresultcodedetails
-            WHERE pprcrc_activedetailid = pprcrcdt_paymentprocessorresultcodedetailid AND pprcrcdt_paymentprocessorresultcodename = ?
-            """,
-            EntityPermission.READ_WRITE,
-            """
-            SELECT _ALL_
-            FROM paymentprocessorresultcodes, paymentprocessorresultcodedetails
-            WHERE pprcrc_activedetailid = pprcrcdt_paymentprocessorresultcodedetailid AND pprcrcdt_paymentprocessorresultcodename = ?
-            FOR UPDATE
-            """);
 
     public PaymentProcessorResultCode getPaymentProcessorResultCodeByName(final String paymentProcessorResultCodeName, final EntityPermission entityPermission) {
-        return paymentProcessorResultCodeFactory.getEntityFromQuery(entityPermission, getPaymentProcessorResultCodeByNameQueries,
-                paymentProcessorResultCodeName);
+        var baseQuery = session.getDslContext()
+                .select(PaymentProcessorResultCodes.fields())
+                .from(PaymentProcessorResultCodes)
+                .join(PaymentProcessorResultCodeDetails).onKey(PAYMENT_PROCESSOR_RESULT_CODES_ACTIVE_DETAIL_FK)
+                .where(PaymentProcessorResultCodeDetails.PAYMENT_PROCESSOR_RESULT_CODE_NAME.eq(paymentProcessorResultCodeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return paymentProcessorResultCodeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PaymentProcessorResultCode getPaymentProcessorResultCodeByName(final String paymentProcessorResultCodeName) {
@@ -153,23 +161,20 @@ public class PaymentProcessorResultCodeControl
         return getPaymentProcessorResultCodeDetailValueForUpdate(getPaymentProcessorResultCodeByNameForUpdate(paymentProcessorResultCodeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultPaymentProcessorResultCodeQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            """
-            SELECT _ALL_
-            FROM paymentprocessorresultcodes, paymentprocessorresultcodedetails
-            WHERE pprcrc_activedetailid = pprcrcdt_paymentprocessorresultcodedetailid AND pprcrcdt_isdefault = 1
-            """,
-            EntityPermission.READ_WRITE,
-            """
-            SELECT _ALL_
-            FROM paymentprocessorresultcodes, paymentprocessorresultcodedetails
-            WHERE pprcrc_activedetailid = pprcrcdt_paymentprocessorresultcodedetailid AND pprcrcdt_isdefault = 1
-            FOR UPDATE
-            """);
 
     public PaymentProcessorResultCode getDefaultPaymentProcessorResultCode(final EntityPermission entityPermission) {
-        return paymentProcessorResultCodeFactory.getEntityFromQuery(entityPermission, getDefaultPaymentProcessorResultCodeQueries);
+        var baseQuery = session.getDslContext()
+                .select(PaymentProcessorResultCodes.fields())
+                .from(PaymentProcessorResultCodes)
+                .join(PaymentProcessorResultCodeDetails).onKey(PAYMENT_PROCESSOR_RESULT_CODES_ACTIVE_DETAIL_FK)
+                .where(PaymentProcessorResultCodeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return paymentProcessorResultCodeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PaymentProcessorResultCode getDefaultPaymentProcessorResultCode() {
@@ -184,25 +189,21 @@ public class PaymentProcessorResultCodeControl
         return getDefaultPaymentProcessorResultCodeForUpdate().getLastDetailForUpdate().getPaymentProcessorResultCodeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getPaymentProcessorResultCodesQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            """
-            SELECT _ALL_
-            FROM paymentprocessorresultcodes, paymentprocessorresultcodedetails
-            WHERE pprcrc_activedetailid = pprcrcdt_paymentprocessorresultcodedetailid
-            ORDER BY pprcrcdt_sortorder, pprcrcdt_paymentprocessorresultcodename
-            _LIMIT_
-            """,
-            EntityPermission.READ_WRITE,
-            """
-            SELECT _ALL_
-            FROM paymentprocessorresultcodes, paymentprocessorresultcodedetails
-            WHERE pprcrc_activedetailid = pprcrcdt_paymentprocessorresultcodedetailid
-            FOR UPDATE
-            """);
 
     private List<PaymentProcessorResultCode> getPaymentProcessorResultCodes(final EntityPermission entityPermission) {
-        return paymentProcessorResultCodeFactory.getEntitiesFromQuery(entityPermission, getPaymentProcessorResultCodesQueries);
+        var baseQuery = session.getDslContext()
+                .select(PaymentProcessorResultCodes.fields())
+                .from(PaymentProcessorResultCodes)
+                .join(PaymentProcessorResultCodeDetails).onKey(PAYMENT_PROCESSOR_RESULT_CODES_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(PaymentProcessorResultCodeDetails.SORT_ORDER, PaymentProcessorResultCodeDetails.PAYMENT_PROCESSOR_RESULT_CODE_NAME),
+                    PaymentProcessorResultCodeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return paymentProcessorResultCodeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PaymentProcessorResultCode> getPaymentProcessorResultCodes() {
@@ -349,7 +350,10 @@ public class PaymentProcessorResultCodeControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PaymentProcessorResultCodeDescriptionFactory paymentProcessorResultCodeDescriptionFactory;
+    private PaymentProcessorResultCodeDescriptionFactory paymentProcessorResultCodeDescriptionFactory;
+
+    @Inject
+    private PaymentProcessorResultCodeDescriptionTransferCache paymentProcessorResultCodeDescriptionTransferCache;
 
     public PaymentProcessorResultCodeDescription createPaymentProcessorResultCodeDescription(final PaymentProcessorResultCode paymentProcessorResultCode,
             final Language language, final String description, final BasePK createdBy) {
@@ -361,25 +365,22 @@ public class PaymentProcessorResultCodeControl
         return paymentProcessorResultCodeDescription;
     }
 
-    private static final Map<EntityPermission, String> getPaymentProcessorResultCodeDescriptionQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            """
-            SELECT _ALL_
-            FROM paymentprocessorresultcodedescriptions
-            WHERE pprcrcd_pprcrc_paymentprocessorresultcodeid = ? AND pprcrcd_lang_languageid = ? AND pprcrcd_thrutime = ?
-            """,
-            EntityPermission.READ_WRITE,
-            """
-            SELECT _ALL_
-            FROM paymentprocessorresultcodedescriptions
-            WHERE pprcrcd_pprcrc_paymentprocessorresultcodeid = ? AND pprcrcd_lang_languageid = ? AND pprcrcd_thrutime = ?
-            FOR UPDATE
-            """);
 
     private PaymentProcessorResultCodeDescription getPaymentProcessorResultCodeDescription(final PaymentProcessorResultCode paymentProcessorResultCode,
             final Language language, final EntityPermission entityPermission) {
-        return paymentProcessorResultCodeDescriptionFactory.getEntityFromQuery(entityPermission, getPaymentProcessorResultCodeDescriptionQueries,
-                paymentProcessorResultCode, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(PaymentProcessorResultCodeDescriptions.fields())
+                .from(PaymentProcessorResultCodeDescriptions)
+                .where(PaymentProcessorResultCodeDescriptions.PAYMENT_PROCESSOR_RESULT_CODE.eq(paymentProcessorResultCode.getPrimaryKey()),
+                        PaymentProcessorResultCodeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        PaymentProcessorResultCodeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return paymentProcessorResultCodeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PaymentProcessorResultCodeDescription getPaymentProcessorResultCodeDescription(final PaymentProcessorResultCode paymentProcessorResultCode,
@@ -401,28 +402,27 @@ public class PaymentProcessorResultCodeControl
         return getPaymentProcessorResultCodeDescriptionValue(getPaymentProcessorResultCodeDescriptionForUpdate(paymentProcessorResultCode, language));
     }
 
-    private static final Map<EntityPermission, String> getPaymentProcessorResultCodeDescriptionsByPaymentProcessorResultCodeQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            """
-            SELECT _ALL_
-            FROM paymentprocessorresultcodedescriptions, languages
-            WHERE pprcrcd_pprcrc_paymentprocessorresultcodeid = ? AND pprcrcd_thrutime = ? AND pprcrcd_lang_languageid = lang_languageid
-            ORDER BY lang_sortorder, lang_languageisoname
-            _LIMIT_
-            """,
-            EntityPermission.READ_WRITE,
-            """
-            SELECT _ALL_
-            FROM paymentprocessorresultcodedescriptions
-            WHERE pprcrcd_pprcrc_paymentprocessorresultcodeid = ? AND pprcrcd_thrutime = ?
-            FOR UPDATE
-            """);
 
     private List<PaymentProcessorResultCodeDescription> getPaymentProcessorResultCodeDescriptionsByPaymentProcessorResultCode(final PaymentProcessorResultCode paymentProcessorResultCode,
             final EntityPermission entityPermission) {
-        return paymentProcessorResultCodeDescriptionFactory.getEntitiesFromQuery(entityPermission,
-                getPaymentProcessorResultCodeDescriptionsByPaymentProcessorResultCodeQueries,
-                paymentProcessorResultCode, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PaymentProcessorResultCodeDescriptions.fields())
+                    .from(PaymentProcessorResultCodeDescriptions)
+                    .join(Languages).onKey(PAYMENT_PROCESSOR_RESULT_CODE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(PaymentProcessorResultCodeDescriptions.PAYMENT_PROCESSOR_RESULT_CODE.eq(paymentProcessorResultCode.getPrimaryKey()),
+                            PaymentProcessorResultCodeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    PaymentProcessorResultCodeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PaymentProcessorResultCodeDescriptions.fields())
+                    .from(PaymentProcessorResultCodeDescriptions)
+                    .where(PaymentProcessorResultCodeDescriptions.PAYMENT_PROCESSOR_RESULT_CODE.eq(paymentProcessorResultCode.getPrimaryKey()),
+                            PaymentProcessorResultCodeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return paymentProcessorResultCodeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PaymentProcessorResultCodeDescription> getPaymentProcessorResultCodeDescriptionsByPaymentProcessorResultCode(final PaymentProcessorResultCode paymentProcessorResultCode) {

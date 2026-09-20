@@ -20,6 +20,8 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.payment.common.choice.PaymentProcessorChoicesBean;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorDescriptionTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTransfer;
+import com.echothree.model.control.payment.server.transfer.PaymentProcessorDescriptionTransferCache;
+import com.echothree.model.control.payment.server.transfer.PaymentProcessorTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.payment.common.pk.PaymentProcessorPK;
@@ -32,12 +34,17 @@ import com.echothree.model.data.payment.server.factory.PaymentProcessorFactory;
 import com.echothree.model.data.payment.server.value.PaymentProcessorDescriptionValue;
 import com.echothree.model.data.payment.server.value.PaymentProcessorDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.payment.PaymentForeignKeys.PAYMENT_PROCESSORS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.payment.PaymentForeignKeys.PAYMENT_PROCESSOR_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.payment.PaymentProcessorDescriptions.PaymentProcessorDescriptions;
+import static com.echothree.model.jooq.server.tables.payment.PaymentProcessorDetails.PaymentProcessorDetails;
+import static com.echothree.model.jooq.server.tables.payment.PaymentProcessors.PaymentProcessors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -46,16 +53,16 @@ import javax.inject.Inject;
 
 @CommandScope
 public class PaymentProcessorControl
-        extends BasePaymentControl {
+        extends BaseModelControl {
 
     @Inject
-    protected PaymentMethodControl paymentMethodControl;
+    private PaymentMethodControl paymentMethodControl;
 
     @Inject
     protected PaymentProcessorActionControl paymentProcessorActionControl;
 
     @Inject
-    protected PaymentProcessorTransactionControl paymentProcessorTransactionControl;
+    private PaymentProcessorTransactionControl paymentProcessorTransactionControl;
 
     /** Creates a new instance of PaymentProcessorControl */
     protected PaymentProcessorControl() {
@@ -67,10 +74,13 @@ public class PaymentProcessorControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PaymentProcessorFactory paymentProcessorFactory;
+    protected PaymentProcessorDetailFactory paymentProcessorDetailFactory;
 
     @Inject
-    protected PaymentProcessorDetailFactory paymentProcessorDetailFactory;
+    private PaymentProcessorFactory paymentProcessorFactory;
+
+    @Inject
+    private PaymentProcessorTransferCache paymentProcessorTransferCache;
 
     public PaymentProcessor createPaymentProcessor(String paymentProcessorName, PaymentProcessorType paymentProcessorType,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -120,57 +130,41 @@ public class PaymentProcessorControl
     }
 
     public long countPaymentProcessors() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM paymentprocessors, paymentprocessordetails
-                WHERE pprc_activedetailid = pprcdt_paymentprocessordetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(PaymentProcessors)
+                .join(PaymentProcessorDetails).onKey(PAYMENT_PROCESSORS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPaymentProcessorsByPaymentProcessorType(final PaymentProcessorType paymentProcessorType) {
-            return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM paymentprocessors
-                        JOIN paymentprocessordetails ON pprcdt_paymentprocessordetailid = pprc_activedetailid
-                        WHERE pprcdt_pprctyp_paymentprocessortypeid = ?
-                        """, paymentProcessorType);
-        }
+        return session.getDslContext()
+                .selectCount()
+                .from(PaymentProcessors)
+                .join(PaymentProcessorDetails).onKey(PAYMENT_PROCESSORS_ACTIVE_DETAIL_FK)
+                .where(PaymentProcessorDetails.PAYMENT_PROCESSOR_TYPE.eq(paymentProcessorType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
+    }
 
     public PaymentProcessorDetailValue getPaymentProcessorDetailValueForUpdate(PaymentProcessor paymentProcessor) {
         return paymentProcessor.getLastDetailForUpdate().getPaymentProcessorDetailValue().clone();
     }
 
     public PaymentProcessor getPaymentProcessorByName(String paymentProcessorName, EntityPermission entityPermission) {
-        PaymentProcessor paymentProcessor;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM paymentprocessors, paymentprocessordetails
-                        WHERE pprc_activedetailid = pprcdt_paymentprocessordetailid AND pprcdt_paymentprocessorname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM paymentprocessors, paymentprocessordetails
-                        WHERE pprc_activedetailid = pprcdt_paymentprocessordetailid AND pprcdt_paymentprocessorname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(PaymentProcessors.fields())
+                .from(PaymentProcessors)
+                .join(PaymentProcessorDetails).onKey(PAYMENT_PROCESSORS_ACTIVE_DETAIL_FK)
+                .where(PaymentProcessorDetails.PAYMENT_PROCESSOR_NAME.eq(paymentProcessorName));
 
-            var ps = paymentProcessorFactory.prepareStatement(query);
-            
-            ps.setString(1, paymentProcessorName);
-            
-            paymentProcessor = paymentProcessorFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return paymentProcessor;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return paymentProcessorFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PaymentProcessor getPaymentProcessorByName(String paymentProcessorName) {
@@ -186,28 +180,19 @@ public class PaymentProcessorControl
     }
 
     private List<PaymentProcessor> getPaymentProcessors(EntityPermission entityPermission) {
-        String query = null;
+        var baseQuery = session.getDslContext()
+                .select(PaymentProcessors.fields())
+                .from(PaymentProcessors)
+                .join(PaymentProcessorDetails).onKey(PAYMENT_PROCESSORS_ACTIVE_DETAIL_FK);
 
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM paymentprocessors, paymentprocessordetails
-                    WHERE pprc_activedetailid = pprcdt_paymentprocessordetailid
-                    ORDER BY pprcdt_sortorder, pprcdt_paymentprocessorname
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM paymentprocessors, paymentprocessordetails
-                    WHERE pprc_activedetailid = pprcdt_paymentprocessordetailid
-                    FOR UPDATE
-                    """;
-        }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(PaymentProcessorDetails.SORT_ORDER, PaymentProcessorDetails.PAYMENT_PROCESSOR_NAME),
+                    PaymentProcessorFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        var ps = paymentProcessorFactory.prepareStatement(query);
-
-        return paymentProcessorFactory.getEntitiesFromQuery(entityPermission, ps);
+        return paymentProcessorFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PaymentProcessor> getPaymentProcessors() {
@@ -220,37 +205,23 @@ public class PaymentProcessorControl
 
     private List<PaymentProcessor> getPaymentProcessorsByPaymentProcessorType(final PaymentProcessorType paymentProcessorType,
             EntityPermission entityPermission) {
-        List<PaymentProcessor> paymentProcessors;
-        String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PaymentProcessors.fields())
+                    .from(PaymentProcessors)
+                    .join(PaymentProcessorDetails).onKey(PAYMENT_PROCESSORS_ACTIVE_DETAIL_FK)
+                    .where(PaymentProcessorDetails.PAYMENT_PROCESSOR_TYPE.eq(paymentProcessorType.getPrimaryKey()))
+                    .orderBy(PaymentProcessorDetails.SORT_ORDER, PaymentProcessorDetails.PAYMENT_PROCESSOR_NAME),
+                    PaymentProcessorFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PaymentProcessors.fields())
+                    .from(PaymentProcessors)
+                    .join(PaymentProcessorDetails).onKey(PAYMENT_PROCESSORS_ACTIVE_DETAIL_FK)
+                    .where(PaymentProcessorDetails.PAYMENT_PROCESSOR_TYPE.eq(paymentProcessorType.getPrimaryKey()))
+                    .forUpdate();
+        };
 
-        try {
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM paymentprocessors, paymentprocessordetails
-                        WHERE pprc_activedetailid = pprcdt_paymentprocessordetailid
-                        ORDER BY pprcdt_sortorder, pprcdt_paymentprocessorname AND pprcdt_pprctyp_paymentprocessortypeid = ?
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM paymentprocessors, paymentprocessordetails
-                        WHERE pprc_activedetailid = pprcdt_paymentprocessordetailid AND pprcdt_pprctyp_paymentprocessortypeid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = paymentProcessorFactory.prepareStatement(query);
-
-            ps.setLong(1, paymentProcessorType.getPrimaryKey().getEntityId());
-
-            paymentProcessors = paymentProcessorFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return paymentProcessors;
+        return paymentProcessorFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PaymentProcessor> getPaymentProcessorsByPaymentProcessorType(final PaymentProcessorType paymentProcessorType) {
@@ -262,26 +233,18 @@ public class PaymentProcessorControl
     }
 
     public PaymentProcessor getDefaultPaymentProcessor(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM paymentprocessors, paymentprocessordetails
-                    WHERE pprc_activedetailid = pprcdt_paymentprocessordetailid AND pprcdt_isdefault = 1
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM paymentprocessors, paymentprocessordetails
-                    WHERE pprc_activedetailid = pprcdt_paymentprocessordetailid AND pprcdt_isdefault = 1
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(PaymentProcessors.fields())
+                .from(PaymentProcessors)
+                .join(PaymentProcessorDetails).onKey(PAYMENT_PROCESSORS_ACTIVE_DETAIL_FK)
+                .where(PaymentProcessorDetails.IS_DEFAULT.eq(true));
 
-        var ps = paymentProcessorFactory.prepareStatement(query);
-        
-        return paymentProcessorFactory.getEntityFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return paymentProcessorFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PaymentProcessor getDefaultPaymentProcessor() {
@@ -427,7 +390,10 @@ public class PaymentProcessorControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PaymentProcessorDescriptionFactory paymentProcessorDescriptionFactory;
+    private PaymentProcessorDescriptionFactory paymentProcessorDescriptionFactory;
+
+    @Inject
+    private PaymentProcessorDescriptionTransferCache paymentProcessorDescriptionTransferCache;
 
     public PaymentProcessorDescription createPaymentProcessorDescription(PaymentProcessor paymentProcessor, Language language,
             String description, BasePK createdBy) {
@@ -442,38 +408,19 @@ public class PaymentProcessorControl
     
     private PaymentProcessorDescription getPaymentProcessorDescription(PaymentProcessor paymentProcessor, Language language,
             EntityPermission entityPermission) {
-        PaymentProcessorDescription paymentProcessorDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM paymentprocessordescriptions
-                        WHERE pprcd_pprc_paymentprocessorid = ? AND pprcd_lang_languageid = ? AND pprcd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM paymentprocessordescriptions
-                        WHERE pprcd_pprc_paymentprocessorid = ? AND pprcd_lang_languageid = ? AND pprcd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(PaymentProcessorDescriptions.fields())
+                .from(PaymentProcessorDescriptions)
+                .where(PaymentProcessorDescriptions.PAYMENT_PROCESSOR.eq(paymentProcessor.getPrimaryKey()),
+                        PaymentProcessorDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        PaymentProcessorDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = paymentProcessorDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, paymentProcessor.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            paymentProcessorDescription = paymentProcessorDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return paymentProcessorDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return paymentProcessorDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PaymentProcessorDescription getPaymentProcessorDescription(PaymentProcessor paymentProcessor, Language language) {
@@ -493,39 +440,24 @@ public class PaymentProcessorControl
     }
     
     private List<PaymentProcessorDescription> getPaymentProcessorDescriptions(PaymentProcessor paymentProcessor, EntityPermission entityPermission) {
-        List<PaymentProcessorDescription> paymentProcessorDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM paymentprocessordescriptions, languages
-                        WHERE pprcd_pprc_paymentprocessorid = ? AND pprcd_thrutime = ? AND pprcd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM paymentprocessordescriptions
-                        WHERE pprcd_pprc_paymentprocessorid = ? AND pprcd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PaymentProcessorDescriptions.fields())
+                    .from(PaymentProcessorDescriptions)
+                    .join(Languages).onKey(PAYMENT_PROCESSOR_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(PaymentProcessorDescriptions.PAYMENT_PROCESSOR.eq(paymentProcessor.getPrimaryKey()),
+                            PaymentProcessorDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    PaymentProcessorDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PaymentProcessorDescriptions.fields())
+                    .from(PaymentProcessorDescriptions)
+                    .where(PaymentProcessorDescriptions.PAYMENT_PROCESSOR.eq(paymentProcessor.getPrimaryKey()),
+                            PaymentProcessorDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = paymentProcessorDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, paymentProcessor.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            paymentProcessorDescriptions = paymentProcessorDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return paymentProcessorDescriptions;
+        return paymentProcessorDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PaymentProcessorDescription> getPaymentProcessorDescriptions(PaymentProcessor paymentProcessor) {

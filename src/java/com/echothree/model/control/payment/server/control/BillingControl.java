@@ -21,6 +21,9 @@ import com.echothree.model.control.payment.common.BillingAccountRoleTypes;
 import com.echothree.model.control.payment.common.transfer.BillingAccountRoleTransfer;
 import com.echothree.model.control.payment.common.transfer.BillingAccountRoleTypeTransfer;
 import com.echothree.model.control.payment.common.transfer.BillingAccountTransfer;
+import com.echothree.model.control.payment.server.transfer.BillingAccountRoleTransferCache;
+import com.echothree.model.control.payment.server.transfer.BillingAccountRoleTypeTransferCache;
+import com.echothree.model.control.payment.server.transfer.BillingAccountTransferCache;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
@@ -40,23 +43,38 @@ import com.echothree.model.data.payment.server.factory.BillingAccountRoleTypeFac
 import com.echothree.model.data.payment.server.factory.BillingAccountStatusFactory;
 import com.echothree.model.data.payment.server.value.BillingAccountRoleValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTIES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.payment.PaymentForeignKeys.BILLING_ACCOUNTS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.payment.PaymentForeignKeys.BILLING_ACCOUNTS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.payment.PaymentForeignKeys.BILLING_ACCOUNT_DETAILS_CURRENCY_FK;
+import static com.echothree.model.jooq.server.keys.payment.PaymentForeignKeys.BILLING_ACCOUNT_ROLES_BILLING_ACCOUNT_FK;
+import static com.echothree.model.jooq.server.keys.payment.PaymentForeignKeys.BILLING_ACCOUNT_ROLES_BILLING_ACCOUNT_ROLE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.payment.PaymentForeignKeys.BILLING_ACCOUNT_ROLES_PARTY_FK;
+import static com.echothree.model.jooq.server.tables.accounting.Currencies.Currencies;
+import static com.echothree.model.jooq.server.tables.party.Parties.Parties;
+import static com.echothree.model.jooq.server.tables.party.PartyDetails.PartyDetails;
+import static com.echothree.model.jooq.server.tables.payment.BillingAccountDetails.BillingAccountDetails;
+import static com.echothree.model.jooq.server.tables.payment.BillingAccountRoleTypeDescriptions.BillingAccountRoleTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.payment.BillingAccountRoleTypes.BillingAccountRoleTypes;
+import static com.echothree.model.jooq.server.tables.payment.BillingAccountRoles.BillingAccountRoles;
+import static com.echothree.model.jooq.server.tables.payment.BillingAccountStatuses.BillingAccountStatuses;
+import static com.echothree.model.jooq.server.tables.payment.BillingAccounts.BillingAccounts;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
 public class BillingControl
-        extends BasePaymentControl {
+        extends BaseModelControl {
 
     @Inject
-    protected SequenceControl sequenceControl;
+    private SequenceControl sequenceControl;
 
     @Inject
     protected SequenceGeneratorLogic sequenceGeneratorLogic;
@@ -71,44 +89,32 @@ public class BillingControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected BillingAccountRoleTypeFactory billingAccountRoleTypeFactory;
+    private BillingAccountRoleTypeFactory billingAccountRoleTypeFactory;
+
+    @Inject
+    private BillingAccountRoleTypeTransferCache billingAccountRoleTypeTransferCache;
 
     public BillingAccountRoleType createBillingAccountRoleType(String billingAccountRoleTypeName, Integer sortOrder) {
         return billingAccountRoleTypeFactory.create(billingAccountRoleTypeName, sortOrder);
     }
     
     public List<BillingAccountRoleType> getBillingAccountRoleTypes() {
-        var ps = billingAccountRoleTypeFactory.prepareStatement(
-                """
-                SELECT _ALL_
-                FROM billingaccountroletypes
-                ORDER BY bllactrtyp_sortorder, bllactrtyp_billingaccountroletypename
-                _LIMIT_
-                """);
-        
-        return billingAccountRoleTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        var query = session.applyLimit(session.getDslContext()
+                .select(BillingAccountRoleTypes.fields())
+                .from(BillingAccountRoleTypes)
+                .orderBy(BillingAccountRoleTypes.SORT_ORDER, BillingAccountRoleTypes.BILLING_ACCOUNT_ROLE_TYPE_NAME),
+                BillingAccountRoleTypeFactory.class);
+
+        return billingAccountRoleTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public BillingAccountRoleType getBillingAccountRoleTypeByName(String billingAccountRoleTypeName) {
-        BillingAccountRoleType billingAccountRoleType;
-        
-        try {
-            var ps = billingAccountRoleTypeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM billingaccountroletypes
-                    WHERE bllactrtyp_billingaccountroletypename = ?
-                    """);
-            
-            ps.setString(1, billingAccountRoleTypeName);
-            
-            
-            billingAccountRoleType = billingAccountRoleTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return billingAccountRoleType;
+        var query = session.getDslContext()
+                .select(BillingAccountRoleTypes.fields())
+                .from(BillingAccountRoleTypes)
+                .where(BillingAccountRoleTypes.BILLING_ACCOUNT_ROLE_TYPE_NAME.eq(billingAccountRoleTypeName));
+
+        return billingAccountRoleTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public BillingAccountRoleTypeTransfer getBillingAccountRoleTypeTransfer(UserVisit userVisit,
@@ -135,32 +141,20 @@ public class BillingControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected BillingAccountRoleTypeDescriptionFactory billingAccountRoleTypeDescriptionFactory;
+    private BillingAccountRoleTypeDescriptionFactory billingAccountRoleTypeDescriptionFactory;
 
     public BillingAccountRoleTypeDescription createBillingAccountRoleTypeDescription(BillingAccountRoleType billingAccountRoleType, Language language, String description) {
         return billingAccountRoleTypeDescriptionFactory.create(billingAccountRoleType, language, description);
     }
     
     public BillingAccountRoleTypeDescription getBillingAccountRoleTypeDescription(BillingAccountRoleType billingAccountRoleType, Language language) {
-        BillingAccountRoleTypeDescription billingAccountRoleTypeDescription;
-        
-        try {
-            var ps = billingAccountRoleTypeDescriptionFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM billingaccountroletypedescriptions
-                    WHERE bllactrtypd_bllactrtyp_billingaccountroletypeid = ? AND bllactrtypd_lang_languageid = ?
-                    """);
-            
-            ps.setLong(1, billingAccountRoleType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            billingAccountRoleTypeDescription = billingAccountRoleTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return billingAccountRoleTypeDescription;
+        var query = session.getDslContext()
+                .select(BillingAccountRoleTypeDescriptions.fields())
+                .from(BillingAccountRoleTypeDescriptions)
+                .where(BillingAccountRoleTypeDescriptions.BILLING_ACCOUNT_ROLE_TYPE.eq(billingAccountRoleType.getPrimaryKey()),
+                        BillingAccountRoleTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
+
+        return billingAccountRoleTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public String getBestBillingAccountRoleTypeDescription(BillingAccountRoleType billingAccountRoleType, Language language) {
@@ -185,10 +179,13 @@ public class BillingControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected BillingAccountFactory billingAccountFactory;
+    protected BillingAccountDetailFactory billingAccountDetailFactory;
 
     @Inject
-    protected BillingAccountDetailFactory billingAccountDetailFactory;
+    private BillingAccountFactory billingAccountFactory;
+
+    @Inject
+    private BillingAccountTransferCache billingAccountTransferCache;
 
     public BillingAccount createBillingAccount(final Party billFrom, final Currency currency, final String reference, final String description, final BasePK createdBy) {
         var sequence = sequenceControl.getDefaultSequence(billFrom.getLastDetail().getPartyType().getBillingAccountSequenceType());
@@ -217,52 +214,32 @@ public class BillingControl
     }
     
     private BillingAccount getBillingAccount(Party billFrom, Party billTo, Currency currency, EntityPermission entityPermission) {
-        BillingAccount billingAccount;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM billingaccounts, billingaccountdetails, billingaccountroletypes barta, billingaccountroles bara, billingaccountroletypes bartb, billingaccountroles barb
-                        WHERE bllact_activedetailid = bllactdt_billingaccountdetailid
-                        AND bllactdt_cur_currencyid = ?
-                        AND bllactdt_bllact_billingaccountid = bara.bllactr_bllact_billingaccountid AND bara.bllactr_par_partyid = ? AND barta.bllactrtyp_billingaccountroletypename = ?
-                        AND barta.bllactrtyp_billingaccountroletypeid = bara.bllactr_bllactrtyp_billingaccountroletypeid AND bara.bllactr_thrutime = ?
-                        AND bllactdt_bllact_billingaccountid = barb.bllactr_bllact_billingaccountid AND barb.bllactr_par_partyid = ? AND bartb.bllactrtyp_billingaccountroletypename = ?
-                        AND bartb.bllactrtyp_billingaccountroletypeid = barb.bllactr_bllactrtyp_billingaccountroletypeid AND barb.bllactr_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM billingaccounts, billingaccountdetails, billingaccountroletypes barta, billingaccountroles bara, billingaccountroletypes bartb, billingaccountroles barb
-                        WHERE bllact_activedetailid = bllactdt_billingaccountdetailid
-                        AND bllactdt_cur_currencyid = ?
-                        AND bllactdt_bllact_billingaccountid = bara.bllactr_bllact_billingaccountid AND bara.bllactr_par_partyid = ? AND barta.bllactrtyp_billingaccountroletypename = ?
-                        AND barta.bllactrtyp_billingaccountroletypeid = bara.bllactr_bllactrtyp_billingaccountroletypeid AND bara.bllactr_thrutime = ?
-                        AND bllactdt_bllact_billingaccountid = barb.bllactr_bllact_billingaccountid AND barb.bllactr_par_partyid = ? AND bartb.bllactrtyp_billingaccountroletypename = ?
-                        AND bartb.bllactrtyp_billingaccountroletypeid = barb.bllactr_bllactrtyp_billingaccountroletypeid AND barb.bllactr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var selectedRole = BillingAccountRoles.as("selectedRole");
+        var selectedRoleType = BillingAccountRoleTypes.as("selectedRoleType");
+        var counterpartRole = BillingAccountRoles.as("counterpartRole");
+        var counterpartRoleType = BillingAccountRoleTypes.as("counterpartRoleType");
+        var baseQuery = session.getDslContext()
+                .select(BillingAccounts.fields())
+                .from(BillingAccounts)
+                .join(BillingAccountDetails).onKey(BILLING_ACCOUNTS_ACTIVE_DETAIL_FK)
+                .join(selectedRole).on(selectedRole.BILLING_ACCOUNT.eq(BillingAccounts.BILLING_ACCOUNT))
+                .join(selectedRoleType).on(selectedRoleType.BILLING_ACCOUNT_ROLE_TYPE.eq(selectedRole.BILLING_ACCOUNT_ROLE_TYPE))
+                .join(counterpartRole).on(counterpartRole.BILLING_ACCOUNT.eq(BillingAccounts.BILLING_ACCOUNT))
+                .join(counterpartRoleType).on(counterpartRoleType.BILLING_ACCOUNT_ROLE_TYPE.eq(counterpartRole.BILLING_ACCOUNT_ROLE_TYPE))
+                .where(selectedRole.PARTY.eq(billFrom.getPrimaryKey()),
+                        selectedRoleType.BILLING_ACCOUNT_ROLE_TYPE_NAME.eq(com.echothree.model.control.payment.common.BillingAccountRoleTypes.BILL_FROM.name()),
+                        selectedRole.THRU_TIME.eq(Session.MAX_TIME),
+                        counterpartRole.PARTY.eq(billTo.getPrimaryKey()),
+                        counterpartRoleType.BILLING_ACCOUNT_ROLE_TYPE_NAME.eq(com.echothree.model.control.payment.common.BillingAccountRoleTypes.BILL_TO.name()),
+                        counterpartRole.THRU_TIME.eq(Session.MAX_TIME),
+                        BillingAccountDetails.CURRENCY.eq(currency.getPrimaryKey()));
 
-            var ps = billingAccountFactory.prepareStatement(query);
-            
-            ps.setLong(1, currency.getPrimaryKey().getEntityId());
-            ps.setLong(2, billFrom.getPrimaryKey().getEntityId());
-            ps.setString(3, BillingAccountRoleTypes.BILL_FROM.name());
-            ps.setLong(4, Session.MAX_TIME);
-            ps.setLong(5, billTo.getPrimaryKey().getEntityId());
-            ps.setString(6, BillingAccountRoleTypes.BILL_TO.name());
-            ps.setLong(7, Session.MAX_TIME);
-            
-            billingAccount = billingAccountFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return billingAccount;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return billingAccountFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public BillingAccount getBillingAccount(Party billFrom, Party billTo, Currency currency) {
@@ -274,51 +251,41 @@ public class BillingControl
     }
     
     private List<BillingAccount> getBillingAccountsByBillFrom(Party billFrom, EntityPermission entityPermission) {
-        List<BillingAccount> billingAccounts;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM billingaccounts, billingaccountdetails, billingaccountroletypes barta, billingaccountroles bara, billingaccountroletypes bartb, billingaccountroles barb, currencies, parties, partydetails
-                        WHERE bllact_activedetailid = bllactdt_billingaccountdetailid
-                        AND bllactdt_bllact_billingaccountid = bara.bllactr_bllact_billingaccountid AND bara.bllactr_par_partyid = ? AND barta.bllactrtyp_billingaccountroletypename = ?
-                        AND barta.bllactrtyp_billingaccountroletypeid = bara.bllactr_bllactrtyp_billingaccountroletypeid AND bara.bllactr_thrutime = ?
-                        AND bllactdt_bllact_billingaccountid = barb.bllactr_bllact_billingaccountid AND bartb.bllactrtyp_billingaccountroletypename = ?
-                        AND bartb.bllactrtyp_billingaccountroletypeid = barb.bllactr_bllactrtyp_billingaccountroletypeid AND barb.bllactr_thrutime = ?
-                        AND bllactdt_cur_currencyid = cur_currencyid AND barb.bllactr_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
-                        ORDER BY pardt_partyname, cur_sortorder, cur_currencyisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM billingaccounts, billingaccountdetails, billingaccountroletypes barta, billingaccountroles bara, billingaccountroletypes bartb, billingaccountroles barb
-                        WHERE bllact_activedetailid = bllactdt_billingaccountdetailid
-                        AND bllactdt_bllact_billingaccountid = bara.bllactr_bllact_billingaccountid AND bara.bllactr_par_partyid = ? AND barta.bllactrtyp_billingaccountroletypename = ?
-                        AND barta.bllactrtyp_billingaccountroletypeid = bara.bllactr_bllactrtyp_billingaccountroletypeid AND bara.bllactr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var selectedRole = BillingAccountRoles.as("selectedRole");
+        var selectedRoleType = BillingAccountRoleTypes.as("selectedRoleType");
+        var counterpartRole = BillingAccountRoles.as("counterpartRole");
+        var counterpartRoleType = BillingAccountRoleTypes.as("counterpartRoleType");
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                .select(BillingAccounts.fields())
+                .from(BillingAccounts)
+                .join(BillingAccountDetails).onKey(BILLING_ACCOUNTS_ACTIVE_DETAIL_FK)
+                .join(selectedRole).on(selectedRole.BILLING_ACCOUNT.eq(BillingAccounts.BILLING_ACCOUNT))
+                .join(selectedRoleType).on(selectedRoleType.BILLING_ACCOUNT_ROLE_TYPE.eq(selectedRole.BILLING_ACCOUNT_ROLE_TYPE))
+                .join(counterpartRole).on(counterpartRole.BILLING_ACCOUNT.eq(BillingAccounts.BILLING_ACCOUNT))
+                .join(counterpartRoleType).on(counterpartRoleType.BILLING_ACCOUNT_ROLE_TYPE.eq(counterpartRole.BILLING_ACCOUNT_ROLE_TYPE))
+                .join(Currencies).onKey(BILLING_ACCOUNT_DETAILS_CURRENCY_FK)
+                .join(Parties).on(Parties.PARTY.eq(counterpartRole.PARTY))
+                .join(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                .where(selectedRole.PARTY.eq(billFrom.getPrimaryKey()),
+                        selectedRoleType.BILLING_ACCOUNT_ROLE_TYPE_NAME.eq(com.echothree.model.control.payment.common.BillingAccountRoleTypes.BILL_FROM.name()),
+                        selectedRole.THRU_TIME.eq(Session.MAX_TIME),
+                        counterpartRoleType.BILLING_ACCOUNT_ROLE_TYPE_NAME.eq(com.echothree.model.control.payment.common.BillingAccountRoleTypes.BILL_TO.name()),
+                        counterpartRole.THRU_TIME.eq(Session.MAX_TIME))
+                .orderBy(PartyDetails.PARTY_NAME, Currencies.SORT_ORDER, Currencies.CURRENCY_ISO_NAME), BillingAccountFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                .select(BillingAccounts.fields())
+                .from(BillingAccounts)
+                .join(BillingAccountDetails).onKey(BILLING_ACCOUNTS_ACTIVE_DETAIL_FK)
+                .join(selectedRole).on(selectedRole.BILLING_ACCOUNT.eq(BillingAccounts.BILLING_ACCOUNT))
+                .join(selectedRoleType).on(selectedRoleType.BILLING_ACCOUNT_ROLE_TYPE.eq(selectedRole.BILLING_ACCOUNT_ROLE_TYPE))
+                .where(selectedRole.PARTY.eq(billFrom.getPrimaryKey()),
+                        selectedRoleType.BILLING_ACCOUNT_ROLE_TYPE_NAME.eq(com.echothree.model.control.payment.common.BillingAccountRoleTypes.BILL_FROM.name()),
+                        selectedRole.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
+        };
 
-            var ps = billingAccountFactory.prepareStatement(query);
-            
-            ps.setLong(1, billFrom.getPrimaryKey().getEntityId());
-            ps.setString(2, BillingAccountRoleTypes.BILL_FROM.name());
-            ps.setLong(3, Session.MAX_TIME);
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                ps.setString(4, BillingAccountRoleTypes.BILL_TO.name());
-                ps.setLong(5, Session.MAX_TIME);
-            }
-            
-            billingAccounts = billingAccountFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return billingAccounts;
+        return billingAccountFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<BillingAccount> getBillingAccountsByBillFrom(Party billFrom) {
@@ -330,51 +297,41 @@ public class BillingControl
     }
     
     private List<BillingAccount> getBillingAccountsByBillTo(Party billTo, EntityPermission entityPermission) {
-        List<BillingAccount> billingAccounts;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM billingaccounts, billingaccountdetails, billingaccountroletypes barta, billingaccountroles bara, billingaccountroletypes bartb, billingaccountroles barb, currencies, parties, partydetails
-                        WHERE bllact_activedetailid = bllactdt_billingaccountdetailid
-                        AND bllactdt_bllact_billingaccountid = bara.bllactr_bllact_billingaccountid AND bara.bllactr_par_partyid = ? AND barta.bllactrtyp_billingaccountroletypename = ?
-                        AND barta.bllactrtyp_billingaccountroletypeid = bara.bllactr_bllactrtyp_billingaccountroletypeid AND bara.bllactr_thrutime = ?
-                        AND bllactdt_bllact_billingaccountid = barb.bllactr_bllact_billingaccountid AND bartb.bllactrtyp_billingaccountroletypename = ?
-                        AND bartb.bllactrtyp_billingaccountroletypeid = barb.bllactr_bllactrtyp_billingaccountroletypeid AND barb.bllactr_thrutime = ?
-                        AND bllactdt_cur_currencyid = cur_currencyid AND barb.bllactr_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
-                        ORDER BY pardt_partyname, cur_sortorder, cur_currencyisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM billingaccounts, billingaccountdetails, billingaccountroletypes barta, billingaccountroles bara, billingaccountroletypes bartb, billingaccountroles barb
-                        WHERE bllact_activedetailid = bllactdt_billingaccountdetailid
-                        AND bllactdt_bllact_billingaccountid = bara.bllactr_bllact_billingaccountid AND bara.bllactr_par_partyid = ? AND barta.bllactrtyp_billingaccountroletypename = ?
-                        AND barta.bllactrtyp_billingaccountroletypeid = bara.bllactr_bllactrtyp_billingaccountroletypeid AND bara.bllactr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var selectedRole = BillingAccountRoles.as("selectedRole");
+        var selectedRoleType = BillingAccountRoleTypes.as("selectedRoleType");
+        var counterpartRole = BillingAccountRoles.as("counterpartRole");
+        var counterpartRoleType = BillingAccountRoleTypes.as("counterpartRoleType");
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                .select(BillingAccounts.fields())
+                .from(BillingAccounts)
+                .join(BillingAccountDetails).onKey(BILLING_ACCOUNTS_ACTIVE_DETAIL_FK)
+                .join(selectedRole).on(selectedRole.BILLING_ACCOUNT.eq(BillingAccounts.BILLING_ACCOUNT))
+                .join(selectedRoleType).on(selectedRoleType.BILLING_ACCOUNT_ROLE_TYPE.eq(selectedRole.BILLING_ACCOUNT_ROLE_TYPE))
+                .join(counterpartRole).on(counterpartRole.BILLING_ACCOUNT.eq(BillingAccounts.BILLING_ACCOUNT))
+                .join(counterpartRoleType).on(counterpartRoleType.BILLING_ACCOUNT_ROLE_TYPE.eq(counterpartRole.BILLING_ACCOUNT_ROLE_TYPE))
+                .join(Currencies).onKey(BILLING_ACCOUNT_DETAILS_CURRENCY_FK)
+                .join(Parties).on(Parties.PARTY.eq(counterpartRole.PARTY))
+                .join(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                .where(selectedRole.PARTY.eq(billTo.getPrimaryKey()),
+                        selectedRoleType.BILLING_ACCOUNT_ROLE_TYPE_NAME.eq(com.echothree.model.control.payment.common.BillingAccountRoleTypes.BILL_TO.name()),
+                        selectedRole.THRU_TIME.eq(Session.MAX_TIME),
+                        counterpartRoleType.BILLING_ACCOUNT_ROLE_TYPE_NAME.eq(com.echothree.model.control.payment.common.BillingAccountRoleTypes.BILL_FROM.name()),
+                        counterpartRole.THRU_TIME.eq(Session.MAX_TIME))
+                .orderBy(PartyDetails.PARTY_NAME, Currencies.SORT_ORDER, Currencies.CURRENCY_ISO_NAME), BillingAccountFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                .select(BillingAccounts.fields())
+                .from(BillingAccounts)
+                .join(BillingAccountDetails).onKey(BILLING_ACCOUNTS_ACTIVE_DETAIL_FK)
+                .join(selectedRole).on(selectedRole.BILLING_ACCOUNT.eq(BillingAccounts.BILLING_ACCOUNT))
+                .join(selectedRoleType).on(selectedRoleType.BILLING_ACCOUNT_ROLE_TYPE.eq(selectedRole.BILLING_ACCOUNT_ROLE_TYPE))
+                .where(selectedRole.PARTY.eq(billTo.getPrimaryKey()),
+                        selectedRoleType.BILLING_ACCOUNT_ROLE_TYPE_NAME.eq(com.echothree.model.control.payment.common.BillingAccountRoleTypes.BILL_TO.name()),
+                        selectedRole.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
+        };
 
-            var ps = billingAccountFactory.prepareStatement(query);
-            
-            ps.setLong(1, billTo.getPrimaryKey().getEntityId());
-            ps.setString(2, BillingAccountRoleTypes.BILL_TO.name());
-            ps.setLong(3, Session.MAX_TIME);
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                ps.setString(4, BillingAccountRoleTypes.BILL_FROM.name());
-                ps.setLong(5, Session.MAX_TIME);
-            }
-            
-            billingAccounts = billingAccountFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return billingAccounts;
+        return billingAccountFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<BillingAccount> getBillingAccountsByBillTo(Party billTo) {
@@ -386,36 +343,18 @@ public class BillingControl
     }
     
     private BillingAccount getBillingAccountByName(String billingAccountName, EntityPermission entityPermission) {
-        BillingAccount billingAccount;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM billingaccounts, billingaccountdetails
-                        WHERE bllact_activedetailid = bllactdt_billingaccountdetailid AND bllactdt_billingaccountname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM billingaccounts, billingaccountdetails
-                        WHERE bllact_activedetailid = bllactdt_billingaccountdetailid AND bllactdt_billingaccountname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(BillingAccounts.fields())
+                .from(BillingAccounts)
+                .join(BillingAccountDetails).onKey(BILLING_ACCOUNTS_ACTIVE_DETAIL_FK)
+                .where(BillingAccountDetails.BILLING_ACCOUNT_NAME.eq(billingAccountName));
 
-            var ps = billingAccountFactory.prepareStatement(query);
-            
-            ps.setString(1, billingAccountName);
-            
-            billingAccount = billingAccountFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return billingAccount;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return billingAccountFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public BillingAccount getBillingAccountByName(String billingAccountName) {
@@ -453,7 +392,7 @@ public class BillingControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected BillingAccountStatusFactory billingAccountStatusFactory;
+    private BillingAccountStatusFactory billingAccountStatusFactory;
 
     public BillingAccountStatus createBillingAccountStatus(BillingAccount billingAccount, Long creditLimit,
             Long potentialCreditLimit) {
@@ -461,36 +400,17 @@ public class BillingControl
     }
     
     private BillingAccountStatus getBillingAccountStatus(BillingAccount billingAccount, EntityPermission entityPermission) {
-        BillingAccountStatus billingAccountStatus;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM billingaccountstatuses
-                        WHERE bllactst_bllact_billingaccountid = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM billingaccountstatuses
-                        WHERE bllactst_bllact_billingaccountid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(BillingAccountStatuses.fields())
+                .from(BillingAccountStatuses)
+                .where(BillingAccountStatuses.BILLING_ACCOUNT.eq(billingAccount.getPrimaryKey()));
 
-            var ps = billingAccountStatusFactory.prepareStatement(query);
-            
-            ps.setLong(1, billingAccount.getPrimaryKey().getEntityId());
-            
-            billingAccountStatus = billingAccountStatusFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return billingAccountStatus;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return billingAccountStatusFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public BillingAccountStatus getBillingAccountStatus(BillingAccount billingAccount) {
@@ -506,7 +426,10 @@ public class BillingControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected BillingAccountRoleFactory billingAccountRoleFactory;
+    private BillingAccountRoleFactory billingAccountRoleFactory;
+
+    @Inject
+    private BillingAccountRoleTransferCache billingAccountRoleTransferCache;
 
     public BillingAccountRole createBillingAccountRoleUsingNames(BillingAccount billingAccount, Party party, PartyContactMechanism partyContactMechanism,
             String billingAccountRoleTypeName, BasePK createdBy) {
@@ -526,38 +449,19 @@ public class BillingControl
     }
     
     private BillingAccountRole getBillingAccountRole(BillingAccount billingAccount, BillingAccountRoleType billingAccountRoleType, EntityPermission entityPermission) {
-        BillingAccountRole billingAccountRole;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM billingaccountroles
-                        WHERE bllactr_bllact_billingaccountid = ? AND bllactr_bllactrtyp_billingaccountroletypeid = ? AND bllactr_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM billingaccountroles
-                        WHERE bllactr_bllact_billingaccountid = ? AND bllactr_bllactrtyp_billingaccountroletypeid = ? AND bllactr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(BillingAccountRoles.fields())
+                .from(BillingAccountRoles)
+                .where(BillingAccountRoles.BILLING_ACCOUNT.eq(billingAccount.getPrimaryKey()),
+                        BillingAccountRoles.BILLING_ACCOUNT_ROLE_TYPE.eq(billingAccountRoleType.getPrimaryKey()),
+                        BillingAccountRoles.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = billingAccountRoleFactory.prepareStatement(query);
-            
-            ps.setLong(1, billingAccount.getPrimaryKey().getEntityId());
-            ps.setLong(2, billingAccountRoleType.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            billingAccountRole = billingAccountRoleFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return billingAccountRole;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return billingAccountRoleFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public BillingAccountRole getBillingAccountRole(BillingAccount billingAccount, BillingAccountRoleType billingAccountRoleType) {
@@ -583,41 +487,26 @@ public class BillingControl
     }
     
     private List<BillingAccountRole> getBillingAccountRolesByBillingAccount(BillingAccount billingAccount, EntityPermission entityPermission) {
-        List<BillingAccountRole> billingAccountRoles;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM billingaccountroles, billingaccountroletypes, parties, partydetails
-                        WHERE bllactr_bllact_billingaccountid = ? AND bllactr_thrutime = ?
-                        AND bllactr_bllactrtyp_billingaccountroletypeid = bllactrtyp_billingaccountroletypeid
-                        AND bllactr_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid
-                        ORDER BY bllactrtyp_sortorder, pardt_partyname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM billingaccountroles
-                        WHERE bllactr_bllact_billingAccountid = ? AND bllactr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(BillingAccountRoles.fields())
+                    .from(BillingAccountRoles)
+                    .join(BillingAccountRoleTypes).onKey(BILLING_ACCOUNT_ROLES_BILLING_ACCOUNT_ROLE_TYPE_FK)
+                    .join(Parties).onKey(BILLING_ACCOUNT_ROLES_PARTY_FK)
+                    .join(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .where(BillingAccountRoles.BILLING_ACCOUNT.eq(billingAccount.getPrimaryKey()),
+                            BillingAccountRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(BillingAccountRoleTypes.SORT_ORDER, PartyDetails.PARTY_NAME),
+                    BillingAccountRoleFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(BillingAccountRoles.fields())
+                    .from(BillingAccountRoles)
+                    .where(BillingAccountRoles.BILLING_ACCOUNT.eq(billingAccount.getPrimaryKey()),
+                            BillingAccountRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = billingAccountRoleFactory.prepareStatement(query);
-            
-            ps.setLong(1, billingAccount.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            billingAccountRoles = billingAccountRoleFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return billingAccountRoles;
+        return billingAccountRoleFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<BillingAccountRole> getBillingAccountRolesByBillingAccount(BillingAccount billingAccount) {
@@ -629,41 +518,26 @@ public class BillingControl
     }
     
     private List<BillingAccountRole> getBillingAccountRolesByPartyContactMechanism(PartyContactMechanism partyContactMechanism, EntityPermission entityPermission) {
-        List<BillingAccountRole> billingAccountRoles;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM billingaccountroles, billingaccounts, billingaccountdetails, billingaccountroletypes
-                        WHERE bllactr_pcm_partycontactmechanismid = ? AND bllactr_thrutime = ?
-                        AND bllactr_bllact_billingaccountid = bllact_billingaccountid AND bllact_lastdetailid = bllactdt_billingaccountdetailid
-                        AND bllactr_bllactrtyp_billingaccountroletypeid = bllactrtyp_billingaccountroletypeid
-                        ORDER BY bllactdt_billingaccountname, bllactrtyp_sortorder, bllactrtyp_billingaccountroletypename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM billingaccountroles
-                        WHERE bllactr_pcm_partycontactmechanismid = ? AND bllactr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(BillingAccountRoles.fields())
+                    .from(BillingAccountRoles)
+                    .join(BillingAccounts).onKey(BILLING_ACCOUNT_ROLES_BILLING_ACCOUNT_FK)
+                    .join(BillingAccountDetails).onKey(BILLING_ACCOUNTS_LAST_DETAIL_FK)
+                    .join(BillingAccountRoleTypes).onKey(BILLING_ACCOUNT_ROLES_BILLING_ACCOUNT_ROLE_TYPE_FK)
+                    .where(BillingAccountRoles.PARTY_CONTACT_MECHANISM.eq(partyContactMechanism.getPrimaryKey()),
+                            BillingAccountRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(BillingAccountDetails.BILLING_ACCOUNT_NAME, BillingAccountRoleTypes.SORT_ORDER, BillingAccountRoleTypes.BILLING_ACCOUNT_ROLE_TYPE_NAME),
+                    BillingAccountRoleFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(BillingAccountRoles.fields())
+                    .from(BillingAccountRoles)
+                    .where(BillingAccountRoles.PARTY_CONTACT_MECHANISM.eq(partyContactMechanism.getPrimaryKey()),
+                            BillingAccountRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = billingAccountRoleFactory.prepareStatement(query);
-            
-            ps.setLong(1, partyContactMechanism.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            billingAccountRoles = billingAccountRoleFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return billingAccountRoles;
+        return billingAccountRoleFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<BillingAccountRole> getBillingAccountRolesByPartyContactMechanism(PartyContactMechanism partyContactMechanism) {

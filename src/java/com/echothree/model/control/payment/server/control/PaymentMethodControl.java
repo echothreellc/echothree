@@ -22,6 +22,8 @@ import com.echothree.model.control.order.server.control.OrderPaymentPreferenceCo
 import com.echothree.model.control.payment.common.choice.PaymentMethodChoicesBean;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodDescriptionTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
+import com.echothree.model.control.payment.server.transfer.PaymentMethodDescriptionTransferCache;
+import com.echothree.model.control.payment.server.transfer.PaymentMethodTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.payment.common.pk.PaymentMethodPK;
@@ -42,12 +44,19 @@ import com.echothree.model.data.payment.server.value.PaymentMethodDescriptionVal
 import com.echothree.model.data.payment.server.value.PaymentMethodDetailValue;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.payment.PaymentForeignKeys.PAYMENT_METHODS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.payment.PaymentForeignKeys.PAYMENT_METHOD_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.payment.PaymentMethodChecks.PaymentMethodChecks;
+import static com.echothree.model.jooq.server.tables.payment.PaymentMethodCreditCards.PaymentMethodCreditCards;
+import static com.echothree.model.jooq.server.tables.payment.PaymentMethodDescriptions.PaymentMethodDescriptions;
+import static com.echothree.model.jooq.server.tables.payment.PaymentMethodDetails.PaymentMethodDetails;
+import static com.echothree.model.jooq.server.tables.payment.PaymentMethods.PaymentMethods;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -56,16 +65,16 @@ import javax.inject.Inject;
 
 @CommandScope
 public class PaymentMethodControl
-        extends BasePaymentControl {
+        extends BaseModelControl {
 
     @Inject
-    protected CustomerControl customerControl;
+    private CustomerControl customerControl;
 
     @Inject
     protected OrderPaymentPreferenceControl orderPaymentPreferenceControl;
 
     @Inject
-    protected PartyPaymentMethodControl partyPaymentMethodControl;
+    private PartyPaymentMethodControl partyPaymentMethodControl;
 
     /** Creates a new instance of PaymentMethodControl */
     protected PaymentMethodControl() {
@@ -77,10 +86,13 @@ public class PaymentMethodControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PaymentMethodFactory paymentMethodFactory;
+    protected PaymentMethodDetailFactory paymentMethodDetailFactory;
 
     @Inject
-    protected PaymentMethodDetailFactory paymentMethodDetailFactory;
+    private PaymentMethodFactory paymentMethodFactory;
+
+    @Inject
+    private PaymentMethodTransferCache paymentMethodTransferCache;
 
     public PaymentMethod createPaymentMethod(String paymentMethodName, PaymentMethodType paymentMethodType, PaymentProcessor paymentProcessor,
             Selector itemSelector, Selector salesOrderItemSelector, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -127,47 +139,52 @@ public class PaymentMethodControl
     }
 
     public long countPaymentMethods() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM paymentmethods
-                        JOIN paymentmethoddetails ON pmdt_paymentmethoddetailid = pm_activedetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(PaymentMethods)
+                .join(PaymentMethodDetails).onKey(PAYMENT_METHODS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPaymentMethodsByPaymentMethodType(final PaymentMethodType paymentMethodType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM paymentmethods
-                        JOIN paymentmethoddetails ON pmdt_paymentmethoddetailid = pm_activedetailid
-                        WHERE pmdt_pmtyp_paymentmethodtypeid = ?
-                        """, paymentMethodType);
+        return session.getDslContext()
+                .selectCount()
+                .from(PaymentMethods)
+                .join(PaymentMethodDetails).onKey(PAYMENT_METHODS_ACTIVE_DETAIL_FK)
+                .where(PaymentMethodDetails.PAYMENT_METHOD_TYPE.eq(paymentMethodType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPaymentMethodsByPaymentProcessor(final PaymentProcessor paymentProcessor) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM paymentmethods
-                        JOIN paymentmethoddetails ON pmdt_paymentmethoddetailid = pm_activedetailid
-                        WHERE pmdt_pprc_paymentprocessorid = ?
-                        """, paymentProcessor);
+        return session.getDslContext()
+                .selectCount()
+                .from(PaymentMethods)
+                .join(PaymentMethodDetails).onKey(PAYMENT_METHODS_ACTIVE_DETAIL_FK)
+                .where(PaymentMethodDetails.PAYMENT_PROCESSOR.eq(paymentProcessor.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPaymentMethodsByItemSelector(final Selector itemSelector) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM paymentmethods
-                        JOIN paymentmethoddetails ON pmdt_paymentmethoddetailid = pm_activedetailid
-                        WHERE pmdt_itemselectorid = ?
-                        """, itemSelector);
+        return session.getDslContext()
+                .selectCount()
+                .from(PaymentMethods)
+                .join(PaymentMethodDetails).onKey(PAYMENT_METHODS_ACTIVE_DETAIL_FK)
+                .where(PaymentMethodDetails.ITEM_SELECTOR.eq(itemSelector.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPaymentMethodsBySalesOrderItemSelector(final Selector salesOrderItemSelector) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM paymentmethods
-                        JOIN paymentmethoddetails ON pmdt_paymentmethoddetailid = pm_activedetailid
-                        WHERE pmdt_salesorderitemselectorid = ?
-                        """, salesOrderItemSelector);
+        return session.getDslContext()
+                .selectCount()
+                .from(PaymentMethods)
+                .join(PaymentMethodDetails).onKey(PAYMENT_METHODS_ACTIVE_DETAIL_FK)
+                .where(PaymentMethodDetails.SALES_ORDER_ITEM_SELECTOR.eq(salesOrderItemSelector.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public PaymentMethodDetailValue getPaymentMethodDetailValueForUpdate(PaymentMethod paymentMethod) {
@@ -175,36 +192,18 @@ public class PaymentMethodControl
     }
     
     public PaymentMethod getPaymentMethodByName(String paymentMethodName, EntityPermission entityPermission) {
-        PaymentMethod paymentMethod;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM paymentmethods, paymentmethoddetails
-                        WHERE pm_activedetailid = pmdt_paymentmethoddetailid AND pmdt_paymentmethodname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM paymentmethods, paymentmethoddetails
-                        WHERE pm_activedetailid = pmdt_paymentmethoddetailid AND pmdt_paymentmethodname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(PaymentMethods.fields())
+                .from(PaymentMethods)
+                .join(PaymentMethodDetails).onKey(PAYMENT_METHODS_ACTIVE_DETAIL_FK)
+                .where(PaymentMethodDetails.PAYMENT_METHOD_NAME.eq(paymentMethodName));
 
-            var ps = paymentMethodFactory.prepareStatement(query);
-            
-            ps.setString(1, paymentMethodName);
-            
-            paymentMethod = paymentMethodFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return paymentMethod;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return paymentMethodFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PaymentMethod getPaymentMethodByName(String paymentMethodName) {
@@ -220,28 +219,19 @@ public class PaymentMethodControl
     }
     
     private List<PaymentMethod> getPaymentMethods(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM paymentmethods, paymentmethoddetails
-                    WHERE pm_activedetailid = pmdt_paymentmethoddetailid
-                    ORDER BY pmdt_sortorder, pmdt_paymentmethodname
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM paymentmethods, paymentmethoddetails
-                    WHERE pm_activedetailid = pmdt_paymentmethoddetailid
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(PaymentMethods.fields())
+                .from(PaymentMethods)
+                .join(PaymentMethodDetails).onKey(PAYMENT_METHODS_ACTIVE_DETAIL_FK);
 
-        var ps = paymentMethodFactory.prepareStatement(query);
-        
-        return paymentMethodFactory.getEntitiesFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(PaymentMethodDetails.SORT_ORDER, PaymentMethodDetails.PAYMENT_METHOD_NAME),
+                    PaymentMethodFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return paymentMethodFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PaymentMethod> getPaymentMethods() {
@@ -253,38 +243,20 @@ public class PaymentMethodControl
     }
     
     private List<PaymentMethod> getPaymentMethodsByPaymentMethodType(PaymentMethodType paymentMethodType, EntityPermission entityPermission) {
-        List<PaymentMethod> paymentMethod;
+        var baseQuery = session.getDslContext()
+                .select(PaymentMethods.fields())
+                .from(PaymentMethods)
+                .join(PaymentMethodDetails).onKey(PAYMENT_METHODS_ACTIVE_DETAIL_FK)
+                .where(PaymentMethodDetails.PAYMENT_METHOD_TYPE.eq(paymentMethodType.getPrimaryKey()));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(PaymentMethodDetails.SORT_ORDER, PaymentMethodDetails.PAYMENT_METHOD_NAME),
+                    PaymentMethodFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM paymentmethods, paymentmethoddetails
-                        WHERE pm_activedetailid = pmdt_paymentmethoddetailid AND pmdt_pmtyp_paymentmethodtypeid = ?
-                        ORDER BY pmdt_sortorder, pmdt_paymentmethodname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM paymentmethods, paymentmethoddetails
-                        WHERE pm_activedetailid = pmdt_paymentmethoddetailid AND pmdt_pmtyp_paymentmethodtypeid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = paymentMethodFactory.prepareStatement(query);
-
-            ps.setLong(1, paymentMethodType.getPrimaryKey().getEntityId());
-
-            paymentMethod = paymentMethodFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return paymentMethod;
+        return paymentMethodFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PaymentMethod> getPaymentMethodsByPaymentMethodType(PaymentMethodType paymentMethodType) {
@@ -296,38 +268,20 @@ public class PaymentMethodControl
     }
 
     private List<PaymentMethod> getPaymentMethodsByPaymentProcessor(PaymentProcessor paymentProcessor, EntityPermission entityPermission) {
-        List<PaymentMethod> paymentMethod;
+        var baseQuery = session.getDslContext()
+                .select(PaymentMethods.fields())
+                .from(PaymentMethods)
+                .join(PaymentMethodDetails).onKey(PAYMENT_METHODS_ACTIVE_DETAIL_FK)
+                .where(PaymentMethodDetails.PAYMENT_PROCESSOR.eq(paymentProcessor.getPrimaryKey()));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(PaymentMethodDetails.SORT_ORDER, PaymentMethodDetails.PAYMENT_METHOD_NAME),
+                    PaymentMethodFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM paymentmethods, paymentmethoddetails
-                        WHERE pm_activedetailid = pmdt_paymentmethoddetailid AND pmdt_pprc_paymentprocessorid = ?
-                        ORDER BY pmdt_sortorder, pmdt_paymentmethodname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM paymentmethods, paymentmethoddetails
-                        WHERE pm_activedetailid = pmdt_paymentmethoddetailid AND pmdt_pprc_paymentprocessorid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = paymentMethodFactory.prepareStatement(query);
-
-            ps.setLong(1, paymentProcessor.getPrimaryKey().getEntityId());
-
-            paymentMethod = paymentMethodFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return paymentMethod;
+        return paymentMethodFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PaymentMethod> getPaymentMethodsByPaymentProcessor(PaymentProcessor paymentProcessor) {
@@ -339,26 +293,18 @@ public class PaymentMethodControl
     }
 
     private PaymentMethod getDefaultPaymentMethod(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM paymentmethods, paymentmethoddetails
-                    WHERE pm_activedetailid = pmdt_paymentmethoddetailid AND pmdt_isdefault = 1
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM paymentmethods, paymentmethoddetails
-                    WHERE pm_activedetailid = pmdt_paymentmethoddetailid AND pmdt_isdefault = 1
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(PaymentMethods.fields())
+                .from(PaymentMethods)
+                .join(PaymentMethodDetails).onKey(PAYMENT_METHODS_ACTIVE_DETAIL_FK)
+                .where(PaymentMethodDetails.IS_DEFAULT.eq(true));
 
-        var ps = paymentMethodFactory.prepareStatement(query);
-        
-        return paymentMethodFactory.getEntityFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return paymentMethodFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PaymentMethod getDefaultPaymentMethod() {
@@ -526,7 +472,10 @@ public class PaymentMethodControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PaymentMethodDescriptionFactory paymentMethodDescriptionFactory;
+    private PaymentMethodDescriptionFactory paymentMethodDescriptionFactory;
+
+    @Inject
+    private PaymentMethodDescriptionTransferCache paymentMethodDescriptionTransferCache;
 
     public PaymentMethodDescription createPaymentMethodDescription(PaymentMethod paymentMethod, Language language,
             String description, BasePK createdBy) {
@@ -541,38 +490,19 @@ public class PaymentMethodControl
     
     private PaymentMethodDescription getPaymentMethodDescription(PaymentMethod paymentMethod, Language language,
             EntityPermission entityPermission) {
-        PaymentMethodDescription paymentMethodDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM paymentmethoddescriptions
-                        WHERE pmd_pm_paymentmethodid = ? AND pmd_lang_languageid = ? AND pmd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM paymentmethoddescriptions
-                        WHERE pmd_pm_paymentmethodid = ? AND pmd_lang_languageid = ? AND pmd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(PaymentMethodDescriptions.fields())
+                .from(PaymentMethodDescriptions)
+                .where(PaymentMethodDescriptions.PAYMENT_METHOD.eq(paymentMethod.getPrimaryKey()),
+                        PaymentMethodDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        PaymentMethodDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = paymentMethodDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, paymentMethod.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            paymentMethodDescription = paymentMethodDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return paymentMethodDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return paymentMethodDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PaymentMethodDescription getPaymentMethodDescription(PaymentMethod paymentMethod, Language language) {
@@ -592,39 +522,24 @@ public class PaymentMethodControl
     }
     
     private List<PaymentMethodDescription> getPaymentMethodDescriptions(PaymentMethod paymentMethod, EntityPermission entityPermission) {
-        List<PaymentMethodDescription> paymentMethodDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM paymentmethoddescriptions, languages
-                        WHERE pmd_pm_paymentmethodid = ? AND pmd_thrutime = ? AND pmd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM paymentmethoddescriptions
-                        WHERE pmd_pm_paymentmethodid = ? AND pmd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PaymentMethodDescriptions.fields())
+                    .from(PaymentMethodDescriptions)
+                    .join(Languages).onKey(PAYMENT_METHOD_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(PaymentMethodDescriptions.PAYMENT_METHOD.eq(paymentMethod.getPrimaryKey()),
+                            PaymentMethodDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    PaymentMethodDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PaymentMethodDescriptions.fields())
+                    .from(PaymentMethodDescriptions)
+                    .where(PaymentMethodDescriptions.PAYMENT_METHOD.eq(paymentMethod.getPrimaryKey()),
+                            PaymentMethodDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = paymentMethodDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, paymentMethod.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            paymentMethodDescriptions = paymentMethodDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return paymentMethodDescriptions;
+        return paymentMethodDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PaymentMethodDescription> getPaymentMethodDescriptions(PaymentMethod paymentMethod) {
@@ -707,7 +622,7 @@ public class PaymentMethodControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PaymentMethodCheckFactory paymentMethodCheckFactory;
+    private PaymentMethodCheckFactory paymentMethodCheckFactory;
 
     public PaymentMethodCheck createPaymentMethodCheck(PaymentMethod paymentMethod, Integer holdDays, BasePK createdBy) {
         var paymentMethodCheck = paymentMethodCheckFactory.create(paymentMethod, holdDays,
@@ -720,37 +635,18 @@ public class PaymentMethodControl
     }
     
     private PaymentMethodCheck getPaymentMethodCheck(PaymentMethod paymentMethod, EntityPermission entityPermission) {
-        PaymentMethodCheck paymentMethodCheck;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM paymentmethodchecks
-                        WHERE pmchk_pm_paymentmethodid = ? AND pmchk_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM paymentmethodchecks
-                        WHERE pmchk_pm_paymentmethodid = ? AND pmchk_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(PaymentMethodChecks.fields())
+                .from(PaymentMethodChecks)
+                .where(PaymentMethodChecks.PAYMENT_METHOD.eq(paymentMethod.getPrimaryKey()),
+                        PaymentMethodChecks.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = paymentMethodCheckFactory.prepareStatement(query);
-            
-            ps.setLong(1, paymentMethod.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            paymentMethodCheck = paymentMethodCheckFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return paymentMethodCheck;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return paymentMethodCheckFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PaymentMethodCheck getPaymentMethodCheck(PaymentMethod paymentMethod) {
@@ -798,7 +694,7 @@ public class PaymentMethodControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PaymentMethodCreditCardFactory paymentMethodCreditCardFactory;
+    private PaymentMethodCreditCardFactory paymentMethodCreditCardFactory;
 
     public PaymentMethodCreditCard createPaymentMethodCreditCard(PaymentMethod paymentMethod, Boolean requestNameOnCard,
             Boolean requireNameOnCard, Boolean checkCardNumber, Boolean requestExpirationDate, Boolean requireExpirationDate,
@@ -818,37 +714,18 @@ public class PaymentMethodControl
     }
     
     private PaymentMethodCreditCard getPaymentMethodCreditCard(PaymentMethod paymentMethod, EntityPermission entityPermission) {
-        PaymentMethodCreditCard paymentMethodCreditCard;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM paymentmethodcreditcards
-                        WHERE pmcc_pm_paymentmethodid = ? AND pmcc_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM paymentmethodcreditcards
-                        WHERE pmcc_pm_paymentmethodid = ? AND pmcc_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(PaymentMethodCreditCards.fields())
+                .from(PaymentMethodCreditCards)
+                .where(PaymentMethodCreditCards.PAYMENT_METHOD.eq(paymentMethod.getPrimaryKey()),
+                        PaymentMethodCreditCards.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = paymentMethodCreditCardFactory.prepareStatement(query);
-            
-            ps.setLong(1, paymentMethod.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            paymentMethodCreditCard = paymentMethodCreditCardFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return paymentMethodCreditCard;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return paymentMethodCreditCardFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PaymentMethodCreditCard getPaymentMethodCreditCard(PaymentMethod paymentMethod) {
