@@ -43,7 +43,6 @@ import com.echothree.model.control.cancellationpolicy.server.transfer.Cancellati
 import com.echothree.model.control.cancellationpolicy.server.transfer.CancellationTypeTransferCache;
 import com.echothree.model.control.cancellationpolicy.server.transfer.PartyCancellationPolicyTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.cancellationpolicy.common.pk.CancellationKindPK;
 import com.echothree.model.data.cancellationpolicy.common.pk.CancellationPolicyPK;
 import com.echothree.model.data.cancellationpolicy.common.pk.CancellationReasonPK;
@@ -92,19 +91,52 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.cancellationpolicy.CancellationPolicyForeignKeys.CANCELLATION_KINDS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.cancellationpolicy.CancellationPolicyForeignKeys.CANCELLATION_KINDS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.cancellationpolicy.CancellationPolicyForeignKeys.CANCELLATION_KIND_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.cancellationpolicy.CancellationPolicyForeignKeys.CANCELLATION_POLICIES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.cancellationpolicy.CancellationPolicyForeignKeys.CANCELLATION_POLICIES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.cancellationpolicy.CancellationPolicyForeignKeys.CANCELLATION_POLICY_REASONS_CANCELLATION_POLICY_FK;
+import static com.echothree.model.jooq.server.keys.cancellationpolicy.CancellationPolicyForeignKeys.CANCELLATION_POLICY_REASONS_CANCELLATION_REASON_FK;
+import static com.echothree.model.jooq.server.keys.cancellationpolicy.CancellationPolicyForeignKeys.CANCELLATION_POLICY_TRANSLATIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.cancellationpolicy.CancellationPolicyForeignKeys.CANCELLATION_REASONS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.cancellationpolicy.CancellationPolicyForeignKeys.CANCELLATION_REASONS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.cancellationpolicy.CancellationPolicyForeignKeys.CANCELLATION_REASON_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.cancellationpolicy.CancellationPolicyForeignKeys.CANCELLATION_REASON_TYPES_CANCELLATION_REASON_FK;
+import static com.echothree.model.jooq.server.keys.cancellationpolicy.CancellationPolicyForeignKeys.CANCELLATION_REASON_TYPES_CANCELLATION_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.cancellationpolicy.CancellationPolicyForeignKeys.CANCELLATION_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.cancellationpolicy.CancellationPolicyForeignKeys.CANCELLATION_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.cancellationpolicy.CancellationPolicyForeignKeys.CANCELLATION_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.cancellationpolicy.CancellationPolicyForeignKeys.CANCELLATION_TYPE_DETAILS_CANCELLATION_KIND_FK;
+import static com.echothree.model.jooq.server.keys.cancellationpolicy.CancellationPolicyForeignKeys.PARTY_CANCELLATION_POLICIES_CANCELLATION_POLICY_FK;
+import static com.echothree.model.jooq.server.keys.cancellationpolicy.CancellationPolicyForeignKeys.PARTY_CANCELLATION_POLICIES_PARTY_FK;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTIES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.cancellationpolicy.CancellationKindDescriptions.CancellationKindDescriptions;
+import static com.echothree.model.jooq.server.tables.cancellationpolicy.CancellationKindDetails.CancellationKindDetails;
+import static com.echothree.model.jooq.server.tables.cancellationpolicy.CancellationKinds.CancellationKinds;
+import static com.echothree.model.jooq.server.tables.cancellationpolicy.CancellationPolicies.CancellationPolicies;
+import static com.echothree.model.jooq.server.tables.cancellationpolicy.CancellationPolicyDetails.CancellationPolicyDetails;
+import static com.echothree.model.jooq.server.tables.cancellationpolicy.CancellationPolicyReasons.CancellationPolicyReasons;
+import static com.echothree.model.jooq.server.tables.cancellationpolicy.CancellationPolicyTranslations.CancellationPolicyTranslations;
+import static com.echothree.model.jooq.server.tables.cancellationpolicy.CancellationReasonDescriptions.CancellationReasonDescriptions;
+import static com.echothree.model.jooq.server.tables.cancellationpolicy.CancellationReasonDetails.CancellationReasonDetails;
+import static com.echothree.model.jooq.server.tables.cancellationpolicy.CancellationReasonTypes.CancellationReasonTypes;
+import static com.echothree.model.jooq.server.tables.cancellationpolicy.CancellationReasons.CancellationReasons;
+import static com.echothree.model.jooq.server.tables.cancellationpolicy.CancellationTypeDescriptions.CancellationTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.cancellationpolicy.CancellationTypeDetails.CancellationTypeDetails;
+import static com.echothree.model.jooq.server.tables.cancellationpolicy.CancellationTypes.CancellationTypes;
+import static com.echothree.model.jooq.server.tables.cancellationpolicy.PartyCancellationPolicies.PartyCancellationPolicies;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.party.Parties.Parties;
+import static com.echothree.model.jooq.server.tables.party.PartyDetails.PartyDetails;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 
@@ -119,48 +151,14 @@ public class CancellationPolicyControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Cancellation Policy Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    @Inject
-    CancellationPolicyTransferCache cancellationPolicyTransferCache;
-
-    @Inject
-    CancellationPolicyTranslationTransferCache cancellationPolicyTranslationTransferCache;
-
-    @Inject
-    PartyCancellationPolicyTransferCache partyCancellationPolicyTransferCache;
-
-    @Inject
-    CancellationKindDescriptionTransferCache cancellationKindDescriptionTransferCache;
-
-    @Inject
-    CancellationReasonDescriptionTransferCache cancellationReasonDescriptionTransferCache;
-
-    @Inject
-    CancellationTypeDescriptionTransferCache cancellationTypeDescriptionTransferCache;
-
-    @Inject
-    CancellationKindTransferCache cancellationKindTransferCache;
-
-    @Inject
-    CancellationReasonTransferCache cancellationReasonTransferCache;
-
-    @Inject
-    CancellationTypeTransferCache cancellationTypeTransferCache;
-
-    @Inject
-    CancellationPolicyReasonTransferCache cancellationPolicyReasonTransferCache;
-
-    @Inject
-    CancellationReasonTypeTransferCache cancellationReasonTypeTransferCache;
-
-    // --------------------------------------------------------------------------------
     //   Party Cancellation Policies
     // --------------------------------------------------------------------------------
 
     @Inject
     protected PartyCancellationPolicyFactory partyCancellationPolicyFactory;
+
+    @Inject
+    PartyCancellationPolicyTransferCache partyCancellationPolicyTransferCache;
 
     public PartyCancellationPolicy createPartyCancellationPolicy(Party party, CancellationPolicy cancellationPolicy, BasePK createdBy) {
         var partyCancellationPolicy = partyCancellationPolicyFactory.create(party, cancellationPolicy,
@@ -172,51 +170,50 @@ public class CancellationPolicyControl
     }
     
     public long countPartyCancellationPoliciesByParty(Party party) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM partycancellationpolicies
-                WHERE pcnclplcy_par_partyid = ? AND pcnclplcy_thrutime = ?
-                """, party, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyCancellationPolicies)
+                .where(PartyCancellationPolicies.PARTY.eq(party.getPrimaryKey()),
+                        PartyCancellationPolicies.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyCancellationPoliciesByCancellationPolicy(CancellationPolicy cancellationPolicy) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM partycancellationpolicies
-                WHERE pcnclplcy_cnclplcy_cancellationpolicyid = ? AND pcnclplcy_thrutime = ?
-                """, cancellationPolicy, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyCancellationPolicies)
+                .where(PartyCancellationPolicies.CANCELLATION_POLICY.eq(cancellationPolicy.getPrimaryKey()),
+                        PartyCancellationPolicies.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyCancellationPoliciesByPartyAndCancellationPolicy(Party party, CancellationPolicy cancellationPolicy) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM partycancellationpolicies
-                WHERE pcnclplcy_par_partyid = ? AND pcnclplcy_cnclplcy_cancellationpolicyid = ? AND pcnclplcy_thrutime = ?
-                """, party, cancellationPolicy, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getPartyCancellationPolicyQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partycancellationpolicies
-                WHERE pcnclplcy_par_partyid = ? AND pcnclplcy_cnclplcy_cancellationpolicyid = ? AND pcnclplcy_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partycancellationpolicies
-                WHERE pcnclplcy_par_partyid = ? AND pcnclplcy_cnclplcy_cancellationpolicyid = ? AND pcnclplcy_thrutime = ?
-                FOR UPDATE
-                """);
-        getPartyCancellationPolicyQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyCancellationPolicies)
+                .where(PartyCancellationPolicies.PARTY.eq(party.getPrimaryKey()),
+                        PartyCancellationPolicies.CANCELLATION_POLICY.eq(cancellationPolicy.getPrimaryKey()),
+                        PartyCancellationPolicies.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private PartyCancellationPolicy getPartyCancellationPolicy(Party party, CancellationPolicy cancellationPolicy, EntityPermission entityPermission) {
-        return partyCancellationPolicyFactory.getEntityFromQuery(entityPermission, getPartyCancellationPolicyQueries,
-                party, cancellationPolicy, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(PartyCancellationPolicies.fields())
+                .from(PartyCancellationPolicies)
+                .where(PartyCancellationPolicies.PARTY.eq(party.getPrimaryKey()),
+                        PartyCancellationPolicies.CANCELLATION_POLICY.eq(cancellationPolicy.getPrimaryKey()),
+                        PartyCancellationPolicies.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyCancellationPolicyFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PartyCancellationPolicy getPartyCancellationPolicy(Party party, CancellationPolicy cancellationPolicy) {
@@ -231,31 +228,26 @@ public class CancellationPolicyControl
         return partyCancellationPolicy == null? null: partyCancellationPolicy.getPartyCancellationPolicyValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getPartyCancellationPoliciesByCancellationPolicyQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partycancellationpolicies, cancellationpolicies, cancellationpolicydetails
-                WHERE pcnclplcy_cnclplcy_cancellationpolicyid = ? AND pcnclplcy_thrutime = ?
-                AND pcnclplcy_cnclplcy_cancellationpolicyid = cnclplcy_cancellationpolicyid AND cnclplcy_lastdetailid = cnclplcydt_cancellationpolicydetailid
-                ORDER BY cnclplcydt_sortorder, cnclplcydt_cancellationpolicyname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partycancellationpolicies
-                WHERE pcnclplcy_cnclplcy_cancellationpolicyid = ? AND pcnclplcy_thrutime = ?
-                FOR UPDATE
-                """);
-        getPartyCancellationPoliciesByCancellationPolicyQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PartyCancellationPolicy> getPartyCancellationPoliciesByCancellationPolicy(CancellationPolicy cancellationPolicy, EntityPermission entityPermission) {
-        return partyCancellationPolicyFactory.getEntitiesFromQuery(entityPermission, getPartyCancellationPoliciesByCancellationPolicyQueries,
-                cancellationPolicy, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyCancellationPolicies.fields())
+                    .from(PartyCancellationPolicies)
+                    .join(CancellationPolicies).onKey(PARTY_CANCELLATION_POLICIES_CANCELLATION_POLICY_FK)
+                    .join(CancellationPolicyDetails).onKey(CANCELLATION_POLICIES_LAST_DETAIL_FK)
+                    .where(PartyCancellationPolicies.CANCELLATION_POLICY.eq(cancellationPolicy.getPrimaryKey()),
+                            PartyCancellationPolicies.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(CancellationPolicyDetails.SORT_ORDER, CancellationPolicyDetails.CANCELLATION_POLICY_NAME),
+                    PartyCancellationPolicyFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyCancellationPolicies.fields())
+                    .from(PartyCancellationPolicies)
+                    .where(PartyCancellationPolicies.CANCELLATION_POLICY.eq(cancellationPolicy.getPrimaryKey()),
+                            PartyCancellationPolicies.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return partyCancellationPolicyFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyCancellationPolicy> getPartyCancellationPoliciesByCancellationPolicy(CancellationPolicy cancellationPolicy) {
@@ -266,31 +258,26 @@ public class CancellationPolicyControl
         return getPartyCancellationPoliciesByCancellationPolicy(cancellationPolicy, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getPartyCancellationPoliciesByPartyQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partycancellationpolicies, parties, partydetails
-                WHERE pcnclplcy_par_partyid = ? AND pcnclplcy_thrutime = ?
-                AND pcnclplcy_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
-                ORDER BY pardt_partyname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partycancellationpolicies
-                WHERE pcnclplcy_par_partyid = ? AND pcnclplcy_thrutime = ?
-                FOR UPDATE
-                """);
-        getPartyCancellationPoliciesByPartyQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PartyCancellationPolicy> getPartyCancellationPoliciesByParty(Party party, EntityPermission entityPermission) {
-        return partyCancellationPolicyFactory.getEntitiesFromQuery(entityPermission, getPartyCancellationPoliciesByPartyQueries,
-                party, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyCancellationPolicies.fields())
+                    .from(PartyCancellationPolicies)
+                    .join(Parties).onKey(PARTY_CANCELLATION_POLICIES_PARTY_FK)
+                    .join(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .where(PartyCancellationPolicies.PARTY.eq(party.getPrimaryKey()),
+                            PartyCancellationPolicies.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PartyDetails.PARTY_NAME),
+                    PartyCancellationPolicyFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyCancellationPolicies.fields())
+                    .from(PartyCancellationPolicies)
+                    .where(PartyCancellationPolicies.PARTY.eq(party.getPrimaryKey()),
+                            PartyCancellationPolicies.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return partyCancellationPolicyFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyCancellationPolicy> getPartyCancellationPoliciesByParty(Party party) {
@@ -352,10 +339,13 @@ public class CancellationPolicyControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected CancellationKindDetailFactory cancellationKindDetailFactory;
+
+    @Inject
     protected CancellationKindFactory cancellationKindFactory;
 
     @Inject
-    protected CancellationKindDetailFactory cancellationKindDetailFactory;
+    CancellationKindTransferCache cancellationKindTransferCache;
 
     public CancellationKind createCancellationKind(String cancellationKindName, SequenceType cancellationSequenceType, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -388,11 +378,12 @@ public class CancellationPolicyControl
     }
 
     public long countCancellationKinds() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM cancellationkinds, cancellationkinddetails
-                WHERE cnclk_activedetailid = cnclkdt_cancellationkinddetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(CancellationKinds)
+                .join(CancellationKindDetails).onKey(CANCELLATION_KINDS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.CancellationKind */
@@ -411,36 +402,18 @@ public class CancellationPolicyControl
     }
 
     public CancellationKind getCancellationKindByName(String cancellationKindName, EntityPermission entityPermission) {
-        CancellationKind cancellationKind;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationkinds, cancellationkinddetails
-                        WHERE cnclk_activedetailid = cnclkdt_cancellationkinddetailid AND cnclkdt_cancellationkindname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationkinds, cancellationkinddetails
-                        WHERE cnclk_activedetailid = cnclkdt_cancellationkinddetailid AND cnclkdt_cancellationkindname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CancellationKinds.fields())
+                .from(CancellationKinds)
+                .join(CancellationKindDetails).onKey(CANCELLATION_KINDS_ACTIVE_DETAIL_FK)
+                .where(CancellationKindDetails.CANCELLATION_KIND_NAME.eq(cancellationKindName));
 
-            var ps = cancellationKindFactory.prepareStatement(query);
-            
-            ps.setString(1, cancellationKindName);
-            
-            cancellationKind = cancellationKindFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return cancellationKind;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cancellationKindFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public CancellationKind getCancellationKindByName(String cancellationKindName) {
@@ -460,26 +433,18 @@ public class CancellationPolicyControl
     }
     
     public CancellationKind getDefaultCancellationKind(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM cancellationkinds, cancellationkinddetails
-                    WHERE cnclk_activedetailid = cnclkdt_cancellationkinddetailid AND cnclkdt_isdefault = 1
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM cancellationkinds, cancellationkinddetails
-                    WHERE cnclk_activedetailid = cnclkdt_cancellationkinddetailid AND cnclkdt_isdefault = 1
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(CancellationKinds.fields())
+                .from(CancellationKinds)
+                .join(CancellationKindDetails).onKey(CANCELLATION_KINDS_ACTIVE_DETAIL_FK)
+                .where(CancellationKindDetails.IS_DEFAULT.eq(true));
 
-        var ps = cancellationKindFactory.prepareStatement(query);
-        
-        return cancellationKindFactory.getEntityFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cancellationKindFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public CancellationKind getDefaultCancellationKind() {
@@ -495,28 +460,19 @@ public class CancellationPolicyControl
     }
     
     private List<CancellationKind> getCancellationKinds(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM cancellationkinds, cancellationkinddetails
-                    WHERE cnclk_activedetailid = cnclkdt_cancellationkinddetailid
-                    ORDER BY cnclkdt_sortorder, cnclkdt_cancellationkindname
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM cancellationkinds, cancellationkinddetails
-                    WHERE cnclk_activedetailid = cnclkdt_cancellationkinddetailid
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(CancellationKinds.fields())
+                .from(CancellationKinds)
+                .join(CancellationKindDetails).onKey(CANCELLATION_KINDS_ACTIVE_DETAIL_FK);
 
-        var ps = cancellationKindFactory.prepareStatement(query);
-        
-        return cancellationKindFactory.getEntitiesFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(CancellationKindDetails.SORT_ORDER, CancellationKindDetails.CANCELLATION_KIND_NAME),
+                    CancellationKindFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cancellationKindFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<CancellationKind> getCancellationKinds() {
@@ -658,6 +614,9 @@ public class CancellationPolicyControl
     @Inject
     protected CancellationKindDescriptionFactory cancellationKindDescriptionFactory;
 
+    @Inject
+    CancellationKindDescriptionTransferCache cancellationKindDescriptionTransferCache;
+
     public CancellationKindDescription createCancellationKindDescription(CancellationKind cancellationKind, Language language, String description,
             BasePK createdBy) {
         var cancellationKindDescription = cancellationKindDescriptionFactory.create(cancellationKind,
@@ -669,38 +628,19 @@ public class CancellationPolicyControl
     }
     
     public CancellationKindDescription getCancellationKindDescription(CancellationKind cancellationKind, Language language, EntityPermission entityPermission) {
-        CancellationKindDescription cancellationKindDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationkinddescriptions
-                        WHERE cnclkd_cnclk_cancellationkindid = ? AND cnclkd_lang_languageid = ? AND cnclkd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationkinddescriptions
-                        WHERE cnclkd_cnclk_cancellationkindid = ? AND cnclkd_lang_languageid = ? AND cnclkd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CancellationKindDescriptions.fields())
+                .from(CancellationKindDescriptions)
+                .where(CancellationKindDescriptions.CANCELLATION_KIND.eq(cancellationKind.getPrimaryKey()),
+                        CancellationKindDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        CancellationKindDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = cancellationKindDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, cancellationKind.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            cancellationKindDescription = cancellationKindDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return cancellationKindDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cancellationKindDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public CancellationKindDescription getCancellationKindDescription(CancellationKind cancellationKind, Language language) {
@@ -720,39 +660,24 @@ public class CancellationPolicyControl
     }
     
     private List<CancellationKindDescription> getCancellationKindDescriptionsByCancellationKind(CancellationKind cancellationKind, EntityPermission entityPermission) {
-        List<CancellationKindDescription> cancellationKindDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationkinddescriptions, languages
-                        WHERE cnclkd_cnclk_cancellationkindid = ? AND cnclkd_thrutime = ? AND cnclkd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationkinddescriptions
-                        WHERE cnclkd_cnclk_cancellationkindid = ? AND cnclkd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CancellationKindDescriptions.fields())
+                    .from(CancellationKindDescriptions)
+                    .join(Languages).onKey(CANCELLATION_KIND_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(CancellationKindDescriptions.CANCELLATION_KIND.eq(cancellationKind.getPrimaryKey()),
+                            CancellationKindDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    CancellationKindDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(CancellationKindDescriptions.fields())
+                    .from(CancellationKindDescriptions)
+                    .where(CancellationKindDescriptions.CANCELLATION_KIND.eq(cancellationKind.getPrimaryKey()),
+                            CancellationKindDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = cancellationKindDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, cancellationKind.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            cancellationKindDescriptions = cancellationKindDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return cancellationKindDescriptions;
+        return cancellationKindDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<CancellationKindDescription> getCancellationKindDescriptionsByCancellationKind(CancellationKind cancellationKind) {
@@ -834,10 +759,13 @@ public class CancellationPolicyControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected CancellationPolicyDetailFactory cancellationPolicyDetailFactory;
+
+    @Inject
     protected CancellationPolicyFactory cancellationPolicyFactory;
 
     @Inject
-    protected CancellationPolicyDetailFactory cancellationPolicyDetailFactory;
+    CancellationPolicyTransferCache cancellationPolicyTransferCache;
 
     public CancellationPolicy createCancellationPolicy(CancellationKind cancellationKind, String cancellationPolicyName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -871,11 +799,13 @@ public class CancellationPolicyControl
     }
 
     public long countCancellationPoliciesByCancellationKind(CancellationKind cancellationKind) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM cancellationpolicies, cancellationpolicydetails
-                WHERE cnclplcy_activedetailid = cnclplcydt_cancellationpolicydetailid AND cnclplcydt_cnclk_cancellationkindid = ?
-                """, cancellationKind);
+        return session.getDslContext()
+                .selectCount()
+                .from(CancellationPolicies)
+                .join(CancellationPolicyDetails).onKey(CANCELLATION_POLICIES_ACTIVE_DETAIL_FK)
+                .where(CancellationPolicyDetails.CANCELLATION_KIND.eq(cancellationKind.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.CancellationPolicy */
@@ -894,38 +824,20 @@ public class CancellationPolicyControl
     }
 
     private List<CancellationPolicy> getCancellationPolicies(CancellationKind cancellationKind, EntityPermission entityPermission) {
-        List<CancellationPolicy> cancellationPolicies;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationpolicies, cancellationpolicydetails
-                        WHERE cnclplcy_activedetailid = cnclplcydt_cancellationpolicydetailid AND cnclplcydt_cnclk_cancellationkindid = ?
-                        ORDER BY cnclplcydt_sortorder, cnclplcydt_cancellationpolicyname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationpolicies, cancellationpolicydetails
-                        WHERE cnclplcy_activedetailid = cnclplcydt_cancellationpolicydetailid AND cnclplcydt_cnclk_cancellationkindid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CancellationPolicies.fields())
+                .from(CancellationPolicies)
+                .join(CancellationPolicyDetails).onKey(CANCELLATION_POLICIES_ACTIVE_DETAIL_FK)
+                .where(CancellationPolicyDetails.CANCELLATION_KIND.eq(cancellationKind.getPrimaryKey()));
 
-            var ps = cancellationPolicyFactory.prepareStatement(query);
-            
-            ps.setLong(1, cancellationKind.getPrimaryKey().getEntityId());
-            
-            cancellationPolicies = cancellationPolicyFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return cancellationPolicies;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(CancellationPolicyDetails.SORT_ORDER, CancellationPolicyDetails.CANCELLATION_POLICY_NAME),
+                    CancellationPolicyFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cancellationPolicyFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<CancellationPolicy> getCancellationPolicies(CancellationKind cancellationKind) {
@@ -937,38 +849,19 @@ public class CancellationPolicyControl
     }
     
     public CancellationPolicy getDefaultCancellationPolicy(CancellationKind cancellationKind, EntityPermission entityPermission) {
-        CancellationPolicy cancellationPolicy;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationpolicies, cancellationpolicydetails
-                        WHERE cnclplcy_activedetailid = cnclplcydt_cancellationpolicydetailid
-                        AND cnclplcydt_cnclk_cancellationkindid = ? AND cnclplcydt_isdefault = 1
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationpolicies, cancellationpolicydetails
-                        WHERE cnclplcy_activedetailid = cnclplcydt_cancellationpolicydetailid
-                        AND cnclplcydt_cnclk_cancellationkindid = ? AND cnclplcydt_isdefault = 1
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CancellationPolicies.fields())
+                .from(CancellationPolicies)
+                .join(CancellationPolicyDetails).onKey(CANCELLATION_POLICIES_ACTIVE_DETAIL_FK)
+                .where(CancellationPolicyDetails.CANCELLATION_KIND.eq(cancellationKind.getPrimaryKey()),
+                        CancellationPolicyDetails.IS_DEFAULT.eq(true));
 
-            var ps = cancellationPolicyFactory.prepareStatement(query);
-            
-            ps.setLong(1, cancellationKind.getPrimaryKey().getEntityId());
-            
-            cancellationPolicy = cancellationPolicyFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return cancellationPolicy;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cancellationPolicyFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public CancellationPolicy getDefaultCancellationPolicy(CancellationKind cancellationKind) {
@@ -984,39 +877,19 @@ public class CancellationPolicyControl
     }
     
     public CancellationPolicy getCancellationPolicyByName(CancellationKind cancellationKind, String cancellationPolicyName, EntityPermission entityPermission) {
-        CancellationPolicy cancellationPolicy;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationpolicies, cancellationpolicydetails
-                        WHERE cnclplcy_activedetailid = cnclplcydt_cancellationpolicydetailid
-                        AND cnclplcydt_cnclk_cancellationkindid = ? AND cnclplcydt_cancellationpolicyname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationpolicies, cancellationpolicydetails
-                        WHERE cnclplcy_activedetailid = cnclplcydt_cancellationpolicydetailid
-                        AND cnclplcydt_cnclk_cancellationkindid = ? AND cnclplcydt_cancellationpolicyname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CancellationPolicies.fields())
+                .from(CancellationPolicies)
+                .join(CancellationPolicyDetails).onKey(CANCELLATION_POLICIES_ACTIVE_DETAIL_FK)
+                .where(CancellationPolicyDetails.CANCELLATION_KIND.eq(cancellationKind.getPrimaryKey()),
+                        CancellationPolicyDetails.CANCELLATION_POLICY_NAME.eq(cancellationPolicyName));
 
-            var ps = cancellationPolicyFactory.prepareStatement(query);
-            
-            ps.setLong(1, cancellationKind.getPrimaryKey().getEntityId());
-            ps.setString(2, cancellationPolicyName);
-            
-            cancellationPolicy = cancellationPolicyFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return cancellationPolicy;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cancellationPolicyFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public CancellationPolicy getCancellationPolicyByName(CancellationKind cancellationKind, String cancellationPolicyName) {
@@ -1183,6 +1056,9 @@ public class CancellationPolicyControl
     @Inject
     protected CancellationPolicyTranslationFactory cancellationPolicyTranslationFactory;
 
+    @Inject
+    CancellationPolicyTranslationTransferCache cancellationPolicyTranslationTransferCache;
+
     public CancellationPolicyTranslation createCancellationPolicyTranslation(CancellationPolicy cancellationPolicy, Language language,
             String description, MimeType policyMimeType, String policy, BasePK createdBy) {
         var cancellationPolicyTranslation = cancellationPolicyTranslationFactory.create(cancellationPolicy,
@@ -1193,28 +1069,20 @@ public class CancellationPolicyControl
         return cancellationPolicyTranslation;
     }
 
-    private static final Map<EntityPermission, String> getCancellationPolicyTranslationQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM cancellationpolicytranslations
-                WHERE cnclplcytr_cnclplcy_cancellationpolicyid = ? AND cnclplcytr_lang_languageid = ? AND cnclplcytr_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM cancellationpolicytranslations
-                WHERE cnclplcytr_cnclplcy_cancellationpolicyid = ? AND cnclplcytr_lang_languageid = ? AND cnclplcytr_thrutime = ?
-                FOR UPDATE
-                """);
-        getCancellationPolicyTranslationQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private CancellationPolicyTranslation getCancellationPolicyTranslation(CancellationPolicy cancellationPolicy, Language language, EntityPermission entityPermission) {
-        return cancellationPolicyTranslationFactory.getEntityFromQuery(entityPermission, getCancellationPolicyTranslationQueries, cancellationPolicy, language,
-                Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(CancellationPolicyTranslations.fields())
+                .from(CancellationPolicyTranslations)
+                .where(CancellationPolicyTranslations.CANCELLATION_POLICY.eq(cancellationPolicy.getPrimaryKey()),
+                        CancellationPolicyTranslations.LANGUAGE.eq(language.getPrimaryKey()),
+                        CancellationPolicyTranslations.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cancellationPolicyTranslationFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public CancellationPolicyTranslation getCancellationPolicyTranslation(CancellationPolicy cancellationPolicy, Language language) {
@@ -1233,30 +1101,25 @@ public class CancellationPolicyControl
         return getCancellationPolicyTranslationValue(getCancellationPolicyTranslationForUpdate(cancellationPolicy, language));
     }
 
-    private static final Map<EntityPermission, String> getCancellationPolicyTranslationsByCancellationPolicyQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM cancellationpolicytranslations, languages
-                WHERE cnclplcytr_cnclplcy_cancellationpolicyid = ? AND cnclplcytr_thrutime = ? AND cnclplcytr_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM cancellationpolicytranslations
-                WHERE cnclplcytr_cnclplcy_cancellationpolicyid = ? AND cnclplcytr_thrutime = ?
-                FOR UPDATE
-                """);
-        getCancellationPolicyTranslationsByCancellationPolicyQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<CancellationPolicyTranslation> getCancellationPolicyTranslationsByCancellationPolicy(CancellationPolicy cancellationPolicy, EntityPermission entityPermission) {
-        return cancellationPolicyTranslationFactory.getEntitiesFromQuery(entityPermission, getCancellationPolicyTranslationsByCancellationPolicyQueries,
-                cancellationPolicy, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CancellationPolicyTranslations.fields())
+                    .from(CancellationPolicyTranslations)
+                    .join(Languages).onKey(CANCELLATION_POLICY_TRANSLATIONS_LANGUAGE_FK)
+                    .where(CancellationPolicyTranslations.CANCELLATION_POLICY.eq(cancellationPolicy.getPrimaryKey()),
+                            CancellationPolicyTranslations.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    CancellationPolicyTranslationFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(CancellationPolicyTranslations.fields())
+                    .from(CancellationPolicyTranslations)
+                    .where(CancellationPolicyTranslations.CANCELLATION_POLICY.eq(cancellationPolicy.getPrimaryKey()),
+                            CancellationPolicyTranslations.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return cancellationPolicyTranslationFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<CancellationPolicyTranslation> getCancellationPolicyTranslationsByCancellationPolicy(CancellationPolicy cancellationPolicy) {
@@ -1335,6 +1198,9 @@ public class CancellationPolicyControl
     @Inject
     protected CancellationPolicyReasonFactory cancellationPolicyReasonFactory;
 
+    @Inject
+    CancellationPolicyReasonTransferCache cancellationPolicyReasonTransferCache;
+
     public CancellationPolicyReason createCancellationPolicyReason(CancellationPolicy cancellationPolicy, CancellationReason cancellationReason, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
         var defaultCancellationPolicyReason = getDefaultCancellationPolicyReason(cancellationPolicy);
@@ -1358,54 +1224,39 @@ public class CancellationPolicyControl
     }
 
     public long countCancellationPolicyReasonsByCancellationPolicy(final CancellationPolicy cancellationPolicy) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM cancellationpolicyreasons
-                        WHERE cnclplcyrsn_cnclplcy_cancellationpolicyid = ? AND cnclplcyrsn_thrutime = ?
-                        """, cancellationPolicy, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(CancellationPolicyReasons)
+                .where(CancellationPolicyReasons.CANCELLATION_POLICY.eq(cancellationPolicy.getPrimaryKey()),
+                        CancellationPolicyReasons.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countCancellationPolicyReasonsByCancellationReason(final CancellationReason cancellationReason) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM cancellationpolicyreasons
-                        WHERE cnclplcyrsn_cnclrsn_cancellationreasonid = ? AND cnclplcyrsn_thrutime = ?
-                        """, cancellationReason, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(CancellationPolicyReasons)
+                .where(CancellationPolicyReasons.CANCELLATION_REASON.eq(cancellationReason.getPrimaryKey()),
+                        CancellationPolicyReasons.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public CancellationPolicyReason getCancellationPolicyReason(CancellationPolicy cancellationPolicy, CancellationReason cancellationReason, EntityPermission entityPermission) {
-        CancellationPolicyReason cancellationPolicyReason;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationpolicyreasons
-                        WHERE cnclplcyrsn_cnclplcy_cancellationpolicyid = ? AND cnclplcyrsn_cnclrsn_cancellationreasonid = ? AND cnclplcyrsn_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationpolicyreasons
-                        WHERE cnclplcyrsn_cnclplcy_cancellationpolicyid = ? AND cnclplcyrsn_cnclrsn_cancellationreasonid = ? AND cnclplcyrsn_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CancellationPolicyReasons.fields())
+                .from(CancellationPolicyReasons)
+                .where(CancellationPolicyReasons.CANCELLATION_POLICY.eq(cancellationPolicy.getPrimaryKey()),
+                        CancellationPolicyReasons.CANCELLATION_REASON.eq(cancellationReason.getPrimaryKey()),
+                        CancellationPolicyReasons.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = cancellationPolicyReasonFactory.prepareStatement(query);
-            
-            ps.setLong(1, cancellationPolicy.getPrimaryKey().getEntityId());
-            ps.setLong(2, cancellationReason.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            cancellationPolicyReason = cancellationPolicyReasonFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return cancellationPolicyReason;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cancellationPolicyReasonFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public CancellationPolicyReason getCancellationPolicyReason(CancellationPolicy cancellationPolicy, CancellationReason cancellationReason) {
@@ -1423,37 +1274,19 @@ public class CancellationPolicyControl
     }
     
     private CancellationPolicyReason getDefaultCancellationPolicyReason(CancellationPolicy cancellationPolicy, EntityPermission entityPermission) {
-        CancellationPolicyReason cancellationPolicyReason;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationpolicyreasons
-                        WHERE cnclplcyrsn_cnclplcy_cancellationpolicyid = ? AND cnclplcyrsn_isdefault = 1 AND cnclplcyrsn_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationpolicyreasons
-                        WHERE cnclplcyrsn_cnclplcy_cancellationpolicyid = ? AND cnclplcyrsn_isdefault = 1 AND cnclplcyrsn_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CancellationPolicyReasons.fields())
+                .from(CancellationPolicyReasons)
+                .where(CancellationPolicyReasons.CANCELLATION_POLICY.eq(cancellationPolicy.getPrimaryKey()),
+                        CancellationPolicyReasons.IS_DEFAULT.eq(true),
+                        CancellationPolicyReasons.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = cancellationPolicyReasonFactory.prepareStatement(query);
-            
-            ps.setLong(1, cancellationPolicy.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            cancellationPolicyReason = cancellationPolicyReasonFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return cancellationPolicyReason;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cancellationPolicyReasonFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public CancellationPolicyReason getDefaultCancellationPolicyReason(CancellationPolicy cancellationPolicy) {
@@ -1471,40 +1304,25 @@ public class CancellationPolicyControl
     }
     
     private List<CancellationPolicyReason> getCancellationPolicyReasonsByCancellationPolicy(CancellationPolicy cancellationPolicy, EntityPermission entityPermission) {
-        List<CancellationPolicyReason> cancellationPolicyReasons;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationpolicyreasons, cancellationreasons, cancellationreasondetails
-                        WHERE cnclplcyrsn_cnclplcy_cancellationpolicyid = ? AND cnclplcyrsn_thrutime = ?
-                        AND cnclplcyrsn_cnclrsn_cancellationreasonid = cnclrsn_cancellationreasonid AND cnclrsn_lastdetailid = cnclrsndt_cancellationreasondetailid
-                        ORDER BY cnclrsndt_sortorder, cnclrsndt_cancellationreasonname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationpolicyreasons
-                        WHERE cnclplcyrsn_cnclplcy_cancellationpolicyid = ? AND cnclplcyrsn_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CancellationPolicyReasons.fields())
+                    .from(CancellationPolicyReasons)
+                    .join(CancellationReasons).onKey(CANCELLATION_POLICY_REASONS_CANCELLATION_REASON_FK)
+                    .join(CancellationReasonDetails).onKey(CANCELLATION_REASONS_LAST_DETAIL_FK)
+                    .where(CancellationPolicyReasons.CANCELLATION_POLICY.eq(cancellationPolicy.getPrimaryKey()),
+                            CancellationPolicyReasons.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(CancellationReasonDetails.SORT_ORDER, CancellationReasonDetails.CANCELLATION_REASON_NAME),
+                    CancellationPolicyReasonFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(CancellationPolicyReasons.fields())
+                    .from(CancellationPolicyReasons)
+                    .where(CancellationPolicyReasons.CANCELLATION_POLICY.eq(cancellationPolicy.getPrimaryKey()),
+                            CancellationPolicyReasons.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = cancellationPolicyReasonFactory.prepareStatement(query);
-            
-            ps.setLong(1, cancellationPolicy.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            cancellationPolicyReasons = cancellationPolicyReasonFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return cancellationPolicyReasons;
+        return cancellationPolicyReasonFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<CancellationPolicyReason> getCancellationPolicyReasonsByCancellationPolicy(CancellationPolicy cancellationPolicy) {
@@ -1516,40 +1334,25 @@ public class CancellationPolicyControl
     }
     
     private List<CancellationPolicyReason> getCancellationPolicyReasonsByCancellationReason(CancellationReason cancellationReason, EntityPermission entityPermission) {
-        List<CancellationPolicyReason> cancellationPolicyReasons;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationpolicyreasons, cancellationpolicies, cancellationpolicydetails
-                        WHERE cnclplcyrsn_cnclrsn_cancellationreasonid = ? AND cnclplcyrsn_thrutime = ?
-                        AND cnclplcyrsn_cnclplcy_cancellationpolicyid = cnclplcy_cancellationpolicyid AND cnclplcy_lastdetailid = cnclplcydt_cancellationpolicydetailid
-                        ORDER BY cnclplcydt_sortorder, cnclplcydt_cancellationpolicyname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationpolicyreasons
-                        WHERE cnclplcyrsn_cnclrsn_cancellationreasonid = ? AND cnclplcyrsn_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CancellationPolicyReasons.fields())
+                    .from(CancellationPolicyReasons)
+                    .join(CancellationPolicies).onKey(CANCELLATION_POLICY_REASONS_CANCELLATION_POLICY_FK)
+                    .join(CancellationPolicyDetails).onKey(CANCELLATION_POLICIES_LAST_DETAIL_FK)
+                    .where(CancellationPolicyReasons.CANCELLATION_REASON.eq(cancellationReason.getPrimaryKey()),
+                            CancellationPolicyReasons.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(CancellationPolicyDetails.SORT_ORDER, CancellationPolicyDetails.CANCELLATION_POLICY_NAME),
+                    CancellationPolicyReasonFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(CancellationPolicyReasons.fields())
+                    .from(CancellationPolicyReasons)
+                    .where(CancellationPolicyReasons.CANCELLATION_REASON.eq(cancellationReason.getPrimaryKey()),
+                            CancellationPolicyReasons.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = cancellationPolicyReasonFactory.prepareStatement(query);
-            
-            ps.setLong(1, cancellationReason.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            cancellationPolicyReasons = cancellationPolicyReasonFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return cancellationPolicyReasons;
+        return cancellationPolicyReasonFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<CancellationPolicyReason> getCancellationPolicyReasonsByCancellationReason(CancellationReason cancellationReason) {
@@ -1667,10 +1470,13 @@ public class CancellationPolicyControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected CancellationReasonDetailFactory cancellationReasonDetailFactory;
+
+    @Inject
     protected CancellationReasonFactory cancellationReasonFactory;
 
     @Inject
-    protected CancellationReasonDetailFactory cancellationReasonDetailFactory;
+    CancellationReasonTransferCache cancellationReasonTransferCache;
 
     public CancellationReason createCancellationReason(CancellationKind cancellationKind, String cancellationReasonName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -1719,47 +1525,30 @@ public class CancellationPolicyControl
     }
 
     public long countCancellationReasonsByCancellationKind(final CancellationKind cancellationKind) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM cancellationreasons
-                        JOIN cancellationreasondetails ON cnclrsndt_cancellationreasondetailid = cnclrsn_activedetailid
-                        WHERE cnclrsndt_cnclk_cancellationkindid = ?
-                        """, cancellationKind);
+        return session.getDslContext()
+                .selectCount()
+                .from(CancellationReasons)
+                .join(CancellationReasonDetails).onKey(CANCELLATION_REASONS_ACTIVE_DETAIL_FK)
+                .where(CancellationReasonDetails.CANCELLATION_KIND.eq(cancellationKind.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<CancellationReason> getCancellationReasons(CancellationKind cancellationKind, EntityPermission entityPermission) {
-        List<CancellationReason> cancellationReasons;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationreasons, cancellationreasondetails
-                        WHERE cnclrsn_activedetailid = cnclrsndt_cancellationreasondetailid AND cnclrsndt_cnclk_cancellationkindid = ?
-                        ORDER BY cnclrsndt_sortorder, cnclrsndt_cancellationreasonname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationreasons, cancellationreasondetails
-                        WHERE cnclrsn_activedetailid = cnclrsndt_cancellationreasondetailid AND cnclrsndt_cnclk_cancellationkindid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CancellationReasons.fields())
+                .from(CancellationReasons)
+                .join(CancellationReasonDetails).onKey(CANCELLATION_REASONS_ACTIVE_DETAIL_FK)
+                .where(CancellationReasonDetails.CANCELLATION_KIND.eq(cancellationKind.getPrimaryKey()));
 
-            var ps = cancellationReasonFactory.prepareStatement(query);
-            
-            ps.setLong(1, cancellationKind.getPrimaryKey().getEntityId());
-            
-            cancellationReasons = cancellationReasonFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return cancellationReasons;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(CancellationReasonDetails.SORT_ORDER, CancellationReasonDetails.CANCELLATION_REASON_NAME),
+                    CancellationReasonFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cancellationReasonFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<CancellationReason> getCancellationReasons(CancellationKind cancellationKind) {
@@ -1771,38 +1560,19 @@ public class CancellationPolicyControl
     }
     
     private CancellationReason getDefaultCancellationReason(CancellationKind cancellationKind, EntityPermission entityPermission) {
-        CancellationReason cancellationReason;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationreasons, cancellationreasondetails
-                        WHERE cnclrsn_activedetailid = cnclrsndt_cancellationreasondetailid
-                        AND cnclrsndt_cnclk_cancellationkindid = ? AND cnclrsndt_isdefault = 1
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationreasons, cancellationreasondetails
-                        WHERE cnclrsn_activedetailid = cnclrsndt_cancellationreasondetailid
-                        AND cnclrsndt_cnclk_cancellationkindid = ? AND cnclrsndt_isdefault = 1
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CancellationReasons.fields())
+                .from(CancellationReasons)
+                .join(CancellationReasonDetails).onKey(CANCELLATION_REASONS_ACTIVE_DETAIL_FK)
+                .where(CancellationReasonDetails.CANCELLATION_KIND.eq(cancellationKind.getPrimaryKey()),
+                        CancellationReasonDetails.IS_DEFAULT.eq(true));
 
-            var ps = cancellationReasonFactory.prepareStatement(query);
-            
-            ps.setLong(1, cancellationKind.getPrimaryKey().getEntityId());
-            
-            cancellationReason = cancellationReasonFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return cancellationReason;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cancellationReasonFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public CancellationReason getDefaultCancellationReason(CancellationKind cancellationKind) {
@@ -1818,39 +1588,19 @@ public class CancellationPolicyControl
     }
     
     public CancellationReason getCancellationReasonByName(CancellationKind cancellationKind, String cancellationReasonName, EntityPermission entityPermission) {
-        CancellationReason cancellationReason;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationreasons, cancellationreasondetails
-                        WHERE cnclrsn_activedetailid = cnclrsndt_cancellationreasondetailid
-                        AND cnclrsndt_cnclk_cancellationkindid = ? AND cnclrsndt_cancellationreasonname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationreasons, cancellationreasondetails
-                        WHERE cnclrsn_activedetailid = cnclrsndt_cancellationreasondetailid
-                        AND cnclrsndt_cnclk_cancellationkindid = ? AND cnclrsndt_cancellationreasonname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CancellationReasons.fields())
+                .from(CancellationReasons)
+                .join(CancellationReasonDetails).onKey(CANCELLATION_REASONS_ACTIVE_DETAIL_FK)
+                .where(CancellationReasonDetails.CANCELLATION_KIND.eq(cancellationKind.getPrimaryKey()),
+                        CancellationReasonDetails.CANCELLATION_REASON_NAME.eq(cancellationReasonName));
 
-            var ps = cancellationReasonFactory.prepareStatement(query);
-            
-            ps.setLong(1, cancellationKind.getPrimaryKey().getEntityId());
-            ps.setString(2, cancellationReasonName);
-            
-            cancellationReason = cancellationReasonFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return cancellationReason;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cancellationReasonFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public CancellationReason getCancellationReasonByName(CancellationKind cancellationKind, String cancellationReasonName) {
@@ -2014,6 +1764,9 @@ public class CancellationPolicyControl
     @Inject
     protected CancellationReasonDescriptionFactory cancellationReasonDescriptionFactory;
 
+    @Inject
+    CancellationReasonDescriptionTransferCache cancellationReasonDescriptionTransferCache;
+
     public CancellationReasonDescription createCancellationReasonDescription(CancellationReason cancellationReason, Language language, String description,
             BasePK createdBy) {
         var cancellationReasonDescription = cancellationReasonDescriptionFactory.create(cancellationReason,
@@ -2025,38 +1778,19 @@ public class CancellationPolicyControl
     }
     
     public CancellationReasonDescription getCancellationReasonDescription(CancellationReason cancellationReason, Language language, EntityPermission entityPermission) {
-        CancellationReasonDescription cancellationReasonDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationreasondescriptions
-                        WHERE cnclrsnd_cnclrsn_cancellationreasonid = ? AND cnclrsnd_lang_languageid = ? AND cnclrsnd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationreasondescriptions
-                        WHERE cnclrsnd_cnclrsn_cancellationreasonid = ? AND cnclrsnd_lang_languageid = ? AND cnclrsnd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CancellationReasonDescriptions.fields())
+                .from(CancellationReasonDescriptions)
+                .where(CancellationReasonDescriptions.CANCELLATION_REASON.eq(cancellationReason.getPrimaryKey()),
+                        CancellationReasonDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        CancellationReasonDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = cancellationReasonDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, cancellationReason.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            cancellationReasonDescription = cancellationReasonDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return cancellationReasonDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cancellationReasonDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public CancellationReasonDescription getCancellationReasonDescription(CancellationReason cancellationReason, Language language) {
@@ -2076,39 +1810,24 @@ public class CancellationPolicyControl
     }
     
     private List<CancellationReasonDescription> getCancellationReasonDescriptionsByCancellationReason(CancellationReason cancellationReason, EntityPermission entityPermission) {
-        List<CancellationReasonDescription> cancellationReasonDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationreasondescriptions, languages
-                        WHERE cnclrsnd_cnclrsn_cancellationreasonid = ? AND cnclrsnd_thrutime = ? AND cnclrsnd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationreasondescriptions
-                        WHERE cnclrsnd_cnclrsn_cancellationreasonid = ? AND cnclrsnd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CancellationReasonDescriptions.fields())
+                    .from(CancellationReasonDescriptions)
+                    .join(Languages).onKey(CANCELLATION_REASON_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(CancellationReasonDescriptions.CANCELLATION_REASON.eq(cancellationReason.getPrimaryKey()),
+                            CancellationReasonDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    CancellationReasonDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(CancellationReasonDescriptions.fields())
+                    .from(CancellationReasonDescriptions)
+                    .where(CancellationReasonDescriptions.CANCELLATION_REASON.eq(cancellationReason.getPrimaryKey()),
+                            CancellationReasonDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = cancellationReasonDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, cancellationReason.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            cancellationReasonDescriptions = cancellationReasonDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return cancellationReasonDescriptions;
+        return cancellationReasonDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<CancellationReasonDescription> getCancellationReasonDescriptionsByCancellationReason(CancellationReason cancellationReason) {
@@ -2192,6 +1911,9 @@ public class CancellationPolicyControl
     @Inject
     protected CancellationReasonTypeFactory cancellationReasonTypeFactory;
 
+    @Inject
+    CancellationReasonTypeTransferCache cancellationReasonTypeTransferCache;
+
     public CancellationReasonType createCancellationReasonType(CancellationReason cancellationReason, CancellationType cancellationType, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
         var defaultCancellationReasonType = getDefaultCancellationReasonType(cancellationReason);
@@ -2215,54 +1937,39 @@ public class CancellationPolicyControl
     }
 
     public long countCancellationReasonTypesByCancellationReason(final CancellationReason cancellationReason) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM cancellationreasontypes
-                        WHERE cnclrsntyp_cnclrsn_cancellationreasonid = ? AND cnclrsntyp_thrutime = ?
-                        """, cancellationReason, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(CancellationReasonTypes)
+                .where(CancellationReasonTypes.CANCELLATION_REASON.eq(cancellationReason.getPrimaryKey()),
+                        CancellationReasonTypes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countCancellationReasonTypesByCancellationType(final CancellationType cancellationType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM cancellationreasontypes
-                        WHERE cnclrsntyp_cncltyp_cancellationtypeid = ? AND cnclrsntyp_thrutime = ?
-                        """, cancellationType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(CancellationReasonTypes)
+                .where(CancellationReasonTypes.CANCELLATION_TYPE.eq(cancellationType.getPrimaryKey()),
+                        CancellationReasonTypes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public CancellationReasonType getCancellationReasonType(CancellationReason cancellationReason, CancellationType cancellationType, EntityPermission entityPermission) {
-        CancellationReasonType cancellationReasonType;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationreasontypes
-                        WHERE cnclrsntyp_cnclrsn_cancellationreasonid = ? AND cnclrsntyp_cncltyp_cancellationtypeid = ? AND cnclrsntyp_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationreasontypes
-                        WHERE cnclrsntyp_cnclrsn_cancellationreasonid = ? AND cnclrsntyp_cncltyp_cancellationtypeid = ? AND cnclrsntyp_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CancellationReasonTypes.fields())
+                .from(CancellationReasonTypes)
+                .where(CancellationReasonTypes.CANCELLATION_REASON.eq(cancellationReason.getPrimaryKey()),
+                        CancellationReasonTypes.CANCELLATION_TYPE.eq(cancellationType.getPrimaryKey()),
+                        CancellationReasonTypes.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = cancellationReasonTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, cancellationReason.getPrimaryKey().getEntityId());
-            ps.setLong(2, cancellationType.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            cancellationReasonType = cancellationReasonTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return cancellationReasonType;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cancellationReasonTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public CancellationReasonType getCancellationReasonType(CancellationReason cancellationReason, CancellationType cancellationType) {
@@ -2280,37 +1987,19 @@ public class CancellationPolicyControl
     }
     
     private CancellationReasonType getDefaultCancellationReasonType(CancellationReason cancellationReason, EntityPermission entityPermission) {
-        CancellationReasonType cancellationReasonType;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationreasontypes
-                        WHERE cnclrsntyp_cnclrsn_cancellationreasonid = ? AND cnclrsntyp_isdefault = 1 AND cnclrsntyp_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationreasontypes
-                        WHERE cnclrsntyp_cnclrsn_cancellationreasonid = ? AND cnclrsntyp_isdefault = 1 AND cnclrsntyp_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CancellationReasonTypes.fields())
+                .from(CancellationReasonTypes)
+                .where(CancellationReasonTypes.CANCELLATION_REASON.eq(cancellationReason.getPrimaryKey()),
+                        CancellationReasonTypes.IS_DEFAULT.eq(true),
+                        CancellationReasonTypes.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = cancellationReasonTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, cancellationReason.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            cancellationReasonType = cancellationReasonTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return cancellationReasonType;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cancellationReasonTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public CancellationReasonType getDefaultCancellationReasonType(CancellationReason cancellationReason) {
@@ -2328,41 +2017,27 @@ public class CancellationPolicyControl
     }
     
     private List<CancellationReasonType> getCancellationReasonTypesByCancellationReason(CancellationReason cancellationReason, EntityPermission entityPermission) {
-        List<CancellationReasonType> cancellationReasonTypes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationreasontypes, cancellationtypes, cancellationtypedetails, cancellationkinds, cancellationkinddetails
-                        WHERE cnclrsntyp_cnclrsn_cancellationreasonid = ? AND cnclrsntyp_thrutime = ?
-                        AND cnclrsntyp_cncltyp_cancellationtypeid = cncltyp_cancellationtypeid AND cncltyp_lastdetailid = cncltypdt_cancellationtypedetailid
-                        AND cncltypdt_cnclk_cancellationkindid = cnclk_cancellationkindid AND cnclk_lastdetailid = cnclkdt_cancellationkinddetailid
-                        ORDER BY cncltypdt_sortorder, cncltypdt_cancellationtypename, cnclkdt_sortorder, cnclkdt_cancellationkindname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationreasontypes
-                        WHERE cnclrsntyp_cnclrsn_cancellationreasonid = ? AND cnclrsntyp_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CancellationReasonTypes.fields())
+                    .from(CancellationReasonTypes)
+                    .join(CancellationTypes).onKey(CANCELLATION_REASON_TYPES_CANCELLATION_TYPE_FK)
+                    .join(CancellationTypeDetails).onKey(CANCELLATION_TYPES_LAST_DETAIL_FK)
+                    .join(CancellationKinds).onKey(CANCELLATION_TYPE_DETAILS_CANCELLATION_KIND_FK)
+                    .join(CancellationKindDetails).onKey(CANCELLATION_KINDS_LAST_DETAIL_FK)
+                    .where(CancellationReasonTypes.CANCELLATION_REASON.eq(cancellationReason.getPrimaryKey()),
+                            CancellationReasonTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(CancellationTypeDetails.SORT_ORDER, CancellationTypeDetails.CANCELLATION_TYPE_NAME, CancellationKindDetails.SORT_ORDER, CancellationKindDetails.CANCELLATION_KIND_NAME),
+                    CancellationReasonTypeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(CancellationReasonTypes.fields())
+                    .from(CancellationReasonTypes)
+                    .where(CancellationReasonTypes.CANCELLATION_REASON.eq(cancellationReason.getPrimaryKey()),
+                            CancellationReasonTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = cancellationReasonTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, cancellationReason.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            cancellationReasonTypes = cancellationReasonTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return cancellationReasonTypes;
+        return cancellationReasonTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<CancellationReasonType> getCancellationReasonTypesByCancellationReason(CancellationReason cancellationReason) {
@@ -2374,40 +2049,25 @@ public class CancellationPolicyControl
     }
     
     private List<CancellationReasonType> getCancellationReasonTypesByCancellationType(CancellationType cancellationType, EntityPermission entityPermission) {
-        List<CancellationReasonType> cancellationReasonTypes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationreasontypes, cancellationreasons, cancellationreasondetails
-                        WHERE cnclrsntyp_cncltyp_cancellationtypeid = ? AND cnclrsntyp_thrutime = ?
-                        AND cnclrsntyp_cnclrsn_cancellationreasonid = cnclrsn_cancellationreasonid AND cnclrsn_lastdetailid = cnclrsndt_cancellationreasondetailid
-                        ORDER BY cnclrsndt_sortorder, cnclrsndt_cancellationreasonname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationreasontypes
-                        WHERE cnclrsntyp_cncltyp_cancellationtypeid = ? AND cnclrsntyp_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CancellationReasonTypes.fields())
+                    .from(CancellationReasonTypes)
+                    .join(CancellationReasons).onKey(CANCELLATION_REASON_TYPES_CANCELLATION_REASON_FK)
+                    .join(CancellationReasonDetails).onKey(CANCELLATION_REASONS_LAST_DETAIL_FK)
+                    .where(CancellationReasonTypes.CANCELLATION_TYPE.eq(cancellationType.getPrimaryKey()),
+                            CancellationReasonTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(CancellationReasonDetails.SORT_ORDER, CancellationReasonDetails.CANCELLATION_REASON_NAME),
+                    CancellationReasonTypeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(CancellationReasonTypes.fields())
+                    .from(CancellationReasonTypes)
+                    .where(CancellationReasonTypes.CANCELLATION_TYPE.eq(cancellationType.getPrimaryKey()),
+                            CancellationReasonTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = cancellationReasonTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, cancellationType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            cancellationReasonTypes = cancellationReasonTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return cancellationReasonTypes;
+        return cancellationReasonTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<CancellationReasonType> getCancellationReasonTypesByCancellationType(CancellationType cancellationType) {
@@ -2525,10 +2185,13 @@ public class CancellationPolicyControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected CancellationTypeDetailFactory cancellationTypeDetailFactory;
+
+    @Inject
     protected CancellationTypeFactory cancellationTypeFactory;
 
     @Inject
-    protected CancellationTypeDetailFactory cancellationTypeDetailFactory;
+    CancellationTypeTransferCache cancellationTypeTransferCache;
 
     public CancellationType createCancellationType(CancellationKind cancellationKind, String cancellationTypeName, Sequence cancellationSequence, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
@@ -2562,21 +2225,23 @@ public class CancellationPolicyControl
     }
 
     public long countCancellationTypesByCancellationKind(final CancellationKind cancellationKind) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM cancellationtypes
-                        JOIN cancellationtypedetails ON cncltyp_activedetailid = cncltypdt_cancellationtypedetailid
-                        WHERE cncltypdt_cnclk_cancellationkindid = ?
-                        """, cancellationKind);
+        return session.getDslContext()
+                .selectCount()
+                .from(CancellationTypes)
+                .join(CancellationTypeDetails).onKey(CANCELLATION_TYPES_ACTIVE_DETAIL_FK)
+                .where(CancellationTypeDetails.CANCELLATION_KIND.eq(cancellationKind.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countCancellationTypesByCancellationSequence(final Sequence cancellationSequence) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM cancellationtypes
-                        JOIN cancellationtypedetails ON cncltyp_activedetailid = cncltypdt_cancellationtypedetailid
-                        WHERE cncltypdt_cancellationsequenceid = ?
-                        """, cancellationSequence);
+        return session.getDslContext()
+                .selectCount()
+                .from(CancellationTypes)
+                .join(CancellationTypeDetails).onKey(CANCELLATION_TYPES_ACTIVE_DETAIL_FK)
+                .where(CancellationTypeDetails.CANCELLATION_SEQUENCE.eq(cancellationSequence.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.CancellationType */
@@ -2595,38 +2260,20 @@ public class CancellationPolicyControl
     }
 
     private List<CancellationType> getCancellationTypes(CancellationKind cancellationKind, EntityPermission entityPermission) {
-        List<CancellationType> cancellationTypes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationtypes, cancellationtypedetails
-                        WHERE cncltyp_activedetailid = cncltypdt_cancellationtypedetailid AND cncltypdt_cnclk_cancellationkindid = ?
-                        ORDER BY cncltypdt_sortorder, cncltypdt_cancellationtypename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationtypes, cancellationtypedetails
-                        WHERE cncltyp_activedetailid = cncltypdt_cancellationtypedetailid AND cncltypdt_cnclk_cancellationkindid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CancellationTypes.fields())
+                .from(CancellationTypes)
+                .join(CancellationTypeDetails).onKey(CANCELLATION_TYPES_ACTIVE_DETAIL_FK)
+                .where(CancellationTypeDetails.CANCELLATION_KIND.eq(cancellationKind.getPrimaryKey()));
 
-            var ps = cancellationTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, cancellationKind.getPrimaryKey().getEntityId());
-            
-            cancellationTypes = cancellationTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return cancellationTypes;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(CancellationTypeDetails.SORT_ORDER, CancellationTypeDetails.CANCELLATION_TYPE_NAME),
+                    CancellationTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cancellationTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<CancellationType> getCancellationTypes(CancellationKind cancellationKind) {
@@ -2638,38 +2285,19 @@ public class CancellationPolicyControl
     }
     
     private CancellationType getDefaultCancellationType(CancellationKind cancellationKind, EntityPermission entityPermission) {
-        CancellationType cancellationType;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationtypes, cancellationtypedetails
-                        WHERE cncltyp_activedetailid = cncltypdt_cancellationtypedetailid
-                        AND cncltypdt_cnclk_cancellationkindid = ? AND cncltypdt_isdefault = 1
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationtypes, cancellationtypedetails
-                        WHERE cncltyp_activedetailid = cncltypdt_cancellationtypedetailid
-                        AND cncltypdt_cnclk_cancellationkindid = ? AND cncltypdt_isdefault = 1
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CancellationTypes.fields())
+                .from(CancellationTypes)
+                .join(CancellationTypeDetails).onKey(CANCELLATION_TYPES_ACTIVE_DETAIL_FK)
+                .where(CancellationTypeDetails.CANCELLATION_KIND.eq(cancellationKind.getPrimaryKey()),
+                        CancellationTypeDetails.IS_DEFAULT.eq(true));
 
-            var ps = cancellationTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, cancellationKind.getPrimaryKey().getEntityId());
-            
-            cancellationType = cancellationTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return cancellationType;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cancellationTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public CancellationType getDefaultCancellationType(CancellationKind cancellationKind) {
@@ -2685,39 +2313,19 @@ public class CancellationPolicyControl
     }
     
     public CancellationType getCancellationTypeByName(CancellationKind cancellationKind, String cancellationTypeName, EntityPermission entityPermission) {
-        CancellationType cancellationType;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationtypes, cancellationtypedetails
-                        WHERE cncltyp_activedetailid = cncltypdt_cancellationtypedetailid
-                        AND cncltypdt_cnclk_cancellationkindid = ? AND cncltypdt_cancellationtypename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationtypes, cancellationtypedetails
-                        WHERE cncltyp_activedetailid = cncltypdt_cancellationtypedetailid
-                        AND cncltypdt_cnclk_cancellationkindid = ? AND cncltypdt_cancellationtypename = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CancellationTypes.fields())
+                .from(CancellationTypes)
+                .join(CancellationTypeDetails).onKey(CANCELLATION_TYPES_ACTIVE_DETAIL_FK)
+                .where(CancellationTypeDetails.CANCELLATION_KIND.eq(cancellationKind.getPrimaryKey()),
+                        CancellationTypeDetails.CANCELLATION_TYPE_NAME.eq(cancellationTypeName));
 
-            var ps = cancellationTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, cancellationKind.getPrimaryKey().getEntityId());
-            ps.setString(2, cancellationTypeName);
-            
-            cancellationType = cancellationTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return cancellationType;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cancellationTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public CancellationType getCancellationTypeByName(CancellationKind cancellationKind, String cancellationTypeName) {
@@ -2878,6 +2486,9 @@ public class CancellationPolicyControl
     @Inject
     protected CancellationTypeDescriptionFactory cancellationTypeDescriptionFactory;
 
+    @Inject
+    CancellationTypeDescriptionTransferCache cancellationTypeDescriptionTransferCache;
+
     public CancellationTypeDescription createCancellationTypeDescription(CancellationType cancellationType, Language language, String description,
             BasePK createdBy) {
         var cancellationTypeDescription = cancellationTypeDescriptionFactory.create(cancellationType,
@@ -2889,38 +2500,19 @@ public class CancellationPolicyControl
     }
     
     public CancellationTypeDescription getCancellationTypeDescription(CancellationType cancellationType, Language language, EntityPermission entityPermission) {
-        CancellationTypeDescription cancellationTypeDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationtypedescriptions
-                        WHERE cncltypd_cncltyp_cancellationtypeid = ? AND cncltypd_lang_languageid = ? AND cncltypd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationtypedescriptions
-                        WHERE cncltypd_cncltyp_cancellationtypeid = ? AND cncltypd_lang_languageid = ? AND cncltypd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CancellationTypeDescriptions.fields())
+                .from(CancellationTypeDescriptions)
+                .where(CancellationTypeDescriptions.CANCELLATION_TYPE.eq(cancellationType.getPrimaryKey()),
+                        CancellationTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        CancellationTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = cancellationTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, cancellationType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            cancellationTypeDescription = cancellationTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return cancellationTypeDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return cancellationTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public CancellationTypeDescription getCancellationTypeDescription(CancellationType cancellationType, Language language) {
@@ -2940,39 +2532,24 @@ public class CancellationPolicyControl
     }
     
     private List<CancellationTypeDescription> getCancellationTypeDescriptionsByCancellationType(CancellationType cancellationType, EntityPermission entityPermission) {
-        List<CancellationTypeDescription> cancellationTypeDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationtypedescriptions, languages
-                        WHERE cncltypd_cncltyp_cancellationtypeid = ? AND cncltypd_thrutime = ? AND cncltypd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM cancellationtypedescriptions
-                        WHERE cncltypd_cncltyp_cancellationtypeid = ? AND cncltypd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CancellationTypeDescriptions.fields())
+                    .from(CancellationTypeDescriptions)
+                    .join(Languages).onKey(CANCELLATION_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(CancellationTypeDescriptions.CANCELLATION_TYPE.eq(cancellationType.getPrimaryKey()),
+                            CancellationTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    CancellationTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(CancellationTypeDescriptions.fields())
+                    .from(CancellationTypeDescriptions)
+                    .where(CancellationTypeDescriptions.CANCELLATION_TYPE.eq(cancellationType.getPrimaryKey()),
+                            CancellationTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = cancellationTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, cancellationType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            cancellationTypeDescriptions = cancellationTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return cancellationTypeDescriptions;
+        return cancellationTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<CancellationTypeDescription> getCancellationTypeDescriptionsByCancellationType(CancellationType cancellationType) {
