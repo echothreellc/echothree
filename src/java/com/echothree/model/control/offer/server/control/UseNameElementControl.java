@@ -19,6 +19,8 @@ package com.echothree.model.control.offer.server.control;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.offer.common.transfer.UseNameElementDescriptionTransfer;
 import com.echothree.model.control.offer.common.transfer.UseNameElementTransfer;
+import com.echothree.model.control.offer.server.transfer.UseNameElementDescriptionTransferCache;
+import com.echothree.model.control.offer.server.transfer.UseNameElementTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.offer.common.pk.UseNameElementPK;
 import com.echothree.model.data.offer.server.entity.UseNameElement;
@@ -30,20 +32,25 @@ import com.echothree.model.data.offer.server.value.UseNameElementDescriptionValu
 import com.echothree.model.data.offer.server.value.UseNameElementDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.offer.OfferForeignKeys.USE_NAME_ELEMENTS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.offer.OfferForeignKeys.USE_NAME_ELEMENT_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.offer.UseNameElementDescriptions.UseNameElementDescriptions;
+import static com.echothree.model.jooq.server.tables.offer.UseNameElementDetails.UseNameElementDetails;
+import static com.echothree.model.jooq.server.tables.offer.UseNameElements.UseNameElements;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
 public class UseNameElementControl
-        extends BaseOfferControl {
+        extends BaseModelControl {
 
     /** Creates a new instance of UseNameElementControl */
     protected UseNameElementControl() {
@@ -55,10 +62,13 @@ public class UseNameElementControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected UseNameElementFactory useNameElementFactory;
+    protected UseNameElementDetailFactory useNameElementDetailFactory;
 
     @Inject
-    protected UseNameElementDetailFactory useNameElementDetailFactory;
+    private UseNameElementFactory useNameElementFactory;
+
+    @Inject
+    private UseNameElementTransferCache useNameElementTransferCache;
 
     public UseNameElement createUseNameElement(String useNameElementName, Integer offset,
             Integer length, String validationPattern, BasePK createdBy) {
@@ -80,12 +90,12 @@ public class UseNameElementControl
     }
 
     public long countUseNameElements() {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM usenameelements, usenameelementdetails
-                WHERE usene_activedetailid = usenedt_usenameelementdetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(UseNameElements)
+                .join(UseNameElementDetails).onKey(USE_NAME_ELEMENTS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.UseNameElement */
@@ -105,36 +115,18 @@ public class UseNameElementControl
     }
 
     public UseNameElement getUseNameElementByName(String useNameElementName, EntityPermission entityPermission) {
-        UseNameElement useNameElement;
+        var baseQuery = session.getDslContext()
+                .select(UseNameElements.fields())
+                .from(UseNameElements)
+                .join(UseNameElementDetails).onKey(USE_NAME_ELEMENTS_ACTIVE_DETAIL_FK)
+                .where(UseNameElementDetails.USE_NAME_ELEMENT_NAME.eq(useNameElementName));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM usenameelements, usenameelementdetails
-                        WHERE usene_activedetailid = usenedt_usenameelementdetailid AND usenedt_usenameelementname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM usenameelements, usenameelementdetails
-                        WHERE usene_activedetailid = usenedt_usenameelementdetailid AND usenedt_usenameelementname = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = useNameElementFactory.prepareStatement(query);
-
-            ps.setString(1, useNameElementName);
-
-            useNameElement = useNameElementFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return useNameElement;
+        return useNameElementFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public UseNameElement getUseNameElementByName(String useNameElementName) {
@@ -154,28 +146,19 @@ public class UseNameElementControl
     }
 
     private List<UseNameElement> getUseNameElements(EntityPermission entityPermission) {
-        String query = null;
+        var baseQuery = session.getDslContext()
+                .select(UseNameElements.fields())
+                .from(UseNameElements)
+                .join(UseNameElementDetails).onKey(USE_NAME_ELEMENTS_ACTIVE_DETAIL_FK);
 
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM usenameelements, usenameelementdetails
-                    WHERE usene_activedetailid = usenedt_usenameelementdetailid
-                    ORDER BY usenedt_offset
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM usenameelements, usenameelementdetails
-                    WHERE usene_activedetailid = usenedt_usenameelementdetailid
-                    FOR UPDATE
-                    """;
-        }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(UseNameElementDetails.OFFSET),
+                    UseNameElementFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        var ps = useNameElementFactory.prepareStatement(query);
-
-        return useNameElementFactory.getEntitiesFromQuery(entityPermission, ps);
+        return useNameElementFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<UseNameElement> getUseNameElements() {
@@ -245,7 +228,10 @@ public class UseNameElementControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected UseNameElementDescriptionFactory useNameElementDescriptionFactory;
+    private UseNameElementDescriptionFactory useNameElementDescriptionFactory;
+
+    @Inject
+    private UseNameElementDescriptionTransferCache useNameElementDescriptionTransferCache;
 
     public UseNameElementDescription createUseNameElementDescription(UseNameElement useNameElement, Language language,
             String description, BasePK createdBy) {
@@ -260,38 +246,19 @@ public class UseNameElementControl
 
     private UseNameElementDescription getUseNameElementDescription(UseNameElement useNameElement, Language language,
             EntityPermission entityPermission) {
-        UseNameElementDescription useNameElementDescription;
+        var baseQuery = session.getDslContext()
+                .select(UseNameElementDescriptions.fields())
+                .from(UseNameElementDescriptions)
+                .where(UseNameElementDescriptions.USE_NAME_ELEMENT.eq(useNameElement.getPrimaryKey()),
+                        UseNameElementDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        UseNameElementDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM usenameelementdescriptions
-                        WHERE usened_usene_usenameelementid = ? AND usened_lang_languageid = ? AND usened_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM usenameelementdescriptions
-                        WHERE usened_usene_usenameelementid = ? AND usened_lang_languageid = ? AND usened_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = useNameElementDescriptionFactory.prepareStatement(query);
-
-            ps.setLong(1, useNameElement.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-
-            useNameElementDescription = useNameElementDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return useNameElementDescription;
+        return useNameElementDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public UseNameElementDescription getUseNameElementDescription(UseNameElement useNameElement, Language language) {
@@ -311,39 +278,24 @@ public class UseNameElementControl
     }
 
     private List<UseNameElementDescription> getUseNameElementDescriptionsByUseNameElement(UseNameElement useNameElement, EntityPermission entityPermission) {
-        List<UseNameElementDescription> useNameElementDescriptions;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(UseNameElementDescriptions.fields())
+                    .from(UseNameElementDescriptions)
+                    .join(Languages).onKey(USE_NAME_ELEMENT_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(UseNameElementDescriptions.USE_NAME_ELEMENT.eq(useNameElement.getPrimaryKey()),
+                            UseNameElementDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    UseNameElementDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(UseNameElementDescriptions.fields())
+                    .from(UseNameElementDescriptions)
+                    .where(UseNameElementDescriptions.USE_NAME_ELEMENT.eq(useNameElement.getPrimaryKey()),
+                            UseNameElementDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM usenameelementdescriptions, languages
-                        WHERE usened_usene_usenameelementid = ? AND usened_thrutime = ? AND usened_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM usenameelementdescriptions
-                        WHERE usened_usene_usenameelementid = ? AND usened_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = useNameElementDescriptionFactory.prepareStatement(query);
-
-            ps.setLong(1, useNameElement.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            useNameElementDescriptions = useNameElementDescriptionFactory.getEntitiesFromQuery(
-                    entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return useNameElementDescriptions;
+        return useNameElementDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<UseNameElementDescription> getUseNameElementDescriptionsByUseNameElement(UseNameElement useNameElement) {

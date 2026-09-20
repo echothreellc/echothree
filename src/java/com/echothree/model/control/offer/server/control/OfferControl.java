@@ -24,7 +24,12 @@ import com.echothree.model.control.offer.common.transfer.OfferDescriptionTransfe
 import com.echothree.model.control.offer.common.transfer.OfferResultTransfer;
 import com.echothree.model.control.offer.common.transfer.OfferTransfer;
 import com.echothree.model.control.offer.server.logic.OfferItemLogic;
+import com.echothree.model.control.offer.server.transfer.OfferChainTypeTransferCache;
+import com.echothree.model.control.offer.server.transfer.OfferCustomerTypeTransferCache;
+import com.echothree.model.control.offer.server.transfer.OfferDescriptionTransferCache;
+import com.echothree.model.control.offer.server.transfer.OfferTransferCache;
 import com.echothree.model.control.search.common.SearchOptions;
+import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.chain.server.entity.ChainType;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -48,34 +53,70 @@ import com.echothree.model.data.offer.server.value.OfferDescriptionValue;
 import com.echothree.model.data.offer.server.value.OfferDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.search.common.CachedExecutedSearchResultConstants;
+import com.echothree.model.data.search.common.SearchResultConstants;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
+import com.echothree.model.data.search.server.factory.CachedExecutedSearchResultFactory;
 import com.echothree.model.data.search.server.factory.SearchResultFactory;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.factory.SelectorFactory;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.chain.ChainForeignKeys.CHAIN_KINDS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.chain.ChainForeignKeys.CHAIN_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.chain.ChainForeignKeys.CHAIN_TYPE_DETAILS_CHAIN_KIND_FK;
+import static com.echothree.model.jooq.server.keys.customer.CustomerForeignKeys.CUSTOMER_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.offer.OfferForeignKeys.OFFERS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.offer.OfferForeignKeys.OFFERS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.offer.OfferForeignKeys.OFFER_CHAIN_TYPES_CHAIN_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.offer.OfferForeignKeys.OFFER_CHAIN_TYPES_OFFER_FK;
+import static com.echothree.model.jooq.server.keys.offer.OfferForeignKeys.OFFER_CUSTOMER_TYPES_CUSTOMER_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.offer.OfferForeignKeys.OFFER_CUSTOMER_TYPES_OFFER_FK;
+import static com.echothree.model.jooq.server.keys.offer.OfferForeignKeys.OFFER_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.offer.OfferForeignKeys.OFFER_DETAILS_OFFER_ITEM_SELECTOR_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.CACHED_EXECUTED_SEARCH_RESULTS_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_RESULTS_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.tables.chain.ChainKindDetails.ChainKindDetails;
+import static com.echothree.model.jooq.server.tables.chain.ChainKinds.ChainKinds;
+import static com.echothree.model.jooq.server.tables.chain.ChainTypeDetails.ChainTypeDetails;
+import static com.echothree.model.jooq.server.tables.chain.ChainTypes.ChainTypes;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.customer.CustomerTypeDetails.CustomerTypeDetails;
+import static com.echothree.model.jooq.server.tables.customer.CustomerTypes.CustomerTypes;
+import static com.echothree.model.jooq.server.tables.offer.OfferChainTypes.OfferChainTypes;
+import static com.echothree.model.jooq.server.tables.offer.OfferCustomerTypes.OfferCustomerTypes;
+import static com.echothree.model.jooq.server.tables.offer.OfferDescriptions.OfferDescriptions;
+import static com.echothree.model.jooq.server.tables.offer.OfferDetails.OfferDetails;
+import static com.echothree.model.jooq.server.tables.offer.OfferTimes.OfferTimes;
+import static com.echothree.model.jooq.server.tables.offer.Offers.Offers;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.search.CachedExecutedSearchResults.CachedExecutedSearchResults;
+import static com.echothree.model.jooq.server.tables.search.SearchResults.SearchResults;
+import static com.echothree.model.jooq.server.tables.selector.Selectors.Selectors;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
+import org.jooq.Select;
 
 @CommandScope
 public class OfferControl
-        extends BaseOfferControl {
+        extends BaseModelControl {
     
     @Inject
     protected OfferUseControl offerUseControl;
 
     @Inject
-    protected OfferItemLogic offerItemLogic;
+    private SearchControl searchControl;
+
+    @Inject
+    private OfferItemLogic offerItemLogic;
 
     /** Creates a new instance of OfferControl */
     protected OfferControl() {
@@ -87,13 +128,16 @@ public class OfferControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OfferFactory offerFactory;
+    private OfferDetailFactory offerDetailFactory;
+
+    @Inject
+    private OfferFactory offerFactory;
 
     @Inject
     protected SelectorFactory selectorFactory;
 
     @Inject
-    protected OfferDetailFactory offerDetailFactory;
+    private OfferTransferCache offerTransferCache;
 
     /** Use the function in OfferLogic instead. */
     public Offer createOffer(String offerName, Sequence salesOrderSequence, Party departmentParty, Selector offerItemSelector,
@@ -126,52 +170,52 @@ public class OfferControl
     }
 
     public long countOffers() {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM offers, offerdetails
-                WHERE ofr_activedetailid = ofrdt_offerdetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(Offers)
+                .join(OfferDetails).onKey(OFFERS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countOffersBySalesOrderSequence(Sequence sequence) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM offers, offerdetails
-                WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_salesordersequenceid = ?
-                """,
-                sequence);
+        return session.getDslContext()
+                .selectCount()
+                .from(Offers)
+                .join(OfferDetails).onKey(OFFERS_ACTIVE_DETAIL_FK)
+                .where(OfferDetails.SALES_ORDER_SEQUENCE.eq(sequence.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countOffersByDepartmentParty(Party departmentParty) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM offers, offerdetails
-                WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_departmentpartyid = ?
-                """,
-                departmentParty);
+        return session.getDslContext()
+                .selectCount()
+                .from(Offers)
+                .join(OfferDetails).onKey(OFFERS_ACTIVE_DETAIL_FK)
+                .where(OfferDetails.DEPARTMENT_PARTY.eq(departmentParty.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countOffersBySelector(Selector selector) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM offers, offerdetails
-                WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_offeritemselectorid = ?
-                """,
-                selector);
+        return session.getDslContext()
+                .selectCount()
+                .from(Offers)
+                .join(OfferDetails).onKey(OFFERS_ACTIVE_DETAIL_FK)
+                .where(OfferDetails.OFFER_ITEM_SELECTOR.eq(selector.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countOffersByFilter(Filter filter) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM offers, offerdetails
-                WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_offeritempricefilterid = ?
-                """,
-                filter);
+        return session.getDslContext()
+                .selectCount()
+                .from(Offers)
+                .join(OfferDetails).onKey(OFFERS_ACTIVE_DETAIL_FK)
+                .where(OfferDetails.OFFER_ITEM_PRICE_FILTER.eq(filter.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Offer */
@@ -191,26 +235,18 @@ public class OfferControl
     }
     
     public Offer getDefaultOffer(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM offers, offerdetails
-                    WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_isdefault = 1
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM offers, offerdetails
-                    WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_isdefault = 1
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(Offers.fields())
+                .from(Offers)
+                .join(OfferDetails).onKey(OFFERS_ACTIVE_DETAIL_FK)
+                .where(OfferDetails.IS_DEFAULT.eq(true));
 
-        var ps = offerFactory.prepareStatement(query);
-        
-        return offerFactory.getEntityFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return offerFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Offer getDefaultOffer() {
@@ -226,36 +262,18 @@ public class OfferControl
     }
     
     public Offer getOfferByName(String offerName, EntityPermission entityPermission) {
-        Offer offer;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offers, offerdetails
-                        WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_offername = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offers, offerdetails
-                        WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_offername = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Offers.fields())
+                .from(Offers)
+                .join(OfferDetails).onKey(OFFERS_ACTIVE_DETAIL_FK)
+                .where(OfferDetails.OFFER_NAME.eq(offerName));
 
-            var ps = offerFactory.prepareStatement(query);
-            
-            ps.setString(1, offerName);
-            
-            offer = offerFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return offer;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return offerFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Offer getOfferByName(String offerName) {
@@ -275,61 +293,46 @@ public class OfferControl
     }
 
     public List<Offer> getOffersByDepartmentParty(Party departmentParty) {
-        List<Offer> offers;
+        var query = session.applyLimit(session.getDslContext()
+                .select(Offers.fields())
+                .from(Offers)
+                .join(OfferDetails).onKey(OFFERS_ACTIVE_DETAIL_FK)
+                .where(OfferDetails.DEPARTMENT_PARTY.eq(departmentParty.getPrimaryKey()))
+                .orderBy(OfferDetails.SORT_ORDER, OfferDetails.OFFER_NAME),
+                OfferFactory.class);
 
-        try {
-            var ps = offerFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM offers, offerdetails
-                    WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_departmentpartyid = ?
-                    ORDER BY ofrdt_sortorder, ofrdt_offername
-                    _LIMIT_
-                    """);
-
-            ps.setLong(1, departmentParty.getPrimaryKey().getEntityId());
-
-            offers = offerFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return offers;
+        return offerFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public List<Offer> getOffersByOfferItemSelector(Selector offerItemSelector) {
-        List<Offer> offers;
+        var query = session.applyLimit(session.getDslContext()
+                .select(Offers.fields())
+                .from(Offers)
+                .join(OfferDetails).onKey(OFFERS_ACTIVE_DETAIL_FK)
+                .where(OfferDetails.OFFER_ITEM_SELECTOR.eq(offerItemSelector.getPrimaryKey()))
+                .orderBy(OfferDetails.SORT_ORDER, OfferDetails.OFFER_NAME),
+                OfferFactory.class);
 
-        try {
-            var ps = offerFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM offers, offerdetails
-                    WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_offeritemselectorid = ?
-                    ORDER BY ofrdt_sortorder, ofrdt_offername
-                    """);
-
-            ps.setLong(1, offerItemSelector.getPrimaryKey().getEntityId());
-
-            offers = offerFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return offers;
+        return offerFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     private List<Offer> getOffers(EntityPermission entityPermission) {
-        var ps = offerFactory.prepareStatement(
-                """
-                SELECT _ALL_
-                FROM offers, offerdetails
-                WHERE ofr_activedetailid = ofrdt_offerdetailid
-                ORDER BY ofrdt_sortorder, ofrdt_offername
-                _LIMIT_
-                """);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(Offers.fields())
+                    .from(Offers)
+                    .join(OfferDetails).onKey(OFFERS_ACTIVE_DETAIL_FK)
+                    .orderBy(OfferDetails.SORT_ORDER, OfferDetails.OFFER_NAME),
+                    OfferFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(Offers.fields())
+                    .from(Offers)
+                    .join(OfferDetails).onKey(OFFERS_ACTIVE_DETAIL_FK)
+                    .orderBy(OfferDetails.SORT_ORDER, OfferDetails.OFFER_NAME)
+                    .forUpdate();
+        };
 
-        return offerFactory.getEntitiesFromQuery(entityPermission, ps);
+        return offerFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<Offer> getOffers() {
@@ -342,14 +345,14 @@ public class OfferControl
     
     /** Gets a List that contains all the Selectors used by Offers. */
     public List<Selector> getDistinctOfferItemSelectors() {
-        var ps = selectorFactory.prepareStatement(
-                """
-                SELECT DISTINCT _ALL_
-                FROM offers, offerdetails, selectors
-                WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_offeritemselectorid = sl_selectorid
-                """);
-        
-        return selectorFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        var query = session.applyLimit(session.getDslContext()
+                .selectDistinct(Selectors.fields())
+                .from(Selectors)
+                .join(OfferDetails).onKey(OFFER_DETAILS_OFFER_ITEM_SELECTOR_FK)
+                .join(Offers).onKey(OFFERS_ACTIVE_DETAIL_FK),
+                SelectorFactory.class);
+
+        return selectorFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public OfferTransfer getOfferTransfer(UserVisit userVisit, Offer offer) {
@@ -495,7 +498,10 @@ public class OfferControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OfferDescriptionFactory offerDescriptionFactory;
+    private OfferDescriptionFactory offerDescriptionFactory;
+
+    @Inject
+    private OfferDescriptionTransferCache offerDescriptionTransferCache;
 
     public OfferDescription createOfferDescription(Offer offer, Language language, String description, BasePK createdBy) {
         var offerDescription = offerDescriptionFactory.create(offer, language, description,
@@ -508,38 +514,19 @@ public class OfferControl
     }
     
     private OfferDescription getOfferDescription(Offer offer, Language language, EntityPermission entityPermission) {
-        OfferDescription offerDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offerdescriptions
-                        WHERE ofrd_ofr_offerid = ? AND ofrd_lang_languageid = ? AND ofrd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offerdescriptions
-                        WHERE ofrd_ofr_offerid = ? AND ofrd_lang_languageid = ? AND ofrd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(OfferDescriptions.fields())
+                .from(OfferDescriptions)
+                .where(OfferDescriptions.OFFER.eq(offer.getPrimaryKey()),
+                        OfferDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        OfferDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = offerDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, offer.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            offerDescription = offerDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return offerDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return offerDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public OfferDescription getOfferDescription(Offer offer, Language language) {
@@ -559,38 +546,24 @@ public class OfferControl
     }
     
     private List<OfferDescription> getOfferDescriptionsByOffer(Offer offer, EntityPermission entityPermission) {
-        List<OfferDescription> offerDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offerdescriptions, languages
-                        WHERE ofrd_ofr_offerid = ? AND ofrd_thrutime = ? AND ofrd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offerdescriptions
-                        WHERE ofrd_ofr_offerid = ? AND ofrd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OfferDescriptions.fields())
+                    .from(OfferDescriptions)
+                    .join(Languages).onKey(OFFER_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(OfferDescriptions.OFFER.eq(offer.getPrimaryKey()),
+                            OfferDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    OfferDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(OfferDescriptions.fields())
+                    .from(OfferDescriptions)
+                    .where(OfferDescriptions.OFFER.eq(offer.getPrimaryKey()),
+                            OfferDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = offerDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, offer.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            offerDescriptions = offerDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return offerDescriptions;
+        return offerDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<OfferDescription> getOfferDescriptionsByOffer(Offer offer) {
@@ -673,30 +646,25 @@ public class OfferControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OfferTimeFactory offerTimeFactory;
+    private OfferTimeFactory offerTimeFactory;
 
     public OfferTime createOfferTime(Offer offer) {
         return offerTimeFactory.create(offer, null, null, null, null);
     }
 
-    private static final Map<EntityPermission, String> getOfferTimeQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            """
-            SELECT _ALL_
-            FROM offertimes
-            WHERE ofrtm_ofr_offerid = ?
-            """,
-            EntityPermission.READ_WRITE,
-            """
-            SELECT _ALL_
-            FROM offertimes
-            WHERE ofrtm_ofr_offerid = ?
-            FOR UPDATE
-            """
-    );
 
     private OfferTime getOfferTime(Offer offer, EntityPermission entityPermission) {
-        return offerTimeFactory.getEntityFromQuery(entityPermission, getOfferTimeQueries, offer);
+        var baseQuery = session.getDslContext()
+                .select(OfferTimes.fields())
+                .from(OfferTimes)
+                .where(OfferTimes.OFFER.eq(offer.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return offerTimeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OfferTime getOfferTime(Offer offer) {
@@ -720,7 +688,10 @@ public class OfferControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OfferCustomerTypeFactory offerCustomerTypeFactory;
+    private OfferCustomerTypeFactory offerCustomerTypeFactory;
+
+    @Inject
+    private OfferCustomerTypeTransferCache offerCustomerTypeTransferCache;
 
     public OfferCustomerType createOfferCustomerType(Offer offer, CustomerType customerType, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
@@ -745,54 +716,39 @@ public class OfferControl
     }
 
     public long countOfferCustomerTypesByOffer(Offer offer) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM offercustomertypes
-                        WHERE ofrcuty_ofr_offerid = ? AND ofrcuty_thrutime = ?
-                        """, offer, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(OfferCustomerTypes)
+                .where(OfferCustomerTypes.OFFER.eq(offer.getPrimaryKey()),
+                        OfferCustomerTypes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countOfferCustomerTypesByCustomerType(CustomerType customerType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM offercustomertypes
-                        WHERE ofrcuty_cuty_customertypeid = ? AND ofrcuty_thrutime = ?
-                        """, customerType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(OfferCustomerTypes)
+                .where(OfferCustomerTypes.CUSTOMER_TYPE.eq(customerType.getPrimaryKey()),
+                        OfferCustomerTypes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private OfferCustomerType getOfferCustomerType(Offer offer, CustomerType customerType, EntityPermission entityPermission) {
-        OfferCustomerType offerCustomerType;
+        var baseQuery = session.getDslContext()
+                .select(OfferCustomerTypes.fields())
+                .from(OfferCustomerTypes)
+                .where(OfferCustomerTypes.OFFER.eq(offer.getPrimaryKey()),
+                        OfferCustomerTypes.CUSTOMER_TYPE.eq(customerType.getPrimaryKey()),
+                        OfferCustomerTypes.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offercustomertypes
-                        WHERE ofrcuty_ofr_offerid = ? AND ofrcuty_cuty_customertypeid = ? AND ofrcuty_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offercustomertypes
-                        WHERE ofrcuty_ofr_offerid = ? AND ofrcuty_cuty_customertypeid = ? AND ofrcuty_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = offerCustomerTypeFactory.prepareStatement(query);
-
-            ps.setLong(1, offer.getPrimaryKey().getEntityId());
-            ps.setLong(2, customerType.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-
-            offerCustomerType = offerCustomerTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return offerCustomerType;
+        return offerCustomerTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OfferCustomerType getOfferCustomerType(Offer offer, CustomerType customerType) {
@@ -810,37 +766,19 @@ public class OfferControl
     }
 
     private OfferCustomerType getDefaultOfferCustomerType(Offer offer, EntityPermission entityPermission) {
-        OfferCustomerType offerCustomerType;
+        var baseQuery = session.getDslContext()
+                .select(OfferCustomerTypes.fields())
+                .from(OfferCustomerTypes)
+                .where(OfferCustomerTypes.OFFER.eq(offer.getPrimaryKey()),
+                        OfferCustomerTypes.IS_DEFAULT.eq(true),
+                        OfferCustomerTypes.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offercustomertypes
-                        WHERE ofrcuty_ofr_offerid = ? AND ofrcuty_isdefault = 1 AND ofrcuty_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offercustomertypes
-                        WHERE ofrcuty_ofr_offerid = ? AND ofrcuty_isdefault = 1 AND ofrcuty_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = offerCustomerTypeFactory.prepareStatement(query);
-
-            ps.setLong(1, offer.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            offerCustomerType = offerCustomerTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return offerCustomerType;
+        return offerCustomerTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OfferCustomerType getDefaultOfferCustomerType(Offer offer) {
@@ -858,40 +796,25 @@ public class OfferControl
     }
 
     private List<OfferCustomerType> getOfferCustomerTypesByOffer(Offer offer, EntityPermission entityPermission) {
-        List<OfferCustomerType> offerCustomerTypes;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OfferCustomerTypes.fields())
+                    .from(OfferCustomerTypes)
+                    .join(CustomerTypes).onKey(OFFER_CUSTOMER_TYPES_CUSTOMER_TYPE_FK)
+                    .join(CustomerTypeDetails).onKey(CUSTOMER_TYPES_LAST_DETAIL_FK)
+                    .where(OfferCustomerTypes.OFFER.eq(offer.getPrimaryKey()),
+                            OfferCustomerTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(CustomerTypeDetails.SORT_ORDER, CustomerTypeDetails.CUSTOMER_TYPE_NAME),
+                    OfferCustomerTypeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(OfferCustomerTypes.fields())
+                    .from(OfferCustomerTypes)
+                    .where(OfferCustomerTypes.OFFER.eq(offer.getPrimaryKey()),
+                            OfferCustomerTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offercustomertypes, customertypes, customertypedetails
-                        WHERE ofrcuty_ofr_offerid = ? AND ofrcuty_thrutime = ?
-                        AND ofrcuty_cuty_customertypeid = cuty_customertypeid AND cuty_lastdetailid = cutydt_customertypedetailid
-                        ORDER BY cutydt_sortorder, cutydt_customertypename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offercustomertypes
-                        WHERE ofrcuty_ofr_offerid = ? AND ofrcuty_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = offerCustomerTypeFactory.prepareStatement(query);
-
-            ps.setLong(1, offer.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            offerCustomerTypes = offerCustomerTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return offerCustomerTypes;
+        return offerCustomerTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OfferCustomerType> getOfferCustomerTypesByOffer(Offer offer) {
@@ -903,40 +826,25 @@ public class OfferControl
     }
 
     private List<OfferCustomerType> getOfferCustomerTypesByCustomerType(CustomerType customerType, EntityPermission entityPermission) {
-        List<OfferCustomerType> offerCustomerTypes;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OfferCustomerTypes.fields())
+                    .from(OfferCustomerTypes)
+                    .join(Offers).onKey(OFFER_CUSTOMER_TYPES_OFFER_FK)
+                    .join(OfferDetails).onKey(OFFERS_LAST_DETAIL_FK)
+                    .where(OfferCustomerTypes.CUSTOMER_TYPE.eq(customerType.getPrimaryKey()),
+                            OfferCustomerTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(OfferDetails.SORT_ORDER, OfferDetails.OFFER_NAME),
+                    OfferCustomerTypeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(OfferCustomerTypes.fields())
+                    .from(OfferCustomerTypes)
+                    .where(OfferCustomerTypes.CUSTOMER_TYPE.eq(customerType.getPrimaryKey()),
+                            OfferCustomerTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offercustomertypes, offers, offerdetails
-                        WHERE ofrcuty_cuty_customertypeid = ? AND ofrcuty_thrutime = ?
-                        AND ofrcuty_ofr_offerid = ofr_offerid AND ofr_lastdetailid = ofrdt_offerdetailid
-                        ORDER BY ofrdt_sortorder, ofrdt_offername
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offercustomertypes
-                        WHERE ofrcuty_cuty_customertypeid = ? AND ofrcuty_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = offerCustomerTypeFactory.prepareStatement(query);
-
-            ps.setLong(1, customerType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            offerCustomerTypes = offerCustomerTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return offerCustomerTypes;
+        return offerCustomerTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OfferCustomerType> getOfferCustomerTypesByCustomerType(CustomerType customerType) {
@@ -1054,7 +962,10 @@ public class OfferControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OfferChainTypeFactory offerChainTypeFactory;
+    private OfferChainTypeFactory offerChainTypeFactory;
+
+    @Inject
+    private OfferChainTypeTransferCache offerChainTypeTransferCache;
 
     public OfferChainType createOfferChainType(Offer offer, ChainType chainType, Chain chain, BasePK createdBy) {
         var offerChainType = offerChainTypeFactory.create(offer, chainType, chain,
@@ -1067,54 +978,39 @@ public class OfferControl
     }
 
     public long countOfferChainTypesByOffer(Offer offer) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM offerchaintypes
-                        WHERE ofrchntyp_ofr_offerid = ? AND ofrchntyp_thrutime = ?
-                        """, offer, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(OfferChainTypes)
+                .where(OfferChainTypes.OFFER.eq(offer.getPrimaryKey()),
+                        OfferChainTypes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countOfferChainTypesByChainType(ChainType chainType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM offerchaintypes
-                        WHERE ofrchntyp_chntyp_chaintypeid = ? AND ofrchntyp_thrutime = ?
-                        """, chainType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(OfferChainTypes)
+                .where(OfferChainTypes.CHAIN_TYPE.eq(chainType.getPrimaryKey()),
+                        OfferChainTypes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private OfferChainType getOfferChainType(Offer offer, ChainType chainType, EntityPermission entityPermission) {
-        OfferChainType offerChainType;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offerchaintypes
-                        WHERE ofrchntyp_ofr_offerid = ? AND ofrchntyp_chntyp_chaintypeid = ? AND ofrchntyp_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offerchaintypes
-                        WHERE ofrchntyp_ofr_offerid = ? AND ofrchntyp_chntyp_chaintypeid = ? AND ofrchntyp_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(OfferChainTypes.fields())
+                .from(OfferChainTypes)
+                .where(OfferChainTypes.OFFER.eq(offer.getPrimaryKey()),
+                        OfferChainTypes.CHAIN_TYPE.eq(chainType.getPrimaryKey()),
+                        OfferChainTypes.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = offerChainTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, offer.getPrimaryKey().getEntityId());
-            ps.setLong(2, chainType.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            offerChainType = offerChainTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return offerChainType;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return offerChainTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public OfferChainType getOfferChainType(Offer offer, ChainType chainType) {
@@ -1134,41 +1030,27 @@ public class OfferControl
     }
     
     private List<OfferChainType> getOfferChainTypesByOffer(Offer offer, EntityPermission entityPermission) {
-        List<OfferChainType> offerChainTypes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offerchaintypes, chaintypes, chaintypedetails, chainkinds, chainkinddetails
-                        WHERE ofrchntyp_ofr_offerid = ? AND ofrchntyp_thrutime = ?
-                        AND ofrchntyp_chntyp_chaintypeid = chntyp_chaintypeid AND chntyp_lastdetailid = chntypdt_chaintypedetailid
-                        AND chntypdt_chnk_chainkindid = chnk_chainkindid AND chnk_lastdetailid = chnkdt_chainkinddetailid
-                        ORDER BY chntypdt_sortorder, chntypdt_chaintypename, chnkdt_sortorder, chnkdt_chainkindname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offerchaintypes
-                        WHERE ofrchntyp_ofr_offerid = ? AND ofrchntyp_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OfferChainTypes.fields())
+                    .from(OfferChainTypes)
+                    .join(ChainTypes).onKey(OFFER_CHAIN_TYPES_CHAIN_TYPE_FK)
+                    .join(ChainTypeDetails).onKey(CHAIN_TYPES_LAST_DETAIL_FK)
+                    .join(ChainKinds).onKey(CHAIN_TYPE_DETAILS_CHAIN_KIND_FK)
+                    .join(ChainKindDetails).onKey(CHAIN_KINDS_LAST_DETAIL_FK)
+                    .where(OfferChainTypes.OFFER.eq(offer.getPrimaryKey()),
+                            OfferChainTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ChainTypeDetails.SORT_ORDER, ChainTypeDetails.CHAIN_TYPE_NAME, ChainKindDetails.SORT_ORDER, ChainKindDetails.CHAIN_KIND_NAME),
+                    OfferChainTypeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(OfferChainTypes.fields())
+                    .from(OfferChainTypes)
+                    .where(OfferChainTypes.OFFER.eq(offer.getPrimaryKey()),
+                            OfferChainTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = offerChainTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, offer.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            offerChainTypes = offerChainTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return offerChainTypes;
+        return offerChainTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<OfferChainType> getOfferChainTypesByOffer(Offer offer) {
@@ -1180,40 +1062,25 @@ public class OfferControl
     }
     
     private List<OfferChainType> getOfferChainTypesByChainType(ChainType chainType, EntityPermission entityPermission) {
-        List<OfferChainType> offerChainTypes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offerchaintypes, offers, offerdetails
-                        WHERE ofrchntyp_chntyp_chaintypeid = ? AND ofrchntyp_thrutime = ?
-                        AND ofrchntyp_ofr_offerid = ofr_offerid AND ofr_activedetailid = ofrdt_offerdetailid
-                        ORDER BY ofrdt_sortorder, ofrdt_offername
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offerchaintypes
-                        WHERE ofrchntyp_chntyp_chaintypeid = ? AND ofrchntyp_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OfferChainTypes.fields())
+                    .from(OfferChainTypes)
+                    .join(Offers).onKey(OFFER_CHAIN_TYPES_OFFER_FK)
+                    .join(OfferDetails).onKey(OFFERS_LAST_DETAIL_FK)
+                    .where(OfferChainTypes.CHAIN_TYPE.eq(chainType.getPrimaryKey()),
+                            OfferChainTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(OfferDetails.SORT_ORDER, OfferDetails.OFFER_NAME),
+                    OfferChainTypeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(OfferChainTypes.fields())
+                    .from(OfferChainTypes)
+                    .where(OfferChainTypes.CHAIN_TYPE.eq(chainType.getPrimaryKey()),
+                            OfferChainTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = offerChainTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, chainType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            offerChainTypes = offerChainTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return offerChainTypes;
+        return offerChainTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<OfferChainType> getOfferChainTypesByChainType(ChainType chainType) {
@@ -1225,40 +1092,25 @@ public class OfferControl
     }
     
     private List<OfferChainType> getOfferChainTypesByChain(Chain chain, EntityPermission entityPermission) {
-        List<OfferChainType> offerChainTypes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offerchaintypes, offers, offerdetails
-                        WHERE ofrchntyp_chn_chainid = ? AND ofrchntyp_thrutime = ?
-                        AND ofrchntyp_ofr_offerid = ofr_offerid AND ofr_activedetailid = ofrdt_offerdetailid
-                        ORDER BY ofrdt_sortorder, ofrdt_offername
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offerchaintypes
-                        WHERE ofrchntyp_chntyp_chaintypeid = ? AND ofrchntyp_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OfferChainTypes.fields())
+                    .from(OfferChainTypes)
+                    .join(Offers).onKey(OFFER_CHAIN_TYPES_OFFER_FK)
+                    .join(OfferDetails).onKey(OFFERS_LAST_DETAIL_FK)
+                    .where(OfferChainTypes.CHAIN.eq(chain.getPrimaryKey()),
+                            OfferChainTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(OfferDetails.SORT_ORDER, OfferDetails.OFFER_NAME),
+                    OfferChainTypeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(OfferChainTypes.fields())
+                    .from(OfferChainTypes)
+                    .where(OfferChainTypes.CHAIN.eq(chain.getPrimaryKey()),
+                            OfferChainTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = offerChainTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, chain.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            offerChainTypes = offerChainTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return offerChainTypes;
+        return offerChainTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<OfferChainType> getOfferChainTypesByChain(Chain chain) {
@@ -1341,44 +1193,49 @@ public class OfferControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected SearchResultFactory searchResultFactory;
+    private SearchResultFactory searchResultFactory;
 
-    public List<OfferResultTransfer> getOfferResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
+    private List<Long> getOfferIdsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
-        var offerResultTransfers = new ArrayList<OfferResultTransfer>();
-        var includeOffer = false;
+        var cachedSearch = search.getCachedSearch();
+        Select<?> query;
 
-        var options = session.getOptions();
-        if(options != null) {
-            includeOffer = options.contains(SearchOptions.OfferResultIncludeOffer);
+        if(cachedSearch == null) {
+            query = session.applyLimit(session.getDslContext()
+                    .select(EntityInstances.ENTITY_UNIQUE)
+                    .from(SearchResults)
+                    .join(EntityInstances).onKey(SEARCH_RESULTS_ENTITY_INSTANCE_FK)
+                    .where(SearchResults.SEARCH.eq(search.getPrimaryKey()))
+                    .orderBy(SearchResults.SORT_ORDER, SearchResults.ENTITY_INSTANCE), SearchResultFactory.class);
+        } else {
+            var cachedExecutedSearch = searchControl.getCachedExecutedSearch(cachedSearch);
+
+            session.copyLimit(SearchResultConstants.ENTITY_TYPE_NAME, CachedExecutedSearchResultConstants.ENTITY_TYPE_NAME);
+
+            query = session.applyLimit(session.getDslContext()
+                    .select(EntityInstances.ENTITY_UNIQUE)
+                    .from(CachedExecutedSearchResults)
+                    .join(EntityInstances).onKey(CACHED_EXECUTED_SEARCH_RESULTS_ENTITY_INSTANCE_FK)
+                    .where(CachedExecutedSearchResults.CACHED_EXECUTED_SEARCH.eq(cachedExecutedSearch.getPrimaryKey()))
+                    .orderBy(CachedExecutedSearchResults.SORT_ORDER, CachedExecutedSearchResults.ENTITY_INSTANCE),
+                    CachedExecutedSearchResultFactory.class);
         }
 
-        try {
-            var offerControl = this;
-            var ps = searchResultFactory.prepareStatement(
-                    """
-                    SELECT eni_entityuniqueid
-                    FROM searchresults, entityinstances
-                    WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid
-                    ORDER BY srchr_sortorder, srchr_eni_entityinstanceid
-                    _LIMIT_
-                    """);
+        return query.fetch(EntityInstances.ENTITY_UNIQUE);
+    }
 
-            ps.setLong(1, search.getPrimaryKey().getEntityId());
+    public List<OfferResultTransfer> getOfferResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
+        var entityIds = getOfferIdsFromUserVisitSearch(userVisitSearch);
+        var offerResultTransfers = new ArrayList<OfferResultTransfer>(entityIds.size());
+        var options = session.getOptions();
+        var includeOffer = options != null && options.contains(SearchOptions.OfferResultIncludeOffer);
 
-            try (var rs = ps.executeQuery()) {
-                while(rs.next()) {
-                    var offer = offerFactory.getEntityFromPK(EntityPermission.READ_ONLY, new OfferPK(rs.getLong(1)));
-                    var offerDetail = offer.getLastDetail();
+        for(var entityUniqueId : entityIds) {
+            var offer = offerFactory.getEntityFromPK(EntityPermission.READ_ONLY, new OfferPK(entityUniqueId));
+            var offerDetail = offer.getLastDetail();
 
-                    offerResultTransfers.add(new OfferResultTransfer(offerDetail.getOfferName(),
-                            includeOffer ? offerControl.getOfferTransfer(userVisit, offer) : null));
-                }
-            } catch (SQLException se) {
-                throw new PersistenceDatabaseException(se);
-            }
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
+            offerResultTransfers.add(new OfferResultTransfer(offerDetail.getOfferName(),
+                    includeOffer ? getOfferTransfer(userVisit, offer) : null));
         }
 
         return offerResultTransfers;

@@ -19,6 +19,8 @@ package com.echothree.model.control.offer.server.control;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.offer.common.transfer.OfferNameElementDescriptionTransfer;
 import com.echothree.model.control.offer.common.transfer.OfferNameElementTransfer;
+import com.echothree.model.control.offer.server.transfer.OfferNameElementDescriptionTransferCache;
+import com.echothree.model.control.offer.server.transfer.OfferNameElementTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.offer.common.pk.OfferNameElementPK;
 import com.echothree.model.data.offer.server.entity.OfferNameElement;
@@ -30,20 +32,25 @@ import com.echothree.model.data.offer.server.value.OfferNameElementDescriptionVa
 import com.echothree.model.data.offer.server.value.OfferNameElementDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.offer.OfferForeignKeys.OFFER_NAME_ELEMENTS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.offer.OfferForeignKeys.OFFER_NAME_ELEMENT_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.offer.OfferNameElementDescriptions.OfferNameElementDescriptions;
+import static com.echothree.model.jooq.server.tables.offer.OfferNameElementDetails.OfferNameElementDetails;
+import static com.echothree.model.jooq.server.tables.offer.OfferNameElements.OfferNameElements;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
 public class OfferNameElementControl
-        extends BaseOfferControl {
+        extends BaseModelControl {
 
     /** Creates a new instance of OfferNameElementControl */
     protected OfferNameElementControl() {
@@ -55,10 +62,13 @@ public class OfferNameElementControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OfferNameElementFactory offerNameElementFactory;
+    protected OfferNameElementDetailFactory offerNameElementDetailFactory;
 
     @Inject
-    protected OfferNameElementDetailFactory offerNameElementDetailFactory;
+    private OfferNameElementFactory offerNameElementFactory;
+
+    @Inject
+    private OfferNameElementTransferCache offerNameElementTransferCache;
 
     public OfferNameElement createOfferNameElement(String offerNameElementName, Integer offset, Integer length,
             String validationPattern, BasePK createdBy) {
@@ -80,12 +90,12 @@ public class OfferNameElementControl
     }
 
     public long countOfferNameElements() {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM offernameelements, offernameelementdetails
-                WHERE ofrne_activedetailid = ofrnedt_offernameelementdetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(OfferNameElements)
+                .join(OfferNameElementDetails).onKey(OFFER_NAME_ELEMENTS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.OfferNameElement */
@@ -105,36 +115,18 @@ public class OfferNameElementControl
     }
     
     public OfferNameElement getOfferNameElementByName(String offerNameElementName, EntityPermission entityPermission) {
-        OfferNameElement offerNameElement;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offernameelements, offernameelementdetails
-                        WHERE ofrne_activedetailid = ofrnedt_offernameelementdetailid AND ofrnedt_offernameelementname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offernameelements, offernameelementdetails
-                        WHERE ofrne_activedetailid = ofrnedt_offernameelementdetailid AND ofrnedt_offernameelementname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(OfferNameElements.fields())
+                .from(OfferNameElements)
+                .join(OfferNameElementDetails).onKey(OFFER_NAME_ELEMENTS_ACTIVE_DETAIL_FK)
+                .where(OfferNameElementDetails.OFFER_NAME_ELEMENT_NAME.eq(offerNameElementName));
 
-            var ps = offerNameElementFactory.prepareStatement(query);
-            
-            ps.setString(1, offerNameElementName);
-            
-            offerNameElement = offerNameElementFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return offerNameElement;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return offerNameElementFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public OfferNameElement getOfferNameElementByName(String offerNameElementName) {
@@ -154,28 +146,19 @@ public class OfferNameElementControl
     }
     
     private List<OfferNameElement> getOfferNameElements(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM offernameelements, offernameelementdetails
-                    WHERE ofrne_activedetailid = ofrnedt_offernameelementdetailid
-                    ORDER BY ofrnedt_offset
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM offernameelements, offernameelementdetails
-                    WHERE ofrne_activedetailid = ofrnedt_offernameelementdetailid
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(OfferNameElements.fields())
+                .from(OfferNameElements)
+                .join(OfferNameElementDetails).onKey(OFFER_NAME_ELEMENTS_ACTIVE_DETAIL_FK);
 
-        var ps = offerNameElementFactory.prepareStatement(query);
-        
-        return offerNameElementFactory.getEntitiesFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(OfferNameElementDetails.OFFSET),
+                    OfferNameElementFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return offerNameElementFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<OfferNameElement> getOfferNameElements() {
@@ -245,7 +228,10 @@ public class OfferNameElementControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OfferNameElementDescriptionFactory offerNameElementDescriptionFactory;
+    private OfferNameElementDescriptionFactory offerNameElementDescriptionFactory;
+
+    @Inject
+    private OfferNameElementDescriptionTransferCache offerNameElementDescriptionTransferCache;
 
     public OfferNameElementDescription createOfferNameElementDescription(OfferNameElement offerNameElement, Language language,
             String description, BasePK createdBy) {
@@ -260,38 +246,19 @@ public class OfferNameElementControl
     
     private OfferNameElementDescription getOfferNameElementDescription(OfferNameElement offerNameElement, Language language,
             EntityPermission entityPermission) {
-        OfferNameElementDescription offerNameElementDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offernameelementdescriptions
-                        WHERE ofrned_ofrne_offernameelementid = ? AND ofrned_lang_languageid = ? AND ofrned_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offernameelementdescriptions
-                        WHERE ofrned_ofrne_offernameelementid = ? AND ofrned_lang_languageid = ? AND ofrned_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(OfferNameElementDescriptions.fields())
+                .from(OfferNameElementDescriptions)
+                .where(OfferNameElementDescriptions.OFFER_NAME_ELEMENT.eq(offerNameElement.getPrimaryKey()),
+                        OfferNameElementDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        OfferNameElementDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = offerNameElementDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, offerNameElement.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            offerNameElementDescription = offerNameElementDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return offerNameElementDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return offerNameElementDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public OfferNameElementDescription getOfferNameElementDescription(OfferNameElement offerNameElement, Language language) {
@@ -312,38 +279,24 @@ public class OfferNameElementControl
     
     private List<OfferNameElementDescription> getOfferNameElementDescriptionsByOfferNameElement(OfferNameElement offerNameElement,
             EntityPermission entityPermission) {
-        List<OfferNameElementDescription> offerNameElementDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offernameelementdescriptions, languages
-                        WHERE ofrned_ofrne_offernameelementid = ? AND ofrned_thrutime = ? AND ofrned_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offernameelementdescriptions
-                        WHERE ofrned_ofrne_offernameelementid = ? AND ofrned_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OfferNameElementDescriptions.fields())
+                    .from(OfferNameElementDescriptions)
+                    .join(Languages).onKey(OFFER_NAME_ELEMENT_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(OfferNameElementDescriptions.OFFER_NAME_ELEMENT.eq(offerNameElement.getPrimaryKey()),
+                            OfferNameElementDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    OfferNameElementDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(OfferNameElementDescriptions.fields())
+                    .from(OfferNameElementDescriptions)
+                    .where(OfferNameElementDescriptions.OFFER_NAME_ELEMENT.eq(offerNameElement.getPrimaryKey()),
+                            OfferNameElementDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = offerNameElementDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, offerNameElement.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            offerNameElementDescriptions = offerNameElementDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return offerNameElementDescriptions;
+        return offerNameElementDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<OfferNameElementDescription> getOfferNameElementDescriptionsByOfferNameElement(OfferNameElement offerNameElement) {

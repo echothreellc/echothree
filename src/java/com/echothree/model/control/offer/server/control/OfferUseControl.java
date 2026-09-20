@@ -18,6 +18,7 @@ package com.echothree.model.control.offer.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.offer.common.transfer.OfferUseTransfer;
+import com.echothree.model.control.offer.server.transfer.OfferUseTransferCache;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.offer.server.entity.Use;
@@ -26,23 +27,33 @@ import com.echothree.model.data.offer.server.factory.OfferUseFactory;
 import com.echothree.model.data.offer.server.value.OfferUseDetailValue;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.offer.OfferForeignKeys.OFFERS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.offer.OfferForeignKeys.OFFER_USES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.offer.OfferForeignKeys.OFFER_USE_DETAILS_OFFER_FK;
+import static com.echothree.model.jooq.server.keys.offer.OfferForeignKeys.OFFER_USE_DETAILS_USE_FK;
+import static com.echothree.model.jooq.server.keys.offer.OfferForeignKeys.USES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.offer.OfferDetails.OfferDetails;
+import static com.echothree.model.jooq.server.tables.offer.OfferUseDetails.OfferUseDetails;
+import static com.echothree.model.jooq.server.tables.offer.OfferUses.OfferUses;
+import static com.echothree.model.jooq.server.tables.offer.Offers.Offers;
+import static com.echothree.model.jooq.server.tables.offer.UseDetails.UseDetails;
+import static com.echothree.model.jooq.server.tables.offer.Uses.Uses;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
 public class OfferUseControl
-        extends BaseOfferControl {
+        extends BaseModelControl {
 
     @Inject
-    protected SourceControl sourceControl;
+    private SourceControl sourceControl;
 
     /** Creates a new instance of OfferUseControl */
     protected OfferUseControl() {
@@ -54,10 +65,13 @@ public class OfferUseControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OfferUseFactory offerUseFactory;
+    protected OfferUseDetailFactory offerUseDetailFactory;
 
     @Inject
-    protected OfferUseDetailFactory offerUseDetailFactory;
+    private OfferUseFactory offerUseFactory;
+
+    @Inject
+    private OfferUseTransferCache offerUseTransferCache;
 
     public OfferUse createOfferUse(Offer offer, Use use, Sequence salesOrderSequence, BasePK createdBy) {
         var offerUse = offerUseFactory.create();
@@ -76,59 +90,54 @@ public class OfferUseControl
     }
 
     public long countOfferUses() {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM offeruses, offerusedetails
-                WHERE ofruse_activedetailid = ofrusedt_offerusedetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(OfferUses)
+                .join(OfferUseDetails).onKey(OFFER_USES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countOfferUsesByOffer(Offer offer) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM offeruses, offerusedetails
-                WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_ofr_offerid = ?
-                """,
-                offer);
+        return session.getDslContext()
+                .selectCount()
+                .from(OfferUses)
+                .join(OfferUseDetails).onKey(OFFER_USES_ACTIVE_DETAIL_FK)
+                .where(OfferUseDetails.OFFER.eq(offer.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countOfferUsesByUse(Use use) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM offeruses, offerusedetails
-                WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_use_useid = ?
-                """,
-                use);
+        return session.getDslContext()
+                .selectCount()
+                .from(OfferUses)
+                .join(OfferUseDetails).onKey(OFFER_USES_ACTIVE_DETAIL_FK)
+                .where(OfferUseDetails.USE.eq(use.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<OfferUse> getOfferUses(EntityPermission entityPermission) {
-        String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OfferUses.fields())
+                    .from(OfferUses)
+                    .join(OfferUseDetails).onKey(OFFER_USES_ACTIVE_DETAIL_FK)
+                    .join(Offers).onKey(OFFER_USE_DETAILS_OFFER_FK)
+                    .join(OfferDetails).onKey(OFFERS_LAST_DETAIL_FK)
+                    .join(Uses).onKey(OFFER_USE_DETAILS_USE_FK)
+                    .join(UseDetails).onKey(USES_LAST_DETAIL_FK)
+                    .orderBy(OfferDetails.SORT_ORDER, OfferDetails.OFFER_NAME, UseDetails.SORT_ORDER, UseDetails.USE_NAME),
+                    OfferUseFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(OfferUses.fields())
+                    .from(OfferUses)
+                    .join(OfferUseDetails).onKey(OFFER_USES_ACTIVE_DETAIL_FK)
+                    .forUpdate();
+        };
 
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM offeruses, offerusedetails, offers, offerdetails, uses, usedetails
-                    WHERE ofruse_activedetailid = ofrusedt_offerusedetailid
-                    AND ofrusedt_use_useid = use_useid AND use_activedetailid = usedt_usedetailid
-                    AND ofrusedt_ofr_offerid = ofr_offerid AND ofr_activedetailid = ofrdt_offerdetailid
-                    ORDER BY ofrdt_sortorder, ofrdt_offername, usedt_sortorder, usedt_usename
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM offeruses, offerusedetails
-                    WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_ofr_offerid = ?
-                    FOR UPDATE
-                    """;
-        }
-
-        var ps = offerUseFactory.prepareStatement(query);
-
-        return offerUseFactory.getEntitiesFromQuery(entityPermission, ps);
+        return offerUseFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OfferUse> getOfferUses() {
@@ -140,39 +149,25 @@ public class OfferUseControl
     }
 
     private List<OfferUse> getOfferUsesByOffer(Offer offer, EntityPermission entityPermission) {
-        List<OfferUse> offerUses;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OfferUses.fields())
+                    .from(OfferUses)
+                    .join(OfferUseDetails).onKey(OFFER_USES_ACTIVE_DETAIL_FK)
+                    .join(Uses).onKey(OFFER_USE_DETAILS_USE_FK)
+                    .join(UseDetails).onKey(USES_LAST_DETAIL_FK)
+                    .where(OfferUseDetails.OFFER.eq(offer.getPrimaryKey()))
+                    .orderBy(UseDetails.SORT_ORDER, UseDetails.USE_NAME),
+                    OfferUseFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(OfferUses.fields())
+                    .from(OfferUses)
+                    .join(OfferUseDetails).onKey(OFFER_USES_ACTIVE_DETAIL_FK)
+                    .where(OfferUseDetails.OFFER.eq(offer.getPrimaryKey()))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offeruses, offerusedetails, uses, usedetails
-                        WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_ofr_offerid = ?
-                        AND ofrusedt_use_useid = use_useid AND use_activedetailid = usedt_usedetailid
-                        ORDER BY usedt_sortorder, usedt_usename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offeruses, offerusedetails
-                        WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_ofr_offerid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = offerUseFactory.prepareStatement(query);
-
-            ps.setLong(1, offer.getPrimaryKey().getEntityId());
-
-            offerUses = offerUseFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return offerUses;
+        return offerUseFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OfferUse> getOfferUsesByOffer(Offer offer) {
@@ -184,39 +179,25 @@ public class OfferUseControl
     }
 
     private List<OfferUse> getOfferUsesByUse(Use use, EntityPermission entityPermission) {
-        List<OfferUse> offerUses;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OfferUses.fields())
+                    .from(OfferUses)
+                    .join(OfferUseDetails).onKey(OFFER_USES_ACTIVE_DETAIL_FK)
+                    .join(Offers).onKey(OFFER_USE_DETAILS_OFFER_FK)
+                    .join(OfferDetails).onKey(OFFERS_LAST_DETAIL_FK)
+                    .where(OfferUseDetails.USE.eq(use.getPrimaryKey()))
+                    .orderBy(OfferDetails.SORT_ORDER, OfferDetails.OFFER_NAME),
+                    OfferUseFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(OfferUses.fields())
+                    .from(OfferUses)
+                    .join(OfferUseDetails).onKey(OFFER_USES_ACTIVE_DETAIL_FK)
+                    .where(OfferUseDetails.USE.eq(use.getPrimaryKey()))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offeruses, offerusedetails, offers, offerdetails
-                        WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_use_useid = ?
-                        AND ofrusedt_ofr_offerid = ofr_offerid AND ofr_activedetailid = ofrdt_offerdetailid
-                        ORDER BY ofrdt_sortorder, ofrdt_offername
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offeruses, offerusedetails
-                        WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_use_useid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = offerUseFactory.prepareStatement(query);
-
-            ps.setLong(1, use.getPrimaryKey().getEntityId());
-
-            offerUses = offerUseFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return offerUses;
+        return offerUseFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OfferUse> getOfferUsesByUse(Use use) {
@@ -228,39 +209,27 @@ public class OfferUseControl
     }
 
     private List<OfferUse> getOfferUsesBySalesOrderSequence(Sequence salesOrderSequence, EntityPermission entityPermission) {
-        List<OfferUse> offerUses;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OfferUses.fields())
+                    .from(OfferUses)
+                    .join(OfferUseDetails).onKey(OFFER_USES_ACTIVE_DETAIL_FK)
+                    .join(Offers).onKey(OFFER_USE_DETAILS_OFFER_FK)
+                    .join(OfferDetails).onKey(OFFERS_LAST_DETAIL_FK)
+                    .join(Uses).onKey(OFFER_USE_DETAILS_USE_FK)
+                    .join(UseDetails).onKey(USES_LAST_DETAIL_FK)
+                    .where(OfferUseDetails.SALES_ORDER_SEQUENCE.eq(salesOrderSequence.getPrimaryKey()))
+                    .orderBy(OfferDetails.SORT_ORDER, OfferDetails.OFFER_NAME, UseDetails.SORT_ORDER, UseDetails.USE_NAME),
+                    OfferUseFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(OfferUses.fields())
+                    .from(OfferUses)
+                    .join(OfferUseDetails).onKey(OFFER_USES_ACTIVE_DETAIL_FK)
+                    .where(OfferUseDetails.SALES_ORDER_SEQUENCE.eq(salesOrderSequence.getPrimaryKey()))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offeruses, offerusedetails, sequences, sequencedetails
-                        WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_salesordersequenceid = ?
-                        AND ofrusedt_salesordersequenceid = sq_sequenceid AND sq_activedetailid = sqdt_sequencedetailid
-                        ORDER BY sqdt_sortorder, sqdt_sequencename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offeruses, offerusedetails
-                        WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_salesordersequenceid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = offerUseFactory.prepareStatement(query);
-
-            ps.setLong(1, salesOrderSequence.getPrimaryKey().getEntityId());
-
-            offerUses = offerUseFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return offerUses;
+        return offerUseFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OfferUse> getOfferUsesBySalesOrderSequence(Sequence salesOrderSequence) {
@@ -272,37 +241,19 @@ public class OfferUseControl
     }
 
     public OfferUse getOfferUse(Offer offer, Use use, EntityPermission entityPermission) {
-        OfferUse offerUse;
+        var baseQuery = session.getDslContext()
+                .select(OfferUses.fields())
+                .from(OfferUses)
+                .join(OfferUseDetails).onKey(OFFER_USES_ACTIVE_DETAIL_FK)
+                .where(OfferUseDetails.OFFER.eq(offer.getPrimaryKey()),
+                        OfferUseDetails.USE.eq(use.getPrimaryKey()));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offeruses, offerusedetails
-                        WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_ofr_offerid = ? AND ofrusedt_use_useid = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM offeruses, offerusedetails
-                        WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_ofr_offerid = ? AND ofrusedt_use_useid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = offerUseFactory.prepareStatement(query);
-
-            ps.setLong(1, offer.getPrimaryKey().getEntityId());
-            ps.setLong(2, use.getPrimaryKey().getEntityId());
-
-            offerUse = offerUseFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return offerUse;
+        return offerUseFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OfferUse getOfferUse(Offer offer, Use use) {
