@@ -18,7 +18,6 @@ package com.echothree.model.control.period.server.control;
 
 import com.echothree.model.control.accounting.common.workflow.FiscalPeriodStatusConstants;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.period.common.choice.FiscalPeriodStatusChoicesBean;
 import com.echothree.model.control.period.common.choice.PeriodKindChoicesBean;
 import com.echothree.model.control.period.common.choice.PeriodTypeChoicesBean;
@@ -62,7 +61,24 @@ import com.echothree.model.data.period.server.value.PeriodTypeDescriptionValue;
 import com.echothree.model.data.period.server.value.PeriodTypeDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.period.PeriodForeignKeys.PERIODS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.period.PeriodForeignKeys.PERIOD_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.period.PeriodForeignKeys.PERIOD_DETAILS_PERIOD_KIND_FK;
+import static com.echothree.model.jooq.server.keys.period.PeriodForeignKeys.PERIOD_KINDS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.period.PeriodForeignKeys.PERIOD_KINDS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.period.PeriodForeignKeys.PERIOD_KIND_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.period.PeriodForeignKeys.PERIOD_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.period.PeriodForeignKeys.PERIOD_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.period.PeriodDescriptions.PeriodDescriptions;
+import static com.echothree.model.jooq.server.tables.period.PeriodDetails.PeriodDetails;
+import static com.echothree.model.jooq.server.tables.period.PeriodKindDescriptions.PeriodKindDescriptions;
+import static com.echothree.model.jooq.server.tables.period.PeriodKindDetails.PeriodKindDetails;
+import static com.echothree.model.jooq.server.tables.period.PeriodKinds.PeriodKinds;
+import static com.echothree.model.jooq.server.tables.period.PeriodTypeDescriptions.PeriodTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.period.PeriodTypeDetails.PeriodTypeDetails;
+import static com.echothree.model.jooq.server.tables.period.PeriodTypes.PeriodTypes;
+import static com.echothree.model.jooq.server.tables.period.Periods.Periods;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
@@ -70,7 +86,6 @@ import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -90,36 +105,17 @@ public class PeriodControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Period Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    @Inject
-    PeriodKindTransferCache periodKindTransferCache;
-
-    @Inject
-    PeriodKindDescriptionTransferCache periodKindDescriptionTransferCache;
-
-    @Inject
-    PeriodTypeTransferCache periodTypeTransferCache;
-
-    @Inject
-    PeriodTypeDescriptionTransferCache periodTypeDescriptionTransferCache;
-
-    @Inject
-    PeriodTransferCache periodTransferCache;
-
-    @Inject
-    PeriodDescriptionTransferCache periodDescriptionTransferCache;
-
-    // --------------------------------------------------------------------------------
     //   Period Kinds
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PeriodKindFactory periodKindFactory;
+    protected PeriodKindDetailFactory periodKindDetailFactory;
 
     @Inject
-    protected PeriodKindDetailFactory periodKindDetailFactory;
+    private PeriodKindFactory periodKindFactory;
+
+    @Inject
+    private PeriodKindTransferCache periodKindTransferCache;
 
     public PeriodKind createPeriodKind(String periodKindName, WorkflowEntrance workflowEntrance, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultPeriodKind = getDefaultPeriodKind();
@@ -166,44 +162,27 @@ public class PeriodControl
     }
 
     public long countPeriodKinds() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM periodkinds
-                        JOIN periodkinddetails ON prdkdt_periodkinddetailid = prdk_activedetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(PeriodKinds)
+                .join(PeriodKindDetails).onKey(PERIOD_KINDS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public PeriodKind getPeriodKindByName(String periodKindName, EntityPermission entityPermission) {
-        PeriodKind periodKind;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM periodkinds, periodkinddetails
-                        WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_periodkindname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM periodkinds, periodkinddetails
-                        WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_periodkindname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(PeriodKinds.fields())
+                .from(PeriodKinds)
+                .join(PeriodKindDetails).onKey(PERIOD_KINDS_ACTIVE_DETAIL_FK)
+                .where(PeriodKindDetails.PERIOD_KIND_NAME.eq(periodKindName));
 
-            var ps = periodKindFactory.prepareStatement(query);
-            
-            ps.setString(1, periodKindName);
-            
-            periodKind = periodKindFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return periodKind;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return periodKindFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PeriodKind getPeriodKindByName(String periodKindName) {
@@ -223,26 +202,18 @@ public class PeriodControl
     }
     
     public PeriodKind getDefaultPeriodKind(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM periodkinds, periodkinddetails
-                    WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_isdefault = 1
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM periodkinds, periodkinddetails
-                    WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_isdefault = 1
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(PeriodKinds.fields())
+                .from(PeriodKinds)
+                .join(PeriodKindDetails).onKey(PERIOD_KINDS_ACTIVE_DETAIL_FK)
+                .where(PeriodKindDetails.IS_DEFAULT.eq(true));
 
-        var ps = periodKindFactory.prepareStatement(query);
-        
-        return periodKindFactory.getEntityFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return periodKindFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PeriodKind getDefaultPeriodKind() {
@@ -258,28 +229,19 @@ public class PeriodControl
     }
     
     private List<PeriodKind> getPeriodKinds(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM periodkinds, periodkinddetails
-                    WHERE prdk_activedetailid = prdkdt_periodkinddetailid
-                    ORDER BY prdkdt_sortorder, prdkdt_periodkindname
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM periodkinds, periodkinddetails
-                    WHERE prdk_activedetailid = prdkdt_periodkinddetailid
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(PeriodKinds.fields())
+                .from(PeriodKinds)
+                .join(PeriodKindDetails).onKey(PERIOD_KINDS_ACTIVE_DETAIL_FK);
 
-        var ps = periodKindFactory.prepareStatement(query);
-        
-        return periodKindFactory.getEntitiesFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(PeriodKindDetails.SORT_ORDER, PeriodKindDetails.PERIOD_KIND_NAME),
+                    PeriodKindFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return periodKindFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PeriodKind> getPeriodKinds() {
@@ -419,7 +381,10 @@ public class PeriodControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PeriodKindDescriptionFactory periodKindDescriptionFactory;
+    private PeriodKindDescriptionFactory periodKindDescriptionFactory;
+
+    @Inject
+    private PeriodKindDescriptionTransferCache periodKindDescriptionTransferCache;
 
     public PeriodKindDescription createPeriodKindDescription(PeriodKind periodKind, Language language, String description,
             BasePK createdBy) {
@@ -432,38 +397,19 @@ public class PeriodControl
     }
     
     private PeriodKindDescription getPeriodKindDescription(PeriodKind periodKind, Language language, EntityPermission entityPermission) {
-        PeriodKindDescription periodKindDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM periodkinddescriptions
-                        WHERE prdkd_prdk_periodkindid = ? AND prdkd_lang_languageid = ? AND prdkd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM periodkinddescriptions
-                        WHERE prdkd_prdk_periodkindid = ? AND prdkd_lang_languageid = ? AND prdkd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(PeriodKindDescriptions.fields())
+                .from(PeriodKindDescriptions)
+                .where(PeriodKindDescriptions.PERIOD_KIND.eq(periodKind.getPrimaryKey()),
+                        PeriodKindDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        PeriodKindDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = periodKindDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, periodKind.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            periodKindDescription = periodKindDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return periodKindDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return periodKindDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PeriodKindDescription getPeriodKindDescription(PeriodKind periodKind, Language language) {
@@ -483,38 +429,24 @@ public class PeriodControl
     }
     
     private List<PeriodKindDescription> getPeriodKindDescriptionsByPeriodKind(PeriodKind periodKind, EntityPermission entityPermission) {
-        List<PeriodKindDescription> periodKindDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM periodkinddescriptions, languages
-                        WHERE prdkd_prdk_periodkindid = ? AND prdkd_thrutime = ? AND prdkd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM periodkinddescriptions
-                        WHERE prdkd_prdk_periodkindid = ? AND prdkd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PeriodKindDescriptions.fields())
+                    .from(PeriodKindDescriptions)
+                    .join(Languages).onKey(PERIOD_KIND_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(PeriodKindDescriptions.PERIOD_KIND.eq(periodKind.getPrimaryKey()),
+                            PeriodKindDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    PeriodKindDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PeriodKindDescriptions.fields())
+                    .from(PeriodKindDescriptions)
+                    .where(PeriodKindDescriptions.PERIOD_KIND.eq(periodKind.getPrimaryKey()),
+                            PeriodKindDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = periodKindDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, periodKind.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            periodKindDescriptions = periodKindDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return periodKindDescriptions;
+        return periodKindDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PeriodKindDescription> getPeriodKindDescriptionsByPeriodKind(PeriodKind periodKind) {
@@ -596,10 +528,13 @@ public class PeriodControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PeriodTypeFactory periodTypeFactory;
+    protected PeriodTypeDetailFactory periodTypeDetailFactory;
 
     @Inject
-    protected PeriodTypeDetailFactory periodTypeDetailFactory;
+    private PeriodTypeFactory periodTypeFactory;
+
+    @Inject
+    private PeriodTypeTransferCache periodTypeTransferCache;
 
     public PeriodType createPeriodType(PeriodKind periodKind, String periodTypeName, PeriodType parentPeriodType, WorkflowEntrance workflowEntrance, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -647,46 +582,30 @@ public class PeriodControl
     }
 
     public long countPeriodTypes(final PeriodKind periodKind) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM periodtypes
-                        JOIN periodtypedetails ON prdtdt_periodtypedetailid = prdt_activedetailid
-                        WHERE prdtdt_prdk_periodkindid = ?
-                        """, periodKind);
+        return session.getDslContext()
+                .selectCount()
+                .from(PeriodTypes)
+                .join(PeriodTypeDetails).onKey(PERIOD_TYPES_ACTIVE_DETAIL_FK)
+                .where(PeriodTypeDetails.PERIOD_KIND.eq(periodKind.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<PeriodType> getPeriodTypes(PeriodKind periodKind, EntityPermission entityPermission) {
-        List<PeriodType> periodTypes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM periodtypes, periodtypedetails
-                        WHERE prdt_activedetailid = prdtdt_periodtypedetailid AND prdtdt_prdk_periodkindid = ?
-                        ORDER BY prdtdt_sortorder, prdtdt_periodtypename
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM periodtypes, periodtypedetails
-                        WHERE prdt_activedetailid = prdtdt_periodtypedetailid AND prdtdt_prdk_periodkindid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(PeriodTypes.fields())
+                .from(PeriodTypes)
+                .join(PeriodTypeDetails).onKey(PERIOD_TYPES_ACTIVE_DETAIL_FK)
+                .where(PeriodTypeDetails.PERIOD_KIND.eq(periodKind.getPrimaryKey()));
 
-            var ps = periodTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, periodKind.getPrimaryKey().getEntityId());
-            
-            periodTypes = periodTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return periodTypes;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(PeriodTypeDetails.SORT_ORDER, PeriodTypeDetails.PERIOD_TYPE_NAME),
+                    PeriodTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return periodTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PeriodType> getPeriodTypes(PeriodKind periodKind) {
@@ -698,38 +617,19 @@ public class PeriodControl
     }
     
     private PeriodType getDefaultPeriodType(PeriodKind periodKind, EntityPermission entityPermission) {
-        PeriodType periodType;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM periodtypes, periodtypedetails
-                        WHERE prdt_activedetailid = prdtdt_periodtypedetailid
-                        AND prdtdt_prdk_periodkindid = ? AND prdtdt_isdefault = 1
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM periodtypes, periodtypedetails
-                        WHERE prdt_activedetailid = prdtdt_periodtypedetailid
-                        AND prdtdt_prdk_periodkindid = ? AND prdtdt_isdefault = 1
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(PeriodTypes.fields())
+                .from(PeriodTypes)
+                .join(PeriodTypeDetails).onKey(PERIOD_TYPES_ACTIVE_DETAIL_FK)
+                .where(PeriodTypeDetails.PERIOD_KIND.eq(periodKind.getPrimaryKey()),
+                        PeriodTypeDetails.IS_DEFAULT.eq(true));
 
-            var ps = periodTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, periodKind.getPrimaryKey().getEntityId());
-            
-            periodType = periodTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return periodType;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return periodTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PeriodType getDefaultPeriodType(PeriodKind periodKind) {
@@ -745,39 +645,19 @@ public class PeriodControl
     }
     
     private PeriodType getPeriodTypeByName(PeriodKind periodKind, String periodTypeName, EntityPermission entityPermission) {
-        PeriodType periodType;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM periodtypes, periodtypedetails
-                        WHERE prdt_activedetailid = prdtdt_periodtypedetailid
-                        AND prdtdt_prdk_periodkindid = ? AND prdtdt_periodtypename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM periodtypes, periodtypedetails
-                        WHERE prdt_activedetailid = prdtdt_periodtypedetailid
-                        AND prdtdt_prdk_periodkindid = ? AND prdtdt_periodtypename = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(PeriodTypes.fields())
+                .from(PeriodTypes)
+                .join(PeriodTypeDetails).onKey(PERIOD_TYPES_ACTIVE_DETAIL_FK)
+                .where(PeriodTypeDetails.PERIOD_KIND.eq(periodKind.getPrimaryKey()),
+                        PeriodTypeDetails.PERIOD_TYPE_NAME.eq(periodTypeName));
 
-            var ps = periodTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, periodKind.getPrimaryKey().getEntityId());
-            ps.setString(2, periodTypeName);
-            
-            periodType = periodTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return periodType;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return periodTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PeriodType getPeriodTypeByName(PeriodKind periodKind, String periodTypeName) {
@@ -957,7 +837,10 @@ public class PeriodControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PeriodTypeDescriptionFactory periodTypeDescriptionFactory;
+    private PeriodTypeDescriptionFactory periodTypeDescriptionFactory;
+
+    @Inject
+    private PeriodTypeDescriptionTransferCache periodTypeDescriptionTransferCache;
 
     public PeriodTypeDescription createPeriodTypeDescription(PeriodType periodType, Language language, String description,
             BasePK createdBy) {
@@ -970,38 +853,19 @@ public class PeriodControl
     }
     
     private PeriodTypeDescription getPeriodTypeDescription(PeriodType periodType, Language language, EntityPermission entityPermission) {
-        PeriodTypeDescription periodTypeDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM periodtypedescriptions
-                        WHERE prdtd_prdt_periodtypeid = ? AND prdtd_lang_languageid = ? AND prdtd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM periodtypedescriptions
-                        WHERE prdtd_prdt_periodtypeid = ? AND prdtd_lang_languageid = ? AND prdtd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(PeriodTypeDescriptions.fields())
+                .from(PeriodTypeDescriptions)
+                .where(PeriodTypeDescriptions.PERIOD_TYPE.eq(periodType.getPrimaryKey()),
+                        PeriodTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        PeriodTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = periodTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, periodType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            periodTypeDescription = periodTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return periodTypeDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return periodTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PeriodTypeDescription getPeriodTypeDescription(PeriodType periodType, Language language) {
@@ -1021,38 +885,24 @@ public class PeriodControl
     }
     
     private List<PeriodTypeDescription> getPeriodTypeDescriptionsByPeriodType(PeriodType periodType, EntityPermission entityPermission) {
-        List<PeriodTypeDescription> periodTypeDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM periodtypedescriptions, languages
-                        WHERE prdtd_prdt_periodtypeid = ? AND prdtd_thrutime = ? AND prdtd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM periodtypedescriptions
-                        WHERE prdtd_prdt_periodtypeid = ? AND prdtd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PeriodTypeDescriptions.fields())
+                    .from(PeriodTypeDescriptions)
+                    .join(Languages).onKey(PERIOD_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(PeriodTypeDescriptions.PERIOD_TYPE.eq(periodType.getPrimaryKey()),
+                            PeriodTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    PeriodTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PeriodTypeDescriptions.fields())
+                    .from(PeriodTypeDescriptions)
+                    .where(PeriodTypeDescriptions.PERIOD_TYPE.eq(periodType.getPrimaryKey()),
+                            PeriodTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = periodTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, periodType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            periodTypeDescriptions = periodTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return periodTypeDescriptions;
+        return periodTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PeriodTypeDescription> getPeriodTypeDescriptionsByPeriodType(PeriodType periodType) {
@@ -1133,10 +983,13 @@ public class PeriodControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PeriodFactory periodFactory;
+    protected PeriodDetailFactory periodDetailFactory;
 
     @Inject
-    protected PeriodDetailFactory periodDetailFactory;
+    private PeriodFactory periodFactory;
+
+    @Inject
+    private PeriodTransferCache periodTransferCache;
 
     public Period createPeriod(PeriodKind periodKind, String periodName, Period parentPeriod, PeriodType periodType, Long startTime, Long endTime, BasePK createdBy) {
         var period = periodFactory.create();
@@ -1156,43 +1009,24 @@ public class PeriodControl
     }
     
     private List<Period> getContainingPeriodsUsingNames(String periodKindName, Long time, EntityPermission entityPermission) {
-        List<Period> periods;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM periodkinds, periodkinddetails, periods, perioddetails
-                        WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_periodkindname = ?
-                        AND prd_activedetailid = prddt_perioddetailid AND prddt_prdk_periodkindid = prdk_periodkindid
-                        AND prddt_starttime <= ? AND prddt_endtime >= ?
-                        ORDER BY prddt_periodname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM periodkinds, periodkinddetails, periods, perioddetails
-                        WHERE prdk_activedetailid = prdkdt_periodkinddetailid AND prdkdt_periodkindname = ?
-                        AND prd_activedetailid = prddt_perioddetailid AND prddt_prdk_periodkindid = prdk_periodkindid
-                        AND prddt_starttime <= ? AND prddt_endtime >= ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Periods.fields())
+                .from(Periods)
+                .join(PeriodDetails).onKey(PERIODS_ACTIVE_DETAIL_FK)
+                .join(PeriodKinds).onKey(PERIOD_DETAILS_PERIOD_KIND_FK)
+                .join(PeriodKindDetails).onKey(PERIOD_KINDS_LAST_DETAIL_FK)
+                .where(PeriodKindDetails.PERIOD_KIND_NAME.eq(periodKindName),
+                        PeriodDetails.START_TIME.le(time),
+                        PeriodDetails.END_TIME.ge(time));
 
-            var ps = periodFactory.prepareStatement(query);
-            
-            ps.setString(1, periodKindName);
-            ps.setLong(2, time);
-            ps.setLong(3, time);
-            
-            periods = periodFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return periods;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(PeriodDetails.PERIOD_NAME),
+                    PeriodFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return periodFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<Period> getContainingPeriodsUsingNames(String periodKindName, Long time) {
@@ -1204,37 +1038,20 @@ public class PeriodControl
     }
     
     private List<Period> getPeriods(PeriodType periodType, EntityPermission entityPermission) {
-        List<Period> periods;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM periods, perioddetails
-                        WHERE prd_activedetailid = prddt_perioddetailid AND prddt_prdt_periodtypeid = ?
-                        ORDER BY prddt_sortorder, prddt_periodname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM periods, perioddetails
-                        WHERE prd_activedetailid = prddt_perioddetailid AND prddt_prdt_periodtypeid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Periods.fields())
+                .from(Periods)
+                .join(PeriodDetails).onKey(PERIODS_ACTIVE_DETAIL_FK)
+                .where(PeriodDetails.PERIOD_TYPE.eq(periodType.getPrimaryKey()));
 
-            var ps = periodFactory.prepareStatement(query);
-            
-            ps.setLong(1, periodType.getPrimaryKey().getEntityId());
-            
-            periods = periodFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return periods;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(PeriodDetails.PERIOD_NAME),
+                    PeriodFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return periodFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<Period> getPeriods(PeriodType periodType) {
@@ -1246,37 +1063,20 @@ public class PeriodControl
     }
     
     private List<Period> getPeriodsByParentPeriod(Period parentPeriod, EntityPermission entityPermission) {
-        List<Period> periods;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM periods, perioddetails
-                        WHERE prd_activedetailid = prddt_perioddetailid AND prddt_parentperiodid = ?
-                        ORDER BY prddt_sortorder, prddt_periodname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM periods, perioddetails
-                        WHERE prd_activedetailid = prddt_perioddetailid AND prddt_parentperiodid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Periods.fields())
+                .from(Periods)
+                .join(PeriodDetails).onKey(PERIODS_ACTIVE_DETAIL_FK)
+                .where(PeriodDetails.PARENT_PERIOD.eq(parentPeriod.getPrimaryKey()));
 
-            var ps = periodFactory.prepareStatement(query);
-            
-            ps.setLong(1, parentPeriod.getPrimaryKey().getEntityId());
-            
-            periods = periodFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return periods;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(PeriodDetails.PERIOD_NAME),
+                    PeriodFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return periodFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<Period> getPeriodsByParentPeriod(Period parentPeriod) {
@@ -1299,39 +1099,19 @@ public class PeriodControl
     }
     
     public Period getPeriodByName(PeriodKind periodKind, String periodName, EntityPermission entityPermission) {
-        Period period;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM periods, perioddetails
-                        WHERE prd_activedetailid = prddt_perioddetailid
-                        AND prddt_prdk_periodkindid = ? AND prddt_periodname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM periods, perioddetails
-                        WHERE prd_activedetailid = prddt_perioddetailid
-                        AND prddt_prdk_periodkindid = ? AND prddt_periodname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Periods.fields())
+                .from(Periods)
+                .join(PeriodDetails).onKey(PERIODS_ACTIVE_DETAIL_FK)
+                .where(PeriodDetails.PERIOD_KIND.eq(periodKind.getPrimaryKey()),
+                        PeriodDetails.PERIOD_NAME.eq(periodName));
 
-            var ps = periodFactory.prepareStatement(query);
-            
-            ps.setLong(1, periodKind.getPrimaryKey().getEntityId());
-            ps.setString(2, periodName);
-            
-            period = periodFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return period;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return periodFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Period getPeriodByName(PeriodKind periodKind, String periodName) {
@@ -1447,7 +1227,10 @@ public class PeriodControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PeriodDescriptionFactory periodDescriptionFactory;
+    private PeriodDescriptionFactory periodDescriptionFactory;
+
+    @Inject
+    private PeriodDescriptionTransferCache periodDescriptionTransferCache;
 
     public PeriodDescription createPeriodDescription(Period period, Language language, String description,
             BasePK createdBy) {
@@ -1460,38 +1243,19 @@ public class PeriodControl
     }
     
     private PeriodDescription getPeriodDescription(Period period, Language language, EntityPermission entityPermission) {
-        PeriodDescription periodDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM perioddescriptions
-                        WHERE prdd_prd_periodid = ? AND prdd_lang_languageid = ? AND prdd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM perioddescriptions
-                        WHERE prdd_prd_periodid = ? AND prdd_lang_languageid = ? AND prdd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(PeriodDescriptions.fields())
+                .from(PeriodDescriptions)
+                .where(PeriodDescriptions.PERIOD.eq(period.getPrimaryKey()),
+                        PeriodDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        PeriodDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = periodDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, period.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            periodDescription = periodDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return periodDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return periodDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PeriodDescription getPeriodDescription(Period period, Language language) {
@@ -1511,38 +1275,24 @@ public class PeriodControl
     }
     
     private List<PeriodDescription> getPeriodDescriptionsByPeriod(Period period, EntityPermission entityPermission) {
-        List<PeriodDescription> periodDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM perioddescriptions, languages
-                        WHERE prdd_prd_periodid = ? AND prdd_thrutime = ? AND prdd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM perioddescriptions
-                        WHERE prdd_prd_periodid = ? AND prdd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PeriodDescriptions.fields())
+                    .from(PeriodDescriptions)
+                    .join(Languages).onKey(PERIOD_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(PeriodDescriptions.PERIOD.eq(period.getPrimaryKey()),
+                            PeriodDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    PeriodDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PeriodDescriptions.fields())
+                    .from(PeriodDescriptions)
+                    .where(PeriodDescriptions.PERIOD.eq(period.getPrimaryKey()),
+                            PeriodDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = periodDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, period.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            periodDescriptions = periodDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return periodDescriptions;
+        return periodDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PeriodDescription> getPeriodDescriptionsByPeriod(Period period) {
