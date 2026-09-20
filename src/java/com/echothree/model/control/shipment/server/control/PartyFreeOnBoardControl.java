@@ -18,24 +18,29 @@ package com.echothree.model.control.shipment.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.shipment.common.transfer.PartyFreeOnBoardTransfer;
+import com.echothree.model.control.shipment.server.transfer.PartyFreeOnBoardTransferCache;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.model.data.shipment.server.entity.PartyFreeOnBoard;
 import com.echothree.model.data.shipment.server.factory.PartyFreeOnBoardFactory;
 import com.echothree.model.data.shipment.server.value.PartyFreeOnBoardValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTIES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.shipment.ShipmentForeignKeys.PARTY_FREE_ON_BOARDS_PARTY_FK;
+import static com.echothree.model.jooq.server.tables.party.Parties.Parties;
+import static com.echothree.model.jooq.server.tables.party.PartyDetails.PartyDetails;
+import static com.echothree.model.jooq.server.tables.shipment.PartyFreeOnBoards.PartyFreeOnBoards;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.List;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
 public class PartyFreeOnBoardControl
-        extends BaseShipmentControl {
+        extends BaseModelControl {
 
     /** Creates a new instance of FreeOnBoardControl */
     protected PartyFreeOnBoardControl() {
@@ -49,6 +54,9 @@ public class PartyFreeOnBoardControl
     @Inject
     protected PartyFreeOnBoardFactory partyFreeOnBoardFactory;
 
+    @Inject
+    private PartyFreeOnBoardTransferCache partyFreeOnBoardTransferCache;
+
     public PartyFreeOnBoard createPartyFreeOnBoard(Party party, FreeOnBoard freeOnBoard, BasePK createdBy) {
         var partyFreeOnBoard = partyFreeOnBoardFactory.create(party, freeOnBoard, session.getStartTime(),
                 Session.MAX_TIME);
@@ -59,37 +67,18 @@ public class PartyFreeOnBoardControl
     }
 
     private PartyFreeOnBoard getPartyFreeOnBoard(Party party, EntityPermission entityPermission) {
-        PartyFreeOnBoard partyFreeOnBoard;
+        var baseQuery = session.getDslContext()
+                .select(PartyFreeOnBoards.fields())
+                .from(PartyFreeOnBoards)
+                .where(PartyFreeOnBoards.PARTY.eq(party.getPrimaryKey()),
+                        PartyFreeOnBoards.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partyfreeonboards
-                        WHERE pfob_par_partyid = ? AND pfob_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partyfreeonboards
-                        WHERE pfob_par_partyid = ? AND pfob_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = partyFreeOnBoardFactory.prepareStatement(query);
-
-            ps.setLong(1, party.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            partyFreeOnBoard = partyFreeOnBoardFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return partyFreeOnBoard;
+        return partyFreeOnBoardFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PartyFreeOnBoard getPartyFreeOnBoard(Party party) {
@@ -109,39 +98,25 @@ public class PartyFreeOnBoardControl
     }
 
     private List<PartyFreeOnBoard> getPartyFreeOnBoardsByFreeOnBoard(FreeOnBoard freeOnBoard, EntityPermission entityPermission) {
-        List<PartyFreeOnBoard> partyFreeOnBoards;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyFreeOnBoards.fields())
+                    .from(PartyFreeOnBoards)
+                    .join(Parties).onKey(PARTY_FREE_ON_BOARDS_PARTY_FK)
+                    .join(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .where(PartyFreeOnBoards.FREE_ON_BOARD.eq(freeOnBoard.getPrimaryKey()),
+                            PartyFreeOnBoards.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PartyDetails.PARTY_NAME),
+                    PartyFreeOnBoardFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyFreeOnBoards.fields())
+                    .from(PartyFreeOnBoards)
+                    .where(PartyFreeOnBoards.FREE_ON_BOARD.eq(freeOnBoard.getPrimaryKey()),
+                            PartyFreeOnBoards.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partyfreeonboards, freeOnBoards, freeOnBoarddetails
-                        WHERE pfob_fob_freeOnBoardid = ? AND pfob_thrutime = ?
-                        AND pfob_fob_freeOnBoardid = fob_freeOnBoardid AND fob_lastdetailid = fobdt_freeOnBoarddetailid
-                        ORDER BY fobdt_sortorder, fobdt_freeOnBoardname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM partyfreeonboards
-                        WHERE pfob_fob_freeOnBoardid = ? AND pfob_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = partyFreeOnBoardFactory.prepareStatement(query);
-
-            ps.setLong(1, freeOnBoard.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            partyFreeOnBoards = partyFreeOnBoardFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return partyFreeOnBoards;
+        return partyFreeOnBoardFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyFreeOnBoard> getPartyFreeOnBoardsByFreeOnBoard(FreeOnBoard freeOnBoard) {

@@ -20,6 +20,8 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.shipment.common.choice.FreeOnBoardChoicesBean;
 import com.echothree.model.control.shipment.common.transfer.FreeOnBoardDescriptionTransfer;
 import com.echothree.model.control.shipment.common.transfer.FreeOnBoardTransfer;
+import com.echothree.model.control.shipment.server.transfer.FreeOnBoardDescriptionTransferCache;
+import com.echothree.model.control.shipment.server.transfer.FreeOnBoardTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.shipment.common.pk.FreeOnBoardPK;
@@ -31,20 +33,26 @@ import com.echothree.model.data.shipment.server.factory.FreeOnBoardFactory;
 import com.echothree.model.data.shipment.server.value.FreeOnBoardDescriptionValue;
 import com.echothree.model.data.shipment.server.value.FreeOnBoardDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import static com.echothree.model.jooq.server.keys.shipment.ShipmentForeignKeys.FREE_ON_BOARDS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.shipment.ShipmentForeignKeys.FREE_ON_BOARD_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.shipment.FreeOnBoardDescriptions.FreeOnBoardDescriptions;
+import static com.echothree.model.jooq.server.tables.shipment.FreeOnBoardDetails.FreeOnBoardDetails;
+import static com.echothree.model.jooq.server.tables.shipment.FreeOnBoards.FreeOnBoards;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
 public class FreeOnBoardControl
-        extends BaseShipmentControl {
+        extends BaseModelControl {
 
     @Inject
     protected PartyFreeOnBoardControl partyFreeOnBoardControl;
@@ -59,10 +67,13 @@ public class FreeOnBoardControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected FreeOnBoardDetailFactory freeOnBoardDetailFactory;
+
+    @Inject
     protected FreeOnBoardFactory freeOnBoardFactory;
 
     @Inject
-    protected FreeOnBoardDetailFactory freeOnBoardDetailFactory;
+    private FreeOnBoardTransferCache freeOnBoardTransferCache;
 
     public FreeOnBoard createFreeOnBoard(final String freeOnBoardName, Boolean isDefault,
             final Integer sortOrder, final BasePK createdBy) {
@@ -110,32 +121,28 @@ public class FreeOnBoardControl
     }
 
     public long countFreeOnBoards() {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM freeonboards, freeonboarddetails
-                WHERE fob_activedetailid = fobdt_freeonboarddetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(FreeOnBoards)
+                .join(FreeOnBoardDetails).onKey(FREE_ON_BOARDS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
-    private static final Map<EntityPermission, String> getFreeOnBoardByNameQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            """
-            SELECT _ALL_
-            FROM freeonboards, freeonboarddetails
-            WHERE fob_activedetailid = fobdt_freeonboarddetailid AND fobdt_freeonboardname = ?
-            """,
-            EntityPermission.READ_WRITE,
-            """
-            SELECT _ALL_
-            FROM freeonboards, freeonboarddetails
-            WHERE fob_activedetailid = fobdt_freeonboarddetailid AND fobdt_freeonboardname = ?
-            FOR UPDATE
-            """);
 
     public FreeOnBoard getFreeOnBoardByName(final String freeOnBoardName, final EntityPermission entityPermission) {
-        return freeOnBoardFactory.getEntityFromQuery(entityPermission, getFreeOnBoardByNameQueries,
-                freeOnBoardName);
+        var baseQuery = session.getDslContext()
+                .select(FreeOnBoards.fields())
+                .from(FreeOnBoards)
+                .join(FreeOnBoardDetails).onKey(FREE_ON_BOARDS_ACTIVE_DETAIL_FK)
+                .where(FreeOnBoardDetails.FREE_ON_BOARD_NAME.eq(freeOnBoardName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return freeOnBoardFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public FreeOnBoard getFreeOnBoardByName(final String freeOnBoardName) {
@@ -154,23 +161,20 @@ public class FreeOnBoardControl
         return getFreeOnBoardDetailValueForUpdate(getFreeOnBoardByNameForUpdate(freeOnBoardName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultFreeOnBoardQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            """
-            SELECT _ALL_
-            FROM freeonboards, freeonboarddetails
-            WHERE fob_activedetailid = fobdt_freeonboarddetailid AND fobdt_isdefault = 1
-            """,
-            EntityPermission.READ_WRITE,
-            """
-            SELECT _ALL_
-            FROM freeonboards, freeonboarddetails
-            WHERE fob_activedetailid = fobdt_freeonboarddetailid AND fobdt_isdefault = 1
-            FOR UPDATE
-            """);
 
     public FreeOnBoard getDefaultFreeOnBoard(final EntityPermission entityPermission) {
-        return freeOnBoardFactory.getEntityFromQuery(entityPermission, getDefaultFreeOnBoardQueries);
+        var baseQuery = session.getDslContext()
+                .select(FreeOnBoards.fields())
+                .from(FreeOnBoards)
+                .join(FreeOnBoardDetails).onKey(FREE_ON_BOARDS_ACTIVE_DETAIL_FK)
+                .where(FreeOnBoardDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return freeOnBoardFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public FreeOnBoard getDefaultFreeOnBoard() {
@@ -185,24 +189,21 @@ public class FreeOnBoardControl
         return getDefaultFreeOnBoardForUpdate().getLastDetailForUpdate().getFreeOnBoardDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getFreeOnBoardsQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            """
-            SELECT _ALL_
-            FROM freeonboards, freeonboarddetails
-            WHERE fob_activedetailid = fobdt_freeonboarddetailid
-            ORDER BY fobdt_sortorder, fobdt_freeonboardname
-            """,
-            EntityPermission.READ_WRITE,
-            """
-            SELECT _ALL_
-            FROM freeonboards, freeonboarddetails
-            WHERE fob_activedetailid = fobdt_freeonboarddetailid
-            FOR UPDATE
-            """);
 
     private List<FreeOnBoard> getFreeOnBoards(final EntityPermission entityPermission) {
-        return freeOnBoardFactory.getEntitiesFromQuery(entityPermission, getFreeOnBoardsQueries);
+        var baseQuery = session.getDslContext()
+                .select(FreeOnBoards.fields())
+                .from(FreeOnBoards)
+                .join(FreeOnBoardDetails).onKey(FREE_ON_BOARDS_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(FreeOnBoardDetails.SORT_ORDER, FreeOnBoardDetails.FREE_ON_BOARD_NAME),
+                    FreeOnBoardFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return freeOnBoardFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<FreeOnBoard> getFreeOnBoards() {
@@ -351,6 +352,9 @@ public class FreeOnBoardControl
     @Inject
     protected FreeOnBoardDescriptionFactory freeOnBoardDescriptionFactory;
 
+    @Inject
+    private FreeOnBoardDescriptionTransferCache freeOnBoardDescriptionTransferCache;
+
     public FreeOnBoardDescription createFreeOnBoardDescription(final FreeOnBoard freeOnBoard,
             final Language language, final String description, final BasePK createdBy) {
         var freeOnBoardDescription = freeOnBoardDescriptionFactory.create(freeOnBoard,
@@ -361,25 +365,22 @@ public class FreeOnBoardControl
         return freeOnBoardDescription;
     }
 
-    private static final Map<EntityPermission, String> getFreeOnBoardDescriptionQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            """
-            SELECT _ALL_
-            FROM freeonboarddescriptions
-            WHERE fobd_fob_freeonboardid = ? AND fobd_lang_languageid = ? AND fobd_thrutime = ?
-            """,
-            EntityPermission.READ_WRITE,
-            """
-            SELECT _ALL_
-            FROM freeonboarddescriptions
-            WHERE fobd_fob_freeonboardid = ? AND fobd_lang_languageid = ? AND fobd_thrutime = ?
-            FOR UPDATE
-            """);
 
     private FreeOnBoardDescription getFreeOnBoardDescription(final FreeOnBoard freeOnBoard,
             final Language language, final EntityPermission entityPermission) {
-        return freeOnBoardDescriptionFactory.getEntityFromQuery(entityPermission, getFreeOnBoardDescriptionQueries,
-                freeOnBoard, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(FreeOnBoardDescriptions.fields())
+                .from(FreeOnBoardDescriptions)
+                .where(FreeOnBoardDescriptions.FREE_ON_BOARD.eq(freeOnBoard.getPrimaryKey()),
+                        FreeOnBoardDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        FreeOnBoardDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return freeOnBoardDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public FreeOnBoardDescription getFreeOnBoardDescription(final FreeOnBoard freeOnBoard,
@@ -401,27 +402,27 @@ public class FreeOnBoardControl
         return getFreeOnBoardDescriptionValue(getFreeOnBoardDescriptionForUpdate(freeOnBoard, language));
     }
 
-    private static final Map<EntityPermission, String> getFreeOnBoardDescriptionsByFreeOnBoardQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            """
-            SELECT _ALL_
-            FROM freeonboarddescriptions, languages
-            WHERE fobd_fob_freeonboardid = ? AND fobd_thrutime = ? AND fobd_lang_languageid = lang_languageid
-            ORDER BY lang_sortorder, lang_languageisoname
-            """,
-            EntityPermission.READ_WRITE,
-            """
-            SELECT _ALL_
-            FROM freeonboarddescriptions
-            WHERE fobd_fob_freeonboardid = ? AND fobd_thrutime = ?
-            FOR UPDATE
-            """);
 
     private List<FreeOnBoardDescription> getFreeOnBoardDescriptionsByFreeOnBoard(final FreeOnBoard freeOnBoard,
             final EntityPermission entityPermission) {
-        return freeOnBoardDescriptionFactory.getEntitiesFromQuery(entityPermission,
-                getFreeOnBoardDescriptionsByFreeOnBoardQueries,
-                freeOnBoard, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(FreeOnBoardDescriptions.fields())
+                    .from(FreeOnBoardDescriptions)
+                    .join(Languages).onKey(FREE_ON_BOARD_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(FreeOnBoardDescriptions.FREE_ON_BOARD.eq(freeOnBoard.getPrimaryKey()),
+                            FreeOnBoardDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    FreeOnBoardDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(FreeOnBoardDescriptions.fields())
+                    .from(FreeOnBoardDescriptions)
+                    .where(FreeOnBoardDescriptions.FREE_ON_BOARD.eq(freeOnBoard.getPrimaryKey()),
+                            FreeOnBoardDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return freeOnBoardDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<FreeOnBoardDescription> getFreeOnBoardDescriptionsByFreeOnBoard(final FreeOnBoard freeOnBoard) {
