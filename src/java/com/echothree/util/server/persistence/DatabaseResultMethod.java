@@ -19,15 +19,21 @@ package com.echothree.util.server.persistence;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
-class DatabaseResultMethod {
+final class DatabaseResultMethod {
 
-    Method setMethod;
-    Class<?> type;
-    Object factoryInstance;
-    Constructor<?> pkConstructor;
-    Method getEntityFromPkMethod;
+    enum Kind { SCALAR, PRIMARY_KEY, ENTITY }
 
-    DatabaseResultMethod(Method setMethod, Class<?> type, Object factoryInstance, Constructor<?> pkConstructor, Method getEntityFromPkMethod) {
+    final String columnLabel;
+    final Kind kind;
+    final Method setMethod;
+    final Class<?> type;
+    final Object factoryInstance;
+    final Constructor<?> pkConstructor;
+    final Method getEntityFromPkMethod;
+
+    DatabaseResultMethod(String columnLabel, Method setMethod, Class<?> type, Object factoryInstance, Constructor<?> pkConstructor, Method getEntityFromPkMethod) {
+        this.columnLabel = columnLabel;
+        this.kind = pkConstructor == null ? Kind.SCALAR : getEntityFromPkMethod == null ? Kind.PRIMARY_KEY : Kind.ENTITY;
         this.setMethod = setMethod;
         this.type = type;
         this.factoryInstance = factoryInstance;
