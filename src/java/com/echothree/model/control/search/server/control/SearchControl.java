@@ -4008,21 +4008,17 @@ public class SearchControl
     }
 
     public void removeSearchResultsBySearch(Search search) {
-        session.query(
-                """
-                DELETE FROM searchresults
-                WHERE srchr_srch_searchid = ?
-                """,
-                search);
+        session.getDslContext()
+                .deleteFrom(SearchResults)
+                .where(SearchResults.SEARCH.eq(search.getPrimaryKey()))
+                .execute();
     }
     
     public void removeSearchResultsByEntityInstance(EntityInstance entityInstance) {
-        session.query(
-                """
-                DELETE FROM searchresults
-                WHERE srchr_eni_entityinstanceid = ?
-                """,
-                entityInstance);
+        session.getDslContext()
+                .deleteFrom(SearchResults)
+                .where(SearchResults.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()))
+                .execute();
     }
     
     // --------------------------------------------------------------------------------
@@ -4498,21 +4494,17 @@ public class SearchControl
     }
 
     public void removeCachedExecutedSearchResultsByCachedExecutedSearch(CachedExecutedSearch cachedExecutedSearch) {
-        session.query(
-                """
-                DELETE FROM cachedexecutedsearchresults
-                WHERE cxsrchr_cxsrch_cachedexecutedsearchid = ?
-                """,
-                cachedExecutedSearch);
+        session.getDslContext()
+                .deleteFrom(CachedExecutedSearchResults)
+                .where(CachedExecutedSearchResults.CACHED_EXECUTED_SEARCH.eq(cachedExecutedSearch.getPrimaryKey()))
+                .execute();
     }
 
     public void removeCachedExecutedSearchResultsByEntityInstance(EntityInstance entityInstance) {
-        session.query(
-                """
-                DELETE FROM cachedexecutedsearchresults
-                WHERE cxsrchr_eni_entityinstanceid = ?
-                """,
-                entityInstance);
+        session.getDslContext()
+                .deleteFrom(CachedExecutedSearchResults)
+                .where(CachedExecutedSearchResults.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()))
+                .execute();
     }
     
     // --------------------------------------------------------------------------------

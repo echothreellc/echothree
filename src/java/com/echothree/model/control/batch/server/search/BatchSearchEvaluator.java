@@ -16,6 +16,12 @@
 
 package com.echothree.model.control.batch.server.search;
 
+import static com.echothree.model.jooq.server.keys.batch.BatchForeignKeys.BATCHES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.workflow.WorkflowForeignKeys.WORKFLOW_ENTITY_STATUSES_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.tables.batch.BatchDetails.BatchDetails;
+import static com.echothree.model.jooq.server.tables.batch.Batches.Batches;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.workflow.WorkflowEntityStatuses.WorkflowEntityStatuses;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
@@ -25,7 +31,6 @@ import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
 import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.batch.server.entity.BatchAliasType;
 import com.echothree.model.data.batch.server.entity.BatchType;
-import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperator;
 import com.echothree.model.data.search.server.entity.SearchSortDirection;
 import com.echothree.model.data.search.server.entity.SearchSortOrder;
@@ -92,24 +97,30 @@ public class BatchSearchEvaluator
     }
 
     public EntityInstancePKHolder getEntityInstancePKHolderByBatchType(BatchType batchType) {
-        return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                "SELECT _PK_ "
-                + "FROM entityinstances, batches, batchdetails "
-                + "WHERE btch_activedetailid = btchdt_batchdetailid "
-                + "AND btchdt_btchtyp_batchtypeid = ? "
-                + "AND eni_ent_entitytypeid = ? AND btch_batchid = eni_entityuniqueid"),
-                batchType, entityType);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Batches).on(Batches.BATCH.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(BatchDetails).onKey(BATCHES_ACTIVE_DETAIL_FK)
+                .where(BatchDetails.BATCH_TYPE.eq(batchType.getPrimaryKey()),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
     
     public EntityInstancePKHolder getEntityInstancePKHolderByBatchStatusWorkflowStep(WorkflowStep batchStatusWorkflowStep) {
-            return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                    "SELECT _PK_ "
-                    + "FROM entityinstances, batches, batchdetails, workflowentitystatuses "
-                    + "WHERE btch_activedetailid = btchdt_batchdetailid "
-                    + "AND btchdt_btchtyp_batchtypeid = ? "
-                    + "AND eni_ent_entitytypeid = ? AND btch_batchid = eni_entityuniqueid "
-                    + "AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?"),
-                    batchType, entityType, batchStatusWorkflowStep, Session.MAX_TIME);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Batches).on(Batches.BATCH.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(BatchDetails).onKey(BATCHES_ACTIVE_DETAIL_FK)
+                .join(WorkflowEntityStatuses).onKey(WORKFLOW_ENTITY_STATUSES_ENTITY_INSTANCE_FK)
+                .where(BatchDetails.BATCH_TYPE.eq(batchType.getPrimaryKey()),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                        WorkflowEntityStatuses.WORKFLOW_STEP.eq(batchStatusWorkflowStep.getPrimaryKey()),
+                        WorkflowEntityStatuses.THRU_TIME.eq(Session.MAX_TIME));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
  
     /** Subclasses should override and always call their super's executeSearch() */

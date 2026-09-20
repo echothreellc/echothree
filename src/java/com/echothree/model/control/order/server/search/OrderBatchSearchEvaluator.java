@@ -16,11 +16,16 @@
 
 package com.echothree.model.control.order.server.search;
 
+import static com.echothree.model.jooq.server.keys.batch.BatchForeignKeys.BATCHES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_BATCHES_BATCH_FK;
+import static com.echothree.model.jooq.server.tables.batch.BatchDetails.BatchDetails;
+import static com.echothree.model.jooq.server.tables.batch.Batches.Batches;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.order.OrderBatches.OrderBatches;
 import com.echothree.model.control.batch.server.search.BatchSearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.batch.server.entity.BatchType;
-import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperator;
 import com.echothree.model.data.search.server.entity.SearchSortDirection;
 import com.echothree.model.data.search.server.entity.SearchSortOrder;
@@ -41,15 +46,18 @@ public class OrderBatchSearchEvaluator
     }
     
     public EntityInstancePKHolder getEntityInstancePKHolderByCurrency(Currency currency) {
-        return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                "SELECT _PK_ "
-                + "FROM entityinstances, batches, batchdetails, orderbatches "
-                + "WHERE btch_activedetailid = btchdt_batchdetailid "
-                + "AND btchdt_btchtyp_batchtypeid = ? "
-                + "AND btch_batchid = ordbtch_btch_batchid "
-                + "AND ordbtch_cur_currencyid = ? AND ordbtch_thrutime = ? "
-                + "AND eni_ent_entitytypeid = ? AND btch_batchid = eni_entityuniqueid"),
-                batchType, currency, Session.MAX_TIME, entityType);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Batches).on(Batches.BATCH.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(BatchDetails).onKey(BATCHES_ACTIVE_DETAIL_FK)
+                .join(OrderBatches).onKey(ORDER_BATCHES_BATCH_FK)
+                .where(BatchDetails.BATCH_TYPE.eq(batchType.getPrimaryKey()),
+                        OrderBatches.CURRENCY.eq(currency.getPrimaryKey()),
+                        OrderBatches.THRU_TIME.eq(Session.MAX_TIME),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
     
     public Currency getCurrency() {

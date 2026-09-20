@@ -16,11 +16,16 @@
 
 package com.echothree.model.control.sales.server.search;
 
+import static com.echothree.model.jooq.server.keys.batch.BatchForeignKeys.BATCHES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.sales.SalesForeignKeys.SALES_ORDER_BATCHES_BATCH_FK;
+import static com.echothree.model.jooq.server.tables.batch.BatchDetails.BatchDetails;
+import static com.echothree.model.jooq.server.tables.batch.Batches.Batches;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.sales.SalesOrderBatches.SalesOrderBatches;
 import com.echothree.model.control.batch.common.BatchTypes;
 import com.echothree.model.control.batch.server.logic.BatchLogic;
 import com.echothree.model.control.order.server.search.OrderBatchSearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
-import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperator;
 import com.echothree.model.data.search.server.entity.SearchSortDirection;
@@ -43,15 +48,18 @@ public class SalesOrderBatchSearchEvaluator
     }
     
     public EntityInstancePKHolder getEntityInstancePKHolderByPaymentMethod(PaymentMethod paymentMethod) {
-        return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                "SELECT _PK_ "
-                + "FROM entityinstances, batches, batchdetails, salesorderbatches "
-                + "WHERE btch_activedetailid = btchdt_batchdetailid "
-                + "AND btchdt_btchtyp_batchtypeid = ? "
-                + "AND btch_batchid = salordbtch_btch_batchid "
-                + "AND salordbtch_pm_paymentmethodid = ? AND salordbtch_thrutime = ? "
-                + "AND eni_ent_entitytypeid = ? AND btch_batchid = eni_entityuniqueid"),
-                batchType, paymentMethod, Session.MAX_TIME, entityType);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Batches).on(Batches.BATCH.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(BatchDetails).onKey(BATCHES_ACTIVE_DETAIL_FK)
+                .join(SalesOrderBatches).onKey(SALES_ORDER_BATCHES_BATCH_FK)
+                .where(BatchDetails.BATCH_TYPE.eq(batchType.getPrimaryKey()),
+                        SalesOrderBatches.PAYMENT_METHOD.eq(paymentMethod.getPrimaryKey()),
+                        SalesOrderBatches.THRU_TIME.eq(Session.MAX_TIME),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
     
     public PaymentMethod getPaymentMethod() {
