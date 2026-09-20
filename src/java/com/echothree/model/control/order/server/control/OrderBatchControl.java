@@ -22,18 +22,17 @@ import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.order.server.entity.OrderBatch;
 import com.echothree.model.data.order.server.factory.OrderBatchFactory;
 import com.echothree.model.data.order.server.value.OrderBatchValue;
+import static com.echothree.model.jooq.server.tables.order.OrderBatches.OrderBatches;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
 public class OrderBatchControl
-        extends BaseOrderControl {
+        extends BaseModelControl {
 
     /** Creates a new instance of OrderControl */
     protected OrderBatchControl() {
@@ -45,7 +44,7 @@ public class OrderBatchControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OrderBatchFactory orderBatchFactory;
+    private OrderBatchFactory orderBatchFactory;
 
     public OrderBatch createOrderBatch(Batch batch, Currency currency, Long count, Long amount, BasePK createdBy) {
         var orderBatch = orderBatchFactory.create(batch, currency, count, amount, session.getStartTime(), Session.MAX_TIME);
@@ -55,30 +54,19 @@ public class OrderBatchControl
         return orderBatch;
     }
 
-    private static final Map<EntityPermission, String> getOrderBatchQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM orderbatches
-                WHERE ordbtch_btch_batchid = ? AND ordbtch_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM orderbatches
-                WHERE ordbtch_btch_batchid = ? AND ordbtch_thrutime = ?
-                FOR UPDATE
-                """);
-        getOrderBatchQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private OrderBatch getOrderBatch(Batch batch, EntityPermission entityPermission) {
-        return orderBatchFactory.getEntityFromQuery(entityPermission, getOrderBatchQueries,
-                batch, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(OrderBatches.fields())
+                .from(OrderBatches)
+                .where(OrderBatches.BATCH.eq(batch.getPrimaryKey()),
+                        OrderBatches.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderBatchFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OrderBatch getOrderBatch(Batch batch) {

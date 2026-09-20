@@ -32,21 +32,24 @@ import com.echothree.model.data.order.server.value.OrderLineDetailValue;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_LINES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.order.OrderLineDetails.OrderLineDetails;
+import static com.echothree.model.jooq.server.tables.order.OrderLineStatuses.OrderLineStatuses;
+import static com.echothree.model.jooq.server.tables.order.OrderLines.OrderLines;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.List;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
 public class OrderLineControl
-        extends BaseOrderControl {
+        extends BaseModelControl {
 
     @Inject
-    protected OrderLineAdjustmentControl orderLineAdjustmentControl;
+    private OrderLineAdjustmentControl orderLineAdjustmentControl;
 
     @Inject
     protected WishlistControl wishlistControl;
@@ -61,10 +64,10 @@ public class OrderLineControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OrderLineFactory orderLineFactory;
+    protected OrderLineDetailFactory orderLineDetailFactory;
 
     @Inject
-    protected OrderLineDetailFactory orderLineDetailFactory;
+    private OrderLineFactory orderLineFactory;
 
     public OrderLine createOrderLine(Order order, Integer orderLineSequence, OrderLine parentOrderLine, OrderShipmentGroup orderShipmentGroup, Item item,
             InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType, Long quantity, Long unitAmount, String description,
@@ -89,107 +92,92 @@ public class OrderLineControl
     }
     
     public long countOrderLinesByCancellationPolicy(CancellationPolicy cancellationPolicy) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM orderlines, orderlinedetails
-                WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_cnclplcy_cancellationpolicyid = ?
-                """,
-                cancellationPolicy);
+        return session.getDslContext()
+                .selectCount()
+                .from(OrderLines)
+                .join(OrderLineDetails).onKey(ORDER_LINES_ACTIVE_DETAIL_FK)
+                .where(OrderLineDetails.CANCELLATION_POLICY.eq(cancellationPolicy.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countOrderLinesByReturnPolicy(ReturnPolicy returnPolicy) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM orderlines, orderlinedetails
-                WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_rtnplcy_returnpolicyid = ?
-                """,
-                returnPolicy);
+        return session.getDslContext()
+                .selectCount()
+                .from(OrderLines)
+                .join(OrderLineDetails).onKey(ORDER_LINES_ACTIVE_DETAIL_FK)
+                .where(OrderLineDetails.RETURN_POLICY.eq(returnPolicy.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countOrderLinesByInventoryCondition(InventoryCondition inventoryCondition) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM orderlines, orderlinedetails
-                WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_invcon_inventoryconditionid = ?
-                """,
-                inventoryCondition);
+        return session.getDslContext()
+                .selectCount()
+                .from(OrderLines)
+                .join(OrderLineDetails).onKey(ORDER_LINES_ACTIVE_DETAIL_FK)
+                .where(OrderLineDetails.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countOrderLinesByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM orderlines, orderlinedetails
-                WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_uomt_unitofmeasuretypeid = ?
-                """,
-                unitOfMeasureType);
+        return session.getDslContext()
+                .selectCount()
+                .from(OrderLines)
+                .join(OrderLineDetails).onKey(ORDER_LINES_ACTIVE_DETAIL_FK)
+                .where(OrderLineDetails.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countOrderLinesByOrderAndCancellationPolicy(Order order, CancellationPolicy cancellationPolicy) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM orderlines, orderlinedetails
-                WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ? AND ordldt_cnclplcy_cancellationpolicyid = ?
-                """,
-                order, cancellationPolicy);
+        return session.getDslContext()
+                .selectCount()
+                .from(OrderLines)
+                .join(OrderLineDetails).onKey(ORDER_LINES_ACTIVE_DETAIL_FK)
+                .where(OrderLineDetails.ORDER.eq(order.getPrimaryKey()),
+                        OrderLineDetails.CANCELLATION_POLICY.eq(cancellationPolicy.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countOrderLinesByOrderAndReturnPolicy(Order order, ReturnPolicy returnPolicy) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM orderlines, orderlinedetails
-                WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ? AND ordldt_rtnplcy_returnpolicyid = ?
-                """,
-                order, returnPolicy);
+        return session.getDslContext()
+                .selectCount()
+                .from(OrderLines)
+                .join(OrderLineDetails).onKey(ORDER_LINES_ACTIVE_DETAIL_FK)
+                .where(OrderLineDetails.ORDER.eq(order.getPrimaryKey()),
+                        OrderLineDetails.RETURN_POLICY.eq(returnPolicy.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countOrderLinesByOrderAndShipmentGroup(Order order, OrderShipmentGroup orderShipmentGroup) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM orderlines, orderlinedetails
-                WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ? AND ordldt_ordshpgrp_ordershipmentgroupid = ?
-                """,
-                order, orderShipmentGroup);
+        return session.getDslContext()
+                .selectCount()
+                .from(OrderLines)
+                .join(OrderLineDetails).onKey(ORDER_LINES_ACTIVE_DETAIL_FK)
+                .where(OrderLineDetails.ORDER.eq(order.getPrimaryKey()),
+                        OrderLineDetails.ORDER_SHIPMENT_GROUP.eq(orderShipmentGroup.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public OrderLine getOrderLineBySequence(Order order, Integer orderLineSequence, EntityPermission entityPermission) {
-        OrderLine orderLine;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM orderlines, orderlinedetails
-                        WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ? AND ordldt_orderlinesequence = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM orderlines, orderlinedetails
-                        WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ? AND ordldt_orderlinesequence = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(OrderLines.fields())
+                .from(OrderLines)
+                .join(OrderLineDetails).onKey(ORDER_LINES_ACTIVE_DETAIL_FK)
+                .where(OrderLineDetails.ORDER.eq(order.getPrimaryKey()),
+                        OrderLineDetails.ORDER_LINE_SEQUENCE.eq(orderLineSequence));
 
-            var ps = orderLineFactory.prepareStatement(query);
-            
-            ps.setLong(1, order.getPrimaryKey().getEntityId());
-            ps.setInt(2, orderLineSequence);
-            
-            orderLine = orderLineFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return orderLine;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderLineFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public OrderLine getOrderLineBySequence(Order order, Integer orderLineSequence) {
@@ -209,37 +197,20 @@ public class OrderLineControl
     }
     
     private List<OrderLine> getOrderLinesByOrder(Order order, EntityPermission entityPermission) {
-        List<OrderLine> orderLines;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM orderlines, orderlinedetails
-                        WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ?
-                        ORDER BY ordldt_orderlinesequence
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM orderlines, orderlinedetails
-                        WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(OrderLines.fields())
+                .from(OrderLines)
+                .join(OrderLineDetails).onKey(ORDER_LINES_ACTIVE_DETAIL_FK)
+                .where(OrderLineDetails.ORDER.eq(order.getPrimaryKey()));
 
-            var ps = orderLineFactory.prepareStatement(query);
-            
-            ps.setLong(1, order.getPrimaryKey().getEntityId());
-            
-            orderLines = orderLineFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return orderLines;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(OrderLineDetails.ORDER_LINE_SEQUENCE),
+                    OrderLineFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderLineFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<OrderLine> getOrderLinesByOrder(Order order) {
@@ -251,37 +222,20 @@ public class OrderLineControl
     }
     
     private List<OrderLine> getOrderLinesByOrderShipmentGroup(OrderShipmentGroup orderShipmentGroup, EntityPermission entityPermission) {
-        List<OrderLine> orderLines;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM orderlines, orderlinedetails
-                        WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ordshpgrp_ordershipmentgroupid = ?
-                        ORDER BY ordldt_orderlinesequence
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM orderlines, orderlinedetails
-                        WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ordshpgrp_ordershipmentgroupid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(OrderLines.fields())
+                .from(OrderLines)
+                .join(OrderLineDetails).onKey(ORDER_LINES_ACTIVE_DETAIL_FK)
+                .where(OrderLineDetails.ORDER_SHIPMENT_GROUP.eq(orderShipmentGroup.getPrimaryKey()));
 
-            var ps = orderLineFactory.prepareStatement(query);
-            
-            ps.setLong(1, orderShipmentGroup.getPrimaryKey().getEntityId());
-            
-            orderLines = orderLineFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return orderLines;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(OrderLineDetails.ORDER_LINE_SEQUENCE),
+                    OrderLineFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderLineFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<OrderLine> getOrderLinesByOrderShipmentGroup(OrderShipmentGroup orderShipmentGroup) {
@@ -367,43 +321,24 @@ public class OrderLineControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OrderLineStatusFactory orderLineStatusFactory;
+    private OrderLineStatusFactory orderLineStatusFactory;
 
     public OrderLineStatus createOrderLineStatus(OrderLine orderLine) {
         return orderLineStatusFactory.create(orderLine, 0);
     }
     
     private OrderLineStatus getOrderLineStatus(OrderLine orderLine, EntityPermission entityPermission) {
-        OrderLineStatus orderLineStatus;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM orderlinestatuses
-                        WHERE ordlst_ordl_orderlineid = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM orderlinestatuses
-                        WHERE ordlst_ordl_orderlineid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(OrderLineStatuses.fields())
+                .from(OrderLineStatuses)
+                .where(OrderLineStatuses.ORDER_LINE.eq(orderLine.getPrimaryKey()));
 
-            var ps = orderLineStatusFactory.prepareStatement(query);
-            
-            ps.setLong(1, orderLine.getPrimaryKey().getEntityId());
-            
-            orderLineStatus = orderLineStatusFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return orderLineStatus;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderLineStatusFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public OrderLineStatus getOrderLineStatus(OrderLine orderLine) {

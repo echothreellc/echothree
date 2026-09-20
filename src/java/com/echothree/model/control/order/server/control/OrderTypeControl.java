@@ -20,6 +20,8 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.order.common.choice.OrderTypeChoicesBean;
 import com.echothree.model.control.order.common.transfer.OrderTypeDescriptionTransfer;
 import com.echothree.model.control.order.common.transfer.OrderTypeTransfer;
+import com.echothree.model.control.order.server.transfer.OrderTypeDescriptionTransferCache;
+import com.echothree.model.control.order.server.transfer.OrderTypeTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.order.common.pk.OrderTypePK;
 import com.echothree.model.data.order.server.entity.OrderType;
@@ -34,25 +36,29 @@ import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.order.OrderTypeDescriptions.OrderTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.order.OrderTypeDetails.OrderTypeDetails;
+import static com.echothree.model.jooq.server.tables.order.OrderTypes.OrderTypes;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 
 @CommandScope
 public class OrderTypeControl
-        extends BaseOrderControl {
+        extends BaseModelControl {
 
     @Inject
-    protected OrderAliasControl orderAliasControl;
+    private OrderAliasControl orderAliasControl;
 
     /** Creates a new instance of OrderControl */
     protected OrderTypeControl() {
@@ -64,10 +70,13 @@ public class OrderTypeControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OrderTypeFactory orderTypeFactory;
+    protected OrderTypeDetailFactory orderTypeDetailFactory;
 
     @Inject
-    protected OrderTypeDetailFactory orderTypeDetailFactory;
+    private OrderTypeFactory orderTypeFactory;
+
+    @Inject
+    private OrderTypeTransferCache orderTypeTransferCache;
 
     public OrderType createOrderType(String orderTypeName, SequenceType orderSequenceType, Workflow orderWorkflow,
             WorkflowEntrance orderWorkflowEntrance, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -116,38 +125,27 @@ public class OrderTypeControl
     }
 
     public long countOrderTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM ordertypes
-                        JOIN ordertypedetails ON ordtypdt_ordertypedetailid = ordtyp_activedetailid
-                        """);
-    }
-
-    private static final Map<EntityPermission, String> getOrderTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM ordertypes, ordertypedetails
-                WHERE ordtyp_activedetailid = ordtypdt_ordertypedetailid
-                AND ordtypdt_ordertypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM ordertypes, ordertypedetails
-                WHERE ordtyp_activedetailid = ordtypdt_ordertypedetailid
-                AND ordtypdt_ordertypename = ?
-                FOR UPDATE
-                """);
-        getOrderTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(OrderTypes)
+                .join(OrderTypeDetails).onKey(ORDER_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public OrderType getOrderTypeByName(String orderTypeName, EntityPermission entityPermission) {
-        return orderTypeFactory.getEntityFromQuery(entityPermission, getOrderTypeByNameQueries, orderTypeName);
+        var baseQuery = session.getDslContext()
+                .select(OrderTypes.fields())
+                .from(OrderTypes)
+                .join(OrderTypeDetails).onKey(ORDER_TYPES_ACTIVE_DETAIL_FK)
+                .where(OrderTypeDetails.ORDER_TYPE_NAME.eq(orderTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OrderType getOrderTypeByName(String orderTypeName) {
@@ -166,31 +164,19 @@ public class OrderTypeControl
         return getOrderTypeDetailValueForUpdate(getOrderTypeByNameForUpdate(orderTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultOrderTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM ordertypes, ordertypedetails
-                WHERE ordtyp_activedetailid = ordtypdt_ordertypedetailid
-                AND ordtypdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM ordertypes, ordertypedetails
-                WHERE ordtyp_activedetailid = ordtypdt_ordertypedetailid
-                AND ordtypdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultOrderTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public OrderType getDefaultOrderType(EntityPermission entityPermission) {
-        return orderTypeFactory.getEntityFromQuery(entityPermission, getDefaultOrderTypeQueries);
+        var baseQuery = session.getDslContext()
+                .select(OrderTypes.fields())
+                .from(OrderTypes)
+                .join(OrderTypeDetails).onKey(ORDER_TYPES_ACTIVE_DETAIL_FK)
+                .where(OrderTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OrderType getDefaultOrderType() {
@@ -205,31 +191,20 @@ public class OrderTypeControl
         return getDefaultOrderTypeForUpdate().getLastDetailForUpdate().getOrderTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getOrderTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM ordertypes, ordertypedetails
-                WHERE ordtyp_activedetailid = ordtypdt_ordertypedetailid
-                ORDER BY ordtypdt_sortorder, ordtypdt_ordertypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM ordertypes, ordertypedetails
-                WHERE ordtyp_activedetailid = ordtypdt_ordertypedetailid
-                FOR UPDATE
-                """);
-        getOrderTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<OrderType> getOrderTypes(EntityPermission entityPermission) {
-        return orderTypeFactory.getEntitiesFromQuery(entityPermission, getOrderTypesQueries);
+        var baseQuery = session.getDslContext()
+                .select(OrderTypes.fields())
+                .from(OrderTypes)
+                .join(OrderTypeDetails).onKey(ORDER_TYPES_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(OrderTypeDetails.SORT_ORDER, OrderTypeDetails.ORDER_TYPE_NAME),
+                    OrderTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OrderType> getOrderTypes() {
@@ -391,7 +366,10 @@ public class OrderTypeControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OrderTypeDescriptionFactory orderTypeDescriptionFactory;
+    private OrderTypeDescriptionFactory orderTypeDescriptionFactory;
+
+    @Inject
+    private OrderTypeDescriptionTransferCache orderTypeDescriptionTransferCache;
 
     public OrderTypeDescription createOrderTypeDescription(OrderType orderType, Language language, String description, BasePK createdBy) {
         var orderTypeDescription = orderTypeDescriptionFactory.create(orderType, language, description,
@@ -402,30 +380,20 @@ public class OrderTypeControl
         return orderTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getOrderTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM ordertypedescriptions
-                WHERE ordtypd_ordtyp_ordertypeid = ? AND ordtypd_lang_languageid = ? AND ordtypd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM ordertypedescriptions
-                WHERE ordtypd_ordtyp_ordertypeid = ? AND ordtypd_lang_languageid = ? AND ordtypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getOrderTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private OrderTypeDescription getOrderTypeDescription(OrderType orderType, Language language, EntityPermission entityPermission) {
-        return orderTypeDescriptionFactory.getEntityFromQuery(entityPermission, getOrderTypeDescriptionQueries,
-                orderType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(OrderTypeDescriptions.fields())
+                .from(OrderTypeDescriptions)
+                .where(OrderTypeDescriptions.ORDER_TYPE.eq(orderType.getPrimaryKey()),
+                        OrderTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        OrderTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OrderTypeDescription getOrderTypeDescription(OrderType orderType, Language language) {
@@ -444,32 +412,25 @@ public class OrderTypeControl
         return getOrderTypeDescriptionValue(getOrderTypeDescriptionForUpdate(orderType, language));
     }
 
-    private static final Map<EntityPermission, String> getOrderTypeDescriptionsByOrderTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM ordertypedescriptions, languages
-                WHERE ordtypd_ordtyp_ordertypeid = ? AND ordtypd_thrutime = ? AND ordtypd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM ordertypedescriptions
-                WHERE ordtypd_ordtyp_ordertypeid = ? AND ordtypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getOrderTypeDescriptionsByOrderTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<OrderTypeDescription> getOrderTypeDescriptionsByOrderType(OrderType orderType, EntityPermission entityPermission) {
-        return orderTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getOrderTypeDescriptionsByOrderTypeQueries,
-                orderType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OrderTypeDescriptions.fields())
+                    .from(OrderTypeDescriptions)
+                    .join(Languages).onKey(ORDER_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(OrderTypeDescriptions.ORDER_TYPE.eq(orderType.getPrimaryKey()),
+                            OrderTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    OrderTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(OrderTypeDescriptions.fields())
+                    .from(OrderTypeDescriptions)
+                    .where(OrderTypeDescriptions.ORDER_TYPE.eq(orderType.getPrimaryKey()),
+                            OrderTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return orderTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OrderTypeDescription> getOrderTypeDescriptionsByOrderType(OrderType orderType) {

@@ -19,6 +19,8 @@ package com.echothree.model.control.order.server.control;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.order.common.transfer.OrderRoleTransfer;
 import com.echothree.model.control.order.common.transfer.OrderRoleTypeTransfer;
+import com.echothree.model.control.order.server.transfer.OrderRoleTransferCache;
+import com.echothree.model.control.order.server.transfer.OrderRoleTypeTransferCache;
 import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderRole;
 import com.echothree.model.data.order.server.entity.OrderRoleType;
@@ -29,23 +31,27 @@ import com.echothree.model.data.order.server.factory.OrderRoleTypeFactory;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_ROLES_ORDER_ROLE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_ROLES_PARTY_FK;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTIES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.order.OrderRoleTypeDescriptions.OrderRoleTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.order.OrderRoleTypes.OrderRoleTypes;
+import static com.echothree.model.jooq.server.tables.order.OrderRoles.OrderRoles;
+import static com.echothree.model.jooq.server.tables.party.Parties.Parties;
+import static com.echothree.model.jooq.server.tables.party.PartyDetails.PartyDetails;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
 public class OrderRoleControl
-        extends BaseOrderControl {
+        extends BaseModelControl {
 
     /** Creates a new instance of OrderControl */
     protected OrderRoleControl() {
@@ -57,31 +63,22 @@ public class OrderRoleControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OrderRoleTypeFactory orderRoleTypeFactory;
+    private OrderRoleTypeFactory orderRoleTypeFactory;
+
+    @Inject
+    private OrderRoleTypeTransferCache orderRoleTypeTransferCache;
 
     public OrderRoleType createOrderRoleType(String orderRoleTypeName, Integer sortOrder) {
         return orderRoleTypeFactory.create(orderRoleTypeName, sortOrder);
     }
     
     public OrderRoleType getOrderRoleTypeByName(String orderRoleTypeName) {
-        OrderRoleType orderRoleType;
-        
-        try {
-            var ps = orderRoleTypeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM orderroletypes
-                    WHERE ordrtyp_orderroletypename = ?
-                    """);
-            
-            ps.setString(1, orderRoleTypeName);
-            
-            orderRoleType = orderRoleTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return orderRoleType;
+        var query = session.getDslContext()
+                .select(OrderRoleTypes.fields())
+                .from(OrderRoleTypes)
+                .where(OrderRoleTypes.ORDER_ROLE_TYPE_NAME.eq(orderRoleTypeName));
+
+        return orderRoleTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public OrderRoleTypeTransfer getOrderRoleTypeTransfer(UserVisit userVisit, OrderRoleType orderRoleType) {
@@ -93,7 +90,7 @@ public class OrderRoleControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OrderRoleTypeDescriptionFactory orderRoleTypeDescriptionFactory;
+    private OrderRoleTypeDescriptionFactory orderRoleTypeDescriptionFactory;
 
     public OrderRoleTypeDescription createOrderRoleTypeDescription(OrderRoleType orderRoleType, Language language,
             String description) {
@@ -101,26 +98,13 @@ public class OrderRoleControl
     }
     
     public OrderRoleTypeDescription getOrderRoleTypeDescription(OrderRoleType orderRoleType, Language language) {
-        OrderRoleTypeDescription orderRoleTypeDescription;
-        
-        try {
-            var ps = orderRoleTypeDescriptionFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM orderroletypedescriptions
-                    WHERE ordrtyps_ordrtyp_orderroletypeid = ? AND ordrtyps_lang_languageid = ?
-                    """);
-            
-            ps.setLong(1, orderRoleType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            orderRoleTypeDescription = orderRoleTypeDescriptionFactory.getEntityFromQuery(
-                    EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return orderRoleTypeDescription;
+        var query = session.getDslContext()
+                .select(OrderRoleTypeDescriptions.fields())
+                .from(OrderRoleTypeDescriptions)
+                .where(OrderRoleTypeDescriptions.ORDER_ROLE_TYPE.eq(orderRoleType.getPrimaryKey()),
+                        OrderRoleTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
+
+        return orderRoleTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public String getBestOrderRoleTypeDescription(OrderRoleType orderRoleType, Language language) {
@@ -145,7 +129,10 @@ public class OrderRoleControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OrderRoleFactory orderRoleFactory;
+    private OrderRoleFactory orderRoleFactory;
+
+    @Inject
+    private OrderRoleTransferCache orderRoleTransferCache;
 
     public OrderRole createOrderRoleUsingNames(Order order, Party party, String orderRoleTypeName, BasePK createdBy) {
         return createOrderRole(order, party, getOrderRoleTypeByName(orderRoleTypeName), createdBy);
@@ -160,42 +147,39 @@ public class OrderRoleControl
     }
 
     public long countOrderRolesByOrderAndOrderRoleType(Order order, OrderRoleType orderRoleType) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM orderroles
-                WHERE ordr_ord_orderid = ? AND ordr_ordrtyp_orderroletypeid = ? AND ordr_thrutime = ?
-                """,
-                order, orderRoleType, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getOrderRolesByOrderAndOrderRoleTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM orderroles, orderroletypes, parties, partydetails
-                WHERE ordr_ord_orderid = ? AND ordr_ordrtyp_orderroletypeid = ? AND ordr_thrutime = ?
-                AND ordr_ordrtyp_orderroletypeid = ordrtyp_orderroletypeid
-                AND ordr_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid
-                ORDER BY ordrtyp_sortorder, pardt_partyname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM orderroles
-                WHERE ordr_ord_orderid = ? AND ordr_ordrtyp_orderroletypeid = ? AND ordr_thrutime = ?
-                FOR UPDATE
-                """);
-        getOrderRolesByOrderAndOrderRoleTypeQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(OrderRoles)
+                .where(OrderRoles.ORDER.eq(order.getPrimaryKey()),
+                        OrderRoles.ORDER_ROLE_TYPE.eq(orderRoleType.getPrimaryKey()),
+                        OrderRoles.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<OrderRole> getOrderRolesByOrderAndOrderRoleType(Order order, OrderRoleType orderRoleType, EntityPermission entityPermission) {
-        return orderRoleFactory.getEntitiesFromQuery(entityPermission, getOrderRolesByOrderAndOrderRoleTypeQueries,
-                order, orderRoleType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OrderRoles.fields())
+                    .from(OrderRoles)
+                    .join(OrderRoleTypes).onKey(ORDER_ROLES_ORDER_ROLE_TYPE_FK)
+                    .join(Parties).onKey(ORDER_ROLES_PARTY_FK)
+                    .join(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .where(OrderRoles.ORDER.eq(order.getPrimaryKey()),
+                            OrderRoles.ORDER_ROLE_TYPE.eq(orderRoleType.getPrimaryKey()),
+                            OrderRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(OrderRoleTypes.SORT_ORDER, PartyDetails.PARTY_NAME),
+                    OrderRoleFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(OrderRoles.fields())
+                    .from(OrderRoles)
+                    .where(OrderRoles.ORDER.eq(order.getPrimaryKey()),
+                            OrderRoles.ORDER_ROLE_TYPE.eq(orderRoleType.getPrimaryKey()),
+                            OrderRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return orderRoleFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OrderRole> getOrderRolesByOrderAndOrderRoleType(Order order, OrderRoleType orderRoleType) {
@@ -242,33 +226,27 @@ public class OrderRoleControl
         return getOrderRoleByOrderAndOrderRoleTypeForUpdate(order, getOrderRoleTypeByName(orderRoleTypeName));
     }
 
-    private static final Map<EntityPermission, String> getOrderRolesByOrderQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM orderroles, orderroletypes, parties, partydetails
-                WHERE ordr_ord_orderid = ? AND ordr_thrutime = ?
-                AND ordr_ordrtyp_orderroletypeid = ordrtyp_orderroletypeid
-                AND ordr_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid
-                ORDER BY ordrtyp_sortorder, pardt_partyname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM orderroles
-                WHERE ordr_ord_orderid = ? AND ordr_thrutime = ?
-                FOR UPDATE
-                """);
-        getOrderRolesByOrderQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<OrderRole> getOrderRolesByOrder(Order order, EntityPermission entityPermission) {
-        return orderRoleFactory.getEntitiesFromQuery(entityPermission, getOrderRolesByOrderQueries,
-                order, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OrderRoles.fields())
+                    .from(OrderRoles)
+                    .join(OrderRoleTypes).onKey(ORDER_ROLES_ORDER_ROLE_TYPE_FK)
+                    .join(Parties).onKey(ORDER_ROLES_PARTY_FK)
+                    .join(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .where(OrderRoles.ORDER.eq(order.getPrimaryKey()),
+                            OrderRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(OrderRoleTypes.SORT_ORDER, PartyDetails.PARTY_NAME),
+                    OrderRoleFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(OrderRoles.fields())
+                    .from(OrderRoles)
+                    .where(OrderRoles.ORDER.eq(order.getPrimaryKey()),
+                            OrderRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return orderRoleFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OrderRole> getOrderRolesByOrder(Order order) {

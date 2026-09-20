@@ -18,6 +18,7 @@ package com.echothree.model.control.order.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.order.common.transfer.OrderShipmentGroupTransfer;
+import com.echothree.model.control.order.server.transfer.OrderShipmentGroupTransferCache;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.item.server.entity.ItemDeliveryType;
 import com.echothree.model.data.order.server.entity.Order;
@@ -27,25 +28,26 @@ import com.echothree.model.data.order.server.factory.OrderShipmentGroupFactory;
 import com.echothree.model.data.order.server.value.OrderShipmentGroupDetailValue;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_SHIPMENT_GROUPS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.order.OrderShipmentGroupDetails.OrderShipmentGroupDetails;
+import static com.echothree.model.jooq.server.tables.order.OrderShipmentGroups.OrderShipmentGroups;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
 public class OrderShipmentGroupControl
-        extends BaseOrderControl {
+        extends BaseModelControl {
 
     @Inject
-    protected OrderLineControl orderLineControl;
+    private OrderLineControl orderLineControl;
 
     /** Creates a new instance of OrderControl */
     protected OrderShipmentGroupControl() {
@@ -57,10 +59,13 @@ public class OrderShipmentGroupControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OrderShipmentGroupFactory orderShipmentGroupFactory;
+    protected OrderShipmentGroupDetailFactory orderShipmentGroupDetailFactory;
 
     @Inject
-    protected OrderShipmentGroupDetailFactory orderShipmentGroupDetailFactory;
+    private OrderShipmentGroupFactory orderShipmentGroupFactory;
+
+    @Inject
+    private OrderShipmentGroupTransferCache orderShipmentGroupTransferCache;
 
     public OrderShipmentGroup createOrderShipmentGroup(Order order, Integer orderShipmentGroupSequence, ItemDeliveryType itemDeliveryType, Boolean isDefault,
             PartyContactMechanism partyContactMechanism, ShippingMethod shippingMethod, Boolean holdUntilComplete, BasePK createdBy) {
@@ -92,32 +97,20 @@ public class OrderShipmentGroupControl
         return orderShipmentGroup;
     }
     
-    private static final Map<EntityPermission, String> getOrderShipmentGroupBySequenceQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM ordershipmentgroups, ordershipmentgroupdetails
-                WHERE ordshpgrp_activedetailid = ordshpgrpdt_ordershipmentgroupdetailid
-                AND ordshpgrpdt_ord_orderid = ? AND ordshpgrpdt_ordershipmentgroupsequence = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM ordershipmentgroups, ordershipmentgroupdetails
-                WHERE ordshpgrp_activedetailid = ordshpgrpdt_ordershipmentgroupdetailid
-                AND ordshpgrpdt_ord_orderid = ? AND ordshpgrpdt_ordershipmentgroupsequence = ?
-                FOR UPDATE
-                """);
-        getOrderShipmentGroupBySequenceQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public OrderShipmentGroup getOrderShipmentGroupBySequence(Order order, Integer orderShipmentGroupSequence, EntityPermission entityPermission) {
-        return orderShipmentGroupFactory.getEntityFromQuery(entityPermission, getOrderShipmentGroupBySequenceQueries,
-                order, orderShipmentGroupSequence);
+        var baseQuery = session.getDslContext()
+                .select(OrderShipmentGroups.fields())
+                .from(OrderShipmentGroups)
+                .join(OrderShipmentGroupDetails).onKey(ORDER_SHIPMENT_GROUPS_ACTIVE_DETAIL_FK)
+                .where(OrderShipmentGroupDetails.ORDER.eq(order.getPrimaryKey()),
+                        OrderShipmentGroupDetails.ORDER_SHIPMENT_GROUP_SEQUENCE.eq(orderShipmentGroupSequence));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderShipmentGroupFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OrderShipmentGroup getOrderShipmentGroupBySequence(Order order, Integer orderShipmentGroupSequence) {
@@ -136,32 +129,21 @@ public class OrderShipmentGroupControl
         return getOrderShipmentGroupDetailValueForUpdate(getOrderShipmentGroupBySequenceForUpdate(order, orderShipmentGroupSequence));
     }
 
-    private static final Map<EntityPermission, String> getDefaultOrderShipmentGroupQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM ordershipmentgroups, ordershipmentgroupdetails
-                WHERE ordshpgrp_activedetailid = ordshpgrpdt_ordershipmentgroupdetailid
-                AND ordshpgrpdt_ord_orderid = ? AND ordshpgrpdt_idlvrtyp_itemdeliverytypeid = ? AND ordshpgrpdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM ordershipmentgroups, ordershipmentgroupdetails
-                WHERE ordshpgrp_activedetailid = ordshpgrpdt_ordershipmentgroupdetailid
-                AND ordshpgrpdt_ord_orderid = ? AND ordshpgrpdt_idlvrtyp_itemdeliverytypeid = ? AND ordshpgrpdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultOrderShipmentGroupQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public OrderShipmentGroup getDefaultOrderShipmentGroup(Order order, ItemDeliveryType itemDeliveryType, EntityPermission entityPermission) {
-        return orderShipmentGroupFactory.getEntityFromQuery(entityPermission, getDefaultOrderShipmentGroupQueries,
-                order, itemDeliveryType);
+        var baseQuery = session.getDslContext()
+                .select(OrderShipmentGroups.fields())
+                .from(OrderShipmentGroups)
+                .join(OrderShipmentGroupDetails).onKey(ORDER_SHIPMENT_GROUPS_ACTIVE_DETAIL_FK)
+                .where(OrderShipmentGroupDetails.ORDER.eq(order.getPrimaryKey()),
+                        OrderShipmentGroupDetails.ITEM_DELIVERY_TYPE.eq(itemDeliveryType.getPrimaryKey()),
+                        OrderShipmentGroupDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderShipmentGroupFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OrderShipmentGroup getDefaultOrderShipmentGroup(Order order, ItemDeliveryType itemDeliveryType) {
@@ -176,33 +158,21 @@ public class OrderShipmentGroupControl
         return getDefaultOrderShipmentGroupForUpdate(order, itemDeliveryType).getLastDetailForUpdate().getOrderShipmentGroupDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getOrderShipmentGroupsByOrderQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM ordershipmentgroups, ordershipmentgroupdetails
-                WHERE ordshpgrp_activedetailid = ordshpgrpdt_ordershipmentgroupdetailid
-                AND ordshpgrpdt_ord_orderid = ?
-                ORDER BY ordshpgrpdt_ordershipmentgroupsequence
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM ordershipmentgroups, ordershipmentgroupdetails
-                WHERE ordshpgrp_activedetailid = ordshpgrpdt_ordershipmentgroupdetailid
-                AND ordshpgrpdt_ord_orderid = ?
-                FOR UPDATE
-                """);
-        getOrderShipmentGroupsByOrderQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<OrderShipmentGroup> getOrderShipmentGroupsByOrder(Order order, EntityPermission entityPermission) {
-        return orderShipmentGroupFactory.getEntitiesFromQuery(entityPermission, getOrderShipmentGroupsByOrderQueries,
-                order);
+        var baseQuery = session.getDslContext()
+                .select(OrderShipmentGroups.fields())
+                .from(OrderShipmentGroups)
+                .join(OrderShipmentGroupDetails).onKey(ORDER_SHIPMENT_GROUPS_ACTIVE_DETAIL_FK)
+                .where(OrderShipmentGroupDetails.ORDER.eq(order.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(OrderShipmentGroupDetails.ORDER_SHIPMENT_GROUP_SEQUENCE),
+                    OrderShipmentGroupFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderShipmentGroupFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OrderShipmentGroup> getOrderShipmentGroupsByOrder(Order order) {
@@ -213,33 +183,22 @@ public class OrderShipmentGroupControl
         return getOrderShipmentGroupsByOrder(order, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getOrderShipmentGroupsQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM ordershipmentgroups, ordershipmentgroupdetails
-                WHERE ordshpgrp_activedetailid = ordshpgrpdt_ordershipmentgroupdetailid
-                AND ordshpgrpdt_ord_orderid = ? AND ordshpgrpdt_idlvrtyp_itemdeliverytypeid = ?
-                ORDER BY ordshpgrpdt_ordershipmentgroupsequence
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM ordershipmentgroups, ordershipmentgroupdetails
-                WHERE ordshpgrp_activedetailid = ordshpgrpdt_ordershipmentgroupdetailid
-                AND ordshpgrpdt_ord_orderid = ? AND ordshpgrpdt_idlvrtyp_itemdeliverytypeid = ?
-                FOR UPDATE
-                """);
-        getOrderShipmentGroupsQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<OrderShipmentGroup> getOrderShipmentGroups(Order order, ItemDeliveryType itemDeliveryType, EntityPermission entityPermission) {
-        return orderShipmentGroupFactory.getEntitiesFromQuery(entityPermission, getOrderShipmentGroupsQueries,
-                order, itemDeliveryType);
+        var baseQuery = session.getDslContext()
+                .select(OrderShipmentGroups.fields())
+                .from(OrderShipmentGroups)
+                .join(OrderShipmentGroupDetails).onKey(ORDER_SHIPMENT_GROUPS_ACTIVE_DETAIL_FK)
+                .where(OrderShipmentGroupDetails.ORDER.eq(order.getPrimaryKey()),
+                        OrderShipmentGroupDetails.ITEM_DELIVERY_TYPE.eq(itemDeliveryType.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(OrderShipmentGroupDetails.ORDER_SHIPMENT_GROUP_SEQUENCE),
+                    OrderShipmentGroupFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderShipmentGroupFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OrderShipmentGroup> getOrderShipmentGroups(Order order, ItemDeliveryType itemDeliveryType) {

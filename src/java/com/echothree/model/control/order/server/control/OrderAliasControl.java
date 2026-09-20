@@ -21,6 +21,9 @@ import com.echothree.model.control.order.common.choice.OrderAliasTypeChoicesBean
 import com.echothree.model.control.order.common.transfer.OrderAliasTransfer;
 import com.echothree.model.control.order.common.transfer.OrderAliasTypeDescriptionTransfer;
 import com.echothree.model.control.order.common.transfer.OrderAliasTypeTransfer;
+import com.echothree.model.control.order.server.transfer.OrderAliasTransferCache;
+import com.echothree.model.control.order.server.transfer.OrderAliasTypeDescriptionTransferCache;
+import com.echothree.model.control.order.server.transfer.OrderAliasTypeTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.order.common.pk.OrderAliasTypePK;
 import com.echothree.model.data.order.server.entity.Order;
@@ -37,22 +40,33 @@ import com.echothree.model.data.order.server.value.OrderAliasTypeDetailValue;
 import com.echothree.model.data.order.server.value.OrderAliasValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDERS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_ALIASES_ORDER_ALIAS_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_ALIASES_ORDER_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_ALIAS_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_ALIAS_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_ALIAS_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.order.OrderAliasTypeDescriptions.OrderAliasTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.order.OrderAliasTypeDetails.OrderAliasTypeDetails;
+import static com.echothree.model.jooq.server.tables.order.OrderAliasTypes.OrderAliasTypes;
+import static com.echothree.model.jooq.server.tables.order.OrderAliases.OrderAliases;
+import static com.echothree.model.jooq.server.tables.order.OrderDetails.OrderDetails;
+import static com.echothree.model.jooq.server.tables.order.Orders.Orders;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 
 @CommandScope
 public class OrderAliasControl
-        extends BaseOrderControl {
+        extends BaseModelControl {
 
     /** Creates a new instance of OrderControl */
     protected OrderAliasControl() {
@@ -64,10 +78,13 @@ public class OrderAliasControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OrderAliasTypeFactory orderAliasTypeFactory;
+    protected OrderAliasTypeDetailFactory orderAliasTypeDetailFactory;
 
     @Inject
-    protected OrderAliasTypeDetailFactory orderAliasTypeDetailFactory;
+    private OrderAliasTypeFactory orderAliasTypeFactory;
+
+    @Inject
+    private OrderAliasTypeTransferCache orderAliasTypeTransferCache;
 
     public OrderAliasType createOrderAliasType(OrderType orderType, String orderAliasTypeName, String validationPattern, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -114,40 +131,29 @@ public class OrderAliasControl
     }
 
     public long countOrderAliasTypesByOrderType(final OrderType orderType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM orderaliastypes
-                        JOIN orderaliastypedetails ON ordaltypdt_orderaliastypedetailid = ordaltyp_activedetailid
-                        WHERE ordaltypdt_ordtyp_ordertypeid = ?
-                        """, orderType);
-    }
-
-    private static final Map<EntityPermission, String> getOrderAliasTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM orderaliastypes, orderaliastypedetails
-                WHERE ordaltyp_activedetailid = ordaltypdt_orderaliastypedetailid AND ordaltypdt_ordtyp_ordertypeid = ?
-                AND ordaltypdt_orderaliastypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM orderaliastypes, orderaliastypedetails
-                WHERE ordaltyp_activedetailid = ordaltypdt_orderaliastypedetailid AND ordaltypdt_ordtyp_ordertypeid = ?
-                AND ordaltypdt_orderaliastypename = ?
-                FOR UPDATE
-                """);
-        getOrderAliasTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(OrderAliasTypes)
+                .join(OrderAliasTypeDetails).onKey(ORDER_ALIAS_TYPES_ACTIVE_DETAIL_FK)
+                .where(OrderAliasTypeDetails.ORDER_TYPE.eq(orderType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private OrderAliasType getOrderAliasTypeByName(OrderType orderType, String orderAliasTypeName, EntityPermission entityPermission) {
-        return orderAliasTypeFactory.getEntityFromQuery(entityPermission, getOrderAliasTypeByNameQueries,
-                orderType, orderAliasTypeName);
+        var baseQuery = session.getDslContext()
+                .select(OrderAliasTypes.fields())
+                .from(OrderAliasTypes)
+                .join(OrderAliasTypeDetails).onKey(ORDER_ALIAS_TYPES_ACTIVE_DETAIL_FK)
+                .where(OrderAliasTypeDetails.ORDER_TYPE.eq(orderType.getPrimaryKey()),
+                        OrderAliasTypeDetails.ORDER_ALIAS_TYPE_NAME.eq(orderAliasTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderAliasTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OrderAliasType getOrderAliasTypeByName(OrderType orderType, String orderAliasTypeName) {
@@ -167,31 +173,20 @@ public class OrderAliasControl
         return getOrderAliasTypeDetailValueForUpdate(getOrderAliasTypeByNameForUpdate(orderType, orderAliasTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultOrderAliasTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM orderaliastypes, orderaliastypedetails
-                WHERE ordaltyp_activedetailid = ordaltypdt_orderaliastypedetailid AND ordaltypdt_ordtyp_ordertypeid = ?
-                AND ordaltypdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM orderaliastypes, orderaliastypedetails
-                WHERE ordaltyp_activedetailid = ordaltypdt_orderaliastypedetailid AND ordaltypdt_ordtyp_ordertypeid = ?
-                AND ordaltypdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultOrderAliasTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private OrderAliasType getDefaultOrderAliasType(OrderType orderType, EntityPermission entityPermission) {
-        return orderAliasTypeFactory.getEntityFromQuery(entityPermission, getDefaultOrderAliasTypeQueries, orderType);
+        var baseQuery = session.getDslContext()
+                .select(OrderAliasTypes.fields())
+                .from(OrderAliasTypes)
+                .join(OrderAliasTypeDetails).onKey(ORDER_ALIAS_TYPES_ACTIVE_DETAIL_FK)
+                .where(OrderAliasTypeDetails.ORDER_TYPE.eq(orderType.getPrimaryKey()),
+                        OrderAliasTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderAliasTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OrderAliasType getDefaultOrderAliasType(OrderType orderType) {
@@ -206,31 +201,21 @@ public class OrderAliasControl
         return getDefaultOrderAliasTypeForUpdate(orderType).getLastDetailForUpdate().getOrderAliasTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getOrderAliasTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM orderaliastypes, orderaliastypedetails
-                WHERE ordaltyp_activedetailid = ordaltypdt_orderaliastypedetailid AND ordaltypdt_ordtyp_ordertypeid = ?
-                ORDER BY ordaltypdt_sortorder, ordaltypdt_orderaliastypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM orderaliastypes, orderaliastypedetails
-                WHERE ordaltyp_activedetailid = ordaltypdt_orderaliastypedetailid AND ordaltypdt_ordtyp_ordertypeid = ?
-                FOR UPDATE
-                """);
-        getOrderAliasTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<OrderAliasType> getOrderAliasTypes(OrderType orderType, EntityPermission entityPermission) {
-        return orderAliasTypeFactory.getEntitiesFromQuery(entityPermission, getOrderAliasTypesQueries, orderType);
+        var baseQuery = session.getDslContext()
+                .select(OrderAliasTypes.fields())
+                .from(OrderAliasTypes)
+                .join(OrderAliasTypeDetails).onKey(ORDER_ALIAS_TYPES_ACTIVE_DETAIL_FK)
+                .where(OrderAliasTypeDetails.ORDER_TYPE.eq(orderType.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(OrderAliasTypeDetails.SORT_ORDER, OrderAliasTypeDetails.ORDER_ALIAS_TYPE_NAME),
+                    OrderAliasTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderAliasTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OrderAliasType> getOrderAliasTypes(OrderType orderType) {
@@ -387,7 +372,10 @@ public class OrderAliasControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OrderAliasTypeDescriptionFactory orderAliasTypeDescriptionFactory;
+    private OrderAliasTypeDescriptionFactory orderAliasTypeDescriptionFactory;
+
+    @Inject
+    private OrderAliasTypeDescriptionTransferCache orderAliasTypeDescriptionTransferCache;
 
     public OrderAliasTypeDescription createOrderAliasTypeDescription(OrderAliasType orderAliasType, Language language, String description, BasePK createdBy) {
         var orderAliasTypeDescription = orderAliasTypeDescriptionFactory.create(orderAliasType, language,
@@ -398,30 +386,20 @@ public class OrderAliasControl
         return orderAliasTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getOrderAliasTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM orderaliastypedescriptions
-                WHERE ordaltypd_ordaltyp_orderaliastypeid = ? AND ordaltypd_lang_languageid = ? AND ordaltypd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM orderaliastypedescriptions
-                WHERE ordaltypd_ordaltyp_orderaliastypeid = ? AND ordaltypd_lang_languageid = ? AND ordaltypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getOrderAliasTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private OrderAliasTypeDescription getOrderAliasTypeDescription(OrderAliasType orderAliasType, Language language, EntityPermission entityPermission) {
-        return orderAliasTypeDescriptionFactory.getEntityFromQuery(entityPermission, getOrderAliasTypeDescriptionQueries,
-                orderAliasType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(OrderAliasTypeDescriptions.fields())
+                .from(OrderAliasTypeDescriptions)
+                .where(OrderAliasTypeDescriptions.ORDER_ALIAS_TYPE.eq(orderAliasType.getPrimaryKey()),
+                        OrderAliasTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        OrderAliasTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderAliasTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OrderAliasTypeDescription getOrderAliasTypeDescription(OrderAliasType orderAliasType, Language language) {
@@ -440,32 +418,25 @@ public class OrderAliasControl
         return getOrderAliasTypeDescriptionValue(getOrderAliasTypeDescriptionForUpdate(orderAliasType, language));
     }
 
-    private static final Map<EntityPermission, String> getOrderAliasTypeDescriptionsByOrderAliasTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM orderaliastypedescriptions, languages
-                WHERE ordaltypd_ordaltyp_orderaliastypeid = ? AND ordaltypd_thrutime = ? AND ordaltypd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM orderaliastypedescriptions
-                WHERE ordaltypd_ordaltyp_orderaliastypeid = ? AND ordaltypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getOrderAliasTypeDescriptionsByOrderAliasTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<OrderAliasTypeDescription> getOrderAliasTypeDescriptionsByOrderAliasType(OrderAliasType orderAliasType, EntityPermission entityPermission) {
-        return orderAliasTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getOrderAliasTypeDescriptionsByOrderAliasTypeQueries,
-                orderAliasType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OrderAliasTypeDescriptions.fields())
+                    .from(OrderAliasTypeDescriptions)
+                    .join(Languages).onKey(ORDER_ALIAS_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(OrderAliasTypeDescriptions.ORDER_ALIAS_TYPE.eq(orderAliasType.getPrimaryKey()),
+                            OrderAliasTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    OrderAliasTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(OrderAliasTypeDescriptions.fields())
+                    .from(OrderAliasTypeDescriptions)
+                    .where(OrderAliasTypeDescriptions.ORDER_ALIAS_TYPE.eq(orderAliasType.getPrimaryKey()),
+                            OrderAliasTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return orderAliasTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OrderAliasTypeDescription> getOrderAliasTypeDescriptionsByOrderAliasType(OrderAliasType orderAliasType) {
@@ -547,7 +518,10 @@ public class OrderAliasControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OrderAliasFactory orderAliasFactory;
+    private OrderAliasFactory orderAliasFactory;
+
+    @Inject
+    private OrderAliasTransferCache orderAliasTransferCache;
 
     public OrderAlias createOrderAlias(Order order, OrderAliasType orderAliasType, String alias, BasePK createdBy) {
         var orderAlias = orderAliasFactory.create(order, orderAliasType, alias, session.getStartTime(), Session.MAX_TIME);
@@ -558,45 +532,39 @@ public class OrderAliasControl
     }
 
     public long countOrderAliasByOrder(final Order order) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM orderaliases
-                        WHERE ordal_ord_orderid = ? AND ordal_ordaltyp_orderaliastypeid = ? AND ordal_thrutime = ?
-                        """, order, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(OrderAliases)
+                .where(OrderAliases.ORDER.eq(order.getPrimaryKey()),
+                        OrderAliases.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countOrderAliasByOrderAliasType(final OrderAliasType orderAliasType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM orderaliases
-                        WHERE ordal_ord_orderid = ? AND ordal_ordaltyp_orderaliastypeid = ? AND ordal_thrutime = ?
-                        """, orderAliasType, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getOrderAliasQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM orderaliases
-                WHERE ordal_ord_orderid = ? AND ordal_ordaltyp_orderaliastypeid = ? AND ordal_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM orderaliases
-                WHERE ordal_ord_orderid = ? AND ordal_ordaltyp_orderaliastypeid = ? AND ordal_thrutime = ?
-                FOR UPDATE
-                """);
-        getOrderAliasQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(OrderAliases)
+                .where(OrderAliases.ORDER_ALIAS_TYPE.eq(orderAliasType.getPrimaryKey()),
+                        OrderAliases.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private OrderAlias getOrderAlias(Order order, OrderAliasType orderAliasType, EntityPermission entityPermission) {
-        return orderAliasFactory.getEntityFromQuery(entityPermission, getOrderAliasQueries,
-                order, orderAliasType, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(OrderAliases.fields())
+                .from(OrderAliases)
+                .where(OrderAliases.ORDER.eq(order.getPrimaryKey()),
+                        OrderAliases.ORDER_ALIAS_TYPE.eq(orderAliasType.getPrimaryKey()),
+                        OrderAliases.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderAliasFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OrderAlias getOrderAlias(Order order, OrderAliasType orderAliasType) {
@@ -615,29 +583,20 @@ public class OrderAliasControl
         return getOrderAliasValue(getOrderAliasForUpdate(order, orderAliasType));
     }
 
-    private static final Map<EntityPermission, String> getOrderAliasByAliasQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM orderaliases
-                WHERE ordal_ordaltyp_orderaliastypeid = ? AND ordal_alias = ? AND ordal_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM orderaliases
-                WHERE ordal_ordaltyp_orderaliastypeid = ? AND ordal_alias = ? AND ordal_thrutime = ?
-                FOR UPDATE
-                """);
-        getOrderAliasByAliasQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private OrderAlias getOrderAliasByAlias(OrderAliasType orderAliasType, String alias, EntityPermission entityPermission) {
-        return orderAliasFactory.getEntityFromQuery(entityPermission, getOrderAliasByAliasQueries, orderAliasType, alias, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(OrderAliases.fields())
+                .from(OrderAliases)
+                .where(OrderAliases.ORDER_ALIAS_TYPE.eq(orderAliasType.getPrimaryKey()),
+                        OrderAliases.ALIAS.eq(alias),
+                        OrderAliases.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderAliasFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OrderAlias getOrderAliasByAlias(OrderAliasType orderAliasType, String alias) {
@@ -648,33 +607,26 @@ public class OrderAliasControl
         return getOrderAliasByAlias(orderAliasType, alias, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getOrderAliasesByOrderQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM orderaliases, orderaliastypes, orderaliastypedetails
-                WHERE ordal_ord_orderid = ? AND ordal_thrutime = ?
-                AND ordal_ordaltyp_orderaliastypeid = ordaltyp_orderaliastypeid AND ordaltyp_lastdetailid = ordaltypdt_orderaliastypedetailid
-                ORDER BY ordaltypdt_sortorder, ordaltypdt_orderaliastypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM orderaliases
-                WHERE ordal_ord_orderid = ? AND ordal_thrutime = ?
-                FOR UPDATE
-                """);
-        getOrderAliasesByOrderQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<OrderAlias> getOrderAliasesByOrder(Order order, EntityPermission entityPermission) {
-        return orderAliasFactory.getEntitiesFromQuery(entityPermission, getOrderAliasesByOrderQueries,
-                order, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OrderAliases.fields())
+                    .from(OrderAliases)
+                    .join(OrderAliasTypes).onKey(ORDER_ALIASES_ORDER_ALIAS_TYPE_FK)
+                    .join(OrderAliasTypeDetails).onKey(ORDER_ALIAS_TYPES_LAST_DETAIL_FK)
+                    .where(OrderAliases.ORDER.eq(order.getPrimaryKey()),
+                            OrderAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(OrderAliasTypeDetails.SORT_ORDER, OrderAliasTypeDetails.ORDER_ALIAS_TYPE_NAME),
+                    OrderAliasFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(OrderAliases.fields())
+                    .from(OrderAliases)
+                    .where(OrderAliases.ORDER.eq(order.getPrimaryKey()),
+                            OrderAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return orderAliasFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OrderAlias> getOrderAliasesByOrder(Order order) {
@@ -685,33 +637,26 @@ public class OrderAliasControl
         return getOrderAliasesByOrder(order, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getOrderAliasesByOrderAliasTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM orderaliases, orders, orderdetails
-                WHERE ordal_ordaltyp_orderaliastypeid = ? AND ordal_thrutime = ?
-                AND ordal_ord_orderid = ord_orderid AND ord_lastdetailid = orddt_orderdetailid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM orderaliases
-                WHERE ordal_ordaltyp_orderaliastypeid = ? AND ordal_thrutime = ?
-                FOR UPDATE
-                """);
-        getOrderAliasesByOrderAliasTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<OrderAlias> getOrderAliasesByOrderAliasType(OrderAliasType orderAliasType, EntityPermission entityPermission) {
-        return orderAliasFactory.getEntitiesFromQuery(entityPermission, getOrderAliasesByOrderAliasTypeQueries,
-                orderAliasType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OrderAliases.fields())
+                    .from(OrderAliases)
+                    .join(Orders).onKey(ORDER_ALIASES_ORDER_FK)
+                    .join(OrderDetails).onKey(ORDERS_LAST_DETAIL_FK)
+                    .where(OrderAliases.ORDER_ALIAS_TYPE.eq(orderAliasType.getPrimaryKey()),
+                            OrderAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(OrderDetails.ORDER_NAME, OrderAliases.ALIAS),
+                    OrderAliasFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(OrderAliases.fields())
+                    .from(OrderAliases)
+                    .where(OrderAliases.ORDER_ALIAS_TYPE.eq(orderAliasType.getPrimaryKey()),
+                            OrderAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return orderAliasFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OrderAlias> getOrderAliasesByOrderAliasType(OrderAliasType orderAliasType) {
