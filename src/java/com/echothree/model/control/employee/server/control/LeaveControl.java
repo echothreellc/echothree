@@ -18,21 +18,27 @@ package com.echothree.model.control.employee.server.control;
 
 import com.echothree.model.control.employee.common.transfer.LeaveResultTransfer;
 import com.echothree.model.control.search.common.SearchOptions;
+import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.employee.common.pk.LeavePK;
 import com.echothree.model.data.employee.server.factory.LeaveFactory;
+import com.echothree.model.data.search.common.CachedExecutedSearchResultConstants;
+import com.echothree.model.data.search.common.SearchResultConstants;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
+import com.echothree.model.data.search.server.factory.CachedExecutedSearchResultFactory;
 import com.echothree.model.data.search.server.factory.SearchResultFactory;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.CACHED_EXECUTED_SEARCH_RESULTS_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_RESULTS_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.search.CachedExecutedSearchResults.CachedExecutedSearchResults;
+import static com.echothree.model.jooq.server.tables.search.SearchResults.SearchResults;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
-import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
+import org.jooq.Select;
 
 @CommandScope
 public class LeaveControl
@@ -40,6 +46,9 @@ public class LeaveControl
 
     @Inject
     protected EmployeeControl employeeControl;
+
+    @Inject
+    protected SearchControl searchControl;
 
     /** Creates a new instance of LeaveControl */
     protected LeaveControl() {
@@ -53,43 +62,46 @@ public class LeaveControl
     @Inject
     protected LeaveFactory leaveFactory;
 
-    @Inject
-    protected SearchResultFactory searchResultFactory;
-
-    public List<LeaveResultTransfer> getLeaveResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
+    private List<Long> getLeaveIdsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
-        var leaveResultTransfers = new ArrayList<LeaveResultTransfer>();
-        var includeLeave = false;
+        var cachedSearch = search.getCachedSearch();
+        Select<?> query;
 
-        var options = session.getOptions();
-        if(options != null) {
-            includeLeave = options.contains(SearchOptions.LeaveResultIncludeLeave);
+        if(cachedSearch == null) {
+            query = session.applyLimit(session.getDslContext()
+                    .select(EntityInstances.ENTITY_UNIQUE)
+                    .from(SearchResults)
+                    .join(EntityInstances).onKey(SEARCH_RESULTS_ENTITY_INSTANCE_FK)
+                    .where(SearchResults.SEARCH.eq(search.getPrimaryKey()))
+                    .orderBy(SearchResults.SORT_ORDER, SearchResults.ENTITY_INSTANCE), SearchResultFactory.class);
+        } else {
+            var cachedExecutedSearch = searchControl.getCachedExecutedSearch(cachedSearch);
+
+            session.copyLimit(SearchResultConstants.ENTITY_TYPE_NAME, CachedExecutedSearchResultConstants.ENTITY_TYPE_NAME);
+
+            query = session.applyLimit(session.getDslContext()
+                    .select(EntityInstances.ENTITY_UNIQUE)
+                    .from(CachedExecutedSearchResults)
+                    .join(EntityInstances).onKey(CACHED_EXECUTED_SEARCH_RESULTS_ENTITY_INSTANCE_FK)
+                    .where(CachedExecutedSearchResults.CACHED_EXECUTED_SEARCH.eq(cachedExecutedSearch.getPrimaryKey()))
+                    .orderBy(CachedExecutedSearchResults.SORT_ORDER, CachedExecutedSearchResults.ENTITY_INSTANCE),
+                    CachedExecutedSearchResultFactory.class);
         }
 
-        try {
-            var ps = searchResultFactory.prepareStatement(
-                    """
-                    SELECT eni_entityuniqueid
-                    FROM searchresults, entityinstances
-                    WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid
-                    ORDER BY srchr_sortorder, srchr_eni_entityinstanceid
-                    _LIMIT_
-                    """);
+        return query.fetch(EntityInstances.ENTITY_UNIQUE);
+    }
 
-            ps.setLong(1, search.getPrimaryKey().getEntityId());
+    public List<LeaveResultTransfer> getLeaveResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
+        var entityIds = getLeaveIdsFromUserVisitSearch(userVisitSearch);
+        var leaveResultTransfers = new ArrayList<LeaveResultTransfer>(entityIds.size());
+        var options = session.getOptions();
+        var includeLeave = options != null && options.contains(SearchOptions.LeaveResultIncludeLeave);
 
-            try (var rs = ps.executeQuery()) {
-                while(rs.next()) {
-                    var leave = leaveFactory.getEntityFromPK(EntityPermission.READ_ONLY, new LeavePK(rs.getLong(1)));
+        for(var entityUniqueId : entityIds) {
+            var leave = leaveFactory.getEntityFromPK(EntityPermission.READ_ONLY, new LeavePK(entityUniqueId));
 
-                    leaveResultTransfers.add(new LeaveResultTransfer(leave.getLastDetail().getLeaveName(),
-                            includeLeave ? employeeControl.getLeaveTransfer(userVisit, leave) : null));
-                }
-            } catch (SQLException se) {
-                throw new PersistenceDatabaseException(se);
-            }
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
+            leaveResultTransfers.add(new LeaveResultTransfer(leave.getLastDetail().getLeaveName(),
+                    includeLeave ? employeeControl.getLeaveTransfer(userVisit, leave) : null));
         }
 
         return leaveResultTransfers;
