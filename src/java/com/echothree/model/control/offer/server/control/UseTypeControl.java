@@ -506,9 +506,6 @@ public class UseTypeControl
     //   Use Type Searches
     // --------------------------------------------------------------------------------
 
-    @Inject
-    private SearchResultFactory searchResultFactory;
-
     private List<Long> getUseTypeIdsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
         var cachedSearch = search.getCachedSearch();

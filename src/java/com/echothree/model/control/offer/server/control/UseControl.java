@@ -552,9 +552,6 @@ public class UseControl
     //   Use Searches
     // --------------------------------------------------------------------------------
 
-    @Inject
-    private SearchResultFactory searchResultFactory;
-
     private List<Long> getUseIdsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
         var cachedSearch = search.getCachedSearch();
