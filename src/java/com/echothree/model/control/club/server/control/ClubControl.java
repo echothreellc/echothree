@@ -48,13 +48,27 @@ import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.subscription.server.entity.SubscriptionType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.club.ClubForeignKeys.CLUBS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.club.ClubForeignKeys.CLUBS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.club.ClubForeignKeys.CLUB_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.club.ClubForeignKeys.CLUB_ITEMS_CLUB_FK;
+import static com.echothree.model.jooq.server.keys.club.ClubForeignKeys.CLUB_ITEMS_CLUB_ITEM_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.club.ClubForeignKeys.CLUB_ITEMS_ITEM_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEMS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.club.ClubDescriptions.ClubDescriptions;
+import static com.echothree.model.jooq.server.tables.club.ClubDetails.ClubDetails;
+import static com.echothree.model.jooq.server.tables.club.ClubItemTypeDescriptions.ClubItemTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.club.ClubItemTypes.ClubItemTypes;
+import static com.echothree.model.jooq.server.tables.club.ClubItems.ClubItems;
+import static com.echothree.model.jooq.server.tables.club.Clubs.Clubs;
+import static com.echothree.model.jooq.server.tables.item.ItemDetails.ItemDetails;
+import static com.echothree.model.jooq.server.tables.item.Items.Items;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -71,30 +85,17 @@ public class ClubControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Club Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    @Inject
-    ClubItemTransferCache clubItemTransferCache;
-
-    @Inject
-    ClubItemTypeTransferCache clubItemTypeTransferCache;
-
-    @Inject
-    ClubTransferCache clubTransferCache;
-
-    @Inject
-    ClubDescriptionTransferCache clubDescriptionTransferCache;
-
-    // --------------------------------------------------------------------------------
     //   Clubs
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected ClubDetailFactory clubDetailFactory;
 
     @Inject
     protected ClubFactory clubFactory;
 
     @Inject
-    protected ClubDetailFactory clubDetailFactory;
+    ClubTransferCache clubTransferCache;
 
     public Club createClub(String clubName, SubscriptionType subscriptionType, Filter clubPriceFilter, Currency currency,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -142,57 +143,48 @@ public class ClubControl
     }
 
     public long countClubs() {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM clubs, clubdetails
-                WHERE clb_activedetailid = clbdt_clubdetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(Clubs)
+                .join(ClubDetails).onKey(CLUBS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countClubsBySubscriptionType(SubscriptionType subscriptionType) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM clubs, clubdetails
-                WHERE clb_activedetailid = clbdt_clubdetailid AND clbdt_subscrtyp_subscriptiontypeid = ?
-                """,
-                subscriptionType);
+        return session.getDslContext()
+                .selectCount()
+                .from(Clubs)
+                .join(ClubDetails).onKey(CLUBS_ACTIVE_DETAIL_FK)
+                .where(ClubDetails.SUBSCRIPTION_TYPE.eq(subscriptionType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countClubsByFilter(Filter filter) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM clubs, clubdetails
-                WHERE clb_activedetailid = clbdt_clubdetailid AND clbdt_clubpricefilterid = ?
-                """,
-                filter);
+        return session.getDslContext()
+                .selectCount()
+                .from(Clubs)
+                .join(ClubDetails).onKey(CLUBS_ACTIVE_DETAIL_FK)
+                .where(ClubDetails.CLUB_PRICE_FILTER.eq(filter.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<Club> getClubs(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM clubs, clubdetails
-                    WHERE clb_activedetailid = clbdt_clubdetailid
-                    ORDER BY clbdt_sortorder, clbdt_clubname
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM clubs, clubdetails
-                    WHERE clb_activedetailid = clbdt_clubdetailid
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(Clubs.fields())
+                .from(Clubs)
+                .join(ClubDetails).onKey(CLUBS_ACTIVE_DETAIL_FK);
 
-        var ps = clubFactory.prepareStatement(query);
-        
-        return clubFactory.getEntitiesFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ClubDetails.SORT_ORDER, ClubDetails.CLUB_NAME),
+                    ClubFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return clubFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<Club> getClubs() {
@@ -204,26 +196,18 @@ public class ClubControl
     }
     
     private Club getDefaultClub(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM clubs, clubdetails
-                    WHERE clb_activedetailid = clbdt_clubdetailid AND clbdt_isdefault = 1
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM clubs, clubdetails
-                    WHERE clb_activedetailid = clbdt_clubdetailid AND clbdt_isdefault = 1
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(Clubs.fields())
+                .from(Clubs)
+                .join(ClubDetails).onKey(CLUBS_ACTIVE_DETAIL_FK)
+                .where(ClubDetails.IS_DEFAULT.eq(true));
 
-        var ps = clubFactory.prepareStatement(query);
-        
-        return clubFactory.getEntityFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return clubFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Club getDefaultClub() {
@@ -239,36 +223,18 @@ public class ClubControl
     }
     
     public Club getClubByName(String clubName, EntityPermission entityPermission) {
-        Club club;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM clubs, clubdetails
-                        WHERE clb_activedetailid = clbdt_clubdetailid AND clbdt_clubname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM clubs, clubdetails
-                        WHERE clb_activedetailid = clbdt_clubdetailid AND clbdt_clubname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Clubs.fields())
+                .from(Clubs)
+                .join(ClubDetails).onKey(CLUBS_ACTIVE_DETAIL_FK)
+                .where(ClubDetails.CLUB_NAME.eq(clubName));
 
-            var ps = clubFactory.prepareStatement(query);
-            
-            ps.setString(1, clubName);
-            
-            club = clubFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return club;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return clubFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Club getClubByName(String clubName) {
@@ -288,36 +254,21 @@ public class ClubControl
     }
     
     private Club getClubBySubscriptionType(SubscriptionType subscriptionType, EntityPermission entityPermission) {
-        Club club;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM clubs, clubdetails
-                        WHERE clb_activedetailid = clbdt_clubdetailid AND clbdt_clubname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM clubs, clubdetails
-                        WHERE clb_activedetailid = clbdt_clubdetailid AND clbdt_subscrtyp_subscriptiontypeid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.getDslContext()
+                    .select(Clubs.fields())
+                    .from(Clubs)
+                    .join(ClubDetails).onKey(CLUBS_ACTIVE_DETAIL_FK)
+                    .where(ClubDetails.SUBSCRIPTION_TYPE.eq(subscriptionType.getPrimaryKey()));
+            case READ_WRITE -> session.getDslContext()
+                    .select(Clubs.fields())
+                    .from(Clubs)
+                    .join(ClubDetails).onKey(CLUBS_ACTIVE_DETAIL_FK)
+                    .where(ClubDetails.SUBSCRIPTION_TYPE.eq(subscriptionType.getPrimaryKey()))
+                    .forUpdate();
+        };
 
-            var ps = clubFactory.prepareStatement(query);
-            
-            ps.setLong(1, subscriptionType.getPrimaryKey().getEntityId());
-            
-            club = clubFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return club;
+        return clubFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Club getClubBySubscriptionType(SubscriptionType subscriptionType) {
@@ -437,6 +388,9 @@ public class ClubControl
     @Inject
     protected ClubDescriptionFactory clubDescriptionFactory;
 
+    @Inject
+    ClubDescriptionTransferCache clubDescriptionTransferCache;
+
     public ClubDescription createClubDescription(Club club, Language language, String description, BasePK createdBy) {
         var clubDescription = clubDescriptionFactory.create(club,
                 language, description, session.getStartTime(), Session.MAX_TIME);
@@ -449,38 +403,19 @@ public class ClubControl
     
     private ClubDescription getClubDescription(Club club, Language language,
             EntityPermission entityPermission) {
-        ClubDescription clubDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM clubdescriptions
-                        WHERE clbd_clb_clubid = ? AND clbd_lang_languageid = ? AND clbd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM clubdescriptions
-                        WHERE clbd_clb_clubid = ? AND clbd_lang_languageid = ? AND clbd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ClubDescriptions.fields())
+                .from(ClubDescriptions)
+                .where(ClubDescriptions.CLUB.eq(club.getPrimaryKey()),
+                        ClubDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ClubDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = clubDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, club.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            clubDescription = clubDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return clubDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return clubDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ClubDescription getClubDescription(Club club, Language language) {
@@ -501,38 +436,24 @@ public class ClubControl
     
     private List<ClubDescription> getClubDescriptionsByClub(Club club,
             EntityPermission entityPermission) {
-        List<ClubDescription> clubDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM clubdescriptions, languages
-                        WHERE clbd_clb_clubid = ? AND clbd_thrutime = ? AND clbd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM clubdescriptions
-                        WHERE clbd_clb_clubid = ? AND clbd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ClubDescriptions.fields())
+                    .from(ClubDescriptions)
+                    .join(Languages).onKey(CLUB_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ClubDescriptions.CLUB.eq(club.getPrimaryKey()),
+                            ClubDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ClubDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ClubDescriptions.fields())
+                    .from(ClubDescriptions)
+                    .where(ClubDescriptions.CLUB.eq(club.getPrimaryKey()),
+                            ClubDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = clubDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, club.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            clubDescriptions = clubDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return clubDescriptions;
+        return clubDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ClubDescription> getClubDescriptionsByClub(Club club) {
@@ -618,40 +539,30 @@ public class ClubControl
     @Inject
     protected ClubItemTypeFactory clubItemTypeFactory;
 
+    @Inject
+    ClubItemTypeTransferCache clubItemTypeTransferCache;
+
     public ClubItemType createClubItemType(String clubItemTypeName, Boolean isDefault, Integer sortOrder) {
         return clubItemTypeFactory.create(clubItemTypeName, isDefault, sortOrder);
     }
     
     public List<ClubItemType> getClubItemTypes() {
-        var ps = clubItemTypeFactory.prepareStatement(
-                """
-                SELECT _ALL_
-                FROM clubitemtypes
-                ORDER BY clbitmtyp_sortorder, clbitmtyp_clubitemtypename
-                """);
-        
-        return clubItemTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        var query = session.applyLimit(session.getDslContext()
+                .select(ClubItemTypes.fields())
+                .from(ClubItemTypes)
+                .orderBy(ClubItemTypes.SORT_ORDER, ClubItemTypes.CLUB_ITEM_TYPE_NAME),
+                ClubItemTypeFactory.class);
+
+        return clubItemTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public ClubItemType getClubItemTypeByName(String clubItemTypeName) {
-        ClubItemType clubItemType;
+        var query = session.getDslContext()
+                .select(ClubItemTypes.fields())
+                .from(ClubItemTypes)
+                .where(ClubItemTypes.CLUB_ITEM_TYPE_NAME.eq(clubItemTypeName));
 
-        try {
-            var ps = clubItemTypeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM clubitemtypes
-                    WHERE clbitmtyp_clubitemtypename = ?
-                    """);
-            
-            ps.setString(1, clubItemTypeName);
-            
-            clubItemType = clubItemTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return clubItemType;
+        return clubItemTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public ClubItemTypeChoicesBean getClubItemTypeChoices(String defaultClubItemTypeChoice, Language language,
@@ -709,25 +620,13 @@ public class ClubControl
     }
     
     public ClubItemTypeDescription getClubItemTypeDescription(ClubItemType clubItemType, Language language) {
-        ClubItemTypeDescription clubItemTypeDescription;
-        
-        try {
-            var ps = clubItemTypeDescriptionFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM clubitemtypedescriptions
-                    WHERE clbitmtypd_clbitmtyp_clubitemtypeid = ? AND clbitmtypd_lang_languageid = ?
-                    """);
-            
-            ps.setLong(1, clubItemType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            clubItemTypeDescription = clubItemTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return clubItemTypeDescription;
+        var query = session.getDslContext()
+                .select(ClubItemTypeDescriptions.fields())
+                .from(ClubItemTypeDescriptions)
+                .where(ClubItemTypeDescriptions.CLUB_ITEM_TYPE.eq(clubItemType.getPrimaryKey()),
+                        ClubItemTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
+
+        return clubItemTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public String getBestClubItemTypeDescription(ClubItemType clubItemType, Language language) {
@@ -754,6 +653,9 @@ public class ClubControl
     @Inject
     protected ClubItemFactory clubItemFactory;
 
+    @Inject
+    ClubItemTransferCache clubItemTransferCache;
+
     public ClubItem createClubItem(Club club, ClubItemType clubItemType, Item item, Long subscriptionTime, BasePK createdBy) {
         var clubItem = clubItemFactory.create(club, clubItemType, item, subscriptionTime,
                 session.getStartTime(), Session.MAX_TIME);
@@ -764,65 +666,50 @@ public class ClubControl
     }
 
     public long countClubItemsByClub(final Club club) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM clubitems
-                        WHERE clbitm_clb_clubid = ? AND clbitm_thrutime = ?
-                        """, club, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ClubItems)
+                .where(ClubItems.CLUB.eq(club.getPrimaryKey()),
+                        ClubItems.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countClubItemsByClubItemType(final ClubItemType clubItemType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM clubitems
-                        WHERE clbitm_clbitmtyp_clubitemtypeid = ? AND clbitm_thrutime = ?
-                        """, clubItemType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ClubItems)
+                .where(ClubItems.CLUB_ITEM_TYPE.eq(clubItemType.getPrimaryKey()),
+                        ClubItems.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countClubItemsByItem(final Item item) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM clubitems
-                        WHERE clbitm_itm_itemid = ? AND clbitm_thrutime = ?
-                        """, item, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ClubItems)
+                .where(ClubItems.ITEM.eq(item.getPrimaryKey()),
+                        ClubItems.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ClubItem getClubItem(Club club, ClubItemType clubItemType, Item item, EntityPermission entityPermission) {
-        ClubItem clubItem;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM clubitems
-                        WHERE clbitm_clb_clubid = ? AND clbitm_clbitmtyp_clubitemtypeid = ? AND clbitm_itm_itemid = ?
-                        AND clbitm_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM clubitems
-                        WHERE clbitm_clb_clubid = ? AND clbitm_clbitmtyp_clubitemtypeid = ? AND clbitm_itm_itemid = ?
-                        AND clbitm_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ClubItems.fields())
+                .from(ClubItems)
+                .where(ClubItems.CLUB.eq(club.getPrimaryKey()),
+                        ClubItems.CLUB_ITEM_TYPE.eq(clubItemType.getPrimaryKey()),
+                        ClubItems.ITEM.eq(item.getPrimaryKey()),
+                        ClubItems.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = clubItemFactory.prepareStatement(query);
-            
-            ps.setLong(1, club.getPrimaryKey().getEntityId());
-            ps.setLong(2, clubItemType.getPrimaryKey().getEntityId());
-            ps.setLong(3, item.getPrimaryKey().getEntityId());
-            ps.setLong(4, Session.MAX_TIME);
-            
-            clubItem = clubItemFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return clubItem;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return clubItemFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ClubItem getClubItem(Club club, ClubItemType clubItemType, Item item) {
@@ -834,40 +721,26 @@ public class ClubControl
     }
     
     private List<ClubItem> getClubItemsByClub(Club club, EntityPermission entityPermission) {
-        List<ClubItem> clubItems;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM clubitems, clubitemtypes, items, itemdetails
-                        WHERE clbitm_clb_clubid = ? AND clbitm_thrutime = ?
-                        AND clbitm_clbitmtyp_clubitemtypeid = clbitmtyp_clubitemtypeid
-                        AND clbitm_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                        ORDER BY clbitmtyp_sortorder, clbitmtyp_clubitemtypename, itmdt_itemname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM clubitems
-                        WHERE clbitm_clb_clubid = ? AND clbitm_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ClubItems.fields())
+                    .from(ClubItems)
+                    .join(ClubItemTypes).onKey(CLUB_ITEMS_CLUB_ITEM_TYPE_FK)
+                    .join(Items).onKey(CLUB_ITEMS_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .where(ClubItems.CLUB.eq(club.getPrimaryKey()),
+                            ClubItems.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ClubItemTypes.SORT_ORDER, ClubItemTypes.CLUB_ITEM_TYPE_NAME, ItemDetails.ITEM_NAME),
+                    ClubItemFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ClubItems.fields())
+                    .from(ClubItems)
+                    .where(ClubItems.CLUB.eq(club.getPrimaryKey()),
+                            ClubItems.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = clubItemFactory.prepareStatement(query);
-            
-            ps.setLong(1, club.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            clubItems = clubItemFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return clubItems;
+        return clubItemFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ClubItem> getClubItemsByClub(Club club) {
@@ -879,40 +752,26 @@ public class ClubControl
     }
     
     private List<ClubItem> getClubItemsByItem(Item item, EntityPermission entityPermission) {
-        List<ClubItem> clubItems;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM clubitems, clubs, clubdetails, clubitemtypes
-                        WHERE clbitm_itm_itemid = ? AND clbitm_thrutime = ?
-                        AND clbitm_clb_clubid = clb_clubid AND clb_lastdetailid = clbdt_clubdetailid
-                        AND clbitm_clbitmtyp_clubitemtypeid = clbitmtyp_clubitemtypeid
-                        ORDER BY clbdt_sortorder, clbdt_clubname, clbitmtyp_sortorder, clbitmtyp_clubitemtypename
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM clubitems
-                        WHERE clbitm_itm_itemid = ? AND clbitm_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ClubItems.fields())
+                    .from(ClubItems)
+                    .join(Clubs).onKey(CLUB_ITEMS_CLUB_FK)
+                    .join(ClubDetails).onKey(CLUBS_LAST_DETAIL_FK)
+                    .join(ClubItemTypes).onKey(CLUB_ITEMS_CLUB_ITEM_TYPE_FK)
+                    .where(ClubItems.ITEM.eq(item.getPrimaryKey()),
+                            ClubItems.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ClubDetails.SORT_ORDER, ClubDetails.CLUB_NAME, ClubItemTypes.SORT_ORDER, ClubItemTypes.CLUB_ITEM_TYPE_NAME),
+                    ClubItemFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ClubItems.fields())
+                    .from(ClubItems)
+                    .where(ClubItems.ITEM.eq(item.getPrimaryKey()),
+                            ClubItems.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = clubItemFactory.prepareStatement(query);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            clubItems = clubItemFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return clubItems;
+        return clubItemFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ClubItem> getClubItemsByItem(Item item) {
