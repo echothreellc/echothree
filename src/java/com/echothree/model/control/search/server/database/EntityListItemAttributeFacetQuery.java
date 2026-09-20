@@ -16,6 +16,14 @@
 
 package com.echothree.model.control.search.server.database;
 
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_LIST_ITEMS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_LIST_ITEM_ATTRIBUTES_ENTITY_LIST_ITEM_FK;
+import static com.echothree.model.jooq.server.tables.core.EntityListItemAttributes.EntityListItemAttributes;
+import static com.echothree.model.jooq.server.tables.core.EntityListItemDetails.EntityListItemDetails;
+import static com.echothree.model.jooq.server.tables.core.EntityListItems.EntityListItems;
+import static com.echothree.model.jooq.server.tables.search.CachedExecutedSearchResults.CachedExecutedSearchResults;
+import static com.echothree.model.jooq.server.tables.search.SearchResults.SearchResults;
+import static org.jooq.impl.DSL.count;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.util.server.persistence.Session;
@@ -25,26 +33,37 @@ public class EntityListItemAttributeFacetQuery
         extends BaseFacetQuery<EntityListItemAttributeFacetResult> {
     
     public EntityListItemAttributeFacetQuery(UserVisitSearch userVisitSearch) {
-        super(userVisitSearch.getSearch().getCachedSearch() == null
-                ? "SELECT eli_entitylistitemid AS EntityListItem, COUNT(*) AS Count "
-                + "FROM searchresults, entitylistitems, entitylistitemdetails, entitylistitemattributes "
-                + "WHERE srchr_srch_searchid = ? "
-                + "AND eli_activedetailid = elidt_entitylistitemdetailid AND elidt_ena_entityattributeid = ? "
-                + "AND srchr_eni_entityinstanceid = ela_eni_entityinstanceid AND ela_eli_entitylistitemid = eli_entitylistitemid AND ela_thrutime = ? "
-                + "GROUP BY eli_entitylistitemid "
-                + "ORDER BY Count DESC"
-                : "SELECT eli_entitylistitemid AS EntityListItem, COUNT(*) AS Count "
-                + "FROM cachedexecutedsearchresults, entitylistitems, entitylistitemdetails, entitylistitemattributes "
-                + "WHERE cxsrchr_cxsrch_cachedexecutedsearchid = ? "
-                + "AND eli_activedetailid = elidt_entitylistitemdetailid AND elidt_ena_entityattributeid = ? "
-                + "AND cxsrchr_eni_entityinstanceid = ela_eni_entityinstanceid AND ela_eli_entitylistitemid = eli_entitylistitemid AND ela_thrutime = ? "
-                + "GROUP BY eli_entitylistitemid "
-                + "ORDER BY Count DESC",
-                userVisitSearch);
+        super(userVisitSearch);
     }
     
     public List<EntityListItemAttributeFacetResult> execute(EntityAttribute entityAttribute) {
-        return super.execute(cachedExecutedSearch == null ? search : cachedExecutedSearch, entityAttribute, Session.MAX_TIME);
+        var query = cachedExecutedSearch == null
+                ? getDslContext()
+                    .select(EntityListItems.ENTITY_LIST_ITEM.as("EntityListItem"),
+                            count().as("Count"))
+                    .from(SearchResults)
+                    .join(EntityListItemAttributes).on(SearchResults.ENTITY_INSTANCE.eq(EntityListItemAttributes.ENTITY_INSTANCE))
+                    .join(EntityListItems).onKey(ENTITY_LIST_ITEM_ATTRIBUTES_ENTITY_LIST_ITEM_FK)
+                    .join(EntityListItemDetails).onKey(ENTITY_LIST_ITEMS_ACTIVE_DETAIL_FK)
+                    .where(SearchResults.SEARCH.eq(search.getPrimaryKey()),
+                            EntityListItemDetails.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                            EntityListItemAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                    .groupBy(EntityListItems.ENTITY_LIST_ITEM)
+                    .orderBy(count().desc())
+                : getDslContext()
+                    .select(EntityListItems.ENTITY_LIST_ITEM.as("EntityListItem"),
+                            count().as("Count"))
+                    .from(CachedExecutedSearchResults)
+                    .join(EntityListItemAttributes).on(CachedExecutedSearchResults.ENTITY_INSTANCE.eq(EntityListItemAttributes.ENTITY_INSTANCE))
+                    .join(EntityListItems).onKey(ENTITY_LIST_ITEM_ATTRIBUTES_ENTITY_LIST_ITEM_FK)
+                    .join(EntityListItemDetails).onKey(ENTITY_LIST_ITEMS_ACTIVE_DETAIL_FK)
+                    .where(CachedExecutedSearchResults.CACHED_EXECUTED_SEARCH.eq(cachedExecutedSearch.getPrimaryKey()),
+                            EntityListItemDetails.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                            EntityListItemAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                    .groupBy(EntityListItems.ENTITY_LIST_ITEM)
+                    .orderBy(count().desc());
+
+        return super.execute(query);
     }
     
 }

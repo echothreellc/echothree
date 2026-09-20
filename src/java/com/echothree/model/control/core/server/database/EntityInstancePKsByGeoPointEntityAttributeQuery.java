@@ -16,22 +16,23 @@
 
 package com.echothree.model.control.core.server.database;
 
+import static com.echothree.model.jooq.server.tables.core.EntityGeoPointAttributes.EntityGeoPointAttributes;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
 
 public class EntityInstancePKsByGeoPointEntityAttributeQuery
         extends BaseEntityInstancePKQuery<EntityInstancePKResult> {
-    
-    public EntityInstancePKsByGeoPointEntityAttributeQuery() {
-        super("SELECT engeopnta_eni_entityinstanceid AS EntityInstancePK "
-                + "FROM entitygeopointattributes "
-                + "WHERE engeopnta_ena_entityattributeid = ? AND engeopnta_thrutime = ?");
-    }
-    
+
     @Override
     public List<EntityInstancePKResult> execute(final EntityAttribute entityAttribute) {
-        return super.execute(entityAttribute, Session.MAX_TIME);
+        var query = getDslContext()
+                .select(EntityGeoPointAttributes.ENTITY_INSTANCE.as("EntityInstancePK"))
+                .from(EntityGeoPointAttributes)
+                .where(EntityGeoPointAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()),
+                        EntityGeoPointAttributes.THRU_TIME.eq(Session.MAX_TIME));
+
+        return super.execute(query);
     }
     
 }

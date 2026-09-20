@@ -16,6 +16,10 @@
 
 package com.echothree.model.control.core.server.database;
 
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTIES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.party.Parties.Parties;
+import static com.echothree.model.jooq.server.tables.party.PartyDetails.PartyDetails;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.util.server.persistence.BaseDatabaseQuery;
@@ -26,16 +30,19 @@ public class EntityInstancePKsByPartyTypeQuery
         extends BaseDatabaseQuery<EntityInstancePKResult> {
     
     public EntityInstancePKsByPartyTypeQuery() {
-        super("SELECT eni_entityinstanceid AS EntityInstancePK "
-                + "FROM entityinstances, parties, partydetails "
-                + "WHERE eni_ent_entitytypeid = ? "
-                + "AND eni_entityuniqueid = par_partyid AND par_activedetailid = pardt_partydetailid "
-                + "AND pardt_ptyp_partytypeid = ?",
-                EntityPermission.READ_ONLY);
+        super(EntityPermission.READ_ONLY);
     }
     
     public List<EntityInstancePKResult> execute(final EntityType entityType, final PartyType partyType) {
-        return super.execute(entityType, partyType);
+        var query = getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE.as("EntityInstancePK"))
+                .from(EntityInstances)
+                .join(Parties).on(EntityInstances.ENTITY_UNIQUE.eq(Parties.PARTY.cast(Long.class)))
+                .join(PartyDetails).onKey(PARTIES_ACTIVE_DETAIL_FK)
+                .where(EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                        PartyDetails.PARTY_TYPE.eq(partyType.getPrimaryKey()));
+
+        return super.execute(query);
     }
     
 }

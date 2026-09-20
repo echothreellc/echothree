@@ -25,8 +25,8 @@ import java.util.List;
 public abstract class BaseEntityInstancePKQuery<R extends BaseDatabaseResult>
         extends BaseDatabaseQuery<R> {
     
-    protected BaseEntityInstancePKQuery(final String sql) {
-        super(sql, EntityPermission.READ_ONLY);
+    protected BaseEntityInstancePKQuery() {
+        super(EntityPermission.READ_ONLY);
     }
     
     public abstract List<EntityInstancePKResult> execute(final EntityAttribute entityAttribute);
