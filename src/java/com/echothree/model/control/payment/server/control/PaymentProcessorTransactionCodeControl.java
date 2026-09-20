@@ -18,25 +18,39 @@ package com.echothree.model.control.payment.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTransactionCodeTransfer;
+import com.echothree.model.control.payment.server.transfer.PaymentProcessorTransactionCodeTransferCache;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTransaction;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTransactionCode;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCode;
 import com.echothree.model.data.payment.server.factory.PaymentProcessorTransactionCodeFactory;
 import com.echothree.model.data.payment.server.value.PaymentProcessorTransactionCodeValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import static com.echothree.model.jooq.server.keys.payment.PaymentForeignKeys.PAYMENT_PROCESSOR_TRANSACTIONS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.payment.PaymentForeignKeys.PAYMENT_PROCESSOR_TRANSACTION_CODES_PAYMENT_PROCESSOR_TRANSACTION_FK;
+import static com.echothree.model.jooq.server.keys.payment.PaymentForeignKeys.PAYMENT_PROCESSOR_TRANSACTION_CODES_PAYMENT_PROCESSOR_TYPE_CODE_FK;
+import static com.echothree.model.jooq.server.keys.payment.PaymentForeignKeys.PAYMENT_PROCESSOR_TYPE_CODES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.payment.PaymentForeignKeys.PAYMENT_PROCESSOR_TYPE_CODE_DETAILS_PAYMENT_PROCESSOR_TYPE_CODE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.payment.PaymentForeignKeys.PAYMENT_PROCESSOR_TYPE_CODE_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.payment.PaymentProcessorTransactionCodes.PaymentProcessorTransactionCodes;
+import static com.echothree.model.jooq.server.tables.payment.PaymentProcessorTransactionDetails.PaymentProcessorTransactionDetails;
+import static com.echothree.model.jooq.server.tables.payment.PaymentProcessorTransactions.PaymentProcessorTransactions;
+import static com.echothree.model.jooq.server.tables.payment.PaymentProcessorTypeCodeDetails.PaymentProcessorTypeCodeDetails;
+import static com.echothree.model.jooq.server.tables.payment.PaymentProcessorTypeCodeTypeDetails.PaymentProcessorTypeCodeTypeDetails;
+import static com.echothree.model.jooq.server.tables.payment.PaymentProcessorTypeCodeTypes.PaymentProcessorTypeCodeTypes;
+import static com.echothree.model.jooq.server.tables.payment.PaymentProcessorTypeCodes.PaymentProcessorTypeCodes;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
 public class PaymentProcessorTransactionCodeControl
-        extends BasePaymentControl {
+        extends BaseModelControl {
 
     /** Creates a new instance of PaymentProcessorTransactionCodeControl */
     protected PaymentProcessorTransactionCodeControl() {
@@ -48,7 +62,10 @@ public class PaymentProcessorTransactionCodeControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PaymentProcessorTransactionCodeFactory paymentProcessorTransactionCodeFactory;
+    private PaymentProcessorTransactionCodeFactory paymentProcessorTransactionCodeFactory;
+
+    @Inject
+    private PaymentProcessorTransactionCodeTransferCache paymentProcessorTransactionCodeTransferCache;
 
     public PaymentProcessorTransactionCode createPaymentProcessorTransactionCode(final PaymentProcessorTransaction paymentProcessorTransaction,
             final PaymentProcessorTypeCode paymentProcessorTypeCode, final BasePK createdBy) {
@@ -61,40 +78,41 @@ public class PaymentProcessorTransactionCodeControl
     }
 
     public long countPaymentProcessorTransactionCodesByPaymentProcessorTransaction(final PaymentProcessorTransaction paymentProcessorTransaction) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM paymentprocessortransactions
-                        WHERE pprctrxc_pprctrx_paymentprocessortransactionid = ? AND pprctrxc_thrutime = ?
-                        """, paymentProcessorTransaction, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PaymentProcessorTransactionCodes)
+                .where(PaymentProcessorTransactionCodes.PAYMENT_PROCESSOR_TRANSACTION.eq(paymentProcessorTransaction.getPrimaryKey()),
+                        PaymentProcessorTransactionCodes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPaymentProcessorTransactionCodesByPaymentProcessorTypeCode(final PaymentProcessorTypeCode paymentProcessorTypeCode) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM paymentprocessortransactions
-                        WHERE pprctrxc_pproctypc_paymentprocessortypecodeid = ? AND pprctrxc_thrutime = ?
-                        """, paymentProcessorTypeCode, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PaymentProcessorTransactionCodes)
+                .where(PaymentProcessorTransactionCodes.PAYMENT_PROCESSOR_TYPE_CODE.eq(paymentProcessorTypeCode.getPrimaryKey()),
+                        PaymentProcessorTransactionCodes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
-    private static final Map<EntityPermission, String> getPaymentProcessorTransactionCodeQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            """
-            SELECT _ALL_
-            FROM paymentprocessortransactions
-            WHERE pprctrxc_pprctrx_paymentprocessortransactionid = ? AND pprctrxc_pproctypc_paymentprocessortypecodeid = ? AND pprctrxc_thrutime = ?
-            """,
-            EntityPermission.READ_WRITE,
-            """
-            SELECT _ALL_
-            FROM paymentprocessortransactions
-            WHERE pprctrxc_pprctrx_paymentprocessortransactionid = ? AND pprctrxc_pproctypc_paymentprocessortypecodeid = ? AND pprctrxc_thrutime = ?
-            FOR UPDATE
-            """);
 
     public PaymentProcessorTransactionCode getPaymentProcessorTransactionCode(final PaymentProcessorTransaction paymentProcessorTransaction,
             final PaymentProcessorTypeCode paymentProcessorTypeCode, final EntityPermission entityPermission) {
-        return paymentProcessorTransactionCodeFactory.getEntityFromQuery(entityPermission, getPaymentProcessorTransactionCodeQueries,
-                paymentProcessorTransaction, paymentProcessorTypeCode, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(PaymentProcessorTransactionCodes.fields())
+                .from(PaymentProcessorTransactionCodes)
+                .where(PaymentProcessorTransactionCodes.PAYMENT_PROCESSOR_TRANSACTION.eq(paymentProcessorTransaction.getPrimaryKey()),
+                        PaymentProcessorTransactionCodes.PAYMENT_PROCESSOR_TYPE_CODE.eq(paymentProcessorTypeCode.getPrimaryKey()),
+                        PaymentProcessorTransactionCodes.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return paymentProcessorTransactionCodeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PaymentProcessorTransactionCode getPaymentProcessorTransactionCode(final PaymentProcessorTransaction paymentProcessorTransaction,
@@ -116,30 +134,30 @@ public class PaymentProcessorTransactionCodeControl
         return getPaymentProcessorTransactionCodeValue(getPaymentProcessorTransactionCodeForUpdate(paymentProcessorTransaction, paymentProcessorTypeCode));
     }
 
-    private static final Map<EntityPermission, String> getPaymentProcessorTransactionCodesByPaymentProcessorTransactionQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            """
-            SELECT _ALL_
-            FROM paymentprocessortransactioncodes, paymentprocessortypecodes, paymentprocessortypecodedetails, paymentprocessortypecodetypes, paymentprocessortypecodetypedetails
-            WHERE pprctrxc_pprctrx_paymentprocessortransactionid = ? AND pprctrxc_thrutime = ?
-            AND pprctrxc_pproctypc_paymentprocessortypecodeid = pproctypc_paymentprocessortypecodeid AND pproctypc_lastdetailid = pproctypcdt_paymentprocessortypecodedetailid
-            AND pproctypcdt_pproctypctyp_paymentprocessortypecodetypeid = pproctypctyp_paymentprocessortypecodetypeid AND pproctypctyp_lastdetailid = pproctypctypdt_paymentprocessortypecodetypedetailid
-            ORDER BY pproctypcdt_sortorder, pproctypcdt_paymentprocessortypecodename, pproctypctypdt_sortorder, pproctypctypdt_paymentprocessortypecodetypename
-            _LIMIT_
-            """,
-            EntityPermission.READ_WRITE,
-            """
-            SELECT _ALL_
-            FROM paymentprocessortransactioncodes
-            WHERE pprctrxc_pprctrx_paymentprocessortransactionid = ? AND pprctrxc_thrutime = ?
-            FOR UPDATE
-            """);
 
     public List<PaymentProcessorTransactionCode> getPaymentProcessorTransactionCodesByPaymentProcessorTransaction(final PaymentProcessorTransaction paymentProcessorTransaction,
             final EntityPermission entityPermission) {
-        return paymentProcessorTransactionCodeFactory.getEntitiesFromQuery(entityPermission,
-                getPaymentProcessorTransactionCodesByPaymentProcessorTransactionQueries,
-                paymentProcessorTransaction, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PaymentProcessorTransactionCodes.fields())
+                    .from(PaymentProcessorTransactionCodes)
+                    .join(PaymentProcessorTypeCodes).onKey(PAYMENT_PROCESSOR_TRANSACTION_CODES_PAYMENT_PROCESSOR_TYPE_CODE_FK)
+                    .join(PaymentProcessorTypeCodeDetails).onKey(PAYMENT_PROCESSOR_TYPE_CODES_LAST_DETAIL_FK)
+                    .join(PaymentProcessorTypeCodeTypes).onKey(PAYMENT_PROCESSOR_TYPE_CODE_DETAILS_PAYMENT_PROCESSOR_TYPE_CODE_TYPE_FK)
+                    .join(PaymentProcessorTypeCodeTypeDetails).onKey(PAYMENT_PROCESSOR_TYPE_CODE_TYPES_LAST_DETAIL_FK)
+                    .where(PaymentProcessorTransactionCodes.PAYMENT_PROCESSOR_TRANSACTION.eq(paymentProcessorTransaction.getPrimaryKey()),
+                            PaymentProcessorTransactionCodes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PaymentProcessorTypeCodeDetails.SORT_ORDER, PaymentProcessorTypeCodeDetails.PAYMENT_PROCESSOR_TYPE_CODE_NAME, PaymentProcessorTypeCodeTypeDetails.SORT_ORDER, PaymentProcessorTypeCodeTypeDetails.PAYMENT_PROCESSOR_TYPE_CODE_TYPE_NAME),
+                    PaymentProcessorTransactionCodeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PaymentProcessorTransactionCodes.fields())
+                    .from(PaymentProcessorTransactionCodes)
+                    .where(PaymentProcessorTransactionCodes.PAYMENT_PROCESSOR_TRANSACTION.eq(paymentProcessorTransaction.getPrimaryKey()),
+                            PaymentProcessorTransactionCodes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return paymentProcessorTransactionCodeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PaymentProcessorTransactionCode> getPaymentProcessorTransactionCodesByPaymentProcessorTransaction(final PaymentProcessorTransaction paymentProcessorTransaction) {
@@ -150,29 +168,28 @@ public class PaymentProcessorTransactionCodeControl
         return getPaymentProcessorTransactionCodesByPaymentProcessorTransaction(paymentProcessorTransaction, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getPaymentProcessorTransactionCodesByPaymentProcessorTypeCodeQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            """
-            SELECT _ALL_
-            FROM paymentprocessortransactioncodes, paymentprocessortransactions, paymentprocessortransactiondetails
-            WHERE pprctrxc_pproctypc_paymentprocessortypecodeid = ? AND pprctrxc_thrutime = ?
-            AND pprctrxc_pprctrx_paymentprocessortransactionid = pprctrx_paymentprocessortransactionid AND pprctrx_lastdetailid = pprctrxdt_paymentprocessortransactiondetailid
-            ORDER BY pprctrxdt_paymentprocessortransactionname
-            _LIMIT_
-            """,
-            EntityPermission.READ_WRITE,
-            """
-            SELECT _ALL_
-            FROM paymentprocessortransactioncodes
-            WHERE pprctrxc_pproctypc_paymentprocessortypecodeid = ? AND pprctrxc_thrutime = ?
-            FOR UPDATE
-            """);
 
     public List<PaymentProcessorTransactionCode> getPaymentProcessorTransactionCodesByPaymentProcessorTypeCode(final PaymentProcessorTypeCode paymentProcessorTypeCode,
             final EntityPermission entityPermission) {
-        return paymentProcessorTransactionCodeFactory.getEntitiesFromQuery(entityPermission,
-                getPaymentProcessorTransactionCodesByPaymentProcessorTypeCodeQueries,
-                paymentProcessorTypeCode, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PaymentProcessorTransactionCodes.fields())
+                    .from(PaymentProcessorTransactionCodes)
+                    .join(PaymentProcessorTransactions).onKey(PAYMENT_PROCESSOR_TRANSACTION_CODES_PAYMENT_PROCESSOR_TRANSACTION_FK)
+                    .join(PaymentProcessorTransactionDetails).onKey(PAYMENT_PROCESSOR_TRANSACTIONS_LAST_DETAIL_FK)
+                    .where(PaymentProcessorTransactionCodes.PAYMENT_PROCESSOR_TYPE_CODE.eq(paymentProcessorTypeCode.getPrimaryKey()),
+                            PaymentProcessorTransactionCodes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PaymentProcessorTransactionDetails.PAYMENT_PROCESSOR_TRANSACTION_NAME),
+                    PaymentProcessorTransactionCodeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PaymentProcessorTransactionCodes.fields())
+                    .from(PaymentProcessorTransactionCodes)
+                    .where(PaymentProcessorTransactionCodes.PAYMENT_PROCESSOR_TYPE_CODE.eq(paymentProcessorTypeCode.getPrimaryKey()),
+                            PaymentProcessorTransactionCodes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return paymentProcessorTransactionCodeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PaymentProcessorTransactionCode> getPaymentProcessorTransactionCodesByPaymentProcessorTypeCode(final PaymentProcessorTypeCode paymentProcessorTypeCode) {

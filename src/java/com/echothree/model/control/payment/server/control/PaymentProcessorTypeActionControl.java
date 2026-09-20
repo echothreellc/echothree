@@ -19,6 +19,7 @@ package com.echothree.model.control.payment.server.control;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.payment.common.choice.PaymentProcessorTypeActionChoicesBean;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTypeActionTransfer;
+import com.echothree.model.control.payment.server.transfer.PaymentProcessorTypeActionTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.payment.common.pk.PaymentProcessorTypeActionPK;
@@ -29,23 +30,34 @@ import com.echothree.model.data.payment.server.factory.PaymentProcessorTypeActio
 import com.echothree.model.data.payment.server.factory.PaymentProcessorTypeActionFactory;
 import com.echothree.model.data.payment.server.value.PaymentProcessorTypeActionDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import static com.echothree.model.jooq.server.keys.payment.PaymentForeignKeys.PAYMENT_PROCESSOR_ACTION_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.payment.PaymentForeignKeys.PAYMENT_PROCESSOR_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.payment.PaymentForeignKeys.PAYMENT_PROCESSOR_TYPE_ACTIONS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.payment.PaymentForeignKeys.PAYMENT_PROCESSOR_TYPE_ACTION_DETAILS_PAYMENT_PROCESSOR_ACTION_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.payment.PaymentForeignKeys.PAYMENT_PROCESSOR_TYPE_ACTION_DETAILS_PAYMENT_PROCESSOR_TYPE_FK;
+import static com.echothree.model.jooq.server.tables.payment.PaymentProcessorActionTypeDetails.PaymentProcessorActionTypeDetails;
+import static com.echothree.model.jooq.server.tables.payment.PaymentProcessorActionTypes.PaymentProcessorActionTypes;
+import static com.echothree.model.jooq.server.tables.payment.PaymentProcessorTypeActionDetails.PaymentProcessorTypeActionDetails;
+import static com.echothree.model.jooq.server.tables.payment.PaymentProcessorTypeActions.PaymentProcessorTypeActions;
+import static com.echothree.model.jooq.server.tables.payment.PaymentProcessorTypeDetails.PaymentProcessorTypeDetails;
+import static com.echothree.model.jooq.server.tables.payment.PaymentProcessorTypes.PaymentProcessorTypes;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
 public class PaymentProcessorTypeActionControl
-        extends BasePaymentControl {
+        extends BaseModelControl {
 
     @Inject
-    protected PaymentProcessorActionControl paymentProcessorActionControl;
+    private PaymentProcessorActionControl paymentProcessorActionControl;
 
     @Inject
     protected PaymentProcessorActionTypeControl paymentProcessorActionTypeControl;
@@ -60,10 +72,13 @@ public class PaymentProcessorTypeActionControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PaymentProcessorTypeActionFactory paymentProcessorTypeActionFactory;
+    protected PaymentProcessorTypeActionDetailFactory paymentProcessorTypeActionDetailFactory;
 
     @Inject
-    protected PaymentProcessorTypeActionDetailFactory paymentProcessorTypeActionDetailFactory;
+    private PaymentProcessorTypeActionFactory paymentProcessorTypeActionFactory;
+
+    @Inject
+    private PaymentProcessorTypeActionTransferCache paymentProcessorTypeActionTransferCache;
 
     public PaymentProcessorTypeAction createPaymentProcessorTypeAction(final PaymentProcessorType paymentProcessorType,
             final PaymentProcessorActionType paymentProcessorActionType, Boolean isDefault, final Integer sortOrder, final BasePK createdBy) {
@@ -111,27 +126,22 @@ public class PaymentProcessorTypeActionControl
         return getPaymentProcessorTypeActionByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getPaymentProcessorTypeActionQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            """
-            SELECT _ALL_
-            FROM paymentprocessortypeactions, paymentprocessortypeactiondetails
-            WHERE pprctypact_activedetailid = pprctypactdt_paymentprocessortypeactiondetailid
-            AND pprctypactdt_pprctyp_paymentprocessortypeid = ? AND pprctypactdt_pprcacttyp_paymentprocessoractiontypeid = ?
-            """,
-            EntityPermission.READ_WRITE,
-            """
-            SELECT _ALL_
-            FROM paymentprocessortypeactions, paymentprocessortypeactiondetails
-            WHERE pprctypact_activedetailid = pprctypactdt_paymentprocessortypeactiondetailid
-            AND pprctypactdt_pprctyp_paymentprocessortypeid = ? AND pprctypactdt_pprcacttyp_paymentprocessoractiontypeid = ?
-            FOR UPDATE
-            """);
 
     public PaymentProcessorTypeAction getPaymentProcessorTypeAction(final PaymentProcessorType paymentProcessorType,
             final PaymentProcessorActionType paymentProcessorActionType, final EntityPermission entityPermission) {
-        return paymentProcessorTypeActionFactory.getEntityFromQuery(entityPermission, getPaymentProcessorTypeActionQueries,
-                paymentProcessorType, paymentProcessorActionType);
+        var baseQuery = session.getDslContext()
+                .select(PaymentProcessorTypeActions.fields())
+                .from(PaymentProcessorTypeActions)
+                .join(PaymentProcessorTypeActionDetails).onKey(PAYMENT_PROCESSOR_TYPE_ACTIONS_ACTIVE_DETAIL_FK)
+                .where(PaymentProcessorTypeActionDetails.PAYMENT_PROCESSOR_TYPE.eq(paymentProcessorType.getPrimaryKey()),
+                        PaymentProcessorTypeActionDetails.PAYMENT_PROCESSOR_ACTION_TYPE.eq(paymentProcessorActionType.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return paymentProcessorTypeActionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PaymentProcessorTypeAction getPaymentProcessorTypeAction(final PaymentProcessorType paymentProcessorType,
@@ -153,27 +163,22 @@ public class PaymentProcessorTypeActionControl
         return getPaymentProcessorTypeActionDetailValueForUpdate(getPaymentProcessorTypeActionForUpdate(paymentProcessorType, paymentProcessorActionType));
     }
 
-    private static final Map<EntityPermission, String> getDefaultPaymentProcessorTypeActionQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            """
-            SELECT _ALL_
-            FROM paymentprocessortypeactions, paymentprocessortypeactiondetails
-            WHERE pprctypact_activedetailid = pprctypactdt_paymentprocessortypeactiondetailid
-            AND pprctypactdt_pprctyp_paymentprocessortypeid = ? AND pprctypactdt_isdefault = 1
-            """,
-            EntityPermission.READ_WRITE,
-            """
-            SELECT _ALL_
-            FROM paymentprocessortypeactions, paymentprocessortypeactiondetails
-            WHERE pprctypact_activedetailid = pprctypactdt_paymentprocessortypeactiondetailid
-            AND pprctypactdt_pprctyp_paymentprocessortypeid = ? AND pprctypactdt_isdefault = 1
-            FOR UPDATE
-            """);
 
     public PaymentProcessorTypeAction getDefaultPaymentProcessorTypeAction(final PaymentProcessorType paymentProcessorType,
             final EntityPermission entityPermission) {
-        return paymentProcessorTypeActionFactory.getEntityFromQuery(entityPermission, getDefaultPaymentProcessorTypeActionQueries,
-                paymentProcessorType);
+        var baseQuery = session.getDslContext()
+                .select(PaymentProcessorTypeActions.fields())
+                .from(PaymentProcessorTypeActions)
+                .join(PaymentProcessorTypeActionDetails).onKey(PAYMENT_PROCESSOR_TYPE_ACTIONS_ACTIVE_DETAIL_FK)
+                .where(PaymentProcessorTypeActionDetails.PAYMENT_PROCESSOR_TYPE.eq(paymentProcessorType.getPrimaryKey()),
+                        PaymentProcessorTypeActionDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return paymentProcessorTypeActionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PaymentProcessorTypeAction getDefaultPaymentProcessorTypeAction(final PaymentProcessorType paymentProcessorType) {
@@ -188,29 +193,27 @@ public class PaymentProcessorTypeActionControl
         return getDefaultPaymentProcessorTypeActionForUpdate(paymentProcessorType).getLastDetailForUpdate().getPaymentProcessorTypeActionDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getPaymentProcessorTypeActionsByPaymentProcessorTypeQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            """
-            SELECT _ALL_
-            FROM paymentprocessortypeactions, paymentprocessortypeactiondetails, paymentprocessoractiontypes, paymentprocessoractiontypedetails
-            WHERE pprctypact_activedetailid = pprctypactdt_paymentprocessortypeactiondetailid
-            AND pprctypactdt_pprcacttyp_paymentprocessoractiontypeid = pprcacttyp_paymentprocessoractiontypeid AND pprcacttyp_activedetailid = pprcacttypdt_paymentprocessoractiontypedetailid
-            AND pprctypactdt_pprctyp_paymentprocessortypeid = ?
-            ORDER BY pprcacttypdt_sortorder, pprcacttypdt_paymentprocessoractiontypename
-            _LIMIT_
-            """,
-            EntityPermission.READ_WRITE,
-            """
-            SELECT _ALL_
-            FROM paymentprocessortypeactions, paymentprocessortypeactiondetails
-            WHERE pprctypact_activedetailid = pprctypactdt_paymentprocessortypeactiondetailid
-            AND pprctypactdt_pprctyp_paymentprocessortypeid = ?
-            FOR UPDATE
-            """);
 
     private List<PaymentProcessorTypeAction> getPaymentProcessorTypeActionsByPaymentProcessorType(final PaymentProcessorType paymentProcessorType, final EntityPermission entityPermission) {
-        return paymentProcessorTypeActionFactory.getEntitiesFromQuery(entityPermission, getPaymentProcessorTypeActionsByPaymentProcessorTypeQueries,
-                paymentProcessorType);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PaymentProcessorTypeActions.fields())
+                    .from(PaymentProcessorTypeActions)
+                    .join(PaymentProcessorTypeActionDetails).onKey(PAYMENT_PROCESSOR_TYPE_ACTIONS_ACTIVE_DETAIL_FK)
+                    .join(PaymentProcessorActionTypes).onKey(PAYMENT_PROCESSOR_TYPE_ACTION_DETAILS_PAYMENT_PROCESSOR_ACTION_TYPE_FK)
+                    .join(PaymentProcessorActionTypeDetails).onKey(PAYMENT_PROCESSOR_ACTION_TYPES_ACTIVE_DETAIL_FK)
+                    .where(PaymentProcessorTypeActionDetails.PAYMENT_PROCESSOR_TYPE.eq(paymentProcessorType.getPrimaryKey()))
+                    .orderBy(PaymentProcessorActionTypeDetails.SORT_ORDER, PaymentProcessorActionTypeDetails.PAYMENT_PROCESSOR_ACTION_TYPE_NAME),
+                    PaymentProcessorTypeActionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PaymentProcessorTypeActions.fields())
+                    .from(PaymentProcessorTypeActions)
+                    .join(PaymentProcessorTypeActionDetails).onKey(PAYMENT_PROCESSOR_TYPE_ACTIONS_ACTIVE_DETAIL_FK)
+                    .where(PaymentProcessorTypeActionDetails.PAYMENT_PROCESSOR_TYPE.eq(paymentProcessorType.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return paymentProcessorTypeActionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PaymentProcessorTypeAction> getPaymentProcessorTypeActionsByPaymentProcessorType(final PaymentProcessorType paymentProcessorType) {
@@ -221,29 +224,27 @@ public class PaymentProcessorTypeActionControl
         return getPaymentProcessorTypeActionsByPaymentProcessorType(paymentProcessorType, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getPaymentProcessorTypeActionsByPaymentProcessorActionTypeQueries = Map.of(
-            EntityPermission.READ_ONLY,
-            """
-            SELECT _ALL_
-            FROM paymentprocessortypeactions, paymentprocessortypeactiondetails, paymentprocessortypes, paymentprocessortypedetails
-            WHERE pprctypact_activedetailid = pprctypactdt_paymentprocessortypeactiondetailid
-            AND pprctypactdt_pprctyp_paymentprocessortypeid = pprctyp_paymentprocessortypeid AND pprctyp_activedetailid = pprctypdt_paymentprocessortypedetailid
-            AND pprctypactdt_pprcacttyp_paymentprocessoractiontypeid = ?
-            ORDER BY pprctypdt_sortorder, pprctypdt_paymentprocessortypename
-            _LIMIT_
-            """,
-            EntityPermission.READ_WRITE,
-            """
-            SELECT _ALL_
-            FROM paymentprocessortypeactions, paymentprocessortypeactiondetails
-            WHERE pprctypact_activedetailid = pprctypactdt_paymentprocessortypeactiondetailid
-            AND pprctypactdt_pprcacttyp_paymentprocessoractiontypeid = ?
-            FOR UPDATE
-            """);
 
     private List<PaymentProcessorTypeAction> getPaymentProcessorTypeActionsByPaymentProcessorActionType(final PaymentProcessorActionType paymentProcessorActionType, final EntityPermission entityPermission) {
-        return paymentProcessorTypeActionFactory.getEntitiesFromQuery(entityPermission, getPaymentProcessorTypeActionsByPaymentProcessorActionTypeQueries,
-                paymentProcessorActionType);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PaymentProcessorTypeActions.fields())
+                    .from(PaymentProcessorTypeActions)
+                    .join(PaymentProcessorTypeActionDetails).onKey(PAYMENT_PROCESSOR_TYPE_ACTIONS_ACTIVE_DETAIL_FK)
+                    .join(PaymentProcessorTypes).onKey(PAYMENT_PROCESSOR_TYPE_ACTION_DETAILS_PAYMENT_PROCESSOR_TYPE_FK)
+                    .join(PaymentProcessorTypeDetails).onKey(PAYMENT_PROCESSOR_TYPES_ACTIVE_DETAIL_FK)
+                    .where(PaymentProcessorTypeActionDetails.PAYMENT_PROCESSOR_ACTION_TYPE.eq(paymentProcessorActionType.getPrimaryKey()))
+                    .orderBy(PaymentProcessorTypeDetails.SORT_ORDER, PaymentProcessorTypeDetails.PAYMENT_PROCESSOR_TYPE_NAME),
+                    PaymentProcessorTypeActionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PaymentProcessorTypeActions.fields())
+                    .from(PaymentProcessorTypeActions)
+                    .join(PaymentProcessorTypeActionDetails).onKey(PAYMENT_PROCESSOR_TYPE_ACTIONS_ACTIVE_DETAIL_FK)
+                    .where(PaymentProcessorTypeActionDetails.PAYMENT_PROCESSOR_ACTION_TYPE.eq(paymentProcessorActionType.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return paymentProcessorTypeActionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PaymentProcessorTypeAction> getPaymentProcessorTypeActionsByPaymentProcessorActionType(final PaymentProcessorActionType paymentProcessorActionType) {
