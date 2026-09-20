@@ -91,14 +91,41 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.communication.CommunicationForeignKeys.COMMUNICATION_EVENTS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.communication.CommunicationForeignKeys.COMMUNICATION_EVENTS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.communication.CommunicationForeignKeys.COMMUNICATION_EVENT_PURPOSES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.communication.CommunicationForeignKeys.COMMUNICATION_EVENT_PURPOSE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.communication.CommunicationForeignKeys.COMMUNICATION_EVENT_ROLES_COMMUNICATION_EVENT_FK;
+import static com.echothree.model.jooq.server.keys.communication.CommunicationForeignKeys.COMMUNICATION_EVENT_ROLES_COMMUNICATION_EVENT_ROLE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.communication.CommunicationForeignKeys.COMMUNICATION_EVENT_ROLES_PARTY_FK;
+import static com.echothree.model.jooq.server.keys.communication.CommunicationForeignKeys.COMMUNICATION_SOURCES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.communication.CommunicationForeignKeys.COMMUNICATION_SOURCE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTIES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.communication.CommunicationEmailSources.CommunicationEmailSources;
+import static com.echothree.model.jooq.server.tables.communication.CommunicationEventDetails.CommunicationEventDetails;
+import static com.echothree.model.jooq.server.tables.communication.CommunicationEventPurposeDescriptions.CommunicationEventPurposeDescriptions;
+import static com.echothree.model.jooq.server.tables.communication.CommunicationEventPurposeDetails.CommunicationEventPurposeDetails;
+import static com.echothree.model.jooq.server.tables.communication.CommunicationEventPurposes.CommunicationEventPurposes;
+import static com.echothree.model.jooq.server.tables.communication.CommunicationEventRoleTypeDescriptions.CommunicationEventRoleTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.communication.CommunicationEventRoleTypes.CommunicationEventRoleTypes;
+import static com.echothree.model.jooq.server.tables.communication.CommunicationEventRoles.CommunicationEventRoles;
+import static com.echothree.model.jooq.server.tables.communication.CommunicationEventTypeDescriptions.CommunicationEventTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.communication.CommunicationEventTypes.CommunicationEventTypes;
+import static com.echothree.model.jooq.server.tables.communication.CommunicationEvents.CommunicationEvents;
+import static com.echothree.model.jooq.server.tables.communication.CommunicationSourceDescriptions.CommunicationSourceDescriptions;
+import static com.echothree.model.jooq.server.tables.communication.CommunicationSourceDetails.CommunicationSourceDetails;
+import static com.echothree.model.jooq.server.tables.communication.CommunicationSourceTypeDescriptions.CommunicationSourceTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.communication.CommunicationSourceTypes.CommunicationSourceTypes;
+import static com.echothree.model.jooq.server.tables.communication.CommunicationSources.CommunicationSources;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.party.Parties.Parties;
+import static com.echothree.model.jooq.server.tables.party.PartyDetails.PartyDetails;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EncryptionUtils;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -122,48 +149,17 @@ public class CommunicationControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Communication Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    @Inject
-    CommunicationEventRoleTypeTransferCache communicationEventRoleTypeTransferCache;
-
-    @Inject
-    CommunicationEventTypeTransferCache communicationEventTypeTransferCache;
-
-    @Inject
-    CommunicationEventPurposeTransferCache communicationEventPurposeTransferCache;
-
-    @Inject
-    CommunicationEventPurposeDescriptionTransferCache communicationEventPurposeDescriptionTransferCache;
-
-    @Inject
-    CommunicationEventTransferCache communicationEventTransferCache;
-
-    @Inject
-    CommunicationEventRoleTransferCache communicationEventRoleTransferCache;
-
-    @Inject
-    CommunicationSourceTypeTransferCache communicationSourceTypeTransferCache;
-
-    @Inject
-    CommunicationSourceTransferCache communicationSourceTransferCache;
-
-    @Inject
-    CommunicationSourceDescriptionTransferCache communicationSourceDescriptionTransferCache;
-
-    @Inject
-    CommunicationEmailSourceTransferCache communicationEmailSourceTransferCache;
-
-    // --------------------------------------------------------------------------------
     //   Communication Event Purposes
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected CommunicationEventPurposeDetailFactory communicationEventPurposeDetailFactory;
 
     @Inject
     protected CommunicationEventPurposeFactory communicationEventPurposeFactory;
 
     @Inject
-    protected CommunicationEventPurposeDetailFactory communicationEventPurposeDetailFactory;
+    CommunicationEventPurposeTransferCache communicationEventPurposeTransferCache;
 
     public CommunicationEventPurpose createCommunicationEventPurpose(String communicationEventPurposeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultCommunicationEventPurpose = getDefaultCommunicationEventPurpose();
@@ -209,44 +205,27 @@ public class CommunicationControl
     }
 
     public long countCommunicationEventPurposes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM communicationeventpurposes
-                        JOIN communicationeventpurposedetails ON cmmnevprdt_communicationeventpurposedetailid = cmmnevpr_activedetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(CommunicationEventPurposes)
+                .join(CommunicationEventPurposeDetails).onKey(COMMUNICATION_EVENT_PURPOSES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private CommunicationEventPurpose getCommunicationEventPurposeByName(String communicationEventPurposeName, EntityPermission entityPermission) {
-        CommunicationEventPurpose communicationEventPurpose;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM communicationeventpurposes, communicationeventpurposedetails
-                        WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid AND cmmnevprdt_communicationeventpurposename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM communicationeventpurposes, communicationeventpurposedetails
-                        WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid AND cmmnevprdt_communicationeventpurposename = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CommunicationEventPurposes.fields())
+                .from(CommunicationEventPurposes)
+                .join(CommunicationEventPurposeDetails).onKey(COMMUNICATION_EVENT_PURPOSES_ACTIVE_DETAIL_FK)
+                .where(CommunicationEventPurposeDetails.COMMUNICATION_EVENT_PURPOSE_NAME.eq(communicationEventPurposeName));
 
-            var ps = communicationEventPurposeFactory.prepareStatement(query);
-            
-            ps.setString(1, communicationEventPurposeName);
-            
-            communicationEventPurpose = communicationEventPurposeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return communicationEventPurpose;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return communicationEventPurposeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public CommunicationEventPurpose getCommunicationEventPurposeByName(String communicationEventPurposeName) {
@@ -266,26 +245,18 @@ public class CommunicationControl
     }
     
     private CommunicationEventPurpose getDefaultCommunicationEventPurpose(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM communicationeventpurposes, communicationeventpurposedetails
-                    WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid AND cmmnevprdt_isdefault = 1
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM communicationeventpurposes, communicationeventpurposedetails
-                    WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid AND cmmnevprdt_isdefault = 1
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(CommunicationEventPurposes.fields())
+                .from(CommunicationEventPurposes)
+                .join(CommunicationEventPurposeDetails).onKey(COMMUNICATION_EVENT_PURPOSES_ACTIVE_DETAIL_FK)
+                .where(CommunicationEventPurposeDetails.IS_DEFAULT.eq(true));
 
-        var ps = communicationEventPurposeFactory.prepareStatement(query);
-        
-        return communicationEventPurposeFactory.getEntityFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return communicationEventPurposeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public CommunicationEventPurpose getDefaultCommunicationEventPurpose() {
@@ -301,28 +272,19 @@ public class CommunicationControl
     }
     
     private List<CommunicationEventPurpose> getCommunicationEventPurposes(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM communicationeventpurposes, communicationeventpurposedetails
-                    WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid
-                    ORDER BY cmmnevprdt_sortorder, cmmnevprdt_communicationeventpurposename
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM communicationeventpurposes, communicationeventpurposedetails
-                    WHERE cmmnevpr_activedetailid = cmmnevprdt_communicationeventpurposedetailid
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(CommunicationEventPurposes.fields())
+                .from(CommunicationEventPurposes)
+                .join(CommunicationEventPurposeDetails).onKey(COMMUNICATION_EVENT_PURPOSES_ACTIVE_DETAIL_FK);
 
-        var ps = communicationEventPurposeFactory.prepareStatement(query);
-        
-        return communicationEventPurposeFactory.getEntitiesFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(CommunicationEventPurposeDetails.SORT_ORDER, CommunicationEventPurposeDetails.COMMUNICATION_EVENT_PURPOSE_NAME),
+                    CommunicationEventPurposeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return communicationEventPurposeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<CommunicationEventPurpose> getCommunicationEventPurposes() {
@@ -466,6 +428,9 @@ public class CommunicationControl
     @Inject
     protected CommunicationEventPurposeDescriptionFactory communicationEventPurposeDescriptionFactory;
 
+    @Inject
+    CommunicationEventPurposeDescriptionTransferCache communicationEventPurposeDescriptionTransferCache;
+
     public CommunicationEventPurposeDescription createCommunicationEventPurposeDescription(CommunicationEventPurpose communicationEventPurpose,
             Language language, String description, BasePK createdBy) {
         var communicationEventPurposeDescription = communicationEventPurposeDescriptionFactory.create(
@@ -478,38 +443,19 @@ public class CommunicationControl
     
     private CommunicationEventPurposeDescription getCommunicationEventPurposeDescription(CommunicationEventPurpose communicationEventPurpose,
             Language language, EntityPermission entityPermission) {
-        CommunicationEventPurposeDescription communicationEventPurposeDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM communicationeventpurposedescriptions
-                        WHERE cmmnevprd_cmmnevpr_communicationeventpurposeid = ? AND cmmnevprd_lang_languageid = ? AND cmmnevprd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM communicationeventpurposedescriptions
-                        WHERE cmmnevprd_cmmnevpr_communicationeventpurposeid = ? AND cmmnevprd_lang_languageid = ? AND cmmnevprd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CommunicationEventPurposeDescriptions.fields())
+                .from(CommunicationEventPurposeDescriptions)
+                .where(CommunicationEventPurposeDescriptions.COMMUNICATION_EVENT_PURPOSE.eq(communicationEventPurpose.getPrimaryKey()),
+                        CommunicationEventPurposeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        CommunicationEventPurposeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = communicationEventPurposeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, communicationEventPurpose.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            communicationEventPurposeDescription = communicationEventPurposeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return communicationEventPurposeDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return communicationEventPurposeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public CommunicationEventPurposeDescription getCommunicationEventPurposeDescription(CommunicationEventPurpose communicationEventPurpose, Language language) {
@@ -529,39 +475,24 @@ public class CommunicationControl
     }
     
     private List<CommunicationEventPurposeDescription> getCommunicationEventPurposeDescriptionsByCommunicationEventPurpose(CommunicationEventPurpose communicationEventPurpose, EntityPermission entityPermission) {
-        List<CommunicationEventPurposeDescription> communicationEventPurposeDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM communicationeventpurposedescriptions, languages
-                        WHERE cmmnevprd_cmmnevpr_communicationeventpurposeid = ? AND cmmnevprd_thrutime = ? AND cmmnevprd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM communicationeventpurposedescriptions
-                        WHERE cmmnevprd_cmmnevpr_communicationeventpurposeid = ? AND cmmnevprd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CommunicationEventPurposeDescriptions.fields())
+                    .from(CommunicationEventPurposeDescriptions)
+                    .join(Languages).onKey(COMMUNICATION_EVENT_PURPOSE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(CommunicationEventPurposeDescriptions.COMMUNICATION_EVENT_PURPOSE.eq(communicationEventPurpose.getPrimaryKey()),
+                            CommunicationEventPurposeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    CommunicationEventPurposeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(CommunicationEventPurposeDescriptions.fields())
+                    .from(CommunicationEventPurposeDescriptions)
+                    .where(CommunicationEventPurposeDescriptions.COMMUNICATION_EVENT_PURPOSE.eq(communicationEventPurpose.getPrimaryKey()),
+                            CommunicationEventPurposeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = communicationEventPurposeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, communicationEventPurpose.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            communicationEventPurposeDescriptions = communicationEventPurposeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return communicationEventPurposeDescriptions;
+        return communicationEventPurposeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<CommunicationEventPurposeDescription> getCommunicationEventPurposeDescriptionsByCommunicationEventPurpose(CommunicationEventPurpose communicationEventPurpose) {
@@ -644,6 +575,9 @@ public class CommunicationControl
     @Inject
     protected CommunicationEventRoleTypeFactory communicationEventRoleTypeFactory;
 
+    @Inject
+    CommunicationEventRoleTypeTransferCache communicationEventRoleTypeTransferCache;
+
     public CommunicationEventRoleType createCommunicationEventRoleType(String communicationEventRoleTypeName, Integer sortOrder) {
         return communicationEventRoleTypeFactory.create(communicationEventRoleTypeName, sortOrder);
     }
@@ -664,44 +598,30 @@ public class CommunicationControl
     }
 
     public long countCommunicationEventRoleTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM communicationeventroletypes
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(CommunicationEventRoleTypes)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public CommunicationEventRoleType getCommunicationEventRoleTypeByName(String communicationEventRoleTypeName) {
-        CommunicationEventRoleType communicationEventRoleType;
-        
-        try {
-            var ps = communicationEventRoleTypeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM communicationeventroletypes
-                    WHERE cmmnevrtyp_communicationeventroletypename = ?
-                    """);
-            
-            ps.setString(1, communicationEventRoleTypeName);
-            
-            communicationEventRoleType = communicationEventRoleTypeFactory.getEntityFromQuery(
-                    EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return communicationEventRoleType;
+        var query = session.getDslContext()
+                .select(CommunicationEventRoleTypes.fields())
+                .from(CommunicationEventRoleTypes)
+                .where(CommunicationEventRoleTypes.COMMUNICATION_EVENT_ROLE_TYPE_NAME.eq(communicationEventRoleTypeName));
+
+        return communicationEventRoleTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public List<CommunicationEventRoleType> getCommunicationEventRoleTypes() {
-        var ps = communicationEventRoleTypeFactory.prepareStatement(
-                """
-                SELECT _ALL_
-                FROM communicationeventroletypes
-                ORDER BY cmmnevrtyp_sortorder, cmmnevrtyp_communicationeventroletypename
-                _LIMIT_
-                """);
-        
-        return communicationEventRoleTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        var query = session.applyLimit(session.getDslContext()
+                .select(CommunicationEventRoleTypes.fields())
+                .from(CommunicationEventRoleTypes)
+                .orderBy(CommunicationEventRoleTypes.SORT_ORDER, CommunicationEventRoleTypes.COMMUNICATION_EVENT_ROLE_TYPE_NAME),
+                CommunicationEventRoleTypeFactory.class);
+
+        return communicationEventRoleTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public CommunicationEventRoleTypeTransfer getCommunicationEventRoleTypeTransfer(UserVisit userVisit,
@@ -723,26 +643,13 @@ public class CommunicationControl
     
     public CommunicationEventRoleTypeDescription getCommunicationEventRoleTypeDescription(CommunicationEventRoleType communicationEventRoleType,
             Language language) {
-        CommunicationEventRoleTypeDescription communicationEventRoleTypeDescription;
-        
-        try {
-            var ps = communicationEventRoleTypeDescriptionFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM communicationeventroletypedescriptions
-                    WHERE cmmnevrtypd_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevrtypd_lang_languageid = ?
-                    """);
-            
-            ps.setLong(1, communicationEventRoleType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            communicationEventRoleTypeDescription = communicationEventRoleTypeDescriptionFactory.getEntityFromQuery(
-                    EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return communicationEventRoleTypeDescription;
+        var query = session.getDslContext()
+                .select(CommunicationEventRoleTypeDescriptions.fields())
+                .from(CommunicationEventRoleTypeDescriptions)
+                .where(CommunicationEventRoleTypeDescriptions.COMMUNICATION_EVENT_ROLE_TYPE.eq(communicationEventRoleType.getPrimaryKey()),
+                        CommunicationEventRoleTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
+
+        return communicationEventRoleTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public String getBestCommunicationEventRoleTypeDescription(CommunicationEventRoleType communicationEventRoleType, Language language) {
@@ -769,6 +676,9 @@ public class CommunicationControl
     @Inject
     protected CommunicationEventTypeFactory communicationEventTypeFactory;
 
+    @Inject
+    CommunicationEventTypeTransferCache communicationEventTypeTransferCache;
+
     public CommunicationEventType createCommunicationEventType(String communicationEventTypeName, Boolean isDefault,
             Integer sortOrder) {
         return communicationEventTypeFactory.create(communicationEventTypeName, isDefault, sortOrder);
@@ -790,44 +700,30 @@ public class CommunicationControl
     }
 
     public long countCommunicationEventTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM communicationeventtypes
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(CommunicationEventTypes)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public CommunicationEventType getCommunicationEventTypeByName(String communicationEventTypeName) {
-        CommunicationEventType communicationEventType;
-        
-        try {
-            var ps = communicationEventTypeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM communicationeventtypes
-                    WHERE cmmnevtyp_communicationeventtypename = ?
-                    """);
-            
-            ps.setString(1, communicationEventTypeName);
-            
-            communicationEventType = communicationEventTypeFactory.getEntityFromQuery(
-                    EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return communicationEventType;
+        var query = session.getDslContext()
+                .select(CommunicationEventTypes.fields())
+                .from(CommunicationEventTypes)
+                .where(CommunicationEventTypes.COMMUNICATION_EVENT_TYPE_NAME.eq(communicationEventTypeName));
+
+        return communicationEventTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public List<CommunicationEventType> getCommunicationEventTypes() {
-        var ps = communicationEventTypeFactory.prepareStatement(
-                """
-                SELECT _ALL_
-                FROM communicationeventtypes
-                ORDER BY cmmnevtyp_sortorder, cmmnevtyp_communicationeventtypename
-                _LIMIT_
-                """);
-        
-        return communicationEventTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        var query = session.applyLimit(session.getDslContext()
+                .select(CommunicationEventTypes.fields())
+                .from(CommunicationEventTypes)
+                .orderBy(CommunicationEventTypes.SORT_ORDER, CommunicationEventTypes.COMMUNICATION_EVENT_TYPE_NAME),
+                CommunicationEventTypeFactory.class);
+
+        return communicationEventTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public CommunicationEventTypeTransfer getCommunicationEventTypeTransfer(UserVisit userVisit,
@@ -849,26 +745,13 @@ public class CommunicationControl
     
     public CommunicationEventTypeDescription getCommunicationEventTypeDescription(CommunicationEventType communicationEventType,
             Language language) {
-        CommunicationEventTypeDescription communicationEventTypeDescription;
-        
-        try {
-            var ps = communicationEventTypeDescriptionFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM communicationeventtypedescriptions
-                    WHERE cmmnevtypd_cmmnevtyp_communicationeventtypeid = ? AND cmmnevtypd_lang_languageid = ?
-                    """);
-            
-            ps.setLong(1, communicationEventType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            communicationEventTypeDescription = communicationEventTypeDescriptionFactory.getEntityFromQuery(
-                    EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return communicationEventTypeDescription;
+        var query = session.getDslContext()
+                .select(CommunicationEventTypeDescriptions.fields())
+                .from(CommunicationEventTypeDescriptions)
+                .where(CommunicationEventTypeDescriptions.COMMUNICATION_EVENT_TYPE.eq(communicationEventType.getPrimaryKey()),
+                        CommunicationEventTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
+
+        return communicationEventTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public String getBestCommunicationEventTypeDescription(CommunicationEventType communicationEventType, Language language) {
@@ -893,10 +776,13 @@ public class CommunicationControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected CommunicationEventDetailFactory communicationEventDetailFactory;
+
+    @Inject
     protected CommunicationEventFactory communicationEventFactory;
 
     @Inject
-    protected CommunicationEventDetailFactory communicationEventDetailFactory;
+    CommunicationEventTransferCache communicationEventTransferCache;
 
     public CommunicationEvent createCommunicationEvent(CommunicationEventType communicationEventType,
             CommunicationSource communicationSource, CommunicationEventPurpose communicationEventPurpose,
@@ -940,42 +826,26 @@ public class CommunicationControl
     }
 
     private List<CommunicationEvent> getCommunicationEventsByParty(Party party, EntityPermission entityPermission) {
-        List<CommunicationEvent> communicationEvents;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM communicationeventroles, communicationevents, communicationeventdetails
-                        WHERE cmmnevr_par_partyid = ? AND cmmnevr_thrutime = ?
-                        AND cmmnev_activedetailid = cmmnevdt_communicationeventdetailid
-                        AND cmmnevr_cmmnev_communicationeventid = cmmnev_communicationeventid
-                        ORDER BY cmmnevdt_communicationeventname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM communicationeventroles, communicationevents
-                        WHERE cmmnevr_par_partyid = ? AND cmmnevr_thrutime = ?
-                        AND cmmnevr_cmmnev_communicationeventid = cmmnev_communicationeventid
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CommunicationEvents.fields())
+                    .from(CommunicationEvents)
+                    .join(CommunicationEventRoles).onKey(COMMUNICATION_EVENT_ROLES_COMMUNICATION_EVENT_FK)
+                    .join(CommunicationEventDetails).onKey(COMMUNICATION_EVENTS_ACTIVE_DETAIL_FK)
+                    .where(CommunicationEventRoles.PARTY.eq(party.getPrimaryKey()),
+                            CommunicationEventRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(CommunicationEventDetails.COMMUNICATION_EVENT_NAME),
+                    CommunicationEventFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(CommunicationEvents.fields())
+                    .from(CommunicationEvents)
+                    .join(CommunicationEventRoles).onKey(COMMUNICATION_EVENT_ROLES_COMMUNICATION_EVENT_FK)
+                    .where(CommunicationEventRoles.PARTY.eq(party.getPrimaryKey()),
+                            CommunicationEventRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = communicationEventFactory.prepareStatement(query);
-            
-            ps.setLong(1, party.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            communicationEvents = communicationEventFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return communicationEvents;
+        return communicationEventFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<CommunicationEvent> getCommunicationEventsByParty(Party party) {
@@ -987,46 +857,28 @@ public class CommunicationControl
     }
     
     public long countCommunicationEventsByParty(Party party) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM communicationeventroles
-                WHERE cmmnevr_par_partyid = ? AND cmmnevr_thrutime = ?
-                """,
-                party, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(CommunicationEventRoles)
+                .where(CommunicationEventRoles.PARTY.eq(party.getPrimaryKey()),
+                        CommunicationEventRoles.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private CommunicationEvent getCommunicationEventByName(String communicationEventName, EntityPermission entityPermission) {
-        CommunicationEvent communicationEvent;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM communicationevents, communicationeventdetails
-                        WHERE cmmnev_activedetailid = cmmnevdt_communicationeventdetailid AND cmmnevdt_communicationeventname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM communicationevents, communicationeventdetails
-                        WHERE cmmnev_activedetailid = cmmnevdt_communicationeventdetailid AND cmmnevdt_communicationeventname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CommunicationEvents.fields())
+                .from(CommunicationEvents)
+                .join(CommunicationEventDetails).onKey(COMMUNICATION_EVENTS_ACTIVE_DETAIL_FK)
+                .where(CommunicationEventDetails.COMMUNICATION_EVENT_NAME.eq(communicationEventName));
 
-            var ps = communicationEventFactory.prepareStatement(query);
-            
-            ps.setString(1, communicationEventName);
-            
-            communicationEvent = communicationEventFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return communicationEvent;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return communicationEventFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public CommunicationEvent getCommunicationEventByName(String communicationEventName) {
@@ -1074,6 +926,9 @@ public class CommunicationControl
     @Inject
     protected CommunicationEventRoleFactory communicationEventRoleFactory;
 
+    @Inject
+    CommunicationEventRoleTransferCache communicationEventRoleTransferCache;
+
     public CommunicationEventRole createCommunicationEventRole(CommunicationEvent communicationEvent, Party party,
             CommunicationEventRoleType communicationEventRoleType, BasePK createdBy) {
         var communicationEventRole = communicationEventRoleFactory.create(
@@ -1087,41 +942,20 @@ public class CommunicationControl
     
     private CommunicationEventRole getCommunicationEventRole(CommunicationEvent communicationEvent, Party party,
             CommunicationEventRoleType communicationEventRoleType, EntityPermission entityPermission) {
-        CommunicationEventRole communicationEventRole;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM communicationeventroles
-                        WHERE cmmnevr_cmmnev_communicationeventid = ? AND cmmnevr_par_partyid = ?
-                        AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevr_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM communicationeventroles
-                        WHERE cmmnevr_cmmnev_communicationeventid = ? AND cmmnevr_par_partyid = ?
-                        AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CommunicationEventRoles.fields())
+                .from(CommunicationEventRoles)
+                .where(CommunicationEventRoles.COMMUNICATION_EVENT.eq(communicationEvent.getPrimaryKey()),
+                        CommunicationEventRoles.PARTY.eq(party.getPrimaryKey()),
+                        CommunicationEventRoles.COMMUNICATION_EVENT_ROLE_TYPE.eq(communicationEventRoleType.getPrimaryKey()),
+                        CommunicationEventRoles.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = communicationEventRoleFactory.prepareStatement(query);
-            
-            ps.setLong(1, communicationEvent.getPrimaryKey().getEntityId());
-            ps.setLong(2, party.getPrimaryKey().getEntityId());
-            ps.setLong(3, communicationEventRoleType.getPrimaryKey().getEntityId());
-            ps.setLong(4, Session.MAX_TIME);
-            
-            communicationEventRole = communicationEventRoleFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return communicationEventRole;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return communicationEventRoleFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public CommunicationEventRole getCommunicationEventRole(CommunicationEvent communicationEvent, Party party,
@@ -1136,42 +970,26 @@ public class CommunicationControl
     
     private List<CommunicationEventRole> getCommunicationEventRolesByCommunicationEvent(CommunicationEvent communicationEvent,
             EntityPermission entityPermission) {
-        List<CommunicationEventRole> communicationEventRoles;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM communicationeventroles, communicationeventroletypes, parties, partydetails
-                        WHERE cmmnevr_cmmnev_communicationeventid = ? AND cmmnevr_par_partyid = ?
-                        AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevr_thrutime = ?
-                        AND cmmnevr_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
-                        AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = cmmnevrtyp_communicationeventroletypeid
-                        ORDER BY cmmnevrtyp_sortorder, cmmnevrtyp_communicationeventroletypename, pardt_partyname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM communicationeventroles
-                        WHERE cmmnevr_cmmnev_communicationeventid = ? AND cmmnevr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CommunicationEventRoles.fields())
+                    .from(CommunicationEventRoles)
+                    .join(CommunicationEventRoleTypes).onKey(COMMUNICATION_EVENT_ROLES_COMMUNICATION_EVENT_ROLE_TYPE_FK)
+                    .join(Parties).onKey(COMMUNICATION_EVENT_ROLES_PARTY_FK)
+                    .join(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .where(CommunicationEventRoles.COMMUNICATION_EVENT.eq(communicationEvent.getPrimaryKey()),
+                            CommunicationEventRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(CommunicationEventRoleTypes.SORT_ORDER, CommunicationEventRoleTypes.COMMUNICATION_EVENT_ROLE_TYPE_NAME, PartyDetails.PARTY_NAME),
+                    CommunicationEventRoleFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(CommunicationEventRoles.fields())
+                    .from(CommunicationEventRoles)
+                    .where(CommunicationEventRoles.COMMUNICATION_EVENT.eq(communicationEvent.getPrimaryKey()),
+                            CommunicationEventRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = communicationEventRoleFactory.prepareStatement(query);
-            
-            ps.setLong(1, communicationEvent.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            communicationEventRoles = communicationEventRoleFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return communicationEventRoles;
+        return communicationEventRoleFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<CommunicationEventRole> getCommunicationEventRole(CommunicationEvent communicationEvent) {
@@ -1184,44 +1002,27 @@ public class CommunicationControl
     
     private List<CommunicationEventRole> getCommunicationEventRolesByPartyAndCommunicationEventRoleType(Party party,
             CommunicationEventRoleType communicationEventRoleType, EntityPermission entityPermission) {
-        List<CommunicationEventRole> communicationEventRoles;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM communicationeventroles, communicationevents, communicationeventdetails
-                        WHERE cmmnevr_par_partyid = ? AND cmmnevr_par_partyid = ?
-                        AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevr_thrutime = ?
-                        AND cmmnevr_cmmnev_communicationeventid = cmmnev_communicationeventid
-                        AND cmmnev_lastdetailid = cmmnevdt_communicationeventdetailid
-                        ORDER BY cmmnevdt_communicationeventname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM communicationeventroles
-                        WHERE cmmnevr_par_partyid = ? AND cmmnevr_par_partyid = ?
-                        AND cmmnevr_cmmnevrtyp_communicationeventroletypeid = ? AND cmmnevr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CommunicationEventRoles.fields())
+                    .from(CommunicationEventRoles)
+                    .join(CommunicationEvents).onKey(COMMUNICATION_EVENT_ROLES_COMMUNICATION_EVENT_FK)
+                    .join(CommunicationEventDetails).onKey(COMMUNICATION_EVENTS_LAST_DETAIL_FK)
+                    .where(CommunicationEventRoles.PARTY.eq(party.getPrimaryKey()),
+                            CommunicationEventRoles.COMMUNICATION_EVENT_ROLE_TYPE.eq(communicationEventRoleType.getPrimaryKey()),
+                            CommunicationEventRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(CommunicationEventDetails.COMMUNICATION_EVENT_NAME),
+                    CommunicationEventRoleFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(CommunicationEventRoles.fields())
+                    .from(CommunicationEventRoles)
+                    .where(CommunicationEventRoles.PARTY.eq(party.getPrimaryKey()),
+                            CommunicationEventRoles.COMMUNICATION_EVENT_ROLE_TYPE.eq(communicationEventRoleType.getPrimaryKey()),
+                            CommunicationEventRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = communicationEventRoleFactory.prepareStatement(query);
-            
-            ps.setLong(1, party.getPrimaryKey().getEntityId());
-            ps.setLong(2, communicationEventRoleType.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            communicationEventRoles = communicationEventRoleFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return communicationEventRoles;
+        return communicationEventRoleFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<CommunicationEventRole> getCommunicationEventRole(Party party,
@@ -1255,6 +1056,9 @@ public class CommunicationControl
     @Inject
     protected CommunicationSourceTypeFactory communicationSourceTypeFactory;
 
+    @Inject
+    CommunicationSourceTypeTransferCache communicationSourceTypeTransferCache;
+
     public CommunicationSourceType createCommunicationSourceType(String communicationSourceTypeName, Boolean isDefault,
             Integer sortOrder) {
         return communicationSourceTypeFactory.create(communicationSourceTypeName, isDefault, sortOrder);
@@ -1276,44 +1080,30 @@ public class CommunicationControl
     }
 
     public long countCommunicationSourceTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM communicationsourcetypes
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(CommunicationSourceTypes)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public CommunicationSourceType getCommunicationSourceTypeByName(String communicationSourceTypeName) {
-        CommunicationSourceType communicationSourceType;
-        
-        try {
-            var ps = communicationSourceTypeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM communicationsourcetypes
-                    WHERE cmmnsrctyp_communicationsourcetypename = ?
-                    """);
-            
-            ps.setString(1, communicationSourceTypeName);
-            
-            communicationSourceType = communicationSourceTypeFactory.getEntityFromQuery(
-                    EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return communicationSourceType;
+        var query = session.getDslContext()
+                .select(CommunicationSourceTypes.fields())
+                .from(CommunicationSourceTypes)
+                .where(CommunicationSourceTypes.COMMUNICATION_SOURCE_TYPE_NAME.eq(communicationSourceTypeName));
+
+        return communicationSourceTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public List<CommunicationSourceType> getCommunicationSourceTypes() {
-        var ps = communicationSourceTypeFactory.prepareStatement(
-                """
-                SELECT _ALL_
-                FROM communicationsourcetypes
-                ORDER BY cmmnsrctyp_sortorder, cmmnsrctyp_communicationsourcetypename
-                _LIMIT_
-                """);
-        
-        return communicationSourceTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        var query = session.applyLimit(session.getDslContext()
+                .select(CommunicationSourceTypes.fields())
+                .from(CommunicationSourceTypes)
+                .orderBy(CommunicationSourceTypes.SORT_ORDER, CommunicationSourceTypes.COMMUNICATION_SOURCE_TYPE_NAME),
+                CommunicationSourceTypeFactory.class);
+
+        return communicationSourceTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public CommunicationSourceTypeTransfer getCommunicationSourceTypeTransfer(UserVisit userVisit,
@@ -1335,26 +1125,13 @@ public class CommunicationControl
     
     public CommunicationSourceTypeDescription getCommunicationSourceTypeDescription(CommunicationSourceType communicationSourceType,
             Language language) {
-        CommunicationSourceTypeDescription communicationSourceTypeDescription;
-        
-        try {
-            var ps = communicationSourceTypeDescriptionFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM communicationsourcetypedescriptions
-                    WHERE cmmnsrctypd_cmmnsrctyp_communicationsourcetypeid = ? AND cmmnsrctypd_lang_languageid = ?
-                    """);
-            
-            ps.setLong(1, communicationSourceType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            communicationSourceTypeDescription = communicationSourceTypeDescriptionFactory.getEntityFromQuery(
-                    EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return communicationSourceTypeDescription;
+        var query = session.getDslContext()
+                .select(CommunicationSourceTypeDescriptions.fields())
+                .from(CommunicationSourceTypeDescriptions)
+                .where(CommunicationSourceTypeDescriptions.COMMUNICATION_SOURCE_TYPE.eq(communicationSourceType.getPrimaryKey()),
+                        CommunicationSourceTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
+
+        return communicationSourceTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public String getBestCommunicationSourceTypeDescription(CommunicationSourceType communicationSourceType, Language language) {
@@ -1379,10 +1156,13 @@ public class CommunicationControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected CommunicationSourceDetailFactory communicationSourceDetailFactory;
+
+    @Inject
     protected CommunicationSourceFactory communicationSourceFactory;
 
     @Inject
-    protected CommunicationSourceDetailFactory communicationSourceDetailFactory;
+    CommunicationSourceTransferCache communicationSourceTransferCache;
 
     public CommunicationSource createCommunicationSource(String communicationSourceName, CommunicationSourceType communicationSourceType,
             Integer sortOrder, BasePK createdBy) {
@@ -1418,53 +1198,37 @@ public class CommunicationControl
     }
 
     public long countCommunicationSources() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM communicationsources
-                        JOIN communicationsourcedetails ON cmmnsrcdt_communicationsourcedetailid = cmmnsrc_activedetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(CommunicationSources)
+                .join(CommunicationSourceDetails).onKey(COMMUNICATION_SOURCES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countCommunicationSourcesByCommunicationSourceType(CommunicationSourceType communicationSourceType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM communicationsources
-                        JOIN communicationsourcedetails ON cmmnsrcdt_communicationsourcedetailid = cmmnsrc_activedetailid
-                        WHERE cmmnsrcdt_cmmnsrctyp_communicationsourcetypeid = ?
-                        """, communicationSourceType);
+        return session.getDslContext()
+                .selectCount()
+                .from(CommunicationSources)
+                .join(CommunicationSourceDetails).onKey(COMMUNICATION_SOURCES_ACTIVE_DETAIL_FK)
+                .where(CommunicationSourceDetails.COMMUNICATION_SOURCE_TYPE.eq(communicationSourceType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private CommunicationSource getCommunicationSourceByName(String communicationSourceName, EntityPermission entityPermission) {
-        CommunicationSource communicationSource;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM communicationsources, communicationsourcedetails
-                        WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid AND cmmnsrcdt_communicationsourcename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM communicationsources, communicationsourcedetails
-                        WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid AND cmmnsrcdt_communicationsourcename = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CommunicationSources.fields())
+                .from(CommunicationSources)
+                .join(CommunicationSourceDetails).onKey(COMMUNICATION_SOURCES_ACTIVE_DETAIL_FK)
+                .where(CommunicationSourceDetails.COMMUNICATION_SOURCE_NAME.eq(communicationSourceName));
 
-            var ps = communicationSourceFactory.prepareStatement(query);
-            
-            ps.setString(1, communicationSourceName);
-            
-            communicationSource = communicationSourceFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return communicationSource;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return communicationSourceFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public CommunicationSource getCommunicationSourceByName(String communicationSourceName) {
@@ -1484,28 +1248,19 @@ public class CommunicationControl
     }
     
     private List<CommunicationSource> getCommunicationSources(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM communicationsources, communicationsourcedetails
-                    WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid
-                    ORDER BY cmmnsrcdt_sortorder, cmmnsrcdt_communicationsourcename
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM communicationsources, communicationsourcedetails
-                    WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(CommunicationSources.fields())
+                .from(CommunicationSources)
+                .join(CommunicationSourceDetails).onKey(COMMUNICATION_SOURCES_ACTIVE_DETAIL_FK);
 
-        var ps = communicationSourceFactory.prepareStatement(query);
-        
-        return communicationSourceFactory.getEntitiesFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(CommunicationSourceDetails.SORT_ORDER, CommunicationSourceDetails.COMMUNICATION_SOURCE_NAME),
+                    CommunicationSourceFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return communicationSourceFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<CommunicationSource> getCommunicationSources() {
@@ -1518,38 +1273,20 @@ public class CommunicationControl
     
     private List<CommunicationSource> getCommunicationSourcesByCommunicationSourceType(CommunicationSourceType communicationSourceType,
             EntityPermission entityPermission) {
-        List<CommunicationSource> communicationSources;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM communicationsources, communicationsourcedetails
-                        WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid AND cmmnsrcdt_cmmnsrctyp_communicationsourcetypeid = ?
-                        ORDER BY cmmnsrcdt_sortorder, cmmnsrcdt_communicationsourcename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM communicationsources, communicationsourcedetails
-                        WHERE cmmnsrc_activedetailid = cmmnsrcdt_communicationsourcedetailid AND cmmnsrcdt_cmmnsrctyp_communicationsourcetypeid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CommunicationSources.fields())
+                .from(CommunicationSources)
+                .join(CommunicationSourceDetails).onKey(COMMUNICATION_SOURCES_ACTIVE_DETAIL_FK)
+                .where(CommunicationSourceDetails.COMMUNICATION_SOURCE_TYPE.eq(communicationSourceType.getPrimaryKey()));
 
-            var ps = communicationSourceFactory.prepareStatement(query);
-            
-            ps.setLong(1, communicationSourceType.getPrimaryKey().getEntityId());
-            
-            communicationSources = communicationSourceFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return communicationSources;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(CommunicationSourceDetails.SORT_ORDER, CommunicationSourceDetails.COMMUNICATION_SOURCE_NAME),
+                    CommunicationSourceFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return communicationSourceFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<CommunicationSource> getCommunicationSourcesByCommunicationSourceType(CommunicationSourceType communicationSourceType) {
@@ -1626,6 +1363,9 @@ public class CommunicationControl
     @Inject
     protected CommunicationSourceDescriptionFactory communicationSourceDescriptionFactory;
 
+    @Inject
+    CommunicationSourceDescriptionTransferCache communicationSourceDescriptionTransferCache;
+
     public CommunicationSourceDescription createCommunicationSourceDescription(CommunicationSource communicationSource,
             Language language, String description, BasePK createdBy) {
         var communicationSourceDescription = communicationSourceDescriptionFactory.create(
@@ -1638,38 +1378,19 @@ public class CommunicationControl
     
     private CommunicationSourceDescription getCommunicationSourceDescription(CommunicationSource communicationSource,
             Language language, EntityPermission entityPermission) {
-        CommunicationSourceDescription communicationSourceDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM communicationsourcedescriptions
-                        WHERE cmmnsrcd_cmmnsrc_communicationsourceid = ? AND cmmnsrcd_lang_languageid = ? AND cmmnsrcd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM communicationsourcedescriptions
-                        WHERE cmmnsrcd_cmmnsrc_communicationsourceid = ? AND cmmnsrcd_lang_languageid = ? AND cmmnsrcd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CommunicationSourceDescriptions.fields())
+                .from(CommunicationSourceDescriptions)
+                .where(CommunicationSourceDescriptions.COMMUNICATION_SOURCE.eq(communicationSource.getPrimaryKey()),
+                        CommunicationSourceDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        CommunicationSourceDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = communicationSourceDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, communicationSource.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            communicationSourceDescription = communicationSourceDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return communicationSourceDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return communicationSourceDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public CommunicationSourceDescription getCommunicationSourceDescription(CommunicationSource communicationSource, Language language) {
@@ -1689,39 +1410,24 @@ public class CommunicationControl
     }
     
     private List<CommunicationSourceDescription> getCommunicationSourceDescriptionsByCommunicationSource(CommunicationSource communicationSource, EntityPermission entityPermission) {
-        List<CommunicationSourceDescription> communicationSourceDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM communicationsourcedescriptions, languages
-                        WHERE cmmnsrcd_cmmnsrc_communicationsourceid = ? AND cmmnsrcd_thrutime = ? AND cmmnsrcd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM communicationsourcedescriptions
-                        WHERE cmmnsrcd_cmmnsrc_communicationsourceid = ? AND cmmnsrcd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CommunicationSourceDescriptions.fields())
+                    .from(CommunicationSourceDescriptions)
+                    .join(Languages).onKey(COMMUNICATION_SOURCE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(CommunicationSourceDescriptions.COMMUNICATION_SOURCE.eq(communicationSource.getPrimaryKey()),
+                            CommunicationSourceDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    CommunicationSourceDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(CommunicationSourceDescriptions.fields())
+                    .from(CommunicationSourceDescriptions)
+                    .where(CommunicationSourceDescriptions.COMMUNICATION_SOURCE.eq(communicationSource.getPrimaryKey()),
+                            CommunicationSourceDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = communicationSourceDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, communicationSource.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            communicationSourceDescriptions = communicationSourceDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return communicationSourceDescriptions;
+        return communicationSourceDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<CommunicationSourceDescription> getCommunicationSourceDescriptionsByCommunicationSource(CommunicationSource communicationSource) {
@@ -1804,6 +1510,9 @@ public class CommunicationControl
     @Inject
     protected CommunicationEmailSourceFactory communicationEmailSourceFactory;
 
+    @Inject
+    CommunicationEmailSourceTransferCache communicationEmailSourceTransferCache;
+
     public CommunicationEmailSource createCommunicationEmailSource(CommunicationSource communicationSource, Server server,
             String username, String password, WorkEffortScope receiveWorkEffortScope, WorkEffortScope sendWorkEffortScope,
             Selector reviewEmployeeSelector, BasePK createdBy) {
@@ -1817,37 +1526,18 @@ public class CommunicationControl
     }
     
     private CommunicationEmailSource getCommunicationEmailSource(CommunicationSource communicationSource, EntityPermission entityPermission) {
-        CommunicationEmailSource communicationEmailSource;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM communicationemailsources
-                        WHERE cmmnesrc_cmmnsrc_communicationsourceid = ? AND cmmnesrc_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM communicationemailsources
-                        WHERE cmmnesrc_cmmnsrc_communicationsourceid = ? AND cmmnesrc_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(CommunicationEmailSources.fields())
+                .from(CommunicationEmailSources)
+                .where(CommunicationEmailSources.COMMUNICATION_SOURCE.eq(communicationSource.getPrimaryKey()),
+                        CommunicationEmailSources.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = communicationEmailSourceFactory.prepareStatement(query);
-            
-            ps.setLong(1, communicationSource.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            communicationEmailSource = communicationEmailSourceFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return communicationEmailSource;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return communicationEmailSourceFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public CommunicationEmailSource getCommunicationEmailSource(CommunicationSource communicationSource) {
