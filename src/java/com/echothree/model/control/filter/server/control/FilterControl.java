@@ -36,19 +36,28 @@ import com.echothree.model.data.filter.server.value.FilterDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.filter.FilterForeignKeys.FILTERS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.filter.FilterForeignKeys.FILTER_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.filter.FilterForeignKeys.FILTER_DETAILS_FILTER_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.filter.FilterForeignKeys.FILTER_KINDS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.filter.FilterForeignKeys.FILTER_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.filter.FilterForeignKeys.FILTER_TYPE_DETAILS_FILTER_KIND_FK;
+import static com.echothree.model.jooq.server.tables.filter.FilterDescriptions.FilterDescriptions;
+import static com.echothree.model.jooq.server.tables.filter.FilterDetails.FilterDetails;
+import static com.echothree.model.jooq.server.tables.filter.FilterKindDetails.FilterKindDetails;
+import static com.echothree.model.jooq.server.tables.filter.FilterKinds.FilterKinds;
+import static com.echothree.model.jooq.server.tables.filter.FilterTypeDetails.FilterTypeDetails;
+import static com.echothree.model.jooq.server.tables.filter.FilterTypes.FilterTypes;
+import static com.echothree.model.jooq.server.tables.filter.Filters.Filters;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 
@@ -64,21 +73,18 @@ public class FilterControl
     @Inject
     FilterStepControl filterStepControl;
     
-    @Inject
-    FilterTransferCache filterTransferCache;
-
-    @Inject
-    FilterDescriptionTransferCache filterDescriptionTransferCache;
-
     // --------------------------------------------------------------------------------
     //   Filters
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected FilterDetailFactory filterDetailFactory;
+
+    @Inject
     protected FilterFactory filterFactory;
 
     @Inject
-    protected FilterDetailFactory filterDetailFactory;
+    FilterTransferCache filterTransferCache;
 
     public Filter createFilter(FilterType filterType, String filterName, FilterAdjustment initialFilterAdjustment,
             Selector filterItemSelector, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -110,33 +116,33 @@ public class FilterControl
     }
 
     public long countFiltersByFilterType(FilterType filterType) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM filters, filterdetails
-                WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ?
-                """,
-                filterType);
+        return session.getDslContext()
+                .selectCount()
+                .from(Filters)
+                .join(FilterDetails).onKey(FILTERS_ACTIVE_DETAIL_FK)
+                .where(FilterDetails.FILTER_TYPE.eq(filterType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countFiltersBySelector(Selector selector) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM filters, filterdetails
-                WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_filteritemselectorid = ?
-                """,
-                selector);
+        return session.getDslContext()
+                .selectCount()
+                .from(Filters)
+                .join(FilterDetails).onKey(FILTERS_ACTIVE_DETAIL_FK)
+                .where(FilterDetails.FILTER_ITEM_SELECTOR.eq(selector.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countFiltersByFilterAdjustment(FilterAdjustment filterAdjustment) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM filters, filterdetails
-                WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_initialfilteradjustmentid = ?
-                """,
-                filterAdjustment);
+        return session.getDslContext()
+                .selectCount()
+                .from(Filters)
+                .join(FilterDetails).onKey(FILTERS_ACTIVE_DETAIL_FK)
+                .where(FilterDetails.INITIAL_FILTER_ADJUSTMENT.eq(filterAdjustment.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Filter */
@@ -155,38 +161,20 @@ public class FilterControl
     }
 
     private List<Filter> getFilters(FilterType filterType, EntityPermission entityPermission) {
-        List<Filter> filters;
-        
-        try {
-            String query = null;
+        var baseQuery = session.getDslContext()
+                .select(Filters.fields())
+                .from(Filters)
+                .join(FilterDetails).onKey(FILTERS_ACTIVE_DETAIL_FK)
+                .where(FilterDetails.FILTER_TYPE.eq(filterType.getPrimaryKey()));
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM filters, filterdetails
-                        WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ?
-                        ORDER BY fltdt_sortorder, fltdt_filtername
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM filters, filterdetails
-                        WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(FilterDetails.SORT_ORDER, FilterDetails.FILTER_NAME),
+                    FilterFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            var ps = filterFactory.prepareStatement(query);
-
-            ps.setLong(1, filterType.getPrimaryKey().getEntityId());
-            
-            filters = filterFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return filters;
+        return filterFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<Filter> getFilters(FilterType filterType) {
@@ -197,36 +185,28 @@ public class FilterControl
         return getFilters(filterType, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getFiltersByInitialFilterAdjustmentQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM filters
-                JOIN filterdetails ON fltdt_filterdetailid = flt_activedetailid
-                JOIN filtertypes ON flttyp_filtertypeid = fltdt_flttyp_filtertypeid
-                JOIN filtertypedetails ON flttypdt_filtertypedetailid = flttyp_lastdetailid
-                JOIN filterkinds ON fltk_filterkindid = flttypdt_fltk_filterkindid
-                JOIN filterkinddetails ON fltkdt_filterkinddetailid = fltk_lastdetailid
-                WHERE fltdt_initialfilteradjustmentid = ?
-                ORDER BY fltkdt_sortorder, fltkdt_filterkindname, flttypdt_sortorder, flttypdt_filtertypename, fltdt_sortorder, fltdt_filtername
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM filters
-                JOIN filterdetails ON fltdt_filterdetailid = flt_activedetailid
-                WHERE fltdt_initialfilteradjustmentid = ?
-                FOR UPDATE
-                """);
-        getFiltersByInitialFilterAdjustmentQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<Filter> getFiltersByInitialFilterAdjustment(FilterAdjustment initialFilterAdjustment, EntityPermission entityPermission) {
-        return filterFactory.getEntitiesFromQuery(entityPermission, getFiltersByInitialFilterAdjustmentQueries,
-                initialFilterAdjustment);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(Filters.fields())
+                    .from(Filters)
+                    .join(FilterDetails).onKey(FILTERS_ACTIVE_DETAIL_FK)
+                    .join(FilterTypes).onKey(FILTER_DETAILS_FILTER_TYPE_FK)
+                    .join(FilterTypeDetails).onKey(FILTER_TYPES_LAST_DETAIL_FK)
+                    .join(FilterKinds).onKey(FILTER_TYPE_DETAILS_FILTER_KIND_FK)
+                    .join(FilterKindDetails).onKey(FILTER_KINDS_LAST_DETAIL_FK)
+                    .where(FilterDetails.INITIAL_FILTER_ADJUSTMENT.eq(initialFilterAdjustment.getPrimaryKey()))
+                    .orderBy(FilterKindDetails.SORT_ORDER, FilterKindDetails.FILTER_KIND_NAME, FilterTypeDetails.SORT_ORDER, FilterTypeDetails.FILTER_TYPE_NAME, FilterDetails.SORT_ORDER, FilterDetails.FILTER_NAME),
+                    FilterFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(Filters.fields())
+                    .from(Filters)
+                    .join(FilterDetails).onKey(FILTERS_ACTIVE_DETAIL_FK)
+                    .where(FilterDetails.INITIAL_FILTER_ADJUSTMENT.eq(initialFilterAdjustment.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return filterFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Filter> getFiltersByInitialFilterAdjustment(FilterAdjustment initialFilterAdjustment) {
@@ -238,36 +218,19 @@ public class FilterControl
     }
 
     public Filter getDefaultFilter(FilterType filterType, EntityPermission entityPermission) {
-        Filter filter;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM filters, filterdetails
-                        WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ? AND fltdt_isdefault = 1
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM filters, filterdetails
-                        WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ? AND fltdt_isdefault = 1
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Filters.fields())
+                .from(Filters)
+                .join(FilterDetails).onKey(FILTERS_ACTIVE_DETAIL_FK)
+                .where(FilterDetails.FILTER_TYPE.eq(filterType.getPrimaryKey()),
+                        FilterDetails.IS_DEFAULT.eq(true));
 
-            var ps = filterFactory.prepareStatement(query);
-            
-            ps.setLong(1, filterType.getPrimaryKey().getEntityId());
-            
-            filter = filterFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return filter;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return filterFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Filter getDefaultFilter(FilterType filterType) {
@@ -283,37 +246,19 @@ public class FilterControl
     }
     
     public Filter getFilterByName(FilterType filterType, String filterName, EntityPermission entityPermission) {
-        Filter filter;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM filters, filterdetails
-                        WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ? AND fltdt_filtername = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM filters, filterdetails
-                        WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ? AND fltdt_filtername = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Filters.fields())
+                .from(Filters)
+                .join(FilterDetails).onKey(FILTERS_ACTIVE_DETAIL_FK)
+                .where(FilterDetails.FILTER_TYPE.eq(filterType.getPrimaryKey()),
+                        FilterDetails.FILTER_NAME.eq(filterName));
 
-            var ps = filterFactory.prepareStatement(query);
-            
-            ps.setLong(1, filterType.getPrimaryKey().getEntityId());
-            ps.setString(2, filterName);
-            
-            filter = filterFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return filter;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return filterFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Filter getFilterByName(FilterType filterType, String filterName) {
@@ -478,6 +423,9 @@ public class FilterControl
     @Inject
     protected FilterDescriptionFactory filterDescriptionFactory;
 
+    @Inject
+    FilterDescriptionTransferCache filterDescriptionTransferCache;
+
     public FilterDescription createFilterDescription(Filter filter, Language language, String description, BasePK createdBy) {
         var filterDescription = filterDescriptionFactory.create(filter, language, description, session.getStartTime(), Session.MAX_TIME);
         
@@ -487,38 +435,19 @@ public class FilterControl
     }
     
     private FilterDescription getFilterDescription(Filter filter, Language language, EntityPermission entityPermission) {
-        FilterDescription filterDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM filterdescriptions
-                        WHERE fltd_flt_filterid = ? AND fltd_lang_languageid = ? AND fltd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM filterdescriptions
-                        WHERE fltd_flt_filterid = ? AND fltd_lang_languageid = ? AND fltd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(FilterDescriptions.fields())
+                .from(FilterDescriptions)
+                .where(FilterDescriptions.FILTER.eq(filter.getPrimaryKey()),
+                        FilterDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        FilterDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = filterDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, filter.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            filterDescription = filterDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return filterDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return filterDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public FilterDescription getFilterDescription(Filter filter, Language language) {
@@ -540,38 +469,24 @@ public class FilterControl
     }
     
     private List<FilterDescription> getFilterDescriptions(Filter filter, EntityPermission entityPermission) {
-        List<FilterDescription> filterDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM filterdescriptions, languages
-                        WHERE fltd_flt_filterid = ? AND fltd_thrutime = ? AND fltd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM filterdescriptions
-                        WHERE fltd_flt_filterid = ? AND fltd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(FilterDescriptions.fields())
+                    .from(FilterDescriptions)
+                    .join(Languages).onKey(FILTER_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(FilterDescriptions.FILTER.eq(filter.getPrimaryKey()),
+                            FilterDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    FilterDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(FilterDescriptions.fields())
+                    .from(FilterDescriptions)
+                    .where(FilterDescriptions.FILTER.eq(filter.getPrimaryKey()),
+                            FilterDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = filterDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, filter.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            filterDescriptions = filterDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return filterDescriptions;
+        return filterDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<FilterDescription> getFilterDescriptions(Filter filter) {

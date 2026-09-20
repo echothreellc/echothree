@@ -33,6 +33,12 @@ import com.echothree.model.data.filter.server.value.FilterKindDescriptionValue;
 import com.echothree.model.data.filter.server.value.FilterKindDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import static com.echothree.model.jooq.server.keys.filter.FilterForeignKeys.FILTER_KINDS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.filter.FilterForeignKeys.FILTER_KIND_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.filter.FilterKindDescriptions.FilterKindDescriptions;
+import static com.echothree.model.jooq.server.tables.filter.FilterKindDetails.FilterKindDetails;
+import static com.echothree.model.jooq.server.tables.filter.FilterKinds.FilterKinds;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
@@ -40,10 +46,7 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 
@@ -59,12 +62,6 @@ public class FilterKindControl
     @Inject
     FilterTypeControl filterTypeControl;
 
-    @Inject
-    FilterKindDescriptionTransferCache filterKindDescriptionTransferCache;
-
-    @Inject
-    FilterKindTransferCache filterKindTransferCache;
-
     // --------------------------------------------------------------------------------
     //   Filter Kinds
     // --------------------------------------------------------------------------------
@@ -74,6 +71,9 @@ public class FilterKindControl
 
     @Inject
     protected FilterKindFactory filterKindFactory;
+
+    @Inject
+    FilterKindTransferCache filterKindTransferCache;
 
     public FilterKind createFilterKind(String filterKindName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultFilterKind = getDefaultFilterKind();
@@ -105,12 +105,12 @@ public class FilterKindControl
     }
     
     public long countFilterKinds() {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM filterkinds, filterkinddetails
-                WHERE fltk_activedetailid = fltkdt_filterkinddetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(FilterKinds)
+                .join(FilterKindDetails).onKey(FILTER_KINDS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.FilterKind */
@@ -128,30 +128,19 @@ public class FilterKindControl
         return getFilterKindByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getFilterKindByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM filterkinds, filterkinddetails
-                WHERE fltk_activedetailid = fltkdt_filterkinddetailid AND fltkdt_filterkindname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM filterkinds, filterkinddetails
-                WHERE fltk_activedetailid = fltkdt_filterkinddetailid AND fltkdt_filterkindname = ?
-                FOR UPDATE
-                """);
-        getFilterKindByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public FilterKind getFilterKindByName(String filterKindName, EntityPermission entityPermission) {
-        return filterKindFactory.getEntityFromQuery(entityPermission, getFilterKindByNameQueries,
-                filterKindName);
+        var baseQuery = session.getDslContext()
+                .select(FilterKinds.fields())
+                .from(FilterKinds)
+                .join(FilterKindDetails).onKey(FILTER_KINDS_ACTIVE_DETAIL_FK)
+                .where(FilterKindDetails.FILTER_KIND_NAME.eq(filterKindName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return filterKindFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public FilterKind getFilterKindByName(String filterKindName) {
@@ -170,29 +159,19 @@ public class FilterKindControl
         return getFilterKindDetailValueForUpdate(getFilterKindByNameForUpdate(filterKindName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultFilterKindQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM filterkinds, filterkinddetails
-                WHERE fltk_activedetailid = fltkdt_filterkinddetailid AND fltkdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM filterkinds, filterkinddetails
-                WHERE fltk_activedetailid = fltkdt_filterkinddetailid AND fltkdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultFilterKindQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public FilterKind getDefaultFilterKind(EntityPermission entityPermission) {
-        return filterKindFactory.getEntityFromQuery(entityPermission, getDefaultFilterKindQueries);
+        var baseQuery = session.getDslContext()
+                .select(FilterKinds.fields())
+                .from(FilterKinds)
+                .join(FilterKindDetails).onKey(FILTER_KINDS_ACTIVE_DETAIL_FK)
+                .where(FilterKindDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return filterKindFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public FilterKind getDefaultFilterKind() {
@@ -207,31 +186,20 @@ public class FilterKindControl
         return getDefaultFilterKind(EntityPermission.READ_WRITE).getLastDetailForUpdate().getFilterKindDetailValue();
     }
 
-    private static final Map<EntityPermission, String> getFilterKindsQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM filterkinds, filterkinddetails
-                WHERE fltk_activedetailid = fltkdt_filterkinddetailid
-                ORDER BY fltkdt_sortorder, fltkdt_filterkindname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM filterkinds, filterkinddetails
-                WHERE fltk_activedetailid = fltkdt_filterkinddetailid
-                FOR UPDATE
-                """);
-        getFilterKindsQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<FilterKind> getFilterKinds(EntityPermission entityPermission) {
-        return filterKindFactory.getEntitiesFromQuery(entityPermission, getFilterKindsQueries);
+        var baseQuery = session.getDslContext()
+                .select(FilterKinds.fields())
+                .from(FilterKinds)
+                .join(FilterKindDetails).onKey(FILTER_KINDS_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(FilterKindDetails.SORT_ORDER, FilterKindDetails.FILTER_KIND_NAME),
+                    FilterKindFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return filterKindFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<FilterKind> getFilterKinds() {
@@ -373,6 +341,9 @@ public class FilterKindControl
     @Inject
     protected FilterKindDescriptionFactory filterKindDescriptionFactory;
 
+    @Inject
+    FilterKindDescriptionTransferCache filterKindDescriptionTransferCache;
+
     public FilterKindDescription createFilterKindDescription(FilterKind filterKind, Language language, String description,
             BasePK createdBy) {
         var filterKindDescription = filterKindDescriptionFactory.create(filterKind,
@@ -383,30 +354,20 @@ public class FilterKindControl
         return filterKindDescription;
     }
 
-    private static final Map<EntityPermission, String> getFilterKindDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM filterkinddescriptions
-                WHERE fltkd_fltk_filterkindid = ? AND fltkd_lang_languageid = ? AND fltkd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM filterkinddescriptions
-                WHERE fltkd_fltk_filterkindid = ? AND fltkd_lang_languageid = ? AND fltkd_thrutime = ?
-                FOR UPDATE
-                """);
-        getFilterKindDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private FilterKindDescription getFilterKindDescription(FilterKind filterKind, Language language, EntityPermission entityPermission) {
-        return filterKindDescriptionFactory.getEntityFromQuery(entityPermission, getFilterKindDescriptionQueries,
-                filterKind, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(FilterKindDescriptions.fields())
+                .from(FilterKindDescriptions)
+                .where(FilterKindDescriptions.FILTER_KIND.eq(filterKind.getPrimaryKey()),
+                        FilterKindDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        FilterKindDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return filterKindDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public FilterKindDescription getFilterKindDescription(FilterKind filterKind, Language language) {
@@ -425,31 +386,25 @@ public class FilterKindControl
         return getFilterKindDescriptionValue(getFilterKindDescriptionForUpdate(filterKind, language));
     }
 
-    private static final Map<EntityPermission, String> getFilterKindDescriptionsByFilterKindQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM filterkinddescriptions, languages
-                WHERE fltkd_fltk_filterkindid = ? AND fltkd_thrutime = ? AND fltkd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM filterkinddescriptions
-                WHERE fltkd_fltk_filterkindid = ? AND fltkd_thrutime = ?
-                FOR UPDATE
-                """);
-        getFilterKindDescriptionsByFilterKindQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<FilterKindDescription> getFilterKindDescriptionsByFilterKind(FilterKind filterKind, EntityPermission entityPermission) {
-        return filterKindDescriptionFactory.getEntitiesFromQuery(entityPermission, getFilterKindDescriptionsByFilterKindQueries,
-                filterKind, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(FilterKindDescriptions.fields())
+                    .from(FilterKindDescriptions)
+                    .join(Languages).onKey(FILTER_KIND_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(FilterKindDescriptions.FILTER_KIND.eq(filterKind.getPrimaryKey()),
+                            FilterKindDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    FilterKindDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(FilterKindDescriptions.fields())
+                    .from(FilterKindDescriptions)
+                    .where(FilterKindDescriptions.FILTER_KIND.eq(filterKind.getPrimaryKey()),
+                            FilterKindDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return filterKindDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<FilterKindDescription> getFilterKindDescriptionsByFilterKind(FilterKind filterKind) {
