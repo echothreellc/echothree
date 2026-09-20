@@ -16,6 +16,10 @@
 
 package com.echothree.model.control.letter.server.control;
 
+import static com.echothree.model.jooq.server.tables.chain.ChainInstances.ChainInstances;
+import static com.echothree.model.jooq.server.tables.chain.ChainInstanceDetails.ChainInstanceDetails;
+import static com.echothree.model.jooq.server.keys.chain.ChainForeignKeys.CHAIN_INSTANCES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.letter.LetterForeignKeys.QUEUED_LETTERS_CHAIN_INSTANCE_FK;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.letter.common.choice.LetterChoicesBean;
@@ -64,20 +68,30 @@ import com.echothree.model.data.letter.server.value.LetterSourceDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.letter.LetterForeignKeys.LETTERS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.letter.LetterForeignKeys.LETTER_CONTACT_MECHANISM_PURPOSES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.letter.LetterForeignKeys.LETTER_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.letter.LetterForeignKeys.LETTER_SOURCES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.letter.LetterForeignKeys.LETTER_SOURCE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.letter.LetterContactMechanismPurposeDetails.LetterContactMechanismPurposeDetails;
+import static com.echothree.model.jooq.server.tables.letter.LetterContactMechanismPurposes.LetterContactMechanismPurposes;
+import static com.echothree.model.jooq.server.tables.letter.LetterDescriptions.LetterDescriptions;
+import static com.echothree.model.jooq.server.tables.letter.LetterDetails.LetterDetails;
+import static com.echothree.model.jooq.server.tables.letter.LetterSourceDescriptions.LetterSourceDescriptions;
+import static com.echothree.model.jooq.server.tables.letter.LetterSourceDetails.LetterSourceDetails;
+import static com.echothree.model.jooq.server.tables.letter.LetterSources.LetterSources;
+import static com.echothree.model.jooq.server.tables.letter.Letters.Letters;
+import static com.echothree.model.jooq.server.tables.letter.QueuedLetters.QueuedLetters;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 
@@ -94,36 +108,17 @@ public class LetterControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Letter Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    @Inject
-    LetterTransferCache letterTransferCache;
-
-    @Inject
-    LetterDescriptionTransferCache letterDescriptionTransferCache;
-
-    @Inject
-    LetterSourceTransferCache letterSourceTransferCache;
-
-    @Inject
-    LetterSourceDescriptionTransferCache letterSourceDescriptionTransferCache;
-
-    @Inject
-    QueuedLetterTransferCache queuedLetterTransferCache;
-
-    @Inject
-    LetterContactMechanismPurposeTransferCache letterContactMechanismPurposeTransferCache;
-
-    // --------------------------------------------------------------------------------
     //   Letter Sources
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected LetterSourceDetailFactory letterSourceDetailFactory;
 
     @Inject
     protected LetterSourceFactory letterSourceFactory;
 
     @Inject
-    protected LetterSourceDetailFactory letterSourceDetailFactory;
+    LetterSourceTransferCache letterSourceTransferCache;
 
     public LetterSource createLetterSource(String letterSourceName, Party companyParty,
             PartyContactMechanism emailAddressPartyContactMechanism, PartyContactMechanism postalAddressPartyContactMechanism,
@@ -172,80 +167,67 @@ public class LetterControl
     }
 
     public long countLetterSources() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM lettersources
-                        JOIN lettersourcedetails ON lttrsrcdt_lettersourcedetailid = lttrsrc_activedetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(LetterSources)
+                .join(LetterSourceDetails).onKey(LETTER_SOURCES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countLetterSourcesByCompanyParty(final Party companyParty) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM lettersources
-                        JOIN lettersourcedetails ON lttrsrcdt_lettersourcedetailid = lttrsrc_activedetailid
-                        WHERE lttrsrcdt_companypartyid = ?
-                        """, companyParty);
+        return session.getDslContext()
+                .selectCount()
+                .from(LetterSources)
+                .join(LetterSourceDetails).onKey(LETTER_SOURCES_ACTIVE_DETAIL_FK)
+                .where(LetterSourceDetails.COMPANY_PARTY.eq(companyParty.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countLetterSourcesByEmailAddressPartyContactMechanism(final PartyContactMechanism emailAddressPartyContactMechanism) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM lettersources
-                        JOIN lettersourcedetails ON lttrsrcdt_lettersourcedetailid = lttrsrc_activedetailid
-                        WHERE lttrsrcdt_emailaddresspartycontactmechanismid = ?
-                        """, emailAddressPartyContactMechanism);
+        return session.getDslContext()
+                .selectCount()
+                .from(LetterSources)
+                .join(LetterSourceDetails).onKey(LETTER_SOURCES_ACTIVE_DETAIL_FK)
+                .where(LetterSourceDetails.EMAIL_ADDRESS_PARTY_CONTACT_MECHANISM.eq(emailAddressPartyContactMechanism.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countLetterSourcesByPostalAddressPartyContactMechanism(final PartyContactMechanism postalAddressPartyContactMechanism) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM lettersources
-                        JOIN lettersourcedetails ON lttrsrcdt_lettersourcedetailid = lttrsrc_activedetailid
-                        WHERE lttrsrcdt_postaladdresspartycontactmechanismid = ?
-                        """, postalAddressPartyContactMechanism);
+        return session.getDslContext()
+                .selectCount()
+                .from(LetterSources)
+                .join(LetterSourceDetails).onKey(LETTER_SOURCES_ACTIVE_DETAIL_FK)
+                .where(LetterSourceDetails.POSTAL_ADDRESS_PARTY_CONTACT_MECHANISM.eq(postalAddressPartyContactMechanism.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countLetterSourcesByLetterSourcePartyContactMechanism(final PartyContactMechanism letterSourcePartyContactMechanism) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM lettersources
-                        JOIN lettersourcedetails ON lttrsrcdt_lettersourcedetailid = lttrsrc_activedetailid
-                        WHERE lttrsrcdt_lettersourcepartycontactmechanismid = ?
-                        """, letterSourcePartyContactMechanism);
+        return session.getDslContext()
+                .selectCount()
+                .from(LetterSources)
+                .join(LetterSourceDetails).onKey(LETTER_SOURCES_ACTIVE_DETAIL_FK)
+                .where(LetterSourceDetails.LETTER_SOURCE_PARTY_CONTACT_MECHANISM.eq(letterSourcePartyContactMechanism.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private LetterSource getLetterSourceByName(String letterSourceName, EntityPermission entityPermission) {
-        LetterSource letterSource;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM lettersources, lettersourcedetails
-                        WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_lettersourcename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM lettersources, lettersourcedetails
-                        WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_lettersourcename = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(LetterSources.fields())
+                .from(LetterSources)
+                .join(LetterSourceDetails).onKey(LETTER_SOURCES_ACTIVE_DETAIL_FK)
+                .where(LetterSourceDetails.LETTER_SOURCE_NAME.eq(letterSourceName));
 
-            var ps = letterSourceFactory.prepareStatement(query);
-            
-            ps.setString(1, letterSourceName);
-            
-            letterSource = letterSourceFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return letterSource;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return letterSourceFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public LetterSource getLetterSourceByName(String letterSourceName) {
@@ -265,26 +247,18 @@ public class LetterControl
     }
     
     private LetterSource getDefaultLetterSource(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM lettersources, lettersourcedetails
-                    WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_isdefault = 1
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM lettersources, lettersourcedetails
-                    WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_isdefault = 1
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(LetterSources.fields())
+                .from(LetterSources)
+                .join(LetterSourceDetails).onKey(LETTER_SOURCES_ACTIVE_DETAIL_FK)
+                .where(LetterSourceDetails.IS_DEFAULT.eq(true));
 
-        var ps = letterSourceFactory.prepareStatement(query);
-        
-        return letterSourceFactory.getEntityFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return letterSourceFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public LetterSource getDefaultLetterSource() {
@@ -300,28 +274,19 @@ public class LetterControl
     }
     
     private List<LetterSource> getLetterSources(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM lettersources, lettersourcedetails
-                    WHERE lttrsrc_activedetailid = lttrsrcdt_letterSourcedetailid
-                    ORDER BY lttrsrcdt_sortorder, lttrsrcdt_letterSourcename
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM lettersources, lettersourcedetails
-                    WHERE lttrsrc_activedetailid = lttrsrcdt_letterSourcedetailid
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(LetterSources.fields())
+                .from(LetterSources)
+                .join(LetterSourceDetails).onKey(LETTER_SOURCES_ACTIVE_DETAIL_FK);
 
-        var ps = letterSourceFactory.prepareStatement(query);
-        
-        return letterSourceFactory.getEntitiesFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(LetterSourceDetails.SORT_ORDER, LetterSourceDetails.LETTER_SOURCE_NAME),
+                    LetterSourceFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return letterSourceFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<LetterSource> getLetterSources() {
@@ -334,38 +299,20 @@ public class LetterControl
     
     private List<LetterSource> getLetterSourcesByEmailAddressPartyContactMechanism(PartyContactMechanism emailAddressPartyContactMechanism,
             EntityPermission entityPermission) {
-        List<LetterSource> letterSources;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM lettersources, lettersourcedetails
-                        WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_emailaddresspartycontactmechanismid = ?
-                        ORDER BY lttrsrcdt_sortorder, lttrsrcdt_lettersourcename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM lettersources, lettersourcedetails
-                        WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_emailaddresspartycontactmechanismid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(LetterSources.fields())
+                .from(LetterSources)
+                .join(LetterSourceDetails).onKey(LETTER_SOURCES_ACTIVE_DETAIL_FK)
+                .where(LetterSourceDetails.EMAIL_ADDRESS_PARTY_CONTACT_MECHANISM.eq(emailAddressPartyContactMechanism.getPrimaryKey()));
 
-            var ps = letterSourceFactory.prepareStatement(query);
-            
-            ps.setLong(1, emailAddressPartyContactMechanism.getPrimaryKey().getEntityId());
-            
-            letterSources = letterSourceFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return letterSources;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(LetterSourceDetails.SORT_ORDER, LetterSourceDetails.LETTER_SOURCE_NAME),
+                    LetterSourceFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return letterSourceFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<LetterSource> getLetterSourcesByEmailAddressPartyContactMechanism(PartyContactMechanism emailAddressPartyContactMechanism) {
@@ -378,38 +325,20 @@ public class LetterControl
     
     private List<LetterSource> getLetterSourcesByPostalAddressPartyContactMechanism(PartyContactMechanism postalAddressPartyContactMechanism,
             EntityPermission entityPermission) {
-        List<LetterSource> letterSources;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM lettersources, lettersourcedetails
-                        WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_postaladdresspartycontactmechanismid = ?
-                        ORDER BY lttrsrcdt_sortorder, lttrsrcdt_lettersourcename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM lettersources, lettersourcedetails
-                        WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_postaladdresspartycontactmechanismid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(LetterSources.fields())
+                .from(LetterSources)
+                .join(LetterSourceDetails).onKey(LETTER_SOURCES_ACTIVE_DETAIL_FK)
+                .where(LetterSourceDetails.POSTAL_ADDRESS_PARTY_CONTACT_MECHANISM.eq(postalAddressPartyContactMechanism.getPrimaryKey()));
 
-            var ps = letterSourceFactory.prepareStatement(query);
-            
-            ps.setLong(1, postalAddressPartyContactMechanism.getPrimaryKey().getEntityId());
-            
-            letterSources = letterSourceFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return letterSources;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(LetterSourceDetails.SORT_ORDER, LetterSourceDetails.LETTER_SOURCE_NAME),
+                    LetterSourceFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return letterSourceFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<LetterSource> getLetterSourcesByPostalAddressPartyContactMechanism(PartyContactMechanism postalAddressPartyContactMechanism) {
@@ -422,38 +351,20 @@ public class LetterControl
     
     private List<LetterSource> getLetterSourcesByLetterSourcePartyContactMechanism(PartyContactMechanism letterSourcePartyContactMechanism,
             EntityPermission entityPermission) {
-        List<LetterSource> letterSources;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM lettersources, lettersourcedetails
-                        WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_lettersourcepartycontactmechanismid = ?
-                        ORDER BY lttrsrcdt_sortorder, lttrsrcdt_lettersourcename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM lettersources, lettersourcedetails
-                        WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_lettersourcepartycontactmechanismid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(LetterSources.fields())
+                .from(LetterSources)
+                .join(LetterSourceDetails).onKey(LETTER_SOURCES_ACTIVE_DETAIL_FK)
+                .where(LetterSourceDetails.LETTER_SOURCE_PARTY_CONTACT_MECHANISM.eq(letterSourcePartyContactMechanism.getPrimaryKey()));
 
-            var ps = letterSourceFactory.prepareStatement(query);
-            
-            ps.setLong(1, letterSourcePartyContactMechanism.getPrimaryKey().getEntityId());
-            
-            letterSources = letterSourceFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return letterSources;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(LetterSourceDetails.SORT_ORDER, LetterSourceDetails.LETTER_SOURCE_NAME),
+                    LetterSourceFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return letterSourceFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<LetterSource> getLetterSourcesByLetterSourcePartyContactMechanism(PartyContactMechanism letterSourcePartyContactMechanism) {
@@ -624,6 +535,9 @@ public class LetterControl
     @Inject
     protected LetterSourceDescriptionFactory letterSourceDescriptionFactory;
 
+    @Inject
+    LetterSourceDescriptionTransferCache letterSourceDescriptionTransferCache;
+
     public LetterSourceDescription createLetterSourceDescription(LetterSource letterSource, Language language, String description, BasePK createdBy) {
         var letterSourceDescription = letterSourceDescriptionFactory.create(letterSource, language, description,
                 session.getStartTime(), Session.MAX_TIME);
@@ -634,38 +548,19 @@ public class LetterControl
     }
     
     private LetterSourceDescription getLetterSourceDescription(LetterSource letterSource, Language language, EntityPermission entityPermission) {
-        LetterSourceDescription letterSourceDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM lettersourcedescriptions
-                        WHERE lttrsrcd_lttrsrc_letterSourceid = ? AND lttrsrcd_lang_languageid = ? AND lttrsrcd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM lettersourcedescriptions
-                        WHERE lttrsrcd_lttrsrc_letterSourceid = ? AND lttrsrcd_lang_languageid = ? AND lttrsrcd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(LetterSourceDescriptions.fields())
+                .from(LetterSourceDescriptions)
+                .where(LetterSourceDescriptions.LETTER_SOURCE.eq(letterSource.getPrimaryKey()),
+                        LetterSourceDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        LetterSourceDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = letterSourceDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, letterSource.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            letterSourceDescription = letterSourceDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return letterSourceDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return letterSourceDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public LetterSourceDescription getLetterSourceDescription(LetterSource letterSource, Language language) {
@@ -687,39 +582,24 @@ public class LetterControl
     }
     
     private List<LetterSourceDescription> getLetterSourceDescriptionsByLetterSource(LetterSource letterSource, EntityPermission entityPermission) {
-        List<LetterSourceDescription> letterSourceDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM lettersourcedescriptions, languages
-                        WHERE lttrsrcd_lttrsrc_letterSourceid = ? AND lttrsrcd_thrutime = ? AND lttrsrcd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM lettersourcedescriptions
-                        WHERE lttrsrcd_lttrsrc_letterSourceid = ? AND lttrsrcd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(LetterSourceDescriptions.fields())
+                    .from(LetterSourceDescriptions)
+                    .join(Languages).onKey(LETTER_SOURCE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(LetterSourceDescriptions.LETTER_SOURCE.eq(letterSource.getPrimaryKey()),
+                            LetterSourceDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    LetterSourceDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(LetterSourceDescriptions.fields())
+                    .from(LetterSourceDescriptions)
+                    .where(LetterSourceDescriptions.LETTER_SOURCE.eq(letterSource.getPrimaryKey()),
+                            LetterSourceDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = letterSourceDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, letterSource.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            letterSourceDescriptions = letterSourceDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return letterSourceDescriptions;
+        return letterSourceDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<LetterSourceDescription> getLetterSourceDescriptionsByLetterSource(LetterSource letterSource) {
@@ -805,10 +685,13 @@ public class LetterControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected LetterDetailFactory letterDetailFactory;
+
+    @Inject
     protected LetterFactory letterFactory;
 
     @Inject
-    protected LetterDetailFactory letterDetailFactory;
+    LetterTransferCache letterTransferCache;
 
     public Letter createLetter(ChainType chainType, String letterName, LetterSource letterSource, ContactList contactList,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -855,64 +738,49 @@ public class LetterControl
     }
 
     public long countLettersByChainType(final ChainType chainType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM letters
-                        JOIN letterdetails ON lttrdt_letterdetailid = lttr_activedetailid
-                        WHERE lttrdt_chntyp_chaintypeid = ?
-                        """, chainType);
+        return session.getDslContext()
+                .selectCount()
+                .from(Letters)
+                .join(LetterDetails).onKey(LETTERS_ACTIVE_DETAIL_FK)
+                .where(LetterDetails.CHAIN_TYPE.eq(chainType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countLettersByLetterSource(final LetterSource letterSource) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM letters
-                        JOIN letterdetails ON lttrdt_letterdetailid = lttr_activedetailid
-                        WHERE lttrdt_lttrsrc_lettersourceid = ?
-                        """, letterSource);
+        return session.getDslContext()
+                .selectCount()
+                .from(Letters)
+                .join(LetterDetails).onKey(LETTERS_ACTIVE_DETAIL_FK)
+                .where(LetterDetails.LETTER_SOURCE.eq(letterSource.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countLettersByContactList(final ContactList contactList) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM letters
-                        JOIN letterdetails ON lttrdt_letterdetailid = lttr_activedetailid
-                        WHERE lttrdt_clst_contactlistid = ?
-                        """, contactList);
+        return session.getDslContext()
+                .selectCount()
+                .from(Letters)
+                .join(LetterDetails).onKey(LETTERS_ACTIVE_DETAIL_FK)
+                .where(LetterDetails.CONTACT_LIST.eq(contactList.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private Letter getLetterByName(ChainType chainType, String letterName, EntityPermission entityPermission) {
-        Letter letter;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM letters, letterdetails
-                        WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_chntyp_chaintypeid = ? AND lttrdt_lettername = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM letters, letterdetails
-                        WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_chntyp_chaintypeid = ? AND lttrdt_lettername = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Letters.fields())
+                .from(Letters)
+                .join(LetterDetails).onKey(LETTERS_ACTIVE_DETAIL_FK)
+                .where(LetterDetails.CHAIN_TYPE.eq(chainType.getPrimaryKey()),
+                        LetterDetails.LETTER_NAME.eq(letterName));
 
-            var ps = letterFactory.prepareStatement(query);
-            
-            ps.setLong(1, chainType.getPrimaryKey().getEntityId());
-            ps.setString(2, letterName);
-            
-            letter = letterFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return letter;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return letterFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Letter getLetterByName(ChainType chainType, String letterName) {
@@ -932,36 +800,19 @@ public class LetterControl
     }
     
     private Letter getDefaultLetter(ChainType chainType, EntityPermission entityPermission) {
-        Letter letter;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM letters, letterdetails
-                        WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_chntyp_chaintypeid = ? AND lttrdt_isdefault = 1
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM letters, letterdetails
-                        WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_chntyp_chaintypeid = ? AND lttrdt_isdefault = 1
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Letters.fields())
+                .from(Letters)
+                .join(LetterDetails).onKey(LETTERS_ACTIVE_DETAIL_FK)
+                .where(LetterDetails.CHAIN_TYPE.eq(chainType.getPrimaryKey()),
+                        LetterDetails.IS_DEFAULT.eq(true));
 
-            var ps = letterFactory.prepareStatement(query);
-            
-            ps.setLong(1, chainType.getPrimaryKey().getEntityId());
-            
-            letter = letterFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return letter;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return letterFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Letter getDefaultLetter(ChainType chainType) {
@@ -977,38 +828,20 @@ public class LetterControl
     }
     
     private List<Letter> getLettersByChainType(ChainType chainType, EntityPermission entityPermission) {
-        List<Letter> letters;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM letters, letterdetails
-                        WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_chntyp_chaintypeid = ?
-                        ORDER BY lttrdt_sortorder, lttrdt_lettername
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM letters, letterdetails
-                        WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_chntyp_chaintypeid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Letters.fields())
+                .from(Letters)
+                .join(LetterDetails).onKey(LETTERS_ACTIVE_DETAIL_FK)
+                .where(LetterDetails.CHAIN_TYPE.eq(chainType.getPrimaryKey()));
 
-            var ps = letterFactory.prepareStatement(query);
-            
-            ps.setLong(1, chainType.getPrimaryKey().getEntityId());
-            
-            letters = letterFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return letters;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(LetterDetails.SORT_ORDER, LetterDetails.LETTER_NAME),
+                    LetterFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return letterFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<Letter> getLettersByChainType(ChainType chainType) {
@@ -1020,38 +853,20 @@ public class LetterControl
     }
     
     private List<Letter> getLettersByLetterSource(LetterSource letterSource, EntityPermission entityPermission) {
-        List<Letter> letters;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM letters, letterdetails
-                        WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_lttrsrc_lettersourceid = ?
-                        ORDER BY lttrdt_sortorder, lttrdt_lettername
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM letters, letterdetails
-                        WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_lttrsrc_lettersourceid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Letters.fields())
+                .from(Letters)
+                .join(LetterDetails).onKey(LETTERS_ACTIVE_DETAIL_FK)
+                .where(LetterDetails.LETTER_SOURCE.eq(letterSource.getPrimaryKey()));
 
-            var ps = letterFactory.prepareStatement(query);
-            
-            ps.setLong(1, letterSource.getPrimaryKey().getEntityId());
-            
-            letters = letterFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return letters;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(LetterDetails.SORT_ORDER, LetterDetails.LETTER_NAME),
+                    LetterFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return letterFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<Letter> getLettersByLetterSource(LetterSource letterSource) {
@@ -1063,38 +878,20 @@ public class LetterControl
     }
     
     private List<Letter> getLettersByContactList(ContactList contactList, EntityPermission entityPermission) {
-        List<Letter> letters;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                // TODO: ORDER BY
-                query = """
-                        SELECT _ALL_
-                        FROM letters, letterdetails
-                        WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_clst_contactlistid = ?
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM letters, letterdetails
-                        WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_clst_contactlistid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Letters.fields())
+                .from(Letters)
+                .join(LetterDetails).onKey(LETTERS_ACTIVE_DETAIL_FK)
+                .where(LetterDetails.CONTACT_LIST.eq(contactList.getPrimaryKey()));
 
-            var ps = letterFactory.prepareStatement(query);
-            
-            ps.setLong(1, contactList.getPrimaryKey().getEntityId());
-            
-            letters = letterFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return letters;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(LetterDetails.SORT_ORDER, LetterDetails.LETTER_NAME),
+                    LetterFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return letterFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<Letter> getLettersByContactList(ContactList contactList) {
@@ -1259,6 +1056,9 @@ public class LetterControl
     @Inject
     protected LetterDescriptionFactory letterDescriptionFactory;
 
+    @Inject
+    LetterDescriptionTransferCache letterDescriptionTransferCache;
+
     public LetterDescription createLetterDescription(Letter letter, Language language, String description, BasePK createdBy) {
         var letterDescription = letterDescriptionFactory.create(letter, language, description,
                 session.getStartTime(), Session.MAX_TIME);
@@ -1269,38 +1069,19 @@ public class LetterControl
     }
     
     private LetterDescription getLetterDescription(Letter letter, Language language, EntityPermission entityPermission) {
-        LetterDescription letterDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM letterdescriptions
-                        WHERE lttrd_lttr_letterid = ? AND lttrd_lang_languageid = ? AND lttrd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM letterdescriptions
-                        WHERE lttrd_lttr_letterid = ? AND lttrd_lang_languageid = ? AND lttrd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(LetterDescriptions.fields())
+                .from(LetterDescriptions)
+                .where(LetterDescriptions.LETTER.eq(letter.getPrimaryKey()),
+                        LetterDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        LetterDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = letterDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, letter.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            letterDescription = letterDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return letterDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return letterDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public LetterDescription getLetterDescription(Letter letter, Language language) {
@@ -1322,39 +1103,24 @@ public class LetterControl
     }
     
     private List<LetterDescription> getLetterDescriptionsByLetter(Letter letter, EntityPermission entityPermission) {
-        List<LetterDescription> letterDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM letterdescriptions, languages
-                        WHERE lttrd_lttr_letterid = ? AND lttrd_thrutime = ? AND lttrd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM letterdescriptions
-                        WHERE lttrd_lttr_letterid = ? AND lttrd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(LetterDescriptions.fields())
+                    .from(LetterDescriptions)
+                    .join(Languages).onKey(LETTER_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(LetterDescriptions.LETTER.eq(letter.getPrimaryKey()),
+                            LetterDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    LetterDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(LetterDescriptions.fields())
+                    .from(LetterDescriptions)
+                    .where(LetterDescriptions.LETTER.eq(letter.getPrimaryKey()),
+                            LetterDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = letterDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, letter.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            letterDescriptions = letterDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return letterDescriptions;
+        return letterDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<LetterDescription> getLetterDescriptionsByLetter(Letter letter) {
@@ -1440,10 +1206,13 @@ public class LetterControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected LetterContactMechanismPurposeDetailFactory letterContactMechanismPurposeDetailFactory;
+
+    @Inject
     protected LetterContactMechanismPurposeFactory letterContactMechanismPurposeFactory;
 
     @Inject
-    protected LetterContactMechanismPurposeDetailFactory letterContactMechanismPurposeDetailFactory;
+    LetterContactMechanismPurposeTransferCache letterContactMechanismPurposeTransferCache;
 
     public LetterContactMechanismPurpose createLetterContactMechanismPurpose(Letter letter, Integer priority,
             ContactMechanismPurpose contactMechanismPurpose, BasePK createdBy) {
@@ -1480,58 +1249,40 @@ public class LetterControl
     }
 
     public long countLetterContactMechanismPurposesByLetter(final Letter letter) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM lettercontactmechanismpurposes
-                        JOIN lettercontactmechanismpurposedetails ON lttrcmprdt_lettercontactmechanismpurposedetailid = lttrcmpr_activedetailid
-                        WHERE lttrcmprdt_lttr_letterid = ?
-                        """, letter);
+        return session.getDslContext()
+                .selectCount()
+                .from(LetterContactMechanismPurposes)
+                .join(LetterContactMechanismPurposeDetails).onKey(LETTER_CONTACT_MECHANISM_PURPOSES_ACTIVE_DETAIL_FK)
+                .where(LetterContactMechanismPurposeDetails.LETTER.eq(letter.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countLetterContactMechanismPurposesByContactMechanismPurpose(final ContactMechanismPurpose contactMechanismPurpose) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM lettercontactmechanismpurposes
-                        JOIN lettercontactmechanismpurposedetails ON lttrcmprdt_lettercontactmechanismpurposedetailid = lttrcmpr_activedetailid
-                        WHERE lttrcmprdt_cmpr_contactmechanismpurposeid = ?
-                        """, contactMechanismPurpose);
+        return session.getDslContext()
+                .selectCount()
+                .from(LetterContactMechanismPurposes)
+                .join(LetterContactMechanismPurposeDetails).onKey(LETTER_CONTACT_MECHANISM_PURPOSES_ACTIVE_DETAIL_FK)
+                .where(LetterContactMechanismPurposeDetails.CONTACT_MECHANISM_PURPOSE.eq(contactMechanismPurpose.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private LetterContactMechanismPurpose getLetterContactMechanismPurpose(Letter letter, Integer priority,
             EntityPermission entityPermission) {
-        LetterContactMechanismPurpose letterContactMechanismPurpose;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM lettercontactmechanismpurposes, lettercontactmechanismpurposedetails
-                        WHERE lttrcmpr_activedetailid = lttrcmprdt_lettercontactmechanismpurposedetailid
-                        AND lttrcmprdt_lttr_letterid = ? AND lttrcmprdt_priority = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM lettercontactmechanismpurposes, lettercontactmechanismpurposedetails
-                        WHERE lttrcmpr_activedetailid = lttrcmprdt_lettercontactmechanismpurposedetailid
-                        AND lttrcmprdt_lttr_letterid = ? AND lttrcmprdt_priority = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(LetterContactMechanismPurposes.fields())
+                .from(LetterContactMechanismPurposes)
+                .join(LetterContactMechanismPurposeDetails).onKey(LETTER_CONTACT_MECHANISM_PURPOSES_ACTIVE_DETAIL_FK)
+                .where(LetterContactMechanismPurposeDetails.LETTER.eq(letter.getPrimaryKey()),
+                        LetterContactMechanismPurposeDetails.PRIORITY.eq(priority));
 
-            var ps = letterContactMechanismPurposeFactory.prepareStatement(query);
-            
-            ps.setLong(1, letter.getPrimaryKey().getEntityId());
-            ps.setInt(2, priority);
-            
-            letterContactMechanismPurpose = letterContactMechanismPurposeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return letterContactMechanismPurpose;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return letterContactMechanismPurposeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public LetterContactMechanismPurpose getLetterContactMechanismPurpose(Letter letter, Integer priority) {
@@ -1552,40 +1303,20 @@ public class LetterControl
     
     private List<LetterContactMechanismPurpose> getLetterContactMechanismPurposesByLetter(Letter letter,
             EntityPermission entityPermission) {
-        List<LetterContactMechanismPurpose> letterContactMechanismPurposes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM lettercontactmechanismpurposes, lettercontactmechanismpurposedetails
-                        WHERE lttrcmpr_activedetailid = lttrcmprdt_lettercontactmechanismpurposedetailid
-                        AND lttrcmprdt_lttr_letterid = ?
-                        ORDER BY lttrcmprdt_priority
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM lettercontactmechanismpurposes, lettercontactmechanismpurposedetails
-                        WHERE lttrcmpr_activedetailid = lttrcmprdt_lettercontactmechanismpurposedetailid
-                        AND lttrcmprdt_lttr_letterid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(LetterContactMechanismPurposes.fields())
+                .from(LetterContactMechanismPurposes)
+                .join(LetterContactMechanismPurposeDetails).onKey(LETTER_CONTACT_MECHANISM_PURPOSES_ACTIVE_DETAIL_FK)
+                .where(LetterContactMechanismPurposeDetails.LETTER.eq(letter.getPrimaryKey()));
 
-            var ps = letterContactMechanismPurposeFactory.prepareStatement(query);
-            
-            ps.setLong(1, letter.getPrimaryKey().getEntityId());
-            
-            letterContactMechanismPurposes = letterContactMechanismPurposeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return letterContactMechanismPurposes;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(LetterContactMechanismPurposeDetails.PRIORITY),
+                    LetterContactMechanismPurposeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return letterContactMechanismPurposeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<LetterContactMechanismPurpose> getLetterContactMechanismPurposesByLetter(Letter letter) {
@@ -1663,6 +1394,9 @@ public class LetterControl
     @Inject
     protected QueuedLetterFactory queuedLetterFactory;
 
+    @Inject
+    QueuedLetterTransferCache queuedLetterTransferCache;
+
     public QueuedLetter createQueuedLetter(ChainInstance chainInstance, Letter letter) {
         var chainInstanceStatus = chainControl.getChainInstanceStatusForUpdate(chainInstance);
         Integer queuedLetterSequence = chainInstanceStatus.getQueuedLetterSequence() + 1;
@@ -1677,65 +1411,61 @@ public class LetterControl
     }
 
     public long countQueuedLetters() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM queuedletters
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(QueuedLetters)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countQueuedLettersByChainInstance(final ChainInstance chainInstance) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM queuedletters
-                        WHERE qlttr_chni_chaininstanceid = ?
-                        """, chainInstance);
+        return session.getDslContext()
+                .selectCount()
+                .from(QueuedLetters)
+                .where(QueuedLetters.CHAIN_INSTANCE.eq(chainInstance.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countQueuedLettersByLetter(final Letter letter) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM queuedletters
-                        WHERE qlttr_lttr_letterid = ?
-                        """, letter);
+        return session.getDslContext()
+                .selectCount()
+                .from(QueuedLetters)
+                .where(QueuedLetters.LETTER.eq(letter.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
     public boolean isChainInstanceUsedByQueuedLetters(ChainInstance chainInstance) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM queuedletters
-                WHERE qlttr_chni_chaininstanceid = ?
-                """, chainInstance) != 1;
+        return session.getDslContext()
+                .selectCount()
+                .from(QueuedLetters)
+                .where(QueuedLetters.CHAIN_INSTANCE.eq(chainInstance.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L) != 0L;
     }
 
     public boolean isChainInstanceUsedByQueuedLetters(Letter letter) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM queuedletters
-                WHERE qlttr_lttr_letterid = ?
-                """, letter) != 1;
-    }
-
-    private static final Map<EntityPermission, String> getQueuedLetterQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM queuedletters
-                WHERE qlttr_chni_chaininstanceid = ? AND qlttr_queuedlettersequence = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM queuedletters
-                WHERE qlttr_chni_chaininstanceid = ? AND qlttr_queuedlettersequence = ?
-                FOR UPDATE
-                """);
-        getQueuedLetterQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(QueuedLetters)
+                .where(QueuedLetters.LETTER.eq(letter.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L) != 0L;
     }
 
     private QueuedLetter getQueuedLetter(ChainInstance chainInstance, Integer queuedLetterSequence, EntityPermission entityPermission) {
-        return queuedLetterFactory.getEntityFromQuery(entityPermission, getQueuedLetterQueries,
-                chainInstance, queuedLetterSequence);
+        var baseQuery = session.getDslContext()
+                .select(QueuedLetters.fields())
+                .from(QueuedLetters)
+                .where(QueuedLetters.CHAIN_INSTANCE.eq(chainInstance.getPrimaryKey()),
+                        QueuedLetters.QUEUED_LETTER_SEQUENCE.eq(queuedLetterSequence));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return queuedLetterFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public QueuedLetter getQueuedLetter(ChainInstance chainInstance, Integer queuedLetterSequence) {
@@ -1747,25 +1477,22 @@ public class LetterControl
     }
 
     private List<QueuedLetter> getQueuedLetters(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM queuedletters
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM queuedletters
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(QueuedLetters.fields())
+                .from(QueuedLetters);
 
-        var ps = queuedLetterFactory.prepareStatement(query);
-        
-        return queuedLetterFactory.getEntitiesFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(QueuedLetters.fields())
+                    .from(QueuedLetters)
+                    .join(ChainInstances).onKey(QUEUED_LETTERS_CHAIN_INSTANCE_FK)
+                    .join(ChainInstanceDetails).onKey(CHAIN_INSTANCES_LAST_DETAIL_FK)
+                    .orderBy(ChainInstanceDetails.CHAIN_INSTANCE_NAME, QueuedLetters.QUEUED_LETTER_SEQUENCE),
+                    QueuedLetterFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return queuedLetterFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<QueuedLetter> getQueuedLetters() {
@@ -1777,38 +1504,19 @@ public class LetterControl
     }
     
     private List<QueuedLetter> getQueuedLettersByChainInstance(ChainInstance chainInstance, EntityPermission entityPermission) {
-        List<QueuedLetter> queuedLetters;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM queuedletters
-                        WHERE qlttr_chni_chaininstanceid = ?
-                        ORDER BY qlttr_queuedletterid
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM queuedletters
-                        WHERE qlttr_chni_chaininstanceid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(QueuedLetters.fields())
+                .from(QueuedLetters)
+                .where(QueuedLetters.CHAIN_INSTANCE.eq(chainInstance.getPrimaryKey()));
 
-            var ps = queuedLetterFactory.prepareStatement(query);
-            
-            ps.setLong(1, chainInstance.getPrimaryKey().getEntityId());
-            
-            queuedLetters = queuedLetterFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return queuedLetters;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(QueuedLetters.QUEUED_LETTER),
+                    QueuedLetterFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return queuedLetterFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<QueuedLetter> getQueuedLettersByChainInstance(ChainInstance chainInstance) {
@@ -1820,38 +1528,19 @@ public class LetterControl
     }
     
     private List<QueuedLetter> getQueuedLettersByLetter(Letter letter, EntityPermission entityPermission) {
-        List<QueuedLetter> queuedLetters;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM queuedletters
-                        WHERE qlttr_lttr_letterid = ?
-                        ORDER BY qlttr_queuedletterid
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM queuedletters
-                        WHERE qlttr_lttr_letterid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(QueuedLetters.fields())
+                .from(QueuedLetters)
+                .where(QueuedLetters.LETTER.eq(letter.getPrimaryKey()));
 
-            var ps = queuedLetterFactory.prepareStatement(query);
-            
-            ps.setLong(1, letter.getPrimaryKey().getEntityId());
-            
-            queuedLetters = queuedLetterFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return queuedLetters;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(QueuedLetters.QUEUED_LETTER),
+                    QueuedLetterFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return queuedLetterFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<QueuedLetter> getQueuedLettersByLetter(Letter letter) {
