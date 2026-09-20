@@ -69,12 +69,13 @@ public abstract class BaseDatabaseQuery<R extends BaseDatabaseResult> {
 
         try {
             final var getMethod = baseDatabaseResultClass.getMethod("get" + columnLabel);
+            
+            returnType = getMethod.getReturnType();
+
             final var setMethod = baseDatabaseResultClass.getMethod("set" + columnLabel, returnType);
             Object factoryInstance = null;
             Constructor<?> pkConstructor = null;
             Method getEntityFromPkMethod = null;
-
-            returnType = getMethod.getReturnType();
 
             if(!returnType.equals(Long.class) && !returnType.equals(Integer.class) && !returnType.equals(String.class)) {
                 final var superclass = returnType.getSuperclass();
@@ -169,7 +170,9 @@ public abstract class BaseDatabaseQuery<R extends BaseDatabaseResult> {
                         result = baseDatabaseResultConstructor.newInstance();
                     } catch(InstantiationException | IllegalAccessException | InvocationTargetException ex) {
                         var exception = new PersistenceDatabaseException("Cannot instantiate result " + baseDatabaseResultClass.getName());
+
                         exception.initCause(ex instanceof InvocationTargetException invocation ? invocation.getCause() : ex);
+
                         throw exception;
                     }
 
