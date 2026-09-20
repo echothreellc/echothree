@@ -64,17 +64,31 @@ import com.echothree.model.data.sequence.server.value.SequenceDetailValue;
 import com.echothree.model.data.sequence.server.value.SequenceTypeDescriptionValue;
 import com.echothree.model.data.sequence.server.value.SequenceTypeDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.sequence.SequenceForeignKeys.SEQUENCES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.sequence.SequenceForeignKeys.SEQUENCE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.sequence.SequenceForeignKeys.SEQUENCE_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.sequence.SequenceForeignKeys.SEQUENCE_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.sequence.SequenceChecksumTypeDescriptions.SequenceChecksumTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.sequence.SequenceChecksumTypes.SequenceChecksumTypes;
+import static com.echothree.model.jooq.server.tables.sequence.SequenceDescriptions.SequenceDescriptions;
+import static com.echothree.model.jooq.server.tables.sequence.SequenceDetails.SequenceDetails;
+import static com.echothree.model.jooq.server.tables.sequence.SequenceEncoderTypeDescriptions.SequenceEncoderTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.sequence.SequenceEncoderTypes.SequenceEncoderTypes;
+import static com.echothree.model.jooq.server.tables.sequence.SequenceTypeDescriptions.SequenceTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.sequence.SequenceTypeDetails.SequenceTypeDetails;
+import static com.echothree.model.jooq.server.tables.sequence.SequenceTypes.SequenceTypes;
+import static com.echothree.model.jooq.server.tables.sequence.SequenceValues.SequenceValues;
+import static com.echothree.model.jooq.server.tables.sequence.Sequences.Sequences;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -90,36 +104,17 @@ public class SequenceControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Sequence Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    @Inject
-    SequenceEncoderTypeTransferCache sequenceEncoderTypeTransferCache;
-
-    @Inject
-    SequenceChecksumTypeTransferCache sequenceChecksumTypeTransferCache;
-
-    @Inject
-    SequenceTypeTransferCache sequenceTypeTransferCache;
-
-    @Inject
-    SequenceTypeDescriptionTransferCache sequenceTypeDescriptionTransferCache;
-
-    @Inject
-    SequenceTransferCache sequenceTransferCache;
-
-    @Inject
-    SequenceDescriptionTransferCache sequenceDescriptionTransferCache;
-
-    // --------------------------------------------------------------------------------
     //   Sequence Types
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected SequenceTypeDetailFactory sequenceTypeDetailFactory;
 
     @Inject
     protected SequenceTypeFactory sequenceTypeFactory;
 
     @Inject
-    protected SequenceTypeDetailFactory sequenceTypeDetailFactory;
+    private SequenceTypeTransferCache sequenceTypeTransferCache;
 
     public SequenceType createSequenceType(String sequenceTypeName, String prefix, String suffix,
             SequenceEncoderType sequenceEncoderType, SequenceChecksumType sequenceChecksumType, Integer chunkSize, Boolean isDefault,
@@ -169,36 +164,28 @@ public class SequenceControl
     }
 
     public long countSequenceTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM sequencetypes, sequencetypedetails
-                        WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(SequenceTypes)
+                .join(SequenceTypeDetails).onKey(SEQUENCE_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<SequenceType> getSequenceTypes(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM sequencetypes, sequencetypedetails
-                    WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid
-                    ORDER BY sqtypdt_sortorder, sqtypdt_sequencetypename
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM sequencetypes, sequencetypedetails
-                    WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(SequenceTypes.fields())
+                .from(SequenceTypes)
+                .join(SequenceTypeDetails).onKey(SEQUENCE_TYPES_ACTIVE_DETAIL_FK);
 
-        var ps = sequenceTypeFactory.prepareStatement(query);
-        
-        return sequenceTypeFactory.getEntitiesFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SequenceTypeDetails.SORT_ORDER, SequenceTypeDetails.SEQUENCE_TYPE_NAME),
+                    SequenceTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return sequenceTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<SequenceType> getSequenceTypes() {
@@ -210,26 +197,18 @@ public class SequenceControl
     }
     
     public SequenceType getDefaultSequenceType(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM sequencetypes, sequencetypedetails
-                    WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid AND sqtypdt_isdefault = 1
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM sequencetypes, sequencetypedetails
-                    WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid AND sqtypdt_isdefault = 1
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(SequenceTypes.fields())
+                .from(SequenceTypes)
+                .join(SequenceTypeDetails).onKey(SEQUENCE_TYPES_ACTIVE_DETAIL_FK)
+                .where(SequenceTypeDetails.IS_DEFAULT.eq(true));
 
-        var ps = sequenceTypeFactory.prepareStatement(query);
-        
-        return sequenceTypeFactory.getEntityFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return sequenceTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public SequenceType getDefaultSequenceType() {
@@ -245,36 +224,18 @@ public class SequenceControl
     }
 
     public SequenceType getSequenceTypeByName(String sequenceTypeName, EntityPermission entityPermission) {
-        SequenceType sequenceType;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM sequencetypes, sequencetypedetails
-                        WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid AND sqtypdt_sequencetypename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM sequencetypes, sequencetypedetails
-                        WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid AND sqtypdt_sequencetypename = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SequenceTypes.fields())
+                .from(SequenceTypes)
+                .join(SequenceTypeDetails).onKey(SEQUENCE_TYPES_ACTIVE_DETAIL_FK)
+                .where(SequenceTypeDetails.SEQUENCE_TYPE_NAME.eq(sequenceTypeName));
 
-            var ps = sequenceTypeFactory.prepareStatement(query);
-            
-            ps.setString(1, sequenceTypeName);
-            
-            sequenceType = sequenceTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return sequenceType;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return sequenceTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public SequenceType getSequenceTypeByName(String sequenceTypeName) {
@@ -286,36 +247,18 @@ public class SequenceControl
     }
     
     private SequenceType getSequenceTypeByPrefix(String sequenceTypePrefix, EntityPermission entityPermission) {
-        SequenceType sequenceType;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM sequencetypes, sequencetypedetails
-                        WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid AND sqtypdt_prefix = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM sequencetypes, sequencetypedetails
-                        WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid AND sqtypdt_prefix = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SequenceTypes.fields())
+                .from(SequenceTypes)
+                .join(SequenceTypeDetails).onKey(SEQUENCE_TYPES_ACTIVE_DETAIL_FK)
+                .where(SequenceTypeDetails.PREFIX.eq(sequenceTypePrefix));
 
-            var ps = sequenceTypeFactory.prepareStatement(query);
-            
-            ps.setString(1, sequenceTypePrefix);
-            
-            sequenceType = sequenceTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return sequenceType;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return sequenceTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public SequenceType getSequenceTypeByPrefix(String sequenceTypePrefix) {
@@ -327,36 +270,18 @@ public class SequenceControl
     }
     
     private SequenceType getSequenceTypeBySuffix(String sequenceTypeSuffix, EntityPermission entityPermission) {
-        SequenceType sequenceType;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM sequencetypes, sequencetypedetails
-                        WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid AND sqtypdt_suffix = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM sequencetypes, sequencetypedetails
-                        WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid AND sqtypdt_suffix = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SequenceTypes.fields())
+                .from(SequenceTypes)
+                .join(SequenceTypeDetails).onKey(SEQUENCE_TYPES_ACTIVE_DETAIL_FK)
+                .where(SequenceTypeDetails.SUFFIX.eq(sequenceTypeSuffix));
 
-            var ps = sequenceTypeFactory.prepareStatement(query);
-            
-            ps.setString(1, sequenceTypeSuffix);
-            
-            sequenceType = sequenceTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return sequenceType;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return sequenceTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public SequenceType getSequenceTypeBySuffix(String sequenceTypeSuffix) {
@@ -512,6 +437,9 @@ public class SequenceControl
     @Inject
     protected SequenceTypeDescriptionFactory sequenceTypeDescriptionFactory;
 
+    @Inject
+    private SequenceTypeDescriptionTransferCache sequenceTypeDescriptionTransferCache;
+
     public SequenceTypeDescription createSequenceTypeDescription(SequenceType sequenceType, Language language, String description, BasePK createdBy) {
         var sequenceTypeDescription = sequenceTypeDescriptionFactory.create(sequenceType, language, description, session.getStartTime(),
                 Session.MAX_TIME);
@@ -522,38 +450,24 @@ public class SequenceControl
     }
     
     private List<SequenceTypeDescription> getSequenceTypeDescriptionsBySequenceType(SequenceType sequenceType, EntityPermission entityPermission) {
-        List<SequenceTypeDescription> sequenceTypeDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM sequencetypedescriptions, languages
-                        WHERE sqtypd_sqtyp_sequencetypeid = ? AND sqtypd_thrutime = ? AND sqtypd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM sequencetypedescriptions
-                        WHERE sqtypd_sqtyp_sequencetypeid = ? AND sqtypd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(SequenceTypeDescriptions.fields())
+                    .from(SequenceTypeDescriptions)
+                    .join(Languages).onKey(SEQUENCE_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(SequenceTypeDescriptions.SEQUENCE_TYPE.eq(sequenceType.getPrimaryKey()),
+                            SequenceTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    SequenceTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(SequenceTypeDescriptions.fields())
+                    .from(SequenceTypeDescriptions)
+                    .where(SequenceTypeDescriptions.SEQUENCE_TYPE.eq(sequenceType.getPrimaryKey()),
+                            SequenceTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = sequenceTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, sequenceType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            sequenceTypeDescriptions = sequenceTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return sequenceTypeDescriptions;
+        return sequenceTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<SequenceTypeDescription> getSequenceTypeDescriptionsBySequenceType(SequenceType sequenceType) {
@@ -565,38 +479,19 @@ public class SequenceControl
     }
     
     private SequenceTypeDescription getSequenceTypeDescription(SequenceType sequenceType, Language language, EntityPermission entityPermission) {
-        SequenceTypeDescription sequenceTypeDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM sequencetypedescriptions
-                        WHERE sqtypd_sqtyp_sequencetypeid = ? AND sqtypd_lang_languageid = ? AND sqtypd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM sequencetypedescriptions
-                        WHERE sqtypd_sqtyp_sequencetypeid = ? AND sqtypd_lang_languageid = ? AND sqtypd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SequenceTypeDescriptions.fields())
+                .from(SequenceTypeDescriptions)
+                .where(SequenceTypeDescriptions.SEQUENCE_TYPE.eq(sequenceType.getPrimaryKey()),
+                        SequenceTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        SequenceTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = sequenceTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, sequenceType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            sequenceTypeDescription = sequenceTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return sequenceTypeDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return sequenceTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public SequenceTypeDescription getSequenceTypeDescription(SequenceType sequenceType, Language language) {
@@ -686,48 +581,38 @@ public class SequenceControl
     @Inject
     protected SequenceChecksumTypeFactory sequenceChecksumTypeFactory;
 
+    @Inject
+    private SequenceChecksumTypeTransferCache sequenceChecksumTypeTransferCache;
+
     public SequenceChecksumType createSequenceChecksumType(String sequenceChecksumTypeName, Boolean isDefault, Integer sortOrder) {
         return sequenceChecksumTypeFactory.create(sequenceChecksumTypeName, isDefault, sortOrder);
     }
 
     public long countSequenceChecksumTypes() {
-        return session.queryForLong("""
-                                    SELECT COUNT(*)
-                                    FROM sequencechecksumtypes
-                                    """);
+        return session.getDslContext()
+                .selectCount()
+                .from(SequenceChecksumTypes)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<SequenceChecksumType> getSequenceChecksumTypes() {
-        var ps = sequenceChecksumTypeFactory.prepareStatement(
-                """
-                SELECT _ALL_
-                FROM sequencechecksumtypes
-                ORDER BY sqct_sortorder, sqct_sequencechecksumtypename
-                """);
-        
-        return sequenceChecksumTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        var query = session.applyLimit(session.getDslContext()
+                .select(SequenceChecksumTypes.fields())
+                .from(SequenceChecksumTypes)
+                .orderBy(SequenceChecksumTypes.SORT_ORDER, SequenceChecksumTypes.SEQUENCE_CHECKSUM_TYPE_NAME),
+                SequenceChecksumTypeFactory.class);
+
+        return sequenceChecksumTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public SequenceChecksumType getSequenceChecksumTypeByName(String sequenceChecksumTypeName) {
-        SequenceChecksumType sequenceChecksumType;
-        
-        try {
-            var ps = sequenceChecksumTypeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM sequencechecksumtypes
-                    WHERE sqct_sequencechecksumtypename = ?
-                    _LIMIT_
-                    """);
-            
-            ps.setString(1, sequenceChecksumTypeName);
-            
-            sequenceChecksumType = sequenceChecksumTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return sequenceChecksumType;
+        var query = session.getDslContext()
+                .select(SequenceChecksumTypes.fields())
+                .from(SequenceChecksumTypes)
+                .where(SequenceChecksumTypes.SEQUENCE_CHECKSUM_TYPE_NAME.eq(sequenceChecksumTypeName));
+
+        return sequenceChecksumTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public SequenceChecksumTypeTransfer getSequenceChecksumTypeTransfer(UserVisit userVisit, SequenceChecksumType sequenceChecksumType) {
@@ -793,25 +678,13 @@ public class SequenceControl
     }
     
     public SequenceChecksumTypeDescription getSequenceChecksumTypeDescription(SequenceChecksumType sequenceChecksumType, Language language) {
-        SequenceChecksumTypeDescription sequenceChecksumTypeDescription;
-        
-        try {
-            var ps = sequenceChecksumTypeDescriptionFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM sequencechecksumtypedescriptions
-                    WHERE sqctd_sqct_sequencechecksumtypeid = ? AND sqctd_lang_languageid = ?
-                    """);
-            
-            ps.setLong(1, sequenceChecksumType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            sequenceChecksumTypeDescription = sequenceChecksumTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return sequenceChecksumTypeDescription;
+        var query = session.getDslContext()
+                .select(SequenceChecksumTypeDescriptions.fields())
+                .from(SequenceChecksumTypeDescriptions)
+                .where(SequenceChecksumTypeDescriptions.SEQUENCE_CHECKSUM_TYPE.eq(sequenceChecksumType.getPrimaryKey()),
+                        SequenceChecksumTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
+
+        return sequenceChecksumTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public String getBestSequenceChecksumTypeDescription(SequenceChecksumType sequenceChecksumType, Language language) {
@@ -838,48 +711,38 @@ public class SequenceControl
     @Inject
     protected SequenceEncoderTypeFactory sequenceEncoderTypeFactory;
 
+    @Inject
+    private SequenceEncoderTypeTransferCache sequenceEncoderTypeTransferCache;
+
     public SequenceEncoderType createSequenceEncoderType(String sequenceEncoderTypeName, Boolean isDefault, Integer sortOrder) {
         return sequenceEncoderTypeFactory.create(sequenceEncoderTypeName, isDefault, sortOrder);
     }
 
     public long countSequenceEncoderTypes() {
-        return session.queryForLong("""
-                                    SELECT COUNT(*)
-                                    FROM sequenceencodertypes
-                                    """);
+        return session.getDslContext()
+                .selectCount()
+                .from(SequenceEncoderTypes)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public List<SequenceEncoderType> getSequenceEncoderTypes() {
-        var ps = sequenceEncoderTypeFactory.prepareStatement(
-                """
-                SELECT _ALL_
-                FROM sequenceencodertypes
-                ORDER BY sqet_sortorder, sqet_sequenceencodertypename
-                _LIMIT_
-                """);
-        
-        return sequenceEncoderTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        var query = session.applyLimit(session.getDslContext()
+                .select(SequenceEncoderTypes.fields())
+                .from(SequenceEncoderTypes)
+                .orderBy(SequenceEncoderTypes.SORT_ORDER, SequenceEncoderTypes.SEQUENCE_ENCODER_TYPE_NAME),
+                SequenceEncoderTypeFactory.class);
+
+        return sequenceEncoderTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public SequenceEncoderType getSequenceEncoderTypeByName(String sequenceEncoderTypeName) {
-        SequenceEncoderType sequenceEncoderType;
-        
-        try {
-            var ps = sequenceEncoderTypeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM sequenceencodertypes
-                    WHERE sqet_sequenceencodertypename = ?
-                    """);
-            
-            ps.setString(1, sequenceEncoderTypeName);
-            
-            sequenceEncoderType = sequenceEncoderTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return sequenceEncoderType;
+        var query = session.getDslContext()
+                .select(SequenceEncoderTypes.fields())
+                .from(SequenceEncoderTypes)
+                .where(SequenceEncoderTypes.SEQUENCE_ENCODER_TYPE_NAME.eq(sequenceEncoderTypeName));
+
+        return sequenceEncoderTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     public SequenceEncoderTypeTransfer getSequenceEncoderTypeTransfer(UserVisit userVisit, SequenceEncoderType sequenceEncoderType) {
@@ -944,25 +807,13 @@ public class SequenceControl
     }
     
     public SequenceEncoderTypeDescription getSequenceEncoderTypeDescription(SequenceEncoderType sequenceEncoderType, Language language) {
-        SequenceEncoderTypeDescription sequenceEncoderTypeDescription;
-        
-        try {
-            var ps = sequenceEncoderTypeDescriptionFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM sequenceencodertypedescriptions
-                    WHERE sqetd_sqet_sequenceencodertypeid = ? AND sqetd_lang_languageid = ?
-                    """);
-            
-            ps.setLong(1, sequenceEncoderType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            sequenceEncoderTypeDescription = sequenceEncoderTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return sequenceEncoderTypeDescription;
+        var query = session.getDslContext()
+                .select(SequenceEncoderTypeDescriptions.fields())
+                .from(SequenceEncoderTypeDescriptions)
+                .where(SequenceEncoderTypeDescriptions.SEQUENCE_ENCODER_TYPE.eq(sequenceEncoderType.getPrimaryKey()),
+                        SequenceEncoderTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
+
+        return sequenceEncoderTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public String getBestSequenceEncoderTypeDescription(SequenceEncoderType sequenceEncoderType, Language language) {
@@ -987,10 +838,13 @@ public class SequenceControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected SequenceDetailFactory sequenceDetailFactory;
+
+    @Inject
     protected SequenceFactory sequenceFactory;
 
     @Inject
-    protected SequenceDetailFactory sequenceDetailFactory;
+    private SequenceTransferCache sequenceTransferCache;
 
     public Sequence createSequence(SequenceType sequenceType, String sequenceName, String mask, Integer chunkSize, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -1022,22 +876,22 @@ public class SequenceControl
     }
 
     public long countSequences() {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM sequences, sequencedetails
-                WHERE sq_activedetailid = sqdt_sequencedetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(Sequences)
+                .join(SequenceDetails).onKey(SEQUENCES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countSequencesBySequenceType(SequenceType sequenceType) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM sequences, sequencedetails
-                WHERE sq_activedetailid = sqdt_sequencedetailid AND sqdt_sqtyp_sequencetypeid = ?
-                """,
-                sequenceType);
+        return session.getDslContext()
+                .selectCount()
+                .from(Sequences)
+                .join(SequenceDetails).onKey(SEQUENCES_ACTIVE_DETAIL_FK)
+                .where(SequenceDetails.SEQUENCE_TYPE.eq(sequenceType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Sequence */
@@ -1057,38 +911,20 @@ public class SequenceControl
     }
 
     private List<Sequence> getSequencesBySequenceType(SequenceType sequenceType, EntityPermission entityPermission) {
-        List<Sequence> sequences;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM sequences, sequencedetails
-                        WHERE sq_activedetailid = sqdt_sequencedetailid AND sqdt_sqtyp_sequencetypeid = ?
-                        ORDER BY sqdt_sortorder, sqdt_sequencename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM sequences, sequencedetails
-                        WHERE sq_activedetailid = sqdt_sequencedetailid AND sqdt_sqtyp_sequencetypeid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Sequences.fields())
+                .from(Sequences)
+                .join(SequenceDetails).onKey(SEQUENCES_ACTIVE_DETAIL_FK)
+                .where(SequenceDetails.SEQUENCE_TYPE.eq(sequenceType.getPrimaryKey()));
 
-            var ps = sequenceFactory.prepareStatement(query);
-            
-            ps.setLong(1, sequenceType.getPrimaryKey().getEntityId());
-            
-            sequences = sequenceFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return sequences;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SequenceDetails.SORT_ORDER, SequenceDetails.SEQUENCE_NAME),
+                    SequenceFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return sequenceFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<Sequence> getSequencesBySequenceType(SequenceType sequenceType) {
@@ -1100,36 +936,19 @@ public class SequenceControl
     }
     
     public Sequence getDefaultSequence(SequenceType sequenceType, EntityPermission entityPermission) {
-        Sequence sequence;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM sequences, sequencedetails
-                        WHERE sq_activedetailid = sqdt_sequencedetailid AND sqdt_sqtyp_sequencetypeid = ? AND sqdt_isdefault = 1
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM sequences, sequencedetails
-                        WHERE sq_activedetailid = sqdt_sequencedetailid AND sqdt_sqtyp_sequencetypeid = ? AND sqdt_isdefault = 1
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Sequences.fields())
+                .from(Sequences)
+                .join(SequenceDetails).onKey(SEQUENCES_ACTIVE_DETAIL_FK)
+                .where(SequenceDetails.SEQUENCE_TYPE.eq(sequenceType.getPrimaryKey()),
+                        SequenceDetails.IS_DEFAULT.eq(true));
 
-            var ps = sequenceFactory.prepareStatement(query);
-            
-            ps.setLong(1, sequenceType.getPrimaryKey().getEntityId());
-            
-            sequence = sequenceFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return sequence;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return sequenceFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Sequence getDefaultSequence(SequenceType sequenceType) {
@@ -1156,39 +975,19 @@ public class SequenceControl
     }
     
     public Sequence getSequenceByName(SequenceType sequenceType, String sequenceName, EntityPermission entityPermission) {
-        Sequence sequence;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM sequences, sequencedetails
-                        WHERE sq_activedetailid = sqdt_sequencedetailid AND sqdt_sqtyp_sequencetypeid = ?
-                        AND sqdt_sequencename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM sequences, sequencedetails
-                        WHERE sq_activedetailid = sqdt_sequencedetailid AND sqdt_sqtyp_sequencetypeid = ?
-                        AND sqdt_sequencename = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Sequences.fields())
+                .from(Sequences)
+                .join(SequenceDetails).onKey(SEQUENCES_ACTIVE_DETAIL_FK)
+                .where(SequenceDetails.SEQUENCE_TYPE.eq(sequenceType.getPrimaryKey()),
+                        SequenceDetails.SEQUENCE_NAME.eq(sequenceName));
 
-            var ps = sequenceFactory.prepareStatement(query);
-            
-            ps.setLong(1, sequenceType.getPrimaryKey().getEntityId());
-            ps.setString(2, sequenceName);
-            
-            sequence = sequenceFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return sequence;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return sequenceFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Sequence getSequenceByName(SequenceType sequenceType, String sequenceName) {
@@ -1311,7 +1110,7 @@ public class SequenceControl
         var sequenceDetail = sequence.getLastDetailForUpdate();
         var sequenceTypeName = sequenceDetail.getSequenceType().getLastDetail().getSequenceTypeName();
         
-        if(SequenceTypes.SALES_ORDER.name().equals(sequenceTypeName)) {
+        if(com.echothree.model.control.sequence.common.SequenceTypes.SALES_ORDER.name().equals(sequenceTypeName)) {
 
             offerUseControl.deleteOfferUsesBySalesOrderSequence(sequence, deletedBy);
         }
@@ -1358,6 +1157,9 @@ public class SequenceControl
     @Inject
     protected SequenceDescriptionFactory sequenceDescriptionFactory;
 
+    @Inject
+    private SequenceDescriptionTransferCache sequenceDescriptionTransferCache;
+
     public SequenceDescription createSequenceDescription(Sequence sequence, Language language, String description, BasePK createdBy) {
         var sequenceDescription = sequenceDescriptionFactory.create(sequence, language,
                 description, session.getStartTime(), Session.MAX_TIME);
@@ -1368,38 +1170,24 @@ public class SequenceControl
     }
     
     private List<SequenceDescription> getSequenceDescriptionsBySequence(Sequence sequence, EntityPermission entityPermission) {
-        List<SequenceDescription> sequenceDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM sequencedescriptions, languages
-                        WHERE sqd_sq_sequenceid = ? AND sqd_thrutime = ? AND sqd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM sequencedescriptions
-                        WHERE sqd_sq_sequenceid = ? AND sqd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(SequenceDescriptions.fields())
+                    .from(SequenceDescriptions)
+                    .join(Languages).onKey(SEQUENCE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(SequenceDescriptions.SEQUENCE.eq(sequence.getPrimaryKey()),
+                            SequenceDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    SequenceDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(SequenceDescriptions.fields())
+                    .from(SequenceDescriptions)
+                    .where(SequenceDescriptions.SEQUENCE.eq(sequence.getPrimaryKey()),
+                            SequenceDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = sequenceDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, sequence.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            sequenceDescriptions = sequenceDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return sequenceDescriptions;
+        return sequenceDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<SequenceDescription> getSequenceDescriptionsBySequence(Sequence sequence) {
@@ -1411,38 +1199,19 @@ public class SequenceControl
     }
     
     private SequenceDescription getSequenceDescription(Sequence sequence, Language language, EntityPermission entityPermission) {
-        SequenceDescription sequenceDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM sequencedescriptions
-                        WHERE sqd_sq_sequenceid = ? AND sqd_lang_languageid = ? AND sqd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM sequencedescriptions
-                        WHERE sqd_sq_sequenceid = ? AND sqd_lang_languageid = ? AND sqd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SequenceDescriptions.fields())
+                .from(SequenceDescriptions)
+                .where(SequenceDescriptions.SEQUENCE.eq(sequence.getPrimaryKey()),
+                        SequenceDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        SequenceDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = sequenceDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, sequence.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            sequenceDescription = sequenceDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return sequenceDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return sequenceDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public SequenceDescription getSequenceDescription(Sequence sequence, Language language) {
@@ -1536,46 +1305,22 @@ public class SequenceControl
     }
     
     public SequenceValue getSequenceValue(Sequence sequence) {
-        SequenceValue sequenceValue;
-        
-        try {
-            var ps = sequenceValueFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM sequencevalues
-                    WHERE sqv_sq_sequenceid = ?
-                    """);
-            
-            ps.setLong(1, sequence.getPrimaryKey().getEntityId());
-            
-            sequenceValue = sequenceValueFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return sequenceValue;
+        var query = session.getDslContext()
+                .select(SequenceValues.fields())
+                .from(SequenceValues)
+                .where(SequenceValues.SEQUENCE.eq(sequence.getPrimaryKey()));
+
+        return sequenceValueFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public SequenceValue getSequenceValueForUpdate(Sequence sequence) {
-        SequenceValue sequenceValue;
-        
-        try {
-            var ps = session.prepareStatement(SequenceValueFactory.class,
-                    """
-                    SELECT _ALL_
-                    FROM sequencevalues
-                    WHERE sqv_sq_sequenceid = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, sequence.getPrimaryKey().getEntityId());
-            
-            sequenceValue = sequenceValueFactory.getEntityFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return sequenceValue;
+        var query = session.getDslContext()
+                .select(SequenceValues.fields())
+                .from(SequenceValues)
+                .where(SequenceValues.SEQUENCE.eq(sequence.getPrimaryKey()))
+                .forUpdate();
+
+        return sequenceValueFactory.getEntityFromQuery(EntityPermission.READ_WRITE, query);
     }
 
 }
