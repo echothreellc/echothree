@@ -82,13 +82,36 @@ import com.echothree.model.data.uom.server.value.UnitOfMeasureTypeDetailValue;
 import com.echothree.model.data.uom.server.value.UnitOfMeasureTypeVolumeValue;
 import com.echothree.model.data.uom.server.value.UnitOfMeasureTypeWeightValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.uom.UomForeignKeys.UNIT_OF_MEASURE_EQUIVALENTS_FROM_UNIT_OF_MEASURE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.uom.UomForeignKeys.UNIT_OF_MEASURE_EQUIVALENTS_TO_UNIT_OF_MEASURE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.uom.UomForeignKeys.UNIT_OF_MEASURE_KINDS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.uom.UomForeignKeys.UNIT_OF_MEASURE_KINDS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.uom.UomForeignKeys.UNIT_OF_MEASURE_KIND_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.uom.UomForeignKeys.UNIT_OF_MEASURE_KIND_DETAILS_UNIT_OF_MEASURE_KIND_FK;
+import static com.echothree.model.jooq.server.keys.uom.UomForeignKeys.UNIT_OF_MEASURE_KIND_USES_UNIT_OF_MEASURE_KIND_FK;
+import static com.echothree.model.jooq.server.keys.uom.UomForeignKeys.UNIT_OF_MEASURE_KIND_USES_UNIT_OF_MEASURE_KIND_USE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.uom.UomForeignKeys.UNIT_OF_MEASURE_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.uom.UomForeignKeys.UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.uom.UomForeignKeys.UNIT_OF_MEASURE_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.uom.UomForeignKeys.UNIT_OF_MEASURE_TYPE_DETAILS_UNIT_OF_MEASURE_TYPE_FK;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureEquivalents.UnitOfMeasureEquivalents;
+import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureKindDescriptions.UnitOfMeasureKindDescriptions;
+import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureKindDetails.UnitOfMeasureKindDetails;
+import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureKindUseTypeDescriptions.UnitOfMeasureKindUseTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureKindUseTypes.UnitOfMeasureKindUseTypes;
+import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureKindUses.UnitOfMeasureKindUses;
+import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureKinds.UnitOfMeasureKinds;
+import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureTypeDescriptions.UnitOfMeasureTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureTypeDetails.UnitOfMeasureTypeDetails;
+import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureTypeVolumes.UnitOfMeasureTypeVolumes;
+import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureTypeWeights.UnitOfMeasureTypeWeights;
+import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureTypes.UnitOfMeasureTypes;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -120,45 +143,17 @@ public class UomControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Unit of Measure Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    @Inject
-    UnitOfMeasureKindTransferCache unitOfMeasureKindTransferCache;
-
-    @Inject
-    UnitOfMeasureTypeTransferCache unitOfMeasureTypeTransferCache;
-
-    @Inject
-    UnitOfMeasureKindDescriptionTransferCache unitOfMeasureKindDescriptionTransferCache;
-
-    @Inject
-    UnitOfMeasureTypeDescriptionTransferCache unitOfMeasureTypeDescriptionTransferCache;
-
-    @Inject
-    UnitOfMeasureKindUseTransferCache unitOfMeasureKindUseTransferCache;
-
-    @Inject
-    UnitOfMeasureKindUseTypeTransferCache unitOfMeasureKindUseTypeTransferCache;
-
-    @Inject
-    UnitOfMeasureEquivalentTransferCache unitOfMeasureEquivalentTransferCache;
-
-    @Inject
-    UnitOfMeasureTypeVolumeTransferCache unitOfMeasureTypeVolumeTransferCache;
-
-    @Inject
-    UnitOfMeasureTypeWeightTransferCache unitOfMeasureTypeWeightTransferCache;
-
-    // --------------------------------------------------------------------------------
     //   Unit Of Measure Kinds
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected UnitOfMeasureKindDetailFactory unitOfMeasureKindDetailFactory;
 
     @Inject
     protected UnitOfMeasureKindFactory unitOfMeasureKindFactory;
 
     @Inject
-    protected UnitOfMeasureKindDetailFactory unitOfMeasureKindDetailFactory;
+    private UnitOfMeasureKindTransferCache unitOfMeasureKindTransferCache;
 
     public UnitOfMeasureKind createUnitOfMeasureKind(String unitOfMeasureKindName, Integer fractionDigits, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -190,12 +185,12 @@ public class UomControl
     }
 
     public long countUnitOfMeasureKinds() {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM unitofmeasurekinds, unitofmeasurekinddetails
-                WHERE uomk_activedetailid = uomkdt_unitofmeasurekinddetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(UnitOfMeasureKinds)
+                .join(UnitOfMeasureKindDetails).onKey(UNIT_OF_MEASURE_KINDS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.UnitOfMeasureKind */
@@ -214,28 +209,19 @@ public class UomControl
     }
     
     private List<UnitOfMeasureKind> getUnitOfMeasureKinds(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM unitofmeasurekinds, unitofmeasurekinddetails
-                    WHERE uomk_activedetailid = uomkdt_unitofmeasurekinddetailid
-                    ORDER BY uomkdt_sortorder, uomkdt_unitofmeasurekindname
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM unitofmeasurekinds, unitofmeasurekinddetails
-                    WHERE uomk_activedetailid = uomkdt_unitofmeasurekinddetailid
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(UnitOfMeasureKinds.fields())
+                .from(UnitOfMeasureKinds)
+                .join(UnitOfMeasureKindDetails).onKey(UNIT_OF_MEASURE_KINDS_ACTIVE_DETAIL_FK);
 
-        var ps = unitOfMeasureKindFactory.prepareStatement(query);
-        
-        return unitOfMeasureKindFactory.getEntitiesFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(UnitOfMeasureKindDetails.SORT_ORDER, UnitOfMeasureKindDetails.UNIT_OF_MEASURE_KIND_NAME),
+                    UnitOfMeasureKindFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return unitOfMeasureKindFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<UnitOfMeasureKind> getUnitOfMeasureKinds() {
@@ -247,52 +233,33 @@ public class UomControl
     }
     
     public List<UnitOfMeasureKind> getUnitOfMeasureKindsByUnitOfMeasureKindUseType(UnitOfMeasureKindUseType unitOfMeasureKindUseType) {
-        List<UnitOfMeasureKind> unitOfMeasureKinds;
-        
-        try {
-            var ps = unitOfMeasureKindFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM unitofmeasurekinds, unitofmeasurekinddetails, unitofmeasurekinduses
-                    WHERE uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ?
-                    AND uomk_unitofmeasurekindid = uomku_uomk_unitofmeasurekindid AND uomku_uomkut_unitofmeasurekindusetypeid = ? AND uomku_thrutime = ?
-                    ORDER BY uomkdt_sortorder, uomkdt_unitofmeasurekindname
-                    _LIMIT_
-                    """);
-            
-            ps.setLong(1, Session.MAX_TIME);
-            ps.setLong(2, unitOfMeasureKindUseType.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            unitOfMeasureKinds = unitOfMeasureKindFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return unitOfMeasureKinds;
+        var query = session.applyLimit(session.getDslContext()
+                .select(UnitOfMeasureKinds.fields())
+                .from(UnitOfMeasureKinds)
+                .join(UnitOfMeasureKindDetails).onKey(UNIT_OF_MEASURE_KIND_DETAILS_UNIT_OF_MEASURE_KIND_FK)
+                .join(UnitOfMeasureKindUses).onKey(UNIT_OF_MEASURE_KIND_USES_UNIT_OF_MEASURE_KIND_FK)
+                .where(UnitOfMeasureKindDetails.THRU_TIME.eq(Session.MAX_TIME),
+                        UnitOfMeasureKindUses.UNIT_OF_MEASURE_KIND_USE_TYPE.eq(unitOfMeasureKindUseType.getPrimaryKey()),
+                        UnitOfMeasureKindUses.THRU_TIME.eq(Session.MAX_TIME))
+                .orderBy(UnitOfMeasureKindDetails.SORT_ORDER, UnitOfMeasureKindDetails.UNIT_OF_MEASURE_KIND_NAME),
+                UnitOfMeasureKindFactory.class);
+
+        return unitOfMeasureKindFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     private UnitOfMeasureKind getDefaultUnitOfMeasureKind(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM unitofmeasurekinds, unitofmeasurekinddetails
-                    WHERE uomk_activedetailid = uomkdt_unitofmeasurekinddetailid AND uomkdt_isdefault = 1
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM unitofmeasurekinds, unitofmeasurekinddetails
-                    WHERE uomk_activedetailid = uomkdt_unitofmeasurekinddetailid AND uomkdt_isdefault = 1
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(UnitOfMeasureKinds.fields())
+                .from(UnitOfMeasureKinds)
+                .join(UnitOfMeasureKindDetails).onKey(UNIT_OF_MEASURE_KINDS_ACTIVE_DETAIL_FK)
+                .where(UnitOfMeasureKindDetails.IS_DEFAULT.eq(true));
 
-        var ps = unitOfMeasureKindFactory.prepareStatement(query);
-        
-        return unitOfMeasureKindFactory.getEntityFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return unitOfMeasureKindFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public UnitOfMeasureKind getDefaultUnitOfMeasureKind() {
@@ -308,39 +275,19 @@ public class UomControl
     }
     
     public UnitOfMeasureKind getUnitOfMeasureKindByName(String unitOfMeasureKindName, EntityPermission entityPermission) {
-        UnitOfMeasureKind unitOfMeasureKind;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasurekinds, unitofmeasurekinddetails
-                        WHERE uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_unitofmeasurekindname = ?
-                        AND uomkdt_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasurekinds, unitofmeasurekinddetails
-                        WHERE uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_unitofmeasurekindname = ?
-                        AND uomkdt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(UnitOfMeasureKinds.fields())
+                .from(UnitOfMeasureKinds)
+                .join(UnitOfMeasureKindDetails).onKey(UNIT_OF_MEASURE_KIND_DETAILS_UNIT_OF_MEASURE_KIND_FK)
+                .where(UnitOfMeasureKindDetails.UNIT_OF_MEASURE_KIND_NAME.eq(unitOfMeasureKindName),
+                        UnitOfMeasureKindDetails.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = unitOfMeasureKindFactory.prepareStatement(query);
-            
-            ps.setString(1, unitOfMeasureKindName);
-            ps.setLong(2, Session.MAX_TIME);
-            
-            unitOfMeasureKind = unitOfMeasureKindFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return unitOfMeasureKind;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return unitOfMeasureKindFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public UnitOfMeasureKind getUnitOfMeasureKindByName(String unitOfMeasureKindName) {
@@ -551,6 +498,9 @@ public class UomControl
     @Inject
     protected UnitOfMeasureKindDescriptionFactory unitOfMeasureKindDescriptionFactory;
 
+    @Inject
+    private UnitOfMeasureKindDescriptionTransferCache unitOfMeasureKindDescriptionTransferCache;
+
     public UnitOfMeasureKindDescription createUnitOfMeasureKindDescription(UnitOfMeasureKind unitOfMeasureKind, Language language, String description, BasePK createdBy) {
         var unitOfMeasureKindDescription = unitOfMeasureKindDescriptionFactory.create(unitOfMeasureKind, language, description,
                 session.getStartTime(), Session.MAX_TIME);
@@ -561,38 +511,19 @@ public class UomControl
     }
     
     public UnitOfMeasureKindDescription getUnitOfMeasureKindDescription(UnitOfMeasureKind unitOfMeasureKind, Language language, EntityPermission entityPermission) {
-        UnitOfMeasureKindDescription unitOfMeasureKindDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasurekinddescriptions
-                        WHERE uomkd_uomk_unitofmeasurekindid = ? AND uomkd_lang_languageid = ? AND uomkd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasurekinddescriptions
-                        WHERE uomkd_uomk_unitofmeasurekindid = ? AND uomkd_lang_languageid = ? AND uomkd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(UnitOfMeasureKindDescriptions.fields())
+                .from(UnitOfMeasureKindDescriptions)
+                .where(UnitOfMeasureKindDescriptions.UNIT_OF_MEASURE_KIND.eq(unitOfMeasureKind.getPrimaryKey()),
+                        UnitOfMeasureKindDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        UnitOfMeasureKindDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = unitOfMeasureKindDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, unitOfMeasureKind.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            unitOfMeasureKindDescription = unitOfMeasureKindDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return unitOfMeasureKindDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return unitOfMeasureKindDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     
@@ -613,39 +544,24 @@ public class UomControl
     }
     
     private List<UnitOfMeasureKindDescription> getUnitOfMeasureKindDescriptionsByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind, EntityPermission entityPermission) {
-        List<UnitOfMeasureKindDescription> unitOfMeasureKindDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasurekinddescriptions, languages
-                        WHERE uomkd_uomk_unitofmeasurekindid = ? AND uomkd_thrutime = ? AND uomkd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasurekinddescriptions
-                        WHERE uomkd_uomk_unitofmeasurekindid = ? AND uomkd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(UnitOfMeasureKindDescriptions.fields())
+                    .from(UnitOfMeasureKindDescriptions)
+                    .join(Languages).onKey(UNIT_OF_MEASURE_KIND_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(UnitOfMeasureKindDescriptions.UNIT_OF_MEASURE_KIND.eq(unitOfMeasureKind.getPrimaryKey()),
+                            UnitOfMeasureKindDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    UnitOfMeasureKindDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(UnitOfMeasureKindDescriptions.fields())
+                    .from(UnitOfMeasureKindDescriptions)
+                    .where(UnitOfMeasureKindDescriptions.UNIT_OF_MEASURE_KIND.eq(unitOfMeasureKind.getPrimaryKey()),
+                            UnitOfMeasureKindDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = unitOfMeasureKindDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, unitOfMeasureKind.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            unitOfMeasureKindDescriptions = unitOfMeasureKindDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return unitOfMeasureKindDescriptions;
+        return unitOfMeasureKindDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<UnitOfMeasureKindDescription> getUnitOfMeasureKindDescriptionsByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind) {
@@ -726,10 +642,13 @@ public class UomControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected UnitOfMeasureTypeDetailFactory unitOfMeasureTypeDetailFactory;
+
+    @Inject
     protected UnitOfMeasureTypeFactory unitOfMeasureTypeFactory;
 
     @Inject
-    protected UnitOfMeasureTypeDetailFactory unitOfMeasureTypeDetailFactory;
+    private UnitOfMeasureTypeTransferCache unitOfMeasureTypeTransferCache;
 
     public UnitOfMeasureType createUnitOfMeasureType(UnitOfMeasureKind unitOfMeasureKind, String unitOfMeasureTypeName,
             SymbolPosition symbolPosition, Boolean suppressSymbolSeparator, Boolean isDefault, Integer sortOrder,
@@ -763,13 +682,13 @@ public class UomControl
     }
     
     public long countUnitOfMeasureTypesByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM unitofmeasuretypes, unitofmeasuretypedetails
-                WHERE uomt_unitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_uomk_unitofmeasurekindid = ?
-                """,
-                unitOfMeasureKind);
+        return session.getDslContext()
+                .selectCount()
+                .from(UnitOfMeasureTypes)
+                .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPE_DETAILS_UNIT_OF_MEASURE_TYPE_FK)
+                .where(UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_KIND.eq(unitOfMeasureKind.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
     
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.UnitOfMeasureType */
@@ -788,41 +707,21 @@ public class UomControl
     }
     
     private List<UnitOfMeasureType> getUnitOfMeasureTypesByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind, EntityPermission entityPermission) {
-        List<UnitOfMeasureType> unitOfMeasureTypes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasuretypes, unitofmeasuretypedetails
-                        WHERE uomt_unitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_uomk_unitofmeasurekindid = ?
-                        AND uomtdt_thrutime = ?
-                        ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasuretypes, unitofmeasuretypedetails
-                        WHERE uomt_unitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_uomk_unitofmeasurekindid = ?
-                        AND uomtdt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(UnitOfMeasureTypes.fields())
+                .from(UnitOfMeasureTypes)
+                .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPE_DETAILS_UNIT_OF_MEASURE_TYPE_FK)
+                .where(UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_KIND.eq(unitOfMeasureKind.getPrimaryKey()),
+                        UnitOfMeasureTypeDetails.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = unitOfMeasureTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, unitOfMeasureKind.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            unitOfMeasureTypes = unitOfMeasureTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return unitOfMeasureTypes;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME),
+                    UnitOfMeasureTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return unitOfMeasureTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<UnitOfMeasureType> getUnitOfMeasureTypesByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind) {
@@ -834,38 +733,19 @@ public class UomControl
     }
     
     private UnitOfMeasureType getDefaultUnitOfMeasureType(UnitOfMeasureKind unitOfMeasureKind, EntityPermission entityPermission) {
-        UnitOfMeasureType unitOfMeasureType;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasuretypes, unitofmeasuretypedetails
-                        WHERE uomt_activedetailid = uomtdt_unitofmeasuretypedetailid AND uomtdt_uomk_unitofmeasurekindid = ?
-                        AND uomtdt_isdefault = 1
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasuretypes, unitofmeasuretypedetails
-                        WHERE uomt_activedetailid = uomtdt_unitofmeasuretypedetailid AND uomtdt_uomk_unitofmeasurekindid = ?
-                        AND uomtdt_isdefault = 1
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(UnitOfMeasureTypes.fields())
+                .from(UnitOfMeasureTypes)
+                .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPES_ACTIVE_DETAIL_FK)
+                .where(UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_KIND.eq(unitOfMeasureKind.getPrimaryKey()),
+                        UnitOfMeasureTypeDetails.IS_DEFAULT.eq(true));
 
-            var ps = unitOfMeasureTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, unitOfMeasureKind.getPrimaryKey().getEntityId());
-            
-            unitOfMeasureType = unitOfMeasureTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return unitOfMeasureType;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return unitOfMeasureTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public UnitOfMeasureType getDefaultUnitOfMeasureType(UnitOfMeasureKind unitOfMeasureKind) {
@@ -882,40 +762,20 @@ public class UomControl
     
     public UnitOfMeasureType getUnitOfMeasureTypeByName(UnitOfMeasureKind unitOfMeasureKind, String unitOfMeasureTypeName,
             EntityPermission entityPermission) {
-        UnitOfMeasureType unitOfMeasureType;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasuretypes, unitofmeasuretypedetails
-                        WHERE uomt_unitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_uomk_unitofmeasurekindid = ?
-                        AND uomtdt_unitofmeasuretypename = ? AND uomtdt_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasuretypes, unitofmeasuretypedetails
-                        WHERE uomt_unitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_uomk_unitofmeasurekindid = ?
-                        AND uomtdt_unitofmeasuretypename = ? AND uomtdt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(UnitOfMeasureTypes.fields())
+                .from(UnitOfMeasureTypes)
+                .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPE_DETAILS_UNIT_OF_MEASURE_TYPE_FK)
+                .where(UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_KIND.eq(unitOfMeasureKind.getPrimaryKey()),
+                        UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME.eq(unitOfMeasureTypeName),
+                        UnitOfMeasureTypeDetails.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = unitOfMeasureTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, unitOfMeasureKind.getPrimaryKey().getEntityId());
-            ps.setString(2, unitOfMeasureTypeName);
-            ps.setLong(3, Session.MAX_TIME);
-            
-            unitOfMeasureType = unitOfMeasureTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return unitOfMeasureType;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return unitOfMeasureTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public UnitOfMeasureType getUnitOfMeasureTypeByName(UnitOfMeasureKind unitOfMeasureKind, String unitOfMeasureTypeName) {
@@ -1092,6 +952,9 @@ public class UomControl
     @Inject
     protected UnitOfMeasureTypeDescriptionFactory unitOfMeasureTypeDescriptionFactory;
 
+    @Inject
+    private UnitOfMeasureTypeDescriptionTransferCache unitOfMeasureTypeDescriptionTransferCache;
+
     public UnitOfMeasureTypeDescription createUnitOfMeasureTypeDescription(UnitOfMeasureType unitOfMeasureType, Language language,
             String singularDescription, String pluralDescription, String symbol, BasePK createdBy) {
         var unitOfMeasureTypeDescription = unitOfMeasureTypeDescriptionFactory.create(
@@ -1104,38 +967,19 @@ public class UomControl
     }
     
     public UnitOfMeasureTypeDescription getUnitOfMeasureTypeDescription(UnitOfMeasureType unitOfMeasureType, Language language, EntityPermission entityPermission) {
-        UnitOfMeasureTypeDescription unitOfMeasureTypeDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasuretypedescriptions
-                        WHERE uomtd_uomt_unitofmeasuretypeid = ? AND uomtd_lang_languageid = ? AND uomtd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasuretypedescriptions
-                        WHERE uomtd_uomt_unitofmeasuretypeid = ? AND uomtd_lang_languageid = ? AND uomtd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(UnitOfMeasureTypeDescriptions.fields())
+                .from(UnitOfMeasureTypeDescriptions)
+                .where(UnitOfMeasureTypeDescriptions.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        UnitOfMeasureTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        UnitOfMeasureTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = unitOfMeasureTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            unitOfMeasureTypeDescription = unitOfMeasureTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return unitOfMeasureTypeDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return unitOfMeasureTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public UnitOfMeasureTypeDescription getUnitOfMeasureTypeDescription(UnitOfMeasureType unitOfMeasureType, Language language) {
@@ -1155,39 +999,24 @@ public class UomControl
     }
     
     private List<UnitOfMeasureTypeDescription> getUnitOfMeasureTypeDescriptionsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<UnitOfMeasureTypeDescription> unitOfMeasureTypeDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasuretypedescriptions, languages
-                        WHERE uomtd_uomt_unitofmeasuretypeid = ? AND uomtd_thrutime = ? AND uomtd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasuretypedescriptions
-                        WHERE uomtd_uomt_unitofmeasuretypeid = ? AND uomtd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(UnitOfMeasureTypeDescriptions.fields())
+                    .from(UnitOfMeasureTypeDescriptions)
+                    .join(Languages).onKey(UNIT_OF_MEASURE_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(UnitOfMeasureTypeDescriptions.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                            UnitOfMeasureTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    UnitOfMeasureTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(UnitOfMeasureTypeDescriptions.fields())
+                    .from(UnitOfMeasureTypeDescriptions)
+                    .where(UnitOfMeasureTypeDescriptions.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                            UnitOfMeasureTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = unitOfMeasureTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            unitOfMeasureTypeDescriptions = unitOfMeasureTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return unitOfMeasureTypeDescriptions;
+        return unitOfMeasureTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<UnitOfMeasureTypeDescription> getUnitOfMeasureTypeDescriptionsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
@@ -1313,6 +1142,9 @@ public class UomControl
     @Inject
     protected UnitOfMeasureTypeVolumeFactory unitOfMeasureTypeVolumeFactory;
 
+    @Inject
+    private UnitOfMeasureTypeVolumeTransferCache unitOfMeasureTypeVolumeTransferCache;
+
     public UnitOfMeasureTypeVolume createUnitOfMeasureTypeVolume(UnitOfMeasureType unitOfMeasureType, Long height, Long width,
             Long depth, BasePK createdBy) {
         var unitOfMeasureTypeVolume = unitOfMeasureTypeVolumeFactory.create(
@@ -1324,45 +1156,28 @@ public class UomControl
     }
 
     public long countUnitOfMeasureTypeVolumesByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM unitofmeasuretypevolumes
-                        WHERE uomtvol_uomt_unitofmeasuretypeid = ? AND uomtvol_thrutime = ?
-                        """, unitOfMeasureType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(UnitOfMeasureTypeVolumes)
+                .where(UnitOfMeasureTypeVolumes.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        UnitOfMeasureTypeVolumes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private UnitOfMeasureTypeVolume getUnitOfMeasureTypeVolume(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        UnitOfMeasureTypeVolume unitOfMeasureTypeVolume;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasuretypevolumes
-                        WHERE uomtvol_uomt_unitofmeasuretypeid = ? AND uomtvol_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasuretypevolumes
-                        WHERE uomtvol_uomt_unitofmeasuretypeid = ? AND uomtvol_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(UnitOfMeasureTypeVolumes.fields())
+                .from(UnitOfMeasureTypeVolumes)
+                .where(UnitOfMeasureTypeVolumes.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        UnitOfMeasureTypeVolumes.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = unitOfMeasureTypeVolumeFactory.prepareStatement(query);
-            
-            ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            unitOfMeasureTypeVolume = unitOfMeasureTypeVolumeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return unitOfMeasureTypeVolume;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return unitOfMeasureTypeVolumeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public UnitOfMeasureTypeVolume getUnitOfMeasureTypeVolume(UnitOfMeasureType unitOfMeasureType) {
@@ -1429,6 +1244,9 @@ public class UomControl
     @Inject
     protected UnitOfMeasureTypeWeightFactory unitOfMeasureTypeWeightFactory;
 
+    @Inject
+    private UnitOfMeasureTypeWeightTransferCache unitOfMeasureTypeWeightTransferCache;
+
     public UnitOfMeasureTypeWeight createUnitOfMeasureTypeWeight(UnitOfMeasureType unitOfMeasureType, Long weight, BasePK createdBy) {
         var unitOfMeasureTypeWeight = unitOfMeasureTypeWeightFactory.create(unitOfMeasureType, weight,
                 session.getStartTime(), Session.MAX_TIME);
@@ -1439,45 +1257,28 @@ public class UomControl
     }
 
     public long countUnitOfMeasureTypeWeightsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM unitofmeasuretypeweights
-                        WHERE uomtwght_uomt_unitofmeasuretypeid = ? AND uomtwght_thrutime = ?
-                        """, unitOfMeasureType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(UnitOfMeasureTypeWeights)
+                .where(UnitOfMeasureTypeWeights.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        UnitOfMeasureTypeWeights.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private UnitOfMeasureTypeWeight getUnitOfMeasureTypeWeight(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        UnitOfMeasureTypeWeight unitOfMeasureTypeWeight;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasuretypeweights
-                        WHERE uomtwght_uomt_unitofmeasuretypeid = ? AND uomtwght_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasuretypeweights
-                        WHERE uomtwght_uomt_unitofmeasuretypeid = ? AND uomtwght_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(UnitOfMeasureTypeWeights.fields())
+                .from(UnitOfMeasureTypeWeights)
+                .where(UnitOfMeasureTypeWeights.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        UnitOfMeasureTypeWeights.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = unitOfMeasureTypeWeightFactory.prepareStatement(query);
-            
-            ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            unitOfMeasureTypeWeight = unitOfMeasureTypeWeightFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return unitOfMeasureTypeWeight;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return unitOfMeasureTypeWeightFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public UnitOfMeasureTypeWeight getUnitOfMeasureTypeWeight(UnitOfMeasureType unitOfMeasureType) {
@@ -1542,6 +1343,9 @@ public class UomControl
     @Inject
     protected UnitOfMeasureEquivalentFactory unitOfMeasureEquivalentFactory;
 
+    @Inject
+    private UnitOfMeasureEquivalentTransferCache unitOfMeasureEquivalentTransferCache;
+
     public UnitOfMeasureEquivalent createUnitOfMeasureEquivalent(UnitOfMeasureType fromUnitOfMeasureType,
             UnitOfMeasureType toUnitOfMeasureType, Long toQuantity, BasePK createdBy) {
         var unitOfMeasureEquivalent = unitOfMeasureEquivalentFactory.create(
@@ -1553,65 +1357,52 @@ public class UomControl
     }
 
     public long countUnitOfMeasureEquivalentsByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM unitofmeasureequivalents
-                        JOIN unitofmeasuretypes ON uomeq_fromunitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomeq_thrutime = ?
-                        JOIN unitofmeasuretypedetails ON uomtdt_unitofmeasuretypedetailid = uomt_activedetailid
-                        WHERE uomtdt_uomk_unitofmeasurekindid = ?
-                        """, Session.MAX_TIME, unitOfMeasureKind);
+        return session.getDslContext()
+                .selectCount()
+                .from(UnitOfMeasureEquivalents)
+                .join(UnitOfMeasureTypes).onKey(UNIT_OF_MEASURE_EQUIVALENTS_FROM_UNIT_OF_MEASURE_TYPE_FK)
+                .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPES_ACTIVE_DETAIL_FK)
+                .where(UnitOfMeasureEquivalents.THRU_TIME.eq(Session.MAX_TIME),
+                        UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_KIND.eq(unitOfMeasureKind.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countUnitOfMeasureEquivalentsByFromUnitOfMeasureType(UnitOfMeasureType fromUnitOfMeasureType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM unitofmeasureequivalents
-                        WHERE uomeq_fromunitofmeasuretypeid = ? AND uomeq_thrutime = ?
-                        """, fromUnitOfMeasureType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(UnitOfMeasureEquivalents)
+                .where(UnitOfMeasureEquivalents.FROM_UNIT_OF_MEASURE_TYPE.eq(fromUnitOfMeasureType.getPrimaryKey()),
+                        UnitOfMeasureEquivalents.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countUnitOfMeasureEquivalentsByToUnitOfMeasureType(UnitOfMeasureType toUnitOfMeasureType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM unitofmeasureequivalents
-                        WHERE uomeq_tounitofmeasuretypeid = ? AND uomeq_thrutime = ?
-                        """, toUnitOfMeasureType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(UnitOfMeasureEquivalents)
+                .where(UnitOfMeasureEquivalents.TO_UNIT_OF_MEASURE_TYPE.eq(toUnitOfMeasureType.getPrimaryKey()),
+                        UnitOfMeasureEquivalents.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public UnitOfMeasureEquivalent getUnitOfMeasureEquivalent(UnitOfMeasureType fromUnitOfMeasureType,
             UnitOfMeasureType toUnitOfMeasureType, EntityPermission entityPermission) {
-        UnitOfMeasureEquivalent unitOfMeasureEquivalent;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasureequivalents
-                        WHERE uomeq_fromunitofmeasuretypeid = ? AND uomeq_tounitofmeasuretypeid = ? AND uomeq_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasureequivalents
-                        WHERE uomeq_fromunitofmeasuretypeid = ? AND uomeq_tounitofmeasuretypeid = ? AND uomeq_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(UnitOfMeasureEquivalents.fields())
+                .from(UnitOfMeasureEquivalents)
+                .where(UnitOfMeasureEquivalents.FROM_UNIT_OF_MEASURE_TYPE.eq(fromUnitOfMeasureType.getPrimaryKey()),
+                        UnitOfMeasureEquivalents.TO_UNIT_OF_MEASURE_TYPE.eq(toUnitOfMeasureType.getPrimaryKey()),
+                        UnitOfMeasureEquivalents.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = unitOfMeasureEquivalentFactory.prepareStatement(query);
-            
-            ps.setLong(1, fromUnitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(2, toUnitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            unitOfMeasureEquivalent = unitOfMeasureEquivalentFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return unitOfMeasureEquivalent;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return unitOfMeasureEquivalentFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public UnitOfMeasureEquivalent getUnitOfMeasureEquivalent(UnitOfMeasureType fromUnitOfMeasureType,
@@ -1636,47 +1427,32 @@ public class UomControl
     
     private List<UnitOfMeasureEquivalent> getUnitOfMeasureEquivalentsByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind,
             EntityPermission entityPermission) {
-        List<UnitOfMeasureEquivalent> unitOfMeasureEquivalents;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasureequivalents, unitofmeasuretypedetails, unitofmeasurekinddetails
-                        WHERE uomeq_thrutime = ?
-                        AND uomeq_fromunitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_thrutime = ?
-                        AND uomtdt_uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ?
-                        AND uomkdt_uomk_unitofmeasurekindid = ?
-                        ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasureequivalents, unitofmeasuretypedetails, unitofmeasurekinddetails
-                        WHERE AND uomeq_thrutime = ?
-                        AND uomeq_fromunitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_thrutime = ?
-                        AND uomtdt_uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ?
-                        AND uomkdt_uomk_unitofmeasurekindid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var toType = UnitOfMeasureTypes.as("toType");
+        var toTypeDetail = UnitOfMeasureTypeDetails.as("toTypeDetail");
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(UnitOfMeasureEquivalents.fields())
+                    .from(UnitOfMeasureEquivalents)
+                    .join(UnitOfMeasureTypes).onKey(UNIT_OF_MEASURE_EQUIVALENTS_FROM_UNIT_OF_MEASURE_TYPE_FK)
+                    .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK)
+                    .join(toType).on(toType.UNIT_OF_MEASURE_TYPE.eq(UnitOfMeasureEquivalents.TO_UNIT_OF_MEASURE_TYPE))
+                    .join(toTypeDetail).on(toTypeDetail.UNIT_OF_MEASURE_TYPE_DETAIL.eq(toType.LAST_DETAIL))
+                    .where(UnitOfMeasureEquivalents.THRU_TIME.eq(Session.MAX_TIME),
+                            UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_KIND.eq(unitOfMeasureKind.getPrimaryKey()))
+                    .orderBy(UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME,
+                            toTypeDetail.SORT_ORDER, toTypeDetail.UNIT_OF_MEASURE_TYPE_NAME),
+                    UnitOfMeasureEquivalentFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(UnitOfMeasureEquivalents.fields())
+                    .from(UnitOfMeasureEquivalents)
+                    .join(UnitOfMeasureTypes).onKey(UNIT_OF_MEASURE_EQUIVALENTS_FROM_UNIT_OF_MEASURE_TYPE_FK)
+                    .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK)
+                    .where(UnitOfMeasureEquivalents.THRU_TIME.eq(Session.MAX_TIME),
+                            UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_KIND.eq(unitOfMeasureKind.getPrimaryKey()))
+                    .forUpdate();
+        };
 
-            var ps = unitOfMeasureEquivalentFactory.prepareStatement(query);
-            
-            ps.setLong(1, Session.MAX_TIME);
-            ps.setLong(2, Session.MAX_TIME);
-            ps.setLong(3, Session.MAX_TIME);
-            ps.setLong(4, unitOfMeasureKind.getPrimaryKey().getEntityId());
-            
-            unitOfMeasureEquivalents = unitOfMeasureEquivalentFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return unitOfMeasureEquivalents;
+        return unitOfMeasureEquivalentFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<UnitOfMeasureEquivalent> getUnitOfMeasureEquivalentsByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind) {
@@ -1689,43 +1465,25 @@ public class UomControl
     
     private List<UnitOfMeasureEquivalent> getUnitOfMeasureEquivalentsByFromUnitOfMeasureType(UnitOfMeasureType fromUnitOfMeasureType,
             EntityPermission entityPermission) {
-        List<UnitOfMeasureEquivalent> unitOfMeasureEquivalents;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasureequivalents, unitofmeasuretypedetails
-                        WHERE uomeq_fromunitofmeasuretypeid = ? AND uomeq_thrutime = ?
-                        AND uomeq_fromunitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_thrutime = ?
-                        ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasureequivalents
-                        WHERE uomeq_fromunitofmeasuretypeid = ? AND uomeq_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(UnitOfMeasureEquivalents.fields())
+                    .from(UnitOfMeasureEquivalents)
+                    .join(UnitOfMeasureTypes).onKey(UNIT_OF_MEASURE_EQUIVALENTS_TO_UNIT_OF_MEASURE_TYPE_FK)
+                    .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK)
+                    .where(UnitOfMeasureEquivalents.FROM_UNIT_OF_MEASURE_TYPE.eq(fromUnitOfMeasureType.getPrimaryKey()),
+                            UnitOfMeasureEquivalents.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME),
+                    UnitOfMeasureEquivalentFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(UnitOfMeasureEquivalents.fields())
+                    .from(UnitOfMeasureEquivalents)
+                    .where(UnitOfMeasureEquivalents.FROM_UNIT_OF_MEASURE_TYPE.eq(fromUnitOfMeasureType.getPrimaryKey()),
+                            UnitOfMeasureEquivalents.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = unitOfMeasureEquivalentFactory.prepareStatement(query);
-            
-            ps.setLong(1, fromUnitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                ps.setLong(3, Session.MAX_TIME);
-            }
-            
-            unitOfMeasureEquivalents = unitOfMeasureEquivalentFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return unitOfMeasureEquivalents;
+        return unitOfMeasureEquivalentFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<UnitOfMeasureEquivalent> getUnitOfMeasureEquivalentsByFromUnitOfMeasureType(UnitOfMeasureType fromUnitOfMeasureType) {
@@ -1738,43 +1496,25 @@ public class UomControl
     
     private List<UnitOfMeasureEquivalent> getUnitOfMeasureEquivalentsByToUnitOfMeasureType(UnitOfMeasureType toUnitOfMeasureType,
             EntityPermission entityPermission) {
-        List<UnitOfMeasureEquivalent> unitOfMeasureEquivalents;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasureequivalents, unitofmeasuretypedetails
-                        WHERE uomeq_tounitofmeasuretypeid = ? AND uomeq_thrutime = ?
-                        AND uomeq_fromunitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_thrutime = ?
-                        ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasureequivalents
-                        WHERE uomeq_tounitofmeasuretypeid = ? AND uomeq_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(UnitOfMeasureEquivalents.fields())
+                    .from(UnitOfMeasureEquivalents)
+                    .join(UnitOfMeasureTypes).onKey(UNIT_OF_MEASURE_EQUIVALENTS_FROM_UNIT_OF_MEASURE_TYPE_FK)
+                    .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK)
+                    .where(UnitOfMeasureEquivalents.TO_UNIT_OF_MEASURE_TYPE.eq(toUnitOfMeasureType.getPrimaryKey()),
+                            UnitOfMeasureEquivalents.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME),
+                    UnitOfMeasureEquivalentFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(UnitOfMeasureEquivalents.fields())
+                    .from(UnitOfMeasureEquivalents)
+                    .where(UnitOfMeasureEquivalents.TO_UNIT_OF_MEASURE_TYPE.eq(toUnitOfMeasureType.getPrimaryKey()),
+                            UnitOfMeasureEquivalents.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = unitOfMeasureEquivalentFactory.prepareStatement(query);
-            
-            ps.setLong(1, toUnitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                ps.setLong(3, Session.MAX_TIME);
-            }
-            
-            unitOfMeasureEquivalents = unitOfMeasureEquivalentFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return unitOfMeasureEquivalents;
+        return unitOfMeasureEquivalentFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<UnitOfMeasureEquivalent> getUnitOfMeasureEquivalentsByToUnitOfMeasureType(UnitOfMeasureType toUnitOfMeasureType) {
@@ -1870,16 +1610,20 @@ public class UomControl
     @Inject
     protected UnitOfMeasureKindUseTypeFactory unitOfMeasureKindUseTypeFactory;
 
+    @Inject
+    private UnitOfMeasureKindUseTypeTransferCache unitOfMeasureKindUseTypeTransferCache;
+
     public UnitOfMeasureKindUseType createUnitOfMeasureKindUseType(String unitOfMeasureKindUseTypeName, Boolean allowMultiple, Boolean allowFractionDigits,
             Boolean isDefault, Integer sortOrder) {
         return unitOfMeasureKindUseTypeFactory.create(unitOfMeasureKindUseTypeName, allowMultiple, allowFractionDigits, isDefault, sortOrder);
     }
 
     public long countUnitOfMeasureKindUseTypes() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM unitofmeasurekindusetypes
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(UnitOfMeasureKindUseTypes)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.UnitOfMeasureKindUseType */
@@ -1898,36 +1642,22 @@ public class UomControl
     }
     
     public List<UnitOfMeasureKindUseType> getUnitOfMeasureKindUseTypes() {
-        var ps = unitOfMeasureKindUseTypeFactory.prepareStatement(
-                """
-                SELECT _ALL_
-                FROM unitofmeasurekindusetypes
-                ORDER BY uomkut_sortorder, uomkut_unitofmeasurekindusetypename
-                _LIMIT_
-                """);
-        
-        return unitOfMeasureKindUseTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        var query = session.applyLimit(session.getDslContext()
+                .select(UnitOfMeasureKindUseTypes.fields())
+                .from(UnitOfMeasureKindUseTypes)
+                .orderBy(UnitOfMeasureKindUseTypes.SORT_ORDER, UnitOfMeasureKindUseTypes.UNIT_OF_MEASURE_KIND_USE_TYPE_NAME),
+                UnitOfMeasureKindUseTypeFactory.class);
+
+        return unitOfMeasureKindUseTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public UnitOfMeasureKindUseType getUnitOfMeasureKindUseTypeByName(String unitOfMeasureKindUseTypeName) {
-        UnitOfMeasureKindUseType unitOfMeasureKindUseType;
-        
-        try {
-            var ps = unitOfMeasureKindUseTypeFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM unitofmeasurekindusetypes
-                    WHERE uomkut_unitofmeasurekindusetypename = ?
-                    """);
-            
-            ps.setString(1, unitOfMeasureKindUseTypeName);
-            
-            unitOfMeasureKindUseType = unitOfMeasureKindUseTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return unitOfMeasureKindUseType;
+        var query = session.getDslContext()
+                .select(UnitOfMeasureKindUseTypes.fields())
+                .from(UnitOfMeasureKindUseTypes)
+                .where(UnitOfMeasureKindUseTypes.UNIT_OF_MEASURE_KIND_USE_TYPE_NAME.eq(unitOfMeasureKindUseTypeName));
+
+        return unitOfMeasureKindUseTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public UnitOfMeasureKindUseTypeChoicesBean getUnitOfMeasureKindUseTypeChoices(String defaultUnitOfMeasureKindUseTypeChoice,
@@ -1993,25 +1723,13 @@ public class UomControl
     }
     
     public UnitOfMeasureKindUseTypeDescription getUnitOfMeasureKindUseTypeDescription(UnitOfMeasureKindUseType unitOfMeasureKindUseType, Language language) {
-        UnitOfMeasureKindUseTypeDescription unitOfMeasureKindUseTypeDescription;
-        
-        try {
-            var ps = unitOfMeasureKindUseTypeDescriptionFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM unitofmeasurekindusetypedescriptions
-                    WHERE uomkutd_uomkut_unitofmeasurekindusetypeid = ? AND uomkutd_lang_languageid = ?
-                    """);
-            
-            ps.setLong(1, unitOfMeasureKindUseType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            unitOfMeasureKindUseTypeDescription = unitOfMeasureKindUseTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return unitOfMeasureKindUseTypeDescription;
+        var query = session.getDslContext()
+                .select(UnitOfMeasureKindUseTypeDescriptions.fields())
+                .from(UnitOfMeasureKindUseTypeDescriptions)
+                .where(UnitOfMeasureKindUseTypeDescriptions.UNIT_OF_MEASURE_KIND_USE_TYPE.eq(unitOfMeasureKindUseType.getPrimaryKey()),
+                        UnitOfMeasureKindUseTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
+
+        return unitOfMeasureKindUseTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public String getBestUnitOfMeasureKindUseTypeDescription(UnitOfMeasureKindUseType unitOfMeasureKindUseType, Language language) {
@@ -2038,6 +1756,9 @@ public class UomControl
     @Inject
     protected UnitOfMeasureKindUseFactory unitOfMeasureKindUseFactory;
 
+    @Inject
+    private UnitOfMeasureKindUseTransferCache unitOfMeasureKindUseTransferCache;
+
     public UnitOfMeasureKindUse createUnitOfMeasureKindUse(UnitOfMeasureKindUseType unitOfMeasureKindUseType,
             UnitOfMeasureKind unitOfMeasureKind, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultUnitOfMeasureKindUse = getDefaultUnitOfMeasureKindUse(unitOfMeasureKindUseType);
@@ -2061,23 +1782,23 @@ public class UomControl
     }
     
     public long countUnitOfMeasureKindUsesByUnitOfMeasureKindUseType(UnitOfMeasureKindUseType unitOfMeasureKindUseType) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM unitofmeasurekinduses
-                WHERE uomku_uomkut_unitofmeasurekindusetypeid = ? AND uomku_thrutime = ?
-                """,
-                unitOfMeasureKindUseType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(UnitOfMeasureKindUses)
+                .where(UnitOfMeasureKindUses.UNIT_OF_MEASURE_KIND_USE_TYPE.eq(unitOfMeasureKindUseType.getPrimaryKey()),
+                        UnitOfMeasureKindUses.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
     
     public long countUnitOfMeasureKindUsesByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM unitofmeasurekinduses
-                WHERE uomku_uomk_unitofmeasurekindid = ? AND uomku_thrutime = ?
-                """,
-                unitOfMeasureKind, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(UnitOfMeasureKindUses)
+                .where(UnitOfMeasureKindUses.UNIT_OF_MEASURE_KIND.eq(unitOfMeasureKind.getPrimaryKey()),
+                        UnitOfMeasureKindUses.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
     
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.UnitOfMeasureKindUse */
@@ -2097,39 +1818,19 @@ public class UomControl
     
     public UnitOfMeasureKindUse getUnitOfMeasureKindUse(UnitOfMeasureKindUseType unitOfMeasureKindUseType,
             UnitOfMeasureKind unitOfMeasureKind, EntityPermission entityPermission) {
-        UnitOfMeasureKindUse unitOfMeasureKindUse;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasurekinduses
-                        WHERE uomku_uomkut_unitofmeasurekindusetypeid = ? AND uomku_uomk_unitofmeasurekindid = ?
-                        AND uomku_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasurekinduses
-                        WHERE uomku_uomkut_unitofmeasurekindusetypeid = ? AND uomku_uomk_unitofmeasurekindid = ?
-                        AND uomku_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-            var ps = unitOfMeasureKindUseFactory.prepareStatement(query);
-            
-            ps.setLong(1, unitOfMeasureKindUseType.getPrimaryKey().getEntityId());
-            ps.setLong(2, unitOfMeasureKind.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            unitOfMeasureKindUse = unitOfMeasureKindUseFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return unitOfMeasureKindUse;
+        var baseQuery = session.getDslContext()
+                .select(UnitOfMeasureKindUses.fields())
+                .from(UnitOfMeasureKindUses)
+                .where(UnitOfMeasureKindUses.UNIT_OF_MEASURE_KIND_USE_TYPE.eq(unitOfMeasureKindUseType.getPrimaryKey()),
+                        UnitOfMeasureKindUses.UNIT_OF_MEASURE_KIND.eq(unitOfMeasureKind.getPrimaryKey()),
+                        UnitOfMeasureKindUses.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return unitOfMeasureKindUseFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public UnitOfMeasureKindUse getUnitOfMeasureKindUse(UnitOfMeasureKindUseType unitOfMeasureKindUseType,
@@ -2153,36 +1854,19 @@ public class UomControl
     
     private UnitOfMeasureKindUse getDefaultUnitOfMeasureKindUse(UnitOfMeasureKindUseType unitOfMeasureKindUseType,
             EntityPermission entityPermission) {
-        UnitOfMeasureKindUse unitOfMeasureKindUse;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasurekinduses
-                        WHERE uomku_uomkut_unitofmeasurekindusetypeid = ? AND uomku_isdefault = 1 AND uomku_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasurekinduses
-                        WHERE uomku_uomkut_unitofmeasurekindusetypeid = ? AND uomku_isdefault = 1 AND uomku_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-            var ps = unitOfMeasureKindUseFactory.prepareStatement(query);
-            
-            ps.setLong(1, unitOfMeasureKindUseType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            unitOfMeasureKindUse = unitOfMeasureKindUseFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return unitOfMeasureKindUse;
+        var baseQuery = session.getDslContext()
+                .select(UnitOfMeasureKindUses.fields())
+                .from(UnitOfMeasureKindUses)
+                .where(UnitOfMeasureKindUses.UNIT_OF_MEASURE_KIND_USE_TYPE.eq(unitOfMeasureKindUseType.getPrimaryKey()),
+                        UnitOfMeasureKindUses.IS_DEFAULT.eq(true),
+                        UnitOfMeasureKindUses.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return unitOfMeasureKindUseFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public UnitOfMeasureKindUse getDefaultUnitOfMeasureKindUse(UnitOfMeasureKindUseType unitOfMeasureKindUseType) {
@@ -2199,40 +1883,24 @@ public class UomControl
     
     private List<UnitOfMeasureKindUse> getUnitOfMeasureKindUsesByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind,
             EntityPermission entityPermission) {
-        List<UnitOfMeasureKindUse> unitOfMeasureKindUses;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasurekinduses, unitofmeasurekindusetypes
-                        WHERE uomku_uomk_unitofmeasurekindid = ? AND uomku_thrutime = ?
-                        AND uomku_uomkut_unitofmeasurekindusetypeid = uomkut_unitofmeasurekindusetypeid
-                        ORDER BY uomku_sortorder, uomkut_sortorder, uomkut_unitofmeasurekindusetypename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasurekinduses
-                        WHERE uomku_uomk_unitofmeasurekindid = ? AND uomku_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(UnitOfMeasureKindUses.fields())
+                    .from(UnitOfMeasureKindUses)
+                    .join(UnitOfMeasureKindUseTypes).onKey(UNIT_OF_MEASURE_KIND_USES_UNIT_OF_MEASURE_KIND_USE_TYPE_FK)
+                    .where(UnitOfMeasureKindUses.UNIT_OF_MEASURE_KIND.eq(unitOfMeasureKind.getPrimaryKey()),
+                            UnitOfMeasureKindUses.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(UnitOfMeasureKindUses.SORT_ORDER, UnitOfMeasureKindUseTypes.SORT_ORDER, UnitOfMeasureKindUseTypes.UNIT_OF_MEASURE_KIND_USE_TYPE_NAME),
+                    UnitOfMeasureKindUseFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(UnitOfMeasureKindUses.fields())
+                    .from(UnitOfMeasureKindUses)
+                    .where(UnitOfMeasureKindUses.UNIT_OF_MEASURE_KIND.eq(unitOfMeasureKind.getPrimaryKey()),
+                            UnitOfMeasureKindUses.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = unitOfMeasureKindUseFactory.prepareStatement(query);
-            
-            ps.setLong(1, unitOfMeasureKind.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            unitOfMeasureKindUses = unitOfMeasureKindUseFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return unitOfMeasureKindUses;
+        return unitOfMeasureKindUseFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<UnitOfMeasureKindUse> getUnitOfMeasureKindUsesByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind) {
@@ -2248,42 +1916,25 @@ public class UomControl
      */
     private List<UnitOfMeasureKindUse> getUnitOfMeasureKindUsesByUnitOfMeasureKindUseType(UnitOfMeasureKindUseType unitOfMeasureKindUseType,
             EntityPermission entityPermission) {
-        List<UnitOfMeasureKindUse> unitOfMeasureKindUses;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasurekinduses, unitofmeasurekinddetails
-                        WHERE uomku_uomkut_unitofmeasurekindusetypeid = ? AND uomku_thrutime = ?
-                        AND uomku_uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ?
-                        ORDER BY uomku_sortorder, uomkdt_sortorder, uomkdt_unitofmeasurekindname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM unitofmeasurekinduses, unitofmeasurekinddetails
-                        WHERE uomku_uomkut_unitofmeasurekindusetypeid = ? AND uomku_thrutime = ?
-                        AND uomku_uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(UnitOfMeasureKindUses.fields())
+                    .from(UnitOfMeasureKindUses)
+                    .join(UnitOfMeasureKinds).onKey(UNIT_OF_MEASURE_KIND_USES_UNIT_OF_MEASURE_KIND_FK)
+                    .join(UnitOfMeasureKindDetails).onKey(UNIT_OF_MEASURE_KINDS_LAST_DETAIL_FK)
+                    .where(UnitOfMeasureKindUses.UNIT_OF_MEASURE_KIND_USE_TYPE.eq(unitOfMeasureKindUseType.getPrimaryKey()),
+                            UnitOfMeasureKindUses.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(UnitOfMeasureKindUses.SORT_ORDER, UnitOfMeasureKindDetails.SORT_ORDER, UnitOfMeasureKindDetails.UNIT_OF_MEASURE_KIND_NAME),
+                    UnitOfMeasureKindUseFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(UnitOfMeasureKindUses.fields())
+                    .from(UnitOfMeasureKindUses)
+                    .where(UnitOfMeasureKindUses.UNIT_OF_MEASURE_KIND_USE_TYPE.eq(unitOfMeasureKindUseType.getPrimaryKey()),
+                            UnitOfMeasureKindUses.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = unitOfMeasureKindUseFactory.prepareStatement(query);
-            
-            ps.setLong(1, unitOfMeasureKindUseType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            ps.setLong(3, Session.MAX_TIME);
-            
-            unitOfMeasureKindUses = unitOfMeasureKindUseFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return unitOfMeasureKindUses;
+        return unitOfMeasureKindUseFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<UnitOfMeasureKindUse> getUnitOfMeasureKindUsesByUnitOfMeasureKindUseType(UnitOfMeasureKindUseType unitOfMeasureKindUseType) {
@@ -2298,29 +1949,17 @@ public class UomControl
      * UnitOfMeasureKind.
      */
     public UnitOfMeasureKindUse getUnitOfMeasureKindUseByUnitOfMeasureKindUseType(UnitOfMeasureKindUseType unitOfMeasureKindUseType) {
-        UnitOfMeasureKindUse unitOfMeasureKindUse;
-        
-        if(!unitOfMeasureKindUseType.getAllowMultiple()) {
-            try {
-                var ps = unitOfMeasureKindUseFactory.prepareStatement(
-                        """
-                        SELECT _ALL_
-                        FROM unitofmeasurekinduses
-                        WHERE uomku_uomkut_unitofmeasurekindusetypeid = ? AND uomku_thrutime = ?
-                        """);
-                
-                ps.setLong(1, unitOfMeasureKindUseType.getPrimaryKey().getEntityId());
-                ps.setLong(2, Session.MAX_TIME);
-                
-                unitOfMeasureKindUse = unitOfMeasureKindUseFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-            } catch (SQLException se) {
-                throw new PersistenceDatabaseException(se);
-            }
-        } else {
+        if(unitOfMeasureKindUseType.getAllowMultiple()) {
             throw new IllegalArgumentException();
         }
-        
-        return unitOfMeasureKindUse;
+
+        var query = session.getDslContext()
+                .select(UnitOfMeasureKindUses.fields())
+                .from(UnitOfMeasureKindUses)
+                .where(UnitOfMeasureKindUses.UNIT_OF_MEASURE_KIND_USE_TYPE.eq(unitOfMeasureKindUseType.getPrimaryKey()),
+                        UnitOfMeasureKindUses.THRU_TIME.eq(Session.MAX_TIME));
+
+        return unitOfMeasureKindUseFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public UnitOfMeasureKind getUnitOfMeasureKindByUnitOfMeasureKindUseType(UnitOfMeasureKindUseType unitOfMeasureKindUseType) {
