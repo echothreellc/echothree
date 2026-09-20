@@ -24,6 +24,11 @@ import com.echothree.model.control.tag.common.transfer.TagScopeDescriptionTransf
 import com.echothree.model.control.tag.common.transfer.TagScopeEntityTypeTransfer;
 import com.echothree.model.control.tag.common.transfer.TagScopeTransfer;
 import com.echothree.model.control.tag.common.transfer.TagTransfer;
+import com.echothree.model.control.tag.server.transfer.EntityTagTransferCache;
+import com.echothree.model.control.tag.server.transfer.TagScopeDescriptionTransferCache;
+import com.echothree.model.control.tag.server.transfer.TagScopeEntityTypeTransferCache;
+import com.echothree.model.control.tag.server.transfer.TagScopeTransferCache;
+import com.echothree.model.control.tag.server.transfer.TagTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.party.server.entity.Language;
@@ -47,12 +52,37 @@ import com.echothree.model.data.tag.server.value.TagDetailValue;
 import com.echothree.model.data.tag.server.value.TagScopeDescriptionValue;
 import com.echothree.model.data.tag.server.value.TagScopeDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.COMPONENT_VENDORS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_INSTANCES_ENTITY_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK;
+import static com.echothree.model.jooq.server.keys.tag.TagForeignKeys.ENTITY_TAGS_TAGGED_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.keys.tag.TagForeignKeys.ENTITY_TAGS_TAG_FK;
+import static com.echothree.model.jooq.server.keys.tag.TagForeignKeys.TAGS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.tag.TagForeignKeys.TAGS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.tag.TagForeignKeys.TAG_SCOPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.tag.TagForeignKeys.TAG_SCOPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.tag.TagForeignKeys.TAG_SCOPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.tag.TagForeignKeys.TAG_SCOPE_ENTITY_TYPES_ENTITY_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.tag.TagForeignKeys.TAG_SCOPE_ENTITY_TYPES_TAG_SCOPE_FK;
+import static com.echothree.model.jooq.server.tables.core.ComponentVendorDetails.ComponentVendorDetails;
+import static com.echothree.model.jooq.server.tables.core.ComponentVendors.ComponentVendors;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.core.EntityTypeDetails.EntityTypeDetails;
+import static com.echothree.model.jooq.server.tables.core.EntityTypes.EntityTypes;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.tag.EntityTags.EntityTags;
+import static com.echothree.model.jooq.server.tables.tag.TagDetails.TagDetails;
+import static com.echothree.model.jooq.server.tables.tag.TagScopeDescriptions.TagScopeDescriptions;
+import static com.echothree.model.jooq.server.tables.tag.TagScopeDetails.TagScopeDetails;
+import static com.echothree.model.jooq.server.tables.tag.TagScopeEntityTypes.TagScopeEntityTypes;
+import static com.echothree.model.jooq.server.tables.tag.TagScopes.TagScopes;
+import static com.echothree.model.jooq.server.tables.tag.Tags.Tags;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -61,7 +91,7 @@ import javax.inject.Inject;
 
 @CommandScope
 public class TagControl
-        extends BaseTagControl {
+        extends BaseModelControl {
     
     /** Creates a new instance of TagControl */
     protected TagControl() {
@@ -73,10 +103,13 @@ public class TagControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected TagScopeDetailFactory tagScopeDetailFactory;
+
+    @Inject
     protected TagScopeFactory tagScopeFactory;
 
     @Inject
-    protected TagScopeDetailFactory tagScopeDetailFactory;
+    private TagScopeTransferCache tagScopeTransferCache;
 
     public TagScope createTagScope(String tagScopeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultTagScope = getDefaultTagScope();
@@ -108,20 +141,24 @@ public class TagControl
     }
 
     public long countTagScopes() {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM tagscopes, tagscopedetails
-                    WHERE ts_activedetailid = tsdt_tagscopedetailid
-                    """);
+        return session.getDslContext()
+                .selectCount()
+                .from(TagScopes)
+                .join(TagScopeDetails).onKey(TAG_SCOPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countTagScopesByEntityType(EntityType entityType) {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM tagscopes, tagscopedetails, tagscopeentitytypes
-                    WHERE ts_activedetailid = tsdt_tagscopedetailid
-                    AND ts_tagscopeid = tent_ts_tagscopeid AND tent_ent_entitytypeid = ? AND tent_thrutime = ?
-                    """, entityType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(TagScopes)
+                .join(TagScopeDetails).onKey(TAG_SCOPES_ACTIVE_DETAIL_FK)
+                .join(TagScopeEntityTypes).onKey(TAG_SCOPE_ENTITY_TYPES_TAG_SCOPE_FK)
+                .where(TagScopeEntityTypes.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                        TagScopeEntityTypes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.TagScope */
@@ -141,28 +178,19 @@ public class TagControl
     }
 
     private List<TagScope> getTagScopes(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM tagscopes, tagscopedetails
-                    WHERE ts_activedetailid = tsdt_tagscopedetailid
-                    ORDER BY tsdt_sortorder, tsdt_tagscopename
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM tagscopes, tagscopedetails
-                    WHERE ts_activedetailid = tsdt_tagscopedetailid
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(TagScopes.fields())
+                .from(TagScopes)
+                .join(TagScopeDetails).onKey(TAG_SCOPES_ACTIVE_DETAIL_FK);
 
-        var ps = tagScopeFactory.prepareStatement(query);
-        
-        return tagScopeFactory.getEntitiesFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(TagScopeDetails.SORT_ORDER, TagScopeDetails.TAG_SCOPE_NAME),
+                    TagScopeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return tagScopeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<TagScope> getTagScopes() {
@@ -174,41 +202,22 @@ public class TagControl
     }
     
     private List<TagScope> getTagScopesByEntityType(EntityType entityType, EntityPermission entityPermission) {
-        List<TagScope> tagScopes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM tagscopes, tagscopedetails, tagscopeentitytypes
-                        WHERE ts_activedetailid = tsdt_tagscopedetailid
-                        AND ts_tagscopeid = tent_ts_tagscopeid AND tent_ent_entitytypeid = ? AND tent_thrutime = ?
-                        ORDER BY tsdt_sortorder, tsdt_tagscopename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM tagscopes, tagscopedetails, tagscopeentitytypes
-                        WHERE ts_activedetailid = tsdt_tagscopedetailid
-                        AND ts_tagscopeid = tent_ts_tagscopeid AND tent_ent_entitytypeid = ? AND tent_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(TagScopes.fields())
+                .from(TagScopes)
+                .join(TagScopeDetails).onKey(TAG_SCOPES_ACTIVE_DETAIL_FK)
+                .join(TagScopeEntityTypes).onKey(TAG_SCOPE_ENTITY_TYPES_TAG_SCOPE_FK)
+                .where(TagScopeEntityTypes.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                        TagScopeEntityTypes.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = tagScopeFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            tagScopes = tagScopeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return tagScopes;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(TagScopeDetails.SORT_ORDER, TagScopeDetails.TAG_SCOPE_NAME),
+                    TagScopeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return tagScopeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<TagScope> getTagScopesByEntityType(EntityType entityType) {
@@ -220,26 +229,18 @@ public class TagControl
     }
     
     public TagScope getDefaultTagScope(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM tagscopes, tagscopedetails
-                    WHERE ts_activedetailid = tsdt_tagscopedetailid AND tsdt_isdefault = 1
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM tagscopes, tagscopedetails
-                    WHERE ts_activedetailid = tsdt_tagscopedetailid AND tsdt_isdefault = 1
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(TagScopes.fields())
+                .from(TagScopes)
+                .join(TagScopeDetails).onKey(TAG_SCOPES_ACTIVE_DETAIL_FK)
+                .where(TagScopeDetails.IS_DEFAULT.eq(true));
 
-        var ps = tagScopeFactory.prepareStatement(query);
-        
-        return tagScopeFactory.getEntityFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return tagScopeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public TagScope getDefaultTagScope() {
@@ -255,36 +256,18 @@ public class TagControl
     }
     
     public TagScope getTagScopeByName(String tagScopeName, EntityPermission entityPermission) {
-        TagScope tagScope;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM tagscopes, tagscopedetails
-                        WHERE ts_activedetailid = tsdt_tagscopedetailid AND tsdt_tagscopename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM tagscopes, tagscopedetails
-                        WHERE ts_activedetailid = tsdt_tagscopedetailid AND tsdt_tagscopename = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(TagScopes.fields())
+                .from(TagScopes)
+                .join(TagScopeDetails).onKey(TAG_SCOPES_ACTIVE_DETAIL_FK)
+                .where(TagScopeDetails.TAG_SCOPE_NAME.eq(tagScopeName));
 
-            var ps = tagScopeFactory.prepareStatement(query);
-            
-            ps.setString(1, tagScopeName);
-            
-            tagScope = tagScopeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return tagScope;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return tagScopeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public TagScope getTagScopeByName(String tagScopeName) {
@@ -439,6 +422,9 @@ public class TagControl
     @Inject
     protected TagScopeDescriptionFactory tagScopeDescriptionFactory;
 
+    @Inject
+    private TagScopeDescriptionTransferCache tagScopeDescriptionTransferCache;
+
     public TagScopeDescription createTagScopeDescription(TagScope tagScope, Language language, String description,
             BasePK createdBy) {
         var tagScopeDescription = tagScopeDescriptionFactory.create(tagScope,
@@ -451,38 +437,19 @@ public class TagControl
     }
     
     private TagScopeDescription getTagScopeDescription(TagScope tagScope, Language language, EntityPermission entityPermission) {
-        TagScopeDescription tagScopeDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM tagscopedescriptions
-                        WHERE tsd_ts_tagscopeid = ? AND tsd_lang_languageid = ? AND tsd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM tagscopedescriptions
-                        WHERE tsd_ts_tagscopeid = ? AND tsd_lang_languageid = ? AND tsd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(TagScopeDescriptions.fields())
+                .from(TagScopeDescriptions)
+                .where(TagScopeDescriptions.TAG_SCOPE.eq(tagScope.getPrimaryKey()),
+                        TagScopeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        TagScopeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = tagScopeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, tagScope.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            tagScopeDescription = tagScopeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return tagScopeDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return tagScopeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public TagScopeDescription getTagScopeDescription(TagScope tagScope, Language language) {
@@ -502,40 +469,24 @@ public class TagControl
     }
     
     private List<TagScopeDescription> getTagScopeDescriptionsByTagScope(TagScope tagScope, EntityPermission entityPermission) {
-        List<TagScopeDescription> tagScopeDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM tagscopedescriptions, languages
-                        WHERE tsd_ts_tagscopeid = ? AND tsd_thrutime = ?
-                        AND tsd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM tagscopedescriptions
-                        WHERE tsd_ts_tagscopeid = ? AND tsd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(TagScopeDescriptions.fields())
+                    .from(TagScopeDescriptions)
+                    .join(Languages).onKey(TAG_SCOPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(TagScopeDescriptions.TAG_SCOPE.eq(tagScope.getPrimaryKey()),
+                            TagScopeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    TagScopeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(TagScopeDescriptions.fields())
+                    .from(TagScopeDescriptions)
+                    .where(TagScopeDescriptions.TAG_SCOPE.eq(tagScope.getPrimaryKey()),
+                            TagScopeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = tagScopeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, tagScope.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            tagScopeDescriptions = tagScopeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return tagScopeDescriptions;
+        return tagScopeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<TagScopeDescription> getTagScopeDescriptionsByTagScope(TagScope tagScope) {
@@ -618,6 +569,9 @@ public class TagControl
     @Inject
     protected TagScopeEntityTypeFactory tagScopeEntityTypeFactory;
 
+    @Inject
+    private TagScopeEntityTypeTransferCache tagScopeEntityTypeTransferCache;
+
     public TagScopeEntityType createTagScopeEntityType(TagScope tagScope, EntityType entityType, BasePK createdBy) {
         var tagScopeEntityType = tagScopeEntityTypeFactory.create(tagScope, entityType,
                 session.getStartTime(), Session.MAX_TIME);
@@ -628,19 +582,23 @@ public class TagControl
     }
 
     public long countTagScopeEntityTypesByTagScope(TagScope tagScope) {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM tagscopeentitytypes
-                    WHERE tent_ts_tagscopeid = ? AND tent_thrutime = ?
-                    """, tagScope, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(TagScopeEntityTypes)
+                .where(TagScopeEntityTypes.TAG_SCOPE.eq(tagScope.getPrimaryKey()),
+                        TagScopeEntityTypes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countTagScopeEntityTypesByEntityType(EntityType entityType) {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM tagscopeentitytypes
-                    WHERE tent_ent_entitytypeid = ? AND tent_thrutime = ?
-                    """, entityType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(TagScopeEntityTypes)
+                .where(TagScopeEntityTypes.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                        TagScopeEntityTypes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.TagScopeEntityType */
@@ -660,38 +618,19 @@ public class TagControl
     }
 
     private TagScopeEntityType getTagScopeEntityType(TagScope tagScope, EntityType entityType, EntityPermission entityPermission) {
-        TagScopeEntityType tagScopeEntityType;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM tagscopeentitytypes
-                        WHERE tent_ts_tagscopeid = ? AND tent_ent_entitytypeid = ? AND tent_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM tagscopeentitytypes
-                        WHERE tent_ts_tagscopeid = ? AND tent_ent_entitytypeid = ? AND tent_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(TagScopeEntityTypes.fields())
+                .from(TagScopeEntityTypes)
+                .where(TagScopeEntityTypes.TAG_SCOPE.eq(tagScope.getPrimaryKey()),
+                        TagScopeEntityTypes.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                        TagScopeEntityTypes.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = tagScopeEntityTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, tagScope.getPrimaryKey().getEntityId());
-            ps.setLong(2, entityType.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            tagScopeEntityType = tagScopeEntityTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return tagScopeEntityType;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return tagScopeEntityTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public TagScopeEntityType getTagScopeEntityType(TagScope tagScope, EntityType entityType) {
@@ -703,40 +642,25 @@ public class TagControl
     }
     
     private List<TagScopeEntityType> getTagScopeEntityTypesByTagScope(TagScope tagScope, EntityPermission entityPermission) {
-        List<TagScopeEntityType> tagScopeEntityTypes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM tagscopeentitytypes, entitytypes, entitytypedetails
-                        WHERE tent_ts_tagscopeid = ? AND tent_thrutime = ?
-                        AND tent_ent_entitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid
-                        ORDER BY entdt_sortorder, entdt_entitytypename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM tagscopeentitytypes
-                        WHERE tent_ts_tagscopeid = ? AND tent_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(TagScopeEntityTypes.fields())
+                    .from(TagScopeEntityTypes)
+                    .join(EntityTypes).onKey(TAG_SCOPE_ENTITY_TYPES_ENTITY_TYPE_FK)
+                    .join(EntityTypeDetails).onKey(ENTITY_TYPES_LAST_DETAIL_FK)
+                    .where(TagScopeEntityTypes.TAG_SCOPE.eq(tagScope.getPrimaryKey()),
+                            TagScopeEntityTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(EntityTypeDetails.SORT_ORDER, EntityTypeDetails.ENTITY_TYPE_NAME),
+                    TagScopeEntityTypeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(TagScopeEntityTypes.fields())
+                    .from(TagScopeEntityTypes)
+                    .where(TagScopeEntityTypes.TAG_SCOPE.eq(tagScope.getPrimaryKey()),
+                            TagScopeEntityTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = tagScopeEntityTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, tagScope.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            tagScopeEntityTypes = tagScopeEntityTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return tagScopeEntityTypes;
+        return tagScopeEntityTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<TagScopeEntityType> getTagScopeEntityTypesByTagScope(TagScope tagScope) {
@@ -748,40 +672,25 @@ public class TagControl
     }
     
     private List<TagScopeEntityType> getTagScopeEntityTypesByEntityType(EntityType entityType, EntityPermission entityPermission) {
-        List<TagScopeEntityType> tagScopeEntityTypes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM tagscopeentitytypes, tagscopes, tagscopedetails
-                        WHERE tent_ent_entitytypeid = ? AND tent_thrutime = ?
-                        AND tent_ts_tagscopeid = ts_tagscopeid AND ts_lastdetailid = tsdt_tagscopedetailid
-                        ORDER BY tsdt_sortorder, tsdt_tagscopename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM tagscopeentitytypes
-                        WHERE tent_ent_entitytypeid = ? AND tent_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(TagScopeEntityTypes.fields())
+                    .from(TagScopeEntityTypes)
+                    .join(TagScopes).onKey(TAG_SCOPE_ENTITY_TYPES_TAG_SCOPE_FK)
+                    .join(TagScopeDetails).onKey(TAG_SCOPES_LAST_DETAIL_FK)
+                    .where(TagScopeEntityTypes.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                            TagScopeEntityTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(TagScopeDetails.SORT_ORDER, TagScopeDetails.TAG_SCOPE_NAME),
+                    TagScopeEntityTypeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(TagScopeEntityTypes.fields())
+                    .from(TagScopeEntityTypes)
+                    .where(TagScopeEntityTypes.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                            TagScopeEntityTypes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = tagScopeEntityTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, entityType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            tagScopeEntityTypes = tagScopeEntityTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return tagScopeEntityTypes;
+        return tagScopeEntityTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<TagScopeEntityType> getTagScopeEntityTypesByEntityType(EntityType entityType) {
@@ -839,10 +748,13 @@ public class TagControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected TagDetailFactory tagDetailFactory;
+
+    @Inject
     protected TagFactory tagFactory;
 
     @Inject
-    protected TagDetailFactory tagDetailFactory;
+    private TagTransferCache tagTransferCache;
 
     public Tag createTag(TagScope tagScope, String tagName, BasePK createdBy) {
         var tag = tagFactory.create();
@@ -862,21 +774,26 @@ public class TagControl
     }
 
     public long countTagsByTagScope(final TagScope tagScope) {
-        return session.queryForLong("""
-                    SELECT COUNT(*)
-                    FROM tags, tagdetails
-                    WHERE t_activedetailid = tdt_tagdetailid
-                    AND tdt_ts_tagscopeid = ?
-                    """, tagScope);
+        return session.getDslContext()
+                .selectCount()
+                .from(Tags)
+                .join(TagDetails).onKey(TAGS_ACTIVE_DETAIL_FK)
+                .where(TagDetails.TAG_SCOPE.eq(tagScope.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countTagsByTagScopeAndEntityInstance(final TagScope tagScope, final EntityInstance taggedEntityInstance) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM tags, tagdetails, entitytags
-                WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ?
-                AND t_tagid = et_t_tagid AND et_taggedentityinstanceid = ? AND et_thrutime = ?
-                """, tagScope, taggedEntityInstance, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(Tags)
+                .join(TagDetails).onKey(TAGS_ACTIVE_DETAIL_FK)
+                .join(EntityTags).onKey(ENTITY_TAGS_TAG_FK)
+                .where(TagDetails.TAG_SCOPE.eq(tagScope.getPrimaryKey()),
+                        EntityTags.TAGGED_ENTITY_INSTANCE.eq(taggedEntityInstance.getPrimaryKey()),
+                        EntityTags.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Tag */
@@ -896,38 +813,20 @@ public class TagControl
     }
 
     private List<Tag> getTags(TagScope tagScope, EntityPermission entityPermission) {
-        List<Tag> tags;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM tags, tagdetails
-                        WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ?
-                        ORDER BY tdt_tagname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM tags, tagdetails
-                        WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Tags.fields())
+                .from(Tags)
+                .join(TagDetails).onKey(TAGS_ACTIVE_DETAIL_FK)
+                .where(TagDetails.TAG_SCOPE.eq(tagScope.getPrimaryKey()));
 
-            var ps = tagFactory.prepareStatement(query);
-            
-            ps.setLong(1, tagScope.getPrimaryKey().getEntityId());
-            
-            tags = tagFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return tags;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(TagDetails.TAG_NAME),
+                    TagFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return tagFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<Tag> getTags(TagScope tagScope) {
@@ -940,42 +839,23 @@ public class TagControl
     
     private List<Tag> getTagsByTagScopeAndEntityInstance(TagScope tagScope, EntityInstance entityInstance,
             EntityPermission entityPermission) {
-        List<Tag> tags;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM tags, tagdetails, entitytags
-                        WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ?
-                        AND t_tagid = et_t_tagid AND et_taggedentityinstanceid = ? AND et_thrutime = ?
-                        ORDER BY tdt_tagname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM tags, tagdetails, entitytags
-                        WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ?
-                        AND t_tagid = et_t_tagid AND et_taggedentityinstanceid = ? AND et_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Tags.fields())
+                .from(Tags)
+                .join(TagDetails).onKey(TAGS_ACTIVE_DETAIL_FK)
+                .join(EntityTags).onKey(ENTITY_TAGS_TAG_FK)
+                .where(TagDetails.TAG_SCOPE.eq(tagScope.getPrimaryKey()),
+                        EntityTags.TAGGED_ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()),
+                        EntityTags.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = tagFactory.prepareStatement(query);
-            
-            ps.setLong(1, tagScope.getPrimaryKey().getEntityId());
-            ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            tags = tagFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return tags;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(TagDetails.TAG_NAME),
+                    TagFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return tagFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<Tag> getTagsByTagScopeAndEntityInstance(TagScope tagScope, EntityInstance entityInstance) {
@@ -987,37 +867,19 @@ public class TagControl
     }
     
     public Tag getTagByName(TagScope tagScope, String tagName, EntityPermission entityPermission) {
-        Tag tag;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM tags, tagdetails
-                        WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ? AND tdt_tagname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM tags, tagdetails
-                        WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ? AND tdt_tagname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Tags.fields())
+                .from(Tags)
+                .join(TagDetails).onKey(TAGS_ACTIVE_DETAIL_FK)
+                .where(TagDetails.TAG_SCOPE.eq(tagScope.getPrimaryKey()),
+                        TagDetails.TAG_NAME.eq(tagName));
 
-            var ps = tagFactory.prepareStatement(query);
-            
-            ps.setLong(1, tagScope.getPrimaryKey().getEntityId());
-            ps.setString(2, tagName);
-            
-            tag = tagFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return tag;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return tagFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Tag getTagByName(TagScope tagScope, String tagName) {
@@ -1139,6 +1001,9 @@ public class TagControl
     @Inject
     protected EntityTagFactory entityTagFactory;
 
+    @Inject
+    private EntityTagTransferCache entityTagTransferCache;
+
     public EntityTag createEntityTag(EntityInstance taggedEntityInstance, Tag tag, BasePK createdBy) {
         var entityTag = entityTagFactory.create(taggedEntityInstance, tag, session.getStartTime(), Session.MAX_TIME);
         
@@ -1148,58 +1013,39 @@ public class TagControl
     }
 
     public long countEntityTagsByTag(final Tag tag) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM entitytags
-                WHERE et_t_tagid = ? AND et_thrutime = ?
-                """,
-                tag, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityTags)
+                .where(EntityTags.TAG.eq(tag.getPrimaryKey()),
+                        EntityTags.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countEntityTagsByTaggedEntityInstance(final EntityInstance taggedEntityInstance) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM entitytags
-                WHERE et_taggedentityinstanceid = ? AND et_thrutime = ?
-                """,
-                taggedEntityInstance, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityTags)
+                .where(EntityTags.TAGGED_ENTITY_INSTANCE.eq(taggedEntityInstance.getPrimaryKey()),
+                        EntityTags.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private EntityTag getEntityTag(EntityInstance taggedEntityInstance, Tag tag, EntityPermission entityPermission) {
-        EntityTag entityTag;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitytags
-                        WHERE et_taggedentityinstanceid = ? AND et_t_tagid = ? AND et_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitytags
-                        WHERE et_taggedentityinstanceid = ? AND et_t_tagid = ? AND et_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(EntityTags.fields())
+                .from(EntityTags)
+                .where(EntityTags.TAGGED_ENTITY_INSTANCE.eq(taggedEntityInstance.getPrimaryKey()),
+                        EntityTags.TAG.eq(tag.getPrimaryKey()),
+                        EntityTags.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = entityTagFactory.prepareStatement(query);
-            
-            ps.setLong(1, taggedEntityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(2, tag.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            entityTag = entityTagFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityTag;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return entityTagFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public EntityTag getEntityTag(EntityInstance taggedEntityInstance, Tag tag) {
@@ -1219,40 +1065,25 @@ public class TagControl
     }
     
     private List<EntityTag> getEntityTagsByTaggedEntityInstance(EntityInstance taggedEntityInstance, EntityPermission entityPermission) {
-        List<EntityTag> entityTags;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitytags, tags, tagdetails
-                        WHERE et_taggedentityinstanceid = ? AND et_thrutime = ?
-                        AND et_t_tagid = t_tagid AND t_lastdetailid = tdt_tagdetailid
-                        ORDER BY tdt_tagname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitytags
-                        WHERE et_taggedentityinstanceid = ? AND et_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EntityTags.fields())
+                    .from(EntityTags)
+                    .join(Tags).onKey(ENTITY_TAGS_TAG_FK)
+                    .join(TagDetails).onKey(TAGS_LAST_DETAIL_FK)
+                    .where(EntityTags.TAGGED_ENTITY_INSTANCE.eq(taggedEntityInstance.getPrimaryKey()),
+                            EntityTags.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(TagDetails.TAG_NAME),
+                    EntityTagFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityTags.fields())
+                    .from(EntityTags)
+                    .where(EntityTags.TAGGED_ENTITY_INSTANCE.eq(taggedEntityInstance.getPrimaryKey()),
+                            EntityTags.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = entityTagFactory.prepareStatement(query);
-            
-            ps.setLong(1, taggedEntityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityTags = entityTagFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityTags;
+        return entityTagFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<EntityTag> getEntityTagsByTaggedEntityInstance(EntityInstance taggedEntityInstance) {
@@ -1264,42 +1095,28 @@ public class TagControl
     }
     
     private List<EntityTag> getEntityTagsByTag(Tag tag, EntityPermission entityPermission) {
-        List<EntityTag> entityTags;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitytags, entityinstances, componentvendors, componentvendordetails, entitytypes, entitytypedetails
-                        WHERE et_t_tagid = ? AND et_thrutime = ?
-                        AND et_taggedentityinstanceid = eni_entityinstanceid
-                        AND eni_ent_entitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid
-                        AND entdt_cvnd_componentvendorid = cvnd_componentvendorid AND cvnd_lastdetailid = cvndd_componentvendordetailid
-                        ORDER BY cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename, eni_entityuniqueid
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM entitytags
-                        WHERE et_t_tagid = ? AND et_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(EntityTags.fields())
+                    .from(EntityTags)
+                    .join(EntityInstances).onKey(ENTITY_TAGS_TAGGED_ENTITY_INSTANCE_FK)
+                    .join(EntityTypes).onKey(ENTITY_INSTANCES_ENTITY_TYPE_FK)
+                    .join(EntityTypeDetails).onKey(ENTITY_TYPES_LAST_DETAIL_FK)
+                    .join(ComponentVendors).onKey(ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK)
+                    .join(ComponentVendorDetails).onKey(COMPONENT_VENDORS_LAST_DETAIL_FK)
+                    .where(EntityTags.TAG.eq(tag.getPrimaryKey()),
+                            EntityTags.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ComponentVendorDetails.COMPONENT_VENDOR_NAME, EntityTypeDetails.SORT_ORDER, EntityTypeDetails.ENTITY_TYPE_NAME, EntityInstances.ENTITY_UNIQUE),
+                    EntityTagFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(EntityTags.fields())
+                    .from(EntityTags)
+                    .where(EntityTags.TAG.eq(tag.getPrimaryKey()),
+                            EntityTags.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = entityTagFactory.prepareStatement(query);
-            
-            ps.setLong(1, tag.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            entityTags = entityTagFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityTags;
+        return entityTagFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<EntityTag> getEntityTagsByTag(Tag tag) {
