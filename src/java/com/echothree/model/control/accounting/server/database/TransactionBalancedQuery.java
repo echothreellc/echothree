@@ -17,6 +17,7 @@
 package com.echothree.model.control.accounting.server.database;
 
 import static com.echothree.model.jooq.server.tables.accounting.TransactionGlEntries.TransactionGlEntries;
+import static org.jooq.impl.DSL.coalesce;
 import static org.jooq.impl.DSL.sum;
 import com.echothree.model.data.accounting.server.entity.Transaction;
 import com.echothree.util.server.persistence.BaseDatabaseQuery;
@@ -34,10 +35,10 @@ public class TransactionBalancedQuery
 
     public List<TransactionBalancedResult> execute(final Transaction transaction) {
         var query = getDslContext()
-                .select(sum(TransactionGlEntries.ORIGINAL_CREDIT).coalesce(BigDecimal.ZERO)
-                        .sub(sum(TransactionGlEntries.ORIGINAL_DEBIT).coalesce(BigDecimal.ZERO)).as("OriginalDifference"),
-                        sum(TransactionGlEntries.CREDIT).coalesce(BigDecimal.ZERO)
-                        .sub(sum(TransactionGlEntries.DEBIT).coalesce(BigDecimal.ZERO)).as("Difference"))
+                .select(coalesce(sum(TransactionGlEntries.ORIGINAL_CREDIT), BigDecimal.ZERO)
+                        .sub(coalesce(sum(TransactionGlEntries.ORIGINAL_DEBIT), BigDecimal.ZERO)).as("OriginalDifference"),
+                        coalesce(sum(TransactionGlEntries.CREDIT), BigDecimal.ZERO)
+                        .sub(coalesce(sum(TransactionGlEntries.DEBIT), BigDecimal.ZERO)).as("Difference"))
                 .from(TransactionGlEntries)
                 .where(TransactionGlEntries.TRANSACTION.eq(transaction.getPrimaryKey()),
                         TransactionGlEntries.THRU_TIME.eq(Session.MAX_TIME));

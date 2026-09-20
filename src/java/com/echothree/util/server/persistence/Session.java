@@ -34,7 +34,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.RequestScoped;
@@ -49,16 +48,8 @@ import org.jooq.impl.DSL;
 public class Session {
     
     private static final String GET_INSTANCE = "getInstance";
-    private static final String GET_ALL_COLUMNS = "getAllColumns";
-    private static final String GET_PK_COLUMN = "getPKColumn";
     private static final String GET_ENTITY_TYPE_NAME = "getEntityTypeName";
     
-    private static final Pattern PK_FIELD_PATTERN = Pattern.compile("_PK_");
-    private static final Pattern ALL_FIELDS_PATTERN = Pattern.compile("_ALL_");
-    private static final Pattern LIMIT_PATTERN = Pattern.compile("_LIMIT_");
-    
-    private static final Map<Class<? extends BaseFactory<? extends BasePK, ? extends BaseEntity>>, String> allColumnsCache = new ConcurrentHashMap<>();
-    private static final Map<Class<? extends BaseFactory<? extends BasePK, ? extends BaseEntity>>, String> pkColumnCache = new ConcurrentHashMap<>();
     private static final Map<Class<? extends BaseFactory<? extends BasePK, ? extends BaseEntity>>, String> entityNameCache = new ConcurrentHashMap<>();
     
     private Log log;
@@ -199,34 +190,6 @@ public class Session {
         }
     }
     
-    private String getLimit(final Class<? extends BaseFactory<? extends BasePK, ? extends BaseEntity>> entityFactory) {
-        String result = null;
-
-        if(hasLimits()) {
-            var limit = limits.get(getStringFromBaseFactory(entityFactory, entityNameCache, GET_ENTITY_TYPE_NAME));
-
-            if(limit != null) {
-                var rawCount = limit.getCount();
-
-                if(rawCount != null) {
-                    var count = Long.valueOf(rawCount);
-                    var limitBuilder = new StringBuilder(" LIMIT ").append(count);
-                    var rawOffset = limit.getOffset();
-
-                    if(rawOffset != null) {
-                        var offset = Long.valueOf(rawOffset);
-
-                        limitBuilder.append(" OFFSET ").append(offset);
-                    }
-
-                    result = limitBuilder.append(' ').toString();
-                }
-            }
-        }
-
-        return result == null ? "" : result;
-    }
-
     public Select<?> applyLimit(final Select<?> query,
             final Class<? extends BaseFactory<? extends BasePK, ? extends BaseEntity>> entityFactory) {
         var result = query;
@@ -263,33 +226,17 @@ public class Session {
         PreparedStatement preparedStatement = null;
 
         if(sql != null) {
-            // Perform replacements on specific patterns that may be in the SQL...
-            var replacedSql = sql;
-            if(entityFactory != null) {
-                // _LIMIT_ expands to any limit passed in by the client
-                var matcher = LIMIT_PATTERN.matcher(replacedSql);
-                replacedSql = matcher.replaceAll(getLimit(entityFactory));
-
-                // _ALL_ expands to all columns in table
-                matcher = ALL_FIELDS_PATTERN.matcher(replacedSql);
-                replacedSql = matcher.replaceAll(getStringFromBaseFactory(entityFactory, allColumnsCache, GET_ALL_COLUMNS));
-
-                // _PK_ expands to PK column in table
-                matcher = PK_FIELD_PATTERN.matcher(replacedSql);
-                replacedSql = matcher.replaceAll(getStringFromBaseFactory(entityFactory, pkColumnCache, GET_PK_COLUMN));
-            }
-
             // Attempt to get a PreparedStatement from preparedStatementCache...
             if(preparedStatementCache == null) {
                 preparedStatementCache = new HashMap<>();
             } else {
-                preparedStatement = preparedStatementCache.get(replacedSql);
+                preparedStatement = preparedStatementCache.get(sql);
             }
 
             if(preparedStatement == null) {
                 // If it hasn't been cached before, go ahead and cache it for future use...
                 try {
-                    preparedStatement = connection.prepareStatement(replacedSql);
+                    preparedStatement = connection.prepareStatement(sql);
                     preparedStatementCache.put(sql, preparedStatement);
                 } catch(SQLException se) {
                     throw new PersistenceDatabaseException(se);
