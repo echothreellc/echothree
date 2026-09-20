@@ -16,6 +16,12 @@
 
 package com.echothree.model.control.employee.server.search;
 
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTIES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.workflow.WorkflowForeignKeys.WORKFLOW_ENTITY_STATUSES_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.party.Parties.Parties;
+import static com.echothree.model.jooq.server.tables.party.PartyDetails.PartyDetails;
+import static com.echothree.model.jooq.server.tables.workflow.WorkflowEntityStatuses.WorkflowEntityStatuses;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.index.common.IndexFields;
@@ -23,7 +29,6 @@ import com.echothree.model.control.index.common.Indexes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.search.PartySearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
-import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
 import com.echothree.model.data.employee.server.entity.PartyEmployee;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperator;
 import com.echothree.model.data.search.server.entity.SearchSortDirection;
@@ -49,23 +54,31 @@ public class EmployeeSearchEvaluator
     }
     
     public EntityInstancePKHolder getEntityInstancePKHolderByEmployeeStatusWorkflowStep(WorkflowStep employeeStatusWorkflowStep) {
-            return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                    "SELECT _PK_ " +
-                    "FROM entityinstances, parties, partydetails, workflowentitystatuses " +
-                    "WHERE par_activedetailid = pardt_partydetailid " +
-                    "AND eni_ent_entitytypeid = ? AND par_partyid = eni_entityuniqueid " +
-                    "AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?"),
-                    entityType, employeeStatusWorkflowStep, Session.MAX_TIME);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Parties).on(Parties.PARTY.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(PartyDetails).onKey(PARTIES_ACTIVE_DETAIL_FK)
+                .join(WorkflowEntityStatuses).onKey(WORKFLOW_ENTITY_STATUSES_ENTITY_INSTANCE_FK)
+                .where(EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                        WorkflowEntityStatuses.WORKFLOW_STEP.eq(employeeStatusWorkflowStep.getPrimaryKey()),
+                        WorkflowEntityStatuses.THRU_TIME.eq(Session.MAX_TIME));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
 
     public EntityInstancePKHolder getEntityInstancePKHolderByEmployeeAvailabilityWorkflowStep(WorkflowStep employeeAvailabilityWorkflowStep) {
-            return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                    "SELECT _PK_ " +
-                    "FROM entityinstances, parties, partydetails, workflowentitystatuses " +
-                    "WHERE par_activedetailid = pardt_partydetailid " +
-                    "AND eni_ent_entitytypeid = ? AND par_partyid = eni_entityuniqueid " +
-                    "AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?"),
-                    entityType, employeeAvailabilityWorkflowStep, Session.MAX_TIME);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Parties).on(Parties.PARTY.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(PartyDetails).onKey(PARTIES_ACTIVE_DETAIL_FK)
+                .join(WorkflowEntityStatuses).onKey(WORKFLOW_ENTITY_STATUSES_ENTITY_INSTANCE_FK)
+                .where(EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                        WorkflowEntityStatuses.WORKFLOW_STEP.eq(employeeAvailabilityWorkflowStep.getPrimaryKey()),
+                        WorkflowEntityStatuses.THRU_TIME.eq(Session.MAX_TIME));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
 
     /**

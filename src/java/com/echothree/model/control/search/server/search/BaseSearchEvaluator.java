@@ -16,8 +16,10 @@
 
 package com.echothree.model.control.search.server.search;
 
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TIMES_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.core.EntityTimes.EntityTimes;
 import com.echothree.model.data.core.common.pk.EntityInstancePK;
-import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
@@ -40,13 +42,15 @@ import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.Sha1Utils;
 import com.echothree.util.server.persistence.ThreadSession;
 import static java.lang.Math.toIntExact;
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.apache.commons.codec.language.Soundex;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
+import org.jooq.Record1;
+import org.jooq.Select;
+import org.jooq.exception.DataAccessException;
 
 public abstract class BaseSearchEvaluator
         extends BaseEvaluator {
@@ -99,13 +103,12 @@ public abstract class BaseSearchEvaluator
         }
     }
 
-    protected EntityInstancePKHolder getEntityInstancePKHolderFromQuery(PreparedStatement ps) {
-        return convertPKListToEntityInstancePKHolder(EntityInstanceFactory.getInstance().getPKsFromQueryAsList(ps));
-    }
-
-
-    protected EntityInstancePKHolder getEntityInstancePKHolderFromQuery(PreparedStatement ps, final Object... params) {
-        return convertPKListToEntityInstancePKHolder(EntityInstanceFactory.getInstance().getPKsFromQueryAsList(ps, params));
+    protected EntityInstancePKHolder getEntityInstancePKHolderFromQuery(Select<Record1<EntityInstancePK>> query) {
+        try {
+            return convertPKListToEntityInstancePKHolder(query.fetch(Record1::value1));
+        } catch(DataAccessException ex) {
+            throw new PersistenceDatabaseException(ex);
+        }
     }
 
     private EntityInstancePKHolder convertPKListToEntityInstancePKHolder(List<EntityInstancePK> entityInstancePKs) {
@@ -414,19 +417,25 @@ public abstract class BaseSearchEvaluator
     private Long modifiedSince = null;
     
     public EntityInstancePKHolder getEntityInstancePKHolderByCreatedTime(Long createdTime) {
-        return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                "SELECT _PK_ "
-                + "FROM entityinstances, entitytimes "
-                + "WHERE eni_ent_entitytypeid = ? AND eni_entityinstanceid = etim_eni_entityinstanceid AND etim_createdtime >= ?"),
-                entityType, createdTime);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(EntityTimes).onKey(ENTITY_TIMES_ENTITY_INSTANCE_FK)
+                .where(EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                        EntityTimes.CREATED_TIME.ge(createdTime));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
 
     public EntityInstancePKHolder getEntityInstancePKHolderByModifiedTime(Long modifiedTime) {
-        return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                "SELECT _PK_ "
-                + "FROM entityinstances, entitytimes "
-                + "WHERE eni_ent_entitytypeid = ? AND eni_entityinstanceid = etim_eni_entityinstanceid AND etim_modifiedtime >= ?"),
-                entityType, modifiedTime);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(EntityTimes).onKey(ENTITY_TIMES_ENTITY_INSTANCE_FK)
+                .where(EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                        EntityTimes.MODIFIED_TIME.ge(modifiedTime));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
 
     /**

@@ -16,8 +16,19 @@
 
 package com.echothree.model.control.forum.server.search;
 
-import com.echothree.model.control.core.common.ComponentVendors;
-import com.echothree.model.control.core.common.EntityTypes;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.COMPONENT_VENDORS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_INSTANCES_ENTITY_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK;
+import static com.echothree.model.jooq.server.keys.forum.ForumForeignKeys.FORUM_MESSAGES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.core.ComponentVendorDetails.ComponentVendorDetails;
+import static com.echothree.model.jooq.server.tables.core.ComponentVendors.ComponentVendors;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.core.EntityTypeDetails.EntityTypeDetails;
+import static com.echothree.model.jooq.server.tables.core.EntityTypes.EntityTypes;
+import static com.echothree.model.jooq.server.tables.forum.ForumForumThreads.ForumForumThreads;
+import static com.echothree.model.jooq.server.tables.forum.ForumMessageDetails.ForumMessageDetails;
+import static com.echothree.model.jooq.server.tables.forum.ForumMessages.ForumMessages;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.analyzer.ForumMessageAnalyzer;
 import com.echothree.model.control.forum.server.control.ForumControl;
@@ -30,7 +41,6 @@ import com.echothree.model.control.search.common.SearchSortDirections;
 import com.echothree.model.control.search.common.SearchSortOrders;
 import com.echothree.model.control.search.server.search.BaseSearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
-import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
 import com.echothree.model.data.forum.server.entity.Forum;
 import com.echothree.model.data.forum.server.entity.ForumMessageType;
 import com.echothree.model.data.party.server.entity.Language;
@@ -54,8 +64,8 @@ public class ForumMessageSearchEvaluator
     /** Creates a new instance of ForumMessageSearchEvaluator */
     public ForumMessageSearchEvaluator(UserVisit userVisit, Language language, SearchType searchType, SearchDefaultOperator searchDefaultOperator, SearchSortOrder searchSortOrder,
             SearchSortDirection searchSortDirection, SearchUseType searchUseType, Forum forum, ForumMessageType forumMessageType) {
-        super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHO_THREE.name(),
-                EntityTypes.ForumMessage.name(), IndexTypes.FORUM_MESSAGE.name(), language, null);
+        super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, com.echothree.model.control.core.common.ComponentVendors.ECHO_THREE.name(),
+                com.echothree.model.control.core.common.EntityTypes.ForumMessage.name(), IndexTypes.FORUM_MESSAGE.name(), language, null);
         
         this.forum = forum;
         this.forumMessageType = forumMessageType;
@@ -67,54 +77,47 @@ public class ForumMessageSearchEvaluator
     }
     
     public EntityInstancePKHolder getEntityInstancePKHolderByForum(Forum forum) {
-        EntityInstancePKHolder entityInstancePKHolder;
-        var ps = EntityInstanceFactory.getInstance().prepareStatement(
-                "SELECT _PK_ " +
-                "FROM componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances, forummessages, forummessagedetails, forumforumthreads " +
-                "WHERE frmmsg_activedetailid = frmmsgdt_forummessagedetailid " +
-                "AND frmmsgdt_frmthrd_forumthreadid = frmfrmthrd_frmthrd_forumthreadid AND frmfrmthrd_thrutime = ? " +
-                "AND frmfrmthrd_frm_forumid = ? " +
-                "AND cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ? " +
-                "AND ent_activedetailid = entdt_entitytypedetailid " +
-                "AND cvnd_componentvendorid = entdt_cvnd_componentvendorid " +
-                "AND entdt_entitytypename = ? " +
-                "AND ent_entitytypeid = eni_ent_entitytypeid AND frmmsg_forummessageid = eni_entityuniqueid " +
-                (includeFutureForumThreads ? "" : "AND frmmsgdt_postedtime <= ?"));
-        
-        if(includeFutureForumThreads) {
-            entityInstancePKHolder = getEntityInstancePKHolderFromQuery(ps,
-                    Session.MAX_TIME, forum, ComponentVendors.ECHO_THREE.name(), EntityTypes.ForumMessage.name());
-        } else {
-            entityInstancePKHolder = getEntityInstancePKHolderFromQuery(ps,
-                    Session.MAX_TIME, forum, ComponentVendors.ECHO_THREE.name(), EntityTypes.ForumMessage.name(), session.getStartTime());
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(EntityTypes).onKey(ENTITY_INSTANCES_ENTITY_TYPE_FK)
+                .join(EntityTypeDetails).onKey(ENTITY_TYPES_ACTIVE_DETAIL_FK)
+                .join(ComponentVendors).onKey(ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK)
+                .join(ComponentVendorDetails).onKey(COMPONENT_VENDORS_ACTIVE_DETAIL_FK)
+                .join(ForumMessages).on(ForumMessages.FORUM_MESSAGE.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(ForumMessageDetails).onKey(FORUM_MESSAGES_ACTIVE_DETAIL_FK)
+                .join(ForumForumThreads).on(ForumMessageDetails.FORUM_THREAD.eq(ForumForumThreads.FORUM_THREAD))
+                .where(ForumForumThreads.THRU_TIME.eq(Session.MAX_TIME),
+                        ForumForumThreads.FORUM.eq(forum.getPrimaryKey()),
+                        ComponentVendorDetails.COMPONENT_VENDOR_NAME.eq(com.echothree.model.control.core.common.ComponentVendors.ECHO_THREE.name()),
+                        EntityTypeDetails.ENTITY_TYPE_NAME.eq(com.echothree.model.control.core.common.EntityTypes.ForumMessage.name()));
+
+        if(!includeFutureForumThreads) {
+            query = query.and(ForumMessageDetails.POSTED_TIME.le(session.getStartTime()));
         }
 
-        return entityInstancePKHolder;
+        return getEntityInstancePKHolderFromQuery(query);
     }
 
     public EntityInstancePKHolder getEntityInstancePKHolderByForumMessageType(ForumMessageType forumMessageType) {
-        EntityInstancePKHolder entityInstancePKHolder;
-        var ps = EntityInstanceFactory.getInstance().prepareStatement(
-                "SELECT _PK_ " +
-                "FROM componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances, forummessages, forummessagedetails " +
-                "WHERE frmmsg_activedetailid = frmmsgdt_forummessagedetailid " +
-                "AND frmmsgdt_frmmsgtyp_forummessagetypeid = ? " +
-                "AND cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ? " +
-                "AND ent_activedetailid = entdt_entitytypedetailid " +
-                "AND cvnd_componentvendorid = entdt_cvnd_componentvendorid " +
-                "AND entdt_entitytypename = ? " +
-                "AND ent_entitytypeid = eni_ent_entitytypeid AND frmmsg_forummessageid = eni_entityuniqueid " +
-                (includeFutureForumThreads ? "" : "AND frmmsgdt_postedtime <= ?"));
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(EntityTypes).onKey(ENTITY_INSTANCES_ENTITY_TYPE_FK)
+                .join(EntityTypeDetails).onKey(ENTITY_TYPES_ACTIVE_DETAIL_FK)
+                .join(ComponentVendors).onKey(ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK)
+                .join(ComponentVendorDetails).onKey(COMPONENT_VENDORS_ACTIVE_DETAIL_FK)
+                .join(ForumMessages).on(ForumMessages.FORUM_MESSAGE.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(ForumMessageDetails).onKey(FORUM_MESSAGES_ACTIVE_DETAIL_FK)
+                .where(ForumMessageDetails.FORUM_MESSAGE_TYPE.eq(forumMessageType.getPrimaryKey()),
+                        ComponentVendorDetails.COMPONENT_VENDOR_NAME.eq(com.echothree.model.control.core.common.ComponentVendors.ECHO_THREE.name()),
+                        EntityTypeDetails.ENTITY_TYPE_NAME.eq(com.echothree.model.control.core.common.EntityTypes.ForumMessage.name()));
 
-        if(includeFutureForumThreads) {
-            entityInstancePKHolder = getEntityInstancePKHolderFromQuery(ps,
-                    forumMessageType, ComponentVendors.ECHO_THREE.name(), EntityTypes.ForumMessage.name());
-        } else {
-            entityInstancePKHolder = getEntityInstancePKHolderFromQuery(ps,
-                    forumMessageType, ComponentVendors.ECHO_THREE.name(), EntityTypes.ForumMessage.name(),  session.getStartTime());
+        if(!includeFutureForumThreads) {
+            query = query.and(ForumMessageDetails.POSTED_TIME.le(session.getStartTime()));
         }
 
-        return entityInstancePKHolder;
+        return getEntityInstancePKHolderFromQuery(query);
     }
 
     /**

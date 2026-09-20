@@ -16,13 +16,18 @@
 
 package com.echothree.model.control.employee.server.search;
 
+import static com.echothree.model.jooq.server.keys.employee.EmployeeForeignKeys.LEAVES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.workflow.WorkflowForeignKeys.WORKFLOW_ENTITY_STATUSES_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.employee.LeaveDetails.LeaveDetails;
+import static com.echothree.model.jooq.server.tables.employee.Leaves.Leaves;
+import static com.echothree.model.jooq.server.tables.workflow.WorkflowEntityStatuses.WorkflowEntityStatuses;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.search.server.search.BaseSearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
-import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
 import com.echothree.model.data.employee.server.entity.LeaveReason;
 import com.echothree.model.data.employee.server.entity.LeaveType;
 import com.echothree.model.data.party.server.entity.Party;
@@ -53,49 +58,65 @@ public class LeaveSearchEvaluator
     }
 
     public EntityInstancePKHolder getEntityInstancePKHolderByParty(Party party) {
-            return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                    "SELECT _PK_ " +
-                    "FROM entityinstances, leaves, leavedetails " +
-                    "WHERE lv_activedetailid = lvdt_leavedetailid AND lvdt_par_partyid = ? " +
-                    "AND eni_ent_entitytypeid = ? AND lv_leaveid = eni_entityuniqueid"),
-                    party, entityType);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Leaves).on(Leaves.LEAVE.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(LeaveDetails).onKey(LEAVES_ACTIVE_DETAIL_FK)
+                .where(LeaveDetails.PARTY.eq(party.getPrimaryKey()),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
     
     public EntityInstancePKHolder getEntityInstancePKHolderByCompanyParty(Party companyParty) {
-            return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                    "SELECT _PK_ " +
-                    "FROM entityinstances, leaves, leavedetails " +
-                    "WHERE lv_activedetailid = lvdt_leavedetailid AND lvdt_companypartyid = ? " +
-                    "AND eni_ent_entitytypeid = ? AND lv_leaveid = eni_entityuniqueid"),
-                    companyParty, entityType);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Leaves).on(Leaves.LEAVE.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(LeaveDetails).onKey(LEAVES_ACTIVE_DETAIL_FK)
+                .where(LeaveDetails.COMPANY_PARTY.eq(companyParty.getPrimaryKey()),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
     
     public EntityInstancePKHolder getEntityInstancePKHolderByLeaveType(LeaveType leaveType) {
-            return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                    "SELECT _PK_ " +
-                    "FROM entityinstances, leaves, leavedetails " +
-                    "WHERE lv_activedetailid = lvdt_leavedetailid AND lvdt_lvtyp_leavetypeid = ? " +
-                    "AND eni_ent_entitytypeid = ? AND lv_leaveid = eni_entityuniqueid"),
-                    leaveType, entityType);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Leaves).on(Leaves.LEAVE.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(LeaveDetails).onKey(LEAVES_ACTIVE_DETAIL_FK)
+                .where(LeaveDetails.LEAVE_TYPE.eq(leaveType.getPrimaryKey()),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
     
     public EntityInstancePKHolder getEntityInstancePKHolderByLeaveReason(LeaveReason leaveReason) {
-            return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                    "SELECT _PK_ " +
-                    "FROM entityinstances, leaves, leavedetails " +
-                    "WHERE lv_activedetailid = lvdt_leavedetailid AND lvdt_lvrsn_leavereasonid = ? " +
-                    "AND eni_ent_entitytypeid = ? AND lv_leaveid = eni_entityuniqueid"),
-                    leaveReason, entityType);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Leaves).on(Leaves.LEAVE.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(LeaveDetails).onKey(LEAVES_ACTIVE_DETAIL_FK)
+                .where(LeaveDetails.LEAVE_REASON.eq(leaveReason.getPrimaryKey()),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
     
     public EntityInstancePKHolder getEntityInstancePKHolderByLeaveStatusWorkflowStep(WorkflowStep leaveStatusWorkflowStep) {
-            return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                    "SELECT _PK_ " +
-                    "FROM entityinstances, leaves, leavedetails, workflowentitystatuses " +
-                    "WHERE lv_activedetailid = lvdt_leavedetailid " +
-                    "AND eni_ent_entitytypeid = ? AND lv_leaveid = eni_entityuniqueid " +
-                    "AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?"),
-                    entityType, leaveStatusWorkflowStep, Session.MAX_TIME);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Leaves).on(Leaves.LEAVE.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(LeaveDetails).onKey(LEAVES_ACTIVE_DETAIL_FK)
+                .join(WorkflowEntityStatuses).onKey(WORKFLOW_ENTITY_STATUSES_ENTITY_INSTANCE_FK)
+                .where(EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                        WorkflowEntityStatuses.WORKFLOW_STEP.eq(leaveStatusWorkflowStep.getPrimaryKey()),
+                        WorkflowEntityStatuses.THRU_TIME.eq(Session.MAX_TIME));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
  
     /**

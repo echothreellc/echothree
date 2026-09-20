@@ -16,6 +16,12 @@
 
 package com.echothree.model.control.order.server.search;
 
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDERS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.workflow.WorkflowForeignKeys.WORKFLOW_ENTITY_STATUSES_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.order.OrderDetails.OrderDetails;
+import static com.echothree.model.jooq.server.tables.order.Orders.Orders;
+import static com.echothree.model.jooq.server.tables.workflow.WorkflowEntityStatuses.WorkflowEntityStatuses;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
@@ -25,7 +31,6 @@ import com.echothree.model.control.search.server.search.BaseSearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
-import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
 import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderAliasType;
 import com.echothree.model.data.order.server.entity.OrderPriority;
@@ -153,84 +158,108 @@ public class OrderSearchEvaluator
     }
 
     public EntityInstancePKHolder getEntityInstancePKHolderByOrderType(OrderType orderType) {
-        return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                "SELECT _PK_ "
-                + "FROM entityinstances, orderes, orderdetails "
-                + "WHERE ord_activedetailid = orddt_orderdetailid "
-                + "AND orddt_ordtyp_ordertypeid = ? "
-                + "AND eni_ent_entitytypeid = ? AND ord_orderid = eni_entityuniqueid"),
-                orderType, entityType);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Orders).on(Orders.ORDER.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(OrderDetails).onKey(ORDERS_ACTIVE_DETAIL_FK)
+                .where(OrderDetails.ORDER_TYPE.eq(orderType.getPrimaryKey()),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
     
     public EntityInstancePKHolder getEntityInstancePKHolderByOrderStatusWorkflowStep(WorkflowStep orderStatusWorkflowStep) {
-        return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                "SELECT _PK_ "
-                + "FROM entityinstances, orderes, orderdetails, workflowentitystatuses "
-                + "WHERE ord_activedetailid = orddt_orderdetailid "
-                + "AND orddt_ordtyp_ordertypeid = ? "
-                + "AND eni_ent_entitytypeid = ? AND ord_orderid = eni_entityuniqueid "
-                + "AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?"),
-                orderType, entityType, orderStatusWorkflowStep, Session.MAX_TIME);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Orders).on(Orders.ORDER.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(OrderDetails).onKey(ORDERS_ACTIVE_DETAIL_FK)
+                .join(WorkflowEntityStatuses).onKey(WORKFLOW_ENTITY_STATUSES_ENTITY_INSTANCE_FK)
+                .where(OrderDetails.ORDER_TYPE.eq(orderType.getPrimaryKey()),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                        WorkflowEntityStatuses.WORKFLOW_STEP.eq(orderStatusWorkflowStep.getPrimaryKey()),
+                        WorkflowEntityStatuses.THRU_TIME.eq(Session.MAX_TIME));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
  
     public EntityInstancePKHolder getEntityInstancePKHolderByOrderPriority(OrderPriority orderPriority) {
-        return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                "SELECT _PK_ "
-                + "FROM entityinstances, orderes, orderdetails "
-                + "WHERE ord_activedetailid = orddt_orderdetailid "
-                + "AND orddt_ordtyp_ordertypeid = ? AND orddt_ordpr_orderpriorityid = ? "
-                + "AND eni_ent_entitytypeid = ? AND ord_orderid = eni_entityuniqueid"),
-                orderType, orderPriority, entityType);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Orders).on(Orders.ORDER.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(OrderDetails).onKey(ORDERS_ACTIVE_DETAIL_FK)
+                .where(OrderDetails.ORDER_TYPE.eq(orderType.getPrimaryKey()),
+                        OrderDetails.ORDER_PRIORITY.eq(orderPriority.getPrimaryKey()),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
     
     public EntityInstancePKHolder getEntityInstancePKHolderByCurrency(Currency currency) {
-        return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                "SELECT _PK_ "
-                + "FROM entityinstances, orderes, orderdetails "
-                + "WHERE ord_activedetailid = orddt_orderdetailid "
-                + "AND orddt_ordtyp_ordertypeid = ? AND orddt_cur_currencyid = ? "
-                + "AND eni_ent_entitytypeid = ? AND ord_orderid = eni_entityuniqueid"),
-                orderType, currency, entityType);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Orders).on(Orders.ORDER.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(OrderDetails).onKey(ORDERS_ACTIVE_DETAIL_FK)
+                .where(OrderDetails.ORDER_TYPE.eq(orderType.getPrimaryKey()),
+                        OrderDetails.CURRENCY.eq(currency.getPrimaryKey()),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
     
     public EntityInstancePKHolder getEntityInstancePKHolderByTerm(Term term) {
-        return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                "SELECT _PK_ "
-                + "FROM entityinstances, orderes, orderdetails "
-                + "WHERE ord_activedetailid = orddt_orderdetailid "
-                + "AND orddt_ordtyp_ordertypeid = ? AND orddt_trm_termid = ? "
-                + "AND eni_ent_entitytypeid = ? AND ord_orderid = eni_entityuniqueid"),
-                orderType, term, entityType);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Orders).on(Orders.ORDER.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(OrderDetails).onKey(ORDERS_ACTIVE_DETAIL_FK)
+                .where(OrderDetails.ORDER_TYPE.eq(orderType.getPrimaryKey()),
+                        OrderDetails.TERM.eq(term.getPrimaryKey()),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
     
     public EntityInstancePKHolder getEntityInstancePKHolderByReference(String reference) {
-        return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                "SELECT _PK_ "
-                + "FROM entityinstances, orderes, orderdetails "
-                + "WHERE ord_activedetailid = orddt_orderdetailid "
-                + "AND orddt_ordtyp_ordertypeid = ? AND orddt_reference = ? "
-                + "AND eni_ent_entitytypeid = ? AND ord_orderid = eni_entityuniqueid"),
-                orderType, reference, entityType);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Orders).on(Orders.ORDER.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(OrderDetails).onKey(ORDERS_ACTIVE_DETAIL_FK)
+                .where(OrderDetails.ORDER_TYPE.eq(orderType.getPrimaryKey()),
+                        OrderDetails.REFERENCE.eq(reference),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
     
     public EntityInstancePKHolder getEntityInstancePKHolderByCancellationPolicy(CancellationPolicy cancellationPolicy) {
-        return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                "SELECT _PK_ "
-                + "FROM entityinstances, orderes, orderdetails "
-                + "WHERE ord_activedetailid = orddt_orderdetailid "
-                + "AND orddt_ordtyp_ordertypeid = ? AND orddt_cnclplcy_cancellationpolicyid = ? "
-                + "AND eni_ent_entitytypeid = ? AND ord_orderid = eni_entityuniqueid"),
-                orderType, cancellationPolicy, entityType);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Orders).on(Orders.ORDER.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(OrderDetails).onKey(ORDERS_ACTIVE_DETAIL_FK)
+                .where(OrderDetails.ORDER_TYPE.eq(orderType.getPrimaryKey()),
+                        OrderDetails.CANCELLATION_POLICY.eq(cancellationPolicy.getPrimaryKey()),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
     
     public EntityInstancePKHolder getEntityInstancePKHolderByReturnPolicy(ReturnPolicy returnPolicy) {
-        return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                "SELECT _PK_ "
-                + "FROM entityinstances, orderes, orderdetails "
-                + "WHERE ord_activedetailid = orddt_orderdetailid "
-                + "AND orddt_ordtyp_ordertypeid = ? AND orddt_rtnplcy_returnpolicyid = ? "
-                + "AND eni_ent_entitytypeid = ? AND ord_orderid = eni_entityuniqueid"),
-                orderType, returnPolicy, entityType);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Orders).on(Orders.ORDER.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(OrderDetails).onKey(ORDERS_ACTIVE_DETAIL_FK)
+                .where(OrderDetails.ORDER_TYPE.eq(orderType.getPrimaryKey()),
+                        OrderDetails.RETURN_POLICY.eq(returnPolicy.getPrimaryKey()),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
     
     /** Subclasses should override and always call their super's executeSearch() */

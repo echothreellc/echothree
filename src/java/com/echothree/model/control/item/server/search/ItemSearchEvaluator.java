@@ -16,6 +16,12 @@
 
 package com.echothree.model.control.item.server.search;
 
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEMS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.workflow.WorkflowForeignKeys.WORKFLOW_ENTITY_STATUSES_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.item.ItemDetails.ItemDetails;
+import static com.echothree.model.jooq.server.tables.item.Items.Items;
+import static com.echothree.model.jooq.server.tables.workflow.WorkflowEntityStatuses.WorkflowEntityStatuses;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
@@ -32,7 +38,6 @@ import com.echothree.model.control.search.common.SearchSortDirections;
 import com.echothree.model.control.search.common.SearchSortOrders;
 import com.echothree.model.control.search.server.search.BaseSearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
-import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
 import com.echothree.model.data.item.server.entity.ItemType;
 import com.echothree.model.data.item.server.entity.ItemUseType;
 import com.echothree.model.data.party.server.entity.Language;
@@ -82,31 +87,41 @@ public class ItemSearchEvaluator
     }
     
     public EntityInstancePKHolder getEntityInstancePKHolderByItemType(ItemType itemType) {
-            return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                    "SELECT _PK_ " +
-                    "FROM entityinstances, items, itemdetails " +
-                    "WHERE itm_activedetailid = itmdt_itemdetailid AND itmdt_ityp_itemtypeid = ? " +
-                    "AND eni_ent_entitytypeid = ? AND itm_itemid = eni_entityuniqueid"),
-                    itemType, entityType);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Items).on(Items.ITEM.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(ItemDetails).onKey(ITEMS_ACTIVE_DETAIL_FK)
+                .where(ItemDetails.ITEM_TYPE.eq(itemType.getPrimaryKey()),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
     
     public EntityInstancePKHolder getEntityInstancePKHolderByItemUseType(ItemUseType itemUseType) {
-            return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                    "SELECT _PK_ " +
-                    "FROM entityinstances, items, itemdetails " +
-                    "WHERE itm_activedetailid = itmdt_itemdetailid AND itmdt_iutyp_itemusetypeid = ? " +
-                    "AND eni_ent_entitytypeid = ? AND itm_itemid = eni_entityuniqueid"),
-                    itemUseType, entityType);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Items).on(Items.ITEM.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(ItemDetails).onKey(ITEMS_ACTIVE_DETAIL_FK)
+                .where(ItemDetails.ITEM_USE_TYPE.eq(itemUseType.getPrimaryKey()),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
     
     public EntityInstancePKHolder getEntityInstancePKHolderByItemStatusWorkflowStep(WorkflowStep itemStatusWorkflowStep) {
-            return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                    "SELECT _PK_ " +
-                    "FROM entityinstances, items, itemdetails, workflowentitystatuses " +
-                    "WHERE itm_activedetailid = itmdt_itemdetailid " +
-                    "AND eni_ent_entitytypeid = ? AND itm_itemid = eni_entityuniqueid " +
-                    "AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?"),
-                    entityType, itemStatusWorkflowStep, Session.MAX_TIME);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Items).on(Items.ITEM.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(ItemDetails).onKey(ITEMS_ACTIVE_DETAIL_FK)
+                .join(WorkflowEntityStatuses).onKey(WORKFLOW_ENTITY_STATUSES_ENTITY_INSTANCE_FK)
+                .where(EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                        WorkflowEntityStatuses.WORKFLOW_STEP.eq(itemStatusWorkflowStep.getPrimaryKey()),
+                        WorkflowEntityStatuses.THRU_TIME.eq(Session.MAX_TIME));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
  
     /**

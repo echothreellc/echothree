@@ -16,6 +16,20 @@
 
 package com.echothree.model.control.party.server.search;
 
+import static com.echothree.model.jooq.server.keys.contact.ContactForeignKeys.PARTY_CONTACT_MECHANISMS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.contact.ContactForeignKeys.PARTY_CONTACT_MECHANISM_DETAILS_PARTY_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TIMES_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTIES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PEOPLE_PARTY_FK;
+import static com.echothree.model.jooq.server.tables.contact.ContactEmailAddresses.ContactEmailAddresses;
+import static com.echothree.model.jooq.server.tables.contact.ContactTelephones.ContactTelephones;
+import static com.echothree.model.jooq.server.tables.contact.PartyContactMechanismDetails.PartyContactMechanismDetails;
+import static com.echothree.model.jooq.server.tables.contact.PartyContactMechanisms.PartyContactMechanisms;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.core.EntityTimes.EntityTimes;
+import static com.echothree.model.jooq.server.tables.party.Parties.Parties;
+import static com.echothree.model.jooq.server.tables.party.PartyDetails.PartyDetails;
+import static com.echothree.model.jooq.server.tables.party.People.People;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
@@ -26,7 +40,6 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.search.server.search.BaseSearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
-import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
@@ -74,147 +87,194 @@ public class PartySearchEvaluator
     @Override
     public EntityInstancePKHolder getEntityInstancePKHolderByCreatedTime(Long createdTime) {
         // Custom version for PartySearchEvaluator that takes into account the PartyType.
-        return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                "SELECT _PK_ "
-                + "FROM entityinstances, entitytimes, parties, partydetails "
-                + "WHERE par_activedetailid = pardt_partydetailid AND pardt_ptyp_partytypeid = ? "
-                + "AND eni_ent_entitytypeid = ? AND par_partyid = eni_entityuniqueid "
-                + "AND eni_entityinstanceid = etim_eni_entityinstanceid AND etim_createdtime >= ?"),
-                partyType, entityType, createdTime);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(EntityTimes).onKey(ENTITY_TIMES_ENTITY_INSTANCE_FK)
+                .join(Parties).on(Parties.PARTY.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(PartyDetails).onKey(PARTIES_ACTIVE_DETAIL_FK)
+                .where(PartyDetails.PARTY_TYPE.eq(partyType.getPrimaryKey()),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                        EntityTimes.CREATED_TIME.ge(createdTime));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
 
     @Override
     public EntityInstancePKHolder getEntityInstancePKHolderByModifiedTime(Long modifiedTime) {
         // Custom version for PartySearchEvaluator that takes into account the PartyType.
-        return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                "SELECT _PK_ "
-                + "FROM entityinstances, entitytimes, parties, partydetails "
-                + "WHERE par_activedetailid = pardt_partydetailid AND pardt_ptyp_partytypeid = ? "
-                + "AND eni_ent_entitytypeid = ? AND par_partyid = eni_entityuniqueid "
-                + "AND eni_entityinstanceid = etim_eni_entityinstanceid AND etim_modifiedtime >= ?"),
-                partyType, entityType, modifiedTime);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(EntityTimes).onKey(ENTITY_TIMES_ENTITY_INSTANCE_FK)
+                .join(Parties).on(Parties.PARTY.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(PartyDetails).onKey(PARTIES_ACTIVE_DETAIL_FK)
+                .where(PartyDetails.PARTY_TYPE.eq(partyType.getPrimaryKey()),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()),
+                        EntityTimes.MODIFIED_TIME.ge(modifiedTime));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
 
     public EntityInstancePKHolder getEntityInstancePKHolderByFirstName(String firstName) {
-        return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                "SELECT _PK_ "
-                + "FROM entityinstances, parties, partydetails, people "
-                + "WHERE par_activedetailid = pardt_partydetailid "
-                + "AND pardt_ptyp_partytypeid = ? "
-                + "AND par_partyid = peop_par_partyid AND peop_firstname = ? AND peop_thrutime = ? "
-                + "AND eni_ent_entitytypeid = ? AND par_partyid = eni_entityuniqueid"),
-                partyType, firstName, Session.MAX_TIME, entityType);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Parties).on(Parties.PARTY.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(PartyDetails).onKey(PARTIES_ACTIVE_DETAIL_FK)
+                .join(People).onKey(PEOPLE_PARTY_FK)
+                .where(PartyDetails.PARTY_TYPE.eq(partyType.getPrimaryKey()),
+                        People.FIRST_NAME.eq(firstName),
+                        People.THRU_TIME.eq(Session.MAX_TIME),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
 
     public EntityInstancePKHolder getEntityInstancePKHolderByFirstNameSdx(String firstNameSdx) {
-        return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                "SELECT _PK_ "
-                + "FROM entityinstances, parties, partydetails, people "
-                + "WHERE par_activedetailid = pardt_partydetailid "
-                + "AND pardt_ptyp_partytypeid = ? "
-                + "AND par_partyid = peop_par_partyid AND peop_firstnamesdx = ? AND peop_thrutime = ? "
-                + "AND eni_ent_entitytypeid = ? AND par_partyid = eni_entityuniqueid"),
-                partyType, firstNameSdx, Session.MAX_TIME, entityType);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Parties).on(Parties.PARTY.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(PartyDetails).onKey(PARTIES_ACTIVE_DETAIL_FK)
+                .join(People).onKey(PEOPLE_PARTY_FK)
+                .where(PartyDetails.PARTY_TYPE.eq(partyType.getPrimaryKey()),
+                        People.FIRST_NAME_SDX.eq(firstNameSdx),
+                        People.THRU_TIME.eq(Session.MAX_TIME),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
 
     public EntityInstancePKHolder getEntityInstancePKHolderByMiddleName(String middleName) {
-        return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                "SELECT _PK_ "
-                + "FROM entityinstances, parties, partydetails, people "
-                + "WHERE par_activedetailid = pardt_partydetailid "
-                + "AND pardt_ptyp_partytypeid = ? "
-                + "AND par_partyid = peop_par_partyid AND peop_middlename = ? AND peop_thrutime = ? "
-                + "AND eni_ent_entitytypeid = ? AND par_partyid = eni_entityuniqueid"),
-                partyType, middleName, Session.MAX_TIME, entityType);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Parties).on(Parties.PARTY.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(PartyDetails).onKey(PARTIES_ACTIVE_DETAIL_FK)
+                .join(People).onKey(PEOPLE_PARTY_FK)
+                .where(PartyDetails.PARTY_TYPE.eq(partyType.getPrimaryKey()),
+                        People.MIDDLE_NAME.eq(middleName),
+                        People.THRU_TIME.eq(Session.MAX_TIME),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
 
     public EntityInstancePKHolder getEntityInstancePKHolderByMiddleNameSdx(String middleNameSdx) {
-        return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                "SELECT _PK_ "
-                + "FROM entityinstances, parties, partydetails, people "
-                + "WHERE par_activedetailid = pardt_partydetailid "
-                + "AND pardt_ptyp_partytypeid = ? "
-                + "AND par_partyid = peop_par_partyid AND peop_middlenamesdx = ? AND peop_thrutime = ? "
-                + "AND eni_ent_entitytypeid = ? AND par_partyid = eni_entityuniqueid"),
-                partyType, middleNameSdx, Session.MAX_TIME, entityType);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Parties).on(Parties.PARTY.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(PartyDetails).onKey(PARTIES_ACTIVE_DETAIL_FK)
+                .join(People).onKey(PEOPLE_PARTY_FK)
+                .where(PartyDetails.PARTY_TYPE.eq(partyType.getPrimaryKey()),
+                        People.MIDDLE_NAME_SDX.eq(middleNameSdx),
+                        People.THRU_TIME.eq(Session.MAX_TIME),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
 
     public EntityInstancePKHolder getEntityInstancePKHolderByLastName(String lastName) {
-        return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                "SELECT _PK_ "
-                + "FROM entityinstances, parties, partydetails, people "
-                + "WHERE par_activedetailid = pardt_partydetailid "
-                + "AND pardt_ptyp_partytypeid = ? "
-                + "AND par_partyid = peop_par_partyid AND peop_lastname = ? AND peop_thrutime = ? "
-                + "AND eni_ent_entitytypeid = ? AND par_partyid = eni_entityuniqueid"),
-                partyType, lastName, Session.MAX_TIME, entityType);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Parties).on(Parties.PARTY.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(PartyDetails).onKey(PARTIES_ACTIVE_DETAIL_FK)
+                .join(People).onKey(PEOPLE_PARTY_FK)
+                .where(PartyDetails.PARTY_TYPE.eq(partyType.getPrimaryKey()),
+                        People.LAST_NAME.eq(lastName),
+                        People.THRU_TIME.eq(Session.MAX_TIME),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
 
     public EntityInstancePKHolder getEntityInstancePKHolderByLastNameSdx(String lastNameSdx) {
-        return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                "SELECT _PK_ "
-                + "FROM entityinstances, parties, partydetails, people "
-                + "WHERE par_activedetailid = pardt_partydetailid "
-                + "AND pardt_ptyp_partytypeid = ? "
-                + "AND par_partyid = peop_par_partyid AND peop_lastnamesdx = ? AND peop_thrutime = ? "
-                + "AND eni_ent_entitytypeid = ? AND par_partyid = eni_entityuniqueid"),
-                partyType, lastNameSdx, Session.MAX_TIME, entityType);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Parties).on(Parties.PARTY.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(PartyDetails).onKey(PARTIES_ACTIVE_DETAIL_FK)
+                .join(People).onKey(PEOPLE_PARTY_FK)
+                .where(PartyDetails.PARTY_TYPE.eq(partyType.getPrimaryKey()),
+                        People.LAST_NAME_SDX.eq(lastNameSdx),
+                        People.THRU_TIME.eq(Session.MAX_TIME),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
 
     public EntityInstancePKHolder getEntityInstancePKHolderByAreaCode(GeoCode countryGeoCode, String areaCode) {
-        return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                "SELECT _PK_ "
-                + "FROM entityinstances, parties, partydetails, partycontactmechanisms, partycontactmechanismdetails, contacttelephones "
-                + "WHERE par_activedetailid = pardt_partydetailid "
-                + "AND pardt_ptyp_partytypeid = ? "
-                + "AND pcm_activedetailid = pcmdt_partycontactmechanismdetailid "
-                + "AND par_partyid = pcmdt_par_partyid "
-                + "AND pcmdt_cmch_contactmechanismid = cttp_cmch_contactmechanismid AND cttp_thrutime = ? "
-                + "AND cttp_countrygeocodeid = ? AND cttp_areacode = ? "
-                + "AND eni_ent_entitytypeid = ? AND par_partyid = eni_entityuniqueid"),
-                partyType, Session.MAX_TIME, countryGeoCode, areaCode, entityType);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Parties).on(Parties.PARTY.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(PartyDetails).onKey(PARTIES_ACTIVE_DETAIL_FK)
+                .join(PartyContactMechanismDetails).onKey(PARTY_CONTACT_MECHANISM_DETAILS_PARTY_FK)
+                .join(PartyContactMechanisms).onKey(PARTY_CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                .join(ContactTelephones).on(PartyContactMechanismDetails.CONTACT_MECHANISM.eq(ContactTelephones.CONTACT_MECHANISM))
+                .where(PartyDetails.PARTY_TYPE.eq(partyType.getPrimaryKey()),
+                        ContactTelephones.THRU_TIME.eq(Session.MAX_TIME),
+                        ContactTelephones.COUNTRY_GEO_CODE.eq(countryGeoCode.getPrimaryKey()),
+                        ContactTelephones.AREA_CODE.eq(areaCode),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
 
     public EntityInstancePKHolder getEntityInstancePKHolderByTelephoneNumber(GeoCode countryGeoCode, String telephoneNumber) {
-        return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                "SELECT _PK_ "
-                + "FROM entityinstances, parties, partydetails, partycontactmechanisms, partycontactmechanismdetails, contacttelephones "
-                + "WHERE par_activedetailid = pardt_partydetailid "
-                + "AND pardt_ptyp_partytypeid = ? "
-                + "AND pcm_activedetailid = pcmdt_partycontactmechanismdetailid "
-                + "AND par_partyid = pcmdt_par_partyid "
-                + "AND pcmdt_cmch_contactmechanismid = cttp_cmch_contactmechanismid AND cttp_thrutime = ? "
-                + "AND cttp_countrygeocodeid = ? AND cttp_telephonenumber = ? "
-                + "AND eni_ent_entitytypeid = ? AND par_partyid = eni_entityuniqueid"),
-                partyType, Session.MAX_TIME, countryGeoCode, telephoneNumber, entityType);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Parties).on(Parties.PARTY.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(PartyDetails).onKey(PARTIES_ACTIVE_DETAIL_FK)
+                .join(PartyContactMechanismDetails).onKey(PARTY_CONTACT_MECHANISM_DETAILS_PARTY_FK)
+                .join(PartyContactMechanisms).onKey(PARTY_CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                .join(ContactTelephones).on(PartyContactMechanismDetails.CONTACT_MECHANISM.eq(ContactTelephones.CONTACT_MECHANISM))
+                .where(PartyDetails.PARTY_TYPE.eq(partyType.getPrimaryKey()),
+                        ContactTelephones.THRU_TIME.eq(Session.MAX_TIME),
+                        ContactTelephones.COUNTRY_GEO_CODE.eq(countryGeoCode.getPrimaryKey()),
+                        ContactTelephones.TELEPHONE_NUMBER.eq(telephoneNumber),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
 
     public EntityInstancePKHolder getEntityInstancePKHolderByTelephoneExtension(GeoCode countryGeoCode, String telephoneExtension) {
-        return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                "SELECT _PK_ "
-                + "FROM entityinstances, parties, partydetails, partycontactmechanisms, partycontactmechanismdetails, contacttelephones "
-                + "WHERE par_activedetailid = pardt_partydetailid "
-                + "AND pardt_ptyp_partytypeid = ? "
-                + "AND pcm_activedetailid = pcmdt_partycontactmechanismdetailid "
-                + "AND par_partyid = pcmdt_par_partyid "
-                + "AND pcmdt_cmch_contactmechanismid = cttp_cmch_contactmechanismid AND cttp_thrutime = ? "
-                + "AND cttp_countrygeocodeid = ? AND cttp_telephoneextension = ? "
-                + "AND eni_ent_entitytypeid = ? AND par_partyid = eni_entityuniqueid"),
-                partyType, Session.MAX_TIME, countryGeoCode, telephoneExtension, entityType);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Parties).on(Parties.PARTY.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(PartyDetails).onKey(PARTIES_ACTIVE_DETAIL_FK)
+                .join(PartyContactMechanismDetails).onKey(PARTY_CONTACT_MECHANISM_DETAILS_PARTY_FK)
+                .join(PartyContactMechanisms).onKey(PARTY_CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                .join(ContactTelephones).on(PartyContactMechanismDetails.CONTACT_MECHANISM.eq(ContactTelephones.CONTACT_MECHANISM))
+                .where(PartyDetails.PARTY_TYPE.eq(partyType.getPrimaryKey()),
+                        ContactTelephones.THRU_TIME.eq(Session.MAX_TIME),
+                        ContactTelephones.COUNTRY_GEO_CODE.eq(countryGeoCode.getPrimaryKey()),
+                        ContactTelephones.TELEPHONE_EXTENSION.eq(telephoneExtension),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
 
     public EntityInstancePKHolder getEntityInstancePKHolderByEmailAddress(String emailAddress) {
-        return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                "SELECT _PK_ "
-                + "FROM entityinstances, parties, partydetails, partycontactmechanisms, partycontactmechanismdetails, contactemailaddresses "
-                + "WHERE par_activedetailid = pardt_partydetailid "
-                + "AND pardt_ptyp_partytypeid = ? "
-                + "AND pcm_activedetailid = pcmdt_partycontactmechanismdetailid "
-                + "AND par_partyid = pcmdt_par_partyid "
-                + "AND pcmdt_cmch_contactmechanismid = ctea_cmch_contactmechanismid AND ctea_thrutime = ? "
-                + "AND ctea_emailaddress = ? "
-                + "AND eni_ent_entitytypeid = ? AND par_partyid = eni_entityuniqueid"),
-                partyType, Session.MAX_TIME, emailAddress, entityType);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Parties).on(Parties.PARTY.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(PartyDetails).onKey(PARTIES_ACTIVE_DETAIL_FK)
+                .join(PartyContactMechanismDetails).onKey(PARTY_CONTACT_MECHANISM_DETAILS_PARTY_FK)
+                .join(PartyContactMechanisms).onKey(PARTY_CONTACT_MECHANISMS_ACTIVE_DETAIL_FK)
+                .join(ContactEmailAddresses).on(PartyContactMechanismDetails.CONTACT_MECHANISM.eq(ContactEmailAddresses.CONTACT_MECHANISM))
+                .where(PartyDetails.PARTY_TYPE.eq(partyType.getPrimaryKey()),
+                        ContactEmailAddresses.THRU_TIME.eq(Session.MAX_TIME),
+                        ContactEmailAddresses.EMAIL_ADDRESS.eq(emailAddress),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
 
     public String getFirstName() {

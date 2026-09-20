@@ -16,12 +16,17 @@
 
 package com.echothree.model.control.sales.server.search;
 
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDERS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.sales.SalesForeignKeys.SALES_ORDERS_ORDER_FK;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.order.OrderDetails.OrderDetails;
+import static com.echothree.model.jooq.server.tables.order.Orders.Orders;
+import static com.echothree.model.jooq.server.tables.sales.SalesOrders.SalesOrders;
 import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.server.logic.OrderLogic;
 import com.echothree.model.control.order.server.search.OrderSearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
-import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
 import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperator;
 import com.echothree.model.data.search.server.entity.SearchSortDirection;
@@ -45,27 +50,33 @@ public class SalesOrderSearchEvaluator
     }
     
     public EntityInstancePKHolder getEntityInstancePKHolderByOfferUse(OfferUse offerUse) {
-        return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                "SELECT _PK_ "
-                + "FROM entityinstances, orders, orderdetails, salesorders "
-                + "WHERE ord_activedetailid = orddt_orderdetailid "
-                + "AND orddt_ordtyp_ordertypeid = ? "
-                + "AND ord_orderid = salord_ord_orderid "
-                + "AND salord_ofruse_offeruseid = ? AND salord_thrutime = ? "
-                + "AND eni_ent_entitytypeid = ? AND ord_orderid = eni_entityuniqueid"),
-                orderType, offerUse, Session.MAX_TIME, entityType);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Orders).on(Orders.ORDER.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(OrderDetails).onKey(ORDERS_ACTIVE_DETAIL_FK)
+                .join(SalesOrders).onKey(SALES_ORDERS_ORDER_FK)
+                .where(OrderDetails.ORDER_TYPE.eq(orderType.getPrimaryKey()),
+                        SalesOrders.OFFER_USE.eq(offerUse.getPrimaryKey()),
+                        SalesOrders.THRU_TIME.eq(Session.MAX_TIME),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
     
     public EntityInstancePKHolder getEntityInstancePKHolderByAssociateReferral(AssociateReferral associateReferral) {
-        return getEntityInstancePKHolderFromQuery(EntityInstanceFactory.getInstance().prepareStatement(
-                "SELECT _PK_ "
-                + "FROM entityinstances, orders, orderdetails, salesorders "
-                + "WHERE ord_activedetailid = orddt_orderdetailid "
-                + "AND orddt_ordtyp_ordertypeid = ? "
-                + "AND ord_orderid = salord_ord_orderid "
-                + "AND salord_ascrfr_associatereferralid = ? AND salord_thrutime = ? "
-                + "AND eni_ent_entitytypeid = ? AND ord_orderid = eni_entityuniqueid"),
-                orderType, associateReferral, Session.MAX_TIME, entityType);
+        var query = session.getDslContext()
+                .select(EntityInstances.ENTITY_INSTANCE)
+                .from(EntityInstances)
+                .join(Orders).on(Orders.ORDER.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(OrderDetails).onKey(ORDERS_ACTIVE_DETAIL_FK)
+                .join(SalesOrders).onKey(SALES_ORDERS_ORDER_FK)
+                .where(OrderDetails.ORDER_TYPE.eq(orderType.getPrimaryKey()),
+                        SalesOrders.ASSOCIATE_REFERRAL.eq(associateReferral.getPrimaryKey()),
+                        SalesOrders.THRU_TIME.eq(Session.MAX_TIME),
+                        EntityInstances.ENTITY_TYPE.eq(entityType.getPrimaryKey()));
+
+        return getEntityInstancePKHolderFromQuery(query);
     }
     
     public OfferUse getOfferUse() {
