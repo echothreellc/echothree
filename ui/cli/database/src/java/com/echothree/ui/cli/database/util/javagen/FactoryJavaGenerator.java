@@ -195,7 +195,7 @@ public class FactoryJavaGenerator extends JavaGenerator {
         pw.println("    ");
         
         for(var column:columns) {
-            pw.println("    final public static String " + column.getDbColumnName().toUpperCase(Locale.getDefault()) + " = \"" + column.getDbColumnName() + "\";");
+            pw.println("    final public static String " + column.getDbColumnName().toUpperCase(Locale.ROOT) + " = \"" + column.getDbColumnName() + "\";");
         }
         
         pw.println("    ");
@@ -282,7 +282,7 @@ public class FactoryJavaGenerator extends JavaGenerator {
         pw.println("        " + pkClass + " _result;");
         pw.println("        ");
         pw.println("        try {");
-        pw.println("            long " + dbColumnName + " = rs.getLong(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
+        pw.println("            long " + dbColumnName + " = rs.getLong(" + dbColumnName.toUpperCase(Locale.ROOT) + ");");
         pw.println("            Long _entityId = rs.wasNull() ? null : " + dbColumnName + ";");
         pw.println("            ");
         pw.println("            _result = new " + pkClass + "(_entityId);");
@@ -750,7 +750,7 @@ public class FactoryJavaGenerator extends JavaGenerator {
         pw.println("        " + valueClass + " _value;");
         pw.println("        ");
         pw.println("        try {");
-        pw.println("            Long " + eidDbColumnName + " = rs.getLong(" + eidDbColumnName.toUpperCase(Locale.getDefault()) + ");");
+        pw.println("            Long " + eidDbColumnName + " = rs.getLong(" + eidDbColumnName.toUpperCase(Locale.ROOT) + ");");
         pw.println("            " + pkClass + " _pk = new " + pkClass + "(" + eidDbColumnName + ");");
         pw.println("            ");
         pw.println("            // See if we already have the entity in the session cache");
@@ -767,43 +767,43 @@ public class FactoryJavaGenerator extends JavaGenerator {
 
                 switch(type) {
                     case ColumnDataType.INTEGER -> {
-                        pw.println("                Integer " + dbColumnName + " = rs.getInt(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
+                        pw.println("                Integer " + dbColumnName + " = rs.getInt(" + dbColumnName.toUpperCase(Locale.ROOT) + ");");
                         valueParameters += ", " + dbColumnName;
                     }
                     case ColumnDataType.LONG -> {
-                        pw.println("                Long " + dbColumnName + " = rs.getLong(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
+                        pw.println("                Long " + dbColumnName + " = rs.getLong(" + dbColumnName.toUpperCase(Locale.ROOT) + ");");
                         valueParameters += ", " + dbColumnName;
                     }
                     case ColumnDataType.STRING -> {
-                        pw.println("                String " + dbColumnName + " = rs.getString(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
+                        pw.println("                String " + dbColumnName + " = rs.getString(" + dbColumnName.toUpperCase(Locale.ROOT) + ");");
                         valueParameters += ", " + dbColumnName;
                     }
                     case ColumnDataType.BOOLEAN -> {
-                        pw.println("                Boolean " + dbColumnName + " = rs.getInt(" + dbColumnName.toUpperCase(Locale.getDefault()) + ") == 1;");
+                        pw.println("                Boolean " + dbColumnName + " = rs.getInt(" + dbColumnName.toUpperCase(Locale.ROOT) + ") == 1;");
                         valueParameters += ", " + dbColumnName;
                     }
                     case ColumnDataType.DATE -> {
-                        pw.println("                Integer " + dbColumnName + " = rs.getInt(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
+                        pw.println("                Integer " + dbColumnName + " = rs.getInt(" + dbColumnName.toUpperCase(Locale.ROOT) + ");");
                         valueParameters += ", " + dbColumnName;
                     }
                     case ColumnDataType.TIME -> {
-                        pw.println("                Long " + dbColumnName + " = rs.getLong(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
+                        pw.println("                Long " + dbColumnName + " = rs.getLong(" + dbColumnName.toUpperCase(Locale.ROOT) + ");");
                         valueParameters += ", " + dbColumnName;
                     }
                     case ColumnDataType.FOREIGN_KEY -> {
-                        pw.println("                Long " + dbColumnName + " = rs.getLong(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
+                        pw.println("                Long " + dbColumnName + " = rs.getLong(" + dbColumnName.toUpperCase(Locale.ROOT) + ");");
                         valueParameters += ", new " + column.getFKPKClass() + "(" + dbColumnName + ")";
                     }
                     case ColumnDataType.BLOB -> {
-                        pw.println("                Blob " + dbColumnName + " = rs.getBlob(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
+                        pw.println("                Blob " + dbColumnName + " = rs.getBlob(" + dbColumnName.toUpperCase(Locale.ROOT) + ");");
                         valueParameters += ", new ByteArray(" + dbColumnName + ".getBytes(1L, (int)" + dbColumnName + ".length()))";
                     }
                     case ColumnDataType.CLOB -> {
-                        pw.println("                Clob " + dbColumnName + " = rs.getClob(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
+                        pw.println("                Clob " + dbColumnName + " = rs.getClob(" + dbColumnName.toUpperCase(Locale.ROOT) + ");");
                         valueParameters += ", " + dbColumnName + " == null? null: " + dbColumnName + ".getSubString(1L, (int)" + dbColumnName + ".length())";
                     }
                     case ColumnDataType.UUID -> {
-                        pw.println("                String " + dbColumnName + " = rs.getString(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
+                        pw.println("                String " + dbColumnName + " = rs.getString(" + dbColumnName.toUpperCase(Locale.ROOT) + ");");
                         valueParameters += ", " + dbColumnName;
                     }
                     default -> pw.println("<error>");
@@ -1109,7 +1109,7 @@ public class FactoryJavaGenerator extends JavaGenerator {
         pw.println("        " + entityClass + " _entity;");
         pw.println("        ");
         pw.println("        try {");
-        pw.println("            Long " + eidDbColumnName + " = rs.getLong(" + eidDbColumnName.toUpperCase(Locale.getDefault()) + ");");
+        pw.println("            Long " + eidDbColumnName + " = rs.getLong(" + eidDbColumnName.toUpperCase(Locale.ROOT) + ");");
         pw.println("            " + pkClass + " _pk = new " + pkClass + "(" + eidDbColumnName + ");");
         pw.println("            ");
         pw.println("            // See if we already have the entity in the session cache");
@@ -1140,43 +1140,43 @@ public class FactoryJavaGenerator extends JavaGenerator {
 
                 switch(type) {
                     case ColumnDataType.INTEGER -> {
-                        pw.println("                Integer " + dbColumnName + " = rs.getInt(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
+                        pw.println("                Integer " + dbColumnName + " = rs.getInt(" + dbColumnName.toUpperCase(Locale.ROOT) + ");");
                         valueParameters += ", " + dbColumnName;
                     }
                     case ColumnDataType.LONG -> {
-                        pw.println("                Long " + dbColumnName + " = rs.getLong(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
+                        pw.println("                Long " + dbColumnName + " = rs.getLong(" + dbColumnName.toUpperCase(Locale.ROOT) + ");");
                         valueParameters += ", " + dbColumnName;
                     }
                     case ColumnDataType.STRING -> {
-                        pw.println("                String " + dbColumnName + " = rs.getString(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
+                        pw.println("                String " + dbColumnName + " = rs.getString(" + dbColumnName.toUpperCase(Locale.ROOT) + ");");
                         valueParameters += ", " + dbColumnName;
                     }
                     case ColumnDataType.BOOLEAN -> {
-                        pw.println("                Boolean " + dbColumnName + " = rs.getInt(" + dbColumnName.toUpperCase(Locale.getDefault()) + ") == 1;");
+                        pw.println("                Boolean " + dbColumnName + " = rs.getInt(" + dbColumnName.toUpperCase(Locale.ROOT) + ") == 1;");
                         valueParameters += ", " + dbColumnName;
                     }
                     case ColumnDataType.DATE -> {
-                        pw.println("                Integer " + dbColumnName + " = rs.getInt(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
+                        pw.println("                Integer " + dbColumnName + " = rs.getInt(" + dbColumnName.toUpperCase(Locale.ROOT) + ");");
                         valueParameters += ", " + dbColumnName;
                     }
                     case ColumnDataType.TIME -> {
-                        pw.println("                Long " + dbColumnName + " = rs.getLong(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
+                        pw.println("                Long " + dbColumnName + " = rs.getLong(" + dbColumnName.toUpperCase(Locale.ROOT) + ");");
                         valueParameters += ", " + dbColumnName;
                     }
                     case ColumnDataType.FOREIGN_KEY -> {
-                        pw.println("                Long " + dbColumnName + " = rs.getLong(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
+                        pw.println("                Long " + dbColumnName + " = rs.getLong(" + dbColumnName.toUpperCase(Locale.ROOT) + ");");
                         valueParameters += ", " + dbColumnName + " == null? null: new " + column.getFKPKClass() + "(" + dbColumnName + ")";
                     }
                     case ColumnDataType.BLOB -> {
-                        pw.println("                Blob " + dbColumnName + " = rs.getBlob(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
+                        pw.println("                Blob " + dbColumnName + " = rs.getBlob(" + dbColumnName.toUpperCase(Locale.ROOT) + ");");
                         valueParameters += ", new ByteArray(" + dbColumnName + ".getBytes(1L, (int)" + dbColumnName + ".length()))";
                     }
                     case ColumnDataType.CLOB -> {
-                        pw.println("                Clob " + dbColumnName + " = rs.getClob(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
+                        pw.println("                Clob " + dbColumnName + " = rs.getClob(" + dbColumnName.toUpperCase(Locale.ROOT) + ");");
                         valueParameters += ", " + dbColumnName + " == null? null: " + dbColumnName + ".getSubString(1L, (int)" + dbColumnName + ".length())";
                     }
                     case ColumnDataType.UUID -> {
-                        pw.println("                String " + dbColumnName + " = rs.getString(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
+                        pw.println("                String " + dbColumnName + " = rs.getString(" + dbColumnName.toUpperCase(Locale.ROOT) + ");");
                         valueParameters += ", " + dbColumnName;
                     }
                     default -> pw.println("<error>");
