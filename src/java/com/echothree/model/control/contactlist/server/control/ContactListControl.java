@@ -53,7 +53,6 @@ import com.echothree.model.control.contactlist.server.transfer.PartyContactListT
 import com.echothree.model.control.contactlist.server.transfer.PartyTypeContactListGroupTransferCache;
 import com.echothree.model.control.contactlist.server.transfer.PartyTypeContactListTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
@@ -119,6 +118,60 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
+import static com.echothree.model.jooq.server.keys.contactlist.ContactListForeignKeys.CONTACT_LISTS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.contactlist.ContactListForeignKeys.CONTACT_LISTS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.contactlist.ContactListForeignKeys.CONTACT_LIST_CONTACT_MECHANISM_PURPOSES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.contactlist.ContactListForeignKeys.CONTACT_LIST_CONTACT_MECHANISM_PURPOSE_DETAILS_CONTACT_LIST_FK;
+import static com.echothree.model.jooq.server.keys.contactlist.ContactListForeignKeys.CONTACT_LIST_CONTACT_MECHANISM_PURPOSE_DETAILS_CONTACT_MECHANISM_PURPOSE_FK;
+import static com.echothree.model.jooq.server.keys.contactlist.ContactListForeignKeys.CONTACT_LIST_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.contactlist.ContactListForeignKeys.CONTACT_LIST_FREQUENCIES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.contactlist.ContactListForeignKeys.CONTACT_LIST_FREQUENCY_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.contactlist.ContactListForeignKeys.CONTACT_LIST_GROUPS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.contactlist.ContactListForeignKeys.CONTACT_LIST_GROUPS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.contactlist.ContactListForeignKeys.CONTACT_LIST_GROUP_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.contactlist.ContactListForeignKeys.CONTACT_LIST_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.contactlist.ContactListForeignKeys.CONTACT_LIST_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.contactlist.ContactListForeignKeys.CUSTOMER_TYPE_CONTACT_LISTS_CONTACT_LIST_FK;
+import static com.echothree.model.jooq.server.keys.contactlist.ContactListForeignKeys.CUSTOMER_TYPE_CONTACT_LISTS_CUSTOMER_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.contactlist.ContactListForeignKeys.CUSTOMER_TYPE_CONTACT_LIST_GROUPS_CONTACT_LIST_GROUP_FK;
+import static com.echothree.model.jooq.server.keys.contactlist.ContactListForeignKeys.CUSTOMER_TYPE_CONTACT_LIST_GROUPS_CUSTOMER_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.contactlist.ContactListForeignKeys.PARTY_CONTACT_LISTS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.contactlist.ContactListForeignKeys.PARTY_CONTACT_LIST_DETAILS_CONTACT_LIST_FK;
+import static com.echothree.model.jooq.server.keys.contactlist.ContactListForeignKeys.PARTY_CONTACT_LIST_DETAILS_PARTY_FK;
+import static com.echothree.model.jooq.server.keys.contactlist.ContactListForeignKeys.PARTY_TYPE_CONTACT_LISTS_CONTACT_LIST_FK;
+import static com.echothree.model.jooq.server.keys.contactlist.ContactListForeignKeys.PARTY_TYPE_CONTACT_LISTS_PARTY_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.contactlist.ContactListForeignKeys.PARTY_TYPE_CONTACT_LIST_GROUPS_CONTACT_LIST_GROUP_FK;
+import static com.echothree.model.jooq.server.keys.contactlist.ContactListForeignKeys.PARTY_TYPE_CONTACT_LIST_GROUPS_PARTY_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.customer.CustomerForeignKeys.CUSTOMER_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTIES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTY_DETAILS_PARTY_TYPE_FK;
+import static com.echothree.model.jooq.server.tables.contact.ContactMechanismPurposes.ContactMechanismPurposes;
+import static com.echothree.model.jooq.server.tables.contactlist.ContactListContactMechanismPurposeDetails.ContactListContactMechanismPurposeDetails;
+import static com.echothree.model.jooq.server.tables.contactlist.ContactListContactMechanismPurposes.ContactListContactMechanismPurposes;
+import static com.echothree.model.jooq.server.tables.contactlist.ContactListDescriptions.ContactListDescriptions;
+import static com.echothree.model.jooq.server.tables.contactlist.ContactListDetails.ContactListDetails;
+import static com.echothree.model.jooq.server.tables.contactlist.ContactListFrequencies.ContactListFrequencies;
+import static com.echothree.model.jooq.server.tables.contactlist.ContactListFrequencyDescriptions.ContactListFrequencyDescriptions;
+import static com.echothree.model.jooq.server.tables.contactlist.ContactListFrequencyDetails.ContactListFrequencyDetails;
+import static com.echothree.model.jooq.server.tables.contactlist.ContactListGroupDescriptions.ContactListGroupDescriptions;
+import static com.echothree.model.jooq.server.tables.contactlist.ContactListGroupDetails.ContactListGroupDetails;
+import static com.echothree.model.jooq.server.tables.contactlist.ContactListGroups.ContactListGroups;
+import static com.echothree.model.jooq.server.tables.contactlist.ContactListTypeDescriptions.ContactListTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.contactlist.ContactListTypeDetails.ContactListTypeDetails;
+import static com.echothree.model.jooq.server.tables.contactlist.ContactListTypes.ContactListTypes;
+import static com.echothree.model.jooq.server.tables.contactlist.ContactLists.ContactLists;
+import static com.echothree.model.jooq.server.tables.contactlist.CustomerTypeContactListGroups.CustomerTypeContactListGroups;
+import static com.echothree.model.jooq.server.tables.contactlist.CustomerTypeContactLists.CustomerTypeContactLists;
+import static com.echothree.model.jooq.server.tables.contactlist.PartyContactListDetails.PartyContactListDetails;
+import static com.echothree.model.jooq.server.tables.contactlist.PartyContactLists.PartyContactLists;
+import static com.echothree.model.jooq.server.tables.contactlist.PartyTypeContactListGroups.PartyTypeContactListGroups;
+import static com.echothree.model.jooq.server.tables.contactlist.PartyTypeContactLists.PartyTypeContactLists;
+import static com.echothree.model.jooq.server.tables.customer.CustomerTypeDetails.CustomerTypeDetails;
+import static com.echothree.model.jooq.server.tables.customer.CustomerTypes.CustomerTypes;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.party.Parties.Parties;
+import static com.echothree.model.jooq.server.tables.party.PartyDetails.PartyDetails;
+import static com.echothree.model.jooq.server.tables.party.PartyTypes.PartyTypes;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
@@ -128,10 +181,7 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 
@@ -152,60 +202,17 @@ public class ContactListControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Contact List Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    @Inject
-    ContactListTypeDescriptionTransferCache contactListTypeDescriptionTransferCache;
-
-    @Inject
-    ContactListTypeTransferCache contactListTypeTransferCache;
-
-    @Inject
-    ContactListGroupDescriptionTransferCache contactListGroupDescriptionTransferCache;
-
-    @Inject
-    ContactListGroupTransferCache contactListGroupTransferCache;
-
-    @Inject
-    ContactListFrequencyDescriptionTransferCache contactListFrequencyDescriptionTransferCache;
-
-    @Inject
-    ContactListFrequencyTransferCache contactListFrequencyTransferCache;
-
-    @Inject
-    ContactListDescriptionTransferCache contactListDescriptionTransferCache;
-
-    @Inject
-    ContactListTransferCache contactListTransferCache;
-
-    @Inject
-    PartyContactListTransferCache partyContactListTransferCache;
-
-    @Inject
-    PartyTypeContactListTransferCache partyTypeContactListTransferCache;
-
-    @Inject
-    PartyTypeContactListGroupTransferCache partyTypeContactListGroupTransferCache;
-
-    @Inject
-    CustomerTypeContactListTransferCache customerTypeContactListTransferCache;
-
-    @Inject
-    CustomerTypeContactListGroupTransferCache customerTypeContactListGroupTransferCache;
-
-    @Inject
-    ContactListContactMechanismPurposeTransferCache contactListContactMechanismPurposeTransferCache;
-
-    // --------------------------------------------------------------------------------
     //   Contact List Types
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected ContactListTypeDetailFactory contactListTypeDetailFactory;
 
     @Inject
     protected ContactListTypeFactory contactListTypeFactory;
 
     @Inject
-    protected ContactListTypeDetailFactory contactListTypeDetailFactory;
+    ContactListTypeTransferCache contactListTypeTransferCache;
 
     public ContactListType createContactListType(String contactListTypeName, Chain confirmationRequestChain, Chain subscribeChain, Chain unsubscribeChain,
             Boolean usedForSolicitation, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -254,37 +261,27 @@ public class ContactListControl
     }
 
     public long countContactListTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM contactlisttypes
-                        JOIN contactlisttypedetails ON clsttypdt_contactlisttypedetailid = clsttyp_activedetailid
-                        """);
-    }
-
-    private static final Map<EntityPermission, String> getContactListTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlisttypes, contactlisttypedetails
-                WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_contactlisttypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlisttypes, contactlisttypedetails
-                WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_contactlisttypename = ?
-                FOR UPDATE
-                """);
-        getContactListTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContactListTypes)
+                .join(ContactListTypeDetails).onKey(CONTACT_LIST_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public ContactListType getContactListTypeByName(String contactListTypeName, EntityPermission entityPermission) {
-        return contactListTypeFactory.getEntityFromQuery(entityPermission, getContactListTypeByNameQueries,
-                contactListTypeName);
+        var baseQuery = session.getDslContext()
+                .select(ContactListTypes.fields())
+                .from(ContactListTypes)
+                .join(ContactListTypeDetails).onKey(CONTACT_LIST_TYPES_ACTIVE_DETAIL_FK)
+                .where(ContactListTypeDetails.CONTACT_LIST_TYPE_NAME.eq(contactListTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactListTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ContactListType getContactListTypeByName(String contactListTypeName) {
@@ -303,29 +300,19 @@ public class ContactListControl
         return getContactListTypeDetailValueForUpdate(getContactListTypeByNameForUpdate(contactListTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultContactListTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlisttypes, contactlisttypedetails
-                WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlisttypes, contactlisttypedetails
-                WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultContactListTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public ContactListType getDefaultContactListType(EntityPermission entityPermission) {
-        return contactListTypeFactory.getEntityFromQuery(entityPermission, getDefaultContactListTypeQueries);
+        var baseQuery = session.getDslContext()
+                .select(ContactListTypes.fields())
+                .from(ContactListTypes)
+                .join(ContactListTypeDetails).onKey(CONTACT_LIST_TYPES_ACTIVE_DETAIL_FK)
+                .where(ContactListTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactListTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ContactListType getDefaultContactListType() {
@@ -340,31 +327,20 @@ public class ContactListControl
         return getDefaultContactListType(EntityPermission.READ_WRITE).getLastDetailForUpdate().getContactListTypeDetailValue();
     }
 
-    private static final Map<EntityPermission, String> getContactListTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlisttypes, contactlisttypedetails
-                WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid
-                ORDER BY clsttypdt_sortorder, clsttypdt_contactlisttypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlisttypes, contactlisttypedetails
-                WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid
-                FOR UPDATE
-                """);
-        getContactListTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ContactListType> getContactListTypes(EntityPermission entityPermission) {
-        return contactListTypeFactory.getEntitiesFromQuery(entityPermission, getContactListTypesQueries);
+        var baseQuery = session.getDslContext()
+                .select(ContactListTypes.fields())
+                .from(ContactListTypes)
+                .join(ContactListTypeDetails).onKey(CONTACT_LIST_TYPES_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ContactListTypeDetails.SORT_ORDER, ContactListTypeDetails.CONTACT_LIST_TYPE_NAME),
+                    ContactListTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactListTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ContactListType> getContactListTypes() {
@@ -375,32 +351,21 @@ public class ContactListControl
         return getContactListTypes(EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getContactListTypesByConfirmationRequestChainQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlisttypes, contactlisttypedetails
-                WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_confirmationrequestchainid = ?
-                ORDER BY clsttypdt_sortorder, clsttypdt_contactlisttypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlisttypes, contactlisttypedetails
-                WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_confirmationrequestchainid = ?
-                FOR UPDATE
-                """);
-        getContactListTypesByConfirmationRequestChainQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ContactListType> getContactListTypesByConfirmationRequestChain(Chain confirmationRequestChain, EntityPermission entityPermission) {
-        return contactListTypeFactory.getEntitiesFromQuery(entityPermission, getContactListTypesByConfirmationRequestChainQueries,
-                confirmationRequestChain);
+        var baseQuery = session.getDslContext()
+                .select(ContactListTypes.fields())
+                .from(ContactListTypes)
+                .join(ContactListTypeDetails).onKey(CONTACT_LIST_TYPES_ACTIVE_DETAIL_FK)
+                .where(ContactListTypeDetails.CONFIRMATION_REQUEST_CHAIN.eq(confirmationRequestChain.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ContactListTypeDetails.SORT_ORDER, ContactListTypeDetails.CONTACT_LIST_TYPE_NAME),
+                    ContactListTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactListTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ContactListType> getContactListTypesByConfirmationRequestChain(Chain confirmationRequestChain) {
@@ -411,32 +376,21 @@ public class ContactListControl
         return getContactListTypesByConfirmationRequestChain(confirmationRequestChain, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getContactListTypesBySubscribeChainQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlisttypes, contactlisttypedetails
-                WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_subscribechainid = ?
-                ORDER BY clsttypdt_sortorder, clsttypdt_contactlisttypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlisttypes, contactlisttypedetails
-                WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_subscribechainid = ?
-                FOR UPDATE
-                """);
-        getContactListTypesBySubscribeChainQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ContactListType> getContactListTypesBySubscribeChain(Chain subscribeChain, EntityPermission entityPermission) {
-        return contactListTypeFactory.getEntitiesFromQuery(entityPermission, getContactListTypesBySubscribeChainQueries,
-                subscribeChain);
+        var baseQuery = session.getDslContext()
+                .select(ContactListTypes.fields())
+                .from(ContactListTypes)
+                .join(ContactListTypeDetails).onKey(CONTACT_LIST_TYPES_ACTIVE_DETAIL_FK)
+                .where(ContactListTypeDetails.SUBSCRIBE_CHAIN.eq(subscribeChain.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ContactListTypeDetails.SORT_ORDER, ContactListTypeDetails.CONTACT_LIST_TYPE_NAME),
+                    ContactListTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactListTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ContactListType> getContactListTypesBySubscribeChain(Chain subscribeChain) {
@@ -447,32 +401,21 @@ public class ContactListControl
         return getContactListTypesBySubscribeChain(subscribeChain, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getContactListTypesByUnsubscribeChainQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlisttypes, contactlisttypedetails
-                WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_unsubscribechainid = ?
-                ORDER BY clsttypdt_sortorder, clsttypdt_contactlisttypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlisttypes, contactlisttypedetails
-                WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_unsubscribechainid = ?
-                FOR UPDATE
-                """);
-        getContactListTypesByUnsubscribeChainQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ContactListType> getContactListTypesByUnsubscribeChain(Chain unsubscribeChain, EntityPermission entityPermission) {
-        return contactListTypeFactory.getEntitiesFromQuery(entityPermission, getContactListTypesByUnsubscribeChainQueries,
-                unsubscribeChain);
+        var baseQuery = session.getDslContext()
+                .select(ContactListTypes.fields())
+                .from(ContactListTypes)
+                .join(ContactListTypeDetails).onKey(CONTACT_LIST_TYPES_ACTIVE_DETAIL_FK)
+                .where(ContactListTypeDetails.UNSUBSCRIBE_CHAIN.eq(unsubscribeChain.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ContactListTypeDetails.SORT_ORDER, ContactListTypeDetails.CONTACT_LIST_TYPE_NAME),
+                    ContactListTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactListTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ContactListType> getContactListTypesByUnsubscribeChain(Chain unsubscribeChain) {
@@ -642,6 +585,9 @@ public class ContactListControl
     @Inject
     protected ContactListTypeDescriptionFactory contactListTypeDescriptionFactory;
 
+    @Inject
+    ContactListTypeDescriptionTransferCache contactListTypeDescriptionTransferCache;
+
     public ContactListTypeDescription createContactListTypeDescription(ContactListType contactListType, Language language, String description,
             BasePK createdBy) {
         var contactListTypeDescription = contactListTypeDescriptionFactory.create(contactListType,
@@ -652,30 +598,20 @@ public class ContactListControl
         return contactListTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getContactListTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlisttypedescriptions
-                WHERE clsttypd_clsttyp_contactlisttypeid = ? AND clsttypd_lang_languageid = ? AND clsttypd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlisttypedescriptions
-                WHERE clsttypd_clsttyp_contactlisttypeid = ? AND clsttypd_lang_languageid = ? AND clsttypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getContactListTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ContactListTypeDescription getContactListTypeDescription(ContactListType contactListType, Language language, EntityPermission entityPermission) {
-        return contactListTypeDescriptionFactory.getEntityFromQuery(entityPermission, getContactListTypeDescriptionQueries,
-                contactListType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ContactListTypeDescriptions.fields())
+                .from(ContactListTypeDescriptions)
+                .where(ContactListTypeDescriptions.CONTACT_LIST_TYPE.eq(contactListType.getPrimaryKey()),
+                        ContactListTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ContactListTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactListTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ContactListTypeDescription getContactListTypeDescription(ContactListType contactListType, Language language) {
@@ -694,32 +630,25 @@ public class ContactListControl
         return getContactListTypeDescriptionValue(getContactListTypeDescriptionForUpdate(contactListType, language));
     }
 
-    private static final Map<EntityPermission, String> getContactListTypeDescriptionsByContactListTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlisttypedescriptions, languages
-                WHERE clsttypd_clsttyp_contactlisttypeid = ? AND clsttypd_thrutime = ? AND clsttypd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlisttypedescriptions
-                WHERE clsttypd_clsttyp_contactlisttypeid = ? AND clsttypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getContactListTypeDescriptionsByContactListTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ContactListTypeDescription> getContactListTypeDescriptionsByContactListType(ContactListType contactListType, EntityPermission entityPermission) {
-        return contactListTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getContactListTypeDescriptionsByContactListTypeQueries,
-                contactListType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContactListTypeDescriptions.fields())
+                    .from(ContactListTypeDescriptions)
+                    .join(Languages).onKey(CONTACT_LIST_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ContactListTypeDescriptions.CONTACT_LIST_TYPE.eq(contactListType.getPrimaryKey()),
+                            ContactListTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ContactListTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContactListTypeDescriptions.fields())
+                    .from(ContactListTypeDescriptions)
+                    .where(ContactListTypeDescriptions.CONTACT_LIST_TYPE.eq(contactListType.getPrimaryKey()),
+                            ContactListTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return contactListTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ContactListTypeDescription> getContactListTypeDescriptionsByContactListType(ContactListType contactListType) {
@@ -801,10 +730,13 @@ public class ContactListControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ContactListGroupDetailFactory contactListGroupDetailFactory;
+
+    @Inject
     protected ContactListGroupFactory contactListGroupFactory;
 
     @Inject
-    protected ContactListGroupDetailFactory contactListGroupDetailFactory;
+    ContactListGroupTransferCache contactListGroupTransferCache;
 
     public ContactListGroup createContactListGroup(String contactListGroupName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultContactListGroup = getDefaultContactListGroup();
@@ -851,37 +783,27 @@ public class ContactListControl
     }
 
     public long countContactListGroups() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM contactlistgroups
-                        JOIN contactlistgroupdetails ON clstgrpdt_contactlistgroupdetailid = clstgrp_activedetailid
-                        """);
-    }
-
-    private static final Map<EntityPermission, String> getContactListGroupByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlistgroups, contactlistgroupdetails
-                WHERE clstgrp_activedetailid = clstgrpdt_contactlistgroupdetailid AND clstgrpdt_contactlistgroupname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlistgroups, contactlistgroupdetails
-                WHERE clstgrp_activedetailid = clstgrpdt_contactlistgroupdetailid AND clstgrpdt_contactlistgroupname = ?
-                FOR UPDATE
-                """);
-        getContactListGroupByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContactListGroups)
+                .join(ContactListGroupDetails).onKey(CONTACT_LIST_GROUPS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public ContactListGroup getContactListGroupByName(String contactListGroupName, EntityPermission entityPermission) {
-        return contactListGroupFactory.getEntityFromQuery(entityPermission, getContactListGroupByNameQueries,
-                contactListGroupName);
+        var baseQuery = session.getDslContext()
+                .select(ContactListGroups.fields())
+                .from(ContactListGroups)
+                .join(ContactListGroupDetails).onKey(CONTACT_LIST_GROUPS_ACTIVE_DETAIL_FK)
+                .where(ContactListGroupDetails.CONTACT_LIST_GROUP_NAME.eq(contactListGroupName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactListGroupFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ContactListGroup getContactListGroupByName(String contactListGroupName) {
@@ -900,29 +822,19 @@ public class ContactListControl
         return getContactListGroupDetailValueForUpdate(getContactListGroupByNameForUpdate(contactListGroupName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultContactListGroupQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlistgroups, contactlistgroupdetails
-                WHERE clstgrp_activedetailid = clstgrpdt_contactlistgroupdetailid AND clstgrpdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlistgroups, contactlistgroupdetails
-                WHERE clstgrp_activedetailid = clstgrpdt_contactlistgroupdetailid AND clstgrpdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultContactListGroupQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public ContactListGroup getDefaultContactListGroup(EntityPermission entityPermission) {
-        return contactListGroupFactory.getEntityFromQuery(entityPermission, getDefaultContactListGroupQueries);
+        var baseQuery = session.getDslContext()
+                .select(ContactListGroups.fields())
+                .from(ContactListGroups)
+                .join(ContactListGroupDetails).onKey(CONTACT_LIST_GROUPS_ACTIVE_DETAIL_FK)
+                .where(ContactListGroupDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactListGroupFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ContactListGroup getDefaultContactListGroup() {
@@ -937,31 +849,20 @@ public class ContactListControl
         return getDefaultContactListGroup(EntityPermission.READ_WRITE).getLastDetailForUpdate().getContactListGroupDetailValue();
     }
 
-    private static final Map<EntityPermission, String> getContactListGroupsQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlistgroups, contactlistgroupdetails
-                WHERE clstgrp_activedetailid = clstgrpdt_contactlistgroupdetailid
-                ORDER BY clstgrpdt_sortorder, clstgrpdt_contactlistgroupname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlistgroups, contactlistgroupdetails
-                WHERE clstgrp_activedetailid = clstgrpdt_contactlistgroupdetailid
-                FOR UPDATE
-                """);
-        getContactListGroupsQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ContactListGroup> getContactListGroups(EntityPermission entityPermission) {
-        return contactListGroupFactory.getEntitiesFromQuery(entityPermission, getContactListGroupsQueries);
+        var baseQuery = session.getDslContext()
+                .select(ContactListGroups.fields())
+                .from(ContactListGroups)
+                .join(ContactListGroupDetails).onKey(CONTACT_LIST_GROUPS_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ContactListGroupDetails.SORT_ORDER, ContactListGroupDetails.CONTACT_LIST_GROUP_NAME),
+                    ContactListGroupFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactListGroupFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ContactListGroup> getContactListGroups() {
@@ -1106,6 +1007,9 @@ public class ContactListControl
     @Inject
     protected ContactListGroupDescriptionFactory contactListGroupDescriptionFactory;
 
+    @Inject
+    ContactListGroupDescriptionTransferCache contactListGroupDescriptionTransferCache;
+
     public ContactListGroupDescription createContactListGroupDescription(ContactListGroup contactListGroup, Language language, String description,
             BasePK createdBy) {
         var contactListGroupDescription = contactListGroupDescriptionFactory.create(contactListGroup,
@@ -1116,30 +1020,20 @@ public class ContactListControl
         return contactListGroupDescription;
     }
 
-    private static final Map<EntityPermission, String> getContactListGroupDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlistgroupdescriptions
-                WHERE clstgrpd_clstgrp_contactlistgroupid = ? AND clstgrpd_lang_languageid = ? AND clstgrpd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlistgroupdescriptions
-                WHERE clstgrpd_clstgrp_contactlistgroupid = ? AND clstgrpd_lang_languageid = ? AND clstgrpd_thrutime = ?
-                FOR UPDATE
-                """);
-        getContactListGroupDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ContactListGroupDescription getContactListGroupDescription(ContactListGroup contactListGroup, Language language, EntityPermission entityPermission) {
-        return contactListGroupDescriptionFactory.getEntityFromQuery(entityPermission, getContactListGroupDescriptionQueries,
-                contactListGroup, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ContactListGroupDescriptions.fields())
+                .from(ContactListGroupDescriptions)
+                .where(ContactListGroupDescriptions.CONTACT_LIST_GROUP.eq(contactListGroup.getPrimaryKey()),
+                        ContactListGroupDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ContactListGroupDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactListGroupDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ContactListGroupDescription getContactListGroupDescription(ContactListGroup contactListGroup, Language language) {
@@ -1158,32 +1052,25 @@ public class ContactListControl
         return getContactListGroupDescriptionValue(getContactListGroupDescriptionForUpdate(contactListGroup, language));
     }
 
-    private static final Map<EntityPermission, String> getContactListGroupDescriptionsByContactListGroupQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlistgroupdescriptions, languages
-                WHERE clstgrpd_clstgrp_contactlistgroupid = ? AND clstgrpd_thrutime = ? AND clstgrpd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlistgroupdescriptions
-                WHERE clstgrpd_clstgrp_contactlistgroupid = ? AND clstgrpd_thrutime = ?
-                FOR UPDATE
-                """);
-        getContactListGroupDescriptionsByContactListGroupQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ContactListGroupDescription> getContactListGroupDescriptionsByContactListGroup(ContactListGroup contactListGroup, EntityPermission entityPermission) {
-        return contactListGroupDescriptionFactory.getEntitiesFromQuery(entityPermission, getContactListGroupDescriptionsByContactListGroupQueries,
-                contactListGroup, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContactListGroupDescriptions.fields())
+                    .from(ContactListGroupDescriptions)
+                    .join(Languages).onKey(CONTACT_LIST_GROUP_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ContactListGroupDescriptions.CONTACT_LIST_GROUP.eq(contactListGroup.getPrimaryKey()),
+                            ContactListGroupDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ContactListGroupDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContactListGroupDescriptions.fields())
+                    .from(ContactListGroupDescriptions)
+                    .where(ContactListGroupDescriptions.CONTACT_LIST_GROUP.eq(contactListGroup.getPrimaryKey()),
+                            ContactListGroupDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return contactListGroupDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ContactListGroupDescription> getContactListGroupDescriptionsByContactListGroup(ContactListGroup contactListGroup) {
@@ -1265,10 +1152,13 @@ public class ContactListControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ContactListFrequencyDetailFactory contactListFrequencyDetailFactory;
+
+    @Inject
     protected ContactListFrequencyFactory contactListFrequencyFactory;
 
     @Inject
-    protected ContactListFrequencyDetailFactory contactListFrequencyDetailFactory;
+    ContactListFrequencyTransferCache contactListFrequencyTransferCache;
 
     public ContactListFrequency createContactListFrequency(String contactListFrequencyName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultContactListFrequency = getDefaultContactListFrequency();
@@ -1315,37 +1205,27 @@ public class ContactListControl
     }
 
     public long countContactListFrequencies() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM contactlistfrequencies
-                        JOIN contactlistfrequencydetails ON clstfrqdt_contactlistfrequencydetailid = clstfrq_activedetailid
-                        """);
-    }
-
-    private static final Map<EntityPermission, String> getContactListFrequencyByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlistfrequencies, contactlistfrequencydetails
-                WHERE clstfrq_activedetailid = clstfrqdt_contactlistfrequencydetailid AND clstfrqdt_contactlistfrequencyname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlistfrequencies, contactlistfrequencydetails
-                WHERE clstfrq_activedetailid = clstfrqdt_contactlistfrequencydetailid AND clstfrqdt_contactlistfrequencyname = ?
-                FOR UPDATE
-                """);
-        getContactListFrequencyByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContactListFrequencies)
+                .join(ContactListFrequencyDetails).onKey(CONTACT_LIST_FREQUENCIES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public ContactListFrequency getContactListFrequencyByName(String contactListFrequencyName, EntityPermission entityPermission) {
-        return contactListFrequencyFactory.getEntityFromQuery(entityPermission, getContactListFrequencyByNameQueries,
-                contactListFrequencyName);
+        var baseQuery = session.getDslContext()
+                .select(ContactListFrequencies.fields())
+                .from(ContactListFrequencies)
+                .join(ContactListFrequencyDetails).onKey(CONTACT_LIST_FREQUENCIES_ACTIVE_DETAIL_FK)
+                .where(ContactListFrequencyDetails.CONTACT_LIST_FREQUENCY_NAME.eq(contactListFrequencyName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactListFrequencyFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ContactListFrequency getContactListFrequencyByName(String contactListFrequencyName) {
@@ -1364,29 +1244,19 @@ public class ContactListControl
         return getContactListFrequencyDetailValueForUpdate(getContactListFrequencyByNameForUpdate(contactListFrequencyName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultContactListFrequencyQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlistfrequencies, contactlistfrequencydetails
-                WHERE clstfrq_activedetailid = clstfrqdt_contactlistfrequencydetailid AND clstfrqdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlistfrequencies, contactlistfrequencydetails
-                WHERE clstfrq_activedetailid = clstfrqdt_contactlistfrequencydetailid AND clstfrqdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultContactListFrequencyQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public ContactListFrequency getDefaultContactListFrequency(EntityPermission entityPermission) {
-        return contactListFrequencyFactory.getEntityFromQuery(entityPermission, getDefaultContactListFrequencyQueries);
+        var baseQuery = session.getDslContext()
+                .select(ContactListFrequencies.fields())
+                .from(ContactListFrequencies)
+                .join(ContactListFrequencyDetails).onKey(CONTACT_LIST_FREQUENCIES_ACTIVE_DETAIL_FK)
+                .where(ContactListFrequencyDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactListFrequencyFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ContactListFrequency getDefaultContactListFrequency() {
@@ -1401,31 +1271,20 @@ public class ContactListControl
         return getDefaultContactListFrequency(EntityPermission.READ_WRITE).getLastDetailForUpdate().getContactListFrequencyDetailValue();
     }
 
-    private static final Map<EntityPermission, String> getContactListFrequenciesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlistfrequencies, contactlistfrequencydetails
-                WHERE clstfrq_activedetailid = clstfrqdt_contactlistfrequencydetailid
-                ORDER BY clstfrqdt_sortorder, clstfrqdt_contactlistfrequencyname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlistfrequencies, contactlistfrequencydetails
-                WHERE clstfrq_activedetailid = clstfrqdt_contactlistfrequencydetailid
-                FOR UPDATE
-                """);
-        getContactListFrequenciesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ContactListFrequency> getContactListFrequencies(EntityPermission entityPermission) {
-        return contactListFrequencyFactory.getEntitiesFromQuery(entityPermission, getContactListFrequenciesQueries);
+        var baseQuery = session.getDslContext()
+                .select(ContactListFrequencies.fields())
+                .from(ContactListFrequencies)
+                .join(ContactListFrequencyDetails).onKey(CONTACT_LIST_FREQUENCIES_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ContactListFrequencyDetails.SORT_ORDER, ContactListFrequencyDetails.CONTACT_LIST_FREQUENCY_NAME),
+                    ContactListFrequencyFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactListFrequencyFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ContactListFrequency> getContactListFrequencies() {
@@ -1567,6 +1426,9 @@ public class ContactListControl
     @Inject
     protected ContactListFrequencyDescriptionFactory contactListFrequencyDescriptionFactory;
 
+    @Inject
+    ContactListFrequencyDescriptionTransferCache contactListFrequencyDescriptionTransferCache;
+
     public ContactListFrequencyDescription createContactListFrequencyDescription(ContactListFrequency contactListFrequency, Language language, String description,
             BasePK createdBy) {
         var contactListFrequencyDescription = contactListFrequencyDescriptionFactory.create(contactListFrequency,
@@ -1577,30 +1439,20 @@ public class ContactListControl
         return contactListFrequencyDescription;
     }
 
-    private static final Map<EntityPermission, String> getContactListFrequencyDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlistfrequencydescriptions
-                WHERE clstfrqd_clstfrq_contactlistfrequencyid = ? AND clstfrqd_lang_languageid = ? AND clstfrqd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlistfrequencydescriptions
-                WHERE clstfrqd_clstfrq_contactlistfrequencyid = ? AND clstfrqd_lang_languageid = ? AND clstfrqd_thrutime = ?
-                FOR UPDATE
-                """);
-        getContactListFrequencyDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ContactListFrequencyDescription getContactListFrequencyDescription(ContactListFrequency contactListFrequency, Language language, EntityPermission entityPermission) {
-        return contactListFrequencyDescriptionFactory.getEntityFromQuery(entityPermission, getContactListFrequencyDescriptionQueries,
-                contactListFrequency, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ContactListFrequencyDescriptions.fields())
+                .from(ContactListFrequencyDescriptions)
+                .where(ContactListFrequencyDescriptions.CONTACT_LIST_FREQUENCY.eq(contactListFrequency.getPrimaryKey()),
+                        ContactListFrequencyDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ContactListFrequencyDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactListFrequencyDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ContactListFrequencyDescription getContactListFrequencyDescription(ContactListFrequency contactListFrequency, Language language) {
@@ -1619,32 +1471,25 @@ public class ContactListControl
         return getContactListFrequencyDescriptionValue(getContactListFrequencyDescriptionForUpdate(contactListFrequency, language));
     }
 
-    private static final Map<EntityPermission, String> getContactListFrequencyDescriptionsByContactListFrequencyQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlistfrequencydescriptions, languages
-                WHERE clstfrqd_clstfrq_contactlistfrequencyid = ? AND clstfrqd_thrutime = ? AND clstfrqd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlistfrequencydescriptions
-                WHERE clstfrqd_clstfrq_contactlistfrequencyid = ? AND clstfrqd_thrutime = ?
-                FOR UPDATE
-                """);
-        getContactListFrequencyDescriptionsByContactListFrequencyQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ContactListFrequencyDescription> getContactListFrequencyDescriptionsByContactListFrequency(ContactListFrequency contactListFrequency, EntityPermission entityPermission) {
-        return contactListFrequencyDescriptionFactory.getEntitiesFromQuery(entityPermission, getContactListFrequencyDescriptionsByContactListFrequencyQueries,
-                contactListFrequency, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContactListFrequencyDescriptions.fields())
+                    .from(ContactListFrequencyDescriptions)
+                    .join(Languages).onKey(CONTACT_LIST_FREQUENCY_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ContactListFrequencyDescriptions.CONTACT_LIST_FREQUENCY.eq(contactListFrequency.getPrimaryKey()),
+                            ContactListFrequencyDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ContactListFrequencyDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContactListFrequencyDescriptions.fields())
+                    .from(ContactListFrequencyDescriptions)
+                    .where(ContactListFrequencyDescriptions.CONTACT_LIST_FREQUENCY.eq(contactListFrequency.getPrimaryKey()),
+                            ContactListFrequencyDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return contactListFrequencyDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ContactListFrequencyDescription> getContactListFrequencyDescriptionsByContactListFrequency(ContactListFrequency contactListFrequency) {
@@ -1726,10 +1571,13 @@ public class ContactListControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ContactListDetailFactory contactListDetailFactory;
+
+    @Inject
     protected ContactListFactory contactListFactory;
 
     @Inject
-    protected ContactListDetailFactory contactListDetailFactory;
+    ContactListTransferCache contactListTransferCache;
 
     public ContactList createContactList(String contactListName, ContactListGroup contactListGroup, ContactListType contactListType,
             ContactListFrequency contactListFrequency, WorkflowEntrance defaultPartyContactListStatus, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -1777,73 +1625,67 @@ public class ContactListControl
     }
 
     public long countContactLists() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM contactlists
-                        JOIN contactlistdetails ON clstdt_contactlistdetailid = clst_activedetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContactLists)
+                .join(ContactListDetails).onKey(CONTACT_LISTS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countContactListsByContactListGroup(final ContactListGroup contactListGroup) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM contactlists
-                        JOIN contactlistdetails ON clstdt_contactlistdetailid = clst_activedetailid
-                        WHERE clstdt_clstgrp_contactlistgroupid = ?
-                        """, contactListGroup);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContactLists)
+                .join(ContactListDetails).onKey(CONTACT_LISTS_ACTIVE_DETAIL_FK)
+                .where(ContactListDetails.CONTACT_LIST_GROUP.eq(contactListGroup.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countContactListsByContactListType(final ContactListType contactListType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM contactlists
-                        JOIN contactlistdetails ON clstdt_contactlistdetailid = clst_activedetailid
-                        WHERE clstdt_clsttyp_contactlisttypeid = ?
-                        """, contactListType);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContactLists)
+                .join(ContactListDetails).onKey(CONTACT_LISTS_ACTIVE_DETAIL_FK)
+                .where(ContactListDetails.CONTACT_LIST_TYPE.eq(contactListType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countContactListsByContactListFrequency(final ContactListFrequency contactListFrequency) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM contactlists
-                        JOIN contactlistdetails ON clstdt_contactlistdetailid = clst_activedetailid
-                        WHERE clstdt_clstfrq_contactlistfrequencyid = ?
-                        """, contactListFrequency);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContactLists)
+                .join(ContactListDetails).onKey(CONTACT_LISTS_ACTIVE_DETAIL_FK)
+                .where(ContactListDetails.CONTACT_LIST_FREQUENCY.eq(contactListFrequency.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countContactListsByDefaultPartyContactListStatus(final WorkflowEntrance defaultPartyContactListStatus) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM contactlists
-                        JOIN contactlistdetails ON clstdt_contactlistdetailid = clst_activedetailid
-                        WHERE clstdt_defaultpartycontactliststatusid
-                        """, defaultPartyContactListStatus);
-    }
-
-    private static final Map<EntityPermission, String> getContactListByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlists, contactlistdetails
-                WHERE clst_activedetailid = clstdt_contactlistdetailid AND clstdt_contactlistname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlists, contactlistdetails
-                WHERE clst_activedetailid = clstdt_contactlistdetailid AND clstdt_contactlistname = ?
-                FOR UPDATE
-                """);
-        getContactListByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContactLists)
+                .join(ContactListDetails).onKey(CONTACT_LISTS_ACTIVE_DETAIL_FK)
+                .where(ContactListDetails.DEFAULT_PARTY_CONTACT_LIST_STATUS.eq(defaultPartyContactListStatus.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public ContactList getContactListByName(String contactListName, EntityPermission entityPermission) {
-        return contactListFactory.getEntityFromQuery(entityPermission, getContactListByNameQueries,
-                contactListName);
+        var baseQuery = session.getDslContext()
+                .select(ContactLists.fields())
+                .from(ContactLists)
+                .join(ContactListDetails).onKey(CONTACT_LISTS_ACTIVE_DETAIL_FK)
+                .where(ContactListDetails.CONTACT_LIST_NAME.eq(contactListName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactListFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ContactList getContactListByName(String contactListName) {
@@ -1862,29 +1704,19 @@ public class ContactListControl
         return getContactListDetailValueForUpdate(getContactListByNameForUpdate(contactListName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultContactListQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlists, contactlistdetails
-                WHERE clst_activedetailid = clstdt_contactlistdetailid AND clstdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlists, contactlistdetails
-                WHERE clst_activedetailid = clstdt_contactlistdetailid AND clstdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultContactListQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public ContactList getDefaultContactList(EntityPermission entityPermission) {
-        return contactListFactory.getEntityFromQuery(entityPermission, getDefaultContactListQueries);
+        var baseQuery = session.getDslContext()
+                .select(ContactLists.fields())
+                .from(ContactLists)
+                .join(ContactListDetails).onKey(CONTACT_LISTS_ACTIVE_DETAIL_FK)
+                .where(ContactListDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactListFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ContactList getDefaultContactList() {
@@ -1899,31 +1731,20 @@ public class ContactListControl
         return getDefaultContactList(EntityPermission.READ_WRITE).getLastDetailForUpdate().getContactListDetailValue();
     }
 
-    private static final Map<EntityPermission, String> getContactListsQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlists, contactlistdetails
-                WHERE clst_activedetailid = clstdt_contactlistdetailid
-                ORDER BY clstdt_sortorder, clstdt_contactlistname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlists, contactlistdetails
-                WHERE clst_activedetailid = clstdt_contactlistdetailid
-                FOR UPDATE
-                """);
-        getContactListsQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ContactList> getContactLists(EntityPermission entityPermission) {
-        return contactListFactory.getEntitiesFromQuery(entityPermission, getContactListsQueries);
+        var baseQuery = session.getDslContext()
+                .select(ContactLists.fields())
+                .from(ContactLists)
+                .join(ContactListDetails).onKey(CONTACT_LISTS_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ContactListDetails.SORT_ORDER, ContactListDetails.CONTACT_LIST_NAME),
+                    ContactListFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactListFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ContactList> getContactLists() {
@@ -1934,34 +1755,21 @@ public class ContactListControl
         return getContactLists(EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getContactListsByContactListGroupQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlists, contactlistdetails
-                WHERE clst_activedetailid = clstdt_contactlistdetailid
-                AND clstdt_clstgrp_contactlistgroupid = ?
-                ORDER BY clstdt_sortorder, clstdt_contactlistname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlists, contactlistdetails
-                WHERE clst_activedetailid = clstdt_contactlistdetailid
-                AND clstdt_clstgrp_contactlistgroupid = ?
-                FOR UPDATE
-                """);
-        getContactListsByContactListGroupQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ContactList> getContactListsByContactListGroup(ContactListGroup contactListGroup, EntityPermission entityPermission) {
-        return contactListFactory.getEntitiesFromQuery(entityPermission, getContactListsByContactListGroupQueries,
-                contactListGroup);
+        var baseQuery = session.getDslContext()
+                .select(ContactLists.fields())
+                .from(ContactLists)
+                .join(ContactListDetails).onKey(CONTACT_LISTS_ACTIVE_DETAIL_FK)
+                .where(ContactListDetails.CONTACT_LIST_GROUP.eq(contactListGroup.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ContactListDetails.SORT_ORDER, ContactListDetails.CONTACT_LIST_NAME),
+                    ContactListFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactListFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ContactList> getContactListsByContactListGroup(ContactListGroup contactListGroup) {
@@ -1972,34 +1780,21 @@ public class ContactListControl
         return getContactListsByContactListGroup(contactListGroup, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getContactListsByContactListTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlists, contactlistdetails
-                WHERE clst_activedetailid = clstdt_contactlistdetailid
-                AND clstdt_clsttyp_contactlisttypeid = ?
-                ORDER BY clstdt_sortorder, clstdt_contactlistname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlists, contactlistdetails
-                WHERE clst_activedetailid = clstdt_contactlistdetailid
-                AND clstdt_clsttyp_contactlisttypeid = ?
-                FOR UPDATE
-                """);
-        getContactListsByContactListTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ContactList> getContactListsByContactListType(ContactListType contactListType, EntityPermission entityPermission) {
-        return contactListFactory.getEntitiesFromQuery(entityPermission, getContactListsByContactListTypeQueries,
-                contactListType);
+        var baseQuery = session.getDslContext()
+                .select(ContactLists.fields())
+                .from(ContactLists)
+                .join(ContactListDetails).onKey(CONTACT_LISTS_ACTIVE_DETAIL_FK)
+                .where(ContactListDetails.CONTACT_LIST_TYPE.eq(contactListType.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ContactListDetails.SORT_ORDER, ContactListDetails.CONTACT_LIST_NAME),
+                    ContactListFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactListFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ContactList> getContactListsByContactListType(ContactListType contactListType) {
@@ -2010,34 +1805,21 @@ public class ContactListControl
         return getContactListsByContactListType(contactListType, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getContactListsByContactListFrequencyQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlists, contactlistdetails
-                WHERE clst_activedetailid = clstdt_contactlistdetailid
-                AND clstdt_clstfrq_contactlistfrequencyid = ?
-                ORDER BY clstdt_sortorder, clstdt_contactlistname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlists, contactlistdetails
-                WHERE clst_activedetailid = clstdt_contactlistdetailid
-                AND clstdt_clstfrq_contactlistfrequencyid = ?
-                FOR UPDATE
-                """);
-        getContactListsByContactListFrequencyQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ContactList> getContactListsByContactListFrequency(ContactListFrequency contactListFrequency, EntityPermission entityPermission) {
-        return contactListFactory.getEntitiesFromQuery(entityPermission, getContactListsByContactListFrequencyQueries,
-                contactListFrequency);
+        var baseQuery = session.getDslContext()
+                .select(ContactLists.fields())
+                .from(ContactLists)
+                .join(ContactListDetails).onKey(CONTACT_LISTS_ACTIVE_DETAIL_FK)
+                .where(ContactListDetails.CONTACT_LIST_FREQUENCY.eq(contactListFrequency.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ContactListDetails.SORT_ORDER, ContactListDetails.CONTACT_LIST_NAME),
+                    ContactListFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactListFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ContactList> getContactListsByContactListFrequency(ContactListFrequency contactListFrequency) {
@@ -2048,34 +1830,21 @@ public class ContactListControl
         return getContactListsByContactListFrequency(contactListFrequency, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getContactListsByWorkflowEntranceQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlists, contactlistdetails
-                WHERE clst_activedetailid = clstdt_contactlistdetailid
-                AND clstdt_wkflen_workflowentranceid = ?
-                ORDER BY clstdt_sortorder, clstdt_contactlistname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlists, contactlistdetails
-                WHERE clst_activedetailid = clstdt_contactlistdetailid
-                AND clstdt_wkflen_workflowentranceid = ?
-                FOR UPDATE
-                """);
-        getContactListsByWorkflowEntranceQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ContactList> getContactListsByWorkflowEntrance(WorkflowEntrance workflowEntrance, EntityPermission entityPermission) {
-        return contactListFactory.getEntitiesFromQuery(entityPermission, getContactListsByWorkflowEntranceQueries,
-                workflowEntrance);
+        var baseQuery = session.getDslContext()
+                .select(ContactLists.fields())
+                .from(ContactLists)
+                .join(ContactListDetails).onKey(CONTACT_LISTS_ACTIVE_DETAIL_FK)
+                .where(ContactListDetails.DEFAULT_PARTY_CONTACT_LIST_STATUS.eq(workflowEntrance.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ContactListDetails.SORT_ORDER, ContactListDetails.CONTACT_LIST_NAME),
+                    ContactListFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactListFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ContactList> getContactListsByWorkflowEntrance(WorkflowEntrance workflowEntrance) {
@@ -2248,6 +2017,9 @@ public class ContactListControl
     @Inject
     protected ContactListDescriptionFactory contactListDescriptionFactory;
 
+    @Inject
+    ContactListDescriptionTransferCache contactListDescriptionTransferCache;
+
     public ContactListDescription createContactListDescription(ContactList contactList, Language language, String description,
             BasePK createdBy) {
         var contactListDescription = contactListDescriptionFactory.create(contactList,
@@ -2258,30 +2030,20 @@ public class ContactListControl
         return contactListDescription;
     }
 
-    private static final Map<EntityPermission, String> getContactListDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlistdescriptions
-                WHERE clstd_clst_contactlistid = ? AND clstd_lang_languageid = ? AND clstd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlistdescriptions
-                WHERE clstd_clst_contactlistid = ? AND clstd_lang_languageid = ? AND clstd_thrutime = ?
-                FOR UPDATE
-                """);
-        getContactListDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ContactListDescription getContactListDescription(ContactList contactList, Language language, EntityPermission entityPermission) {
-        return contactListDescriptionFactory.getEntityFromQuery(entityPermission, getContactListDescriptionQueries,
-                contactList, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ContactListDescriptions.fields())
+                .from(ContactListDescriptions)
+                .where(ContactListDescriptions.CONTACT_LIST.eq(contactList.getPrimaryKey()),
+                        ContactListDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ContactListDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactListDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ContactListDescription getContactListDescription(ContactList contactList, Language language) {
@@ -2300,32 +2062,25 @@ public class ContactListControl
         return getContactListDescriptionValue(getContactListDescriptionForUpdate(contactList, language));
     }
 
-    private static final Map<EntityPermission, String> getContactListDescriptionsByContactListQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlistdescriptions, languages
-                WHERE clstd_clst_contactlistid = ? AND clstd_thrutime = ? AND clstd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlistdescriptions
-                WHERE clstd_clst_contactlistid = ? AND clstd_thrutime = ?
-                FOR UPDATE
-                """);
-        getContactListDescriptionsByContactListQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ContactListDescription> getContactListDescriptionsByContactList(ContactList contactList, EntityPermission entityPermission) {
-        return contactListDescriptionFactory.getEntitiesFromQuery(entityPermission, getContactListDescriptionsByContactListQueries,
-                contactList, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContactListDescriptions.fields())
+                    .from(ContactListDescriptions)
+                    .join(Languages).onKey(CONTACT_LIST_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ContactListDescriptions.CONTACT_LIST.eq(contactList.getPrimaryKey()),
+                            ContactListDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ContactListDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContactListDescriptions.fields())
+                    .from(ContactListDescriptions)
+                    .where(ContactListDescriptions.CONTACT_LIST.eq(contactList.getPrimaryKey()),
+                            ContactListDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return contactListDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ContactListDescription> getContactListDescriptionsByContactList(ContactList contactList) {
@@ -2407,10 +2162,13 @@ public class ContactListControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected PartyContactListDetailFactory partyContactListDetailFactory;
+
+    @Inject
     protected PartyContactListFactory partyContactListFactory;
 
     @Inject
-    protected PartyContactListDetailFactory partyContactListDetailFactory;
+    PartyContactListTransferCache partyContactListTransferCache;
 
     public PartyContactList createPartyContactList(Party party, ContactList contactList, ContactListContactMechanismPurpose preferredContactListContactMechanismPurpose,
             BasePK createdBy) {
@@ -2445,56 +2203,49 @@ public class ContactListControl
     }
 
     public long countPartyContactListsByParty(final Party party) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partycontactlists
-                        JOIN partycontactlistdetails ON parclstdt_partycontactlistdetailid = parclst_activedetailid
-                        WHERE parclstdt_par_partyid = ?
-                        """, party);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyContactLists)
+                .join(PartyContactListDetails).onKey(PARTY_CONTACT_LISTS_ACTIVE_DETAIL_FK)
+                .where(PartyContactListDetails.PARTY.eq(party.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyContactListsByContactList(final ContactList contactList) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partycontactlists
-                        JOIN partycontactlistdetails ON parclstdt_partycontactlistdetailid = parclst_activedetailid
-                        WHERE parclstdt_clst_contactlistid = ?
-                        """, contactList);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyContactLists)
+                .join(PartyContactListDetails).onKey(PARTY_CONTACT_LISTS_ACTIVE_DETAIL_FK)
+                .where(PartyContactListDetails.CONTACT_LIST.eq(contactList.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyContactListsByPreferredContactListContactMechanismPurpose(final ContactListContactMechanismPurpose preferredContactListContactMechanismPurpose) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partycontactlists
-                        JOIN partycontactlistdetails ON parclstdt_partycontactlistdetailid = parclst_activedetailid
-                        WHERE parclstdt_preferredcontactlistcontactmechanismpurposeid = ?
-                        """, preferredContactListContactMechanismPurpose);
-    }
-
-    private static final Map<EntityPermission, String> getPartyContactListQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM partycontactlists, partycontactlistdetails
-                WHERE parclst_activedetailid = parclstdt_partycontactlistdetailid AND parclstdt_par_partyid = ? AND parclstdt_clst_contactlistid = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM partycontactlists, partycontactlistdetails
-                WHERE parclst_activedetailid = parclstdt_partycontactlistdetailid AND parclstdt_par_partyid = ? AND parclstdt_clst_contactlistid = ?
-                FOR UPDATE
-                """);
-        getPartyContactListQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyContactLists)
+                .join(PartyContactListDetails).onKey(PARTY_CONTACT_LISTS_ACTIVE_DETAIL_FK)
+                .where(PartyContactListDetails.PREFERRED_CONTACT_LIST_CONTACT_MECHANISM_PURPOSE.eq(preferredContactListContactMechanismPurpose.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public PartyContactList getPartyContactList(Party party, ContactList contactList, EntityPermission entityPermission) {
-        return partyContactListFactory.getEntityFromQuery(entityPermission, getPartyContactListQueries,
-                party, contactList);
+        var baseQuery = session.getDslContext()
+                .select(PartyContactLists.fields())
+                .from(PartyContactLists)
+                .join(PartyContactListDetails).onKey(PARTY_CONTACT_LISTS_ACTIVE_DETAIL_FK)
+                .where(PartyContactListDetails.PARTY.eq(party.getPrimaryKey()),
+                        PartyContactListDetails.CONTACT_LIST.eq(contactList.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyContactListFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PartyContactList getPartyContactList(Party party, ContactList contactList) {
@@ -2513,34 +2264,26 @@ public class ContactListControl
         return getPartyContactListDetailValueForUpdate(getPartyContactListForUpdate(party, contactList));
     }
     
-    private static final Map<EntityPermission, String> getPartyContactListsByPartyQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM partycontactlists, partycontactlistdetails, contactlists, contactlistdetails
-                WHERE parclst_activedetailid = parclstdt_partycontactlistdetailid AND parclstdt_par_partyid = ?
-                AND parclstdt_clst_contactlistid = clst_contactlistid
-                AND clst_activedetailid = clstdt_contactlistdetailid
-                ORDER BY clstdt_sortorder, clstdt_contactlistname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM partycontactlists, partycontactlistdetails
-                WHERE parclst_activedetailid = parclstdt_partycontactlistdetailid AND parclstdt_par_partyid = ?
-                FOR UPDATE
-                """);
-        getPartyContactListsByPartyQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PartyContactList> getPartyContactListsByParty(Party party, EntityPermission entityPermission) {
-        return partyContactListFactory.getEntitiesFromQuery(entityPermission, getPartyContactListsByPartyQueries,
-                party);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyContactLists.fields())
+                    .from(PartyContactLists)
+                    .join(PartyContactListDetails).onKey(PARTY_CONTACT_LISTS_ACTIVE_DETAIL_FK)
+                    .join(ContactLists).onKey(PARTY_CONTACT_LIST_DETAILS_CONTACT_LIST_FK)
+                    .join(ContactListDetails).onKey(CONTACT_LISTS_ACTIVE_DETAIL_FK)
+                    .where(PartyContactListDetails.PARTY.eq(party.getPrimaryKey()))
+                    .orderBy(ContactListDetails.SORT_ORDER, ContactListDetails.CONTACT_LIST_NAME),
+                    PartyContactListFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyContactLists.fields())
+                    .from(PartyContactLists)
+                    .join(PartyContactListDetails).onKey(PARTY_CONTACT_LISTS_ACTIVE_DETAIL_FK)
+                    .where(PartyContactListDetails.PARTY.eq(party.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return partyContactListFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyContactList> getPartyContactListsByParty(Party party) {
@@ -2551,34 +2294,27 @@ public class ContactListControl
         return getPartyContactListsByParty(party, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getPartyContactListsByContactListQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM partycontactlists, partycontactlistdetails, parties, partydetails, partytypes
-                WHERE parclst_activedetailid = parclstdt_partycontactlistdetailid AND parclstdt_clst_contactlistid = ?
-                AND parclstdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
-                AND pardt_ptyp_partytypeid = ptyp_partytypeid
-                ORDER BY pardt_partyname, ptyp_sortorder, ptyp_partytypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM partycontactlists, partycontactlistdetails
-                WHERE parclst_activedetailid = parclstdt_partycontactlistdetailid AND parclstdt_clst_contactlistid = ?
-                FOR UPDATE
-                """);
-        getPartyContactListsByContactListQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PartyContactList> getPartyContactListsByContactList(ContactList contactList, EntityPermission entityPermission) {
-        return partyContactListFactory.getEntitiesFromQuery(entityPermission, getPartyContactListsByContactListQueries,
-                contactList);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyContactLists.fields())
+                    .from(PartyContactLists)
+                    .join(PartyContactListDetails).onKey(PARTY_CONTACT_LISTS_ACTIVE_DETAIL_FK)
+                    .join(Parties).onKey(PARTY_CONTACT_LIST_DETAILS_PARTY_FK)
+                    .join(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .join(PartyTypes).onKey(PARTY_DETAILS_PARTY_TYPE_FK)
+                    .where(PartyContactListDetails.CONTACT_LIST.eq(contactList.getPrimaryKey()))
+                    .orderBy(PartyDetails.PARTY_NAME, PartyTypes.SORT_ORDER, PartyTypes.PARTY_TYPE_NAME),
+                    PartyContactListFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyContactLists.fields())
+                    .from(PartyContactLists)
+                    .join(PartyContactListDetails).onKey(PARTY_CONTACT_LISTS_ACTIVE_DETAIL_FK)
+                    .where(PartyContactListDetails.CONTACT_LIST.eq(contactList.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return partyContactListFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyContactList> getPartyContactListsByContactList(ContactList contactList) {
@@ -2589,31 +2325,30 @@ public class ContactListControl
         return getPartyContactListsByContactList(contactList, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getPartyContactListsByPreferredContactListContactMechanismPurposeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM partycontactlists, partycontactlistdetails
-                WHERE parclst_activedetailid = parclstdt_partycontactlistdetailid AND parclstdt_preferredcontactlistcontactmechanismpurposeid = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM partycontactlists, partycontactlistdetails
-                WHERE parclst_activedetailid = parclstdt_partycontactlistdetailid AND parclstdt_preferredcontactlistcontactmechanismpurposeid = ?
-                FOR UPDATE
-                """);
-        getPartyContactListsByPreferredContactListContactMechanismPurposeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PartyContactList> getPartyContactListsByPreferredContactListContactMechanismPurpose(ContactListContactMechanismPurpose preferredContactListContactMechanismPurpose,
             EntityPermission entityPermission) {
-        return partyContactListFactory.getEntitiesFromQuery(entityPermission, getPartyContactListsByPreferredContactListContactMechanismPurposeQueries,
-                preferredContactListContactMechanismPurpose);
+        var baseQuery = session.getDslContext()
+                .select(PartyContactLists.fields())
+                .from(PartyContactLists)
+                .join(PartyContactListDetails).onKey(PARTY_CONTACT_LISTS_ACTIVE_DETAIL_FK)
+                .where(PartyContactListDetails.PREFERRED_CONTACT_LIST_CONTACT_MECHANISM_PURPOSE.eq(preferredContactListContactMechanismPurpose.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyContactLists.fields())
+                    .from(PartyContactLists)
+                    .join(PartyContactListDetails).onKey(PARTY_CONTACT_LISTS_ACTIVE_DETAIL_FK)
+                    .join(Parties).onKey(PARTY_CONTACT_LIST_DETAILS_PARTY_FK)
+                    .join(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .join(ContactLists).onKey(PARTY_CONTACT_LIST_DETAILS_CONTACT_LIST_FK)
+                    .join(ContactListDetails).onKey(CONTACT_LISTS_LAST_DETAIL_FK)
+                    .where(PartyContactListDetails.PREFERRED_CONTACT_LIST_CONTACT_MECHANISM_PURPOSE.eq(preferredContactListContactMechanismPurpose.getPrimaryKey()))
+                    .orderBy(PartyDetails.PARTY_NAME, ContactListDetails.SORT_ORDER, ContactListDetails.CONTACT_LIST_NAME),
+                    PartyContactListFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyContactListFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyContactList> getPartyContactListsByPreferredContactListContactMechanismPurpose(ContactListContactMechanismPurpose preferredContactListContactMechanismPurpose) {
@@ -2745,6 +2480,9 @@ public class ContactListControl
     @Inject
     protected PartyTypeContactListGroupFactory partyTypeContactListGroupFactory;
 
+    @Inject
+    PartyTypeContactListGroupTransferCache partyTypeContactListGroupTransferCache;
+
     public PartyTypeContactListGroup createPartyTypeContactListGroup(PartyType partyType, ContactListGroup contactListGroup,
             Boolean addWhenCreated, BasePK createdBy) {
         var partyTypeContactListGroup = partyTypeContactListGroupFactory.create(
@@ -2756,45 +2494,39 @@ public class ContactListControl
     }
 
     public long countPartyTypeContactListGroupsByPartyType(final PartyType partyType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partytypecontactlistgroups
-                        WHERE ptypclstgrp_ptyp_partytypeid = ? AND ptypclstgrp_thrutime = ?
-                        """, partyType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyTypeContactListGroups)
+                .where(PartyTypeContactListGroups.PARTY_TYPE.eq(partyType.getPrimaryKey()),
+                        PartyTypeContactListGroups.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyTypeContactListGroupsByContactListGroup(final ContactListGroup contactListGroup) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partytypecontactlistgroups
-                        WHERE ptypclstgrp_clstgrp_contactlistgroupid = ? AND ptypclstgrp_thrutime = ?
-                        """, contactListGroup, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getPartyTypeContactListGroupQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM partytypecontactlistgroups
-                WHERE ptypclstgrp_ptyp_partytypeid = ? AND ptypclstgrp_clstgrp_contactlistgroupid = ? AND ptypclstgrp_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM partytypecontactlistgroups
-                WHERE ptypclstgrp_ptyp_partytypeid = ? AND ptypclstgrp_clstgrp_contactlistgroupid = ? AND ptypclstgrp_thrutime = ?
-                FOR UPDATE
-                """);
-        getPartyTypeContactListGroupQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyTypeContactListGroups)
+                .where(PartyTypeContactListGroups.CONTACT_LIST_GROUP.eq(contactListGroup.getPrimaryKey()),
+                        PartyTypeContactListGroups.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private PartyTypeContactListGroup getPartyTypeContactListGroup(PartyType partyType, ContactListGroup contactListGroup, EntityPermission entityPermission) {
-        return partyTypeContactListGroupFactory.getEntityFromQuery(entityPermission, getPartyTypeContactListGroupQueries,
-                partyType, contactListGroup, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(PartyTypeContactListGroups.fields())
+                .from(PartyTypeContactListGroups)
+                .where(PartyTypeContactListGroups.PARTY_TYPE.eq(partyType.getPrimaryKey()),
+                        PartyTypeContactListGroups.CONTACT_LIST_GROUP.eq(contactListGroup.getPrimaryKey()),
+                        PartyTypeContactListGroups.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyTypeContactListGroupFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PartyTypeContactListGroup getPartyTypeContactListGroup(PartyType partyType, ContactListGroup contactListGroup) {
@@ -2813,33 +2545,26 @@ public class ContactListControl
         return getPartyTypeContactListGroupValue(getPartyTypeContactListGroupForUpdate(partyType, contactListGroup));
     }
     
-    private static final Map<EntityPermission, String> getPartyTypeContactListGroupsByPartyTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM partytypecontactlistgroups, contactlistgroups, contactlistgroupdetails
-                WHERE ptypclstgrp_ptyp_partytypeid = ? AND ptypclstgrp_thrutime = ?
-                AND ptypclstgrp_clstgrp_contactlistgroupid = clstgrp_contactlistgroupid AND clstgrp_lastdetailid = clstgrpdt_contactlistgroupdetailid
-                ORDER BY clstgrpdt_sortorder, clstgrpdt_contactlistgroupname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM partytypecontactlistgroups
-                WHERE ptypclstgrp_ptyp_partytypeid = ? AND ptypclstgrp_thrutime = ?
-                FOR UPDATE
-                """);
-        getPartyTypeContactListGroupsByPartyTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PartyTypeContactListGroup> getPartyTypeContactListGroupsByPartyType(PartyType partyType, EntityPermission entityPermission) {
-        return partyTypeContactListGroupFactory.getEntitiesFromQuery(entityPermission, getPartyTypeContactListGroupsByPartyTypeQueries,
-                partyType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyTypeContactListGroups.fields())
+                    .from(PartyTypeContactListGroups)
+                    .join(ContactListGroups).onKey(PARTY_TYPE_CONTACT_LIST_GROUPS_CONTACT_LIST_GROUP_FK)
+                    .join(ContactListGroupDetails).onKey(CONTACT_LIST_GROUPS_LAST_DETAIL_FK)
+                    .where(PartyTypeContactListGroups.PARTY_TYPE.eq(partyType.getPrimaryKey()),
+                            PartyTypeContactListGroups.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ContactListGroupDetails.SORT_ORDER, ContactListGroupDetails.CONTACT_LIST_GROUP_NAME),
+                    PartyTypeContactListGroupFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyTypeContactListGroups.fields())
+                    .from(PartyTypeContactListGroups)
+                    .where(PartyTypeContactListGroups.PARTY_TYPE.eq(partyType.getPrimaryKey()),
+                            PartyTypeContactListGroups.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return partyTypeContactListGroupFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyTypeContactListGroup> getPartyTypeContactListGroupsByPartyType(PartyType partyType) {
@@ -2850,33 +2575,25 @@ public class ContactListControl
         return getPartyTypeContactListGroupsByPartyType(partyType, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getPartyTypeContactListGroupsByContactListGroupQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM partytypecontactlistgroups, partytypes
-                WHERE ptypclstgrp_clstgrp_contactlistgroupid = ? AND ptypclstgrp_thrutime = ?
-                AND ptypclstgrp_ptyp_partytypeid = ptyp_partytypeid
-                ORDER BY ptyp_sortorder, ptyp_partytypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM partytypecontactlistgroups
-                WHERE ptypclstgrp_clstgrp_contactlistgroupid = ? AND ptypclstgrp_thrutime = ?
-                FOR UPDATE
-                """);
-        getPartyTypeContactListGroupsByContactListGroupQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PartyTypeContactListGroup> getPartyTypeContactListGroupsByContactListGroup(ContactListGroup contactListGroup, EntityPermission entityPermission) {
-        return partyTypeContactListGroupFactory.getEntitiesFromQuery(entityPermission, getPartyTypeContactListGroupsByContactListGroupQueries,
-                contactListGroup, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyTypeContactListGroups.fields())
+                    .from(PartyTypeContactListGroups)
+                    .join(PartyTypes).onKey(PARTY_TYPE_CONTACT_LIST_GROUPS_PARTY_TYPE_FK)
+                    .where(PartyTypeContactListGroups.CONTACT_LIST_GROUP.eq(contactListGroup.getPrimaryKey()),
+                            PartyTypeContactListGroups.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PartyTypes.SORT_ORDER, PartyTypes.PARTY_TYPE_NAME),
+                    PartyTypeContactListGroupFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyTypeContactListGroups.fields())
+                    .from(PartyTypeContactListGroups)
+                    .where(PartyTypeContactListGroups.CONTACT_LIST_GROUP.eq(contactListGroup.getPrimaryKey()),
+                            PartyTypeContactListGroups.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return partyTypeContactListGroupFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyTypeContactListGroup> getPartyTypeContactListGroupsByContactListGroup(ContactListGroup contactListGroup) {
@@ -2956,6 +2673,9 @@ public class ContactListControl
     @Inject
     protected PartyTypeContactListFactory partyTypeContactListFactory;
 
+    @Inject
+    PartyTypeContactListTransferCache partyTypeContactListTransferCache;
+
     public PartyTypeContactList createPartyTypeContactList(PartyType partyType, ContactList contactList, Boolean addWhenCreated, BasePK createdBy) {
         var partyTypeContactList = partyTypeContactListFactory.create( partyType, contactList, addWhenCreated,
                 session.getStartTime(), Session.MAX_TIME);
@@ -2966,45 +2686,39 @@ public class ContactListControl
     }
 
     public long countPartyTypeContactListsByPartyType(final PartyType partyType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partytypecontactlists
-                        WHERE ptypclst_ptyp_partytypeid = ? AND ptypclst_thrutime = ?
-                        """, partyType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyTypeContactLists)
+                .where(PartyTypeContactLists.PARTY_TYPE.eq(partyType.getPrimaryKey()),
+                        PartyTypeContactLists.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyTypeContactListsByContactList(final ContactList contactList) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partytypecontactlists
-                        WHERE ptypclst_clst_contactlistid = ? AND ptypclst_thrutime = ?
-                        """, contactList, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getPartyTypeContactListQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM partytypecontactlists
-                WHERE ptypclst_ptyp_partytypeid = ? AND ptypclst_clst_contactlistid = ? AND ptypclst_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM partytypecontactlists
-                WHERE ptypclst_ptyp_partytypeid = ? AND ptypclst_clst_contactlistid = ? AND ptypclst_thrutime = ?
-                FOR UPDATE
-                """);
-        getPartyTypeContactListQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyTypeContactLists)
+                .where(PartyTypeContactLists.CONTACT_LIST.eq(contactList.getPrimaryKey()),
+                        PartyTypeContactLists.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private PartyTypeContactList getPartyTypeContactList(PartyType partyType, ContactList contactList, EntityPermission entityPermission) {
-        return partyTypeContactListFactory.getEntityFromQuery(entityPermission, getPartyTypeContactListQueries,
-                partyType, contactList, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(PartyTypeContactLists.fields())
+                .from(PartyTypeContactLists)
+                .where(PartyTypeContactLists.PARTY_TYPE.eq(partyType.getPrimaryKey()),
+                        PartyTypeContactLists.CONTACT_LIST.eq(contactList.getPrimaryKey()),
+                        PartyTypeContactLists.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyTypeContactListFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PartyTypeContactList getPartyTypeContactList(PartyType partyType, ContactList contactList) {
@@ -3023,33 +2737,26 @@ public class ContactListControl
         return getPartyTypeContactListValue(getPartyTypeContactListForUpdate(partyType, contactList));
     }
     
-    private static final Map<EntityPermission, String> getPartyTypeContactListsByPartyTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM partytypecontactlists, contactlists, contactlistdetails
-                WHERE ptypclst_ptyp_partytypeid = ? AND ptypclst_thrutime = ?
-                AND ptypclst_clst_contactlistid = clst_contactlistid AND clst_lastdetailid = clstdt_contactlistdetailid
-                ORDER BY clstdt_sortorder, clstdt_contactlistname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM partytypecontactlists
-                WHERE ptypclst_ptyp_partytypeid = ? AND ptypclst_thrutime = ?
-                FOR UPDATE
-                """);
-        getPartyTypeContactListsByPartyTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PartyTypeContactList> getPartyTypeContactListsByPartyType(PartyType partyType, EntityPermission entityPermission) {
-        return partyTypeContactListFactory.getEntitiesFromQuery(entityPermission, getPartyTypeContactListsByPartyTypeQueries,
-                partyType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyTypeContactLists.fields())
+                    .from(PartyTypeContactLists)
+                    .join(ContactLists).onKey(PARTY_TYPE_CONTACT_LISTS_CONTACT_LIST_FK)
+                    .join(ContactListDetails).onKey(CONTACT_LISTS_LAST_DETAIL_FK)
+                    .where(PartyTypeContactLists.PARTY_TYPE.eq(partyType.getPrimaryKey()),
+                            PartyTypeContactLists.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ContactListDetails.SORT_ORDER, ContactListDetails.CONTACT_LIST_NAME),
+                    PartyTypeContactListFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyTypeContactLists.fields())
+                    .from(PartyTypeContactLists)
+                    .where(PartyTypeContactLists.PARTY_TYPE.eq(partyType.getPrimaryKey()),
+                            PartyTypeContactLists.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return partyTypeContactListFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyTypeContactList> getPartyTypeContactListsByPartyType(PartyType partyType) {
@@ -3060,33 +2767,25 @@ public class ContactListControl
         return getPartyTypeContactListsByPartyType(partyType, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getPartyTypeContactListsByContactListQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM partytypecontactlists, partytypes
-                WHERE ptypclst_clst_contactlistid = ? AND ptypclst_thrutime = ?
-                AND ptypclst_ptyp_partytypeid = ptyp_partytypeid
-                ORDER BY ptyp_sortorder, ptyp_partytypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM partytypecontactlists
-                WHERE ptypclst_clst_contactlistid = ? AND ptypclst_thrutime = ?
-                FOR UPDATE
-                """);
-        getPartyTypeContactListsByContactListQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PartyTypeContactList> getPartyTypeContactListsByContactList(ContactList contactList, EntityPermission entityPermission) {
-        return partyTypeContactListFactory.getEntitiesFromQuery(entityPermission, getPartyTypeContactListsByContactListQueries,
-                contactList, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyTypeContactLists.fields())
+                    .from(PartyTypeContactLists)
+                    .join(PartyTypes).onKey(PARTY_TYPE_CONTACT_LISTS_PARTY_TYPE_FK)
+                    .where(PartyTypeContactLists.CONTACT_LIST.eq(contactList.getPrimaryKey()),
+                            PartyTypeContactLists.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PartyTypes.SORT_ORDER, PartyTypes.PARTY_TYPE_NAME),
+                    PartyTypeContactListFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyTypeContactLists.fields())
+                    .from(PartyTypeContactLists)
+                    .where(PartyTypeContactLists.CONTACT_LIST.eq(contactList.getPrimaryKey()),
+                            PartyTypeContactLists.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return partyTypeContactListFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyTypeContactList> getPartyTypeContactListsByContactList(ContactList contactList) {
@@ -3166,6 +2865,9 @@ public class ContactListControl
     @Inject
     protected CustomerTypeContactListGroupFactory customerTypeContactListGroupFactory;
 
+    @Inject
+    CustomerTypeContactListGroupTransferCache customerTypeContactListGroupTransferCache;
+
     public CustomerTypeContactListGroup createCustomerTypeContactListGroup(CustomerType customerType, ContactListGroup contactListGroup,
             Boolean addWhenCreated, BasePK createdBy) {
         var customerTypeContactListGroup = customerTypeContactListGroupFactory.create(
@@ -3177,45 +2879,39 @@ public class ContactListControl
     }
 
     public long countCustomerTypeContactListGroupsByCustomerType(final CustomerType customerType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM customertypecontactlistgroups
-                        WHERE cutyclstgrp_cuty_customertypeid = ? AND cutyclstgrp_thrutime = ?
-                        """, customerType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(CustomerTypeContactListGroups)
+                .where(CustomerTypeContactListGroups.CUSTOMER_TYPE.eq(customerType.getPrimaryKey()),
+                        CustomerTypeContactListGroups.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countCustomerTypeContactListGroupsByContactListGroup(final ContactListGroup contactListGroup) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM customertypecontactlistgroups
-                        WHERE cutyclstgrp_clstgrp_contactlistgroupid = ? AND cutyclstgrp_thrutime = ?
-                        """, contactListGroup, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getCustomerTypeContactListGroupQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM customertypecontactlistgroups
-                WHERE cutyclstgrp_cuty_customertypeid = ? AND cutyclstgrp_clstgrp_contactlistgroupid = ? AND cutyclstgrp_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM customertypecontactlistgroups
-                WHERE cutyclstgrp_cuty_customertypeid = ? AND cutyclstgrp_clstgrp_contactlistgroupid = ? AND cutyclstgrp_thrutime = ?
-                FOR UPDATE
-                """);
-        getCustomerTypeContactListGroupQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(CustomerTypeContactListGroups)
+                .where(CustomerTypeContactListGroups.CONTACT_LIST_GROUP.eq(contactListGroup.getPrimaryKey()),
+                        CustomerTypeContactListGroups.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private CustomerTypeContactListGroup getCustomerTypeContactListGroup(CustomerType customerType, ContactListGroup contactListGroup, EntityPermission entityPermission) {
-        return customerTypeContactListGroupFactory.getEntityFromQuery(entityPermission, getCustomerTypeContactListGroupQueries,
-                customerType, contactListGroup, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(CustomerTypeContactListGroups.fields())
+                .from(CustomerTypeContactListGroups)
+                .where(CustomerTypeContactListGroups.CUSTOMER_TYPE.eq(customerType.getPrimaryKey()),
+                        CustomerTypeContactListGroups.CONTACT_LIST_GROUP.eq(contactListGroup.getPrimaryKey()),
+                        CustomerTypeContactListGroups.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return customerTypeContactListGroupFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public CustomerTypeContactListGroup getCustomerTypeContactListGroup(CustomerType customerType, ContactListGroup contactListGroup) {
@@ -3234,33 +2930,26 @@ public class ContactListControl
         return getCustomerTypeContactListGroupValue(getCustomerTypeContactListGroupForUpdate(customerType, contactListGroup));
     }
 
-    private static final Map<EntityPermission, String> getCustomerTypeContactListGroupsByCustomerTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM customertypecontactlistgroups, contactlistgroups, contactlistgroupdetails
-                WHERE cutyclstgrp_cuty_customertypeid = ? AND cutyclstgrp_thrutime = ?
-                AND cutyclstgrp_clstgrp_contactlistgroupid = clstgrp_contactlistgroupid AND clstgrp_lastdetailid = clstgrpdt_contactlistgroupdetailid
-                ORDER BY clstgrpdt_sortorder, clstgrpdt_contactlistgroupname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM customertypecontactlistgroups
-                WHERE cutyclstgrp_cuty_customertypeid = ? AND cutyclstgrp_thrutime = ?
-                FOR UPDATE
-                """);
-        getCustomerTypeContactListGroupsByCustomerTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<CustomerTypeContactListGroup> getCustomerTypeContactListGroupsByCustomerType(CustomerType customerType, EntityPermission entityPermission) {
-        return customerTypeContactListGroupFactory.getEntitiesFromQuery(entityPermission, getCustomerTypeContactListGroupsByCustomerTypeQueries,
-                customerType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CustomerTypeContactListGroups.fields())
+                    .from(CustomerTypeContactListGroups)
+                    .join(ContactListGroups).onKey(CUSTOMER_TYPE_CONTACT_LIST_GROUPS_CONTACT_LIST_GROUP_FK)
+                    .join(ContactListGroupDetails).onKey(CONTACT_LIST_GROUPS_LAST_DETAIL_FK)
+                    .where(CustomerTypeContactListGroups.CUSTOMER_TYPE.eq(customerType.getPrimaryKey()),
+                            CustomerTypeContactListGroups.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ContactListGroupDetails.SORT_ORDER, ContactListGroupDetails.CONTACT_LIST_GROUP_NAME),
+                    CustomerTypeContactListGroupFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(CustomerTypeContactListGroups.fields())
+                    .from(CustomerTypeContactListGroups)
+                    .where(CustomerTypeContactListGroups.CUSTOMER_TYPE.eq(customerType.getPrimaryKey()),
+                            CustomerTypeContactListGroups.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return customerTypeContactListGroupFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<CustomerTypeContactListGroup> getCustomerTypeContactListGroupsByCustomerType(CustomerType customerType) {
@@ -3271,33 +2960,26 @@ public class ContactListControl
         return getCustomerTypeContactListGroupsByCustomerType(customerType, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getCustomerTypeContactListGroupsByContactListGroupQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM customertypecontactlistgroups, customertypes, customertypedetails
-                WHERE cutyclstgrp_clstgrp_contactlistgroupid = ? AND cutyclstgrp_thrutime = ?
-                AND cutyclstgrp_cuty_customertypeid = cuty_customertypeid AND cuty_lastdetailid = cutydt_customertypedetailid
-                ORDER BY cutydt_sortorder, cutydt_customertypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM customertypecontactlistgroups
-                WHERE cutyclstgrp_clstgrp_contactlistgroupid = ? AND cutyclstgrp_thrutime = ?
-                FOR UPDATE
-                """);
-        getCustomerTypeContactListGroupsByContactListGroupQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<CustomerTypeContactListGroup> getCustomerTypeContactListGroupsByContactListGroup(ContactListGroup contactListGroup, EntityPermission entityPermission) {
-        return customerTypeContactListGroupFactory.getEntitiesFromQuery(entityPermission, getCustomerTypeContactListGroupsByContactListGroupQueries,
-                contactListGroup, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CustomerTypeContactListGroups.fields())
+                    .from(CustomerTypeContactListGroups)
+                    .join(CustomerTypes).onKey(CUSTOMER_TYPE_CONTACT_LIST_GROUPS_CUSTOMER_TYPE_FK)
+                    .join(CustomerTypeDetails).onKey(CUSTOMER_TYPES_LAST_DETAIL_FK)
+                    .where(CustomerTypeContactListGroups.CONTACT_LIST_GROUP.eq(contactListGroup.getPrimaryKey()),
+                            CustomerTypeContactListGroups.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(CustomerTypeDetails.SORT_ORDER, CustomerTypeDetails.CUSTOMER_TYPE_NAME),
+                    CustomerTypeContactListGroupFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(CustomerTypeContactListGroups.fields())
+                    .from(CustomerTypeContactListGroups)
+                    .where(CustomerTypeContactListGroups.CONTACT_LIST_GROUP.eq(contactListGroup.getPrimaryKey()),
+                            CustomerTypeContactListGroups.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return customerTypeContactListGroupFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<CustomerTypeContactListGroup> getCustomerTypeContactListGroupsByContactListGroup(ContactListGroup contactListGroup) {
@@ -3377,6 +3059,9 @@ public class ContactListControl
     @Inject
     protected CustomerTypeContactListFactory customerTypeContactListFactory;
 
+    @Inject
+    CustomerTypeContactListTransferCache customerTypeContactListTransferCache;
+
     public CustomerTypeContactList createCustomerTypeContactList(CustomerType customerType, ContactList contactList, Boolean addWhenCreated, BasePK createdBy) {
         var customerTypeContactList = customerTypeContactListFactory.create( customerType, contactList, addWhenCreated,
                 session.getStartTime(), Session.MAX_TIME);
@@ -3387,45 +3072,39 @@ public class ContactListControl
     }
 
     public long countCustomerTypeContactListsByCustomerType(final CustomerType customerType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM customertypecontactlists
-                        WHERE cutyclst_cuty_customertypeid = ? AND cutyclst_thrutime = ?
-                        """, customerType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(CustomerTypeContactLists)
+                .where(CustomerTypeContactLists.CUSTOMER_TYPE.eq(customerType.getPrimaryKey()),
+                        CustomerTypeContactLists.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countCustomerTypeContactListsByContactList(final ContactList contactList) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM customertypecontactlists
-                        WHERE cutyclst_clst_contactlistid = ? AND cutyclst_thrutime = ?
-                        """, contactList, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getCustomerTypeContactListQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM customertypecontactlists
-                WHERE cutyclst_cuty_customertypeid = ? AND cutyclst_clst_contactlistid = ? AND cutyclst_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM customertypecontactlists
-                WHERE cutyclst_cuty_customertypeid = ? AND cutyclst_clst_contactlistid = ? AND cutyclst_thrutime = ?
-                FOR UPDATE
-                """);
-        getCustomerTypeContactListQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(CustomerTypeContactLists)
+                .where(CustomerTypeContactLists.CONTACT_LIST.eq(contactList.getPrimaryKey()),
+                        CustomerTypeContactLists.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private CustomerTypeContactList getCustomerTypeContactList(CustomerType customerType, ContactList contactList, EntityPermission entityPermission) {
-        return customerTypeContactListFactory.getEntityFromQuery(entityPermission, getCustomerTypeContactListQueries,
-                customerType, contactList, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(CustomerTypeContactLists.fields())
+                .from(CustomerTypeContactLists)
+                .where(CustomerTypeContactLists.CUSTOMER_TYPE.eq(customerType.getPrimaryKey()),
+                        CustomerTypeContactLists.CONTACT_LIST.eq(contactList.getPrimaryKey()),
+                        CustomerTypeContactLists.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return customerTypeContactListFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public CustomerTypeContactList getCustomerTypeContactList(CustomerType customerType, ContactList contactList) {
@@ -3444,33 +3123,26 @@ public class ContactListControl
         return getCustomerTypeContactListValue(getCustomerTypeContactListForUpdate(customerType, contactList));
     }
 
-    private static final Map<EntityPermission, String> getCustomerTypeContactListsByCustomerTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM customertypecontactlists, contactlists, contactlistdetails
-                WHERE cutyclst_cuty_customertypeid = ? AND cutyclst_thrutime = ?
-                AND cutyclst_clst_contactlistid = clst_contactlistid AND clst_lastdetailid = clstdt_contactlistdetailid
-                ORDER BY clstdt_sortorder, clstdt_contactlistname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM customertypecontactlists
-                WHERE cutyclst_cuty_customertypeid = ? AND cutyclst_thrutime = ?
-                FOR UPDATE
-                """);
-        getCustomerTypeContactListsByCustomerTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<CustomerTypeContactList> getCustomerTypeContactListsByCustomerType(CustomerType customerType, EntityPermission entityPermission) {
-        return customerTypeContactListFactory.getEntitiesFromQuery(entityPermission, getCustomerTypeContactListsByCustomerTypeQueries,
-                customerType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CustomerTypeContactLists.fields())
+                    .from(CustomerTypeContactLists)
+                    .join(ContactLists).onKey(CUSTOMER_TYPE_CONTACT_LISTS_CONTACT_LIST_FK)
+                    .join(ContactListDetails).onKey(CONTACT_LISTS_LAST_DETAIL_FK)
+                    .where(CustomerTypeContactLists.CUSTOMER_TYPE.eq(customerType.getPrimaryKey()),
+                            CustomerTypeContactLists.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ContactListDetails.SORT_ORDER, ContactListDetails.CONTACT_LIST_NAME),
+                    CustomerTypeContactListFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(CustomerTypeContactLists.fields())
+                    .from(CustomerTypeContactLists)
+                    .where(CustomerTypeContactLists.CUSTOMER_TYPE.eq(customerType.getPrimaryKey()),
+                            CustomerTypeContactLists.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return customerTypeContactListFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<CustomerTypeContactList> getCustomerTypeContactListsByCustomerType(CustomerType customerType) {
@@ -3481,33 +3153,26 @@ public class ContactListControl
         return getCustomerTypeContactListsByCustomerType(customerType, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getCustomerTypeContactListsByContactListQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM customertypecontactlists, customertypes, customertypedetails
-                WHERE cutyclst_clst_contactlistid = ? AND cutyclst_thrutime = ?
-                AND cutyclst_cuty_customertypeid = cuty_customertypeid AND cuty_lastdetailid = cutydt_customertypedetailid
-                ORDER BY cutydt_sortorder, cutydt_customertypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM customertypecontactlists
-                WHERE cutyclst_clst_contactlistid = ? AND cutyclst_thrutime = ?
-                FOR UPDATE
-                """);
-        getCustomerTypeContactListsByContactListQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<CustomerTypeContactList> getCustomerTypeContactListsByContactList(ContactList contactList, EntityPermission entityPermission) {
-        return customerTypeContactListFactory.getEntitiesFromQuery(entityPermission, getCustomerTypeContactListsByContactListQueries,
-                contactList, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(CustomerTypeContactLists.fields())
+                    .from(CustomerTypeContactLists)
+                    .join(CustomerTypes).onKey(CUSTOMER_TYPE_CONTACT_LISTS_CUSTOMER_TYPE_FK)
+                    .join(CustomerTypeDetails).onKey(CUSTOMER_TYPES_LAST_DETAIL_FK)
+                    .where(CustomerTypeContactLists.CONTACT_LIST.eq(contactList.getPrimaryKey()),
+                            CustomerTypeContactLists.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(CustomerTypeDetails.SORT_ORDER, CustomerTypeDetails.CUSTOMER_TYPE_NAME),
+                    CustomerTypeContactListFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(CustomerTypeContactLists.fields())
+                    .from(CustomerTypeContactLists)
+                    .where(CustomerTypeContactLists.CONTACT_LIST.eq(contactList.getPrimaryKey()),
+                            CustomerTypeContactLists.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return customerTypeContactListFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<CustomerTypeContactList> getCustomerTypeContactListsByContactList(ContactList contactList) {
@@ -3585,10 +3250,13 @@ public class ContactListControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ContactListContactMechanismPurposeDetailFactory contactListContactMechanismPurposeDetailFactory;
+
+    @Inject
     protected ContactListContactMechanismPurposeFactory contactListContactMechanismPurposeFactory;
 
     @Inject
-    protected ContactListContactMechanismPurposeDetailFactory contactListContactMechanismPurposeDetailFactory;
+    ContactListContactMechanismPurposeTransferCache contactListContactMechanismPurposeTransferCache;
 
     public ContactListContactMechanismPurpose createContactListContactMechanismPurpose(ContactList contactList, ContactMechanismPurpose contactMechanismPurpose, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultContactListContactMechanismPurpose = getDefaultContactListContactMechanismPurpose(contactList);
@@ -3634,49 +3302,39 @@ public class ContactListControl
     }
 
     public long countContactListContactMechanismPurposesByContactList(final ContactList contactList) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM contactlistcontactmechanismpurposes
-                        JOIN contactlistcontactmechanismpurposedetails ON clstcmprdt_contactlistcontactmechanismpurposedetailid = clstcmpr_activedetailid
-                        WHERE clstcmprdt_clst_contactlistid = ?
-                        """, contactList);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContactListContactMechanismPurposes)
+                .join(ContactListContactMechanismPurposeDetails).onKey(CONTACT_LIST_CONTACT_MECHANISM_PURPOSES_ACTIVE_DETAIL_FK)
+                .where(ContactListContactMechanismPurposeDetails.CONTACT_LIST.eq(contactList.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countContactListContactMechanismPurposesByContactMechanismPurpose(final ContactMechanismPurpose contactMechanismPurpose) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM contactlistcontactmechanismpurposes
-                        JOIN contactlistcontactmechanismpurposedetails ON clstcmprdt_contactlistcontactmechanismpurposedetailid = clstcmpr_activedetailid
-                        WHERE clstcmprdt_cmpr_contactmechanismpurposeid = ?
-                        """, contactMechanismPurpose);
-    }
-
-    private static final Map<EntityPermission, String> getContactListContactMechanismPurposeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlistcontactmechanismpurposes, contactlistcontactmechanismpurposedetails
-                WHERE clstcmpr_activedetailid = clstcmprdt_contactlistcontactmechanismpurposedetailid
-                AND clstcmprdt_clst_contactlistid = ? AND clstcmprdt_cmpr_contactmechanismpurposeid = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlistcontactmechanismpurposes, contactlistcontactmechanismpurposedetails
-                WHERE clstcmpr_activedetailid = clstcmprdt_contactlistcontactmechanismpurposedetailid
-                AND clstcmprdt_clst_contactlistid = ? AND clstcmprdt_cmpr_contactmechanismpurposeid = ?
-                FOR UPDATE
-                """);
-        getContactListContactMechanismPurposeQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContactListContactMechanismPurposes)
+                .join(ContactListContactMechanismPurposeDetails).onKey(CONTACT_LIST_CONTACT_MECHANISM_PURPOSES_ACTIVE_DETAIL_FK)
+                .where(ContactListContactMechanismPurposeDetails.CONTACT_MECHANISM_PURPOSE.eq(contactMechanismPurpose.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ContactListContactMechanismPurpose getContactListContactMechanismPurpose(ContactList contactList, ContactMechanismPurpose contactMechanismPurpose, EntityPermission entityPermission) {
-        return contactListContactMechanismPurposeFactory.getEntityFromQuery(entityPermission, getContactListContactMechanismPurposeQueries,
-                contactList, contactMechanismPurpose);
+        var baseQuery = session.getDslContext()
+                .select(ContactListContactMechanismPurposes.fields())
+                .from(ContactListContactMechanismPurposes)
+                .join(ContactListContactMechanismPurposeDetails).onKey(CONTACT_LIST_CONTACT_MECHANISM_PURPOSES_ACTIVE_DETAIL_FK)
+                .where(ContactListContactMechanismPurposeDetails.CONTACT_LIST.eq(contactList.getPrimaryKey()),
+                        ContactListContactMechanismPurposeDetails.CONTACT_MECHANISM_PURPOSE.eq(contactMechanismPurpose.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactListContactMechanismPurposeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ContactListContactMechanismPurpose getContactListContactMechanismPurpose(ContactList contactList, ContactMechanismPurpose contactMechanismPurpose) {
@@ -3695,32 +3353,20 @@ public class ContactListControl
         return getContactListContactMechanismPurposeDetailValueForUpdate(getContactListContactMechanismPurposeForUpdate(contactList, contactMechanismPurpose));
     }
 
-    private static final Map<EntityPermission, String> getDefaultContactListContactMechanismPurposeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlistcontactmechanismpurposes, contactlistcontactmechanismpurposedetails
-                WHERE clstcmpr_activedetailid = clstcmprdt_contactlistcontactmechanismpurposedetailid
-                AND clstcmprdt_clst_contactlistid = ? AND clstcmprdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlistcontactmechanismpurposes, contactlistcontactmechanismpurposedetails
-                WHERE clstcmpr_activedetailid = clstcmprdt_contactlistcontactmechanismpurposedetailid
-                AND clstcmprdt_clst_contactlistid = ? AND clstcmprdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultContactListContactMechanismPurposeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ContactListContactMechanismPurpose getDefaultContactListContactMechanismPurpose(ContactList contactList, EntityPermission entityPermission) {
-        return contactListContactMechanismPurposeFactory.getEntityFromQuery(entityPermission, getDefaultContactListContactMechanismPurposeQueries,
-                contactList);
+        var baseQuery = session.getDslContext()
+                .select(ContactListContactMechanismPurposes.fields())
+                .from(ContactListContactMechanismPurposes)
+                .join(ContactListContactMechanismPurposeDetails).onKey(CONTACT_LIST_CONTACT_MECHANISM_PURPOSES_ACTIVE_DETAIL_FK)
+                .where(ContactListContactMechanismPurposeDetails.CONTACT_LIST.eq(contactList.getPrimaryKey()),
+                        ContactListContactMechanismPurposeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contactListContactMechanismPurposeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ContactListContactMechanismPurpose getDefaultContactListContactMechanismPurpose(ContactList contactList) {
@@ -3735,33 +3381,25 @@ public class ContactListControl
         return getDefaultContactListContactMechanismPurposeForUpdate(contactList).getLastDetailForUpdate().getContactListContactMechanismPurposeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getContactListContactMechanismPurposesByContactListQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlistcontactmechanismpurposes, contactlistcontactmechanismpurposedetails, contactmechanismpurposes
-                WHERE clstcmpr_activedetailid = clstcmprdt_contactlistcontactmechanismpurposedetailid AND clstcmprdt_clst_contactlistid = ?
-                AND clstcmprdt_cmpr_contactmechanismpurposeid = cmpr_contactmechanismpurposeid
-                ORDER BY cmpr_sortorder, cmpr_contactmechanismpurposename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlistcontactmechanismpurposes, contactlistcontactmechanismpurposedetails
-                WHERE clstcmpr_activedetailid = clstcmprdt_contactlistcontactmechanismpurposedetailid AND clstcmprdt_clst_contactlistid = ?
-                FOR UPDATE
-                """);
-        getContactListContactMechanismPurposesByContactListQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ContactListContactMechanismPurpose> getContactListContactMechanismPurposesByContactList(ContactList contactList, EntityPermission entityPermission) {
-        return contactListContactMechanismPurposeFactory.getEntitiesFromQuery(entityPermission, getContactListContactMechanismPurposesByContactListQueries,
-                contactList);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContactListContactMechanismPurposes.fields())
+                    .from(ContactListContactMechanismPurposes)
+                    .join(ContactListContactMechanismPurposeDetails).onKey(CONTACT_LIST_CONTACT_MECHANISM_PURPOSES_ACTIVE_DETAIL_FK)
+                    .join(ContactMechanismPurposes).onKey(CONTACT_LIST_CONTACT_MECHANISM_PURPOSE_DETAILS_CONTACT_MECHANISM_PURPOSE_FK)
+                    .where(ContactListContactMechanismPurposeDetails.CONTACT_LIST.eq(contactList.getPrimaryKey()))
+                    .orderBy(ContactMechanismPurposes.SORT_ORDER, ContactMechanismPurposes.CONTACT_MECHANISM_PURPOSE_NAME),
+                    ContactListContactMechanismPurposeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContactListContactMechanismPurposes.fields())
+                    .from(ContactListContactMechanismPurposes)
+                    .join(ContactListContactMechanismPurposeDetails).onKey(CONTACT_LIST_CONTACT_MECHANISM_PURPOSES_ACTIVE_DETAIL_FK)
+                    .where(ContactListContactMechanismPurposeDetails.CONTACT_LIST.eq(contactList.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return contactListContactMechanismPurposeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ContactListContactMechanismPurpose> getContactListContactMechanismPurposesByContactList(ContactList contactList) {
@@ -3772,33 +3410,26 @@ public class ContactListControl
         return getContactListContactMechanismPurposesByContactList(contactList, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getContactListContactMechanismPurposesByContactMechanismPurposeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contactlistcontactmechanismpurposes, contactlistcontactmechanismpurposedetails, contactLists, contactlistdetails
-                WHERE clstcmpr_activedetailid = clstcmprdt_contactlistcontactmechanismpurposedetailid AND clstcmprdt_cmpr_contactmechanismpurposeid = ?
-                AND clstcmprdt_clst_contactlistid = clst_contactlistid AND clst_lastdetailid = clstdt_contactlistdetailid
-                ORDER BY clstdt_sortorder, clstdt_contactlistname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contactlistcontactmechanismpurposes, contactlistcontactmechanismpurposedetails
-                WHERE clstcmpr_activedetailid = clstcmprdt_contactlistcontactmechanismpurposedetailid AND clstcmprdt_cmpr_contactmechanismpurposeid = ?
-                FOR UPDATE
-                """);
-        getContactListContactMechanismPurposesByContactMechanismPurposeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ContactListContactMechanismPurpose> getContactListContactMechanismPurposesByContactMechanismPurpose(ContactMechanismPurpose contactMechanismPurpose, EntityPermission entityPermission) {
-        return contactListContactMechanismPurposeFactory.getEntitiesFromQuery(entityPermission, getContactListContactMechanismPurposesByContactMechanismPurposeQueries,
-                contactMechanismPurpose);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContactListContactMechanismPurposes.fields())
+                    .from(ContactListContactMechanismPurposes)
+                    .join(ContactListContactMechanismPurposeDetails).onKey(CONTACT_LIST_CONTACT_MECHANISM_PURPOSES_ACTIVE_DETAIL_FK)
+                    .join(ContactLists).onKey(CONTACT_LIST_CONTACT_MECHANISM_PURPOSE_DETAILS_CONTACT_LIST_FK)
+                    .join(ContactListDetails).onKey(CONTACT_LISTS_LAST_DETAIL_FK)
+                    .where(ContactListContactMechanismPurposeDetails.CONTACT_MECHANISM_PURPOSE.eq(contactMechanismPurpose.getPrimaryKey()))
+                    .orderBy(ContactListDetails.SORT_ORDER, ContactListDetails.CONTACT_LIST_NAME),
+                    ContactListContactMechanismPurposeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContactListContactMechanismPurposes.fields())
+                    .from(ContactListContactMechanismPurposes)
+                    .join(ContactListContactMechanismPurposeDetails).onKey(CONTACT_LIST_CONTACT_MECHANISM_PURPOSES_ACTIVE_DETAIL_FK)
+                    .where(ContactListContactMechanismPurposeDetails.CONTACT_MECHANISM_PURPOSE.eq(contactMechanismPurpose.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return contactListContactMechanismPurposeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ContactListContactMechanismPurpose> getContactListContactMechanismPurposesByContactMechanismPurpose(ContactMechanismPurpose contactMechanismPurpose) {
