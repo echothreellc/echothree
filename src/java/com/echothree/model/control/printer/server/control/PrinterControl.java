@@ -19,7 +19,6 @@ package com.echothree.model.control.printer.server.control;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.printer.common.choice.PrinterGroupChoicesBean;
 import com.echothree.model.control.printer.common.choice.PrinterGroupJobStatusChoicesBean;
@@ -87,6 +86,43 @@ import com.echothree.model.data.printer.server.value.PrinterGroupUseTypeDescript
 import com.echothree.model.data.printer.server.value.PrinterGroupUseTypeDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.COMPONENT_VENDORS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_INSTANCES_ENTITY_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTIES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.printer.PrinterForeignKeys.PARTY_PRINTER_GROUP_USES_PARTY_FK;
+import static com.echothree.model.jooq.server.keys.printer.PrinterForeignKeys.PARTY_PRINTER_GROUP_USES_PRINTER_GROUP_USE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.printer.PrinterForeignKeys.PRINTERS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.printer.PrinterForeignKeys.PRINTER_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.printer.PrinterForeignKeys.PRINTER_GROUPS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.printer.PrinterForeignKeys.PRINTER_GROUP_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.printer.PrinterForeignKeys.PRINTER_GROUP_JOBS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.printer.PrinterForeignKeys.PRINTER_GROUP_USE_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.printer.PrinterForeignKeys.PRINTER_GROUP_USE_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.printer.PrinterForeignKeys.PRINTER_GROUP_USE_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.workflow.WorkflowForeignKeys.WORKFLOW_ENTITY_STATUSES_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.tables.core.ComponentVendorDetails.ComponentVendorDetails;
+import static com.echothree.model.jooq.server.tables.core.ComponentVendors.ComponentVendors;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.core.EntityTypeDetails.EntityTypeDetails;
+import static com.echothree.model.jooq.server.tables.core.EntityTypes.EntityTypes;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.party.Parties.Parties;
+import static com.echothree.model.jooq.server.tables.party.PartyDetails.PartyDetails;
+import static com.echothree.model.jooq.server.tables.printer.PartyPrinterGroupUses.PartyPrinterGroupUses;
+import static com.echothree.model.jooq.server.tables.printer.PrinterDescriptions.PrinterDescriptions;
+import static com.echothree.model.jooq.server.tables.printer.PrinterDetails.PrinterDetails;
+import static com.echothree.model.jooq.server.tables.printer.PrinterGroupDescriptions.PrinterGroupDescriptions;
+import static com.echothree.model.jooq.server.tables.printer.PrinterGroupDetails.PrinterGroupDetails;
+import static com.echothree.model.jooq.server.tables.printer.PrinterGroupJobDetails.PrinterGroupJobDetails;
+import static com.echothree.model.jooq.server.tables.printer.PrinterGroupJobs.PrinterGroupJobs;
+import static com.echothree.model.jooq.server.tables.printer.PrinterGroupUseTypeDescriptions.PrinterGroupUseTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.printer.PrinterGroupUseTypeDetails.PrinterGroupUseTypeDetails;
+import static com.echothree.model.jooq.server.tables.printer.PrinterGroupUseTypes.PrinterGroupUseTypes;
+import static com.echothree.model.jooq.server.tables.printer.PrinterGroups.PrinterGroups;
+import static com.echothree.model.jooq.server.tables.printer.Printers.Printers;
+import static com.echothree.model.jooq.server.tables.workflow.WorkflowEntityStatuses.WorkflowEntityStatuses;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
@@ -96,10 +132,7 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 
@@ -108,14 +141,13 @@ public class PrinterControl
         extends BaseModelControl {
     
     @Inject
-    protected DocumentControl documentControl;
-
+    private DocumentControl documentControl;
 
     @Inject
     protected SequenceControl sequenceControl;
 
     @Inject
-    protected SequenceGeneratorLogic sequenceGeneratorLogic;
+    private SequenceGeneratorLogic sequenceGeneratorLogic;
 
     /** Creates a new instance of PrinterControl */
     protected PrinterControl() {
@@ -123,42 +155,17 @@ public class PrinterControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Printer Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    @Inject
-    PrinterGroupTransferCache printerGroupTransferCache;
-
-    @Inject
-    PrinterGroupDescriptionTransferCache printerGroupDescriptionTransferCache;
-
-    @Inject
-    PrinterGroupUseTypeTransferCache printerGroupUseTypeTransferCache;
-
-    @Inject
-    PrinterGroupUseTypeDescriptionTransferCache printerGroupUseTypeDescriptionTransferCache;
-
-    @Inject
-    PartyPrinterGroupUseTransferCache partyPrinterGroupUseTransferCache;
-
-    @Inject
-    PrinterTransferCache printerTransferCache;
-
-    @Inject
-    PrinterDescriptionTransferCache printerDescriptionTransferCache;
-
-    @Inject
-    PrinterGroupJobTransferCache printerGroupJobTransferCache;
-
-    // --------------------------------------------------------------------------------
     //   Printer Groups
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PrinterGroupFactory printerGroupFactory;
+    protected PrinterGroupDetailFactory printerGroupDetailFactory;
 
     @Inject
-    protected PrinterGroupDetailFactory printerGroupDetailFactory;
+    private PrinterGroupFactory printerGroupFactory;
+
+    @Inject
+    private PrinterGroupTransferCache printerGroupTransferCache;
 
     public PrinterGroup createPrinterGroup(String printerGroupName, Long keepPrintedJobsTime, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultPrinterGroup = getDefaultPrinterGroup();
@@ -205,38 +212,27 @@ public class PrinterControl
     }
 
     public long countPrinterGroups() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM printergroups
-                        JOIN printergroupdetails ON prngrpdt_printergroupdetailid = prngrp_activedetailid
-                        """);
-    }
-
-    private static final Map<EntityPermission, String> getPrinterGroupByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM printergroups, printergroupdetails
-                WHERE prngrp_activedetailid = prngrpdt_printergroupdetailid
-                AND prngrpdt_printergroupname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM printergroups, printergroupdetails
-                WHERE prngrp_activedetailid = prngrpdt_printergroupdetailid
-                AND prngrpdt_printergroupname = ?
-                FOR UPDATE
-                """);
-        getPrinterGroupByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(PrinterGroups)
+                .join(PrinterGroupDetails).onKey(PRINTER_GROUPS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private PrinterGroup getPrinterGroupByName(String printerGroupName, EntityPermission entityPermission) {
-        return printerGroupFactory.getEntityFromQuery(entityPermission, getPrinterGroupByNameQueries, printerGroupName);
+        var baseQuery = session.getDslContext()
+                .select(PrinterGroups.fields())
+                .from(PrinterGroups)
+                .join(PrinterGroupDetails).onKey(PRINTER_GROUPS_ACTIVE_DETAIL_FK)
+                .where(PrinterGroupDetails.PRINTER_GROUP_NAME.eq(printerGroupName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return printerGroupFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PrinterGroup getPrinterGroupByName(String printerGroupName) {
@@ -255,31 +251,19 @@ public class PrinterControl
         return getPrinterGroupDetailValueForUpdate(getPrinterGroupByNameForUpdate(printerGroupName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultPrinterGroupQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM printergroups, printergroupdetails
-                WHERE prngrp_activedetailid = prngrpdt_printergroupdetailid
-                AND prngrpdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM printergroups, printergroupdetails
-                WHERE prngrp_activedetailid = prngrpdt_printergroupdetailid
-                AND prngrpdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultPrinterGroupQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private PrinterGroup getDefaultPrinterGroup(EntityPermission entityPermission) {
-        return printerGroupFactory.getEntityFromQuery(entityPermission, getDefaultPrinterGroupQueries);
+        var baseQuery = session.getDslContext()
+                .select(PrinterGroups.fields())
+                .from(PrinterGroups)
+                .join(PrinterGroupDetails).onKey(PRINTER_GROUPS_ACTIVE_DETAIL_FK)
+                .where(PrinterGroupDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return printerGroupFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PrinterGroup getDefaultPrinterGroup() {
@@ -294,31 +278,20 @@ public class PrinterControl
         return getDefaultPrinterGroupForUpdate().getLastDetailForUpdate().getPrinterGroupDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getPrinterGroupsQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM printergroups, printergroupdetails
-                WHERE prngrp_activedetailid = prngrpdt_printergroupdetailid
-                ORDER BY prngrpdt_sortorder, prngrpdt_printergroupname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM printergroups, printergroupdetails
-                WHERE prngrp_activedetailid = prngrpdt_printergroupdetailid
-                FOR UPDATE
-                """);
-        getPrinterGroupsQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PrinterGroup> getPrinterGroups(EntityPermission entityPermission) {
-        return printerGroupFactory.getEntitiesFromQuery(entityPermission, getPrinterGroupsQueries);
+        var baseQuery = session.getDslContext()
+                .select(PrinterGroups.fields())
+                .from(PrinterGroups)
+                .join(PrinterGroupDetails).onKey(PRINTER_GROUPS_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(PrinterGroupDetails.SORT_ORDER, PrinterGroupDetails.PRINTER_GROUP_NAME),
+                    PrinterGroupFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return printerGroupFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PrinterGroup> getPrinterGroups() {
@@ -490,7 +463,10 @@ public class PrinterControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PrinterGroupDescriptionFactory printerGroupDescriptionFactory;
+    private PrinterGroupDescriptionFactory printerGroupDescriptionFactory;
+
+    @Inject
+    private PrinterGroupDescriptionTransferCache printerGroupDescriptionTransferCache;
 
     public PrinterGroupDescription createPrinterGroupDescription(PrinterGroup printerGroup,
             Language language, String description, BasePK createdBy) {
@@ -502,31 +478,21 @@ public class PrinterControl
         return printerGroupDescription;
     }
 
-    private static final Map<EntityPermission, String> getPrinterGroupDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM printergroupdescriptions
-                WHERE prngrpd_prngrp_printergroupid = ? AND prngrpd_lang_languageid = ? AND prngrpd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM printergroupdescriptions
-                WHERE prngrpd_prngrp_printergroupid = ? AND prngrpd_lang_languageid = ? AND prngrpd_thrutime = ?
-                FOR UPDATE
-                """);
-        getPrinterGroupDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private PrinterGroupDescription getPrinterGroupDescription(PrinterGroup printerGroup,
             Language language, EntityPermission entityPermission) {
-        return printerGroupDescriptionFactory.getEntityFromQuery(entityPermission, getPrinterGroupDescriptionQueries,
-                printerGroup, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(PrinterGroupDescriptions.fields())
+                .from(PrinterGroupDescriptions)
+                .where(PrinterGroupDescriptions.PRINTER_GROUP.eq(printerGroup.getPrimaryKey()),
+                        PrinterGroupDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        PrinterGroupDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return printerGroupDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PrinterGroupDescription getPrinterGroupDescription(PrinterGroup printerGroup, Language language) {
@@ -545,33 +511,26 @@ public class PrinterControl
         return getPrinterGroupDescriptionValue(getPrinterGroupDescriptionForUpdate(printerGroup, language));
     }
 
-    private static final Map<EntityPermission, String> getPrinterGroupDescriptionsByPrinterGroupQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM printergroupdescriptions, languages
-                WHERE prngrpd_prngrp_printergroupid = ? AND prngrpd_thrutime = ? AND prngrpd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM printergroupdescriptions
-                WHERE prngrpd_prngrp_printergroupid = ? AND prngrpd_thrutime = ?
-                FOR UPDATE
-                """);
-        getPrinterGroupDescriptionsByPrinterGroupQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PrinterGroupDescription> getPrinterGroupDescriptionsByPrinterGroup(PrinterGroup printerGroup,
             EntityPermission entityPermission) {
-        return printerGroupDescriptionFactory.getEntitiesFromQuery(entityPermission, getPrinterGroupDescriptionsByPrinterGroupQueries,
-                printerGroup, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PrinterGroupDescriptions.fields())
+                    .from(PrinterGroupDescriptions)
+                    .join(Languages).onKey(PRINTER_GROUP_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(PrinterGroupDescriptions.PRINTER_GROUP.eq(printerGroup.getPrimaryKey()),
+                            PrinterGroupDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    PrinterGroupDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PrinterGroupDescriptions.fields())
+                    .from(PrinterGroupDescriptions)
+                    .where(PrinterGroupDescriptions.PRINTER_GROUP.eq(printerGroup.getPrimaryKey()),
+                            PrinterGroupDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return printerGroupDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PrinterGroupDescription> getPrinterGroupDescriptionsByPrinterGroup(PrinterGroup printerGroup) {
@@ -653,10 +612,13 @@ public class PrinterControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PrinterFactory printerFactory;
+    protected PrinterDetailFactory printerDetailFactory;
 
     @Inject
-    protected PrinterDetailFactory printerDetailFactory;
+    private PrinterFactory printerFactory;
+
+    @Inject
+    private PrinterTransferCache printerTransferCache;
 
     public Printer createPrinter(String printerName, PrinterGroup printerGroup, Integer priority, BasePK createdBy) {
         var printer = printerFactory.create();
@@ -691,47 +653,37 @@ public class PrinterControl
     }
 
     public long countPrinters() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM printers
-                        JOIN printerdetails ON prndt_printerdetailid = prn_activedetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(Printers)
+                .join(PrinterDetails).onKey(PRINTERS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPrintersByPrinterGroup(final PrinterGroup printerGroup) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM printers
-                        JOIN printerdetails ON prndt_printerdetailid = prn_activedetailid
-                        AND prndt_prngrp_printergroupid = ?
-                        """, printerGroup);
-    }
-
-    private static final Map<EntityPermission, String> getPrinterByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM printers, printerdetails
-                WHERE prn_activedetailid = prndt_printerdetailid
-                AND prndt_printername = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM printers, printerdetails
-                WHERE prn_activedetailid = prndt_printerdetailid
-                AND prndt_printername = ?
-                FOR UPDATE
-                """);
-        getPrinterByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(Printers)
+                .join(PrinterDetails).onKey(PRINTERS_ACTIVE_DETAIL_FK)
+                .where(PrinterDetails.PRINTER_GROUP.eq(printerGroup.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private Printer getPrinterByName(String printerName, EntityPermission entityPermission) {
-        return printerFactory.getEntityFromQuery(entityPermission, getPrinterByNameQueries, printerName);
+        var baseQuery = session.getDslContext()
+                .select(Printers.fields())
+                .from(Printers)
+                .join(PrinterDetails).onKey(PRINTERS_ACTIVE_DETAIL_FK)
+                .where(PrinterDetails.PRINTER_NAME.eq(printerName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return printerFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public Printer getPrinterByName(String printerName) {
@@ -750,70 +702,20 @@ public class PrinterControl
         return getPrinterDetailValueForUpdate(getPrinterByNameForUpdate(printerName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultPrinterQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM printers, printerdetails
-                WHERE prn_activedetailid = prndt_printerdetailid
-                AND prndt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM printers, printerdetails
-                WHERE prn_activedetailid = prndt_printerdetailid
-                AND prndt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultPrinterQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    private Printer getDefaultPrinter(EntityPermission entityPermission) {
-        return printerFactory.getEntityFromQuery(entityPermission, getDefaultPrinterQueries);
-    }
-
-    public Printer getDefaultPrinter() {
-        return getDefaultPrinter(EntityPermission.READ_ONLY);
-    }
-
-    public Printer getDefaultPrinterForUpdate() {
-        return getDefaultPrinter(EntityPermission.READ_WRITE);
-    }
-
-    public PrinterDetailValue getDefaultPrinterDetailValueForUpdate() {
-        return getDefaultPrinterForUpdate().getLastDetailForUpdate().getPrinterDetailValue().clone();
-    }
-
-    private static final Map<EntityPermission, String> getPrintersQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM printers, printerdetails
-                WHERE prn_activedetailid = prndt_printerdetailid
-                ORDER BY prndt_priority, prndt_printername
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM printers, printerdetails
-                WHERE prn_activedetailid = prndt_printerdetailid
-                FOR UPDATE
-                """);
-        getPrintersQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<Printer> getPrinters(EntityPermission entityPermission) {
-        return printerFactory.getEntitiesFromQuery(entityPermission, getPrintersQueries);
+        var baseQuery = session.getDslContext()
+                .select(Printers.fields())
+                .from(Printers)
+                .join(PrinterDetails).onKey(PRINTERS_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(PrinterDetails.PRIORITY, PrinterDetails.PRINTER_NAME),
+                    PrinterFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return printerFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Printer> getPrinters() {
@@ -824,33 +726,21 @@ public class PrinterControl
         return getPrinters(EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getPrintersByPrinterGroupQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM printers, printerdetails
-                WHERE prn_activedetailid = prndt_printerdetailid
-                AND prndt_prngrp_printergroupid = ?
-                ORDER BY prndt_priority, prndt_printername
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM printers, printerdetails
-                WHERE prn_activedetailid = prndt_printerdetailid
-                AND prndt_prngrp_printergroupid = ?
-                FOR UPDATE
-                """);
-        getPrintersByPrinterGroupQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<Printer> getPrintersByPrinterGroup(PrinterGroup printerGroup, EntityPermission entityPermission) {
-        return printerFactory.getEntitiesFromQuery(entityPermission, getPrintersByPrinterGroupQueries, printerGroup);
+        var baseQuery = session.getDslContext()
+                .select(Printers.fields())
+                .from(Printers)
+                .join(PrinterDetails).onKey(PRINTERS_ACTIVE_DETAIL_FK)
+                .where(PrinterDetails.PRINTER_GROUP.eq(printerGroup.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(PrinterDetails.PRIORITY, PrinterDetails.PRINTER_NAME),
+                    PrinterFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return printerFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Printer> getPrintersByPrinterGroup(PrinterGroup printerGroup) {
@@ -958,7 +848,10 @@ public class PrinterControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PrinterDescriptionFactory printerDescriptionFactory;
+    private PrinterDescriptionFactory printerDescriptionFactory;
+
+    @Inject
+    private PrinterDescriptionTransferCache printerDescriptionTransferCache;
 
     public PrinterDescription createPrinterDescription(Printer printer, Language language, String description, BasePK createdBy) {
         var printerDescription = printerDescriptionFactory.create(printer, language, description, session.getStartTime(),
@@ -969,31 +862,21 @@ public class PrinterControl
         return printerDescription;
     }
 
-    private static final Map<EntityPermission, String> getPrinterDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM printerdescriptions
-                WHERE prnd_prn_printerid = ? AND prnd_lang_languageid = ? AND prnd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM printerdescriptions
-                WHERE prnd_prn_printerid = ? AND prnd_lang_languageid = ? AND prnd_thrutime = ?
-                FOR UPDATE
-                """);
-        getPrinterDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private PrinterDescription getPrinterDescription(Printer printer,
             Language language, EntityPermission entityPermission) {
-        return printerDescriptionFactory.getEntityFromQuery(entityPermission, getPrinterDescriptionQueries,
-                printer, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(PrinterDescriptions.fields())
+                .from(PrinterDescriptions)
+                .where(PrinterDescriptions.PRINTER.eq(printer.getPrimaryKey()),
+                        PrinterDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        PrinterDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return printerDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PrinterDescription getPrinterDescription(Printer printer, Language language) {
@@ -1012,33 +895,26 @@ public class PrinterControl
         return getPrinterDescriptionValue(getPrinterDescriptionForUpdate(printer, language));
     }
 
-    private static final Map<EntityPermission, String> getPrinterDescriptionsByPrinterQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM printerdescriptions, languages
-                WHERE prnd_prn_printerid = ? AND prnd_thrutime = ? AND prnd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM printerdescriptions
-                WHERE prnd_prn_printerid = ? AND prnd_thrutime = ?
-                FOR UPDATE
-                """);
-        getPrinterDescriptionsByPrinterQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PrinterDescription> getPrinterDescriptionsByPrinter(Printer printer,
             EntityPermission entityPermission) {
-        return printerDescriptionFactory.getEntitiesFromQuery(entityPermission, getPrinterDescriptionsByPrinterQueries,
-                printer, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PrinterDescriptions.fields())
+                    .from(PrinterDescriptions)
+                    .join(Languages).onKey(PRINTER_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(PrinterDescriptions.PRINTER.eq(printer.getPrimaryKey()),
+                            PrinterDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    PrinterDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PrinterDescriptions.fields())
+                    .from(PrinterDescriptions)
+                    .where(PrinterDescriptions.PRINTER.eq(printer.getPrimaryKey()),
+                            PrinterDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return printerDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PrinterDescription> getPrinterDescriptionsByPrinter(Printer printer) {
@@ -1119,10 +995,13 @@ public class PrinterControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PrinterGroupJobFactory printerGroupJobFactory;
+    protected PrinterGroupJobDetailFactory printerGroupJobDetailFactory;
 
     @Inject
-    protected PrinterGroupJobDetailFactory printerGroupJobDetailFactory;
+    private PrinterGroupJobFactory printerGroupJobFactory;
+
+    @Inject
+    private PrinterGroupJobTransferCache printerGroupJobTransferCache;
 
     public PrinterGroupJob createPrinterGroupJob(PrinterGroup printerGroup, Document document, Integer copies, Integer priority, BasePK createdBy) {
         var sequence = sequenceControl.getDefaultSequence(sequenceControl.getSequenceTypeByName(SequenceTypes.PRINTER_GROUP_JOB.name()));
@@ -1165,47 +1044,38 @@ public class PrinterControl
     }
 
     public long countPrinterGroupJobsByPrinterGroup(final PrinterGroup printerGroup) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM printergroupjobs
-                        JOIN printergroupjobdetails ON prngrpjdt_printergroupjobdetailid = prngrpj_activedetailid
-                        WHERE prngrpjdt_prngrp_printergroupid = ?
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(PrinterGroupJobs)
+                .join(PrinterGroupJobDetails).onKey(PRINTER_GROUP_JOBS_ACTIVE_DETAIL_FK)
+                .where(PrinterGroupJobDetails.PRINTER_GROUP.eq(printerGroup.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPrinterGroupJobsByPrinterGroupJobStatus(final WorkflowStep workflowStep) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM workflowentitystatuses
-                        WHERE wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?
-                        """, workflowStep, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getPrinterGroupJobByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM printergroupjobs, printergroupjobdetails
-                WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid
-                AND prngrpjdt_printergroupjobname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM printergroupjobs, printergroupjobdetails
-                WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid
-                AND prngrpjdt_printergroupjobname = ?
-                FOR UPDATE
-                """);
-        getPrinterGroupJobByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(WorkflowEntityStatuses)
+                .where(WorkflowEntityStatuses.WORKFLOW_STEP.eq(workflowStep.getPrimaryKey()),
+                        WorkflowEntityStatuses.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private PrinterGroupJob getPrinterGroupJobByName(String printerGroupJobName, EntityPermission entityPermission) {
-        return printerGroupJobFactory.getEntityFromQuery(entityPermission, getPrinterGroupJobByNameQueries, printerGroupJobName);
+        var baseQuery = session.getDslContext()
+                .select(PrinterGroupJobs.fields())
+                .from(PrinterGroupJobs)
+                .join(PrinterGroupJobDetails).onKey(PRINTER_GROUP_JOBS_ACTIVE_DETAIL_FK)
+                .where(PrinterGroupJobDetails.PRINTER_GROUP_JOB_NAME.eq(printerGroupJobName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return printerGroupJobFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PrinterGroupJob getPrinterGroupJobByName(String printerGroupJobName) {
@@ -1224,70 +1094,20 @@ public class PrinterControl
         return getPrinterGroupJobDetailValueForUpdate(getPrinterGroupJobByNameForUpdate(printerGroupJobName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultPrinterGroupJobQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM printergroupjobs, printergroupjobdetails
-                WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid
-                AND prngrpjdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM printergroupjobs, printergroupjobdetails
-                WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid
-                AND prngrpjdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultPrinterGroupJobQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    private PrinterGroupJob getDefaultPrinterGroupJob(EntityPermission entityPermission) {
-        return printerGroupJobFactory.getEntityFromQuery(entityPermission, getDefaultPrinterGroupJobQueries);
-    }
-
-    public PrinterGroupJob getDefaultPrinterGroupJob() {
-        return getDefaultPrinterGroupJob(EntityPermission.READ_ONLY);
-    }
-
-    public PrinterGroupJob getDefaultPrinterGroupJobForUpdate() {
-        return getDefaultPrinterGroupJob(EntityPermission.READ_WRITE);
-    }
-
-    public PrinterGroupJobDetailValue getDefaultPrinterGroupJobDetailValueForUpdate() {
-        return getDefaultPrinterGroupJobForUpdate().getLastDetailForUpdate().getPrinterGroupJobDetailValue().clone();
-    }
-
-    private static final Map<EntityPermission, String> getPrinterGroupJobsQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM printergroupjobs, printergroupjobdetails
-                WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid
-                ORDER BY prngrpjdt_sortorder, prngrpjdt_printergroupjobname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM printergroupjobs, printergroupjobdetails
-                WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid
-                FOR UPDATE
-                """);
-        getPrinterGroupJobsQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PrinterGroupJob> getPrinterGroupJobs(EntityPermission entityPermission) {
-        return printerGroupJobFactory.getEntitiesFromQuery(entityPermission, getPrinterGroupJobsQueries);
+        var baseQuery = session.getDslContext()
+                .select(PrinterGroupJobs.fields())
+                .from(PrinterGroupJobs)
+                .join(PrinterGroupJobDetails).onKey(PRINTER_GROUP_JOBS_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(PrinterGroupJobDetails.PRINTER_GROUP_JOB_NAME),
+                    PrinterGroupJobFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return printerGroupJobFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PrinterGroupJob> getPrinterGroupJobs() {
@@ -1298,33 +1118,21 @@ public class PrinterControl
         return getPrinterGroupJobs(EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getPrinterGroupJobsByPrinterGroupQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM printergroupjobs, printergroupjobdetails
-                WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid
-                AND prngrpjdt_prngrp_printergroupid = ?
-                ORDER BY prngrpjdt_priority DESC, prngrpjdt_printergroupjobname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM printergroupjobs, printergroupjobdetails
-                WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid
-                AND prngrpjdt_prngrp_printergroupid = ?
-                FOR UPDATE
-                """);
-        getPrinterGroupJobsByPrinterGroupQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PrinterGroupJob> getPrinterGroupJobsByPrinterGroup(PrinterGroup printerGroup, EntityPermission entityPermission) {
-        return printerGroupJobFactory.getEntitiesFromQuery(entityPermission, getPrinterGroupJobsByPrinterGroupQueries, printerGroup);
+        var baseQuery = session.getDslContext()
+                .select(PrinterGroupJobs.fields())
+                .from(PrinterGroupJobs)
+                .join(PrinterGroupJobDetails).onKey(PRINTER_GROUP_JOBS_ACTIVE_DETAIL_FK)
+                .where(PrinterGroupJobDetails.PRINTER_GROUP.eq(printerGroup.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(PrinterGroupJobDetails.PRIORITY.desc(), PrinterGroupJobDetails.PRINTER_GROUP_JOB_NAME),
+                    PrinterGroupJobFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return printerGroupJobFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PrinterGroupJob> getPrinterGroupJobsByPrinterGroup(PrinterGroup printerGroup) {
@@ -1335,44 +1143,30 @@ public class PrinterControl
         return getPrinterGroupJobsByPrinterGroup(printerGroup, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getPrinterGroupJobsByPrinterGroupJobStatusQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances, printergroupjobs, printergroupjobdetails, workflowentitystatuses
-                WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid
-                AND cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ?
-                AND ent_activedetailid = entdt_entitytypedetailid
-                AND cvnd_componentvendorid = entdt_cvnd_componentvendorid
-                AND entdt_entitytypename = ?
-                AND ent_entitytypeid = eni_ent_entitytypeid AND prngrpj_printergroupjobid = eni_entityuniqueid
-                AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?
-                ORDER BY prngrpjdt_priority DESC, prngrpjdt_printergroupjobname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances, printergroupjobs, printergroupjobdetails, workflowentitystatuses
-                WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid
-                AND cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ?
-                AND ent_activedetailid = entdt_entitytypedetailid
-                AND cvnd_componentvendorid = entdt_cvnd_componentvendorid
-                AND entdt_entitytypename = ?
-                AND ent_entitytypeid = eni_ent_entitytypeid AND prngrpj_printergroupjobid = eni_entityuniqueid
-                AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?
-                FOR UPDATE
-                """);
-        getPrinterGroupJobsByPrinterGroupJobStatusQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PrinterGroupJob> getPrinterGroupJobsByPrinterGroupJobStatus(WorkflowStep workflowStep, EntityPermission entityPermission) {
-        return printerGroupJobFactory.getEntitiesFromQuery(entityPermission, getPrinterGroupJobsByPrinterGroupJobStatusQueries,
-                ComponentVendors.ECHO_THREE.name(), EntityTypes.PrinterGroupJob.name(), workflowStep, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(PrinterGroupJobs.fields())
+                .from(PrinterGroupJobs)
+                .join(EntityInstances).on(PrinterGroupJobs.PRINTER_GROUP_JOB.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(EntityTypes).onKey(ENTITY_INSTANCES_ENTITY_TYPE_FK)
+                .join(EntityTypeDetails).onKey(ENTITY_TYPES_LAST_DETAIL_FK)
+                .join(ComponentVendors).onKey(ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK)
+                .join(ComponentVendorDetails).onKey(COMPONENT_VENDORS_LAST_DETAIL_FK)
+                .join(PrinterGroupJobDetails).onKey(PRINTER_GROUP_JOBS_ACTIVE_DETAIL_FK)
+                .join(WorkflowEntityStatuses).onKey(WORKFLOW_ENTITY_STATUSES_ENTITY_INSTANCE_FK)
+                .where(ComponentVendorDetails.COMPONENT_VENDOR_NAME.eq(com.echothree.model.control.core.common.ComponentVendors.ECHO_THREE.name()),
+                        EntityTypeDetails.ENTITY_TYPE_NAME.eq(com.echothree.model.control.core.common.EntityTypes.PrinterGroupJob.name()),
+                        WorkflowEntityStatuses.WORKFLOW_STEP.eq(workflowStep.getPrimaryKey()),
+                        WorkflowEntityStatuses.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(PrinterGroupJobDetails.PRIORITY.desc(), PrinterGroupJobDetails.PRINTER_GROUP_JOB_NAME),
+                    PrinterGroupJobFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return printerGroupJobFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PrinterGroupJob> getPrinterGroupJobsByPrinterGroupJobStatus(WorkflowStep workflowStep) {
@@ -1522,10 +1316,13 @@ public class PrinterControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PrinterGroupUseTypeFactory printerGroupUseTypeFactory;
+    protected PrinterGroupUseTypeDetailFactory printerGroupUseTypeDetailFactory;
 
     @Inject
-    protected PrinterGroupUseTypeDetailFactory printerGroupUseTypeDetailFactory;
+    private PrinterGroupUseTypeFactory printerGroupUseTypeFactory;
+
+    @Inject
+    private PrinterGroupUseTypeTransferCache printerGroupUseTypeTransferCache;
 
     public PrinterGroupUseType createPrinterGroupUseType(String printerGroupUseTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultPrinterGroupUseType = getDefaultPrinterGroupUseType();
@@ -1572,38 +1369,27 @@ public class PrinterControl
     }
 
     public long countPrinterGroupUseTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM printergroupusetypes
-                        JOIN printergroupusetypedetails ON prngrpusetypdt_printergroupusetypedetailid = prngrpusetyp_activedetailid
-                        """);
-    }
-
-    private static final Map<EntityPermission, String> getPrinterGroupUseTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM printergroupusetypes, printergroupusetypedetails
-                WHERE prngrpusetyp_activedetailid = prngrpusetypdt_printergroupusetypedetailid
-                AND prngrpusetypdt_printergroupusetypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM printergroupusetypes, printergroupusetypedetails
-                WHERE prngrpusetyp_activedetailid = prngrpusetypdt_printergroupusetypedetailid
-                AND prngrpusetypdt_printergroupusetypename = ?
-                FOR UPDATE
-                """);
-        getPrinterGroupUseTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(PrinterGroupUseTypes)
+                .join(PrinterGroupUseTypeDetails).onKey(PRINTER_GROUP_USE_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private PrinterGroupUseType getPrinterGroupUseTypeByName(String printerGroupUseTypeName, EntityPermission entityPermission) {
-        return printerGroupUseTypeFactory.getEntityFromQuery(entityPermission, getPrinterGroupUseTypeByNameQueries, printerGroupUseTypeName);
+        var baseQuery = session.getDslContext()
+                .select(PrinterGroupUseTypes.fields())
+                .from(PrinterGroupUseTypes)
+                .join(PrinterGroupUseTypeDetails).onKey(PRINTER_GROUP_USE_TYPES_ACTIVE_DETAIL_FK)
+                .where(PrinterGroupUseTypeDetails.PRINTER_GROUP_USE_TYPE_NAME.eq(printerGroupUseTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return printerGroupUseTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PrinterGroupUseType getPrinterGroupUseTypeByName(String printerGroupUseTypeName) {
@@ -1622,31 +1408,19 @@ public class PrinterControl
         return getPrinterGroupUseTypeDetailValueForUpdate(getPrinterGroupUseTypeByNameForUpdate(printerGroupUseTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultPrinterGroupUseTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM printergroupusetypes, printergroupusetypedetails
-                WHERE prngrpusetyp_activedetailid = prngrpusetypdt_printergroupusetypedetailid
-                AND prngrpusetypdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM printergroupusetypes, printergroupusetypedetails
-                WHERE prngrpusetyp_activedetailid = prngrpusetypdt_printergroupusetypedetailid
-                AND prngrpusetypdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultPrinterGroupUseTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private PrinterGroupUseType getDefaultPrinterGroupUseType(EntityPermission entityPermission) {
-        return printerGroupUseTypeFactory.getEntityFromQuery(entityPermission, getDefaultPrinterGroupUseTypeQueries);
+        var baseQuery = session.getDslContext()
+                .select(PrinterGroupUseTypes.fields())
+                .from(PrinterGroupUseTypes)
+                .join(PrinterGroupUseTypeDetails).onKey(PRINTER_GROUP_USE_TYPES_ACTIVE_DETAIL_FK)
+                .where(PrinterGroupUseTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return printerGroupUseTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PrinterGroupUseType getDefaultPrinterGroupUseType() {
@@ -1661,31 +1435,20 @@ public class PrinterControl
         return getDefaultPrinterGroupUseTypeForUpdate().getLastDetailForUpdate().getPrinterGroupUseTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getPrinterGroupUseTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM printergroupusetypes, printergroupusetypedetails
-                WHERE prngrpusetyp_activedetailid = prngrpusetypdt_printergroupusetypedetailid
-                ORDER BY prngrpusetypdt_sortorder, prngrpusetypdt_printergroupusetypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM printergroupusetypes, printergroupusetypedetails
-                WHERE prngrpusetyp_activedetailid = prngrpusetypdt_printergroupusetypedetailid
-                FOR UPDATE
-                """);
-        getPrinterGroupUseTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PrinterGroupUseType> getPrinterGroupUseTypes(EntityPermission entityPermission) {
-        return printerGroupUseTypeFactory.getEntitiesFromQuery(entityPermission, getPrinterGroupUseTypesQueries);
+        var baseQuery = session.getDslContext()
+                .select(PrinterGroupUseTypes.fields())
+                .from(PrinterGroupUseTypes)
+                .join(PrinterGroupUseTypeDetails).onKey(PRINTER_GROUP_USE_TYPES_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(PrinterGroupUseTypeDetails.SORT_ORDER, PrinterGroupUseTypeDetails.PRINTER_GROUP_USE_TYPE_NAME),
+                    PrinterGroupUseTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return printerGroupUseTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PrinterGroupUseType> getPrinterGroupUseTypes() {
@@ -1827,7 +1590,10 @@ public class PrinterControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PrinterGroupUseTypeDescriptionFactory printerGroupUseTypeDescriptionFactory;
+    private PrinterGroupUseTypeDescriptionFactory printerGroupUseTypeDescriptionFactory;
+
+    @Inject
+    private PrinterGroupUseTypeDescriptionTransferCache printerGroupUseTypeDescriptionTransferCache;
 
     public PrinterGroupUseTypeDescription createPrinterGroupUseTypeDescription(PrinterGroupUseType printerGroupUseType,
             Language language, String description, BasePK createdBy) {
@@ -1839,31 +1605,21 @@ public class PrinterControl
         return printerGroupUseTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getPrinterGroupUseTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM printergroupusetypedescriptions
-                WHERE prngrpusetypd_prngrpusetyp_printergroupusetypeid = ? AND prngrpusetypd_lang_languageid = ? AND prngrpusetypd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM printergroupusetypedescriptions
-                WHERE prngrpusetypd_prngrpusetyp_printergroupusetypeid = ? AND prngrpusetypd_lang_languageid = ? AND prngrpusetypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getPrinterGroupUseTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private PrinterGroupUseTypeDescription getPrinterGroupUseTypeDescription(PrinterGroupUseType printerGroupUseType,
             Language language, EntityPermission entityPermission) {
-        return printerGroupUseTypeDescriptionFactory.getEntityFromQuery(entityPermission, getPrinterGroupUseTypeDescriptionQueries,
-                printerGroupUseType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(PrinterGroupUseTypeDescriptions.fields())
+                .from(PrinterGroupUseTypeDescriptions)
+                .where(PrinterGroupUseTypeDescriptions.PRINTER_GROUP_USE_TYPE.eq(printerGroupUseType.getPrimaryKey()),
+                        PrinterGroupUseTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        PrinterGroupUseTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return printerGroupUseTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PrinterGroupUseTypeDescription getPrinterGroupUseTypeDescription(PrinterGroupUseType printerGroupUseType, Language language) {
@@ -1882,33 +1638,26 @@ public class PrinterControl
         return getPrinterGroupUseTypeDescriptionValue(getPrinterGroupUseTypeDescriptionForUpdate(printerGroupUseType, language));
     }
 
-    private static final Map<EntityPermission, String> getPrinterGroupUseTypeDescriptionsByPrinterGroupUseTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM printergroupusetypedescriptions, languages
-                WHERE prngrpusetypd_prngrpusetyp_printergroupusetypeid = ? AND prngrpusetypd_thrutime = ? AND prngrpusetypd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM printergroupusetypedescriptions
-                WHERE prngrpusetypd_prngrpusetyp_printergroupusetypeid = ? AND prngrpusetypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getPrinterGroupUseTypeDescriptionsByPrinterGroupUseTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PrinterGroupUseTypeDescription> getPrinterGroupUseTypeDescriptionsByPrinterGroupUseType(PrinterGroupUseType printerGroupUseType,
             EntityPermission entityPermission) {
-        return printerGroupUseTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getPrinterGroupUseTypeDescriptionsByPrinterGroupUseTypeQueries,
-                printerGroupUseType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PrinterGroupUseTypeDescriptions.fields())
+                    .from(PrinterGroupUseTypeDescriptions)
+                    .join(Languages).onKey(PRINTER_GROUP_USE_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(PrinterGroupUseTypeDescriptions.PRINTER_GROUP_USE_TYPE.eq(printerGroupUseType.getPrimaryKey()),
+                            PrinterGroupUseTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    PrinterGroupUseTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PrinterGroupUseTypeDescriptions.fields())
+                    .from(PrinterGroupUseTypeDescriptions)
+                    .where(PrinterGroupUseTypeDescriptions.PRINTER_GROUP_USE_TYPE.eq(printerGroupUseType.getPrimaryKey()),
+                            PrinterGroupUseTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return printerGroupUseTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PrinterGroupUseTypeDescription> getPrinterGroupUseTypeDescriptionsByPrinterGroupUseType(PrinterGroupUseType printerGroupUseType) {
@@ -1990,7 +1739,10 @@ public class PrinterControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PartyPrinterGroupUseFactory partyPrinterGroupUseFactory;
+    private PartyPrinterGroupUseFactory partyPrinterGroupUseFactory;
+
+    @Inject
+    private PartyPrinterGroupUseTransferCache partyPrinterGroupUseTransferCache;
 
     public PartyPrinterGroupUse createPartyPrinterGroupUse(Party party, PrinterGroupUseType printerGroupUseType, PrinterGroup printerGroup, BasePK createdBy) {
         var partyPrinterGroupUse = partyPrinterGroupUseFactory.create(party, printerGroupUseType, printerGroup,
@@ -2002,56 +1754,49 @@ public class PrinterControl
     }
 
     public long countPartyPrinterGroupUsesByParty(final Party party) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partyprintergroupuses
-                        WHERE parprngrpuse_par_partyid = ? AND parprngrpuse_thrutime = ?
-                        """, party, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyPrinterGroupUses)
+                .where(PartyPrinterGroupUses.PARTY.eq(party.getPrimaryKey()),
+                        PartyPrinterGroupUses.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyPrinterGroupUsesByPrinterGroupUseType(final PrinterGroupUseType printerGroupUseType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partyprintergroupuses
-                        WHERE parprngrpuse_prngrpusetyp_printergroupusetypeid = ? AND parprngrpuse_thrutime = ?
-                        """, printerGroupUseType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyPrinterGroupUses)
+                .where(PartyPrinterGroupUses.PRINTER_GROUP_USE_TYPE.eq(printerGroupUseType.getPrimaryKey()),
+                        PartyPrinterGroupUses.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyPrinterGroupUsesByPrinterGroup(final PrinterGroup printerGroup) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partyprintergroupuses
-                        WHERE parprngrpuse_prngrp_printergroupid = ? AND parprngrpuse_thrutime = ?
-                        """, printerGroup, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getPartyPrinterGroupUseQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM partyprintergroupuses
-                WHERE parprngrpuse_par_partyid = ? AND parprngrpuse_prngrpusetyp_printergroupusetypeid = ?
-                AND parprngrpuse_thrutime = ?
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM partyprintergroupuses
-                WHERE parprngrpuse_par_partyid = ? AND parprngrpuse_prngrpusetyp_printergroupusetypeid = ?
-                AND parprngrpuse_thrutime = ?
-                FOR UPDATE
-                """);
-        getPartyPrinterGroupUseQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyPrinterGroupUses)
+                .where(PartyPrinterGroupUses.PRINTER_GROUP.eq(printerGroup.getPrimaryKey()),
+                        PartyPrinterGroupUses.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private PartyPrinterGroupUse getPartyPrinterGroupUse(Party party, PrinterGroupUseType printerGroupUseType, EntityPermission entityPermission) {
-        return partyPrinterGroupUseFactory.getEntityFromQuery(entityPermission, getPartyPrinterGroupUseQueries,
-                party, printerGroupUseType, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(PartyPrinterGroupUses.fields())
+                .from(PartyPrinterGroupUses)
+                .where(PartyPrinterGroupUses.PARTY.eq(party.getPrimaryKey()),
+                        PartyPrinterGroupUses.PRINTER_GROUP_USE_TYPE.eq(printerGroupUseType.getPrimaryKey()),
+                        PartyPrinterGroupUses.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyPrinterGroupUseFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PartyPrinterGroupUse getPartyPrinterGroupUse(Party party, PrinterGroupUseType printerGroupUseType) {
@@ -2073,33 +1818,26 @@ public class PrinterControl
         return getPartyPrinterGroupUse(party, printerGroupUseType, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getPartyPrinterGroupUsesByPartyQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM partyprintergroupuses, printergroupusetypes, printergroupusetypedetails
-                WHERE parprngrpuse_par_partyid = ? AND parprngrpuse_thrutime = ?
-                AND parprngrpuse_prngrpusetyp_printergroupusetypeid = prngrpusetyp_printergroupusetypeid AND prngrpusetyp_lastdetailid = prngrpusetypdt_printergroupusetypedetailid
-                ORDER BY prngrpusetypdt_sortorder, prngrpusetypdt_printergroupusetypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM partyprintergroupuses
-                WHERE parprngrpuse_par_partyid = ? AND parprngrpuse_thrutime = ?
-                FOR UPDATE
-                """);
-        getPartyPrinterGroupUsesByPartyQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PartyPrinterGroupUse> getPartyPrinterGroupUsesByParty(Party party, EntityPermission entityPermission) {
-        return partyPrinterGroupUseFactory.getEntitiesFromQuery(entityPermission, getPartyPrinterGroupUsesByPartyQueries,
-                party, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyPrinterGroupUses.fields())
+                    .from(PartyPrinterGroupUses)
+                    .join(PrinterGroupUseTypes).onKey(PARTY_PRINTER_GROUP_USES_PRINTER_GROUP_USE_TYPE_FK)
+                    .join(PrinterGroupUseTypeDetails).onKey(PRINTER_GROUP_USE_TYPES_LAST_DETAIL_FK)
+                    .where(PartyPrinterGroupUses.PARTY.eq(party.getPrimaryKey()),
+                            PartyPrinterGroupUses.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PrinterGroupUseTypeDetails.SORT_ORDER, PrinterGroupUseTypeDetails.PRINTER_GROUP_USE_TYPE_NAME),
+                    PartyPrinterGroupUseFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyPrinterGroupUses.fields())
+                    .from(PartyPrinterGroupUses)
+                    .where(PartyPrinterGroupUses.PARTY.eq(party.getPrimaryKey()),
+                            PartyPrinterGroupUses.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return partyPrinterGroupUseFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyPrinterGroupUse> getPartyPrinterGroupUsesByParty(Party party) {
@@ -2110,33 +1848,26 @@ public class PrinterControl
         return getPartyPrinterGroupUsesByParty(party, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getPartyPrinterGroupUsesByPrinterGroupQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM partyprintergroupuses, parties, partydetails
-                WHERE parprngrpuse_prngrp_printergroupid = ? AND parprngrpuse_thrutime = ?
-                AND parprngrpuse_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
-                ORDER BY pardt_partyname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM partyprintergroupuses
-                WHERE parprngrpuse_prngrp_printergroupid = ? AND parprngrpuse_thrutime = ?
-                FOR UPDATE
-                """);
-        getPartyPrinterGroupUsesByPrinterGroupQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PartyPrinterGroupUse> getPartyPrinterGroupUsesByPrinterGroup(PrinterGroup printerGroup, EntityPermission entityPermission) {
-        return partyPrinterGroupUseFactory.getEntitiesFromQuery(entityPermission, getPartyPrinterGroupUsesByPrinterGroupQueries,
-                printerGroup, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyPrinterGroupUses.fields())
+                    .from(PartyPrinterGroupUses)
+                    .join(Parties).onKey(PARTY_PRINTER_GROUP_USES_PARTY_FK)
+                    .join(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .where(PartyPrinterGroupUses.PRINTER_GROUP.eq(printerGroup.getPrimaryKey()),
+                            PartyPrinterGroupUses.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PartyDetails.PARTY_NAME),
+                    PartyPrinterGroupUseFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyPrinterGroupUses.fields())
+                    .from(PartyPrinterGroupUses)
+                    .where(PartyPrinterGroupUses.PRINTER_GROUP.eq(printerGroup.getPrimaryKey()),
+                            PartyPrinterGroupUses.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return partyPrinterGroupUseFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyPrinterGroupUse> getPartyPrinterGroupUsesByPrinterGroup(PrinterGroup printerGroup) {
@@ -2147,33 +1878,26 @@ public class PrinterControl
         return getPartyPrinterGroupUsesByPrinterGroup(printerGroup, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getPartyPrinterGroupUsesByPrinterGroupUseTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM partyprintergroupuses, parties, partydetails
-                WHERE parprngrpuse_prngrpusetyp_printergroupusetypeid = ? AND parprngrpuse_thrutime = ?
-                AND parprngrpuse_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
-                ORDER BY pardt_partyname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM partyprintergroupuses
-                WHERE parprngrpuse_prngrpusetyp_printergroupusetypeid = ? AND parprngrpuse_thrutime = ?
-                FOR UPDATE
-                """);
-        getPartyPrinterGroupUsesByPrinterGroupUseTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<PartyPrinterGroupUse> getPartyPrinterGroupUsesByPrinterGroupUseType(PrinterGroupUseType printerGroupUseType, EntityPermission entityPermission) {
-        return partyPrinterGroupUseFactory.getEntitiesFromQuery(entityPermission, getPartyPrinterGroupUsesByPrinterGroupUseTypeQueries,
-                printerGroupUseType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyPrinterGroupUses.fields())
+                    .from(PartyPrinterGroupUses)
+                    .join(Parties).onKey(PARTY_PRINTER_GROUP_USES_PARTY_FK)
+                    .join(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .where(PartyPrinterGroupUses.PRINTER_GROUP_USE_TYPE.eq(printerGroupUseType.getPrimaryKey()),
+                            PartyPrinterGroupUses.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PartyDetails.PARTY_NAME),
+                    PartyPrinterGroupUseFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyPrinterGroupUses.fields())
+                    .from(PartyPrinterGroupUses)
+                    .where(PartyPrinterGroupUses.PRINTER_GROUP_USE_TYPE.eq(printerGroupUseType.getPrimaryKey()),
+                            PartyPrinterGroupUses.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return partyPrinterGroupUseFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<PartyPrinterGroupUse> getPartyPrinterGroupUsesByPrinterGroupUseType(PrinterGroupUseType printerGroupUseType) {
