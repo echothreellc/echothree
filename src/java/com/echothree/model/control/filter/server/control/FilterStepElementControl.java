@@ -8,7 +8,7 @@
 //     http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
+// distributed under the License is distributed ON an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
@@ -35,19 +35,36 @@ import com.echothree.model.data.filter.server.value.FilterStepElementDetailValue
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.filter.FilterForeignKeys.FILTERS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.filter.FilterForeignKeys.FILTER_DETAILS_FILTER_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.filter.FilterForeignKeys.FILTER_KINDS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.filter.FilterForeignKeys.FILTER_STEPS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.filter.FilterForeignKeys.FILTER_STEP_DETAILS_FILTER_FK;
+import static com.echothree.model.jooq.server.keys.filter.FilterForeignKeys.FILTER_STEP_ELEMENTS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.filter.FilterForeignKeys.FILTER_STEP_ELEMENT_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.filter.FilterForeignKeys.FILTER_STEP_ELEMENT_DETAILS_FILTER_STEP_FK;
+import static com.echothree.model.jooq.server.keys.filter.FilterForeignKeys.FILTER_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.filter.FilterForeignKeys.FILTER_TYPE_DETAILS_FILTER_KIND_FK;
+import static com.echothree.model.jooq.server.tables.filter.FilterDetails.FilterDetails;
+import static com.echothree.model.jooq.server.tables.filter.FilterKindDetails.FilterKindDetails;
+import static com.echothree.model.jooq.server.tables.filter.FilterKinds.FilterKinds;
+import static com.echothree.model.jooq.server.tables.filter.FilterStepDetails.FilterStepDetails;
+import static com.echothree.model.jooq.server.tables.filter.FilterStepElementDescriptions.FilterStepElementDescriptions;
+import static com.echothree.model.jooq.server.tables.filter.FilterStepElementDetails.FilterStepElementDetails;
+import static com.echothree.model.jooq.server.tables.filter.FilterStepElements.FilterStepElements;
+import static com.echothree.model.jooq.server.tables.filter.FilterSteps.FilterSteps;
+import static com.echothree.model.jooq.server.tables.filter.FilterTypeDetails.FilterTypeDetails;
+import static com.echothree.model.jooq.server.tables.filter.FilterTypes.FilterTypes;
+import static com.echothree.model.jooq.server.tables.filter.Filters.Filters;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.inject.Inject;
 
 @CommandScope
@@ -59,12 +76,6 @@ public class FilterStepElementControl
         super();
     }
 
-    @Inject
-    FilterStepElementDescriptionTransferCache filterStepElementDescriptionTransferCache;
-
-    @Inject
-    FilterStepElementTransferCache filterStepElementTransferCache;
-
     // --------------------------------------------------------------------------------
     //   Filter Step Elements
     // --------------------------------------------------------------------------------
@@ -74,6 +85,9 @@ public class FilterStepElementControl
 
     @Inject
     protected FilterStepElementFactory filterStepElementFactory;
+
+    @Inject
+    FilterStepElementTransferCache filterStepElementTransferCache;
 
     public FilterStepElement createFilterStepElement(FilterStep filterStep, String filterStepElementName, Selector filterItemSelector,
             FilterAdjustment filterAdjustment, BasePK createdBy) {
@@ -93,33 +107,33 @@ public class FilterStepElementControl
     }
 
     public long countFilterStepElementsByFilterStep(FilterStep filterStep) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM filterstepelements, filterstepelementdetails
-                WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_fltstp_filterstepid = ?
-                """,
-                filterStep);
+        return session.getDslContext()
+                .selectCount()
+                .from(FilterStepElements)
+                .join(FilterStepElementDetails).onKey(FILTER_STEP_ELEMENTS_ACTIVE_DETAIL_FK)
+                .where(FilterStepElementDetails.FILTER_STEP.eq(filterStep.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countFilterStepElementsBySelector(Selector selector) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM filterstepelements, filterstepelementdetails
-                WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_filteritemselectorid = ?
-                """,
-                selector);
+        return session.getDslContext()
+                .selectCount()
+                .from(FilterStepElements)
+                .join(FilterStepElementDetails).onKey(FILTER_STEP_ELEMENTS_ACTIVE_DETAIL_FK)
+                .where(FilterStepElementDetails.FILTER_ITEM_SELECTOR.eq(selector.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countFilterStepElementsByFilterAdjustment(FilterAdjustment filterAdjustment) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM filterstepelements, filterstepelementdetails
-                WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_flta_filteradjustmentid = ?
-                """,
-                filterAdjustment);
+        return session.getDslContext()
+                .selectCount()
+                .from(FilterStepElements)
+                .join(FilterStepElementDetails).onKey(FILTER_STEP_ELEMENTS_ACTIVE_DETAIL_FK)
+                .where(FilterStepElementDetails.FILTER_ADJUSTMENT.eq(filterAdjustment.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.FilterStepElement */
@@ -139,38 +153,19 @@ public class FilterStepElementControl
 
     public FilterStepElement getFilterStepElementByName(FilterStep filterStep, String filterStepElementName,
             EntityPermission entityPermission) {
-        FilterStepElement filterStepElement;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM filterstepelements, filterstepelementdetails
-                        WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid
-                        AND fltstpedt_fltstp_filterstepid = ? AND fltstpedt_filterstepelementname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM filterstepelements, filterstepelementdetails
-                        WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid
-                        AND fltstpedt_fltstp_filterstepid = ? AND fltstpedt_filterstepelementname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(FilterStepElements.fields())
+                .from(FilterStepElements)
+                .join(FilterStepElementDetails).onKey(FILTER_STEP_ELEMENTS_ACTIVE_DETAIL_FK)
+                .where(FilterStepElementDetails.FILTER_STEP.eq(filterStep.getPrimaryKey()),
+                        FilterStepElementDetails.FILTER_STEP_ELEMENT_NAME.eq(filterStepElementName));
 
-            var ps = filterStepElementFactory.prepareStatement(query);
-            
-            ps.setLong(1, filterStep.getPrimaryKey().getEntityId());
-            ps.setString(2, filterStepElementName);
-            filterStepElement = filterStepElementFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return filterStepElement;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return filterStepElementFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public FilterStepElement getFilterStepElementByName(FilterStep filterStep, String filterStepElementName) {
@@ -190,38 +185,20 @@ public class FilterStepElementControl
     }
     
     private List<FilterStepElement> getFilterStepElementsByFilterStep(FilterStep filterStep, EntityPermission entityPermission) {
-        List<FilterStepElement> filterStepElements;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM filterstepelements, filterstepelementdetails
-                        WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_fltstp_filterstepid = ?
-                        ORDER BY fltstpedt_filterstepelementname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM filterstepelements, filterstepelementdetails
-                        WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_fltstp_filterstepid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(FilterStepElements.fields())
+                .from(FilterStepElements)
+                .join(FilterStepElementDetails).onKey(FILTER_STEP_ELEMENTS_ACTIVE_DETAIL_FK)
+                .where(FilterStepElementDetails.FILTER_STEP.eq(filterStep.getPrimaryKey()));
 
-            var ps = filterStepElementFactory.prepareStatement(query);
-            
-            ps.setLong(1, filterStep.getPrimaryKey().getEntityId());
-            
-            filterStepElements = filterStepElementFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return filterStepElements;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(FilterStepElementDetails.FILTER_STEP_ELEMENT_NAME),
+                    FilterStepElementFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return filterStepElementFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<FilterStepElement> getFilterStepElementsByFilterStep(FilterStep filterStep) {
@@ -232,40 +209,32 @@ public class FilterStepElementControl
         return getFilterStepElementsByFilterStep(filterStep, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getFilterStepElementsByFilterAdjustmentQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM filterstepelements
-                JOIN filterstepelementdetails ON fltstpedt_filterstepelementdetailid = fltstpe_activedetailid
-                JOIN filtersteps ON fltstp_filterstepid = fltstpedt_fltstp_filterstepid
-                JOIN filterstepdetails ON fltstpdt_filterstepdetailid = fltstp_lastdetailid
-                JOIN filters ON flt_filterid = fltstpdt_flt_filterid
-                JOIN filterdetails ON fltdt_filterdetailid = flt_lastdetailid
-                JOIN filtertypes on flttyp_filtertypeid = fltdt_flttyp_filtertypeid
-                JOIN filtertypedetails on flttypdt_filtertypedetailid = flttyp_lastdetailid
-                JOIN filterkinds ON fltk_filterkindid = flttypdt_fltk_filterkindid
-                JOIN filterkinddetails ON fltkdt_filterkinddetailid = fltk_lastdetailid
-                WHERE fltstpedt_flta_filteradjustmentid = ?
-                ORDER BY fltkdt_sortorder, fltkdt_filterkindname, flttypdt_sortorder, flttypdt_filtertypename, fltdt_sortorder, fltdt_filtername, fltstpdt_filterstepname, fltstpedt_filterstepelementname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM filterstepelements
-                JOIN filterstepelementdetails ON fltstpedt_filterstepelementdetailid = fltstpe_lastdetailid
-                WHERE fltstpedt_flta_filteradjustmentid = ?
-                FOR UPDATE
-                """);
-        getFilterStepElementsByFilterAdjustmentQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<FilterStepElement> getFilterStepElementsByFilterAdjustment(FilterAdjustment filterAdjustment, EntityPermission entityPermission) {
-        return filterStepElementFactory.getEntitiesFromQuery(entityPermission, getFilterStepElementsByFilterAdjustmentQueries,
-                filterAdjustment);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(FilterStepElements.fields())
+                    .from(FilterStepElements)
+                    .join(FilterStepElementDetails).onKey(FILTER_STEP_ELEMENTS_ACTIVE_DETAIL_FK)
+                    .join(FilterSteps).onKey(FILTER_STEP_ELEMENT_DETAILS_FILTER_STEP_FK)
+                    .join(FilterStepDetails).onKey(FILTER_STEPS_LAST_DETAIL_FK)
+                    .join(Filters).onKey(FILTER_STEP_DETAILS_FILTER_FK)
+                    .join(FilterDetails).onKey(FILTERS_LAST_DETAIL_FK)
+                    .join(FilterTypes).onKey(FILTER_DETAILS_FILTER_TYPE_FK)
+                    .join(FilterTypeDetails).onKey(FILTER_TYPES_LAST_DETAIL_FK)
+                    .join(FilterKinds).onKey(FILTER_TYPE_DETAILS_FILTER_KIND_FK)
+                    .join(FilterKindDetails).onKey(FILTER_KINDS_LAST_DETAIL_FK)
+                    .where(FilterStepElementDetails.FILTER_ADJUSTMENT.eq(filterAdjustment.getPrimaryKey()))
+                    .orderBy(FilterKindDetails.SORT_ORDER, FilterKindDetails.FILTER_KIND_NAME, FilterTypeDetails.SORT_ORDER, FilterTypeDetails.FILTER_TYPE_NAME, FilterDetails.SORT_ORDER, FilterDetails.FILTER_NAME, FilterStepDetails.FILTER_STEP_NAME, FilterStepElementDetails.FILTER_STEP_ELEMENT_NAME),
+                    FilterStepElementFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(FilterStepElements.fields())
+                    .from(FilterStepElements)
+                    .join(FilterStepElementDetails).onKey(FILTER_STEP_ELEMENTS_ACTIVE_DETAIL_FK)
+                    .where(FilterStepElementDetails.FILTER_ADJUSTMENT.eq(filterAdjustment.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return filterStepElementFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<FilterStepElement> getFilterStepElementsByFilterAdjustment(FilterAdjustment filterAdjustment) {
@@ -347,6 +316,9 @@ public class FilterStepElementControl
     @Inject
     protected FilterStepElementDescriptionFactory filterStepElementDescriptionFactory;
 
+    @Inject
+    FilterStepElementDescriptionTransferCache filterStepElementDescriptionTransferCache;
+
     public FilterStepElementDescription createFilterStepElementDescription(FilterStepElement filterStepElement, Language language,
             String description, BasePK createdBy) {
         var filterStepElementDescription = filterStepElementDescriptionFactory.create(
@@ -359,38 +331,19 @@ public class FilterStepElementControl
     
     private FilterStepElementDescription getFilterStepElementDescription(FilterStepElement filterStepElement, Language language,
             EntityPermission entityPermission) {
-        FilterStepElementDescription filterStepElementDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM filterstepelementdescriptions
-                        WHERE fltstped_fltstpe_filterstepelementid = ? AND fltstped_lang_languageid = ? AND fltstped_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM filterstepelementdescriptions
-                        WHERE fltstped_fltstpe_filterstepelementid = ? AND fltstped_lang_languageid = ? AND fltstped_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(FilterStepElementDescriptions.fields())
+                .from(FilterStepElementDescriptions)
+                .where(FilterStepElementDescriptions.FILTER_STEP_ELEMENT.eq(filterStepElement.getPrimaryKey()),
+                        FilterStepElementDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        FilterStepElementDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = filterStepElementDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, filterStepElement.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            filterStepElementDescription = filterStepElementDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return filterStepElementDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return filterStepElementDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public FilterStepElementDescription getFilterStepElementDescription(FilterStepElement filterStepElement, Language language) {
@@ -412,38 +365,24 @@ public class FilterStepElementControl
     }
     
     private List<FilterStepElementDescription> getFilterStepElementDescriptions(FilterStepElement filterStepElement, EntityPermission entityPermission) {
-        List<FilterStepElementDescription> filterStepElementDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM filterstepelementdescriptions, languages
-                        WHERE fltstped_fltstpe_filterstepelementid = ? AND fltstped_thrutime = ? AND fltstped_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM filterstepelementdescriptions
-                        WHERE fltstped_fltstpe_filterstepelementid = ? AND fltstped_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(FilterStepElementDescriptions.fields())
+                    .from(FilterStepElementDescriptions)
+                    .join(Languages).onKey(FILTER_STEP_ELEMENT_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(FilterStepElementDescriptions.FILTER_STEP_ELEMENT.eq(filterStepElement.getPrimaryKey()),
+                            FilterStepElementDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    FilterStepElementDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(FilterStepElementDescriptions.fields())
+                    .from(FilterStepElementDescriptions)
+                    .where(FilterStepElementDescriptions.FILTER_STEP_ELEMENT.eq(filterStepElement.getPrimaryKey()),
+                            FilterStepElementDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = filterStepElementDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, filterStepElement.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            filterStepElementDescriptions = filterStepElementDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return filterStepElementDescriptions;
+        return filterStepElementDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<FilterStepElementDescription> getFilterStepElementDescriptions(FilterStepElement filterStepElement) {
