@@ -17,7 +17,6 @@
 package com.echothree.model.control.job.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.job.common.choice.JobStatusChoicesBean;
 import com.echothree.model.control.job.common.transfer.JobDescriptionTransfer;
 import com.echothree.model.control.job.common.transfer.JobTransfer;
@@ -39,7 +38,13 @@ import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.job.JobForeignKeys.JOBS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.job.JobForeignKeys.JOB_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.job.JobDescriptions.JobDescriptions;
+import static com.echothree.model.jooq.server.tables.job.JobDetails.JobDetails;
+import static com.echothree.model.jooq.server.tables.job.JobStatuses.JobStatuses;
+import static com.echothree.model.jooq.server.tables.job.Jobs.Jobs;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
@@ -47,7 +52,6 @@ import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -64,24 +68,17 @@ public class JobControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Contact List Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    @Inject
-    JobDescriptionTransferCache jobDescriptionTransferCache;
-
-    @Inject
-    JobTransferCache jobTransferCache;
-
-    // --------------------------------------------------------------------------------
     //   Jobs
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected JobDetailFactory jobDetailFactory;
 
     @Inject
     protected JobFactory jobFactory;
 
     @Inject
-    protected JobDetailFactory jobDetailFactory;
+    JobTransferCache jobTransferCache;
 
     public Job createJob(String jobName, Party runAsParty, Integer sortOrder, BasePK createdBy) {
         var job = jobFactory.create();
@@ -117,44 +114,27 @@ public class JobControl
     }
 
     public long countJobs() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM jobs
-                        JOIN jobdetails ON jbdt_jobdetailid = jb_activedetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(Jobs)
+                .join(JobDetails).onKey(JOBS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private Job getJobByName(String jobName, EntityPermission entityPermission) {
-        Job job;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM jobs, jobdetails
-                        WHERE jb_activedetailid = jbdt_jobdetailid AND jbdt_jobname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM jobs, jobdetails
-                        WHERE jb_activedetailid = jbdt_jobdetailid AND jbdt_jobname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Jobs.fields())
+                .from(Jobs)
+                .join(JobDetails).onKey(JOBS_ACTIVE_DETAIL_FK)
+                .where(JobDetails.JOB_NAME.eq(jobName));
 
-            var ps = jobFactory.prepareStatement(query);
-            
-            ps.setString(1, jobName);
-            
-            job = jobFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return job;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return jobFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Job getJobByName(String jobName) {
@@ -174,28 +154,19 @@ public class JobControl
     }
     
     private List<Job> getJobs(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM jobs, jobdetails
-                    WHERE jb_activedetailid = jbdt_jobdetailid
-                    ORDER BY jbdt_sortorder, jbdt_jobname
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM jobs, jobdetails
-                    WHERE jb_activedetailid = jbdt_jobdetailid
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(Jobs.fields())
+                .from(Jobs)
+                .join(JobDetails).onKey(JOBS_ACTIVE_DETAIL_FK);
 
-        var ps = jobFactory.prepareStatement(query);
-        
-        return jobFactory.getEntitiesFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(JobDetails.SORT_ORDER, JobDetails.JOB_NAME),
+                    JobFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return jobFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<Job> getJobs() {
@@ -299,6 +270,9 @@ public class JobControl
     @Inject
     protected JobDescriptionFactory jobDescriptionFactory;
 
+    @Inject
+    JobDescriptionTransferCache jobDescriptionTransferCache;
+
     public JobDescription createJobDescription(Job job, Language language,
             String description, BasePK createdBy) {
         var jobDescription = jobDescriptionFactory.create(
@@ -310,38 +284,19 @@ public class JobControl
     }
     
     private JobDescription getJobDescription(Job job, Language language, EntityPermission entityPermission) {
-        JobDescription jobDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM jobdescriptions
-                        WHERE jbd_jb_jobid = ? AND jbd_lang_languageid = ? AND jbd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM jobdescriptions
-                        WHERE jbd_jb_jobid = ? AND jbd_lang_languageid = ? AND jbd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(JobDescriptions.fields())
+                .from(JobDescriptions)
+                .where(JobDescriptions.JOB.eq(job.getPrimaryKey()),
+                        JobDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        JobDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = jobDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, job.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            jobDescription = jobDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return jobDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return jobDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public JobDescription getJobDescription(Job job, Language language) {
@@ -361,38 +316,24 @@ public class JobControl
     }
     
     private List<JobDescription> getJobDescriptionsByJob(Job job, EntityPermission entityPermission) {
-        List<JobDescription> jobDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM jobdescriptions, languages
-                        WHERE jbd_jb_jobid = ? AND jbd_thrutime = ? AND jbd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM jobdescriptions
-                        WHERE jbd_jb_jobid = ? AND jbd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(JobDescriptions.fields())
+                    .from(JobDescriptions)
+                    .join(Languages).onKey(JOB_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(JobDescriptions.JOB.eq(job.getPrimaryKey()),
+                            JobDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    JobDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(JobDescriptions.fields())
+                    .from(JobDescriptions)
+                    .where(JobDescriptions.JOB.eq(job.getPrimaryKey()),
+                            JobDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = jobDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, job.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            jobDescriptions = jobDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return jobDescriptions;
+        return jobDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<JobDescription> getJobDescriptionsByJob(Job job) {
@@ -481,36 +422,17 @@ public class JobControl
     }
     
     private JobStatus getJobStatus(Job job, EntityPermission entityPermission) {
-        JobStatus jobStatus;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM jobstatuses
-                        WHERE jbst_jb_jobid = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM jobstatuses
-                        WHERE jbst_jb_jobid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(JobStatuses.fields())
+                .from(JobStatuses)
+                .where(JobStatuses.JOB.eq(job.getPrimaryKey()));
 
-            var ps = jobStatusFactory.prepareStatement(query);
-            
-            ps.setLong(1, job.getPrimaryKey().getEntityId());
-            
-            jobStatus = jobStatusFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return jobStatus;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return jobStatusFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public JobStatus getJobStatus(Job job) {
