@@ -16,8 +16,8 @@
 
 package com.echothree.model.control.workrequirement.server.control;
 
+
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.workrequirement.common.choice.WorkAssignmentStatusChoicesBean;
 import com.echothree.model.control.workrequirement.common.choice.WorkRequirementStatusChoicesBean;
 import com.echothree.model.control.workrequirement.common.choice.WorkTimeStatusChoicesBean;
@@ -80,7 +80,42 @@ import com.echothree.model.data.workrequirement.server.value.WorkRequirementType
 import com.echothree.model.data.workrequirement.server.value.WorkRequirementTypeDetailValue;
 import com.echothree.model.data.workrequirement.server.value.WorkTimeDetailValue;
 import com.echothree.model.data.workrequirement.server.value.WorkTimeUserVisitValue;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.workeffort.WorkEffortForeignKeys.WORK_EFFORT_SCOPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.workeffort.WorkEffortForeignKeys.WORK_EFFORT_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.workrequirement.WorkRequirementForeignKeys.WORK_ASSIGNMENTS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.workrequirement.WorkRequirementForeignKeys.WORK_ASSIGNMENT_DETAILS_WORK_REQUIREMENT_FK;
+import static com.echothree.model.jooq.server.keys.workrequirement.WorkRequirementForeignKeys.WORK_REQUIREMENTS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.workrequirement.WorkRequirementForeignKeys.WORK_REQUIREMENTS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.workrequirement.WorkRequirementForeignKeys.WORK_REQUIREMENT_SCOPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.workrequirement.WorkRequirementForeignKeys.WORK_REQUIREMENT_SCOPE_DETAILS_WORK_EFFORT_SCOPE_FK;
+import static com.echothree.model.jooq.server.keys.workrequirement.WorkRequirementForeignKeys.WORK_REQUIREMENT_SCOPE_DETAILS_WORK_REQUIREMENT_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.workrequirement.WorkRequirementForeignKeys.WORK_REQUIREMENT_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.workrequirement.WorkRequirementForeignKeys.WORK_REQUIREMENT_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.workrequirement.WorkRequirementForeignKeys.WORK_REQUIREMENT_TYPE_DETAILS_WORK_EFFORT_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.workrequirement.WorkRequirementForeignKeys.WORK_TIMES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.workrequirement.WorkRequirementForeignKeys.WORK_TIMES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.workrequirement.WorkRequirementForeignKeys.WORK_TIME_DETAILS_WORK_REQUIREMENT_FK;
+import static com.echothree.model.jooq.server.keys.workrequirement.WorkRequirementForeignKeys.WORK_TIME_USER_VISITS_USER_VISIT_FK;
+import static com.echothree.model.jooq.server.keys.workrequirement.WorkRequirementForeignKeys.WORK_TIME_USER_VISITS_WORK_TIME_FK;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.user.UserVisits.UserVisits;
+import static com.echothree.model.jooq.server.tables.workeffort.WorkEffortScopeDetails.WorkEffortScopeDetails;
+import static com.echothree.model.jooq.server.tables.workeffort.WorkEffortScopes.WorkEffortScopes;
+import static com.echothree.model.jooq.server.tables.workeffort.WorkEffortTypeDetails.WorkEffortTypeDetails;
+import static com.echothree.model.jooq.server.tables.workeffort.WorkEffortTypes.WorkEffortTypes;
+import static com.echothree.model.jooq.server.tables.workrequirement.WorkAssignmentDetails.WorkAssignmentDetails;
+import static com.echothree.model.jooq.server.tables.workrequirement.WorkAssignments.WorkAssignments;
+import static com.echothree.model.jooq.server.tables.workrequirement.WorkRequirementDetails.WorkRequirementDetails;
+import static com.echothree.model.jooq.server.tables.workrequirement.WorkRequirementScopeDetails.WorkRequirementScopeDetails;
+import static com.echothree.model.jooq.server.tables.workrequirement.WorkRequirementScopes.WorkRequirementScopes;
+import static com.echothree.model.jooq.server.tables.workrequirement.WorkRequirementStatuses.WorkRequirementStatuses;
+import static com.echothree.model.jooq.server.tables.workrequirement.WorkRequirementTypeDescriptions.WorkRequirementTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.workrequirement.WorkRequirementTypeDetails.WorkRequirementTypeDetails;
+import static com.echothree.model.jooq.server.tables.workrequirement.WorkRequirementTypes.WorkRequirementTypes;
+import static com.echothree.model.jooq.server.tables.workrequirement.WorkRequirements.WorkRequirements;
+import static com.echothree.model.jooq.server.tables.workrequirement.WorkTimeDetails.WorkTimeDetails;
+import static com.echothree.model.jooq.server.tables.workrequirement.WorkTimeUserVisits.WorkTimeUserVisits;
+import static com.echothree.model.jooq.server.tables.workrequirement.WorkTimes.WorkTimes;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
@@ -88,13 +123,9 @@ import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.inject.Inject;
 
 @CommandScope
@@ -108,36 +139,17 @@ public class WorkRequirementControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Work Requirement Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    @Inject
-    WorkRequirementTypeDescriptionTransferCache workRequirementTypeDescriptionTransferCache;
-
-    @Inject
-    WorkRequirementTypeTransferCache workRequirementTypeTransferCache;
-
-    @Inject
-    WorkRequirementScopeTransferCache workRequirementScopeTransferCache;
-
-    @Inject
-    WorkRequirementTransferCache workRequirementTransferCache;
-
-    @Inject
-    WorkAssignmentTransferCache workAssignmentTransferCache;
-
-    @Inject
-    WorkTimeTransferCache workTimeTransferCache;
-    
-    // --------------------------------------------------------------------------------
     //   Work Requirement Types
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected WorkRequirementTypeDetailFactory workRequirementTypeDetailFactory;
 
     @Inject
     protected WorkRequirementTypeFactory workRequirementTypeFactory;
 
     @Inject
-    protected WorkRequirementTypeDetailFactory workRequirementTypeDetailFactory;
+    WorkRequirementTypeTransferCache workRequirementTypeTransferCache;
 
     public WorkRequirementType createWorkRequirementType(WorkEffortType workEffortType, String workRequirementTypeName, Sequence workRequirementSequence,
             WorkflowStep workflowStep, Long estimatedTimeAllowed, Long maximumTimeAllowed, Boolean allowReassignment, Integer sortOrder, BasePK createdBy) {
@@ -173,65 +185,50 @@ public class WorkRequirementControl
     }
 
     public long countWorkRequirementTypesByWorkEffortType(final WorkEffortType workEffortType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM workrequirementtypes
-                        JOIN workrequirementtypedetails ON wrtdt_workrequirementtypedetailid = wrt_activedetailid
-                        WHERE wrtdt_wet_workefforttypeid = ?
-                        """, workEffortType);
+        return session.getDslContext()
+                .selectCount()
+                .from(WorkRequirementTypes)
+                .join(WorkRequirementTypeDetails).onKey(WORK_REQUIREMENT_TYPES_ACTIVE_DETAIL_FK)
+                .where(WorkRequirementTypeDetails.WORK_EFFORT_TYPE.eq(workEffortType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countWorkRequirementTypesByWorkRequirementSequence(final Sequence workRequirementSequence) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM workrequirementtypes
-                        JOIN workrequirementtypedetails ON wrtdt_workrequirementtypedetailid = wrt_activedetailid
-                        WHERE wrtdt_workrequirementsequenceid = ?
-                        """, workRequirementSequence);
+        return session.getDslContext()
+                .selectCount()
+                .from(WorkRequirementTypes)
+                .join(WorkRequirementTypeDetails).onKey(WORK_REQUIREMENT_TYPES_ACTIVE_DETAIL_FK)
+                .where(WorkRequirementTypeDetails.WORK_REQUIREMENT_SEQUENCE.eq(workRequirementSequence.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countWorkRequirementTypesByWorkflowStep(final WorkflowStep workflowStep) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM workrequirementtypes
-                        JOIN workrequirementtypedetails ON wrtdt_workrequirementtypedetailid = wrt_activedetailid
-                        WHERE wrtdt_wkfls_workflowstepid = ?
-                        """, workflowStep);
+        return session.getDslContext()
+                .selectCount()
+                .from(WorkRequirementTypes)
+                .join(WorkRequirementTypeDetails).onKey(WORK_REQUIREMENT_TYPES_ACTIVE_DETAIL_FK)
+                .where(WorkRequirementTypeDetails.WORKFLOW_STEP.eq(workflowStep.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<WorkRequirementType> getWorkRequirementTypes(WorkEffortType workEffortType, EntityPermission entityPermission) {
-        List<WorkRequirementType> workRequirementTypes;
+        var baseQuery = session.getDslContext()
+                .select(WorkRequirementTypes.fields())
+                .from(WorkRequirementTypes)
+                .join(WorkRequirementTypeDetails).onKey(WORK_REQUIREMENT_TYPES_ACTIVE_DETAIL_FK)
+                .where(WorkRequirementTypeDetails.WORK_EFFORT_TYPE.eq(workEffortType.getPrimaryKey()));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(WorkRequirementTypeDetails.SORT_ORDER, WorkRequirementTypeDetails.WORK_REQUIREMENT_TYPE_NAME),
+                    WorkRequirementTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workrequirementtypes, workrequirementtypedetails
-                        WHERE wrt_activedetailid = wrtdt_workrequirementtypedetailid AND wrtdt_wet_workefforttypeid = ?
-                        ORDER BY wrtdt_sortorder, wrtdt_workrequirementtypename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workrequirementtypes, workrequirementtypedetails
-                        WHERE wrt_activedetailid = wrtdt_workrequirementtypedetailid AND wrtdt_wet_workefforttypeid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = workRequirementTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, workEffortType.getPrimaryKey().getEntityId());
-            
-            workRequirementTypes = workRequirementTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return workRequirementTypes;
+        return workRequirementTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<WorkRequirementType> getWorkRequirementTypes(WorkEffortType workEffortType) {
@@ -243,39 +240,25 @@ public class WorkRequirementControl
     }
     
     private List<WorkRequirementType> getWorkRequirementTypesByWorkflowStep(WorkflowStep workflowStep, EntityPermission entityPermission) {
-        List<WorkRequirementType> workRequirementTypes;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(WorkRequirementTypes.fields())
+                    .from(WorkRequirementTypes)
+                    .join(WorkRequirementTypeDetails).onKey(WORK_REQUIREMENT_TYPES_ACTIVE_DETAIL_FK)
+                    .join(WorkEffortTypes).onKey(WORK_REQUIREMENT_TYPE_DETAILS_WORK_EFFORT_TYPE_FK)
+                    .join(WorkEffortTypeDetails).onKey(WORK_EFFORT_TYPES_ACTIVE_DETAIL_FK)
+                    .where(WorkRequirementTypeDetails.WORKFLOW_STEP.eq(workflowStep.getPrimaryKey()))
+                    .orderBy(WorkRequirementTypeDetails.SORT_ORDER, WorkRequirementTypeDetails.WORK_REQUIREMENT_TYPE_NAME, WorkEffortTypeDetails.SORT_ORDER, WorkEffortTypeDetails.WORK_EFFORT_TYPE_NAME),
+                    WorkRequirementTypeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(WorkRequirementTypes.fields())
+                    .from(WorkRequirementTypes)
+                    .join(WorkRequirementTypeDetails).onKey(WORK_REQUIREMENT_TYPES_ACTIVE_DETAIL_FK)
+                    .where(WorkRequirementTypeDetails.WORKFLOW_STEP.eq(workflowStep.getPrimaryKey()))
+                    .forUpdate();
+        };
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workrequirementtypes, workrequirementtypedetails, workefforttypes, workefforttypedetails
-                        WHERE wrt_activedetailid = wrtdt_workrequirementtypedetailid AND wrtdt_wkfls_workflowstepid = ?
-                        AND wrtdt_wet_workefforttypeid = wet_workefforttypeid AND wet_activedetailid = wetdt_workefforttypedetailid
-                        ORDER BY wrtdt_sortorder, wrtdt_workrequirementtypename, wetdt_sortorder, wetdt_workefforttypename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workrequirementtypes, workrequirementtypedetails
-                        WHERE wrt_activedetailid = wrtdt_workrequirementtypedetailid AND wrtdt_wkfls_workflowstepid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = workRequirementTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, workflowStep.getPrimaryKey().getEntityId());
-            
-            workRequirementTypes = workRequirementTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return workRequirementTypes;
+        return workRequirementTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<WorkRequirementType> getWorkRequirementTypesByWorkflowStep(WorkflowStep workflowStep) {
@@ -288,39 +271,19 @@ public class WorkRequirementControl
     
     private WorkRequirementType getWorkRequirementTypeByName(WorkEffortType workEffortType, String workRequirementTypeName,
             EntityPermission entityPermission) {
-        WorkRequirementType workRequirementType;
+        var baseQuery = session.getDslContext()
+                .select(WorkRequirementTypes.fields())
+                .from(WorkRequirementTypes)
+                .join(WorkRequirementTypeDetails).onKey(WORK_REQUIREMENT_TYPES_ACTIVE_DETAIL_FK)
+                .where(WorkRequirementTypeDetails.WORK_EFFORT_TYPE.eq(workEffortType.getPrimaryKey()),
+                        WorkRequirementTypeDetails.WORK_REQUIREMENT_TYPE_NAME.eq(workRequirementTypeName));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workrequirementtypes, workrequirementtypedetails
-                        WHERE wrt_activedetailid = wrtdt_workrequirementtypedetailid
-                        AND wrtdt_wet_workefforttypeid = ? AND wrtdt_workrequirementtypename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workrequirementtypes, workrequirementtypedetails
-                        WHERE wrt_activedetailid = wrtdt_workrequirementtypedetailid
-                        AND wrtdt_wet_workefforttypeid = ? AND wrtdt_workrequirementtypename = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = workRequirementTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, workEffortType.getPrimaryKey().getEntityId());
-            ps.setString(2, workRequirementTypeName);
-            
-            workRequirementType = workRequirementTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return workRequirementType;
+        return workRequirementTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public WorkRequirementType getWorkRequirementTypeByName(WorkEffortType workEffortType, String workRequirementTypeName) {
@@ -422,6 +385,9 @@ public class WorkRequirementControl
     @Inject
     protected WorkRequirementTypeDescriptionFactory workRequirementTypeDescriptionFactory;
 
+    @Inject
+    WorkRequirementTypeDescriptionTransferCache workRequirementTypeDescriptionTransferCache;
+
     public WorkRequirementTypeDescription createWorkRequirementTypeDescription(WorkRequirementType workRequirementType, Language language,
             String description, BasePK createdBy) {
         var workRequirementTypeDescription = workRequirementTypeDescriptionFactory.create(workRequirementType,
@@ -434,38 +400,19 @@ public class WorkRequirementControl
     
     public WorkRequirementTypeDescription getWorkRequirementTypeDescription(WorkRequirementType workRequirementType, Language language,
             EntityPermission entityPermission) {
-        WorkRequirementTypeDescription workRequirementTypeDescription;
+        var baseQuery = session.getDslContext()
+                .select(WorkRequirementTypeDescriptions.fields())
+                .from(WorkRequirementTypeDescriptions)
+                .where(WorkRequirementTypeDescriptions.WORK_REQUIREMENT_TYPE.eq(workRequirementType.getPrimaryKey()),
+                        WorkRequirementTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        WorkRequirementTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workrequirementtypedescriptions
-                        WHERE wrtd_wrt_workrequirementtypeid = ? AND wrtd_lang_languageid = ? AND wrtd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workrequirementtypedescriptions
-                        WHERE wrtd_wrt_workrequirementtypeid = ? AND wrtd_lang_languageid = ? AND wrtd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = workRequirementTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, workRequirementType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            workRequirementTypeDescription = workRequirementTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return workRequirementTypeDescription;
+        return workRequirementTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public WorkRequirementTypeDescription getWorkRequirementTypeDescription(WorkRequirementType workRequirementType, Language language) {
@@ -485,39 +432,24 @@ public class WorkRequirementControl
     }
     
     private List<WorkRequirementTypeDescription> getWorkRequirementTypeDescriptionsByWorkRequirementType(WorkRequirementType workRequirementType, EntityPermission entityPermission) {
-        List<WorkRequirementTypeDescription> workRequirementTypeDescriptions;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(WorkRequirementTypeDescriptions.fields())
+                    .from(WorkRequirementTypeDescriptions)
+                    .join(Languages).onKey(WORK_REQUIREMENT_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(WorkRequirementTypeDescriptions.WORK_REQUIREMENT_TYPE.eq(workRequirementType.getPrimaryKey()),
+                            WorkRequirementTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    WorkRequirementTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(WorkRequirementTypeDescriptions.fields())
+                    .from(WorkRequirementTypeDescriptions)
+                    .where(WorkRequirementTypeDescriptions.WORK_REQUIREMENT_TYPE.eq(workRequirementType.getPrimaryKey()),
+                            WorkRequirementTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workrequirementtypedescriptions, languages
-                        WHERE wrtd_wrt_workrequirementtypeid = ? AND wrtd_thrutime = ? AND wrtd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workrequirementtypedescriptions
-                        WHERE wrtd_wrt_workrequirementtypeid = ? AND wrtd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = workRequirementTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, workRequirementType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            workRequirementTypeDescriptions = workRequirementTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return workRequirementTypeDescriptions;
+        return workRequirementTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<WorkRequirementTypeDescription> getWorkRequirementTypeDescriptionsByWorkRequirementType(WorkRequirementType workRequirementType) {
@@ -598,10 +530,13 @@ public class WorkRequirementControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected WorkRequirementScopeDetailFactory workRequirementScopeDetailFactory;
+
+    @Inject
     protected WorkRequirementScopeFactory workRequirementScopeFactory;
 
     @Inject
-    protected WorkRequirementScopeDetailFactory workRequirementScopeDetailFactory;
+    WorkRequirementScopeTransferCache workRequirementScopeTransferCache;
 
     public WorkRequirementScope createWorkRequirementScope(WorkEffortScope workEffortScope, WorkRequirementType workRequirementType,
             Sequence workRequirementSequence, Sequence workTimeSequence, Selector workAssignmentSelector, Long estimatedTimeAllowed,
@@ -639,83 +574,70 @@ public class WorkRequirementControl
     }
 
     public long countWorkRequirementScopesByWorkEffortScope(final WorkEffortScope workEffortScope) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM workrequirementscopes
-                        JOIN workrequirementscopedetails ON wrsdt_workrequirementscopedetailid = wrs_activedetailid
-                        WHERE wrsdt_wes_workeffortscopeid = ?
-                        """, workEffortScope);
+        return session.getDslContext()
+                .selectCount()
+                .from(WorkRequirementScopes)
+                .join(WorkRequirementScopeDetails).onKey(WORK_REQUIREMENT_SCOPES_ACTIVE_DETAIL_FK)
+                .where(WorkRequirementScopeDetails.WORK_EFFORT_SCOPE.eq(workEffortScope.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countWorkRequirementScopesByWorkRequirementType(final WorkRequirementType workRequirementType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM workrequirementscopes
-                        JOIN workrequirementscopedetails ON wrsdt_workrequirementscopedetailid = wrs_activedetailid
-                        WHERE wrsdt_wrt_workrequirementtypeid = ?
-                        """, workRequirementType);
+        return session.getDslContext()
+                .selectCount()
+                .from(WorkRequirementScopes)
+                .join(WorkRequirementScopeDetails).onKey(WORK_REQUIREMENT_SCOPES_ACTIVE_DETAIL_FK)
+                .where(WorkRequirementScopeDetails.WORK_REQUIREMENT_TYPE.eq(workRequirementType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countWorkRequirementScopesByWorkRequirementSequence(final Sequence workRequirementSequence) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM workrequirementscopes
-                        JOIN workrequirementscopedetails ON wrsdt_workrequirementscopedetailid = wrs_activedetailid
-                        WHERE wrsdt_workrequirementsequenceid = ?
-                        """, workRequirementSequence);
+        return session.getDslContext()
+                .selectCount()
+                .from(WorkRequirementScopes)
+                .join(WorkRequirementScopeDetails).onKey(WORK_REQUIREMENT_SCOPES_ACTIVE_DETAIL_FK)
+                .where(WorkRequirementScopeDetails.WORK_REQUIREMENT_SEQUENCE.eq(workRequirementSequence.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countWorkRequirementScopesByWorkTimeSequence(final Sequence workTimeSequence) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM workrequirementscopes
-                        JOIN workrequirementscopedetails ON wrsdt_workrequirementscopedetailid = wrs_activedetailid
-                        WHERE wrsdt_worktimesequenceid = ?
-                        """, workTimeSequence);
+        return session.getDslContext()
+                .selectCount()
+                .from(WorkRequirementScopes)
+                .join(WorkRequirementScopeDetails).onKey(WORK_REQUIREMENT_SCOPES_ACTIVE_DETAIL_FK)
+                .where(WorkRequirementScopeDetails.WORK_TIME_SEQUENCE.eq(workTimeSequence.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countWorkRequirementScopesByWorkAssignmentSelector(final Selector workAssignmentSelector) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM workrequirementscopes
-                        JOIN workrequirementscopedetails ON wrsdt_workrequirementscopedetailid = wrs_activedetailid
-                        WHERE wrsdt_workassignmentselectorid = ?
-                        """, workAssignmentSelector);
+        return session.getDslContext()
+                .selectCount()
+                .from(WorkRequirementScopes)
+                .join(WorkRequirementScopeDetails).onKey(WORK_REQUIREMENT_SCOPES_ACTIVE_DETAIL_FK)
+                .where(WorkRequirementScopeDetails.WORK_ASSIGNMENT_SELECTOR.eq(workAssignmentSelector.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private WorkRequirementScope getWorkRequirementScope(WorkEffortScope workEffortScope, WorkRequirementType workRequirementType,
             EntityPermission entityPermission) {
-        WorkRequirementScope workRequirementScope;
+        var baseQuery = session.getDslContext()
+                .select(WorkRequirementScopes.fields())
+                .from(WorkRequirementScopes)
+                .join(WorkRequirementScopeDetails).onKey(WORK_REQUIREMENT_SCOPES_ACTIVE_DETAIL_FK)
+                .where(WorkRequirementScopeDetails.WORK_EFFORT_SCOPE.eq(workEffortScope.getPrimaryKey()),
+                        WorkRequirementScopeDetails.WORK_REQUIREMENT_TYPE.eq(workRequirementType.getPrimaryKey()));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workrequirementscopes, workrequirementscopedetails
-                        WHERE wrs_activedetailid = wrsdt_workrequirementscopedetailid AND wrsdt_wes_workeffortscopeid = ? AND wrsdt_wrt_workrequirementtypeid = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workrequirementscopes, workrequirementscopedetails
-                        WHERE wrs_activedetailid = wrsdt_workrequirementscopedetailid AND wrsdt_wes_workeffortscopeid = ? AND wrsdt_wrt_workrequirementtypeid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = workRequirementScopeFactory.prepareStatement(query);
-            
-            ps.setLong(1, workEffortScope.getPrimaryKey().getEntityId());
-            ps.setLong(2, workRequirementType.getPrimaryKey().getEntityId());
-            
-            workRequirementScope = workRequirementScopeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return workRequirementScope;
+        return workRequirementScopeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public WorkRequirementScope getWorkRequirementScope(WorkEffortScope workEffortScope, WorkRequirementType workRequirementType) {
@@ -728,44 +650,25 @@ public class WorkRequirementControl
     
     private List<WorkRequirementScope> getWorkRequirementScopesByWorkEffortScopeAndWorkflowStep(WorkEffortScope workEffortScope,
             WorkflowStep workflowStep, EntityPermission entityPermission) {
-        List<WorkRequirementScope> workRequirementScopes;
+        var baseQuery = session.getDslContext()
+                .select(WorkRequirementScopes.fields())
+                .from(WorkRequirementScopes)
+                .join(WorkRequirementScopeDetails).onKey(WORK_REQUIREMENT_SCOPES_ACTIVE_DETAIL_FK)
+                .join(WorkEffortScopes).onKey(WORK_REQUIREMENT_SCOPE_DETAILS_WORK_EFFORT_SCOPE_FK)
+                .join(WorkEffortScopeDetails).onKey(WORK_EFFORT_SCOPES_ACTIVE_DETAIL_FK)
+                .join(WorkRequirementTypes).onKey(WORK_REQUIREMENT_SCOPE_DETAILS_WORK_REQUIREMENT_TYPE_FK)
+                .join(WorkRequirementTypeDetails).onKey(WORK_REQUIREMENT_TYPES_ACTIVE_DETAIL_FK)
+                .where(WorkEffortScopes.WORK_EFFORT_SCOPE.eq(workEffortScope.getPrimaryKey()),
+                        WorkRequirementTypeDetails.WORKFLOW_STEP.eq(workflowStep.getPrimaryKey()));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(WorkRequirementTypeDetails.SORT_ORDER, WorkRequirementTypeDetails.WORK_REQUIREMENT_TYPE_NAME),
+                    WorkRequirementScopeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workeffortscopes, workeffortscopedetails, workrequirementscopes, workrequirementscopedetails, workrequirementtypes, workrequirementtypedetails
-                        WHERE wes_activedetailid = wesdt_workeffortscopedetailid AND wes_workeffortscopeid = ?
-                        AND wrs_activedetailid = wrsdt_workrequirementscopedetailid AND wes_workeffortscopeid = wrsdt_wes_workeffortscopeid
-                        AND wrt_activedetailid = wrtdt_workrequirementtypedetailid AND wrtdt_wkfls_workflowstepid = ?
-                        AND wrt_workrequirementtypeid = wrsdt_wrt_workrequirementtypeid
-                        _LIMIT_
-                        """; // TODO: ORDER BY something
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workeffortscopes, workeffortscopedetails, workrequirementscopes, workrequirementscopedetails, workrequirementtypes, workrequirementtypedetails
-                        WHERE wes_activedetailid = wesdt_workeffortscopedetailid AND wes_workeffortscopeid = ?
-                        AND wrs_activedetailid = wrsdt_workrequirementscopedetailid AND wes_workeffortscopeid = wrsdt_wes_workeffortscopeid
-                        AND wrt_activedetailid = wrtdt_workrequirementtypedetailid AND wrtdt_wkfls_workflowstepid = ?
-                        AND wrt_workrequirementtypeid = wrsdt_wrt_workrequirementtypeid
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = workRequirementScopeFactory.prepareStatement(query);
-            
-            ps.setLong(1, workEffortScope.getPrimaryKey().getEntityId());
-            ps.setLong(2, workflowStep.getPrimaryKey().getEntityId());
-            
-            workRequirementScopes = workRequirementScopeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return workRequirementScopes;
+        return workRequirementScopeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<WorkRequirementScope> getWorkRequirementScopesByWorkRequirementType(WorkEffortScope workEffortScope,
@@ -780,39 +683,25 @@ public class WorkRequirementControl
     
     private List<WorkRequirementScope> getWorkRequirementScopesByWorkRequirementType(WorkRequirementType workRequirementType,
             EntityPermission entityPermission) {
-        List<WorkRequirementScope> workRequirementScopes;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(WorkRequirementScopes.fields())
+                    .from(WorkRequirementScopes)
+                    .join(WorkRequirementScopeDetails).onKey(WORK_REQUIREMENT_SCOPES_ACTIVE_DETAIL_FK)
+                    .join(WorkEffortScopes).onKey(WORK_REQUIREMENT_SCOPE_DETAILS_WORK_EFFORT_SCOPE_FK)
+                    .join(WorkEffortScopeDetails).onKey(WORK_EFFORT_SCOPES_ACTIVE_DETAIL_FK)
+                    .where(WorkRequirementScopeDetails.WORK_REQUIREMENT_TYPE.eq(workRequirementType.getPrimaryKey()))
+                    .orderBy(WorkEffortScopeDetails.SORT_ORDER, WorkEffortScopeDetails.WORK_EFFORT_SCOPE_NAME),
+                    WorkRequirementScopeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(WorkRequirementScopes.fields())
+                    .from(WorkRequirementScopes)
+                    .join(WorkRequirementScopeDetails).onKey(WORK_REQUIREMENT_SCOPES_ACTIVE_DETAIL_FK)
+                    .where(WorkRequirementScopeDetails.WORK_REQUIREMENT_TYPE.eq(workRequirementType.getPrimaryKey()))
+                    .forUpdate();
+        };
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workrequirementscopes, workrequirementscopedetails, workeffortscopes, workeffortscopedetails
-                        WHERE wrs_activedetailid = wrsdt_workrequirementscopedetailid AND wrsdt_wrt_workrequirementtypeid = ?
-                        AND wrsdt_wes_workeffortscopeid = wes_workeffortscopeid AND wes_activedetailid = wesdt_workeffortscopedetailid
-                        ORDER BY wesdt_sortorder, wesdt_workeffortscopename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workrequirementscopes, workrequirementscopedetails
-                        WHERE wrs_activedetailid = wrsdt_workrequirementscopedetailid AND wrsdt_wrt_workrequirementtypeid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = workRequirementScopeFactory.prepareStatement(query);
-            
-            ps.setLong(1, workRequirementType.getPrimaryKey().getEntityId());
-            
-            workRequirementScopes = workRequirementScopeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return workRequirementScopes;
+        return workRequirementScopeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<WorkRequirementScope> getWorkRequirementScopesByWorkRequirementType(WorkRequirementType workRequirementType) {
@@ -824,39 +713,25 @@ public class WorkRequirementControl
     }
     
     private List<WorkRequirementScope> getWorkRequirementScopesByWorkEffortScope(WorkEffortScope workEffortScope, EntityPermission entityPermission) {
-        List<WorkRequirementScope> workRequirementScopes;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(WorkRequirementScopes.fields())
+                    .from(WorkRequirementScopes)
+                    .join(WorkRequirementScopeDetails).onKey(WORK_REQUIREMENT_SCOPES_ACTIVE_DETAIL_FK)
+                    .join(WorkRequirementTypes).onKey(WORK_REQUIREMENT_SCOPE_DETAILS_WORK_REQUIREMENT_TYPE_FK)
+                    .join(WorkRequirementTypeDetails).onKey(WORK_REQUIREMENT_TYPES_ACTIVE_DETAIL_FK)
+                    .where(WorkRequirementScopeDetails.WORK_EFFORT_SCOPE.eq(workEffortScope.getPrimaryKey()))
+                    .orderBy(WorkRequirementTypeDetails.SORT_ORDER, WorkRequirementTypeDetails.WORK_REQUIREMENT_TYPE_NAME),
+                    WorkRequirementScopeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(WorkRequirementScopes.fields())
+                    .from(WorkRequirementScopes)
+                    .join(WorkRequirementScopeDetails).onKey(WORK_REQUIREMENT_SCOPES_ACTIVE_DETAIL_FK)
+                    .where(WorkRequirementScopeDetails.WORK_EFFORT_SCOPE.eq(workEffortScope.getPrimaryKey()))
+                    .forUpdate();
+        };
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workrequirementscopes, workrequirementscopedetails, workrequirementtypes, workrequirementtypedetails
-                        WHERE wrs_activedetailid = wrsdt_workrequirementscopedetailid AND wrsdt_wes_workeffortscopeid = ?
-                        AND wrsdt_wrt_workrequirementtypeid = wrt_workrequirementtypeid AND wrt_activedetailid = wrtdt_workrequirementtypedetailid
-                        ORDER BY wrtdt_sortorder, wrtdt_workrequirementtypename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workrequirementscopes, workrequirementscopedetails
-                        WHERE wrs_activedetailid = wrsdt_workrequirementscopedetailid AND wrsdt_wes_workeffortscopeid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = workRequirementScopeFactory.prepareStatement(query);
-            
-            ps.setLong(1, workEffortScope.getPrimaryKey().getEntityId());
-            
-            workRequirementScopes = workRequirementScopeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return workRequirementScopes;
+        return workRequirementScopeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<WorkRequirementScope> getWorkRequirementScopesByWorkEffortScope(WorkEffortScope workEffortScope) {
@@ -955,10 +830,13 @@ public class WorkRequirementControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected WorkRequirementDetailFactory workRequirementDetailFactory;
+
+    @Inject
     protected WorkRequirementFactory workRequirementFactory;
 
     @Inject
-    protected WorkRequirementDetailFactory workRequirementDetailFactory;
+    WorkRequirementTransferCache workRequirementTransferCache;
 
     public WorkRequirement createWorkRequirement(String workRequirementName, WorkEffort workEffort, WorkRequirementScope workRequirementScope, Long startTime,
             Long requiredTime, BasePK createdBy) {
@@ -997,64 +875,49 @@ public class WorkRequirementControl
     }
 
     public long countWorkRequirements() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM workrequirements
-                        JOIN workrequirementdetails ON wrdt_workrequirementdetailid = wr_activedetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(WorkRequirements)
+                .join(WorkRequirementDetails).onKey(WORK_REQUIREMENTS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countWorkRequirementsByWorkEffort(final WorkEffort workEffort) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM workrequirements
-                        JOIN workrequirementdetails ON wrdt_workrequirementdetailid = wr_activedetailid
-                        WHERE wrdt_weff_workeffortid = ?
-                        """, workEffort);
+        return session.getDslContext()
+                .selectCount()
+                .from(WorkRequirements)
+                .join(WorkRequirementDetails).onKey(WORK_REQUIREMENTS_ACTIVE_DETAIL_FK)
+                .where(WorkRequirementDetails.WORK_EFFORT.eq(workEffort.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countWorkRequirementsByWorkRequirementScope(final WorkRequirementScope workRequirementScope) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM workrequirements
-                        JOIN workrequirementdetails ON wrdt_workrequirementdetailid = wr_activedetailid
-                        WHERE wrdt_wrs_workrequirementscopeid = ?
-                        """, workRequirementScope);
+        return session.getDslContext()
+                .selectCount()
+                .from(WorkRequirements)
+                .join(WorkRequirementDetails).onKey(WORK_REQUIREMENTS_ACTIVE_DETAIL_FK)
+                .where(WorkRequirementDetails.WORK_REQUIREMENT_SCOPE.eq(workRequirementScope.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<WorkRequirement> getWorkRequirementsByWorkRequirementScope(WorkRequirementScope workRequirementScope, EntityPermission entityPermission) {
-        List<WorkRequirement> workRequirements;
+        var baseQuery = session.getDslContext()
+                .select(WorkRequirements.fields())
+                .from(WorkRequirements)
+                .join(WorkRequirementDetails).onKey(WORK_REQUIREMENTS_ACTIVE_DETAIL_FK)
+                .where(WorkRequirementDetails.WORK_REQUIREMENT_SCOPE.eq(workRequirementScope.getPrimaryKey()));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(WorkRequirementDetails.WORK_REQUIREMENT_NAME),
+                    WorkRequirementFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workrequirements, workrequirementdetails
-                        WHERE wr_activedetailid = wrdt_workrequirementdetailid AND wrdt_wrs_workrequirementscopeid = ?
-                        ORDER BY wrdt_workrequirementname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workrequirements, workrequirementdetails
-                        WHERE wr_activedetailid = wrdt_workrequirementdetailid AND wrdt_wrs_workrequirementscopeid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = workRequirementFactory.prepareStatement(query);
-            
-            ps.setLong(1, workRequirementScope.getPrimaryKey().getEntityId());
-            
-            workRequirements = workRequirementFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return workRequirements;
+        return workRequirementFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<WorkRequirement> getWorkRequirementsByWorkRequirementScope(WorkRequirementScope workRequirementScope) {
@@ -1066,38 +929,20 @@ public class WorkRequirementControl
     }
     
     private List<WorkRequirement> getWorkRequirementsByWorkEffort(WorkEffort workEffort, EntityPermission entityPermission) {
-        List<WorkRequirement> workRequirements;
+        var baseQuery = session.getDslContext()
+                .select(WorkRequirements.fields())
+                .from(WorkRequirements)
+                .join(WorkRequirementDetails).onKey(WORK_REQUIREMENTS_ACTIVE_DETAIL_FK)
+                .where(WorkRequirementDetails.WORK_EFFORT.eq(workEffort.getPrimaryKey()));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(WorkRequirementDetails.WORK_REQUIREMENT_NAME),
+                    WorkRequirementFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workrequirements, workrequirementdetails
-                        WHERE wr_activedetailid = wrdt_workrequirementdetailid AND wrdt_weff_workeffortid = ?
-                        ORDER BY wrdt_workrequirementname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workrequirements, workrequirementdetails
-                        WHERE wr_activedetailid = wrdt_workrequirementdetailid AND wrdt_weff_workeffortid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = workRequirementFactory.prepareStatement(query);
-            
-            ps.setLong(1, workEffort.getPrimaryKey().getEntityId());
-            
-            workRequirements = workRequirementFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return workRequirements;
+        return workRequirementFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<WorkRequirement> getWorkRequirementsByWorkEffort(WorkEffort workEffort) {
@@ -1109,38 +954,18 @@ public class WorkRequirementControl
     }
     
     private WorkRequirement getWorkRequirementByName(String workRequirementName, EntityPermission entityPermission) {
-        WorkRequirement workRequirement;
+        var baseQuery = session.getDslContext()
+                .select(WorkRequirements.fields())
+                .from(WorkRequirements)
+                .join(WorkRequirementDetails).onKey(WORK_REQUIREMENTS_ACTIVE_DETAIL_FK)
+                .where(WorkRequirementDetails.WORK_REQUIREMENT_NAME.eq(workRequirementName));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workrequirements, workrequirementdetails
-                        WHERE wr_activedetailid = wrdt_workrequirementdetailid
-                        AND wrdt_workrequirementname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workrequirements, workrequirementdetails
-                        WHERE wr_activedetailid = wrdt_workrequirementdetailid
-                        AND wrdt_workrequirementname = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = workRequirementFactory.prepareStatement(query);
-            
-            ps.setString(1, workRequirementName);
-            
-            workRequirement = workRequirementFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return workRequirement;
+        return workRequirementFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public WorkRequirement getWorkRequirementByName(String workRequirementName) {
@@ -1281,28 +1106,18 @@ public class WorkRequirementControl
         return workRequirementStatusFactory.create(workRequirement, 0, null, 0, null);
     }
     
-    private static final Map<EntityPermission, String> getWorkRequirementStatusQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM workrequirementstatuses
-                WHERE wrst_wr_workrequirementid = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM workrequirementstatuses
-                WHERE wrst_wr_workrequirementid = ?
-                FOR UPDATE
-                """);
-        getWorkRequirementStatusQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private WorkRequirementStatus getWorkRequirementStatus(WorkRequirement workRequirement, EntityPermission entityPermission) {
-        return workRequirementStatusFactory.getEntityFromQuery(entityPermission, getWorkRequirementStatusQueries,
-                workRequirement);
+        var baseQuery = session.getDslContext()
+                .select(WorkRequirementStatuses.fields())
+                .from(WorkRequirementStatuses)
+                .where(WorkRequirementStatuses.WORK_REQUIREMENT.eq(workRequirement.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return workRequirementStatusFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public WorkRequirementStatus getWorkRequirementStatus(WorkRequirement workRequirement) {
@@ -1326,10 +1141,13 @@ public class WorkRequirementControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected WorkAssignmentDetailFactory workAssignmentDetailFactory;
+
+    @Inject
     protected WorkAssignmentFactory workAssignmentFactory;
 
     @Inject
-    protected WorkAssignmentDetailFactory workAssignmentDetailFactory;
+    WorkAssignmentTransferCache workAssignmentTransferCache;
 
     public WorkAssignment createWorkAssignment(WorkRequirement workRequirement, Party party, Long startTime, Long endTime, BasePK createdBy) {
         var workRequirementStatus = getWorkRequirementStatusForUpdate(workRequirement);
@@ -1372,47 +1190,39 @@ public class WorkRequirementControl
     }
 
     public long countWorkAssignmentsByWorkRequirement(final WorkRequirement workRequirement) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM workassignments
-                        JOIN workassignmentdetails ON wasgndt_workassignmentdetailid = wasgn_activedetailid
-                        WHERE wasgndt_wr_workrequirementid = ?
-                        """, workRequirement);
+        return session.getDslContext()
+                .selectCount()
+                .from(WorkAssignments)
+                .join(WorkAssignmentDetails).onKey(WORK_ASSIGNMENTS_ACTIVE_DETAIL_FK)
+                .where(WorkAssignmentDetails.WORK_REQUIREMENT.eq(workRequirement.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countWorkAssignmentsByParty(final Party party) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM workassignments
-                        JOIN workassignmentdetails ON wasgndt_workassignmentdetailid = wasgn_activedetailid
-                        WHERE wasgndt_par_partyid = ?
-                        """, party);
-    }
-
-    private static final Map<EntityPermission, String> getWorkAssignmentQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM workassignments, workassignmentdetails
-                WHERE wasgn_activedetailid = wasgndt_workassignmentdetailid
-                AND wasgndt_wr_workrequirementid = ? AND wasgndt_workassignmentsequence = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM workassignments, workassignmentdetails
-                WHERE wasgn_activedetailid = wasgndt_workassignmentdetailid
-                AND wasgndt_wr_workrequirementid = ? AND wasgndt_workassignmentsequence = ?
-                FOR UPDATE
-                """);
-        getWorkAssignmentQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(WorkAssignments)
+                .join(WorkAssignmentDetails).onKey(WORK_ASSIGNMENTS_ACTIVE_DETAIL_FK)
+                .where(WorkAssignmentDetails.PARTY.eq(party.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private WorkAssignment getWorkAssignment(WorkRequirement workRequirement, Integer workAssignmentSequence, EntityPermission entityPermission) {
-        return workAssignmentFactory.getEntityFromQuery(entityPermission, getWorkAssignmentQueries,
-                workRequirement, workAssignmentSequence);
+        var baseQuery = session.getDslContext()
+                .select(WorkAssignments.fields())
+                .from(WorkAssignments)
+                .join(WorkAssignmentDetails).onKey(WORK_ASSIGNMENTS_ACTIVE_DETAIL_FK)
+                .where(WorkAssignmentDetails.WORK_REQUIREMENT.eq(workRequirement.getPrimaryKey()),
+                        WorkAssignmentDetails.WORK_ASSIGNMENT_SEQUENCE.eq(workAssignmentSequence));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return workAssignmentFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public WorkAssignment getWorkAssignment(WorkRequirement workRequirement, Integer workAssignmentSequence) {
@@ -1423,32 +1233,21 @@ public class WorkRequirementControl
         return getWorkAssignment(workRequirement, workAssignmentSequence, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getWorkAssignmentsByWorkRequirementQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM workassignments, workassignmentdetails
-                WHERE wasgn_activedetailid = wasgndt_workassignmentdetailid
-                AND wasgndt_wr_workrequirementid = ?
-                ORDER BY wasgndt_workassignmentsequence
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM workassignments, workassignmentdetails
-                WHERE wasgn_activedetailid = wasgndt_workassignmentdetailid
-                AND wasgndt_wr_workrequirementid = ?
-                FOR UPDATE
-                """);
-        getWorkAssignmentsByWorkRequirementQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<WorkAssignment> getWorkAssignmentsByWorkRequirement(WorkRequirement workRequirement, EntityPermission entityPermission) {
-        return workAssignmentFactory.getEntitiesFromQuery(entityPermission, getWorkAssignmentsByWorkRequirementQueries,
-                workRequirement);
+        var baseQuery = session.getDslContext()
+                .select(WorkAssignments.fields())
+                .from(WorkAssignments)
+                .join(WorkAssignmentDetails).onKey(WORK_ASSIGNMENTS_ACTIVE_DETAIL_FK)
+                .where(WorkAssignmentDetails.WORK_REQUIREMENT.eq(workRequirement.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(WorkAssignmentDetails.WORK_ASSIGNMENT_SEQUENCE),
+                    WorkAssignmentFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return workAssignmentFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<WorkAssignment> getWorkAssignmentsByWorkRequirement(WorkRequirement workRequirement) {
@@ -1459,33 +1258,26 @@ public class WorkRequirementControl
         return getWorkAssignmentsByWorkRequirement(workRequirement, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getWorkAssignmentsByPartyQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM workassignments, workassignmentdetails, workrequirements, workrequirementdetails
-                WHERE wasgn_activedetailid = wasgndt_workassignmentdetailid
-                AND wasgndt_par_partyid = ?
-                AND wasgndt_wr_workrequirementid = wr_workrequirementid AND wr_lastdetailid = wrdt_workrequirementdetailid
-                ORDER BY wrdt_workrequirementname, wasgndt_workassignmentsequence
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM workassignments, workassignmentdetails
-                WHERE wasgn_activedetailid = wasgndt_workassignmentdetailid
-                AND wasgndt_wr_workrequirementid = ?
-                FOR UPDATE
-                """);
-        getWorkAssignmentsByPartyQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<WorkAssignment> getWorkAssignmentsByParty(Party party, EntityPermission entityPermission) {
-        return workAssignmentFactory.getEntitiesFromQuery(entityPermission, getWorkAssignmentsByPartyQueries,
-                party);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(WorkAssignments.fields())
+                    .from(WorkAssignments)
+                    .join(WorkAssignmentDetails).onKey(WORK_ASSIGNMENTS_ACTIVE_DETAIL_FK)
+                    .join(WorkRequirements).onKey(WORK_ASSIGNMENT_DETAILS_WORK_REQUIREMENT_FK)
+                    .join(WorkRequirementDetails).onKey(WORK_REQUIREMENTS_LAST_DETAIL_FK)
+                    .where(WorkAssignmentDetails.PARTY.eq(party.getPrimaryKey()))
+                    .orderBy(WorkRequirementDetails.WORK_REQUIREMENT_NAME, WorkAssignmentDetails.WORK_ASSIGNMENT_SEQUENCE),
+                    WorkAssignmentFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(WorkAssignments.fields())
+                    .from(WorkAssignments)
+                    .join(WorkAssignmentDetails).onKey(WORK_ASSIGNMENTS_ACTIVE_DETAIL_FK)
+                    .where(WorkAssignmentDetails.PARTY.eq(party.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return workAssignmentFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<WorkAssignment> getWorkAssignmentsByParty(Party party) {
@@ -1605,10 +1397,13 @@ public class WorkRequirementControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected WorkTimeDetailFactory workTimeDetailFactory;
+
+    @Inject
     protected WorkTimeFactory workTimeFactory;
 
     @Inject
-    protected WorkTimeDetailFactory workTimeDetailFactory;
+    WorkTimeTransferCache workTimeTransferCache;
 
     public WorkTime createWorkTime(WorkRequirement workRequirement, Party party, Long startTime, Long endTime, BasePK createdBy) {
         var workRequirementStatus = getWorkRequirementStatusForUpdate(workRequirement);
@@ -1651,47 +1446,39 @@ public class WorkRequirementControl
     }
 
     public long countWorkTimesByWorkRequirement(final WorkRequirement workRequirement) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM worktimes
-                        JOIN worktimedetails ON wtmdt_worktimedetailid = wtm_activedetailid
-                        WHERE wtmdt_wr_workrequirementid = ?
-                        """, workRequirement);
+        return session.getDslContext()
+                .selectCount()
+                .from(WorkTimes)
+                .join(WorkTimeDetails).onKey(WORK_TIMES_ACTIVE_DETAIL_FK)
+                .where(WorkTimeDetails.WORK_REQUIREMENT.eq(workRequirement.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countWorkTimesByParty(final Party party) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM worktimes
-                        JOIN worktimedetails ON wtmdt_worktimedetailid = wtm_activedetailid
-                        WHERE wtmdt_par_partyid = ?
-                        """, party);
-    }
-
-    private static final Map<EntityPermission, String> getWorkTimeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM worktimes, worktimedetails
-                WHERE wtm_activedetailid = wtmdt_worktimedetailid
-                AND wtmdt_wr_workrequirementid = ? AND wtmdt_worktimesequence = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM worktimes, worktimedetails
-                WHERE wtm_activedetailid = wtmdt_worktimedetailid
-                AND wtmdt_wr_workrequirementid = ? AND wtmdt_worktimesequence = ?
-                FOR UPDATE
-                """);
-        getWorkTimeQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(WorkTimes)
+                .join(WorkTimeDetails).onKey(WORK_TIMES_ACTIVE_DETAIL_FK)
+                .where(WorkTimeDetails.PARTY.eq(party.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private WorkTime getWorkTime(WorkRequirement workRequirement, Integer workTimeSequence, EntityPermission entityPermission) {
-        return workTimeFactory.getEntityFromQuery(entityPermission, getWorkTimeQueries,
-                workRequirement, workTimeSequence);
+        var baseQuery = session.getDslContext()
+                .select(WorkTimes.fields())
+                .from(WorkTimes)
+                .join(WorkTimeDetails).onKey(WORK_TIMES_ACTIVE_DETAIL_FK)
+                .where(WorkTimeDetails.WORK_REQUIREMENT.eq(workRequirement.getPrimaryKey()),
+                        WorkTimeDetails.WORK_TIME_SEQUENCE.eq(workTimeSequence));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return workTimeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public WorkTime getWorkTime(WorkRequirement workRequirement, Integer workTimeSequence) {
@@ -1710,32 +1497,21 @@ public class WorkRequirementControl
         return getWorkTimeDetailValueForUpdate(getWorkTimeForUpdate(workRequirement, workTimeSequence));
     }
     
-    private static final Map<EntityPermission, String> getWorkTimesByWorkRequirementQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM worktimes, worktimedetails
-                WHERE wtm_activedetailid = wtmdt_worktimedetailid
-                AND wtmdt_wr_workrequirementid = ?
-                ORDER BY wtmdt_worktimesequence
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM worktimes, worktimedetails
-                WHERE wtm_activedetailid = wtmdt_worktimedetailid
-                AND wtmdt_wr_workrequirementid = ?
-                FOR UPDATE
-                """);
-        getWorkTimesByWorkRequirementQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<WorkTime> getWorkTimesByWorkRequirement(WorkRequirement workRequirement, EntityPermission entityPermission) {
-        return workTimeFactory.getEntitiesFromQuery(entityPermission, getWorkTimesByWorkRequirementQueries,
-                workRequirement);
+        var baseQuery = session.getDslContext()
+                .select(WorkTimes.fields())
+                .from(WorkTimes)
+                .join(WorkTimeDetails).onKey(WORK_TIMES_ACTIVE_DETAIL_FK)
+                .where(WorkTimeDetails.WORK_REQUIREMENT.eq(workRequirement.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(WorkTimeDetails.WORK_TIME_SEQUENCE),
+                    WorkTimeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return workTimeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<WorkTime> getWorkTimesByWorkRequirement(WorkRequirement workRequirement) {
@@ -1746,31 +1522,27 @@ public class WorkRequirementControl
         return getWorkTimesByWorkRequirement(workRequirement, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getWorkTimesByPartyQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM worktimes, worktimedetails
-                WHERE wtm_activedetailid = wtmdt_worktimedetailid
-                AND wtmdt_par_partyid = ?
-                _LIMIT_
-                """); // TODO: ORDER BY
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM worktimes, worktimedetails
-                WHERE wtm_activedetailid = wtmdt_worktimedetailid
-                AND wtmdt_par_partyid = ?
-                FOR UPDATE
-                """);
-        getWorkTimesByPartyQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<WorkTime> getWorkTimesByParty(Party party, EntityPermission entityPermission) {
-        return workTimeFactory.getEntitiesFromQuery(entityPermission, getWorkTimesByPartyQueries,
-                party);
+        var baseQuery = session.getDslContext()
+                .select(WorkTimes.fields())
+                .from(WorkTimes)
+                .join(WorkTimeDetails).onKey(WORK_TIMES_ACTIVE_DETAIL_FK)
+                .where(WorkTimeDetails.PARTY.eq(party.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(WorkTimes.fields())
+                    .from(WorkTimes)
+                    .join(WorkTimeDetails).onKey(WORK_TIMES_ACTIVE_DETAIL_FK)
+                    .join(WorkRequirements).onKey(WORK_TIME_DETAILS_WORK_REQUIREMENT_FK)
+                    .join(WorkRequirementDetails).onKey(WORK_REQUIREMENTS_LAST_DETAIL_FK)
+                    .where(WorkTimeDetails.PARTY.eq(party.getPrimaryKey()))
+                    .orderBy(WorkRequirementDetails.WORK_REQUIREMENT_NAME, WorkTimeDetails.WORK_TIME_SEQUENCE),
+                    WorkTimeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return workTimeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<WorkTime> getWorkTimesByParty(Party party) {
@@ -1894,28 +1666,20 @@ public class WorkRequirementControl
         return workTimeUserVisitFactory.create(workTime, userVisit, session.getStartTime(), Session.MAX_TIME);
     }
     
-    private static final Map<EntityPermission, String> getWorkTimeUserVisitQueries;
-    
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM worktimeuservisits
-                WHERE wtmuvis_wtm_worktimeid = ? AND wtmuvis_uvis_uservisitid = ? AND wtmuvis_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM worktimeuservisits
-                WHERE wtmuvis_wtm_worktimeid = ? AND wtmuvis_uvis_uservisitid = ? AND wtmuvis_thrutime = ?
-                FOR UPDATE
-                """);
-        getWorkTimeUserVisitQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private WorkTimeUserVisit getWorkTimeUserVisit(WorkTime workTime, UserVisit userVisit, EntityPermission entityPermission) {
-        return workTimeUserVisitFactory.getEntityFromQuery(entityPermission, getWorkTimeUserVisitQueries,
-                workTime, userVisit, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(WorkTimeUserVisits.fields())
+                .from(WorkTimeUserVisits)
+                .where(WorkTimeUserVisits.WORK_TIME.eq(workTime.getPrimaryKey()),
+                        WorkTimeUserVisits.USER_VISIT.eq(userVisit.getPrimaryKey()),
+                        WorkTimeUserVisits.THRU_TIME.eq(Session.MAX_TIME));
+    
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return workTimeUserVisitFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public WorkTimeUserVisit getWorkTimeUserVisit(WorkTime workTime, UserVisit userVisit) {
@@ -1934,31 +1698,25 @@ public class WorkRequirementControl
         return getWorkTimeUserVisitValue(getWorkTimeUserVisitForUpdate(workTime, userVisit));
     }
     
-    private static final Map<EntityPermission, String> getWorkTimeUserVisitsByWorkTimeQueries;
-    
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM worktimeuservisits, uservisits
-                WHERE wtmuvis_wtm_worktimeid = ? AND wtmuvis_thrutime = ?
-                AND wtmuvis_uvis_uservisitid = uvis_uservisitid
-                ORDER BY uvis_fromtime
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM worktimeuservisits
-                WHERE wtmuvis_wtm_worktimeid = ? AND wtmuvis_thrutime = ?
-                FOR UPDATE
-                """);
-        getWorkTimeUserVisitsByWorkTimeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<WorkTimeUserVisit> getWorkTimeUserVisitsByWorkTime(WorkTime workTime, EntityPermission entityPermission) {
-        return workTimeUserVisitFactory.getEntitiesFromQuery(entityPermission, getWorkTimeUserVisitsByWorkTimeQueries,
-                workTime, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(WorkTimeUserVisits.fields())
+                    .from(WorkTimeUserVisits)
+                    .join(UserVisits).onKey(WORK_TIME_USER_VISITS_USER_VISIT_FK)
+                    .where(WorkTimeUserVisits.WORK_TIME.eq(workTime.getPrimaryKey()),
+                            WorkTimeUserVisits.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(UserVisits.FROM_TIME),
+                    WorkTimeUserVisitFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(WorkTimeUserVisits.fields())
+                    .from(WorkTimeUserVisits)
+                    .where(WorkTimeUserVisits.WORK_TIME.eq(workTime.getPrimaryKey()),
+                            WorkTimeUserVisits.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return workTimeUserVisitFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<WorkTimeUserVisit> getWorkTimeUserVisitsByWorkTime(WorkTime workTime) {
@@ -1969,31 +1727,26 @@ public class WorkRequirementControl
         return getWorkTimeUserVisitsByWorkTime(workTime, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getWorkTimeUserVisitsByUserVisitQueries;
-    
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM worktimeuservisits, worktimes, worktimedetails
-                WHERE wtmuvis_wtm_worktimeid = ? AND wtmuvis_thrutime = ?
-                AND wtmuvis_wtm_worktimeid = wtm_worktimeid AND wtm_lastdetailid = wtmdt_worktimedetailid
-                ORDER BY wtmdt_workTimename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM worktimeuservisits
-                WHERE wtmuvis_wtm_worktimeid = ? AND wtmuvis_thrutime = ?
-                FOR UPDATE
-                """);
-        getWorkTimeUserVisitsByUserVisitQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<WorkTimeUserVisit> getWorkTimeUserVisitsByUserVisit(UserVisit userVisit, EntityPermission entityPermission) {
-        return workTimeUserVisitFactory.getEntitiesFromQuery(entityPermission, getWorkTimeUserVisitsByUserVisitQueries,
-                userVisit, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(WorkTimeUserVisits.fields())
+                    .from(WorkTimeUserVisits)
+                    .join(WorkTimes).onKey(WORK_TIME_USER_VISITS_WORK_TIME_FK)
+                    .join(WorkTimeDetails).onKey(WORK_TIMES_LAST_DETAIL_FK)
+                    .where(WorkTimeUserVisits.USER_VISIT.eq(userVisit.getPrimaryKey()),
+                            WorkTimeUserVisits.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(WorkTimeDetails.WORK_TIME_SEQUENCE),
+                    WorkTimeUserVisitFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(WorkTimeUserVisits.fields())
+                    .from(WorkTimeUserVisits)
+                    .where(WorkTimeUserVisits.USER_VISIT.eq(userVisit.getPrimaryKey()),
+                            WorkTimeUserVisits.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return workTimeUserVisitFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<WorkTimeUserVisit> getWorkTimeUserVisitsByUserVisit(UserVisit userVisit) {
