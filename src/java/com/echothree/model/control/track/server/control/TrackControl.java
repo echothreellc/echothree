@@ -17,7 +17,6 @@
 package com.echothree.model.control.track.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
@@ -46,6 +45,15 @@ import com.echothree.model.data.track.server.factory.UserVisitTrackFactory;
 import com.echothree.model.data.track.server.value.TrackDescriptionValue;
 import com.echothree.model.data.track.server.value.TrackDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import static com.echothree.model.jooq.server.keys.track.TrackForeignKeys.TRACKS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.track.TrackForeignKeys.TRACK_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.track.TrackForeignKeys.USER_VISIT_TRACKS_USER_VISIT_FK;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.track.TrackDescriptions.TrackDescriptions;
+import static com.echothree.model.jooq.server.tables.track.TrackDetails.TrackDetails;
+import static com.echothree.model.jooq.server.tables.track.Tracks.Tracks;
+import static com.echothree.model.jooq.server.tables.track.UserVisitTracks.UserVisitTracks;
+import static com.echothree.model.jooq.server.tables.user.UserVisits.UserVisits;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
@@ -56,11 +64,8 @@ import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.Sha1Utils;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 
@@ -83,27 +88,17 @@ public class TrackControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Track Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    @Inject
-    TrackTransferCache trackTransferCache;
-
-    @Inject
-    TrackDescriptionTransferCache trackDescriptionTransferCache;
-
-    @Inject
-    UserVisitTrackTransferCache userVisitTrackTransferCache;
-
-    // --------------------------------------------------------------------------------
     //   Tracks
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected TrackDetailFactory trackDetailFactory;
 
     @Inject
     protected TrackFactory trackFactory;
 
     @Inject
-    protected TrackDetailFactory trackDetailFactory;
+    private TrackTransferCache trackTransferCache;
 
     public Track createTrack(String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.TRACK.name());
@@ -162,38 +157,27 @@ public class TrackControl
     }
 
     public long countTracks() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM tracks
-                        JOIN trackdetails ON trkdt_trackdetailid = trk_activedetailid
-                        """);
-    }
-
-    private static final Map<EntityPermission, String> getTrackByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM tracks, trackdetails
-                WHERE trk_activedetailid = trkdt_trackdetailid
-                AND trkdt_trackname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM tracks, trackdetails
-                WHERE trk_activedetailid = trkdt_trackdetailid
-                AND trkdt_trackname = ?
-                FOR UPDATE
-                """);
-        getTrackByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(Tracks)
+                .join(TrackDetails).onKey(TRACKS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private Track getTrackByName(String trackName, EntityPermission entityPermission) {
-        return trackFactory.getEntityFromQuery(entityPermission, getTrackByNameQueries, trackName);
+        var baseQuery = session.getDslContext()
+                .select(Tracks.fields())
+                .from(Tracks)
+                .join(TrackDetails).onKey(TRACKS_ACTIVE_DETAIL_FK)
+                .where(TrackDetails.TRACK_NAME.eq(trackName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return trackFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public Track getTrackByName(String trackName) {
@@ -204,32 +188,19 @@ public class TrackControl
         return getTrackByName(trackName, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getTrackByValueQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM tracks, trackdetails
-                WHERE trk_activedetailid = trkdt_trackdetailid
-                AND trkdt_valuesha1hash = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM tracks, trackdetails
-                WHERE trk_activedetailid = trkdt_trackdetailid
-                AND trkdt_valuesha1hash = ?
-                FOR UPDATE
-                """);
-        getTrackByValueQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private Track getTrackByValue(String value, EntityPermission entityPermission) {
-        return trackFactory.getEntityFromQuery(entityPermission, getTrackByValueQueries,
-                Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault())));
+        var baseQuery = session.getDslContext()
+                .select(Tracks.fields())
+                .from(Tracks)
+                .join(TrackDetails).onKey(TRACKS_ACTIVE_DETAIL_FK)
+                .where(TrackDetails.VALUE_SHA1_HASH.eq(Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()))));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return trackFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public Track getTrackByValue(String value) {
@@ -248,31 +219,19 @@ public class TrackControl
         return getTrackDetailValueForUpdate(getTrackByNameForUpdate(trackName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultTrackQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM tracks, trackdetails
-                WHERE trk_activedetailid = trkdt_trackdetailid
-                AND trkdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM tracks, trackdetails
-                WHERE trk_activedetailid = trkdt_trackdetailid
-                AND trkdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultTrackQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private Track getDefaultTrack(EntityPermission entityPermission) {
-        return trackFactory.getEntityFromQuery(entityPermission, getDefaultTrackQueries);
+        var baseQuery = session.getDslContext()
+                .select(Tracks.fields())
+                .from(Tracks)
+                .join(TrackDetails).onKey(TRACKS_ACTIVE_DETAIL_FK)
+                .where(TrackDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return trackFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public Track getDefaultTrack() {
@@ -287,31 +246,20 @@ public class TrackControl
         return getDefaultTrackForUpdate().getLastDetailForUpdate().getTrackDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getTracksQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM tracks, trackdetails
-                WHERE trk_activedetailid = trkdt_trackdetailid
-                ORDER BY trkdt_sortorder, trkdt_trackname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM tracks, trackdetails
-                WHERE trk_activedetailid = trkdt_trackdetailid
-                FOR UPDATE
-                """);
-        getTracksQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<Track> getTracks(EntityPermission entityPermission) {
-        return trackFactory.getEntitiesFromQuery(entityPermission, getTracksQueries);
+        var baseQuery = session.getDslContext()
+                .select(Tracks.fields())
+                .from(Tracks)
+                .join(TrackDetails).onKey(TRACKS_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(TrackDetails.SORT_ORDER, TrackDetails.TRACK_NAME),
+                    TrackFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return trackFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Track> getTracks() {
@@ -355,7 +303,7 @@ public class TrackControl
         }
     }
     
-   public TrackTransfer getTrackTransfer(UserVisit userVisit, Track track) {
+    public TrackTransfer getTrackTransfer(UserVisit userVisit, Track track) {
         return trackTransferCache.getTrackTransfer(userVisit, track);
     }
 
@@ -512,6 +460,9 @@ public class TrackControl
     @Inject
     protected TrackDescriptionFactory trackDescriptionFactory;
 
+    @Inject
+    private TrackDescriptionTransferCache trackDescriptionTransferCache;
+
     public TrackDescription createTrackDescription(Track track, Language language, String description, BasePK createdBy) {
         var trackDescription = trackDescriptionFactory.create(track, language, description,
                 session.getStartTime(), Session.MAX_TIME);
@@ -521,30 +472,20 @@ public class TrackControl
         return trackDescription;
     }
 
-    private static final Map<EntityPermission, String> getTrackDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM trackdescriptions
-                WHERE trkd_trk_trackid = ? AND trkd_lang_languageid = ? AND trkd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM trackdescriptions
-                WHERE trkd_trk_trackid = ? AND trkd_lang_languageid = ? AND trkd_thrutime = ?
-                FOR UPDATE
-                """);
-        getTrackDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private TrackDescription getTrackDescription(Track track, Language language, EntityPermission entityPermission) {
-        return trackDescriptionFactory.getEntityFromQuery(entityPermission, getTrackDescriptionQueries,
-                track, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(TrackDescriptions.fields())
+                .from(TrackDescriptions)
+                .where(TrackDescriptions.TRACK.eq(track.getPrimaryKey()),
+                        TrackDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        TrackDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return trackDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public TrackDescription getTrackDescription(Track track, Language language) {
@@ -563,31 +504,25 @@ public class TrackControl
         return getTrackDescriptionValue(getTrackDescriptionForUpdate(track, language));
     }
 
-    private static final Map<EntityPermission, String> getTrackDescriptionsByTrackQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM trackdescriptions, languages
-                WHERE trkd_trk_trackid = ? AND trkd_thrutime = ? AND trkd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM trackdescriptions
-                WHERE trkd_trk_trackid = ? AND trkd_thrutime = ?
-                FOR UPDATE
-                """);
-        getTrackDescriptionsByTrackQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<TrackDescription> getTrackDescriptionsByTrack(Track track, EntityPermission entityPermission) {
-        return trackDescriptionFactory.getEntitiesFromQuery(entityPermission, getTrackDescriptionsByTrackQueries,
-                track, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(TrackDescriptions.fields())
+                    .from(TrackDescriptions)
+                    .join(Languages).onKey(TRACK_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(TrackDescriptions.TRACK.eq(track.getPrimaryKey()),
+                            TrackDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    TrackDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(TrackDescriptions.fields())
+                    .from(TrackDescriptions)
+                    .where(TrackDescriptions.TRACK.eq(track.getPrimaryKey()),
+                            TrackDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return trackDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<TrackDescription> getTrackDescriptionsByTrack(Track track) {
@@ -671,6 +606,9 @@ public class TrackControl
     @Inject
     protected UserVisitTrackFactory userVisitTrackFactory;
 
+    @Inject
+    private UserVisitTrackTransferCache userVisitTrackTransferCache;
+
     public UserVisitTrack createUserVisitTrack(UserVisit userVisit, Long time, Track track) {
         var userVisitStatus = userControl.getUserVisitStatusForUpdate(userVisit);
         Integer userVisitTrackSequence = userVisitStatus.getUserVisitTrackSequence()+ 1;
@@ -688,39 +626,28 @@ public class TrackControl
     }
     
     public Integer getMinimumUserVisitTrackSequence(UserVisit userVisit) {
-        return session.queryForInteger(
-                """
-                SELECT MIN(uvistrk_uservisittracksequence)
-                FROM uservisittracks
-                WHERE uvistrk_uvis_uservisitid = ? AND uvistrk_thrutime = ?
-                """,
-                userVisit, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getUserVisitTrackQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM uservisittracks
-                WHERE uvistrk_uvis_uservisitid = ? AND uvistrk_uservisittracksequence = ? AND uvistrk_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM uservisittracks
-                WHERE uvistrk_uvis_uservisitid = ? AND uvistrk_uservisittracksequence = ? AND uvistrk_thrutime = ?
-                FOR UPDATE
-                """);
-        getUserVisitTrackQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .select(org.jooq.impl.DSL.min(UserVisitTracks.USER_VISIT_TRACK_SEQUENCE))
+                .from(UserVisitTracks)
+                .where(UserVisitTracks.USER_VISIT.eq(userVisit.getPrimaryKey()),
+                        UserVisitTracks.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOne(0, Integer.class);
     }
 
     private UserVisitTrack getUserVisitTrack(UserVisit userVisit, Integer userVisitTrackSequence, EntityPermission entityPermission) {
-        return userVisitTrackFactory.getEntityFromQuery(entityPermission, getUserVisitTrackQueries,
-                userVisit, userVisitTrackSequence, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(UserVisitTracks.fields())
+                .from(UserVisitTracks)
+                .where(UserVisitTracks.USER_VISIT.eq(userVisit.getPrimaryKey()),
+                        UserVisitTracks.USER_VISIT_TRACK_SEQUENCE.eq(userVisitTrackSequence),
+                        UserVisitTracks.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return userVisitTrackFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public UserVisitTrack getUserVisitTrack(UserVisit userVisit, Integer userVisitTrackSequence) {
@@ -731,31 +658,21 @@ public class TrackControl
         return getUserVisitTrack(userVisit, userVisitTrackSequence, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getUserVisitTracksByUserVisitQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM uservisittracks
-                WHERE uvistrk_uvis_uservisitid = ? AND uvistrk_thrutime = ?
-                ORDER BY uvistrk_uservisittracksequence
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM uservisittracks
-                WHERE uvistrk_uvis_uservisitid = ? AND uvistrk_thrutime = ?
-                FOR UPDATE
-                """);
-        getUserVisitTracksByUserVisitQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<UserVisitTrack> getUserVisitTracksByUserVisit(UserVisit userVisit, EntityPermission entityPermission) {
-        return userVisitTrackFactory.getEntitiesFromQuery(entityPermission, getUserVisitTracksByUserVisitQueries,
-                userVisit, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(UserVisitTracks.fields())
+                .from(UserVisitTracks)
+                .where(UserVisitTracks.USER_VISIT.eq(userVisit.getPrimaryKey()),
+                        UserVisitTracks.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(UserVisitTracks.USER_VISIT_TRACK_SEQUENCE),
+                    UserVisitTrackFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return userVisitTrackFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<UserVisitTrack> getUserVisitTracksByUserVisit(UserVisit userVisit) {
@@ -766,24 +683,26 @@ public class TrackControl
         return getUserVisitTracksByUserVisit(userVisit, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getUserVisitTracksByTrackQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM uservisittracks
-                WHERE uvistrk_trk_trackid = ? AND uvistrk_thrutime = ?
-                FOR UPDATE
-                """);
-        getUserVisitTracksByTrackQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<UserVisitTrack> getUserVisitTracksByTrack(Track track, EntityPermission entityPermission) {
-        return userVisitTrackFactory.getEntitiesFromQuery(entityPermission, getUserVisitTracksByTrackQueries,
-                track, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(UserVisitTracks.fields())
+                .from(UserVisitTracks)
+                .where(UserVisitTracks.TRACK.eq(track.getPrimaryKey()),
+                        UserVisitTracks.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(UserVisitTracks.fields())
+                    .from(UserVisitTracks)
+                    .join(UserVisits).onKey(USER_VISIT_TRACKS_USER_VISIT_FK)
+                    .where(UserVisitTracks.TRACK.eq(track.getPrimaryKey()),
+                            UserVisitTracks.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(UserVisits.FROM_TIME, UserVisitTracks.USER_VISIT_TRACK_SEQUENCE),
+                    UserVisitTrackFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return userVisitTrackFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<UserVisitTrack> getUserVisitTracksByTrackForUpdate(Track track) {
