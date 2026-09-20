@@ -20,6 +20,9 @@ import com.echothree.model.control.accounting.common.choice.TransactionTimeTypeC
 import com.echothree.model.control.accounting.common.transfer.TransactionTimeTransfer;
 import com.echothree.model.control.accounting.common.transfer.TransactionTimeTypeDescriptionTransfer;
 import com.echothree.model.control.accounting.common.transfer.TransactionTimeTypeTransfer;
+import com.echothree.model.control.accounting.server.transfer.TransactionTimeTransferCache;
+import com.echothree.model.control.accounting.server.transfer.TransactionTimeTypeDescriptionTransferCache;
+import com.echothree.model.control.accounting.server.transfer.TransactionTimeTypeTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.data.accounting.common.pk.TransactionTimeTypePK;
 import com.echothree.model.data.accounting.server.entity.Transaction;
@@ -36,22 +39,32 @@ import com.echothree.model.data.accounting.server.value.TransactionTimeValue;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.TRANSACTIONS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.TRANSACTION_TIMES_TRANSACTION_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.TRANSACTION_TIMES_TRANSACTION_TIME_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.TRANSACTION_TIME_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.accounting.AccountingForeignKeys.TRANSACTION_TIME_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.accounting.TransactionDetails.TransactionDetails;
+import static com.echothree.model.jooq.server.tables.accounting.TransactionTimeTypeDescriptions.TransactionTimeTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.accounting.TransactionTimeTypeDetails.TransactionTimeTypeDetails;
+import static com.echothree.model.jooq.server.tables.accounting.TransactionTimeTypes.TransactionTimeTypes;
+import static com.echothree.model.jooq.server.tables.accounting.TransactionTimes.TransactionTimes;
+import static com.echothree.model.jooq.server.tables.accounting.Transactions.Transactions;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
 public class TransactionTimeControl
-        extends BaseAccountingControl {
+        extends BaseModelControl {
 
     /** Creates a new instance of TransactionControl */
     protected TransactionTimeControl() {
@@ -63,10 +76,13 @@ public class TransactionTimeControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected TransactionTimeTypeDetailFactory transactionTimeTypeDetailFactory;
+
+    @Inject
     protected TransactionTimeTypeFactory transactionTimeTypeFactory;
 
     @Inject
-    protected TransactionTimeTypeDetailFactory transactionTimeTypeDetailFactory;
+    TransactionTimeTypeTransferCache transactionTimeTypeTransferCache;
 
     public TransactionTimeType createTransactionTimeType(String transactionTimeTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultTransactionTimeType = getDefaultTransactionTimeType();
@@ -118,39 +134,27 @@ public class TransactionTimeControl
     }
 
     public long countTransactionTimeTypes() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM transactiontimetypes, transactiontimetypedetails
-                WHERE txntimtyp_activedetailid = txntimtypdt_transactiontimetypedetailid
-                """);
-    }
-
-    private static final Map<EntityPermission, String> getTransactionTimeTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM transactiontimetypes, transactiontimetypedetails
-                WHERE txntimtyp_activedetailid = txntimtypdt_transactiontimetypedetailid
-                AND txntimtypdt_transactiontimetypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM transactiontimetypes, transactiontimetypedetails
-                WHERE txntimtyp_activedetailid = txntimtypdt_transactiontimetypedetailid
-                AND txntimtypdt_transactiontimetypename = ?
-                FOR UPDATE
-                """);
-        getTransactionTimeTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(TransactionTimeTypes)
+                .join(TransactionTimeTypeDetails).onKey(TRANSACTION_TIME_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public TransactionTimeType getTransactionTimeTypeByName(String transactionTimeTypeName, EntityPermission entityPermission) {
-        return transactionTimeTypeFactory.getEntityFromQuery(entityPermission, getTransactionTimeTypeByNameQueries,
-                transactionTimeTypeName);
+        var baseQuery = session.getDslContext()
+                .select(TransactionTimeTypes.fields())
+                .from(TransactionTimeTypes)
+                .join(TransactionTimeTypeDetails).onKey(TRANSACTION_TIME_TYPES_ACTIVE_DETAIL_FK)
+                .where(TransactionTimeTypeDetails.TRANSACTION_TIME_TYPE_NAME.eq(transactionTimeTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return transactionTimeTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public TransactionTimeType getTransactionTimeTypeByName(String transactionTimeTypeName) {
@@ -169,31 +173,19 @@ public class TransactionTimeControl
         return getTransactionTimeTypeDetailValueForUpdate(getTransactionTimeTypeByNameForUpdate(transactionTimeTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultTransactionTimeTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM transactiontimetypes, transactiontimetypedetails
-                WHERE txntimtyp_activedetailid = txntimtypdt_transactiontimetypedetailid
-                AND txntimtypdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM transactiontimetypes, transactiontimetypedetails
-                WHERE txntimtyp_activedetailid = txntimtypdt_transactiontimetypedetailid
-                AND txntimtypdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultTransactionTimeTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public TransactionTimeType getDefaultTransactionTimeType(EntityPermission entityPermission) {
-        return transactionTimeTypeFactory.getEntityFromQuery(entityPermission, getDefaultTransactionTimeTypeQueries);
+        var baseQuery = session.getDslContext()
+                .select(TransactionTimeTypes.fields())
+                .from(TransactionTimeTypes)
+                .join(TransactionTimeTypeDetails).onKey(TRANSACTION_TIME_TYPES_ACTIVE_DETAIL_FK)
+                .where(TransactionTimeTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return transactionTimeTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public TransactionTimeType getDefaultTransactionTimeType() {
@@ -208,31 +200,20 @@ public class TransactionTimeControl
         return getDefaultTransactionTimeTypeForUpdate().getLastDetailForUpdate().getTransactionTimeTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getTransactionTimeTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM transactiontimetypes, transactiontimetypedetails
-                WHERE txntimtyp_activedetailid = txntimtypdt_transactiontimetypedetailid
-                ORDER BY txntimtypdt_sortorder, txntimtypdt_transactiontimetypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM transactiontimetypes, transactiontimetypedetails
-                WHERE txntimtyp_activedetailid = txntimtypdt_transactiontimetypedetailid
-                FOR UPDATE
-                """);
-        getTransactionTimeTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<TransactionTimeType> getTransactionTimeTypes(EntityPermission entityPermission) {
-        return transactionTimeTypeFactory.getEntitiesFromQuery(entityPermission, getTransactionTimeTypesQueries);
+        var baseQuery = session.getDslContext()
+                .select(TransactionTimeTypes.fields())
+                .from(TransactionTimeTypes)
+                .join(TransactionTimeTypeDetails).onKey(TRANSACTION_TIME_TYPES_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(TransactionTimeTypeDetails.SORT_ORDER, TransactionTimeTypeDetails.TRANSACTION_TIME_TYPE_NAME),
+                    TransactionTimeTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return transactionTimeTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<TransactionTimeType> getTransactionTimeTypes() {
@@ -376,6 +357,9 @@ public class TransactionTimeControl
     @Inject
     protected TransactionTimeTypeDescriptionFactory transactionTimeTypeDescriptionFactory;
 
+    @Inject
+    TransactionTimeTypeDescriptionTransferCache transactionTimeTypeDescriptionTransferCache;
+
     public TransactionTimeTypeDescription createTransactionTimeTypeDescription(TransactionTimeType transactionTimeType, Language language, String description, BasePK createdBy) {
         var transactionTimeTypeDescription = transactionTimeTypeDescriptionFactory.create(transactionTimeType, language, description,
                 session.getStartTime(), Session.MAX_TIME);
@@ -385,30 +369,20 @@ public class TransactionTimeControl
         return transactionTimeTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getTransactionTimeTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM transactiontimetypedescriptions
-                WHERE txntimtypd_txntimtyp_transactiontimetypeid = ? AND txntimtypd_lang_languageid = ? AND txntimtypd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM transactiontimetypedescriptions
-                WHERE txntimtypd_txntimtyp_transactiontimetypeid = ? AND txntimtypd_lang_languageid = ? AND txntimtypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getTransactionTimeTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private TransactionTimeTypeDescription getTransactionTimeTypeDescription(TransactionTimeType transactionTimeType, Language language, EntityPermission entityPermission) {
-        return transactionTimeTypeDescriptionFactory.getEntityFromQuery(entityPermission, getTransactionTimeTypeDescriptionQueries,
-                transactionTimeType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(TransactionTimeTypeDescriptions.fields())
+                .from(TransactionTimeTypeDescriptions)
+                .where(TransactionTimeTypeDescriptions.TRANSACTION_TIME_TYPE.eq(transactionTimeType.getPrimaryKey()),
+                        TransactionTimeTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        TransactionTimeTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return transactionTimeTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public TransactionTimeTypeDescription getTransactionTimeTypeDescription(TransactionTimeType transactionTimeType, Language language) {
@@ -427,31 +401,25 @@ public class TransactionTimeControl
         return getTransactionTimeTypeDescriptionValue(getTransactionTimeTypeDescriptionForUpdate(transactionTimeType, language));
     }
 
-    private static final Map<EntityPermission, String> getTransactionTimeTypeDescriptionsByTransactionTimeTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM transactiontimetypedescriptions, languages
-                WHERE txntimtypd_txntimtyp_transactiontimetypeid = ? AND txntimtypd_thrutime = ? AND txntimtypd_lang_languageid = lang_languageid
-                ORDER BY lang_sorttransaction, lang_languageisoname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM transactiontimetypedescriptions
-                WHERE txntimtypd_txntimtyp_transactiontimetypeid = ? AND txntimtypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getTransactionTimeTypeDescriptionsByTransactionTimeTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<TransactionTimeTypeDescription> getTransactionTimeTypeDescriptionsByTransactionTimeType(TransactionTimeType transactionTimeType, EntityPermission entityPermission) {
-        return transactionTimeTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getTransactionTimeTypeDescriptionsByTransactionTimeTypeQueries,
-                transactionTimeType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(TransactionTimeTypeDescriptions.fields())
+                    .from(TransactionTimeTypeDescriptions)
+                    .join(Languages).onKey(TRANSACTION_TIME_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(TransactionTimeTypeDescriptions.TRANSACTION_TIME_TYPE.eq(transactionTimeType.getPrimaryKey()),
+                            TransactionTimeTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    TransactionTimeTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(TransactionTimeTypeDescriptions.fields())
+                    .from(TransactionTimeTypeDescriptions)
+                    .where(TransactionTimeTypeDescriptions.TRANSACTION_TIME_TYPE.eq(transactionTimeType.getPrimaryKey()),
+                            TransactionTimeTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return transactionTimeTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<TransactionTimeTypeDescription> getTransactionTimeTypeDescriptionsByTransactionTimeType(TransactionTimeType transactionTimeType) {
@@ -535,6 +503,9 @@ public class TransactionTimeControl
     @Inject
     protected TransactionTimeFactory transactionTimeFactory;
 
+    @Inject
+    TransactionTimeTransferCache transactionTimeTransferCache;
+
     public TransactionTime createTransactionTime(Transaction transaction, TransactionTimeType transactionTimeType, Long time, BasePK createdBy) {
         var transactionTime = transactionTimeFactory.create(transaction, transactionTimeType, time, session.getStartTime(), Session.MAX_TIME);
 
@@ -544,58 +515,50 @@ public class TransactionTimeControl
     }
 
     public long countTransactionTimesByTransaction(Transaction transaction) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM transactiontimes
-                WHERE txntim_trx_transactionid = ? AND txntim_thrutime = ?
-                """,
-                transaction, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(TransactionTimes)
+                .where(TransactionTimes.TRANSACTION.eq(transaction.getPrimaryKey()),
+                        TransactionTimes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countTransactionTimesByTransactionTimeType(TransactionTimeType transactionTimeType) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM transactiontimes
-                WHERE txntim_txntimtyp_transactiontimetypeid = ? AND txntim_thrutime = ?
-                """,
-                transactionTimeType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(TransactionTimes)
+                .where(TransactionTimes.TRANSACTION_TIME_TYPE.eq(transactionTimeType.getPrimaryKey()),
+                        TransactionTimes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public boolean transactionTimeExists(Transaction transaction, TransactionTimeType transactionTimeType) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM transactiontimes
-                WHERE txntim_trx_transactionid = ? AND txntim_txntimtyp_transactiontimetypeid = ? AND txntim_thrutime = ?
-                """,
-                transaction, transactionTimeType, Session.MAX_TIME) == 1;
-    }
-
-    private static final Map<EntityPermission, String> getTransactionTimeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM transactiontimes
-                WHERE txntim_trx_transactionid = ? AND txntim_txntimtyp_transactiontimetypeid = ? AND txntim_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM transactiontimes
-                WHERE txntim_trx_transactionid = ? AND txntim_txntimtyp_transactiontimetypeid = ? AND txntim_thrutime = ?
-                FOR UPDATE
-                """);
-        getTransactionTimeQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(TransactionTimes)
+                .where(TransactionTimes.TRANSACTION.eq(transaction.getPrimaryKey()),
+                        TransactionTimes.TRANSACTION_TIME_TYPE.eq(transactionTimeType.getPrimaryKey()),
+                        TransactionTimes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L) == 1L;
     }
 
     private TransactionTime getTransactionTime(Transaction transaction, TransactionTimeType transactionTimeType, EntityPermission entityPermission) {
-        return transactionTimeFactory.getEntityFromQuery(entityPermission, getTransactionTimeQueries, transaction, transactionTimeType, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(TransactionTimes.fields())
+                .from(TransactionTimes)
+                .where(TransactionTimes.TRANSACTION.eq(transaction.getPrimaryKey()),
+                        TransactionTimes.TRANSACTION_TIME_TYPE.eq(transactionTimeType.getPrimaryKey()),
+                        TransactionTimes.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return transactionTimeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public TransactionTime getTransactionTime(Transaction transaction, TransactionTimeType transactionTimeType) {
@@ -614,31 +577,26 @@ public class TransactionTimeControl
         return getTransactionTimeValue(getTransactionTimeForUpdate(transaction, transactionTimeType));
     }
 
-    private static final Map<EntityPermission, String> getTransactionTimesByTransactionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM transactiontimes, transactiontimetypes, transactiontimetypedetails
-                WHERE txntim_trx_transactionid = ? AND txntim_thrutime = ?
-                AND txntim_txntimtyp_transactiontimetypeid = txntimtyp_transactiontimetypeid AND txntimtyp_activedetailid = txntimtypdt_transactiontimetypedetailid
-                ORDER BY txntimtypdt_sortorder, txntimtypdt_transactiontimetypename
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM transactiontimes
-                WHERE txntim_trx_transactionid = ? AND txntim_thrutime = ?
-                FOR UPDATE
-                """);
-        getTransactionTimesByTransactionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<TransactionTime> getTransactionTimesByTransaction(Transaction transaction, EntityPermission entityPermission) {
-        return transactionTimeFactory.getEntitiesFromQuery(entityPermission, getTransactionTimesByTransactionQueries, transaction, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(TransactionTimes.fields())
+                    .from(TransactionTimes)
+                    .join(TransactionTimeTypes).onKey(TRANSACTION_TIMES_TRANSACTION_TIME_TYPE_FK)
+                    .join(TransactionTimeTypeDetails).onKey(TRANSACTION_TIME_TYPES_ACTIVE_DETAIL_FK)
+                    .where(TransactionTimes.TRANSACTION.eq(transaction.getPrimaryKey()),
+                            TransactionTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(TransactionTimeTypeDetails.SORT_ORDER, TransactionTimeTypeDetails.TRANSACTION_TIME_TYPE_NAME),
+                    TransactionTimeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(TransactionTimes.fields())
+                    .from(TransactionTimes)
+                    .where(TransactionTimes.TRANSACTION.eq(transaction.getPrimaryKey()),
+                            TransactionTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return transactionTimeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<TransactionTime> getTransactionTimesByTransaction(Transaction transaction) {
@@ -649,31 +607,26 @@ public class TransactionTimeControl
         return getTransactionTimesByTransaction(transaction, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getTransactionTimesByTransactionTimeTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM transactiontimes, transactions, transactiondetails
-                WHERE txntim_txntimtyp_transactiontimetypeid = ? AND txntim_thrutime = ?
-                AND txntim_trx_transactionid = txntim_trx_transactionid AND trx_transactionid = trxdt_transactiondetailid
-                ORDER BY trxdt_transactionname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM transactiontimes
-                WHERE txntim_txntimtyp_transactiontimetypeid = ? AND txntim_thrutime = ?
-                FOR UPDATE
-                """);
-        getTransactionTimesByTransactionTimeTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<TransactionTime> getTransactionTimesByTransactionTimeType(TransactionTimeType transactionTimeType, EntityPermission entityPermission) {
-        return transactionTimeFactory.getEntitiesFromQuery(entityPermission, getTransactionTimesByTransactionTimeTypeQueries, transactionTimeType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(TransactionTimes.fields())
+                    .from(TransactionTimes)
+                    .join(Transactions).onKey(TRANSACTION_TIMES_TRANSACTION_FK)
+                    .join(TransactionDetails).onKey(TRANSACTIONS_LAST_DETAIL_FK)
+                    .where(TransactionTimes.TRANSACTION_TIME_TYPE.eq(transactionTimeType.getPrimaryKey()),
+                            TransactionTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(TransactionDetails.TRANSACTION_NAME),
+                    TransactionTimeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(TransactionTimes.fields())
+                    .from(TransactionTimes)
+                    .where(TransactionTimes.TRANSACTION_TIME_TYPE.eq(transactionTimeType.getPrimaryKey()),
+                            TransactionTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return transactionTimeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<TransactionTime> getTransactionTimesByTransactionTimeType(TransactionTimeType transactionTimeType) {
