@@ -71,13 +71,41 @@ import com.echothree.model.data.wishlist.server.value.WishlistPriorityDetailValu
 import com.echothree.model.data.wishlist.server.value.WishlistTypeDescriptionValue;
 import com.echothree.model.data.wishlist.server.value.WishlistTypeDetailValue;
 import com.echothree.model.data.wishlist.server.value.WishlistValue;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDERS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDERS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_DETAILS_ORDER_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_LINES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_LINES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_LINE_DETAILS_ORDER_FK;
+import static com.echothree.model.jooq.server.keys.order.OrderForeignKeys.ORDER_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.wishlist.WishlistForeignKeys.WISHLISTS_ORDER_FK;
+import static com.echothree.model.jooq.server.keys.wishlist.WishlistForeignKeys.WISHLIST_LINES_ORDER_LINE_FK;
+import static com.echothree.model.jooq.server.keys.wishlist.WishlistForeignKeys.WISHLIST_PRIORITIES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.wishlist.WishlistForeignKeys.WISHLIST_PRIORITY_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.wishlist.WishlistForeignKeys.WISHLIST_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.wishlist.WishlistForeignKeys.WISHLIST_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.order.OrderDetails.OrderDetails;
+import static com.echothree.model.jooq.server.tables.order.OrderLineDetails.OrderLineDetails;
+import static com.echothree.model.jooq.server.tables.order.OrderLines.OrderLines;
+import static com.echothree.model.jooq.server.tables.order.OrderRoleTypes.OrderRoleTypes;
+import static com.echothree.model.jooq.server.tables.order.OrderRoles.OrderRoles;
+import static com.echothree.model.jooq.server.tables.order.OrderTypeDetails.OrderTypeDetails;
+import static com.echothree.model.jooq.server.tables.order.OrderTypes.OrderTypes;
+import static com.echothree.model.jooq.server.tables.order.Orders.Orders;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.wishlist.WishlistLines.WishlistLines;
+import static com.echothree.model.jooq.server.tables.wishlist.WishlistPriorities.WishlistPriorities;
+import static com.echothree.model.jooq.server.tables.wishlist.WishlistPriorityDescriptions.WishlistPriorityDescriptions;
+import static com.echothree.model.jooq.server.tables.wishlist.WishlistPriorityDetails.WishlistPriorityDetails;
+import static com.echothree.model.jooq.server.tables.wishlist.WishlistTypeDescriptions.WishlistTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.wishlist.WishlistTypeDetails.WishlistTypeDetails;
+import static com.echothree.model.jooq.server.tables.wishlist.WishlistTypes.WishlistTypes;
+import static com.echothree.model.jooq.server.tables.wishlist.Wishlists.Wishlists;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -100,36 +128,17 @@ public class WishlistControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Wishlist Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    @Inject
-    WishlistTypeTransferCache wishlistTypeTransferCache;
-
-    @Inject
-    WishlistTypeDescriptionTransferCache wishlistTypeDescriptionTransferCache;
-
-    @Inject
-    WishlistPriorityTransferCache wishlistPriorityTransferCache;
-
-    @Inject
-    WishlistPriorityDescriptionTransferCache wishlistPriorityDescriptionTransferCache;
-
-    @Inject
-    WishlistTransferCache wishlistTransferCache;
-
-    @Inject
-    WishlistLineTransferCache wishlistLineTransferCache;
-
-    // --------------------------------------------------------------------------------
     //   Wishlist Types
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected WishlistTypeDetailFactory wishlistTypeDetailFactory;
 
     @Inject
     protected WishlistTypeFactory wishlistTypeFactory;
 
     @Inject
-    protected WishlistTypeDetailFactory wishlistTypeDetailFactory;
+    private WishlistTypeTransferCache wishlistTypeTransferCache;
 
     public WishlistType createWishlistType(String wishlistTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultWishlistType = getDefaultWishlistType();
@@ -181,36 +190,28 @@ public class WishlistControl
     }
 
     public long countWishlistTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM wishlisttypes
-                        JOIN wishlisttypedetails ON wshltydt_wishlisttypedetailid = wshlty_activedetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(WishlistTypes)
+                .join(WishlistTypeDetails).onKey(WISHLIST_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<WishlistType> getWishlistTypes(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM wishlisttypes, wishlisttypedetails
-                    WHERE wshlty_activedetailid = wshltydt_wishlisttypedetailid
-                    ORDER BY wshltydt_sortorder, wshltydt_wishlisttypename
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM wishlisttypes, wishlisttypedetails
-                    WHERE wshlty_activedetailid = wshltydt_wishlisttypedetailid
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(WishlistTypes.fields())
+                .from(WishlistTypes)
+                .join(WishlistTypeDetails).onKey(WISHLIST_TYPES_ACTIVE_DETAIL_FK);
 
-        var ps = wishlistTypeFactory.prepareStatement(query);
-        
-        return wishlistTypeFactory.getEntitiesFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(WishlistTypeDetails.SORT_ORDER, WishlistTypeDetails.WISHLIST_TYPE_NAME),
+                    WishlistTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return wishlistTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<WishlistType> getWishlistTypes() {
@@ -222,26 +223,18 @@ public class WishlistControl
     }
     
     public WishlistType getDefaultWishlistType(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM wishlisttypes, wishlisttypedetails
-                    WHERE wshlty_activedetailid = wshltydt_wishlisttypedetailid AND wshltydt_isdefault = 1
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM wishlisttypes, wishlisttypedetails
-                    WHERE wshlty_activedetailid = wshltydt_wishlisttypedetailid AND wshltydt_isdefault = 1
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(WishlistTypes.fields())
+                .from(WishlistTypes)
+                .join(WishlistTypeDetails).onKey(WISHLIST_TYPES_ACTIVE_DETAIL_FK)
+                .where(WishlistTypeDetails.IS_DEFAULT.eq(true));
 
-        var ps = wishlistTypeFactory.prepareStatement(query);
-        
-        return wishlistTypeFactory.getEntityFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return wishlistTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public WishlistType getDefaultWishlistType() {
@@ -257,36 +250,18 @@ public class WishlistControl
     }
     
     public WishlistType getWishlistTypeByName(String wishlistTypeName, EntityPermission entityPermission) {
-        WishlistType wishlistType;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM wishlisttypes, wishlisttypedetails
-                        WHERE wshlty_activedetailid = wshltydt_wishlisttypedetailid AND wshltydt_wishlisttypename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM wishlisttypes, wishlisttypedetails
-                        WHERE wshlty_activedetailid = wshltydt_wishlisttypedetailid AND wshltydt_wishlisttypename = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(WishlistTypes.fields())
+                .from(WishlistTypes)
+                .join(WishlistTypeDetails).onKey(WISHLIST_TYPES_ACTIVE_DETAIL_FK)
+                .where(WishlistTypeDetails.WISHLIST_TYPE_NAME.eq(wishlistTypeName));
 
-            var ps = wishlistTypeFactory.prepareStatement(query);
-            
-            ps.setString(1, wishlistTypeName);
-            
-            wishlistType = wishlistTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return wishlistType;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return wishlistTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public WishlistType getWishlistTypeByName(String wishlistTypeName) {
@@ -441,6 +416,9 @@ public class WishlistControl
     @Inject
     protected WishlistTypeDescriptionFactory wishlistTypeDescriptionFactory;
 
+    @Inject
+    private WishlistTypeDescriptionTransferCache wishlistTypeDescriptionTransferCache;
+
     public WishlistTypeDescription createWishlistTypeDescription(WishlistType wishlistType, Language language, String description,
             BasePK createdBy) {
         var wishlistTypeDescription = wishlistTypeDescriptionFactory.create(wishlistType,
@@ -453,38 +431,19 @@ public class WishlistControl
     }
     
     private WishlistTypeDescription getWishlistTypeDescription(WishlistType wishlistType, Language language, EntityPermission entityPermission) {
-        WishlistTypeDescription wishlistTypeDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM wishlisttypedescriptions
-                        WHERE wshltyd_wshlty_wishlisttypeid = ? AND wshltyd_lang_languageid = ? AND wshltyd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM wishlisttypedescriptions
-                        WHERE wshltyd_wshlty_wishlisttypeid = ? AND wshltyd_lang_languageid = ? AND wshltyd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(WishlistTypeDescriptions.fields())
+                .from(WishlistTypeDescriptions)
+                .where(WishlistTypeDescriptions.WISHLIST_TYPE.eq(wishlistType.getPrimaryKey()),
+                        WishlistTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        WishlistTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = wishlistTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, wishlistType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            wishlistTypeDescription = wishlistTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return wishlistTypeDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return wishlistTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public WishlistTypeDescription getWishlistTypeDescription(WishlistType wishlistType, Language language) {
@@ -504,40 +463,24 @@ public class WishlistControl
     }
     
     private List<WishlistTypeDescription> getWishlistTypeDescriptionsByWishlistType(WishlistType wishlistType, EntityPermission entityPermission) {
-        List<WishlistTypeDescription> wishlistTypeDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM wishlisttypedescriptions, languages
-                        WHERE wshltyd_wshlty_wishlisttypeid = ? AND wshltyd_thrutime = ?
-                        AND wshltyd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM wishlisttypedescriptions
-                        WHERE wshltyd_wshlty_wishlisttypeid = ? AND wshltyd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(WishlistTypeDescriptions.fields())
+                    .from(WishlistTypeDescriptions)
+                    .join(Languages).onKey(WISHLIST_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(WishlistTypeDescriptions.WISHLIST_TYPE.eq(wishlistType.getPrimaryKey()),
+                            WishlistTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    WishlistTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(WishlistTypeDescriptions.fields())
+                    .from(WishlistTypeDescriptions)
+                    .where(WishlistTypeDescriptions.WISHLIST_TYPE.eq(wishlistType.getPrimaryKey()),
+                            WishlistTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = wishlistTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, wishlistType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            wishlistTypeDescriptions = wishlistTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return wishlistTypeDescriptions;
+        return wishlistTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<WishlistTypeDescription> getWishlistTypeDescriptionsByWishlistType(WishlistType wishlistType) {
@@ -614,14 +557,17 @@ public class WishlistControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Wishlist Type Priorities
+    //   Wishlist Priorities
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected WishlistPriorityDetailFactory wishlistPriorityDetailFactory;
 
     @Inject
     protected WishlistPriorityFactory wishlistPriorityFactory;
 
     @Inject
-    protected WishlistPriorityDetailFactory wishlistPriorityDetailFactory;
+    private WishlistPriorityTransferCache wishlistPriorityTransferCache;
 
     public WishlistPriority createWishlistPriority(WishlistType wishlistType, String wishlistPriorityName,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -671,47 +617,30 @@ public class WishlistControl
     }
 
     public long countWishlistPrioritiesByWishlistType(final WishlistType wishlistType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM wishlistpriorities
-                        JOIN wishlistprioritydetails ON wshlprtydt_wishlistprioritydetailid = wshlprty_activedetailid
-                        WHERE wshlprtydt_wshlty_wishlisttypeid = ?
-                        """, wishlistType);
+        return session.getDslContext()
+                .selectCount()
+                .from(WishlistPriorities)
+                .join(WishlistPriorityDetails).onKey(WISHLIST_PRIORITIES_ACTIVE_DETAIL_FK)
+                .where(WishlistPriorityDetails.WISHLIST_TYPE.eq(wishlistType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<WishlistPriority> getWishlistPriorities(WishlistType wishlistType, EntityPermission entityPermission) {
-        List<WishlistPriority> wishlistPriorities;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM wishlistpriorities, wishlistprioritydetails
-                        WHERE wshlprty_activedetailid = wshlprtydt_wishlistprioritydetailid AND wshlprtydt_wshlty_wishlisttypeid = ?
-                        ORDER BY wshlprtydt_sortorder, wshlprtydt_wishlistpriorityname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM wishlistpriorities, wishlistprioritydetails
-                        WHERE wshlprty_activedetailid = wshlprtydt_wishlistprioritydetailid AND wshlprtydt_wshlty_wishlisttypeid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(WishlistPriorities.fields())
+                .from(WishlistPriorities)
+                .join(WishlistPriorityDetails).onKey(WISHLIST_PRIORITIES_ACTIVE_DETAIL_FK)
+                .where(WishlistPriorityDetails.WISHLIST_TYPE.eq(wishlistType.getPrimaryKey()));
 
-            var ps = wishlistPriorityFactory.prepareStatement(query);
-            
-            ps.setLong(1, wishlistType.getPrimaryKey().getEntityId());
-            
-            wishlistPriorities = wishlistPriorityFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return wishlistPriorities;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(WishlistPriorityDetails.SORT_ORDER, WishlistPriorityDetails.WISHLIST_PRIORITY_NAME),
+                    WishlistPriorityFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return wishlistPriorityFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<WishlistPriority> getWishlistPriorities(WishlistType wishlistType) {
@@ -723,38 +652,19 @@ public class WishlistControl
     }
     
     public WishlistPriority getDefaultWishlistPriority(WishlistType wishlistType, EntityPermission entityPermission) {
-        WishlistPriority wishlistPriority;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM wishlistpriorities, wishlistprioritydetails
-                        WHERE wshlprty_activedetailid = wshlprtydt_wishlistprioritydetailid
-                        AND wshlprtydt_wshlty_wishlisttypeid = ? AND wshlprtydt_isdefault = 1
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM wishlistpriorities, wishlistprioritydetails
-                        WHERE wshlprty_activedetailid = wshlprtydt_wishlistprioritydetailid
-                        AND wshlprtydt_wshlty_wishlisttypeid = ? AND wshlprtydt_isdefault = 1
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(WishlistPriorities.fields())
+                .from(WishlistPriorities)
+                .join(WishlistPriorityDetails).onKey(WISHLIST_PRIORITIES_ACTIVE_DETAIL_FK)
+                .where(WishlistPriorityDetails.WISHLIST_TYPE.eq(wishlistType.getPrimaryKey()),
+                        WishlistPriorityDetails.IS_DEFAULT.eq(true));
 
-            var ps = wishlistPriorityFactory.prepareStatement(query);
-            
-            ps.setLong(1, wishlistType.getPrimaryKey().getEntityId());
-            
-            wishlistPriority = wishlistPriorityFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return wishlistPriority;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return wishlistPriorityFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public WishlistPriority getDefaultWishlistPriority(WishlistType wishlistType) {
@@ -770,39 +680,19 @@ public class WishlistControl
     }
     
     public WishlistPriority getWishlistPriorityByName(WishlistType wishlistType, String wishlistPriorityName, EntityPermission entityPermission) {
-        WishlistPriority wishlistPriority;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM wishlistpriorities, wishlistprioritydetails
-                        WHERE wshlprty_activedetailid = wshlprtydt_wishlistprioritydetailid
-                        AND wshlprtydt_wshlty_wishlisttypeid = ? AND wshlprtydt_wishlistpriorityname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM wishlistpriorities, wishlistprioritydetails
-                        WHERE wshlprty_activedetailid = wshlprtydt_wishlistprioritydetailid
-                        AND wshlprtydt_wshlty_wishlisttypeid = ? AND wshlprtydt_wishlistpriorityname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(WishlistPriorities.fields())
+                .from(WishlistPriorities)
+                .join(WishlistPriorityDetails).onKey(WISHLIST_PRIORITIES_ACTIVE_DETAIL_FK)
+                .where(WishlistPriorityDetails.WISHLIST_TYPE.eq(wishlistType.getPrimaryKey()),
+                        WishlistPriorityDetails.WISHLIST_PRIORITY_NAME.eq(wishlistPriorityName));
 
-            var ps = wishlistPriorityFactory.prepareStatement(query);
-            
-            ps.setLong(1, wishlistType.getPrimaryKey().getEntityId());
-            ps.setString(2, wishlistPriorityName);
-            
-            wishlistPriority = wishlistPriorityFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return wishlistPriority;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return wishlistPriorityFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public WishlistPriority getWishlistPriorityByName(WishlistType wishlistType, String wishlistPriorityName) {
@@ -959,11 +849,14 @@ public class WishlistControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Wishlist Type Priority Descriptions
+    //   Wishlist Priority Descriptions
     // --------------------------------------------------------------------------------
 
     @Inject
     protected WishlistPriorityDescriptionFactory wishlistPriorityDescriptionFactory;
+
+    @Inject
+    private WishlistPriorityDescriptionTransferCache wishlistPriorityDescriptionTransferCache;
 
     public WishlistPriorityDescription createWishlistPriorityDescription(WishlistPriority wishlistPriority,
             Language language, String description, BasePK createdBy) {
@@ -976,38 +869,19 @@ public class WishlistControl
     }
     
     private WishlistPriorityDescription getWishlistPriorityDescription(WishlistPriority wishlistPriority, Language language, EntityPermission entityPermission) {
-        WishlistPriorityDescription wishlistPriorityDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM wishlistprioritydescriptions
-                        WHERE wshlprtyd_wshlprty_wishlistpriorityid = ? AND wshlprtyd_lang_languageid = ? AND wshlprtyd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM wishlistprioritydescriptions
-                        WHERE wshlprtyd_wshlprty_wishlistpriorityid = ? AND wshlprtyd_lang_languageid = ? AND wshlprtyd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(WishlistPriorityDescriptions.fields())
+                .from(WishlistPriorityDescriptions)
+                .where(WishlistPriorityDescriptions.WISHLIST_PRIORITY.eq(wishlistPriority.getPrimaryKey()),
+                        WishlistPriorityDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        WishlistPriorityDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = wishlistPriorityDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, wishlistPriority.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            wishlistPriorityDescription = wishlistPriorityDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return wishlistPriorityDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return wishlistPriorityDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public WishlistPriorityDescription getWishlistPriorityDescription(WishlistPriority wishlistPriority, Language language) {
@@ -1027,40 +901,24 @@ public class WishlistControl
     }
     
     private List<WishlistPriorityDescription> getWishlistPriorityDescriptionsByWishlistPriority(WishlistPriority wishlistPriority, EntityPermission entityPermission) {
-        List<WishlistPriorityDescription> wishlistPriorityDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM wishlistprioritydescriptions, languages
-                        WHERE wshlprtyd_wshlprty_wishlistpriorityid = ? AND wshlprtyd_thrutime = ?
-                        AND wshlprtyd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM wishlistprioritydescriptions
-                        WHERE wshlprtyd_wshlprty_wishlistpriorityid = ? AND wshlprtyd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(WishlistPriorityDescriptions.fields())
+                    .from(WishlistPriorityDescriptions)
+                    .join(Languages).onKey(WISHLIST_PRIORITY_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(WishlistPriorityDescriptions.WISHLIST_PRIORITY.eq(wishlistPriority.getPrimaryKey()),
+                            WishlistPriorityDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    WishlistPriorityDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(WishlistPriorityDescriptions.fields())
+                    .from(WishlistPriorityDescriptions)
+                    .where(WishlistPriorityDescriptions.WISHLIST_PRIORITY.eq(wishlistPriority.getPrimaryKey()),
+                            WishlistPriorityDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = wishlistPriorityDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, wishlistPriority.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            wishlistPriorityDescriptions = wishlistPriorityDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return wishlistPriorityDescriptions;
+        return wishlistPriorityDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<WishlistPriorityDescription> getWishlistPriorityDescriptionsByWishlistPriority(WishlistPriority wishlistPriority) {
@@ -1153,53 +1011,38 @@ public class WishlistControl
     }
 
     public long countWishlistsByOfferUse(final OfferUse offerUse) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM wishlists
-                WHERE wshl_ofruse_offeruseid = ? AND wshl_thrutime = ?
-                """, offerUse, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(Wishlists)
+                .where(Wishlists.OFFER_USE.eq(offerUse.getPrimaryKey()),
+                        Wishlists.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countWishlistsByWishlistType(final WishlistType wishlistType) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM wishlists
-                WHERE wshl_wshlty_wishlisttypeid = ? AND wshl_thrutime = ?
-                """, wishlistType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(Wishlists)
+                .where(Wishlists.WISHLIST_TYPE.eq(wishlistType.getPrimaryKey()),
+                        Wishlists.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private Wishlist getWishlist(Order order, EntityPermission entityPermission) {
-        Wishlist wishlist;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM wishlists
-                        WHERE wshl_ord_orderid = ? AND wshl_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM wishlists
-                        WHERE wshl_ord_orderid = ? AND wshl_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Wishlists.fields())
+                .from(Wishlists)
+                .where(Wishlists.ORDER.eq(order.getPrimaryKey()),
+                        Wishlists.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = wishlistFactory.prepareStatement(query);
-            
-            ps.setLong(1, order.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            wishlist = wishlistFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return wishlist;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return wishlistFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Wishlist getWishlist(Order order) {
@@ -1219,40 +1062,25 @@ public class WishlistControl
     }
     
     private List<Wishlist> getWishlistsByWishlistType(WishlistType wishlistType, EntityPermission entityPermission) {
-        List<Wishlist> wishlists;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM wishlists, orders, orderdetails
-                        WHERE wshl_wshlty_wishlisttypeid = ? AND wshl_thrutime = ?
-                        AND wshl_ord_orderid = ord_orderid AND ord_lastdetailid = orddt_orderdetailid
-                        ORDER BY orddt_ordername
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM wishlists
-                        WHERE wshl_wshlty_wishlisttypeid = ? AND wshl_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(Wishlists.fields())
+                    .from(Wishlists)
+                    .join(Orders).onKey(WISHLISTS_ORDER_FK)
+                    .join(OrderDetails).onKey(ORDERS_LAST_DETAIL_FK)
+                    .where(Wishlists.WISHLIST_TYPE.eq(wishlistType.getPrimaryKey()),
+                            Wishlists.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(OrderDetails.ORDER_NAME),
+                    WishlistFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(Wishlists.fields())
+                    .from(Wishlists)
+                    .where(Wishlists.WISHLIST_TYPE.eq(wishlistType.getPrimaryKey()),
+                            Wishlists.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = wishlistFactory.prepareStatement(query);
-            
-            ps.setLong(1, wishlistType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            wishlists = wishlistFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return wishlists;
+        return wishlistFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<Wishlist> getWishlistsByWishlistType(WishlistType wishlistType) {
@@ -1310,66 +1138,58 @@ public class WishlistControl
     }
 
     public long countWishlistLinesByOfferUse(final OfferUse offerUse) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM wishlistlines
-                WHERE wshll_ofruse_offeruseid = ? AND wshll_thrutime = ?
-                """, offerUse, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(WishlistLines)
+                .where(WishlistLines.OFFER_USE.eq(offerUse.getPrimaryKey()),
+                        WishlistLines.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countWishlistLinesByWishlistPriority(final WishlistPriority wishlistPriority) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM wishlistlines
-                WHERE wshll_wshlprty_wishlistpriorityid = ? AND wshll_thrutime = ?
-                """, wishlistPriority, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(WishlistLines)
+                .where(WishlistLines.WISHLIST_PRIORITY.eq(wishlistPriority.getPrimaryKey()),
+                        WishlistLines.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countWishlistLinesByAssociateReferral(final AssociateReferral associateReferral) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM wishlistlines
-                WHERE wshll_ascrfr_associatereferralid = ? AND wshll_thrutime = ?
-                """, associateReferral, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(WishlistLines)
+                .where(WishlistLines.ASSOCIATE_REFERRAL.eq(associateReferral.getPrimaryKey()),
+                        WishlistLines.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<WishlistLine> getWishlistLinesByWishlistPriority(WishlistPriority wishlistPriority,
             EntityPermission entityPermission) {
-        List<WishlistLine> wishlistLines;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM wishlists, orderlines, orderlinedetails, orders, orderdetails
-                        WHERE wshll_wshlprty_wishlistpriorityid = ? AND wshll_thrutime = ?
-                        AND wshll_ordl_orderlineid = ordl_orderlineid AND ordl_activedetailid = ordldt_orderlinedetailid
-                        AND ordldt_ord_orderid = ord_orderid AND ord_lastdetailid = orddt_orderdetailid
-                        ORDER BY orddt_ordername, ordldt_orderlinesequence
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM wishlistlines
-                        WHERE wshll_wshlprty_wishlistpriorityid = ? AND wshll_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(WishlistLines.fields())
+                    .from(WishlistLines)
+                    .join(OrderLines).onKey(WISHLIST_LINES_ORDER_LINE_FK)
+                    .join(OrderLineDetails).onKey(ORDER_LINES_LAST_DETAIL_FK)
+                    .join(Orders).onKey(ORDER_LINE_DETAILS_ORDER_FK)
+                    .join(OrderDetails).onKey(ORDERS_LAST_DETAIL_FK)
+                    .where(WishlistLines.WISHLIST_PRIORITY.eq(wishlistPriority.getPrimaryKey()),
+                            WishlistLines.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(OrderDetails.ORDER_NAME, OrderLineDetails.ORDER_LINE_SEQUENCE),
+                    WishlistLineFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(WishlistLines.fields())
+                    .from(WishlistLines)
+                    .where(WishlistLines.WISHLIST_PRIORITY.eq(wishlistPriority.getPrimaryKey()),
+                            WishlistLines.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = wishlistLineFactory.prepareStatement(query);
-            
-            ps.setLong(1, wishlistPriority.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            wishlistLines = wishlistLineFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return wishlistLines;
+        return wishlistLineFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<WishlistLine> getWishlistLinesByWishlistPriority(WishlistPriority wishlistPriority) {
@@ -1381,37 +1201,18 @@ public class WishlistControl
     }
     
     private WishlistLine getWishlistLine(OrderLine orderLine, EntityPermission entityPermission) {
-        WishlistLine wishlistLine;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM wishlistlines
-                        WHERE wshll_ordl_orderlineid = ? AND wshll_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM wishlistlines
-                        WHERE wshll_ordl_orderlineid = ? AND wshll_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(WishlistLines.fields())
+                .from(WishlistLines)
+                .where(WishlistLines.ORDER_LINE.eq(orderLine.getPrimaryKey()),
+                        WishlistLines.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = wishlistLineFactory.prepareStatement(query);
-            
-            ps.setLong(1, orderLine.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            wishlistLine = wishlistLineFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return wishlistLine;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return wishlistLineFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public WishlistLine getWishlistLine(OrderLine orderLine) {
@@ -1468,63 +1269,43 @@ public class WishlistControl
     @Inject
     protected OrderFactory orderFactory;
 
+    @Inject
+    private WishlistTransferCache wishlistTransferCache;
+
     private Order getWishlist(Party companyParty, Party party, WishlistType wishlistType, Currency currency,
             EntityPermission entityPermission) {
-        Order order;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM orders, orderdetails, ordertypes, ordertypedetails, wishlists, orderroletypes orta, orderroles ora,
-                        orderroletypes ortb, orderroles orb
-                        WHERE ord_activedetailid = orddt_orderdetailid
-                        AND orddt_ordtyp_ordertypeid = ordtyp_ordertypeid
-                        AND ordtyp_activedetailid = ordtypdt_ordertypedetailid AND ordtypdt_ordertypename = ? AND orddt_cur_currencyid = ?
-                        AND ord_orderid = wshl_ord_orderid AND wshl_wshlty_wishlisttypeid = ? AND wshl_thrutime = ?
-                        AND ord_orderid = ora.ordr_ord_orderid AND ora.ordr_par_partyid = ? AND orta.ordrtyp_orderroletypename = ?
-                        AND orta.ordrtyp_orderroletypeid = ora.ordr_ordrtyp_orderroletypeid AND ora.ordr_thrutime = ?
-                        AND ord_orderid = orb.ordr_ord_orderid AND orb.ordr_par_partyid = ? AND ortb.ordrtyp_orderroletypename = ?
-                        AND ortb.ordrtyp_orderroletypeid = orb.ordr_ordrtyp_orderroletypeid AND orb.ordr_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM orders, orderdetails, ordertypes, ordertypedetails, wishlists, orderroletypes orta, orderroles ora,
-                        orderroletypes ortb, orderroles orb
-                        WHERE ord_activedetailid = orddt_orderdetailid
-                        AND orddt_ordtyp_ordertypeid = ordtyp_ordertypeid
-                        AND ordtyp_activedetailid = ordtypdt_ordertypedetailid AND ordtypdt_ordertypename = ? AND orddt_cur_currencyid = ?
-                        AND ord_orderid = wshl_ord_orderid AND wshl_wshlty_wishlisttypeid = ? AND wshl_thrutime = ?
-                        AND ord_orderid = ora.ordr_ord_orderid AND ora.ordr_par_partyid = ? AND orta.ordrtyp_orderroletypename = ?
-                        AND orta.ordrtyp_orderroletypeid = ora.ordr_ordrtyp_orderroletypeid AND ora.ordr_thrutime = ?
-                        AND ord_orderid = orb.ordr_ord_orderid AND orb.ordr_par_partyid = ? AND ortb.ordrtyp_orderroletypename = ?
-                        AND ortb.ordrtyp_orderroletypeid = orb.ordr_ordrtyp_orderroletypeid AND orb.ordr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var billFromRole = OrderRoles.as("billFromRole");
+        var billFromRoleType = OrderRoleTypes.as("billFromRoleType");
+        var billToRole = OrderRoles.as("billToRole");
+        var billToRoleType = OrderRoleTypes.as("billToRoleType");
+        var baseQuery = session.getDslContext()
+                .select(Orders.fields())
+                .from(Orders)
+                .join(OrderDetails).onKey(ORDERS_ACTIVE_DETAIL_FK)
+                .join(OrderTypes).onKey(ORDER_DETAILS_ORDER_TYPE_FK)
+                .join(OrderTypeDetails).onKey(ORDER_TYPES_LAST_DETAIL_FK)
+                .join(Wishlists).onKey(WISHLISTS_ORDER_FK)
+                .join(billFromRole).on(billFromRole.ORDER.eq(Orders.ORDER))
+                .join(billFromRoleType).on(billFromRoleType.ORDER_ROLE_TYPE.eq(billFromRole.ORDER_ROLE_TYPE))
+                .join(billToRole).on(billToRole.ORDER.eq(Orders.ORDER))
+                .join(billToRoleType).on(billToRoleType.ORDER_ROLE_TYPE.eq(billToRole.ORDER_ROLE_TYPE))
+                .where(OrderTypeDetails.ORDER_TYPE_NAME.eq(com.echothree.model.control.order.common.OrderTypes.WISHLIST.name()),
+                        Wishlists.THRU_TIME.eq(Session.MAX_TIME),
+                        billFromRole.PARTY.eq(companyParty.getPrimaryKey()),
+                        billFromRoleType.ORDER_ROLE_TYPE_NAME.eq(com.echothree.model.control.order.common.OrderRoleTypes.BILL_FROM.name()),
+                        billFromRole.THRU_TIME.eq(Session.MAX_TIME),
+                        billToRole.PARTY.eq(party.getPrimaryKey()),
+                        billToRoleType.ORDER_ROLE_TYPE_NAME.eq(com.echothree.model.control.order.common.OrderRoleTypes.BILL_TO.name()),
+                        billToRole.THRU_TIME.eq(Session.MAX_TIME),
+                        OrderDetails.CURRENCY.eq(currency.getPrimaryKey()),
+                        Wishlists.WISHLIST_TYPE.eq(wishlistType.getPrimaryKey()));
 
-            var ps = orderFactory.prepareStatement(query);
-            
-            ps.setString(1, OrderTypes.WISHLIST.name());
-            ps.setLong(2, currency.getPrimaryKey().getEntityId());
-            ps.setLong(3, wishlistType.getPrimaryKey().getEntityId());
-            ps.setLong(4, Session.MAX_TIME);
-            ps.setLong(5, companyParty.getPrimaryKey().getEntityId());
-            ps.setString(6, OrderRoleTypes.BILL_FROM.name());
-            ps.setLong(7, Session.MAX_TIME);
-            ps.setLong(8, party.getPrimaryKey().getEntityId());
-            ps.setString(9, OrderRoleTypes.BILL_TO.name());
-            ps.setLong(10, Session.MAX_TIME);
-            
-            order = orderFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return order;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Order getWishlist(Party companyParty, Party party, WishlistType wishlistType, Currency currency) {
@@ -1536,61 +1317,37 @@ public class WishlistControl
     }
     
     private List<Order> getWishlists(Party companyParty, Party party, EntityPermission entityPermission) {
-        List<Order> orders;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM orders, orderdetails, ordertypes, ordertypedetails, wishlists, orderroletypes orta, orderroles ora,
-                        orderroletypes ortb, orderroles orb
-                        WHERE ord_activedetailid = orddt_orderdetailid
-                        AND orddt_ordtyp_ordertypeid = ordtyp_ordertypeid
-                        AND ordtyp_activedetailid = ordtypdt_ordertypedetailid AND ordtypdt_ordertypename = ?
-                        AND ord_orderid = wshl_ord_orderid AND wshl_thrutime = ?
-                        AND ord_orderid = ora.ordr_ord_orderid AND ora.ordr_par_partyid = ? AND orta.ordrtyp_orderroletypename = ?
-                        AND orta.ordrtyp_orderroletypeid = ora.ordr_ordrtyp_orderroletypeid AND ora.ordr_thrutime = ?
-                        AND ord_orderid = orb.ordr_ord_orderid AND orb.ordr_par_partyid = ? AND ortb.ordrtyp_orderroletypename = ?
-                        AND ortb.ordrtyp_orderroletypeid = orb.ordr_ordrtyp_orderroletypeid AND orb.ordr_thrutime = ?
-                        _LIMIT_
-                        """;
-                // TODO: "ORDER BY" needed, probably by the order's created time
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM orders, orderdetails, ordertypes, ordertypedetails, wishlists, orderroletypes orta, orderroles ora,
-                        orderroletypes ortb, orderroles orb
-                        WHERE ord_activedetailid = orddt_orderdetailid
-                        AND orddt_ordtyp_ordertypeid = ordtyp_ordertypeid
-                        AND ordtyp_activedetailid = ordtypdt_ordertypedetailid AND ordtypdt_ordertypename = ?
-                        AND ord_orderid = wshl_ord_orderid AND wshl_thrutime = ?
-                        AND ord_orderid = ora.ordr_ord_orderid AND ora.ordr_par_partyid = ? AND orta.ordrtyp_orderroletypename = ?
-                        AND orta.ordrtyp_orderroletypeid = ora.ordr_ordrtyp_orderroletypeid AND ora.ordr_thrutime = ?
-                        AND ord_orderid = orb.ordr_ord_orderid AND orb.ordr_par_partyid = ? AND ortb.ordrtyp_orderroletypename = ?
-                        AND ortb.ordrtyp_orderroletypeid = orb.ordr_ordrtyp_orderroletypeid AND orb.ordr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var billFromRole = OrderRoles.as("billFromRole");
+        var billFromRoleType = OrderRoleTypes.as("billFromRoleType");
+        var billToRole = OrderRoles.as("billToRole");
+        var billToRoleType = OrderRoleTypes.as("billToRoleType");
+        var baseQuery = session.getDslContext()
+                .select(Orders.fields())
+                .from(Orders)
+                .join(OrderDetails).onKey(ORDERS_ACTIVE_DETAIL_FK)
+                .join(OrderTypes).onKey(ORDER_DETAILS_ORDER_TYPE_FK)
+                .join(OrderTypeDetails).onKey(ORDER_TYPES_LAST_DETAIL_FK)
+                .join(Wishlists).onKey(WISHLISTS_ORDER_FK)
+                .join(billFromRole).on(billFromRole.ORDER.eq(Orders.ORDER))
+                .join(billFromRoleType).on(billFromRoleType.ORDER_ROLE_TYPE.eq(billFromRole.ORDER_ROLE_TYPE))
+                .join(billToRole).on(billToRole.ORDER.eq(Orders.ORDER))
+                .join(billToRoleType).on(billToRoleType.ORDER_ROLE_TYPE.eq(billToRole.ORDER_ROLE_TYPE))
+                .where(OrderTypeDetails.ORDER_TYPE_NAME.eq(com.echothree.model.control.order.common.OrderTypes.WISHLIST.name()),
+                        Wishlists.THRU_TIME.eq(Session.MAX_TIME),
+                        billFromRole.PARTY.eq(companyParty.getPrimaryKey()),
+                        billFromRoleType.ORDER_ROLE_TYPE_NAME.eq(com.echothree.model.control.order.common.OrderRoleTypes.BILL_FROM.name()),
+                        billFromRole.THRU_TIME.eq(Session.MAX_TIME),
+                        billToRole.PARTY.eq(party.getPrimaryKey()),
+                        billToRoleType.ORDER_ROLE_TYPE_NAME.eq(com.echothree.model.control.order.common.OrderRoleTypes.BILL_TO.name()),
+                        billToRole.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = orderFactory.prepareStatement(query);
-            
-            ps.setString(1, OrderTypes.WISHLIST.name());
-            ps.setLong(2, Session.MAX_TIME);
-            ps.setLong(3, companyParty.getPrimaryKey().getEntityId());
-            ps.setString(4, OrderRoleTypes.BILL_FROM.name());
-            ps.setLong(5, Session.MAX_TIME);
-            ps.setLong(6, party.getPrimaryKey().getEntityId());
-            ps.setString(7, OrderRoleTypes.BILL_TO.name());
-            ps.setLong(8, Session.MAX_TIME);
-            
-            orders = orderFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return orders;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(OrderDetails.ORDER_NAME), OrderFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<Order> getWishlists(Party companyParty, Party party) {
@@ -1606,39 +1363,27 @@ public class WishlistControl
     }
     
     private List<Order> getOrdersByWishlistType(WishlistType wishlistType, EntityPermission entityPermission) {
-        List<Order> orders;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM wishlists, orders
-                        WHERE wshl_wshlty_wishlisttypeid = ? AND wshl_thrutime = ?
-                        AND wshl_ord_orderid = ord_orderid
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM wishlists, orders
-                        WHERE wshl_wshlty_wishlisttypeid = ? AND wshl_thrutime = ?
-                        AND wshl_ord_orderid = ord_orderid
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Orders.fields())
+                .from(Orders)
+                .join(Wishlists).onKey(WISHLISTS_ORDER_FK)
+                .where(Wishlists.WISHLIST_TYPE.eq(wishlistType.getPrimaryKey()),
+                        Wishlists.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = orderFactory.prepareStatement(query);
-            
-            ps.setLong(1, wishlistType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            orders = orderFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return orders;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(Orders.fields())
+                    .from(Orders)
+                    .join(Wishlists).onKey(WISHLISTS_ORDER_FK)
+                    .join(OrderDetails).onKey(ORDERS_LAST_DETAIL_FK)
+                    .where(Wishlists.WISHLIST_TYPE.eq(wishlistType.getPrimaryKey()),
+                            Wishlists.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(OrderDetails.ORDER_NAME),
+                    OrderFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<Order> getOrdersByWishlistType(WishlistType wishlistType) {
@@ -1675,40 +1420,23 @@ public class WishlistControl
     @Inject
     protected OrderLineFactory orderLineFactory;
 
-    private OrderLine getWishlistLine(Order order, Integer orderLineSequence, EntityPermission entityPermission) {
-        OrderLine orderLine;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM orderlines, orderlinedetails
-                        WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ?
-                        AND ordldt_orderlinesequence = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM orderlines, orderlinedetails
-                        WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ?
-                        AND ordldt_orderlinesequence = ?
-                        FOR UPDATE
-                        """;
-            }
+    @Inject
+    private WishlistLineTransferCache wishlistLineTransferCache;
 
-            var ps = orderLineFactory.prepareStatement(query);
-            
-            ps.setLong(1, order.getPrimaryKey().getEntityId());
-            ps.setInt(2, orderLineSequence);
-            
-            orderLine = orderLineFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return orderLine;
+    private OrderLine getWishlistLine(Order order, Integer orderLineSequence, EntityPermission entityPermission) {
+        var baseQuery = session.getDslContext()
+                .select(OrderLines.fields())
+                .from(OrderLines)
+                .join(OrderLineDetails).onKey(ORDER_LINES_ACTIVE_DETAIL_FK)
+                .where(OrderLineDetails.ORDER.eq(order.getPrimaryKey()),
+                        OrderLineDetails.ORDER_LINE_SEQUENCE.eq(orderLineSequence));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderLineFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public OrderLine getWishlistLine(Order order, Integer orderLineSequence) {
@@ -1721,43 +1449,21 @@ public class WishlistControl
     
     private OrderLine getWishlistLineByItem(Order order, Item item, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        OrderLine orderLine;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM orderlines, orderlinedetails
-                        WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ?
-                        AND ordldt_itm_itemid = ? AND ordldt_invcon_inventoryconditionid = ?
-                        AND ordldt_uomt_unitofmeasuretypeid = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM orderlines, orderlinedetails
-                        WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ?
-                        AND ordldt_itm_itemid = ? AND ordldt_invcon_inventoryconditionid = ?
-                        AND ordldt_uomt_unitofmeasuretypeid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(OrderLines.fields())
+                .from(OrderLines)
+                .join(OrderLineDetails).onKey(ORDER_LINES_ACTIVE_DETAIL_FK)
+                .where(OrderLineDetails.ORDER.eq(order.getPrimaryKey()),
+                        OrderLineDetails.ITEM.eq(item.getPrimaryKey()),
+                        OrderLineDetails.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                        OrderLineDetails.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()));
 
-            var ps = orderLineFactory.prepareStatement(query);
-            
-            ps.setLong(1, order.getPrimaryKey().getEntityId());
-            ps.setLong(2, item.getPrimaryKey().getEntityId());
-            ps.setLong(3, inventoryCondition.getPrimaryKey().getEntityId());
-            ps.setLong(4, unitOfMeasureType.getPrimaryKey().getEntityId());
-            
-            orderLine = orderLineFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return orderLine;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderLineFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public OrderLine getWishlistLineByItem(Order order, Item item, InventoryCondition inventoryCondition,
@@ -1771,36 +1477,20 @@ public class WishlistControl
     }
     
     private List<OrderLine> getWishlistLinesByOrder(Order order, EntityPermission entityPermission) {
-        List<OrderLine> orderLines;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM orderlines, orderlinedetails
-                        WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM orderlines, orderlinedetails
-                        WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(OrderLines.fields())
+                .from(OrderLines)
+                .join(OrderLineDetails).onKey(ORDER_LINES_ACTIVE_DETAIL_FK)
+                .where(OrderLineDetails.ORDER.eq(order.getPrimaryKey()));
 
-            var ps = orderLineFactory.prepareStatement(query);
-            
-            ps.setLong(1, order.getPrimaryKey().getEntityId());
-            
-            orderLines = orderLineFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return orderLines;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(OrderLineDetails.ORDER_LINE_SEQUENCE),
+                    OrderLineFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderLineFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<OrderLine> getWishlistLinesByOrder(Order order) {
@@ -1812,46 +1502,36 @@ public class WishlistControl
     }
     
     public long countWishlistLinesByOrder(Order order) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM orderlines, orderlinedetails
-                WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_ord_orderid = ?
-                """,
-                order);
+        return session.getDslContext()
+                .selectCount()
+                .from(OrderLines)
+                .join(OrderLineDetails).onKey(ORDER_LINES_ACTIVE_DETAIL_FK)
+                .where(OrderLineDetails.ORDER.eq(order.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<OrderLine> getWishlistLinesByItem(Item item, EntityPermission entityPermission) {
-        List<OrderLine> orderLines;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM orderlines, orderlinedetails
-                        WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_itm_itemid = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM orderlines, orderlinedetails
-                        WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_itm_itemid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(OrderLines.fields())
+                .from(OrderLines)
+                .join(OrderLineDetails).onKey(ORDER_LINES_ACTIVE_DETAIL_FK)
+                .where(OrderLineDetails.ITEM.eq(item.getPrimaryKey()));
 
-            var ps = orderLineFactory.prepareStatement(query);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            
-            orderLines = orderLineFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return orderLines;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OrderLines.fields())
+                    .from(OrderLines)
+                    .join(OrderLineDetails).onKey(ORDER_LINES_ACTIVE_DETAIL_FK)
+                    .join(Orders).onKey(ORDER_LINE_DETAILS_ORDER_FK)
+                    .join(OrderDetails).onKey(ORDERS_LAST_DETAIL_FK)
+                    .where(OrderLineDetails.ITEM.eq(item.getPrimaryKey()))
+                    .orderBy(OrderDetails.ORDER_NAME, OrderLineDetails.ORDER_LINE_SEQUENCE),
+                    OrderLineFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderLineFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<OrderLine> getWishlistLinesByItem(Item item) {
@@ -1863,50 +1543,40 @@ public class WishlistControl
     }
     
     public long countWishlistLinesByItem(Item item) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM orderlines, orderlinedetails
-                WHERE ordl_activedetailid = ordldt_orderlinedetailid AND ordldt_itm_itemid = ?
-                """,
-                item);
+        return session.getDslContext()
+                .selectCount()
+                .from(OrderLines)
+                .join(OrderLineDetails).onKey(ORDER_LINES_ACTIVE_DETAIL_FK)
+                .where(OrderLineDetails.ITEM.eq(item.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<OrderLine> getOrderLinesByWishlistPriority(WishlistPriority wishlistPriority,
             EntityPermission entityPermission) {
-        List<OrderLine> orderLines;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM wishlistlines, orderlines
-                        WHERE wshll_wshlprty_wishlistpriorityid = ? AND wshll_thrutime = ?
-                        AND wshll_ordl_orderlineid = ordl_orderlineid
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM wishlistlines, orderlines
-                        WHERE wshll_wshlprty_wishlistpriorityid = ? AND wshll_thrutime = ?
-                        AND wshll_ordl_orderlineid = ordl_orderlineid
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(OrderLines.fields())
+                .from(OrderLines)
+                .join(WishlistLines).onKey(WISHLIST_LINES_ORDER_LINE_FK)
+                .where(WishlistLines.WISHLIST_PRIORITY.eq(wishlistPriority.getPrimaryKey()),
+                        WishlistLines.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = orderLineFactory.prepareStatement(query);
-            
-            ps.setLong(1, wishlistPriority.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            orderLines = orderLineFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return orderLines;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OrderLines.fields())
+                    .from(OrderLines)
+                    .join(WishlistLines).onKey(WISHLIST_LINES_ORDER_LINE_FK)
+                    .join(OrderLineDetails).onKey(ORDER_LINES_LAST_DETAIL_FK)
+                    .join(Orders).onKey(ORDER_LINE_DETAILS_ORDER_FK)
+                    .join(OrderDetails).onKey(ORDERS_LAST_DETAIL_FK)
+                    .where(WishlistLines.WISHLIST_PRIORITY.eq(wishlistPriority.getPrimaryKey()),
+                            WishlistLines.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(OrderDetails.ORDER_NAME, OrderLineDetails.ORDER_LINE_SEQUENCE),
+                    OrderLineFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return orderLineFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<OrderLine> getOrderLinesByWishlistPriority(WishlistPriority wishlistPriority) {
