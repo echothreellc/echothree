@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.content.server.control;
 
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_PAGE_LAYOUT_AREAS_CONTENT_PAGE_AREA_TYPE_FK;
 import com.echothree.model.control.content.common.ContentCategories;
 import com.echothree.model.control.content.common.ContentSections;
 import com.echothree.model.control.content.common.choice.ContentCatalogChoicesBean;
@@ -180,21 +181,118 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_CATALOGS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_CATALOGS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_CATALOG_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_CATALOG_DETAILS_CONTENT_CATALOG_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_CATALOG_DETAILS_CONTENT_COLLECTION_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_CATALOG_ITEMS_CONTENT_CATALOG_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_CATALOG_ITEMS_CURRENCY_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_CATALOG_ITEMS_INVENTORY_CONDITION_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_CATALOG_ITEMS_ITEM_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_CATALOG_ITEMS_UNIT_OF_MEASURE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_CATEGORIES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_CATEGORIES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_CATEGORY_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_CATEGORY_DETAILS_CONTENT_CATALOG_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_CATEGORY_ITEMS_CONTENT_CATALOG_ITEM_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_CATEGORY_ITEMS_CONTENT_CATEGORY_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_COLLECTIONS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_COLLECTIONS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_COLLECTION_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_COLLECTION_DETAILS_CONTENT_COLLECTION_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_FORUMS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_FORUM_DETAILS_CONTENT_FORUM_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_FORUM_DETAILS_FORUM_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_PAGES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_PAGE_AREAS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_PAGE_AREA_DETAILS_CONTENT_PAGE_AREA_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_PAGE_AREA_DETAILS_CONTENT_PAGE_LAYOUT_AREA_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_PAGE_AREA_DETAILS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_PAGE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_PAGE_DETAILS_CONTENT_PAGE_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_PAGE_DETAILS_CONTENT_SECTION_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_PAGE_LAYOUTS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_PAGE_LAYOUT_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_PAGE_LAYOUT_DETAILS_CONTENT_PAGE_LAYOUT_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_SECTIONS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_SECTIONS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_SECTION_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_SECTION_DETAILS_CONTENT_SECTION_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_WEB_ADDRESSES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_WEB_ADDRESS_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_WEB_ADDRESS_DETAILS_CONTENT_WEB_ADDRESS_FK;
+import static com.echothree.model.jooq.server.keys.content.ContentForeignKeys.CONTENT_WEB_ADDRESS_SERVERS_SERVER_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.SERVERS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.forum.ForumForeignKeys.FORUMS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.inventory.InventoryForeignKeys.INVENTORY_CONDITIONS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEMS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.uom.UomForeignKeys.UNIT_OF_MEASURE_KINDS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.uom.UomForeignKeys.UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.uom.UomForeignKeys.UNIT_OF_MEASURE_TYPE_DETAILS_UNIT_OF_MEASURE_KIND_FK;
+import static com.echothree.model.jooq.server.tables.accounting.Currencies.Currencies;
+import static com.echothree.model.jooq.server.tables.content.ContentCatalogDescriptions.ContentCatalogDescriptions;
+import static com.echothree.model.jooq.server.tables.content.ContentCatalogDetails.ContentCatalogDetails;
+import static com.echothree.model.jooq.server.tables.content.ContentCatalogItemFixedPrices.ContentCatalogItemFixedPrices;
+import static com.echothree.model.jooq.server.tables.content.ContentCatalogItemVariablePrices.ContentCatalogItemVariablePrices;
+import static com.echothree.model.jooq.server.tables.content.ContentCatalogItems.ContentCatalogItems;
+import static com.echothree.model.jooq.server.tables.content.ContentCatalogs.ContentCatalogs;
+import static com.echothree.model.jooq.server.tables.content.ContentCategories.ContentCategories;
+import static com.echothree.model.jooq.server.tables.content.ContentCategoryDescriptions.ContentCategoryDescriptions;
+import static com.echothree.model.jooq.server.tables.content.ContentCategoryDetails.ContentCategoryDetails;
+import static com.echothree.model.jooq.server.tables.content.ContentCategoryItems.ContentCategoryItems;
+import static com.echothree.model.jooq.server.tables.content.ContentCollectionDescriptions.ContentCollectionDescriptions;
+import static com.echothree.model.jooq.server.tables.content.ContentCollectionDetails.ContentCollectionDetails;
+import static com.echothree.model.jooq.server.tables.content.ContentCollections.ContentCollections;
+import static com.echothree.model.jooq.server.tables.content.ContentForumDetails.ContentForumDetails;
+import static com.echothree.model.jooq.server.tables.content.ContentForums.ContentForums;
+import static com.echothree.model.jooq.server.tables.content.ContentPageAreaBlobs.ContentPageAreaBlobs;
+import static com.echothree.model.jooq.server.tables.content.ContentPageAreaClobs.ContentPageAreaClobs;
+import static com.echothree.model.jooq.server.tables.content.ContentPageAreaDetails.ContentPageAreaDetails;
+import static com.echothree.model.jooq.server.tables.content.ContentPageAreaStrings.ContentPageAreaStrings;
+import static com.echothree.model.jooq.server.tables.content.ContentPageAreaTypeDescriptions.ContentPageAreaTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.content.ContentPageAreaTypes.ContentPageAreaTypes;
+import static com.echothree.model.jooq.server.tables.content.ContentPageAreaUrls.ContentPageAreaUrls;
+import static com.echothree.model.jooq.server.tables.content.ContentPageAreas.ContentPageAreas;
+import static com.echothree.model.jooq.server.tables.content.ContentPageDescriptions.ContentPageDescriptions;
+import static com.echothree.model.jooq.server.tables.content.ContentPageDetails.ContentPageDetails;
+import static com.echothree.model.jooq.server.tables.content.ContentPageLayoutAreaDescriptions.ContentPageLayoutAreaDescriptions;
+import static com.echothree.model.jooq.server.tables.content.ContentPageLayoutAreas.ContentPageLayoutAreas;
+import static com.echothree.model.jooq.server.tables.content.ContentPageLayoutDescriptions.ContentPageLayoutDescriptions;
+import static com.echothree.model.jooq.server.tables.content.ContentPageLayoutDetails.ContentPageLayoutDetails;
+import static com.echothree.model.jooq.server.tables.content.ContentPageLayouts.ContentPageLayouts;
+import static com.echothree.model.jooq.server.tables.content.ContentPages.ContentPages;
+import static com.echothree.model.jooq.server.tables.content.ContentSectionDescriptions.ContentSectionDescriptions;
+import static com.echothree.model.jooq.server.tables.content.ContentSectionDetails.ContentSectionDetails;
+import static com.echothree.model.jooq.server.tables.content.ContentSections.ContentSections;
+import static com.echothree.model.jooq.server.tables.content.ContentWebAddressDescriptions.ContentWebAddressDescriptions;
+import static com.echothree.model.jooq.server.tables.content.ContentWebAddressDetails.ContentWebAddressDetails;
+import static com.echothree.model.jooq.server.tables.content.ContentWebAddressServers.ContentWebAddressServers;
+import static com.echothree.model.jooq.server.tables.content.ContentWebAddresses.ContentWebAddresses;
+import static com.echothree.model.jooq.server.tables.core.ServerDetails.ServerDetails;
+import static com.echothree.model.jooq.server.tables.core.Servers.Servers;
+import static com.echothree.model.jooq.server.tables.forum.ForumDetails.ForumDetails;
+import static com.echothree.model.jooq.server.tables.forum.Forums.Forums;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryConditionDetails.InventoryConditionDetails;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryConditions.InventoryConditions;
+import static com.echothree.model.jooq.server.tables.item.ItemDetails.ItemDetails;
+import static com.echothree.model.jooq.server.tables.item.Items.Items;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureKindDetails.UnitOfMeasureKindDetails;
+import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureKinds.UnitOfMeasureKinds;
+import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureTypeDetails.UnitOfMeasureTypeDetails;
+import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureTypes.UnitOfMeasureTypes;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import javax.inject.Inject;
@@ -215,75 +313,14 @@ public class ContentControl
     OrderControl orderControl;
 
     // --------------------------------------------------------------------------------
-    //   Content Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    @Inject
-    ContentCatalogTransferCache contentCatalogTransferCache;
-
-    @Inject
-    ContentCatalogDescriptionTransferCache contentCatalogDescriptionTransferCache;
-
-    @Inject
-    ContentCategoryTransferCache contentCategoryTransferCache;
-
-    @Inject
-    ContentCategoryDescriptionTransferCache contentCategoryDescriptionTransferCache;
-
-    @Inject
-    ContentCollectionTransferCache contentCollectionTransferCache;
-
-    @Inject
-    ContentCollectionDescriptionTransferCache contentCollectionDescriptionTransferCache;
-
-    @Inject
-    ContentPageAreaTransferCache contentPageAreaTransferCache;
-
-    @Inject
-    ContentPageAreaTypeTransferCache contentPageAreaTypeTransferCache;
-
-    @Inject
-    ContentPageDescriptionTransferCache contentPageDescriptionTransferCache;
-
-    @Inject
-    ContentPageLayoutAreaTransferCache contentPageLayoutAreaTransferCache;
-
-    @Inject
-    ContentPageLayoutTransferCache contentPageLayoutTransferCache;
-
-    @Inject
-    ContentPageLayoutDescriptionTransferCache contentPageLayoutDescriptionTransferCache;
-
-    @Inject
-    ContentPageTransferCache contentPageTransferCache;
-
-    @Inject
-    ContentSectionTransferCache contentSectionTransferCache;
-
-    @Inject
-    ContentSectionDescriptionTransferCache contentSectionDescriptionTransferCache;
-
-    @Inject
-    ContentWebAddressTransferCache contentWebAddressTransferCache;
-
-    @Inject
-    ContentWebAddressDescriptionTransferCache contentWebAddressDescriptionTransferCache;
-
-    @Inject
-    ContentForumTransferCache contentForumTransferCache;
-
-    @Inject
-    ContentCategoryItemTransferCache contentCategoryItemTransferCache;
-
-    @Inject
-    ContentCatalogItemTransferCache contentCatalogItemTransferCache;
-
-    // --------------------------------------------------------------------------------
     //   Content Page Area Types
     // --------------------------------------------------------------------------------
 
     @Inject
     protected ContentPageAreaTypeFactory contentPageAreaTypeFactory;
+
+    @Inject
+    ContentPageAreaTypeTransferCache contentPageAreaTypeTransferCache;
 
     public ContentPageAreaType createContentPageAreaType(String contentPageAreaTypeName, BasePK createdBy) {
         var contentPageAreaType = contentPageAreaTypeFactory.create(contentPageAreaTypeName);
@@ -294,10 +331,11 @@ public class ContentControl
     }
 
     public long countContentPageAreaTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM contentpageareatypes
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContentPageAreaTypes)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContentPageAreaType */
@@ -315,30 +353,18 @@ public class ContentControl
         return getContentPageAreaTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getContentPageAreaTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contentpageareatypes
-                WHERE cntpat_contentpageareatypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contentpageareatypes
-                WHERE cntpat_contentpageareatypename = ?
-                FOR UPDATE
-                """);
-        getContentPageAreaTypeByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public ContentPageAreaType getContentPageAreaTypeByName(String contentPageAreaTypeName, EntityPermission entityPermission) {
-        return contentPageAreaTypeFactory.getEntityFromQuery(entityPermission, getContentPageAreaTypeByNameQueries,
-                contentPageAreaTypeName);
+        var baseQuery = session.getDslContext()
+                .select(ContentPageAreaTypes.fields())
+                .from(ContentPageAreaTypes)
+                .where(ContentPageAreaTypes.CONTENT_PAGE_AREA_TYPE_NAME.eq(contentPageAreaTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentPageAreaTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContentPageAreaType getContentPageAreaTypeByName(String contentPageAreaTypeName) {
@@ -349,29 +375,19 @@ public class ContentControl
         return getContentPageAreaTypeByName(contentPageAreaTypeName, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getContentPageAreaTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contentpageareatypes
-                ORDER BY cntpat_contentpageareatypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contentpageareatypes
-                FOR UPDATE
-                """);
-        getContentPageAreaTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ContentPageAreaType> getContentPageAreaTypes(EntityPermission entityPermission) {
-        return contentPageAreaTypeFactory.getEntitiesFromQuery(entityPermission, getContentPageAreaTypesQueries);
+        var baseQuery = session.getDslContext()
+                .select(ContentPageAreaTypes.fields())
+                .from(ContentPageAreaTypes);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ContentPageAreaTypes.CONTENT_PAGE_AREA_TYPE_NAME),
+                    ContentPageAreaTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentPageAreaTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ContentPageAreaType> getContentPageAreaTypes() {
@@ -451,25 +467,13 @@ public class ContentControl
     }
     
     public ContentPageAreaTypeDescription getContentPageAreaTypeDescription(ContentPageAreaType contentPageAreaType, Language language) {
-        ContentPageAreaTypeDescription contentPageAreaTypeDescription;
-        
-        try {
-            var ps = contentPageAreaTypeDescriptionFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM contentpageareatypedescriptions
-                    WHERE cntpatd_cntpat_contentpageareatypeid = ? AND cntpatd_lang_languageid = ?
-                    """);
-            
-            ps.setLong(1, contentPageAreaType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            contentPageAreaTypeDescription = contentPageAreaTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentPageAreaTypeDescription;
+        var query = session.getDslContext()
+                .select(ContentPageAreaTypeDescriptions.fields())
+                .from(ContentPageAreaTypeDescriptions)
+                .where(ContentPageAreaTypeDescriptions.CONTENT_PAGE_AREA_TYPE.eq(contentPageAreaType.getPrimaryKey()),
+                        ContentPageAreaTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
+
+        return contentPageAreaTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public String getBestContentPageAreaTypeDescription(ContentPageAreaType contentPageAreaType, Language language) {
@@ -494,10 +498,13 @@ public class ContentControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ContentPageLayoutDetailFactory contentPageLayoutDetailFactory;
+
+    @Inject
     protected ContentPageLayoutFactory contentPageLayoutFactory;
 
     @Inject
-    protected ContentPageLayoutDetailFactory contentPageLayoutDetailFactory;
+    ContentPageLayoutTransferCache contentPageLayoutTransferCache;
 
     public ContentPageLayout createContentPageLayout(String contentPageLayoutName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultContentPageLayout = getDefaultContentPageLayout();
@@ -528,11 +535,12 @@ public class ContentControl
     }
 
     public long countContentPageLayouts() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM contentpagelayouts
-                        JOIN contentpagelayoutdetails ON cntpl_activedetailid = cntpldt_contentpagelayoutdetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContentPageLayouts)
+                .join(ContentPageLayoutDetails).onKey(CONTENT_PAGE_LAYOUTS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContentPageLayout */
@@ -550,30 +558,20 @@ public class ContentControl
         return getContentPageLayoutByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getContentPageLayoutByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contentpagelayouts, contentpagelayoutdetails
-                WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_contentpagelayoutname = ? AND cntpldt_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contentpagelayouts, contentpagelayoutdetails
-                WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_contentpagelayoutname = ? AND cntpldt_thrutime = ?
-                FOR UPDATE
-                """);
-        getContentPageLayoutByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public ContentPageLayout getContentPageLayoutByName(String contentPageLayoutName, EntityPermission entityPermission) {
-        return contentPageLayoutFactory.getEntityFromQuery(entityPermission, getContentPageLayoutByNameQueries,
-                contentPageLayoutName, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ContentPageLayouts.fields())
+                .from(ContentPageLayouts)
+                .join(ContentPageLayoutDetails).onKey(CONTENT_PAGE_LAYOUT_DETAILS_CONTENT_PAGE_LAYOUT_FK)
+                .where(ContentPageLayoutDetails.CONTENT_PAGE_LAYOUT_NAME.eq(contentPageLayoutName),
+                        ContentPageLayoutDetails.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentPageLayoutFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContentPageLayout getContentPageLayoutByName(String contentPageLayoutName) {
@@ -592,30 +590,20 @@ public class ContentControl
         return getContentPageLayoutDetailValueForUpdate(getContentPageLayoutByNameForUpdate(contentPageLayoutName));
     }
     
-    private static final Map<EntityPermission, String> getDefaultContentPageLayoutQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contentpagelayouts, contentpagelayoutdetails
-                WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_isdefault = 1 AND cntpldt_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contentpagelayouts, contentpagelayoutdetails
-                WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_isdefault = 1 AND cntpldt_thrutime = ?
-                FOR UPDATE
-                """);
-        getDefaultContentPageLayoutQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public ContentPageLayout getDefaultContentPageLayout(EntityPermission entityPermission) {
-        return contentPageLayoutFactory.getEntityFromQuery(entityPermission, getDefaultContentPageLayoutQueries,
-                Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ContentPageLayouts.fields())
+                .from(ContentPageLayouts)
+                .join(ContentPageLayoutDetails).onKey(CONTENT_PAGE_LAYOUT_DETAILS_CONTENT_PAGE_LAYOUT_FK)
+                .where(ContentPageLayoutDetails.IS_DEFAULT.eq(true),
+                        ContentPageLayoutDetails.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentPageLayoutFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContentPageLayout getDefaultContentPageLayout() {
@@ -630,32 +618,21 @@ public class ContentControl
         return getDefaultContentPageLayoutForUpdate().getLastDetailForUpdate().getContentPageLayoutDetailValue().clone();
     }
     
-    private static final Map<EntityPermission, String> getContentPageLayoutsQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contentpagelayouts, contentpagelayoutdetails
-                WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_thrutime = ?
-                ORDER BY cntpldt_sortorder, cntpldt_contentpagelayoutname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contentpagelayouts, contentpagelayoutdetails
-                WHERE cntpl_contentpagelayoutid = cntpldt_cntpl_contentpagelayoutid AND cntpldt_thrutime = ?
-                FOR UPDATE
-                """);
-        getContentPageLayoutsQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ContentPageLayout> getContentPageLayouts(EntityPermission entityPermission) {
-        return contentPageLayoutFactory.getEntitiesFromQuery(entityPermission, getContentPageLayoutsQueries,
-                Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ContentPageLayouts.fields())
+                .from(ContentPageLayouts)
+                .join(ContentPageLayoutDetails).onKey(CONTENT_PAGE_LAYOUT_DETAILS_CONTENT_PAGE_LAYOUT_FK)
+                .where(ContentPageLayoutDetails.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ContentPageLayoutDetails.SORT_ORDER, ContentPageLayoutDetails.CONTENT_PAGE_LAYOUT_NAME),
+                    ContentPageLayoutFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentPageLayoutFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ContentPageLayout> getContentPageLayouts() {
@@ -800,6 +777,9 @@ public class ContentControl
     @Inject
     protected ContentPageLayoutDescriptionFactory contentPageLayoutDescriptionFactory;
 
+    @Inject
+    ContentPageLayoutDescriptionTransferCache contentPageLayoutDescriptionTransferCache;
+
     public ContentPageLayoutDescription createContentPageLayoutDescription(ContentPageLayout contentPageLayout, Language language, String description, BasePK createdBy) {
         var contentPageLayoutDescription = contentPageLayoutDescriptionFactory.create(contentPageLayout, language, description, session.getStartTime(),
                 Session.MAX_TIME);
@@ -810,38 +790,19 @@ public class ContentControl
     }
     
     public ContentPageLayoutDescription getContentPageLayoutDescription(ContentPageLayout contentPageLayout, Language language, EntityPermission entityPermission) {
-        ContentPageLayoutDescription contentPageLayoutDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentpagelayoutdescriptions
-                        WHERE cntpld_cntpl_contentpagelayoutid = ? AND cntpld_lang_languageid = ? AND cntpld_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentpagelayoutdescriptions
-                        WHERE cntpld_cntpl_contentpagelayoutid = ? AND cntpld_lang_languageid = ? AND cntpld_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContentPageLayoutDescriptions.fields())
+                .from(ContentPageLayoutDescriptions)
+                .where(ContentPageLayoutDescriptions.CONTENT_PAGE_LAYOUT.eq(contentPageLayout.getPrimaryKey()),
+                        ContentPageLayoutDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ContentPageLayoutDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = contentPageLayoutDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentPageLayout.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            contentPageLayoutDescription = contentPageLayoutDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentPageLayoutDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentPageLayoutDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContentPageLayoutDescription getContentPageLayoutDescription(ContentPageLayout contentPageLayout, Language language) {
@@ -861,38 +822,24 @@ public class ContentControl
     }
     
     private List<ContentPageLayoutDescription> getContentPageLayoutDescriptionsByContentPageLayout(ContentPageLayout contentPageLayout, EntityPermission entityPermission) {
-        List<ContentPageLayoutDescription> contentPageLayoutDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentpagelayoutdescriptions, languages
-                        WHERE cntpld_cntpl_contentpagelayoutid = ? AND cntpld_thrutime = ? AND cntpld_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentpagelayoutdescriptions
-                        WHERE cntpld_cntpl_contentpagelayoutid = ? AND cntpld_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContentPageLayoutDescriptions.fields())
+                    .from(ContentPageLayoutDescriptions)
+                    .join(Languages).onKey(CONTENT_PAGE_LAYOUT_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ContentPageLayoutDescriptions.CONTENT_PAGE_LAYOUT.eq(contentPageLayout.getPrimaryKey()),
+                            ContentPageLayoutDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ContentPageLayoutDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContentPageLayoutDescriptions.fields())
+                    .from(ContentPageLayoutDescriptions)
+                    .where(ContentPageLayoutDescriptions.CONTENT_PAGE_LAYOUT.eq(contentPageLayout.getPrimaryKey()),
+                            ContentPageLayoutDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = contentPageLayoutDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentPageLayout.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contentPageLayoutDescriptions = contentPageLayoutDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentPageLayoutDescriptions;
+        return contentPageLayoutDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ContentPageLayoutDescription> getContentPageLayoutDescriptionsByContentPageLayout(ContentPageLayout contentPageLayout) {
@@ -975,6 +922,9 @@ public class ContentControl
     @Inject
     protected ContentPageLayoutAreaFactory contentPageLayoutAreaFactory;
 
+    @Inject
+    ContentPageLayoutAreaTransferCache contentPageLayoutAreaTransferCache;
+
     public ContentPageLayoutArea createContentPageLayoutArea(ContentPageLayout contentPageLayout,
             ContentPageAreaType contentPageAreaType, Boolean showDescriptionField, Integer sortOrder) {
         return contentPageLayoutAreaFactory.create(contentPageLayout, contentPageAreaType,
@@ -982,58 +932,33 @@ public class ContentControl
     }
     
     public long countContentPageLayoutAreasByContentPageLayout(ContentPageLayout contentPageLayout) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM contentpagelayoutareas
-                WHERE cntpla_cntpl_contentpagelayoutid = ?
-                """,
-                contentPageLayout);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContentPageLayoutAreas)
+                .where(ContentPageLayoutAreas.CONTENT_PAGE_LAYOUT.eq(contentPageLayout.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public ContentPageLayoutArea getContentPageLayoutArea(ContentPageLayout contentPageLayout, Integer sortOrder) {
-        ContentPageLayoutArea contentPageLayoutArea;
-        
-        try {
-            var ps = contentPageLayoutAreaFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM contentpagelayoutareas
-                    WHERE cntpla_cntpl_contentpagelayoutid = ? AND cntpla_sortorder = ?
-                    """);
-            
-            ps.setLong(1, contentPageLayout.getPrimaryKey().getEntityId());
-            ps.setInt(2, sortOrder);
-            
-            contentPageLayoutArea = contentPageLayoutAreaFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentPageLayoutArea;
+        var query = session.getDslContext()
+                .select(ContentPageLayoutAreas.fields())
+                .from(ContentPageLayoutAreas)
+                .where(ContentPageLayoutAreas.CONTENT_PAGE_LAYOUT.eq(contentPageLayout.getPrimaryKey()),
+                        ContentPageLayoutAreas.SORT_ORDER.eq(sortOrder));
+
+        return contentPageLayoutAreaFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public List<ContentPageLayoutArea> getContentPageLayoutAreasByContentPageLayout(ContentPageLayout contentPageLayout) {
-        List<ContentPageLayoutArea> contentPageLayoutAreas;
-        
-        try {
-            var ps = contentPageLayoutAreaFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM contentpagelayoutareas
-                    WHERE cntpla_cntpl_contentpagelayoutid = ?
-                    ORDER BY cntpla_sortorder
-                    _LIMIT_
-                    """);
-            
-            ps.setLong(1, contentPageLayout.getPrimaryKey().getEntityId());
-            
-            contentPageLayoutAreas = contentPageLayoutAreaFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentPageLayoutAreas;
+        var query = session.applyLimit(session.getDslContext()
+                .select(ContentPageLayoutAreas.fields())
+                .from(ContentPageLayoutAreas)
+                .where(ContentPageLayoutAreas.CONTENT_PAGE_LAYOUT.eq(contentPageLayout.getPrimaryKey()))
+                .orderBy(ContentPageLayoutAreas.SORT_ORDER),
+                ContentPageLayoutAreaFactory.class);
+
+        return contentPageLayoutAreaFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public List<ContentPageLayoutAreaTransfer> getContentPageLayoutAreaTransfers(UserVisit userVisit, Collection<ContentPageLayoutArea> contentPageLayoutAreas) {
@@ -1066,25 +991,13 @@ public class ContentControl
     }
     
     public ContentPageLayoutAreaDescription getContentPageLayoutAreaDescription(ContentPageLayoutArea contentPageLayoutArea, Language language) {
-        ContentPageLayoutAreaDescription contentPageLayoutAreaDescription;
-        
-        try {
-            var ps = contentPageLayoutAreaDescriptionFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM contentpagelayoutareadescriptions
-                    WHERE cntplad_cntpla_contentpagelayoutareaid = ? AND cntplad_lang_languageid = ?
-                    """);
-            
-            ps.setLong(1, contentPageLayoutArea.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            contentPageLayoutAreaDescription = contentPageLayoutAreaDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentPageLayoutAreaDescription;
+        var query = session.getDslContext()
+                .select(ContentPageLayoutAreaDescriptions.fields())
+                .from(ContentPageLayoutAreaDescriptions)
+                .where(ContentPageLayoutAreaDescriptions.CONTENT_PAGE_LAYOUT_AREA.eq(contentPageLayoutArea.getPrimaryKey()),
+                        ContentPageLayoutAreaDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
+
+        return contentPageLayoutAreaDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public String getBestContentPageLayoutAreaDescription(ContentPageLayoutArea contentPageLayoutArea, Language language) {
@@ -1109,10 +1022,13 @@ public class ContentControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ContentCollectionDetailFactory contentCollectionDetailFactory;
+
+    @Inject
     protected ContentCollectionFactory contentCollectionFactory;
 
     @Inject
-    protected ContentCollectionDetailFactory contentCollectionDetailFactory;
+    ContentCollectionTransferCache contentCollectionTransferCache;
 
     public ContentCollection createContentCollection(String contentCollectionName, OfferUse defaultOfferUse, BasePK createdBy) {
         var contentCollection = contentCollectionFactory.create();
@@ -1131,20 +1047,22 @@ public class ContentControl
     }
 
     public long countContentCollections() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM contentcollections, contentcollectiondetails
-                        WHERE cntc_activedetailid = cntcdt_contentcollectiondetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContentCollections)
+                .join(ContentCollectionDetails).onKey(CONTENT_COLLECTIONS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countContentCollectionsByDefaultOfferUse(OfferUse defaultOfferUse) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM contentcollections, contentcollectiondetails
-                        WHERE cntc_activedetailid = cntcdt_contentcollectiondetailid
-                        AND cntcdt_defaultofferuseid = ?
-                        """, defaultOfferUse);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContentCollections)
+                .join(ContentCollectionDetails).onKey(CONTENT_COLLECTIONS_ACTIVE_DETAIL_FK)
+                .where(ContentCollectionDetails.DEFAULT_OFFER_USE.eq(defaultOfferUse.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContentCollection */
@@ -1163,60 +1081,31 @@ public class ContentControl
     }
 
     public List<ContentCollection> getContentCollections() {
-        List<ContentCollection> contentCollections;
-        
-        try {
-            var ps = contentCollectionFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM contentcollections, contentcollectiondetails
-                    WHERE cntc_contentcollectionid = cntcdt_cntc_contentcollectionid AND cntcdt_thrutime = ?
-                    ORDER BY cntcdt_contentcollectionname
-                    _LIMIT_
-                    """);
-            
-            ps.setLong(1, Session.MAX_TIME);
-            
-            contentCollections = contentCollectionFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentCollections;
+        var query = session.applyLimit(session.getDslContext()
+                .select(ContentCollections.fields())
+                .from(ContentCollections)
+                .join(ContentCollectionDetails).onKey(CONTENT_COLLECTION_DETAILS_CONTENT_COLLECTION_FK)
+                .where(ContentCollectionDetails.THRU_TIME.eq(Session.MAX_TIME))
+                .orderBy(ContentCollectionDetails.CONTENT_COLLECTION_NAME),
+                ContentCollectionFactory.class);
+
+        return contentCollectionFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     public ContentCollection getContentCollectionByName(String contentCollectionName, EntityPermission entityPermission) {
-        ContentCollection contentCollection;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcollections, contentcollectiondetails
-                        WHERE cntc_contentcollectionid = cntcdt_cntc_contentcollectionid AND cntcdt_contentcollectionname = ? AND cntcdt_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcollections, contentcollectiondetails
-                        WHERE cntc_contentcollectionid = cntcdt_cntc_contentcollectionid AND cntcdt_contentcollectionname = ? AND cntcdt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContentCollections.fields())
+                .from(ContentCollections)
+                .join(ContentCollectionDetails).onKey(CONTENT_COLLECTION_DETAILS_CONTENT_COLLECTION_FK)
+                .where(ContentCollectionDetails.CONTENT_COLLECTION_NAME.eq(contentCollectionName),
+                        ContentCollectionDetails.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = contentCollectionFactory.prepareStatement(query);
-            
-            ps.setString(1, contentCollectionName);
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contentCollection = contentCollectionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentCollection;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentCollectionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContentCollection getContentCollectionByName(String contentCollectionName) {
@@ -1318,6 +1207,9 @@ public class ContentControl
     @Inject
     protected ContentCollectionDescriptionFactory contentCollectionDescriptionFactory;
 
+    @Inject
+    ContentCollectionDescriptionTransferCache contentCollectionDescriptionTransferCache;
+
     public ContentCollectionDescription createContentCollectionDescription(ContentCollection contentCollection, Language language, String description, BasePK createdBy) {
 
         var contentCollectionDescription = contentCollectionDescriptionFactory.create(contentCollection, language, description, session.getStartTime(),
@@ -1329,38 +1221,19 @@ public class ContentControl
     }
     
     private ContentCollectionDescription getContentCollectionDescription(ContentCollection contentCollection, Language language, EntityPermission entityPermission) {
-        ContentCollectionDescription contentCollectionDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcollectiondescriptions
-                        WHERE cntcd_cntc_contentcollectionid = ? AND cntcd_lang_languageid = ? AND cntcd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcollectiondescriptions
-                        WHERE cntcd_cntc_contentcollectionid = ? AND cntcd_lang_languageid = ? AND cntcd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContentCollectionDescriptions.fields())
+                .from(ContentCollectionDescriptions)
+                .where(ContentCollectionDescriptions.CONTENT_COLLECTION.eq(contentCollection.getPrimaryKey()),
+                        ContentCollectionDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ContentCollectionDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = contentCollectionDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            contentCollectionDescription = contentCollectionDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentCollectionDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentCollectionDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContentCollectionDescription getContentCollectionDescription(ContentCollection contentCollection, Language language) {
@@ -1380,39 +1253,24 @@ public class ContentControl
     }
     
     private List<ContentCollectionDescription> getContentCollectionDescriptionsByContentCollection(ContentCollection contentCollection, EntityPermission entityPermission) {
-        List<ContentCollectionDescription> contentCollectionDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcollectiondescriptions, languages
-                        WHERE cntcd_cntc_contentcollectionid = ? AND cntcd_thrutime = ? AND cntcd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcollectiondescriptions
-                        WHERE cntcd_cntc_contentcollectionid = ? AND cntcd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContentCollectionDescriptions.fields())
+                    .from(ContentCollectionDescriptions)
+                    .join(Languages).onKey(CONTENT_COLLECTION_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ContentCollectionDescriptions.CONTENT_COLLECTION.eq(contentCollection.getPrimaryKey()),
+                            ContentCollectionDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ContentCollectionDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContentCollectionDescriptions.fields())
+                    .from(ContentCollectionDescriptions)
+                    .where(ContentCollectionDescriptions.CONTENT_COLLECTION.eq(contentCollection.getPrimaryKey()),
+                            ContentCollectionDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = contentCollectionDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contentCollectionDescriptions = contentCollectionDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentCollectionDescriptions;
+        return contentCollectionDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ContentCollectionDescription> getContentCollectionDescriptionsByContentCollection(ContentCollection contentCollection) {
@@ -1492,10 +1350,13 @@ public class ContentControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ContentSectionDetailFactory contentSectionDetailFactory;
+
+    @Inject
     protected ContentSectionFactory contentSectionFactory;
 
     @Inject
-    protected ContentSectionDetailFactory contentSectionDetailFactory;
+    ContentSectionTransferCache contentSectionTransferCache;
 
     public ContentSection createContentSection(ContentCollection contentCollection, String contentSectionName,
             ContentSection parentContentSection, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -1503,7 +1364,7 @@ public class ContentControl
         var defaultFound = defaultContentSection != null;
         
         if(defaultFound) {
-            if(defaultContentSection.getLastDetail().getContentSectionName().equals(ContentSections.ROOT.toString())) {
+            if(defaultContentSection.getLastDetail().getContentSectionName().equals(com.echothree.model.control.content.common.ContentSections.ROOT.toString())) {
                 isDefault = true;
             }
         }
@@ -1533,57 +1394,46 @@ public class ContentControl
     }
 
     public long countContentSectionsByContentCollection(ContentCollection contentCollection) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM contentsections, contentsectiondetails
-                        WHERE cnts_activedetailid = cntsdt_contentsectiondetailid AND cntsdt_cntc_contentcollectionid = ?
-                        """, contentCollection);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContentSections)
+                .join(ContentSectionDetails).onKey(CONTENT_SECTIONS_ACTIVE_DETAIL_FK)
+                .where(ContentSectionDetails.CONTENT_COLLECTION.eq(contentCollection.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countContentSectionsByParentContentSection(ContentSection parentContentSection) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM contentsections, contentsectiondetails
-                        WHERE cnts_activedetailid = cntsdt_contentsectiondetailid
-                        AND cntsdt_parentcontentsectionid = ?
-                        """, parentContentSection);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContentSections)
+                .join(ContentSectionDetails).onKey(CONTENT_SECTIONS_ACTIVE_DETAIL_FK)
+                .where(ContentSectionDetails.PARENT_CONTENT_SECTION.eq(parentContentSection.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<ContentSection> getContentSections(ContentCollection contentCollection, EntityPermission entityPermission) {
-        List<ContentSection> contentSections;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentsections, contentsectiondetails
-                        WHERE cnts_contentsectionid = cntsdt_cnts_contentsectionid AND cntsdt_cntc_contentcollectionid = ? AND cntsdt_thrutime = ?
-                        ORDER BY cntsdt_sortorder, cntsdt_contentsectionname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentsections, contentsectiondetails
-                        WHERE cnts_contentsectionid = cntsdt_cnts_contentsectionid AND cntsdt_cntc_contentcollectionid = ? AND cntsdt_thrutime = ?
-                        ORDER BY cntsdt_sortorder, cntsdt_contentsectionname
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContentSections.fields())
+                    .from(ContentSections)
+                    .join(ContentSectionDetails).onKey(CONTENT_SECTION_DETAILS_CONTENT_SECTION_FK)
+                    .where(ContentSectionDetails.CONTENT_COLLECTION.eq(contentCollection.getPrimaryKey()),
+                            ContentSectionDetails.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ContentSectionDetails.SORT_ORDER, ContentSectionDetails.CONTENT_SECTION_NAME),
+                    ContentSectionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContentSections.fields())
+                    .from(ContentSections)
+                    .join(ContentSectionDetails).onKey(CONTENT_SECTION_DETAILS_CONTENT_SECTION_FK)
+                    .where(ContentSectionDetails.CONTENT_COLLECTION.eq(contentCollection.getPrimaryKey()),
+                            ContentSectionDetails.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ContentSectionDetails.SORT_ORDER, ContentSectionDetails.CONTENT_SECTION_NAME)
+                    .forUpdate();
+        };
 
-            var ps = contentSectionFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contentSections = contentSectionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentSections;
+        return contentSectionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ContentSection> getContentSections(ContentCollection contentCollection) {
@@ -1595,40 +1445,26 @@ public class ContentControl
     }
     
     private List<ContentSection> getContentSectionsByParentContentSection(ContentSection parentContentSection, EntityPermission entityPermission) {
-        List<ContentSection> contentSections;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentsections, contentsectiondetails
-                        WHERE cnts_contentsectionid = cntsdt_cnts_contentsectionid AND cntsdt_parentcontentsectionid = ? AND cntsdt_thrutime = ?
-                        ORDER BY cntsdt_sortorder, cntsdt_contentsectionname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentsections, contentsectiondetails
-                        WHERE cnts_contentsectionid = cntsdt_cnts_contentsectionid AND cntsdt_parentcontentsectionid = ? AND cntsdt_thrutime = ?
-                        ORDER BY cntsdt_sortorder, cntsdt_contentsectionname
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContentSections.fields())
+                    .from(ContentSections)
+                    .join(ContentSectionDetails).onKey(CONTENT_SECTION_DETAILS_CONTENT_SECTION_FK)
+                    .where(ContentSectionDetails.PARENT_CONTENT_SECTION.eq(parentContentSection.getPrimaryKey()),
+                            ContentSectionDetails.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ContentSectionDetails.SORT_ORDER, ContentSectionDetails.CONTENT_SECTION_NAME),
+                    ContentSectionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContentSections.fields())
+                    .from(ContentSections)
+                    .join(ContentSectionDetails).onKey(CONTENT_SECTION_DETAILS_CONTENT_SECTION_FK)
+                    .where(ContentSectionDetails.PARENT_CONTENT_SECTION.eq(parentContentSection.getPrimaryKey()),
+                            ContentSectionDetails.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ContentSectionDetails.SORT_ORDER, ContentSectionDetails.CONTENT_SECTION_NAME)
+                    .forUpdate();
+        };
 
-            var ps = contentSectionFactory.prepareStatement(query);
-            
-            ps.setLong(1, parentContentSection.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contentSections = contentSectionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentSections;
+        return contentSectionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ContentSection> getContentSectionsByParentContentSection(ContentSection parentContentSection) {
@@ -1640,38 +1476,20 @@ public class ContentControl
     }
     
     private ContentSection getContentSectionByName(ContentCollection contentCollection, String contentSectionName, EntityPermission entityPermission) {
-        ContentSection contentSection;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentsections, contentsectiondetails
-                        WHERE cnts_contentsectionid = cntsdt_cnts_contentsectionid AND cntsdt_cntc_contentcollectionid = ? AND cntsdt_contentsectionname = ? AND cntsdt_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentsections, contentsectiondetails
-                        WHERE cnts_contentsectionid = cntsdt_cnts_contentsectionid AND cntsdt_cntc_contentcollectionid = ? AND cntsdt_contentsectionname = ? AND cntsdt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContentSections.fields())
+                .from(ContentSections)
+                .join(ContentSectionDetails).onKey(CONTENT_SECTION_DETAILS_CONTENT_SECTION_FK)
+                .where(ContentSectionDetails.CONTENT_COLLECTION.eq(contentCollection.getPrimaryKey()),
+                        ContentSectionDetails.CONTENT_SECTION_NAME.eq(contentSectionName),
+                        ContentSectionDetails.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = contentSectionFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
-            ps.setString(2, contentSectionName);
-            ps.setLong(3, Session.MAX_TIME);
-            
-            contentSection = contentSectionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentSection;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentSectionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContentSection getContentSectionByName(ContentCollection contentCollection, String contentSectionName) {
@@ -1691,37 +1509,20 @@ public class ContentControl
     }
     
     private ContentSection getDefaultContentSection(ContentCollection contentCollection, EntityPermission entityPermission) {
-        ContentSection contentSection;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentsections, contentsectiondetails
-                        WHERE cnts_contentsectionid = cntsdt_cnts_contentsectionid AND cntsdt_cntc_contentcollectionid = ? AND cntsdt_isdefault = 1 AND cntsdt_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentsections, contentsectiondetails
-                        WHERE cnts_contentsectionid = cntsdt_cnts_contentsectionid AND cntsdt_cntc_contentcollectionid = ? AND cntsdt_isdefault = 1 AND cntsdt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContentSections.fields())
+                .from(ContentSections)
+                .join(ContentSectionDetails).onKey(CONTENT_SECTION_DETAILS_CONTENT_SECTION_FK)
+                .where(ContentSectionDetails.CONTENT_COLLECTION.eq(contentCollection.getPrimaryKey()),
+                        ContentSectionDetails.IS_DEFAULT.eq(true),
+                        ContentSectionDetails.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = contentSectionFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contentSection = contentSectionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentSection;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentSectionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContentSection getDefaultContentSection(ContentCollection contentCollection) {
@@ -1752,7 +1553,7 @@ public class ContentControl
             var contentSectionDetail = contentSection.getLastDetail();
             var value = contentSectionDetail.getContentSectionName();
             
-            if(!value.equals(ContentSections.ROOT.toString())) {
+            if(!value.equals(com.echothree.model.control.content.common.ContentSections.ROOT.toString())) {
                 var label = getBestContentSectionDescription(contentSection, language);
 
                 labels.add(label == null? value: label);
@@ -1891,7 +1692,7 @@ public class ContentControl
             if(!contentSections.isEmpty()) {
                 for(var iter = contentSections.iterator(); iter.hasNext();) {
                     defaultContentSection = iter.next();
-                    if(!defaultContentSection.getLastDetail().getContentSectionName().equals(ContentSections.ROOT.toString())) {
+                    if(!defaultContentSection.getLastDetail().getContentSectionName().equals(com.echothree.model.control.content.common.ContentSections.ROOT.toString())) {
                         break;
                     }
                 }
@@ -1924,6 +1725,9 @@ public class ContentControl
     @Inject
     protected ContentSectionDescriptionFactory contentSectionDescriptionFactory;
 
+    @Inject
+    ContentSectionDescriptionTransferCache contentSectionDescriptionTransferCache;
+
     public ContentSectionDescription createContentSectionDescription(ContentSection contentSection, Language language, String description, BasePK createdBy) {
 
         var contentSectionDescription = contentSectionDescriptionFactory.create(contentSection, language, description, session.getStartTime(),
@@ -1935,38 +1739,19 @@ public class ContentControl
     }
     
     private ContentSectionDescription getContentSectionDescription(ContentSection contentSection, Language language, EntityPermission entityPermission) {
-        ContentSectionDescription contentSectionDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentsectiondescriptions
-                        WHERE cntsd_cnts_contentsectionid = ? AND cntsd_lang_languageid = ? AND cntsd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentsectiondescriptions
-                        WHERE cntsd_cnts_contentsectionid = ? AND cntsd_lang_languageid = ? AND cntsd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContentSectionDescriptions.fields())
+                .from(ContentSectionDescriptions)
+                .where(ContentSectionDescriptions.CONTENT_SECTION.eq(contentSection.getPrimaryKey()),
+                        ContentSectionDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ContentSectionDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = contentSectionDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentSection.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            contentSectionDescription = contentSectionDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentSectionDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentSectionDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContentSectionDescription getContentSectionDescription(ContentSection contentSection, Language language) {
@@ -1986,39 +1771,24 @@ public class ContentControl
     }
     
     private List<ContentSectionDescription> getContentSectionDescriptionsByContentSection(ContentSection contentSection, EntityPermission entityPermission) {
-        List<ContentSectionDescription> contentSectionDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentsectiondescriptions, languages
-                        WHERE cntsd_cnts_contentsectionid = ? AND cntsd_thrutime = ? AND cntsd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentsectiondescriptions
-                        WHERE cntsd_cnts_contentsectionid = ? AND cntsd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContentSectionDescriptions.fields())
+                    .from(ContentSectionDescriptions)
+                    .join(Languages).onKey(CONTENT_SECTION_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ContentSectionDescriptions.CONTENT_SECTION.eq(contentSection.getPrimaryKey()),
+                            ContentSectionDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ContentSectionDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContentSectionDescriptions.fields())
+                    .from(ContentSectionDescriptions)
+                    .where(ContentSectionDescriptions.CONTENT_SECTION.eq(contentSection.getPrimaryKey()),
+                            ContentSectionDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = contentSectionDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentSection.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contentSectionDescriptions = contentSectionDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentSectionDescriptions;
+        return contentSectionDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ContentSectionDescription> getContentSectionDescriptionsByContentSection(ContentSection contentSection) {
@@ -2096,10 +1866,13 @@ public class ContentControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ContentPageDetailFactory contentPageDetailFactory;
+
+    @Inject
     protected ContentPageFactory contentPageFactory;
 
     @Inject
-    protected ContentPageDetailFactory contentPageDetailFactory;
+    ContentPageTransferCache contentPageTransferCache;
 
     public ContentPage createContentPage(ContentSection contentSection, String contentPageName, ContentPageLayout contentPageLayout, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -2130,13 +1903,13 @@ public class ContentControl
     }
     
     public long countContentPagesByContentSection(ContentSection contentSection) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM contentpagedetails
-                WHERE cntpdt_cnts_contentsectionid = ? AND cntpdt_thrutime = ?
-                """,
-                contentSection, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContentPageDetails)
+                .where(ContentPageDetails.CONTENT_SECTION.eq(contentSection.getPrimaryKey()),
+                        ContentPageDetails.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContentPage */
@@ -2155,40 +1928,26 @@ public class ContentControl
     }
 
     private List<ContentPage> getContentPagesByContentSection(ContentSection contentSection, EntityPermission entityPermission) {
-        List<ContentPage> contentPages;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentpages, contentpagedetails
-                        WHERE cntp_contentpageid = cntpdt_cntp_contentpageid AND cntpdt_cnts_contentsectionid = ? AND cntpdt_thrutime = ?
-                        ORDER BY cntpdt_sortorder, cntpdt_contentpagename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentpages, contentpagedetails
-                        WHERE cntp_contentpageid = cntpdt_cntp_contentpageid AND cntpdt_cnts_contentsectionid = ? AND cntpdt_thrutime = ?
-                        ORDER BY cntpdt_sortorder, cntpdt_contentpagename
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContentPages.fields())
+                    .from(ContentPages)
+                    .join(ContentPageDetails).onKey(CONTENT_PAGE_DETAILS_CONTENT_PAGE_FK)
+                    .where(ContentPageDetails.CONTENT_SECTION.eq(contentSection.getPrimaryKey()),
+                            ContentPageDetails.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ContentPageDetails.SORT_ORDER, ContentPageDetails.CONTENT_PAGE_NAME),
+                    ContentPageFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContentPages.fields())
+                    .from(ContentPages)
+                    .join(ContentPageDetails).onKey(CONTENT_PAGE_DETAILS_CONTENT_PAGE_FK)
+                    .where(ContentPageDetails.CONTENT_SECTION.eq(contentSection.getPrimaryKey()),
+                            ContentPageDetails.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ContentPageDetails.SORT_ORDER, ContentPageDetails.CONTENT_PAGE_NAME)
+                    .forUpdate();
+        };
 
-            var ps = contentPageFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentSection.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contentPages = contentPageFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentPages;
+        return contentPageFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ContentPage> getContentPagesByContentSection(ContentSection contentSection) {
@@ -2200,40 +1959,26 @@ public class ContentControl
     }
     
     private List<ContentPage> getContentPagesByContentPageLayout(ContentPageLayout contentPageLayout, EntityPermission entityPermission) {
-        List<ContentPage> contentPages;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentpages, contentpagedetails, contentsections, contentsectiondetails
-                        WHERE cntp_activedetailid = cntpdt_contentpagedetailid AND cntpdt_cntpl_contentpagelayoutid = ?
-                        AND cntpdt_cnts_contentsectionid = cnts_contentsectionid AND cnts_lastdetailid = cntsdt_contentsectiondetailid
-                        ORDER BY ccntsdt_sortorder, cntsdt_contentsectionname, cntpdt_sortorder, cntpdt_contentpagename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentpages, contentpagedetails
-                        WHERE cntp_activedetailid = cntpdt_contentpagedetailid AND cntpdt_cntpl_contentpagelayoutid = ?
-                        ORDER BY cntpdt_sortorder, cntpdt_contentpagename
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContentPages.fields())
+                    .from(ContentPages)
+                    .join(ContentPageDetails).onKey(CONTENT_PAGES_ACTIVE_DETAIL_FK)
+                    .join(ContentSections).onKey(CONTENT_PAGE_DETAILS_CONTENT_SECTION_FK)
+                    .join(ContentSectionDetails).onKey(CONTENT_SECTIONS_LAST_DETAIL_FK)
+                    .where(ContentPageDetails.CONTENT_PAGE_LAYOUT.eq(contentPageLayout.getPrimaryKey()))
+                    .orderBy(ContentSectionDetails.SORT_ORDER, ContentSectionDetails.CONTENT_SECTION_NAME, ContentPageDetails.SORT_ORDER, ContentPageDetails.CONTENT_PAGE_NAME),
+                    ContentPageFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContentPages.fields())
+                    .from(ContentPages)
+                    .join(ContentPageDetails).onKey(CONTENT_PAGES_ACTIVE_DETAIL_FK)
+                    .where(ContentPageDetails.CONTENT_PAGE_LAYOUT.eq(contentPageLayout.getPrimaryKey()))
+                    .orderBy(ContentPageDetails.SORT_ORDER, ContentPageDetails.CONTENT_PAGE_NAME)
+                    .forUpdate();
+        };
 
-            var ps = contentPageFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentPageLayout.getPrimaryKey().getEntityId());
-
-            contentPages = contentPageFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentPages;
+        return contentPageFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ContentPage> getContentPagesByContentPageLayout(ContentPageLayout contentPageLayout) {
@@ -2245,38 +1990,20 @@ public class ContentControl
     }
     
     private ContentPage getContentPageByName(ContentSection contentSection, String contentPageName, EntityPermission entityPermission) {
-        ContentPage contentPage;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentpages, contentpagedetails
-                        WHERE cntp_contentpageid = cntpdt_cntp_contentpageid AND cntpdt_cnts_contentsectionid = ? AND cntpdt_contentpagename = ? AND cntpdt_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentpages, contentpagedetails
-                        WHERE cntp_contentpageid = cntpdt_cntp_contentpageid AND cntpdt_cnts_contentsectionid = ? AND cntpdt_contentpagename = ? AND cntpdt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContentPages.fields())
+                .from(ContentPages)
+                .join(ContentPageDetails).onKey(CONTENT_PAGE_DETAILS_CONTENT_PAGE_FK)
+                .where(ContentPageDetails.CONTENT_SECTION.eq(contentSection.getPrimaryKey()),
+                        ContentPageDetails.CONTENT_PAGE_NAME.eq(contentPageName),
+                        ContentPageDetails.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = contentPageFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentSection.getPrimaryKey().getEntityId());
-            ps.setString(2, contentPageName);
-            ps.setLong(3, Session.MAX_TIME);
-            
-            contentPage = contentPageFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentPage;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentPageFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContentPage getContentPageByName(ContentSection contentSection, String contentPageName) {
@@ -2296,37 +2023,20 @@ public class ContentControl
     }
     
     private ContentPage getDefaultContentPage(ContentSection contentSection, EntityPermission entityPermission) {
-        ContentPage contentPage;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentpages, contentpagedetails
-                        WHERE cntp_contentpageid = cntpdt_cntp_contentpageid AND cntpdt_cnts_contentsectionid = ? AND cntpdt_isdefault = 1 AND cntpdt_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentpages, contentpagedetails
-                        WHERE cntp_contentpageid = cntpdt_cntp_contentpageid AND cntpdt_cnts_contentsectionid = ? AND cntpdt_isdefault = 1 AND cntpdt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContentPages.fields())
+                .from(ContentPages)
+                .join(ContentPageDetails).onKey(CONTENT_PAGE_DETAILS_CONTENT_PAGE_FK)
+                .where(ContentPageDetails.CONTENT_SECTION.eq(contentSection.getPrimaryKey()),
+                        ContentPageDetails.IS_DEFAULT.eq(true),
+                        ContentPageDetails.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = contentPageFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentSection.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contentPage = contentPageFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentPage;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentPageFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContentPage getDefaultContentPage(ContentSection contentSection) {
@@ -2453,6 +2163,9 @@ public class ContentControl
     @Inject
     protected ContentPageDescriptionFactory contentPageDescriptionFactory;
 
+    @Inject
+    ContentPageDescriptionTransferCache contentPageDescriptionTransferCache;
+
     public ContentPageDescription createContentPageDescription(ContentPage contentPage, Language language, String description, BasePK createdBy) {
         var contentPageDescription = contentPageDescriptionFactory.create(contentPage, language, description, session.getStartTime(),
                 Session.MAX_TIME);
@@ -2463,38 +2176,19 @@ public class ContentControl
     }
     
     private ContentPageDescription getContentPageDescription(ContentPage contentPage, Language language, EntityPermission entityPermission) {
-        ContentPageDescription contentPageDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentpagedescriptions
-                        WHERE cntpd_cntp_contentpageid = ? AND cntpd_lang_languageid = ? AND cntpd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentpagedescriptions
-                        WHERE cntpd_cntp_contentpageid = ? AND cntpd_lang_languageid = ? AND cntpd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContentPageDescriptions.fields())
+                .from(ContentPageDescriptions)
+                .where(ContentPageDescriptions.CONTENT_PAGE.eq(contentPage.getPrimaryKey()),
+                        ContentPageDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ContentPageDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = contentPageDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentPage.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            contentPageDescription = contentPageDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentPageDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentPageDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContentPageDescription getContentPageDescription(ContentPage contentPage, Language language) {
@@ -2514,39 +2208,24 @@ public class ContentControl
     }
     
     private List<ContentPageDescription> getContentPageDescriptionsByContentPage(ContentPage contentPage, EntityPermission entityPermission) {
-        List<ContentPageDescription> contentPageDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentpagedescriptions, languages
-                        WHERE cntpd_cntp_contentpageid = ? AND cntpd_thrutime = ? AND cntpd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentpagedescriptions
-                        WHERE cntpd_cntp_contentpageid = ? AND cntpd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContentPageDescriptions.fields())
+                    .from(ContentPageDescriptions)
+                    .join(Languages).onKey(CONTENT_PAGE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ContentPageDescriptions.CONTENT_PAGE.eq(contentPage.getPrimaryKey()),
+                            ContentPageDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ContentPageDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContentPageDescriptions.fields())
+                    .from(ContentPageDescriptions)
+                    .where(ContentPageDescriptions.CONTENT_PAGE.eq(contentPage.getPrimaryKey()),
+                            ContentPageDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = contentPageDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentPage.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contentPageDescriptions = contentPageDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentPageDescriptions;
+        return contentPageDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ContentPageDescription> getContentPageDescriptionsByContentPage(ContentPage contentPage) {
@@ -2624,10 +2303,13 @@ public class ContentControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ContentPageAreaDetailFactory contentPageAreaDetailFactory;
+
+    @Inject
     protected ContentPageAreaFactory contentPageAreaFactory;
 
     @Inject
-    protected ContentPageAreaDetailFactory contentPageAreaDetailFactory;
+    ContentPageAreaTransferCache contentPageAreaTransferCache;
 
     public ContentPageArea createContentPageArea(ContentPage contentPage, ContentPageLayoutArea contentPageLayoutArea, Language language, MimeType mimeType, BasePK createdBy) {
         var contentPageArea = contentPageAreaFactory.create();
@@ -2646,12 +2328,13 @@ public class ContentControl
     }
 
     public long countContentPageAreasByContentPage(ContentPage contentPage) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM contentpageareas
-                        JOIN contentpageareadetails ON cntpa_activedetailid = cntpad_contentpageareadetailid
-                        WHERE cntpad_cntp_contentpageid = ?
-                        """, contentPage);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContentPageAreas)
+                .join(ContentPageAreaDetails).onKey(CONTENT_PAGE_AREAS_ACTIVE_DETAIL_FK)
+                .where(ContentPageAreaDetails.CONTENT_PAGE.eq(contentPage.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContentPageArea */
@@ -2670,40 +2353,27 @@ public class ContentControl
     }
 
     private List<ContentPageArea> getContentPageAreasByContentPage(ContentPage contentPage, EntityPermission entityPermission) {
-        List<ContentPageArea> contentPageAreas;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentpageareas, contentpageareadetails, contentpagelayoutareas, languages
-                        WHERE cntpa_contentpageareaid = cntpad_cntpa_contentpageareaid AND cntpad_cntp_contentpageid = ? AND cntpad_thrutime = ?
-                        AND cntpad_cntpla_contentpagelayoutareaid = cntpla_contentpagelayoutareaid AND cntpad_lang_languageid = lang_languageid
-                        ORDER BY cntpla_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentpageareas, contentpageareadetails
-                        WHERE cntpa_contentpageareaid = cntpad_cntpa_contentpageareaid AND cntpad_cntp_contentpageid = ? AND cntpad_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContentPageAreas.fields())
+                    .from(ContentPageAreas)
+                    .join(ContentPageAreaDetails).onKey(CONTENT_PAGE_AREA_DETAILS_CONTENT_PAGE_AREA_FK)
+                    .join(ContentPageLayoutAreas).onKey(CONTENT_PAGE_AREA_DETAILS_CONTENT_PAGE_LAYOUT_AREA_FK)
+                    .join(Languages).onKey(CONTENT_PAGE_AREA_DETAILS_LANGUAGE_FK)
+                    .where(ContentPageAreaDetails.CONTENT_PAGE.eq(contentPage.getPrimaryKey()),
+                            ContentPageAreaDetails.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ContentPageLayoutAreas.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ContentPageAreaFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContentPageAreas.fields())
+                    .from(ContentPageAreas)
+                    .join(ContentPageAreaDetails).onKey(CONTENT_PAGE_AREA_DETAILS_CONTENT_PAGE_AREA_FK)
+                    .where(ContentPageAreaDetails.CONTENT_PAGE.eq(contentPage.getPrimaryKey()),
+                            ContentPageAreaDetails.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = contentPageAreaFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentPage.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contentPageAreas = contentPageAreaFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentPageAreas;
+        return contentPageAreaFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ContentPageArea> getContentPageAreasByContentPage(ContentPage contentPage) {
@@ -2714,32 +2384,29 @@ public class ContentControl
         return getContentPageAreasByContentPage(contentPage, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getContentPageAreasByContentPageQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contentpageareas, contentpageareadetails
-                WHERE cntpa_activedetailid = cntpad_contentpageareadetailid
-                AND cntpad_cntp_contentpageid = ? AND cntpad_lang_languageid = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contentpageareas, contentpageareadetails
-                WHERE cntpa_activedetailid = cntpad_contentpageareadetailid
-                AND cntpad_cntp_contentpageid = ? AND cntpad_lang_languageid = ?
-                FOR UPDATE
-                """);
-        getContentPageAreasByContentPageQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<ContentPageArea> getContentPageAreasByContentPage(ContentPage contentPage, Language language, EntityPermission entityPermission) {
-        return contentPageAreaFactory.getEntitiesFromQuery(entityPermission, getContentPageAreasByContentPageQueries,
-                contentPage, language);
+        var baseQuery = session.getDslContext()
+                .select(ContentPageAreas.fields())
+                .from(ContentPageAreas)
+                .join(ContentPageAreaDetails).onKey(CONTENT_PAGE_AREAS_ACTIVE_DETAIL_FK)
+                .where(ContentPageAreaDetails.CONTENT_PAGE.eq(contentPage.getPrimaryKey()),
+                        ContentPageAreaDetails.LANGUAGE.eq(language.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContentPageAreas.fields())
+                    .from(ContentPageAreas)
+                    .join(ContentPageAreaDetails).onKey(CONTENT_PAGE_AREAS_ACTIVE_DETAIL_FK)
+                    .join(ContentPageLayoutAreas).onKey(CONTENT_PAGE_AREA_DETAILS_CONTENT_PAGE_LAYOUT_AREA_FK)
+                    .join(ContentPageAreaTypes).onKey(CONTENT_PAGE_LAYOUT_AREAS_CONTENT_PAGE_AREA_TYPE_FK)
+                    .where(ContentPageAreaDetails.CONTENT_PAGE.eq(contentPage.getPrimaryKey()),
+                            ContentPageAreaDetails.LANGUAGE.eq(language.getPrimaryKey()))
+                    .orderBy(ContentPageLayoutAreas.SORT_ORDER, ContentPageAreaTypes.CONTENT_PAGE_AREA_TYPE_NAME),
+                    ContentPageAreaFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentPageAreaFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ContentPageArea> getContentPageAreasByContentPage(ContentPage contentPage, Language language) {
@@ -2751,40 +2418,20 @@ public class ContentControl
     }
     
     private ContentPageArea getContentPageArea(ContentPage contentPage, ContentPageLayoutArea contentPageLayoutArea, Language language, EntityPermission entityPermission) {
-        ContentPageArea contentPageArea;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentpageareas, contentpageareadetails
-                        WHERE cntpa_activedetailid = cntpad_contentpageareadetailid
-                        AND cntpad_cntp_contentpageid = ? AND cntpad_cntpla_contentpagelayoutareaid = ? AND cntpad_lang_languageid = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentpageareas, contentpageareadetails
-                        WHERE cntpa_activedetailid = cntpad_contentpageareadetailid
-                        AND cntpad_cntp_contentpageid = ? AND cntpad_cntpla_contentpagelayoutareaid = ? AND cntpad_lang_languageid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContentPageAreas.fields())
+                .from(ContentPageAreas)
+                .join(ContentPageAreaDetails).onKey(CONTENT_PAGE_AREAS_ACTIVE_DETAIL_FK)
+                .where(ContentPageAreaDetails.CONTENT_PAGE.eq(contentPage.getPrimaryKey()),
+                        ContentPageAreaDetails.CONTENT_PAGE_LAYOUT_AREA.eq(contentPageLayoutArea.getPrimaryKey()),
+                        ContentPageAreaDetails.LANGUAGE.eq(language.getPrimaryKey()));
 
-            var ps = contentPageAreaFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentPage.getPrimaryKey().getEntityId());
-            ps.setLong(2, contentPageLayoutArea.getPrimaryKey().getEntityId());
-            ps.setLong(3, language.getPrimaryKey().getEntityId());
-            
-            contentPageArea = contentPageAreaFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentPageArea;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentPageAreaFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContentPageArea getContentPageArea(ContentPage contentPage, ContentPageLayoutArea contentPageLayoutArea, Language language) {
@@ -2889,24 +2536,12 @@ public class ContentControl
     }
     
     public ContentPageAreaBlob getContentPageAreaBlob(ContentPageAreaDetail contentPageAreaDetail) {
-        ContentPageAreaBlob contentPageAreaBlob;
-        
-        try {
-            var ps = contentPageAreaBlobFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM contentpageareablobs
-                    WHERE cntpab_cntpad_contentpageareadetailid = ?
-                    """);
-            
-            ps.setLong(1, contentPageAreaDetail.getPrimaryKey().getEntityId());
-            
-            contentPageAreaBlob = contentPageAreaBlobFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentPageAreaBlob;
+        var query = session.getDslContext()
+                .select(ContentPageAreaBlobs.fields())
+                .from(ContentPageAreaBlobs)
+                .where(ContentPageAreaBlobs.CONTENT_PAGE_AREA_DETAIL.eq(contentPageAreaDetail.getPrimaryKey()));
+
+        return contentPageAreaBlobFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     // --------------------------------------------------------------------------------
@@ -2921,24 +2556,12 @@ public class ContentControl
     }
     
     public ContentPageAreaClob getContentPageAreaClob(ContentPageAreaDetail contentPageAreaDetail) {
-        ContentPageAreaClob contentPageAreaClob;
-        
-        try {
-            var ps = contentPageAreaClobFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM contentpageareaclobs
-                    WHERE cntpac_cntpad_contentpageareadetailid = ?
-                    """);
-            
-            ps.setLong(1, contentPageAreaDetail.getPrimaryKey().getEntityId());
-            
-            contentPageAreaClob = contentPageAreaClobFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentPageAreaClob;
+        var query = session.getDslContext()
+                .select(ContentPageAreaClobs.fields())
+                .from(ContentPageAreaClobs)
+                .where(ContentPageAreaClobs.CONTENT_PAGE_AREA_DETAIL.eq(contentPageAreaDetail.getPrimaryKey()));
+
+        return contentPageAreaClobFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     // --------------------------------------------------------------------------------
@@ -2953,24 +2576,12 @@ public class ContentControl
     }
     
     public ContentPageAreaString getContentPageAreaString(ContentPageAreaDetail contentPageAreaDetail) {
-        ContentPageAreaString contentPageAreaString;
-        
-        try {
-            var ps = contentPageAreaStringFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM contentpageareastrings
-                    WHERE cntpas_cntpad_contentpageareadetailid = ?
-                    """);
-            
-            ps.setLong(1, contentPageAreaDetail.getPrimaryKey().getEntityId());
-            
-            contentPageAreaString = contentPageAreaStringFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentPageAreaString;
+        var query = session.getDslContext()
+                .select(ContentPageAreaStrings.fields())
+                .from(ContentPageAreaStrings)
+                .where(ContentPageAreaStrings.CONTENT_PAGE_AREA_DETAIL.eq(contentPageAreaDetail.getPrimaryKey()));
+
+        return contentPageAreaStringFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     // --------------------------------------------------------------------------------
@@ -2985,24 +2596,12 @@ public class ContentControl
     }
     
     public ContentPageAreaUrl getContentPageAreaUrl(ContentPageAreaDetail contentPageAreaDetail) {
-        ContentPageAreaUrl contentPageAreaUrl;
-        
-        try {
-            var ps = contentPageAreaUrlFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM contentpageareaurls
-                    WHERE cntpau_cntpad_contentpageareadetailid = ?
-                    """);
-            
-            ps.setLong(1, contentPageAreaDetail.getPrimaryKey().getEntityId());
-            
-            contentPageAreaUrl = contentPageAreaUrlFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentPageAreaUrl;
+        var query = session.getDslContext()
+                .select(ContentPageAreaUrls.fields())
+                .from(ContentPageAreaUrls)
+                .where(ContentPageAreaUrls.CONTENT_PAGE_AREA_DETAIL.eq(contentPageAreaDetail.getPrimaryKey()));
+
+        return contentPageAreaUrlFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
     // --------------------------------------------------------------------------------
@@ -3010,10 +2609,13 @@ public class ContentControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ContentCatalogDetailFactory contentCatalogDetailFactory;
+
+    @Inject
     protected ContentCatalogFactory contentCatalogFactory;
 
     @Inject
-    protected ContentCatalogDetailFactory contentCatalogDetailFactory;
+    ContentCatalogTransferCache contentCatalogTransferCache;
 
     public ContentCatalog createContentCatalog(ContentCollection contentCollection, String contentCatalogName,
             OfferUse defaultOfferUse, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -3060,60 +2662,46 @@ public class ContentControl
     }
 
     public long countContentCatalogsByContentCollection(ContentCollection contentCollection) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM contentcatalogdetails
-                WHERE cntctdt_cntc_contentcollectionid = ? AND cntctdt_thrutime = ?
-                """,
-                contentCollection, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContentCatalogDetails)
+                .where(ContentCatalogDetails.CONTENT_COLLECTION.eq(contentCollection.getPrimaryKey()),
+                        ContentCatalogDetails.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countContentCatalogsByDefaultOfferUse(OfferUse defaultOfferUse) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM contentcatalogs, contentcatalogdetails
-                WHERE cntct_activedetailid = cntctdt_contentcatalogdetailid
-                AND cntctdt_defaultofferuseid = ?
-                """, defaultOfferUse);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContentCatalogs)
+                .join(ContentCatalogDetails).onKey(CONTENT_CATALOGS_ACTIVE_DETAIL_FK)
+                .where(ContentCatalogDetails.DEFAULT_OFFER_USE.eq(defaultOfferUse.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<ContentCatalog> getContentCatalogs(ContentCollection contentCollection, EntityPermission entityPermission) {
-        List<ContentCatalog> contentCatalogs;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcatalogs, contentcatalogdetails
-                        WHERE cntct_contentcatalogid = cntctdt_cntct_contentcatalogid AND cntctdt_cntc_contentcollectionid = ? AND cntctdt_thrutime = ?
-                        ORDER BY cntctdt_sortorder, cntctdt_contentcatalogname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcatalogs, contentcatalogdetails
-                        WHERE cntct_contentcatalogid = cntctdt_cntct_contentcatalogid AND cntctdt_cntc_contentcollectionid = ? AND cntctdt_thrutime = ?
-                        ORDER BY cntctdt_sortorder, cntctdt_contentcatalogname
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContentCatalogs.fields())
+                    .from(ContentCatalogs)
+                    .join(ContentCatalogDetails).onKey(CONTENT_CATALOG_DETAILS_CONTENT_CATALOG_FK)
+                    .where(ContentCatalogDetails.CONTENT_COLLECTION.eq(contentCollection.getPrimaryKey()),
+                            ContentCatalogDetails.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ContentCatalogDetails.SORT_ORDER, ContentCatalogDetails.CONTENT_CATALOG_NAME),
+                    ContentCatalogFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContentCatalogs.fields())
+                    .from(ContentCatalogs)
+                    .join(ContentCatalogDetails).onKey(CONTENT_CATALOG_DETAILS_CONTENT_CATALOG_FK)
+                    .where(ContentCatalogDetails.CONTENT_COLLECTION.eq(contentCollection.getPrimaryKey()),
+                            ContentCatalogDetails.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ContentCatalogDetails.SORT_ORDER, ContentCatalogDetails.CONTENT_CATALOG_NAME)
+                    .forUpdate();
+        };
 
-            var ps = contentCatalogFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contentCatalogs = contentCatalogFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentCatalogs;
+        return contentCatalogFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ContentCatalog> getContentCatalogs(ContentCollection contentCollection) {
@@ -3125,40 +2713,20 @@ public class ContentControl
     }
     
     private ContentCatalog getContentCatalogByName(ContentCollection contentCollection, String contentCatalogName, EntityPermission entityPermission) {
-        ContentCatalog contentCatalog;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcatalogs, contentcatalogdetails
-                        WHERE cntct_contentcatalogid = cntctdt_cntct_contentcatalogid AND cntctdt_cntc_contentcollectionid = ?
-                        AND cntctdt_contentcatalogname = ? AND cntctdt_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcatalogs, contentcatalogdetails
-                        WHERE cntct_contentcatalogid = cntctdt_cntct_contentcatalogid AND cntctdt_cntc_contentcollectionid = ?
-                        AND cntctdt_contentcatalogname = ? AND cntctdt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContentCatalogs.fields())
+                .from(ContentCatalogs)
+                .join(ContentCatalogDetails).onKey(CONTENT_CATALOG_DETAILS_CONTENT_CATALOG_FK)
+                .where(ContentCatalogDetails.CONTENT_COLLECTION.eq(contentCollection.getPrimaryKey()),
+                        ContentCatalogDetails.CONTENT_CATALOG_NAME.eq(contentCatalogName),
+                        ContentCatalogDetails.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = contentCatalogFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
-            ps.setString(2, contentCatalogName);
-            ps.setLong(3, Session.MAX_TIME);
-            
-            contentCatalog = contentCatalogFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentCatalog;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentCatalogFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContentCatalog getContentCatalogByName(ContentCollection contentCollection, String contentCatalogName) {
@@ -3178,39 +2746,20 @@ public class ContentControl
     }
     
     private ContentCatalog getDefaultContentCatalog(ContentCollection contentCollection, EntityPermission entityPermission) {
-        ContentCatalog contentCatalog;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcatalogs, contentcatalogdetails
-                        WHERE cntct_contentcatalogid = cntctdt_cntct_contentcatalogid AND cntctdt_cntc_contentcollectionid = ?
-                        AND cntctdt_isdefault = 1 AND cntctdt_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcatalogs, contentcatalogdetails
-                        WHERE cntct_contentcatalogid = cntctdt_cntct_contentcatalogid AND cntctdt_cntc_contentcollectionid = ?
-                        AND cntctdt_isdefault = 1 AND cntctdt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContentCatalogs.fields())
+                .from(ContentCatalogs)
+                .join(ContentCatalogDetails).onKey(CONTENT_CATALOG_DETAILS_CONTENT_CATALOG_FK)
+                .where(ContentCatalogDetails.CONTENT_COLLECTION.eq(contentCollection.getPrimaryKey()),
+                        ContentCatalogDetails.IS_DEFAULT.eq(true),
+                        ContentCatalogDetails.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = contentCatalogFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contentCatalog = contentCatalogFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentCatalog;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentCatalogFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContentCatalog getDefaultContentCatalog(ContentCollection contentCollection) {
@@ -3358,6 +2907,9 @@ public class ContentControl
     @Inject
     protected ContentCatalogDescriptionFactory contentCatalogDescriptionFactory;
 
+    @Inject
+    ContentCatalogDescriptionTransferCache contentCatalogDescriptionTransferCache;
+
     public ContentCatalogDescription createContentCatalogDescription(ContentCatalog contentCatalog, Language language, String description, BasePK createdBy) {
 
         var contentCatalogDescription = contentCatalogDescriptionFactory.create(contentCatalog, language, description, session.getStartTime(),
@@ -3369,38 +2921,19 @@ public class ContentControl
     }
     
     private ContentCatalogDescription getContentCatalogDescription(ContentCatalog contentCatalog, Language language, EntityPermission entityPermission) {
-        ContentCatalogDescription contentCatalogDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcatalogdescriptions
-                        WHERE cntctd_cntct_contentcatalogid = ? AND cntctd_lang_languageid = ? AND cntctd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcatalogdescriptions
-                        WHERE cntctd_cntct_contentcatalogid = ? AND cntctd_lang_languageid = ? AND cntctd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContentCatalogDescriptions.fields())
+                .from(ContentCatalogDescriptions)
+                .where(ContentCatalogDescriptions.CONTENT_CATALOG.eq(contentCatalog.getPrimaryKey()),
+                        ContentCatalogDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ContentCatalogDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = contentCatalogDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentCatalog.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            contentCatalogDescription = contentCatalogDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentCatalogDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentCatalogDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContentCatalogDescription getContentCatalogDescription(ContentCatalog contentCatalog, Language language) {
@@ -3420,39 +2953,24 @@ public class ContentControl
     }
     
     private List<ContentCatalogDescription> getContentCatalogDescriptionsByContentCatalog(ContentCatalog contentCatalog, EntityPermission entityPermission) {
-        List<ContentCatalogDescription> contentCatalogDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcatalogdescriptions, languages
-                        WHERE cntctd_cntct_contentcatalogid = ? AND cntctd_thrutime = ? AND cntctd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcatalogdescriptions
-                        WHERE cntctd_cntct_contentcatalogid = ? AND cntctd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContentCatalogDescriptions.fields())
+                    .from(ContentCatalogDescriptions)
+                    .join(Languages).onKey(CONTENT_CATALOG_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ContentCatalogDescriptions.CONTENT_CATALOG.eq(contentCatalog.getPrimaryKey()),
+                            ContentCatalogDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ContentCatalogDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContentCatalogDescriptions.fields())
+                    .from(ContentCatalogDescriptions)
+                    .where(ContentCatalogDescriptions.CONTENT_CATALOG.eq(contentCatalog.getPrimaryKey()),
+                            ContentCatalogDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = contentCatalogDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentCatalog.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contentCatalogDescriptions = contentCatalogDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentCatalogDescriptions;
+        return contentCatalogDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ContentCatalogDescription> getContentCatalogDescriptionsByContentCatalog(ContentCatalog contentCatalog) {
@@ -3532,6 +3050,9 @@ public class ContentControl
     @Inject
     protected ContentCatalogItemFactory contentCatalogItemFactory;
 
+    @Inject
+    ContentCatalogItemTransferCache contentCatalogItemTransferCache;
+
     public ContentCatalogItem createContentCatalogItem(ContentCatalog contentCatalog, Item item, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, Currency currency, BasePK createdBy) {
         var contentCatalogItem = contentCatalogItemFactory.create(contentCatalog, item,
@@ -3558,54 +3079,42 @@ public class ContentControl
     }
 
     public long countContentCatalogItemsByContentCatalog(ContentCatalog contentCatalog) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM contentcatalogitems
-                WHERE cntcti_cntct_contentcatalogid = ? AND cntcti_thrutime = ?
-                """,
-                contentCatalog, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContentCatalogItems)
+                .where(ContentCatalogItems.CONTENT_CATALOG.eq(contentCatalog.getPrimaryKey()),
+                        ContentCatalogItems.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<ContentCatalogItem> getContentCatalogItemsByContentCatalog(ContentCatalog contentCatalog, EntityPermission entityPermission) {
-        List<ContentCatalogItem> contentCatalogItems;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContentCatalogItems.fields())
+                    .from(ContentCatalogItems)
+                    .join(Items).onKey(CONTENT_CATALOG_ITEMS_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .join(InventoryConditions).onKey(CONTENT_CATALOG_ITEMS_INVENTORY_CONDITION_FK)
+                    .join(InventoryConditionDetails).onKey(INVENTORY_CONDITIONS_LAST_DETAIL_FK)
+                    .join(UnitOfMeasureTypes).onKey(CONTENT_CATALOG_ITEMS_UNIT_OF_MEASURE_TYPE_FK)
+                    .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK)
+                    .join(UnitOfMeasureKinds).onKey(UNIT_OF_MEASURE_TYPE_DETAILS_UNIT_OF_MEASURE_KIND_FK)
+                    .join(UnitOfMeasureKindDetails).onKey(UNIT_OF_MEASURE_KINDS_LAST_DETAIL_FK)
+                    .join(Currencies).onKey(CONTENT_CATALOG_ITEMS_CURRENCY_FK)
+                    .where(ContentCatalogItems.CONTENT_CATALOG.eq(contentCatalog.getPrimaryKey()),
+                            ContentCatalogItems.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ItemDetails.ITEM_NAME, InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME, UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME, UnitOfMeasureKindDetails.SORT_ORDER, UnitOfMeasureKindDetails.UNIT_OF_MEASURE_KIND_NAME, Currencies.SORT_ORDER, Currencies.CURRENCY_ISO_NAME),
+                    ContentCatalogItemFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContentCatalogItems.fields())
+                    .from(ContentCatalogItems)
+                    .where(ContentCatalogItems.CONTENT_CATALOG.eq(contentCatalog.getPrimaryKey()),
+                            ContentCatalogItems.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcatalogitems, items, itemdetails, inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, unitofmeasuretypedetails, unitofmeasurekinds, unitofmeasurekinddetails, currencies
-                        WHERE cntcti_cntct_contentcatalogid = ? AND cntcti_thrutime = ?
-                        AND cntcti_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                        AND cntcti_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
-                        AND cntcti_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
-                        AND uomtdt_uomk_unitofmeasurekindid = uomk_unitofmeasurekindid AND uomk_lastdetailid = uomkdt_unitofmeasurekinddetailid
-                        AND cntcti_cur_currencyid = cur_currencyid
-                        ORDER BY itmdt_itemname, invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, uomkdt_sortorder, uomkdt_unitofmeasurekindname, cur_sortorder, cur_currencyisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcatalogitems
-                        WHERE cntcti_cntct_contentcatalogid = ? AND cntcti_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = contentCatalogItemFactory.prepareStatement(query);
-
-            ps.setLong(1, contentCatalog.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            contentCatalogItems = contentCatalogItemFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return contentCatalogItems;
+        return contentCatalogItemFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ContentCatalogItem> getContentCatalogItemsByContentCatalog(ContentCatalog contentCatalog) {
@@ -3618,43 +3127,30 @@ public class ContentControl
 
     private List<ContentCatalogItem> getContentCatalogItemsByContentCatalogAndItem(ContentCatalog contentCatalog, Item item,
             EntityPermission entityPermission) {
-        List<ContentCatalogItem> contentCatalogItems;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContentCatalogItems.fields())
+                    .from(ContentCatalogItems)
+                    .join(InventoryConditions).onKey(CONTENT_CATALOG_ITEMS_INVENTORY_CONDITION_FK)
+                    .join(InventoryConditionDetails).onKey(INVENTORY_CONDITIONS_LAST_DETAIL_FK)
+                    .join(UnitOfMeasureTypes).onKey(CONTENT_CATALOG_ITEMS_UNIT_OF_MEASURE_TYPE_FK)
+                    .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK)
+                    .join(Currencies).onKey(CONTENT_CATALOG_ITEMS_CURRENCY_FK)
+                    .where(ContentCatalogItems.CONTENT_CATALOG.eq(contentCatalog.getPrimaryKey()),
+                            ContentCatalogItems.ITEM.eq(item.getPrimaryKey()),
+                            ContentCatalogItems.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME, UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME, Currencies.SORT_ORDER, Currencies.CURRENCY_ISO_NAME),
+                    ContentCatalogItemFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContentCatalogItems.fields())
+                    .from(ContentCatalogItems)
+                    .where(ContentCatalogItems.CONTENT_CATALOG.eq(contentCatalog.getPrimaryKey()),
+                            ContentCatalogItems.ITEM.eq(item.getPrimaryKey()),
+                            ContentCatalogItems.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcatalogitems, inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, unitofmeasuretypedetails, currencies
-                        WHERE cntcti_cntct_contentcatalogid = ? AND cntcti_itm_itemid = ? AND cntcti_thrutime = ?
-                        AND cntcti_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
-                        AND cntcti_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
-                        AND cntcti_cur_currencyid = cur_currencyid
-                        ORDER BY invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, cur_sortorder, cur_currencyisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcatalogitems
-                        WHERE cntcti_cntct_contentcatalogid = ? AND cntcti_itm_itemid = ? AND cntcti_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = contentCatalogItemFactory.prepareStatement(query);
-
-            ps.setLong(1, contentCatalog.getPrimaryKey().getEntityId());
-            ps.setLong(2, item.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-
-            contentCatalogItems = contentCatalogItemFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return contentCatalogItems;
+        return contentCatalogItemFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ContentCatalogItem> getContentCatalogItemsByContentCatalogAndItem(ContentCatalog contentCatalog, Item item) {
@@ -3666,46 +3162,32 @@ public class ContentControl
     }
 
     private List<ContentCatalogItem> getContentCatalogItemsByItem(Item item, EntityPermission entityPermission) {
-        List<ContentCatalogItem> contentCatalogItems;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcatalogitems, contentcollections, contentcollectiondetails, contentcatalogs, contentcatalogdetails,
-                        inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, unitofmeasuretypedetails, currencies
-                        WHERE cntcti_itm_itemid = ? AND cntcti_thrutime = ?
-                        AND cntcti_cntct_contentcatalogid = cntct_contentcatalogid AND cntct_lastdetailid = cntctdt_contentcatalogdetailid
-                        AND cntctdt_cntc_contentcollectionid = cntc_contentcollectionid AND cntc_lastdetailid = cntcdt_contentcollectiondetailid
-                        AND cntcti_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
-                        AND cntcti_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
-                        AND cntcti_cur_currencyid = cur_currencyid
-                        ORDER BY cntcdt_contentcollectionname, cntctdt_sortorder, cntctdt_contentcatalogname, invcondt_sortorder,
-                        invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, cur_sortorder, cur_currencyisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcatalogitems
-                        WHERE cntcti_itm_itemid = ? AND cntcti_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContentCatalogItems.fields())
+                    .from(ContentCatalogItems)
+                    .join(ContentCatalogs).onKey(CONTENT_CATALOG_ITEMS_CONTENT_CATALOG_FK)
+                    .join(ContentCatalogDetails).onKey(CONTENT_CATALOGS_LAST_DETAIL_FK)
+                    .join(ContentCollections).onKey(CONTENT_CATALOG_DETAILS_CONTENT_COLLECTION_FK)
+                    .join(ContentCollectionDetails).onKey(CONTENT_COLLECTIONS_LAST_DETAIL_FK)
+                    .join(InventoryConditions).onKey(CONTENT_CATALOG_ITEMS_INVENTORY_CONDITION_FK)
+                    .join(InventoryConditionDetails).onKey(INVENTORY_CONDITIONS_LAST_DETAIL_FK)
+                    .join(UnitOfMeasureTypes).onKey(CONTENT_CATALOG_ITEMS_UNIT_OF_MEASURE_TYPE_FK)
+                    .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK)
+                    .join(Currencies).onKey(CONTENT_CATALOG_ITEMS_CURRENCY_FK)
+                    .where(ContentCatalogItems.ITEM.eq(item.getPrimaryKey()),
+                            ContentCatalogItems.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ContentCollectionDetails.CONTENT_COLLECTION_NAME, ContentCatalogDetails.SORT_ORDER, ContentCatalogDetails.CONTENT_CATALOG_NAME, InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME, UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME, Currencies.SORT_ORDER, Currencies.CURRENCY_ISO_NAME),
+                    ContentCatalogItemFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContentCatalogItems.fields())
+                    .from(ContentCatalogItems)
+                    .where(ContentCatalogItems.ITEM.eq(item.getPrimaryKey()),
+                            ContentCatalogItems.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = contentCatalogItemFactory.prepareStatement(query);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contentCatalogItems = contentCatalogItemFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentCatalogItems;
+        return contentCatalogItemFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ContentCatalogItem> getContentCatalogItemsByItem(Item item) {
@@ -3717,46 +3199,32 @@ public class ContentControl
     }
     
     private List<ContentCatalogItem> getContentCatalogItemsByInventoryCondition(InventoryCondition inventoryCondition, EntityPermission entityPermission) {
-        List<ContentCatalogItem> contentCatalogItems;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcatalogitems, contentcollections, contentcollectiondetails, contentcatalogs, contentcatalogdetails,
-                        items, itemdetails, unitofmeasuretypes, unitofmeasuretypedetails, currencies
-                        WHERE cntcti_invcon_inventoryconditionid = ? AND cntcti_thrutime = ?
-                        AND cntcti_cntct_contentcatalogid = cntct_contentcatalogid AND cntct_lastdetailid = cntctdt_contentcatalogdetailid
-                        AND cntctdt_cntc_contentcollectionid = cntc_contentcollectionid AND cntc_lastdetailid = cntcdt_contentcollectiondetailid
-                        AND cntcti_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                        AND cntcti_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
-                        AND cntcti_cur_currencyid = cur_currencyid
-                        ORDER BY cntcdt_contentcollectionname, cntctdt_sortorder, cntctdt_contentcatalogname, itmdt_itemname,
-                        uomtdt_sortorder, uomtdt_unitofmeasuretypename, cur_sortorder, cur_currencyisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcatalogitems
-                        WHERE cntcti_invcon_inventoryconditionid = ? AND cntcti_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContentCatalogItems.fields())
+                    .from(ContentCatalogItems)
+                    .join(ContentCatalogs).onKey(CONTENT_CATALOG_ITEMS_CONTENT_CATALOG_FK)
+                    .join(ContentCatalogDetails).onKey(CONTENT_CATALOGS_LAST_DETAIL_FK)
+                    .join(ContentCollections).onKey(CONTENT_CATALOG_DETAILS_CONTENT_COLLECTION_FK)
+                    .join(ContentCollectionDetails).onKey(CONTENT_COLLECTIONS_LAST_DETAIL_FK)
+                    .join(Items).onKey(CONTENT_CATALOG_ITEMS_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .join(UnitOfMeasureTypes).onKey(CONTENT_CATALOG_ITEMS_UNIT_OF_MEASURE_TYPE_FK)
+                    .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK)
+                    .join(Currencies).onKey(CONTENT_CATALOG_ITEMS_CURRENCY_FK)
+                    .where(ContentCatalogItems.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                            ContentCatalogItems.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ContentCollectionDetails.CONTENT_COLLECTION_NAME, ContentCatalogDetails.SORT_ORDER, ContentCatalogDetails.CONTENT_CATALOG_NAME, ItemDetails.ITEM_NAME, UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME, Currencies.SORT_ORDER, Currencies.CURRENCY_ISO_NAME),
+                    ContentCatalogItemFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContentCatalogItems.fields())
+                    .from(ContentCatalogItems)
+                    .where(ContentCatalogItems.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                            ContentCatalogItems.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = contentCatalogItemFactory.prepareStatement(query);
-            
-            ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contentCatalogItems = contentCatalogItemFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentCatalogItems;
+        return contentCatalogItemFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ContentCatalogItem> getContentCatalogItemsByInventoryCondition(InventoryCondition inventoryCondition) {
@@ -3768,46 +3236,32 @@ public class ContentControl
     }
     
     private List<ContentCatalogItem> getContentCatalogItemsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        List<ContentCatalogItem> contentCatalogItems;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcatalogitems, contentcollections, contentcollectiondetails, contentcatalogs, contentcatalogdetails,
-                        items, itemdetails, inventoryconditions, inventoryconditiondetails, currencies
-                        WHERE cntcti_uomt_unitofmeasuretypeid = ? AND cntcti_thrutime = ?
-                        AND cntcti_cntct_contentcatalogid = cntct_contentcatalogid AND cntct_lastdetailid = cntctdt_contentcatalogdetailid
-                        AND cntctdt_cntc_contentcollectionid = cntc_contentcollectionid AND cntc_lastdetailid = cntcdt_contentcollectiondetailid
-                        AND cntcti_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                        AND cntcti_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
-                        AND cntcti_cur_currencyid = cur_currencyid
-                        ORDER BY cntcdt_contentcollectionname, cntctdt_sortorder, cntctdt_contentcatalogname, itmdt_itemname,
-                        invcondt_sortorder, invcondt_inventoryconditionname, cur_sortorder, cur_currencyisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcatalogitems
-                        WHERE cntcti_uomt_unitofmeasuretypeid = ? AND cntcti_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContentCatalogItems.fields())
+                    .from(ContentCatalogItems)
+                    .join(ContentCatalogs).onKey(CONTENT_CATALOG_ITEMS_CONTENT_CATALOG_FK)
+                    .join(ContentCatalogDetails).onKey(CONTENT_CATALOGS_LAST_DETAIL_FK)
+                    .join(ContentCollections).onKey(CONTENT_CATALOG_DETAILS_CONTENT_COLLECTION_FK)
+                    .join(ContentCollectionDetails).onKey(CONTENT_COLLECTIONS_LAST_DETAIL_FK)
+                    .join(Items).onKey(CONTENT_CATALOG_ITEMS_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .join(InventoryConditions).onKey(CONTENT_CATALOG_ITEMS_INVENTORY_CONDITION_FK)
+                    .join(InventoryConditionDetails).onKey(INVENTORY_CONDITIONS_LAST_DETAIL_FK)
+                    .join(Currencies).onKey(CONTENT_CATALOG_ITEMS_CURRENCY_FK)
+                    .where(ContentCatalogItems.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                            ContentCatalogItems.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ContentCollectionDetails.CONTENT_COLLECTION_NAME, ContentCatalogDetails.SORT_ORDER, ContentCatalogDetails.CONTENT_CATALOG_NAME, ItemDetails.ITEM_NAME, InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME, Currencies.SORT_ORDER, Currencies.CURRENCY_ISO_NAME),
+                    ContentCatalogItemFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContentCatalogItems.fields())
+                    .from(ContentCatalogItems)
+                    .where(ContentCatalogItems.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                            ContentCatalogItems.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = contentCatalogItemFactory.prepareStatement(query);
-            
-            ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contentCatalogItems = contentCatalogItemFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentCatalogItems;
+        return contentCatalogItemFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ContentCatalogItem> getContentCatalogItemsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
@@ -3820,43 +3274,22 @@ public class ContentControl
     
     private ContentCatalogItem getContentCatalogItem(ContentCatalog contentCatalog, Item item, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
             Currency currency, EntityPermission entityPermission) {
-        ContentCatalogItem contentCatalogItem;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcatalogitems
-                        WHERE cntcti_cntct_contentcatalogid = ? AND cntcti_itm_itemid = ? AND cntcti_invcon_inventoryconditionid = ? AND cntcti_uomt_unitofmeasuretypeid = ?
-                        AND cntcti_cur_currencyid = ? AND cntcti_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcatalogitems
-                        WHERE cntcti_cntct_contentcatalogid = ? AND cntcti_itm_itemid = ? AND cntcti_invcon_inventoryconditionid = ? AND cntcti_uomt_unitofmeasuretypeid = ?
-                        AND cntcti_cur_currencyid = ? AND cntcti_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContentCatalogItems.fields())
+                .from(ContentCatalogItems)
+                .where(ContentCatalogItems.CONTENT_CATALOG.eq(contentCatalog.getPrimaryKey()),
+                        ContentCatalogItems.ITEM.eq(item.getPrimaryKey()),
+                        ContentCatalogItems.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                        ContentCatalogItems.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        ContentCatalogItems.CURRENCY.eq(currency.getPrimaryKey()),
+                        ContentCatalogItems.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = contentCatalogItemFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentCatalog.getPrimaryKey().getEntityId());
-            ps.setLong(2, item.getPrimaryKey().getEntityId());
-            ps.setLong(3, inventoryCondition.getPrimaryKey().getEntityId());
-            ps.setLong(4, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(5, currency.getPrimaryKey().getEntityId());
-            ps.setLong(6, Session.MAX_TIME);
-            
-            contentCatalogItem = contentCatalogItemFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentCatalogItem;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentCatalogItemFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContentCatalogItem getContentCatalogItem(ContentCatalog contentCatalog, Item item, InventoryCondition inventoryCondition,
@@ -3962,37 +3395,18 @@ public class ContentControl
     }
 
     private ContentCatalogItemFixedPrice getContentCatalogItemFixedPrice(ContentCatalogItem contentCatalogItem, EntityPermission entityPermission) {
-        ContentCatalogItemFixedPrice contentCatalogItemFixedPrice;
+        var baseQuery = session.getDslContext()
+                .select(ContentCatalogItemFixedPrices.fields())
+                .from(ContentCatalogItemFixedPrices)
+                .where(ContentCatalogItemFixedPrices.CONTENT_CATALOG_ITEM.eq(contentCatalogItem.getPrimaryKey()),
+                        ContentCatalogItemFixedPrices.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcatalogitemfixedprices
-                        WHERE cntctifp_cntcti_contentcatalogitemid = ? AND cntctifp_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcatalogitemfixedprices
-                        WHERE cntctifp_cntcti_contentcatalogitemid = ? AND cntctifp_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = contentCatalogItemFixedPriceFactory.prepareStatement(query);
-
-            ps.setLong(1, contentCatalogItem.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            contentCatalogItemFixedPrice = contentCatalogItemFixedPriceFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return contentCatalogItemFixedPrice;
+        return contentCatalogItemFixedPriceFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ContentCatalogItemFixedPrice getContentCatalogItemFixedPrice(ContentCatalogItem contentCatalogItem) {
@@ -4059,37 +3473,18 @@ public class ContentControl
     }
 
     private ContentCatalogItemVariablePrice getContentCatalogItemVariablePrice(ContentCatalogItem contentCatalogItem, EntityPermission entityPermission) {
-        ContentCatalogItemVariablePrice contentCatalogItemVariablePrice;
+        var baseQuery = session.getDslContext()
+                .select(ContentCatalogItemVariablePrices.fields())
+                .from(ContentCatalogItemVariablePrices)
+                .where(ContentCatalogItemVariablePrices.CONTENT_CATALOG_ITEM.eq(contentCatalogItem.getPrimaryKey()),
+                        ContentCatalogItemVariablePrices.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcatalogitemvariableprices
-                        WHERE cntctivp_cntcti_contentcatalogitemid = ? AND cntctivp_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcatalogitemvariableprices
-                        WHERE cntctivp_cntcti_contentcatalogitemid = ? AND cntctivp_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = contentCatalogItemVariablePriceFactory.prepareStatement(query);
-
-            ps.setLong(1, contentCatalogItem.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            contentCatalogItemVariablePrice = contentCatalogItemVariablePriceFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return contentCatalogItemVariablePrice;
+        return contentCatalogItemVariablePriceFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ContentCatalogItemVariablePrice getContentCatalogItemVariablePrice(ContentCatalogItem contentCatalogItem) {
@@ -4140,10 +3535,13 @@ public class ContentControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ContentCategoryDetailFactory contentCategoryDetailFactory;
+
+    @Inject
     protected ContentCategoryFactory contentCategoryFactory;
 
     @Inject
-    protected ContentCategoryDetailFactory contentCategoryDetailFactory;
+    ContentCategoryTransferCache contentCategoryTransferCache;
 
     public ContentCategory createContentCategory(ContentCatalog contentCatalog, String contentCategoryName,
             ContentCategory parentContentCategory, OfferUse defaultOfferUse, Selector itemSelector, Boolean isDefault,
@@ -4152,7 +3550,7 @@ public class ContentControl
         var defaultFound = defaultContentCategory != null;
         
         if(defaultFound) {
-            if(defaultContentCategory.getLastDetail().getContentCategoryName().equals(ContentCategories.ROOT.toString()))
+            if(defaultContentCategory.getLastDetail().getContentCategoryName().equals(com.echothree.model.control.content.common.ContentCategories.ROOT.toString()))
                 isDefault = true;
         }
         
@@ -4197,78 +3595,63 @@ public class ContentControl
     }
 
     public long countContentCategories() {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM contentcategories, contentcategorydetails
-                WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContentCategories)
+                .join(ContentCategoryDetails).onKey(CONTENT_CATEGORIES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countContentCategoriesByContentCatalog(ContentCatalog contentCatalog) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM contentcategories, contentcategorydetails
-                WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_cntct_contentcatalogid = ?
-                """,
-                contentCatalog);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContentCategories)
+                .join(ContentCategoryDetails).onKey(CONTENT_CATEGORIES_ACTIVE_DETAIL_FK)
+                .where(ContentCategoryDetails.CONTENT_CATALOG.eq(contentCatalog.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countContentCategoriesByParentContentCategory(ContentCategory parentContentCategory) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM contentcategories, contentcategorydetails
-                WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_parentcontentcategoryid = ?
-                """,
-                parentContentCategory);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContentCategories)
+                .join(ContentCategoryDetails).onKey(CONTENT_CATEGORIES_ACTIVE_DETAIL_FK)
+                .where(ContentCategoryDetails.PARENT_CONTENT_CATEGORY.eq(parentContentCategory.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countContentCategoriesByDefaultOfferUse(OfferUse defaultOfferUse) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM contentcategories, contentcategorydetails
-                WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid
-                AND cntcgdt_defaultofferuseid = ?
-                """, defaultOfferUse);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContentCategories)
+                .join(ContentCategoryDetails).onKey(CONTENT_CATEGORIES_ACTIVE_DETAIL_FK)
+                .where(ContentCategoryDetails.DEFAULT_OFFER_USE.eq(defaultOfferUse.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<ContentCategory> getContentCategories(ContentCatalog contentCatalog, EntityPermission entityPermission) {
-        List<ContentCategory> contentCategories;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcategories, contentcategorydetails
-                        WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_cntct_contentcatalogid = ?
-                        ORDER BY cntcgdt_sortorder, cntcgdt_contentcategoryname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcategories, contentcategorydetails
-                        WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_cntct_contentcatalogid = ?
-                        ORDER BY cntcgdt_sortorder, cntcgdt_contentcategoryname
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContentCategories.fields())
+                    .from(ContentCategories)
+                    .join(ContentCategoryDetails).onKey(CONTENT_CATEGORIES_ACTIVE_DETAIL_FK)
+                    .where(ContentCategoryDetails.CONTENT_CATALOG.eq(contentCatalog.getPrimaryKey()))
+                    .orderBy(ContentCategoryDetails.SORT_ORDER, ContentCategoryDetails.CONTENT_CATEGORY_NAME),
+                    ContentCategoryFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContentCategories.fields())
+                    .from(ContentCategories)
+                    .join(ContentCategoryDetails).onKey(CONTENT_CATEGORIES_ACTIVE_DETAIL_FK)
+                    .where(ContentCategoryDetails.CONTENT_CATALOG.eq(contentCatalog.getPrimaryKey()))
+                    .orderBy(ContentCategoryDetails.SORT_ORDER, ContentCategoryDetails.CONTENT_CATEGORY_NAME)
+                    .forUpdate();
+        };
 
-            var ps = contentCategoryFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentCatalog.getPrimaryKey().getEntityId());
-            
-            contentCategories = contentCategoryFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentCategories;
+        return contentCategoryFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ContentCategory> getContentCategories(ContentCatalog contentCatalog) {
@@ -4280,39 +3663,24 @@ public class ContentControl
     }
     
     private List<ContentCategory> getContentCategoriesByParentContentCategory(ContentCategory parentContentCategory, EntityPermission entityPermission) {
-        List<ContentCategory> contentCategories;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContentCategories.fields())
+                    .from(ContentCategories)
+                    .join(ContentCategoryDetails).onKey(CONTENT_CATEGORIES_ACTIVE_DETAIL_FK)
+                    .where(ContentCategoryDetails.PARENT_CONTENT_CATEGORY.eq(parentContentCategory.getPrimaryKey()))
+                    .orderBy(ContentCategoryDetails.SORT_ORDER, ContentCategoryDetails.CONTENT_CATEGORY_NAME),
+                    ContentCategoryFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContentCategories.fields())
+                    .from(ContentCategories)
+                    .join(ContentCategoryDetails).onKey(CONTENT_CATEGORIES_ACTIVE_DETAIL_FK)
+                    .where(ContentCategoryDetails.PARENT_CONTENT_CATEGORY.eq(parentContentCategory.getPrimaryKey()))
+                    .orderBy(ContentCategoryDetails.SORT_ORDER, ContentCategoryDetails.CONTENT_CATEGORY_NAME)
+                    .forUpdate();
+        };
 
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcategories, contentcategorydetails
-                        WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_parentcontentcategoryid = ?
-                        ORDER BY cntcgdt_sortorder, cntcgdt_contentcategoryname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcategories, contentcategorydetails
-                        WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_parentcontentcategoryid = ?
-                        ORDER BY cntcgdt_sortorder, cntcgdt_contentcategoryname
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = contentCategoryFactory.prepareStatement(query);
-
-            ps.setLong(1, parentContentCategory.getPrimaryKey().getEntityId());
-
-            contentCategories = contentCategoryFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return contentCategories;
+        return contentCategoryFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ContentCategory> getContentCategoriesByParentContentCategory(ContentCategory parentContentCategory) {
@@ -4323,35 +3691,29 @@ public class ContentControl
         return getContentCategoriesByParentContentCategory(parentContentCategory, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getContentCategoriesByDefaultOfferUseQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contentcategories, contentcategorydetails, contentcatalogs, contentcatalogdetails, contentcollections, contentcollectiondetails
-                WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_defaultofferuseid = ?
-                AND cntcgdt_cntct_contentcatalogid = cntct_contentcatalogid AND cntct_lastdetailid = cntctdt_contentcatalogdetailid
-                AND cntctdt_cntc_contentcollectionid = cntc_contentcollectionid AND cntc_lastdetailid = cntcdt_contentcollectiondetailid
-                ORDER BY cntcdt_contentcollectionname, cntctdt_sortorder, cntctdt_contentcatalogname, cntcgdt_sortorder, cntcgdt_contentcategoryname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contentcategories, contentcategorydetails
-                WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_defaultofferuseid = ?
-                ORDER BY cntcgdt_sortorder, cntcgdt_contentcategoryname
-                FOR UPDATE
-                """);
-        getContentCategoriesByDefaultOfferUseQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ContentCategory> getContentCategoriesByDefaultOfferUse(OfferUse defaultOfferUse, EntityPermission entityPermission) {
-        return contentCategoryFactory.getEntitiesFromQuery(entityPermission, getContentCategoriesByDefaultOfferUseQueries,
-                defaultOfferUse);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContentCategories.fields())
+                    .from(ContentCategories)
+                    .join(ContentCategoryDetails).onKey(CONTENT_CATEGORIES_ACTIVE_DETAIL_FK)
+                    .join(ContentCatalogs).onKey(CONTENT_CATEGORY_DETAILS_CONTENT_CATALOG_FK)
+                    .join(ContentCatalogDetails).onKey(CONTENT_CATALOGS_LAST_DETAIL_FK)
+                    .join(ContentCollections).onKey(CONTENT_CATALOG_DETAILS_CONTENT_COLLECTION_FK)
+                    .join(ContentCollectionDetails).onKey(CONTENT_COLLECTIONS_LAST_DETAIL_FK)
+                    .where(ContentCategoryDetails.DEFAULT_OFFER_USE.eq(defaultOfferUse.getPrimaryKey()))
+                    .orderBy(ContentCollectionDetails.CONTENT_COLLECTION_NAME, ContentCatalogDetails.SORT_ORDER, ContentCatalogDetails.CONTENT_CATALOG_NAME, ContentCategoryDetails.SORT_ORDER, ContentCategoryDetails.CONTENT_CATEGORY_NAME),
+                    ContentCategoryFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContentCategories.fields())
+                    .from(ContentCategories)
+                    .join(ContentCategoryDetails).onKey(CONTENT_CATEGORIES_ACTIVE_DETAIL_FK)
+                    .where(ContentCategoryDetails.DEFAULT_OFFER_USE.eq(defaultOfferUse.getPrimaryKey()))
+                    .orderBy(ContentCategoryDetails.SORT_ORDER, ContentCategoryDetails.CONTENT_CATEGORY_NAME)
+                    .forUpdate();
+        };
+
+        return contentCategoryFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ContentCategory> getContentCategoriesByDefaultOfferUse(OfferUse defaultOfferUse) {
@@ -4362,35 +3724,29 @@ public class ContentControl
         return getContentCategoriesByDefaultOfferUse(defaultOfferUse, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getContentCategoriesByContentCategoryItemSelectorQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM contentcategories, contentcategorydetails, contentcatalogs, contentcatalogdetails, contentcollections, contentcollectiondetails
-                WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_contentcategoryitemselectorid = ?
-                AND cntcgdt_cntct_contentcatalogid = cntct_contentcatalogid AND cntct_lastdetailid = cntctdt_contentcatalogdetailid
-                AND cntctdt_cntc_contentcollectionid = cntc_contentcollectionid AND cntc_lastdetailid = cntcdt_contentcollectiondetailid
-                ORDER BY cntcdt_contentcollectionname, cntctdt_sortorder, cntctdt_contentcatalogname, cntcgdt_sortorder, cntcgdt_contentcategoryname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM contentcategories, contentcategorydetails
-                WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_contentcategoryitemselectorid = ?
-                ORDER BY cntcgdt_sortorder, cntcgdt_contentcategoryname
-                FOR UPDATE
-                """);
-        getContentCategoriesByContentCategoryItemSelectorQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ContentCategory> getContentCategoriesByContentCategoryItemSelector(Selector contentCategoryItemSelector, EntityPermission entityPermission) {
-        return contentCategoryFactory.getEntitiesFromQuery(entityPermission, getContentCategoriesByContentCategoryItemSelectorQueries,
-                contentCategoryItemSelector);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContentCategories.fields())
+                    .from(ContentCategories)
+                    .join(ContentCategoryDetails).onKey(CONTENT_CATEGORIES_ACTIVE_DETAIL_FK)
+                    .join(ContentCatalogs).onKey(CONTENT_CATEGORY_DETAILS_CONTENT_CATALOG_FK)
+                    .join(ContentCatalogDetails).onKey(CONTENT_CATALOGS_LAST_DETAIL_FK)
+                    .join(ContentCollections).onKey(CONTENT_CATALOG_DETAILS_CONTENT_COLLECTION_FK)
+                    .join(ContentCollectionDetails).onKey(CONTENT_COLLECTIONS_LAST_DETAIL_FK)
+                    .where(ContentCategoryDetails.CONTENT_CATEGORY_ITEM_SELECTOR.eq(contentCategoryItemSelector.getPrimaryKey()))
+                    .orderBy(ContentCollectionDetails.CONTENT_COLLECTION_NAME, ContentCatalogDetails.SORT_ORDER, ContentCatalogDetails.CONTENT_CATALOG_NAME, ContentCategoryDetails.SORT_ORDER, ContentCategoryDetails.CONTENT_CATEGORY_NAME),
+                    ContentCategoryFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContentCategories.fields())
+                    .from(ContentCategories)
+                    .join(ContentCategoryDetails).onKey(CONTENT_CATEGORIES_ACTIVE_DETAIL_FK)
+                    .where(ContentCategoryDetails.CONTENT_CATEGORY_ITEM_SELECTOR.eq(contentCategoryItemSelector.getPrimaryKey()))
+                    .orderBy(ContentCategoryDetails.SORT_ORDER, ContentCategoryDetails.CONTENT_CATEGORY_NAME)
+                    .forUpdate();
+        };
+
+        return contentCategoryFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ContentCategory> getContentCategoriesByParentContentCategory(Selector contentCategoryItemSelector) {
@@ -4402,37 +3758,19 @@ public class ContentControl
     }
 
     private ContentCategory getContentCategoryByName(ContentCatalog contentCatalog, String contentCategoryName, EntityPermission entityPermission) {
-        ContentCategory contentCategory;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcategories, contentcategorydetails
-                        WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_cntct_contentcatalogid = ? AND cntcgdt_contentcategoryname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcategories, contentcategorydetails
-                        WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_cntct_contentcatalogid = ? AND cntcgdt_contentcategoryname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContentCategories.fields())
+                .from(ContentCategories)
+                .join(ContentCategoryDetails).onKey(CONTENT_CATEGORIES_ACTIVE_DETAIL_FK)
+                .where(ContentCategoryDetails.CONTENT_CATALOG.eq(contentCatalog.getPrimaryKey()),
+                        ContentCategoryDetails.CONTENT_CATEGORY_NAME.eq(contentCategoryName));
 
-            var ps = contentCategoryFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentCatalog.getPrimaryKey().getEntityId());
-            ps.setString(2, contentCategoryName);
-            
-            contentCategory = contentCategoryFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentCategory;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentCategoryFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContentCategory getContentCategoryByName(ContentCatalog contentCatalog, String contentCategoryName) {
@@ -4452,36 +3790,19 @@ public class ContentControl
     }
     
     private ContentCategory getDefaultContentCategory(ContentCatalog contentCatalog, EntityPermission entityPermission) {
-        ContentCategory contentCategory;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcategories, contentcategorydetails
-                        WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_cntct_contentcatalogid = ? AND cntcgdt_isdefault = 1
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcategories, contentcategorydetails
-                        WHERE cntcg_activedetailid = cntcgdt_contentcategorydetailid AND cntcgdt_cntct_contentcatalogid = ? AND cntcgdt_isdefault = 1
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContentCategories.fields())
+                .from(ContentCategories)
+                .join(ContentCategoryDetails).onKey(CONTENT_CATEGORIES_ACTIVE_DETAIL_FK)
+                .where(ContentCategoryDetails.CONTENT_CATALOG.eq(contentCatalog.getPrimaryKey()),
+                        ContentCategoryDetails.IS_DEFAULT.eq(true));
 
-            var ps = contentCategoryFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentCatalog.getPrimaryKey().getEntityId());
-            
-            contentCategory = contentCategoryFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentCategory;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentCategoryFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContentCategory getDefaultContentCategory(ContentCatalog contentCatalog) {
@@ -4512,7 +3833,7 @@ public class ContentControl
             var contentCategoryDetail = contentCategory.getLastDetail();
             var value = contentCategoryDetail.getContentCategoryName();
             
-            if(!value.equals(ContentCategories.ROOT.toString())) {
+            if(!value.equals(com.echothree.model.control.content.common.ContentCategories.ROOT.toString())) {
                 var label = getBestContentCategoryDescription(contentCategory, language);
 
                 labels.add(label == null? value: label);
@@ -4660,7 +3981,7 @@ public class ContentControl
             if(!contentCategories.isEmpty()) {
                 for(var iter = contentCategories.iterator(); iter.hasNext();) {
                     defaultContentCategory = iter.next();
-                    if(!defaultContentCategory.getLastDetail().getContentCategoryName().equals(ContentCategories.ROOT.toString()))
+                    if(!defaultContentCategory.getLastDetail().getContentCategoryName().equals(com.echothree.model.control.content.common.ContentCategories.ROOT.toString()))
                         break;
                 }
                 var contentCategoryDetailValue = Objects.requireNonNull(defaultContentCategory).getLastDetailForUpdate().getContentCategoryDetailValue().clone();
@@ -4690,6 +4011,9 @@ public class ContentControl
     @Inject
     protected ContentCategoryDescriptionFactory contentCategoryDescriptionFactory;
 
+    @Inject
+    ContentCategoryDescriptionTransferCache contentCategoryDescriptionTransferCache;
+
     public ContentCategoryDescription createContentCategoryDescription(ContentCategory contentCategory, Language language,
             String description, BasePK createdBy) {
 
@@ -4704,38 +4028,19 @@ public class ContentControl
     
     private ContentCategoryDescription getContentCategoryDescription(ContentCategory contentCategory, Language language,
             EntityPermission entityPermission) {
-        ContentCategoryDescription contentCategoryDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcategorydescriptions
-                        WHERE cntcgd_cntcg_contentcategoryid = ? AND cntcgd_lang_languageid = ? AND cntcgd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcategorydescriptions
-                        WHERE cntcgd_cntcg_contentcategoryid = ? AND cntcgd_lang_languageid = ? AND cntcgd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContentCategoryDescriptions.fields())
+                .from(ContentCategoryDescriptions)
+                .where(ContentCategoryDescriptions.CONTENT_CATEGORY.eq(contentCategory.getPrimaryKey()),
+                        ContentCategoryDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ContentCategoryDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = contentCategoryDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentCategory.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            contentCategoryDescription = contentCategoryDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentCategoryDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentCategoryDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContentCategoryDescription getContentCategoryDescription(ContentCategory contentCategory, Language language) {
@@ -4755,39 +4060,24 @@ public class ContentControl
     }
     
     private List<ContentCategoryDescription> getContentCategoryDescriptionsByContentCategory(ContentCategory contentCategory, EntityPermission entityPermission) {
-        List<ContentCategoryDescription> contentCategoryDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcategorydescriptions, languages
-                        WHERE cntcgd_cntcg_contentcategoryid = ? AND cntcgd_thrutime = ? AND cntcgd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcategorydescriptions
-                        WHERE cntcgd_cntcg_contentcategoryid = ? AND cntcgd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContentCategoryDescriptions.fields())
+                    .from(ContentCategoryDescriptions)
+                    .join(Languages).onKey(CONTENT_CATEGORY_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ContentCategoryDescriptions.CONTENT_CATEGORY.eq(contentCategory.getPrimaryKey()),
+                            ContentCategoryDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ContentCategoryDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContentCategoryDescriptions.fields())
+                    .from(ContentCategoryDescriptions)
+                    .where(ContentCategoryDescriptions.CONTENT_CATEGORY.eq(contentCategory.getPrimaryKey()),
+                            ContentCategoryDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = contentCategoryDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentCategory.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contentCategoryDescriptions = contentCategoryDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentCategoryDescriptions;
+        return contentCategoryDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ContentCategoryDescription> getContentCategoryDescriptionsByContentCategory(ContentCategory contentCategory) {
@@ -4867,6 +4157,9 @@ public class ContentControl
     @Inject
     protected ContentCategoryItemFactory contentCategoryItemFactory;
 
+    @Inject
+    ContentCategoryItemTransferCache contentCategoryItemTransferCache;
+
     /** Use the function in ContentLogic instead. */
     public ContentCategoryItem createContentCategoryItem(ContentCategory contentCategory, ContentCatalogItem contentCatalogItem,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -4892,49 +4185,30 @@ public class ContentControl
     }
     
     public long countContentCategoryItemsByContentCategory(ContentCategory contentCategory) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM contentcategoryitems
-                WHERE cntcgi_cntcg_contentcategoryid = ? AND cntcgi_thrutime = ?
-                """,
-                contentCategory, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContentCategoryItems)
+                .where(ContentCategoryItems.CONTENT_CATEGORY.eq(contentCategory.getPrimaryKey()),
+                        ContentCategoryItems.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ContentCategoryItem getContentCategoryItem(ContentCategory contentCategory, ContentCatalogItem contentCatalogItem,
             EntityPermission entityPermission) {
-        ContentCategoryItem contentCategoryItem;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcategoryitems
-                        WHERE cntcgi_cntcg_contentcategoryid = ? AND cntcgi_cntcti_contentcatalogitemid = ? AND cntcgi_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcategoryitems
-                        WHERE cntcgi_cntcg_contentcategoryid = ? AND cntcgi_cntcti_contentcatalogitemid = ? AND cntcgi_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContentCategoryItems.fields())
+                .from(ContentCategoryItems)
+                .where(ContentCategoryItems.CONTENT_CATEGORY.eq(contentCategory.getPrimaryKey()),
+                        ContentCategoryItems.CONTENT_CATALOG_ITEM.eq(contentCatalogItem.getPrimaryKey()),
+                        ContentCategoryItems.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = contentCategoryItemFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentCategory.getPrimaryKey().getEntityId());
-            ps.setLong(2, contentCatalogItem.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            contentCategoryItem = contentCategoryItemFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentCategoryItem;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentCategoryItemFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContentCategoryItem getContentCategoryItem(ContentCategory contentCategory, ContentCatalogItem contentCatalogItem) {
@@ -4954,37 +4228,19 @@ public class ContentControl
     }
     
     private ContentCategoryItem getDefaultContentCategoryItem(ContentCatalogItem contentCatalogItem, EntityPermission entityPermission) {
-        ContentCategoryItem contentCategoryItem;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcategoryitems
-                        WHERE cntcgi_cntcti_contentcatalogitemid = ? AND cntcgi_isdefault = 1 AND cntcgi_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcategoryitems
-                        WHERE cntcgi_cntcti_contentcatalogitemid = ? AND cntcgi_isdefault = 1 AND cntcgi_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContentCategoryItems.fields())
+                .from(ContentCategoryItems)
+                .where(ContentCategoryItems.CONTENT_CATALOG_ITEM.eq(contentCatalogItem.getPrimaryKey()),
+                        ContentCategoryItems.IS_DEFAULT.eq(true),
+                        ContentCategoryItems.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = contentCategoryItemFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentCatalogItem.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contentCategoryItem = contentCategoryItemFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentCategoryItem;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentCategoryItemFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContentCategoryItem getDefaultContentCategoryItem(ContentCatalogItem contentCatalogItem) {
@@ -5002,46 +4258,31 @@ public class ContentControl
     }
     
     private List<ContentCategoryItem> getContentCategoryItemsByContentCategory(ContentCategory contentCategory, EntityPermission entityPermission) {
-        List<ContentCategoryItem> contentCategoryItems;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcategoryitems, contentcatalogitems, items, itemdetails, inventoryconditions, inventoryconditiondetails, unitofmeasuretypes,
-                        unitofmeasuretypedetails, currencies
-                        WHERE cntcgi_cntcg_contentcategoryid = ? AND cntcgi_thrutime = ?
-                        AND cntcgi_cntcti_contentcatalogitemid = cntcti_contentcatalogitemid
-                        AND cntcti_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                        AND cntcti_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
-                        AND cntcti_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
-                        AND cntcti_cur_currencyid = cur_currencyid
-                        ORDER BY cntcgi_sortorder, itmdt_itemname, invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder,
-                        uomtdt_unitofmeasuretypename, cur_sortorder, cur_currencyisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcategoryitems
-                        WHERE cntcgi_cntcg_contentcategoryid = ? AND cntcgi_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContentCategoryItems.fields())
+                    .from(ContentCategoryItems)
+                    .join(ContentCatalogItems).onKey(CONTENT_CATEGORY_ITEMS_CONTENT_CATALOG_ITEM_FK)
+                    .join(Items).onKey(CONTENT_CATALOG_ITEMS_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .join(InventoryConditions).onKey(CONTENT_CATALOG_ITEMS_INVENTORY_CONDITION_FK)
+                    .join(InventoryConditionDetails).onKey(INVENTORY_CONDITIONS_LAST_DETAIL_FK)
+                    .join(UnitOfMeasureTypes).onKey(CONTENT_CATALOG_ITEMS_UNIT_OF_MEASURE_TYPE_FK)
+                    .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK)
+                    .join(Currencies).onKey(CONTENT_CATALOG_ITEMS_CURRENCY_FK)
+                    .where(ContentCategoryItems.CONTENT_CATEGORY.eq(contentCategory.getPrimaryKey()),
+                            ContentCategoryItems.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ContentCategoryItems.SORT_ORDER, ItemDetails.ITEM_NAME, InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME, UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME, Currencies.SORT_ORDER, Currencies.CURRENCY_ISO_NAME),
+                    ContentCategoryItemFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContentCategoryItems.fields())
+                    .from(ContentCategoryItems)
+                    .where(ContentCategoryItems.CONTENT_CATEGORY.eq(contentCategory.getPrimaryKey()),
+                            ContentCategoryItems.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = contentCategoryItemFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentCategory.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contentCategoryItems = contentCategoryItemFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentCategoryItems;
+        return contentCategoryItemFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ContentCategoryItem> getContentCategoryItemsByContentCategory(ContentCategory contentCategory) {
@@ -5053,40 +4294,25 @@ public class ContentControl
     }
     
     private List<ContentCategoryItem> getContentCategoryItemsByContentCatalogItem(ContentCatalogItem contentCatalogItem, EntityPermission entityPermission) {
-        List<ContentCategoryItem> contentCategoryItems;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcategoryitems, contentcategories, contentcategorydetails
-                        WHERE cntcgi_cntcti_contentcatalogitemid = ? AND cntcgi_thrutime = ?
-                        AND cntcgi_cntcg_contentcategoryid = cntcg_contentcategoryid AND cntcg_lastdetailid = cntcgdt_contentcategorydetailid
-                        ORDER BY cntcgdt_sortorder, cntcgdt_contentcategoryname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentcategoryitems
-                        WHERE cntcgi_cntcti_contentcatalogitemid = ? AND cntcgi_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContentCategoryItems.fields())
+                    .from(ContentCategoryItems)
+                    .join(ContentCategories).onKey(CONTENT_CATEGORY_ITEMS_CONTENT_CATEGORY_FK)
+                    .join(ContentCategoryDetails).onKey(CONTENT_CATEGORIES_LAST_DETAIL_FK)
+                    .where(ContentCategoryItems.CONTENT_CATALOG_ITEM.eq(contentCatalogItem.getPrimaryKey()),
+                            ContentCategoryItems.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ContentCategoryDetails.SORT_ORDER, ContentCategoryDetails.CONTENT_CATEGORY_NAME),
+                    ContentCategoryItemFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContentCategoryItems.fields())
+                    .from(ContentCategoryItems)
+                    .where(ContentCategoryItems.CONTENT_CATALOG_ITEM.eq(contentCatalogItem.getPrimaryKey()),
+                            ContentCategoryItems.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = contentCategoryItemFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentCatalogItem.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contentCategoryItems = contentCategoryItemFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentCategoryItems;
+        return contentCategoryItemFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ContentCategoryItem> getContentCategoryItemsByContentCatalogItem(ContentCatalogItem contentCatalogItem) {
@@ -5116,13 +4342,13 @@ public class ContentControl
     }
     
     public long countContentCategoryItemsByContentCatalogItem(ContentCatalogItem contentCatalogItem) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM contentcategoryitems
-                WHERE cntcgi_cntcti_contentcatalogitemid = ? AND cntcgi_thrutime = ?
-                """,
-                contentCatalogItem, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContentCategoryItems)
+                .where(ContentCategoryItems.CONTENT_CATALOG_ITEM.eq(contentCatalogItem.getPrimaryKey()),
+                        ContentCategoryItems.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private void updateContentCategoryItemFromValue(ContentCategoryItemValue contentCategoryItemValue, boolean checkDefault, BasePK updatedBy) {
@@ -5217,10 +4443,13 @@ public class ContentControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ContentForumDetailFactory contentForumDetailFactory;
+
+    @Inject
     protected ContentForumFactory contentForumFactory;
 
     @Inject
-    protected ContentForumDetailFactory contentForumDetailFactory;
+    ContentForumTransferCache contentForumTransferCache;
 
     public ContentForum createContentForum(ContentCollection contentCollection, Forum forum, Boolean isDefault, BasePK createdBy) {
         var defaultContentForum = getDefaultContentForum(contentCollection);
@@ -5266,48 +4495,35 @@ public class ContentControl
     }
 
     public long countContentForumsByContentCollection(ContentCollection contentCollection) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM contentforums
-                        JOIN contentforumdetails ON cntfrmdt_contentforumdetailid = cntfrm_activedetailid
-                        WHERE cntfrmdt_cntc_contentcollectionid = ?
-                        """, contentCollection);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContentForums)
+                .join(ContentForumDetails).onKey(CONTENT_FORUMS_ACTIVE_DETAIL_FK)
+                .where(ContentForumDetails.CONTENT_COLLECTION.eq(contentCollection.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
     
     private List<ContentForum> getContentForums(ContentCollection contentCollection, EntityPermission entityPermission) {
-        List<ContentForum> contentForums;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentforums, contentforumdetails, forums, forumdetails
-                        WHERE cntfrm_activedetailid = cntfrmdt_contentforumdetailid AND cntfrmdt_cntc_contentcollectionid = ?
-                        AND cntfrmdt_frm_forumid = frm_forumid AND frm_lastdetailid = frmdt_forumdetailid
-                        ORDER BY frmdt_sortorder, frmdt_forumname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentforums, contentforumdetails
-                        WHERE cntfrm_activedetailid = cntfrmdt_contentforumdetailid AND cntfrmdt_cntc_contentcollectionid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContentForums.fields())
+                    .from(ContentForums)
+                    .join(ContentForumDetails).onKey(CONTENT_FORUMS_ACTIVE_DETAIL_FK)
+                    .join(Forums).onKey(CONTENT_FORUM_DETAILS_FORUM_FK)
+                    .join(ForumDetails).onKey(FORUMS_LAST_DETAIL_FK)
+                    .where(ContentForumDetails.CONTENT_COLLECTION.eq(contentCollection.getPrimaryKey()))
+                    .orderBy(ForumDetails.SORT_ORDER, ForumDetails.FORUM_NAME),
+                    ContentForumFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContentForums.fields())
+                    .from(ContentForums)
+                    .join(ContentForumDetails).onKey(CONTENT_FORUMS_ACTIVE_DETAIL_FK)
+                    .where(ContentForumDetails.CONTENT_COLLECTION.eq(contentCollection.getPrimaryKey()))
+                    .forUpdate();
+        };
 
-            var ps = contentForumFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
-            
-            contentForums = contentForumFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentForums;
+        return contentForumFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ContentForum> getContentForums(ContentCollection contentCollection) {
@@ -5319,40 +4535,20 @@ public class ContentControl
     }
     
     private ContentForum getContentForum(ContentCollection contentCollection, Forum forum, EntityPermission entityPermission) {
-        ContentForum contentForum;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentforums, contentforumdetails
-                        WHERE cntfrm_contentforumid = cntfrmdt_cntfrm_contentforumid AND cntfrmdt_cntc_contentcollectionid = ?
-                        AND cntfrmdt_frm_forumid = ? AND cntfrmdt_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentforums, contentforumdetails
-                        WHERE cntfrm_contentforumid = cntfrmdt_cntfrm_contentforumid AND cntfrmdt_cntc_contentcollectionid = ?
-                        AND cntfrmdt_frm_forumid = ? AND cntfrmdt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContentForums.fields())
+                .from(ContentForums)
+                .join(ContentForumDetails).onKey(CONTENT_FORUM_DETAILS_CONTENT_FORUM_FK)
+                .where(ContentForumDetails.CONTENT_COLLECTION.eq(contentCollection.getPrimaryKey()),
+                        ContentForumDetails.FORUM.eq(forum.getPrimaryKey()),
+                        ContentForumDetails.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = contentForumFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
-            ps.setLong(2, forum.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            contentForum = contentForumFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentForum;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentForumFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContentForum getContentForum(ContentCollection contentCollection, Forum forum) {
@@ -5370,39 +4566,20 @@ public class ContentControl
     }
     
     private ContentForum getDefaultContentForum(ContentCollection contentCollection, EntityPermission entityPermission) {
-        ContentForum contentForum;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentforums, contentforumdetails
-                        WHERE cntfrm_contentforumid = cntfrmdt_cntfrm_contentforumid AND cntfrmdt_cntc_contentcollectionid = ?
-                        AND cntfrmdt_isdefault = 1 AND cntfrmdt_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentforums, contentforumdetails
-                        WHERE cntfrm_contentforumid = cntfrmdt_cntfrm_contentforumid AND cntfrmdt_cntc_contentcollectionid = ?
-                        AND cntfrmdt_isdefault = 1 AND cntfrmdt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContentForums.fields())
+                .from(ContentForums)
+                .join(ContentForumDetails).onKey(CONTENT_FORUM_DETAILS_CONTENT_FORUM_FK)
+                .where(ContentForumDetails.CONTENT_COLLECTION.eq(contentCollection.getPrimaryKey()),
+                        ContentForumDetails.IS_DEFAULT.eq(true),
+                        ContentForumDetails.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = contentForumFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contentForum = contentForumFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentForum;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentForumFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContentForum getDefaultContentForum(ContentCollection contentCollection) {
@@ -5515,10 +4692,13 @@ public class ContentControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ContentWebAddressDetailFactory contentWebAddressDetailFactory;
+
+    @Inject
     protected ContentWebAddressFactory contentWebAddressFactory;
 
     @Inject
-    protected ContentWebAddressDetailFactory contentWebAddressDetailFactory;
+    ContentWebAddressTransferCache contentWebAddressTransferCache;
 
     public ContentWebAddress createContentWebAddress(String contentWebAddressName, ContentCollection contentCollection,
             BasePK createdBy) {
@@ -5538,28 +4718,32 @@ public class ContentControl
     }
     
     public boolean validContentWebAddressName(String contentWebAddressName) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM contentwebaddresses, contentwebaddressdetails
-                        WHERE cntwa_activedetailid = cntwadt_contentwebaddressdetailid AND cntwadt_contentwebaddressname = ?
-                        """, contentWebAddressName) == 1;
+        return session.getDslContext()
+                .selectCount()
+                .from(ContentWebAddresses)
+                .join(ContentWebAddressDetails).onKey(CONTENT_WEB_ADDRESSES_ACTIVE_DETAIL_FK)
+                .where(ContentWebAddressDetails.CONTENT_WEB_ADDRESS_NAME.eq(contentWebAddressName))
+                .fetchOptional(0, Long.class)
+                .orElse(0L) == 1L;
     }
 
     public long countContentWebAddresses() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM contentwebaddresses, contentwebaddressdetails
-                        WHERE cntwa_activedetailid = cntwadt_contentwebaddressdetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContentWebAddresses)
+                .join(ContentWebAddressDetails).onKey(CONTENT_WEB_ADDRESSES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countContentWebAddressesByContentCollection(ContentCollection contentCollection) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM contentwebaddresses, contentwebaddressdetails
-                        WHERE cntwa_activedetailid = cntwadt_contentwebaddressdetailid
-                        AND cntwadt_cntc_contentcollectionid = ?
-                        """, contentCollection);
+        return session.getDslContext()
+                .selectCount()
+                .from(ContentWebAddresses)
+                .join(ContentWebAddressDetails).onKey(CONTENT_WEB_ADDRESSES_ACTIVE_DETAIL_FK)
+                .where(ContentWebAddressDetails.CONTENT_COLLECTION.eq(contentCollection.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContentWebAddress */
@@ -5578,38 +4762,22 @@ public class ContentControl
     }
 
     private List<ContentWebAddress> getContentWebAddresses(EntityPermission entityPermission) {
-        List<ContentWebAddress> contentWebAddresses;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentwebaddresses, contentwebaddressdetails
-                        WHERE cntwa_contentwebaddressid = cntwadt_cntwa_contentwebaddressid AND cntwadt_thrutime = ?
-                        ORDER BY cntwadt_contentwebaddressname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentwebaddresses
-                        WHERE cntwadt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContentWebAddresses.fields())
+                    .from(ContentWebAddresses)
+                    .join(ContentWebAddressDetails).onKey(CONTENT_WEB_ADDRESS_DETAILS_CONTENT_WEB_ADDRESS_FK)
+                    .where(ContentWebAddressDetails.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ContentWebAddressDetails.CONTENT_WEB_ADDRESS_NAME),
+                    ContentWebAddressFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContentWebAddresses.fields())
+                    .from(ContentWebAddresses)
+                    .where(ContentWebAddressDetails.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = contentWebAddressFactory.prepareStatement(query);
-            
-            ps.setLong(1, Session.MAX_TIME);
-            
-            contentWebAddresses = contentWebAddressFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentWebAddresses;
+        return contentWebAddressFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ContentWebAddress> getContentWebAddresses() {
@@ -5621,37 +4789,19 @@ public class ContentControl
     }
     
     private ContentWebAddress getContentWebAddressByName(String contentWebAddressName, EntityPermission entityPermission) {
-        ContentWebAddress contentWebAddress;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentwebaddresses, contentwebaddressdetails
-                        WHERE cntwa_contentwebaddressid = cntwadt_cntwa_contentwebaddressid AND cntwadt_contentwebaddressname = ? AND cntwadt_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentwebaddresses, contentwebaddressdetails
-                        WHERE cntwa_contentwebaddressid = cntwadt_cntwa_contentwebaddressid AND cntwadt_contentwebaddressname = ? AND cntwadt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContentWebAddresses.fields())
+                .from(ContentWebAddresses)
+                .join(ContentWebAddressDetails).onKey(CONTENT_WEB_ADDRESS_DETAILS_CONTENT_WEB_ADDRESS_FK)
+                .where(ContentWebAddressDetails.CONTENT_WEB_ADDRESS_NAME.eq(contentWebAddressName),
+                        ContentWebAddressDetails.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = contentWebAddressFactory.prepareStatement(query);
-            
-            ps.setString(1, contentWebAddressName);
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contentWebAddress = contentWebAddressFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentWebAddress;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentWebAddressFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContentWebAddress getContentWebAddressByName(String contentWebAddressName) {
@@ -5671,38 +4821,21 @@ public class ContentControl
     }
     
     private List<ContentWebAddress> getContentWebAddressesByContentCollection(ContentCollection contentCollection, EntityPermission entityPermission) {
-        List<ContentWebAddress> contentWebAddresses;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentwebaddresses, contentwebaddressdetails
-                        WHERE cntwa_contentwebaddressid = cntwadt_cntwa_contentwebaddressid AND cntwadt_cntc_contentcollectionid = ? AND cntwadt_thrutime = ?
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentwebaddresses, contentwebaddressdetails
-                        WHERE cntwa_contentwebaddressid = cntwadt_cntwa_contentwebaddressid AND cntwadt_cntc_contentcollectionid = ? AND cntwadt_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContentWebAddresses.fields())
+                .from(ContentWebAddresses)
+                .join(ContentWebAddressDetails).onKey(CONTENT_WEB_ADDRESS_DETAILS_CONTENT_WEB_ADDRESS_FK)
+                .where(ContentWebAddressDetails.CONTENT_COLLECTION.eq(contentCollection.getPrimaryKey()),
+                        ContentWebAddressDetails.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = contentWebAddressFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contentWebAddresses = contentWebAddressFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentWebAddresses;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ContentWebAddressDetails.CONTENT_WEB_ADDRESS_NAME),
+                    ContentWebAddressFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentWebAddressFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ContentWebAddress> getContentWebAddressesByContentCollection(ContentCollection contentCollection) {
@@ -5798,6 +4931,9 @@ public class ContentControl
     @Inject
     protected ContentWebAddressDescriptionFactory contentWebAddressDescriptionFactory;
 
+    @Inject
+    ContentWebAddressDescriptionTransferCache contentWebAddressDescriptionTransferCache;
+
     public ContentWebAddressDescription createContentWebAddressDescription(ContentWebAddress contentWebAddress, Language language, String description, BasePK createdBy) {
 
         var contentWebAddressDescription = contentWebAddressDescriptionFactory.create(contentWebAddress, language, description, session.getStartTime(),
@@ -5809,38 +4945,19 @@ public class ContentControl
     }
     
     private ContentWebAddressDescription getContentWebAddressDescription(ContentWebAddress contentWebAddress, Language language, EntityPermission entityPermission) {
-        ContentWebAddressDescription contentWebAddressDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentwebaddressdescriptions
-                        WHERE cntwad_cntwa_contentwebaddressid = ? AND cntwad_lang_languageid = ? AND cntwad_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentwebaddressdescriptions
-                        WHERE cntwad_cntwa_contentwebaddressid = ? AND cntwad_lang_languageid = ? AND cntwad_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContentWebAddressDescriptions.fields())
+                .from(ContentWebAddressDescriptions)
+                .where(ContentWebAddressDescriptions.CONTENT_WEB_ADDRESS.eq(contentWebAddress.getPrimaryKey()),
+                        ContentWebAddressDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ContentWebAddressDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = contentWebAddressDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentWebAddress.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            contentWebAddressDescription = contentWebAddressDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentWebAddressDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentWebAddressDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContentWebAddressDescription getContentWebAddressDescription(ContentWebAddress contentWebAddress, Language language) {
@@ -5860,39 +4977,24 @@ public class ContentControl
     }
     
     private List<ContentWebAddressDescription> getContentWebAddressDescriptionsByContentWebAddress(ContentWebAddress contentWebAddress, EntityPermission entityPermission) {
-        List<ContentWebAddressDescription> contentWebAddressDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentwebaddressdescriptions, languages
-                        WHERE cntwad_cntwa_contentwebaddressid = ? AND cntwad_thrutime = ? AND cntwad_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentwebaddressdescriptions
-                        WHERE cntwad_cntwa_contentwebaddressid = ? AND cntwad_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContentWebAddressDescriptions.fields())
+                    .from(ContentWebAddressDescriptions)
+                    .join(Languages).onKey(CONTENT_WEB_ADDRESS_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ContentWebAddressDescriptions.CONTENT_WEB_ADDRESS.eq(contentWebAddress.getPrimaryKey()),
+                            ContentWebAddressDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ContentWebAddressDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContentWebAddressDescriptions.fields())
+                    .from(ContentWebAddressDescriptions)
+                    .where(ContentWebAddressDescriptions.CONTENT_WEB_ADDRESS.eq(contentWebAddress.getPrimaryKey()),
+                            ContentWebAddressDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = contentWebAddressDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentWebAddress.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            contentWebAddressDescriptions = contentWebAddressDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentWebAddressDescriptions;
+        return contentWebAddressDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ContentWebAddressDescription> getContentWebAddressDescriptionsByContentWebAddress(ContentWebAddress contentWebAddress) {
@@ -5983,38 +5085,19 @@ public class ContentControl
     }
     
     private ContentWebAddressServer getContentWebAddressServer(ContentWebAddress contentWebAddress, Server server, EntityPermission entityPermission) {
-        ContentWebAddressServer contentWebAddressServer;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentwebaddressservers
-                        WHERE cntwaserv_cntwa_contentwebaddressid = ? AND cntwaserv_serv_serverid = ? AND cntwaserv_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentwebaddressservers
-                        WHERE cntwaserv_cntwa_contentwebaddressid = ? AND cntwaserv_serv_serverid = ? AND cntwaserv_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ContentWebAddressServers.fields())
+                .from(ContentWebAddressServers)
+                .where(ContentWebAddressServers.CONTENT_WEB_ADDRESS.eq(contentWebAddress.getPrimaryKey()),
+                        ContentWebAddressServers.SERVER.eq(server.getPrimaryKey()),
+                        ContentWebAddressServers.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = contentWebAddressServerFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentWebAddress.getPrimaryKey().getEntityId());
-            ps.setLong(2, server.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            contentWebAddressServer = contentWebAddressServerFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentWebAddressServer;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return contentWebAddressServerFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ContentWebAddressServer getContentWebAddressServer(ContentWebAddress contentWebAddress, Server server) {
@@ -6026,43 +5109,25 @@ public class ContentControl
     }
     
     private List<ContentWebAddressServer> getContentWebAddressServersByContentWebAddress(ContentWebAddress contentWebAddress, EntityPermission entityPermission) {
-        List<ContentWebAddressServer> contentWebAddressServers;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentwebaddressservers, serverdetails
-                        WHERE cntwaserv_cntwa_contentwebaddressid = ? AND cntwaserv_thrutime = ? AND cntwaserv_serv_serverid = servd_serv_serverid AND servd_thrutime = ?
-                        ORDER BY servd_servername
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM contentwebaddressservers
-                        WHERE cntwaserv_cntwa_contentwebaddressid = ? AND cntwaserv_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ContentWebAddressServers.fields())
+                    .from(ContentWebAddressServers)
+                    .join(Servers).onKey(CONTENT_WEB_ADDRESS_SERVERS_SERVER_FK)
+                    .join(ServerDetails).onKey(SERVERS_LAST_DETAIL_FK)
+                    .where(ContentWebAddressServers.CONTENT_WEB_ADDRESS.eq(contentWebAddress.getPrimaryKey()),
+                            ContentWebAddressServers.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ServerDetails.SERVER_NAME),
+                    ContentWebAddressServerFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ContentWebAddressServers.fields())
+                    .from(ContentWebAddressServers)
+                    .where(ContentWebAddressServers.CONTENT_WEB_ADDRESS.eq(contentWebAddress.getPrimaryKey()),
+                            ContentWebAddressServers.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = contentWebAddressServerFactory.prepareStatement(query);
-            
-            ps.setLong(1, contentWebAddress.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                ps.setLong(3, Session.MAX_TIME);
-            }
-            
-            contentWebAddressServers = contentWebAddressServerFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return contentWebAddressServers;
+        return contentWebAddressServerFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ContentWebAddressServer> getContentWebAddressServersByContentWebAddress(ContentWebAddress contentWebAddress) {
