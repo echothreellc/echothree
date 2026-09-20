@@ -21,33 +21,41 @@ import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.sales.common.transfer.SalesOrderBatchResultTransfer;
 import com.echothree.model.control.sales.common.transfer.SalesOrderBatchTransfer;
+import com.echothree.model.control.sales.server.transfer.SalesOrderBatchTransferCache;
 import com.echothree.model.control.search.common.SearchOptions;
+import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.batch.common.pk.BatchPK;
 import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.sales.server.entity.SalesOrderBatch;
 import com.echothree.model.data.sales.server.factory.SalesOrderBatchFactory;
 import com.echothree.model.data.sales.server.value.SalesOrderBatchValue;
+import com.echothree.model.data.search.common.CachedExecutedSearchResultConstants;
+import com.echothree.model.data.search.common.SearchResultConstants;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
+import com.echothree.model.data.search.server.factory.CachedExecutedSearchResultFactory;
 import com.echothree.model.data.search.server.factory.SearchResultFactory;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.CACHED_EXECUTED_SEARCH_RESULTS_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_RESULTS_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.sales.SalesOrderBatches.SalesOrderBatches;
+import static com.echothree.model.jooq.server.tables.search.CachedExecutedSearchResults.CachedExecutedSearchResults;
+import static com.echothree.model.jooq.server.tables.search.SearchResults.SearchResults;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.inject.Inject;
+import org.jooq.Select;
 
 @CommandScope
 public class SalesOrderBatchControl
-        extends BaseSalesControl {
+        extends BaseModelControl {
 
     /** Creates a new instance of SalesOrderBatchControl */
     protected SalesOrderBatchControl() {
@@ -57,12 +65,18 @@ public class SalesOrderBatchControl
     @Inject
     BatchControl batchControl;
 
+    @Inject
+    private SearchControl searchControl;
+
     // --------------------------------------------------------------------------------
     //   Sales Order Batches
     // --------------------------------------------------------------------------------
 
     @Inject
     protected SalesOrderBatchFactory salesOrderBatchFactory;
+
+    @Inject
+    private SalesOrderBatchTransferCache salesOrderBatchTransferCache;
 
     public SalesOrderBatch createSalesOrderBatch(Batch batch, PaymentMethod paymentMethod, BasePK createdBy) {
         var salesOrderBatch = salesOrderBatchFactory.create(batch, paymentMethod, session.getStartTime(), Session.MAX_TIME);
@@ -76,30 +90,19 @@ public class SalesOrderBatchControl
         return batchControl.countBatchesByBatchType(batchControl.getBatchTypeByName(BatchTypes.SALES_ORDER.name()));
     }
 
-    private static final Map<EntityPermission, String> getSalesOrderBatchQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM salesorderbatches
-                WHERE salordbtch_btch_batchid = ? AND salordbtch_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM salesorderbatches
-                WHERE salordbtch_btch_batchid = ? AND salordbtch_thrutime = ?
-                FOR UPDATE
-                """);
-        getSalesOrderBatchQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private SalesOrderBatch getSalesOrderBatch(Batch batch, EntityPermission entityPermission) {
-        return salesOrderBatchFactory.getEntityFromQuery(entityPermission, getSalesOrderBatchQueries,
-                batch, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(SalesOrderBatches.fields())
+                .from(SalesOrderBatches)
+                .where(SalesOrderBatches.BATCH.eq(batch.getPrimaryKey()),
+                        SalesOrderBatches.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return salesOrderBatchFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SalesOrderBatch getSalesOrderBatch(Batch batch) {
@@ -174,39 +177,46 @@ public class SalesOrderBatchControl
     @Inject
     protected SearchResultFactory searchResultFactory;
 
-    public List<SalesOrderBatchResultTransfer> getSalesOrderBatchResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
+    private List<Long> getSalesOrderBatchIdsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
-        var salesOrderBatchResultTransfers = new ArrayList<SalesOrderBatchResultTransfer>();
-        var includeSalesOrderBatch = false;
+        var cachedSearch = search.getCachedSearch();
+        Select<?> query;
 
-        var options = session.getOptions();
-        if(options != null) {
-            includeSalesOrderBatch = options.contains(SearchOptions.SalesOrderBatchResultIncludeSalesOrderBatch);
+        if(cachedSearch == null) {
+            query = session.applyLimit(session.getDslContext()
+                    .select(EntityInstances.ENTITY_UNIQUE)
+                    .from(SearchResults)
+                    .join(EntityInstances).onKey(SEARCH_RESULTS_ENTITY_INSTANCE_FK)
+                    .where(SearchResults.SEARCH.eq(search.getPrimaryKey()))
+                    .orderBy(SearchResults.SORT_ORDER, SearchResults.ENTITY_INSTANCE), SearchResultFactory.class);
+        } else {
+            var cachedExecutedSearch = searchControl.getCachedExecutedSearch(cachedSearch);
+
+            session.copyLimit(SearchResultConstants.ENTITY_TYPE_NAME, CachedExecutedSearchResultConstants.ENTITY_TYPE_NAME);
+
+            query = session.applyLimit(session.getDslContext()
+                    .select(EntityInstances.ENTITY_UNIQUE)
+                    .from(CachedExecutedSearchResults)
+                    .join(EntityInstances).onKey(CACHED_EXECUTED_SEARCH_RESULTS_ENTITY_INSTANCE_FK)
+                    .where(CachedExecutedSearchResults.CACHED_EXECUTED_SEARCH.eq(cachedExecutedSearch.getPrimaryKey()))
+                    .orderBy(CachedExecutedSearchResults.SORT_ORDER, CachedExecutedSearchResults.ENTITY_INSTANCE),
+                    CachedExecutedSearchResultFactory.class);
         }
 
-        try {
-            var ps = searchResultFactory.prepareStatement("""
-                    SELECT eni_entityuniqueid
-                    FROM searchresults, entityinstances
-                    WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid
-                    ORDER BY srchr_sortorder, srchr_eni_entityinstanceid
-                    _LIMIT_
-                    """);
+        return query.fetch(EntityInstances.ENTITY_UNIQUE);
+    }
 
-            ps.setLong(1, search.getPrimaryKey().getEntityId());
+    public List<SalesOrderBatchResultTransfer> getSalesOrderBatchResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
+        var entityIds = getSalesOrderBatchIdsFromUserVisitSearch(userVisitSearch);
+        var salesOrderBatchResultTransfers = new ArrayList<SalesOrderBatchResultTransfer>(entityIds.size());
+        var options = session.getOptions();
+        var includeSalesOrderBatch = options != null && options.contains(SearchOptions.SalesOrderBatchResultIncludeSalesOrderBatch);
 
-            try (var rs = ps.executeQuery()) {
-                while(rs.next()) {
-                    var batch = batchControl.getBatchByPK(new BatchPK(rs.getLong(1)));
+        for(var entityUniqueId : entityIds) {
+            var batch = batchControl.getBatchByPK(new BatchPK(entityUniqueId));
 
-                    salesOrderBatchResultTransfers.add(new SalesOrderBatchResultTransfer(batch.getLastDetail().getBatchName(),
-                            includeSalesOrderBatch ? getSalesOrderBatchTransfer(userVisit, batch) : null));
-                }
-            } catch (SQLException se) {
-                throw new PersistenceDatabaseException(se);
-            }
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
+            salesOrderBatchResultTransfers.add(new SalesOrderBatchResultTransfer(batch.getLastDetail().getBatchName(),
+                    includeSalesOrderBatch ? getSalesOrderBatchTransfer(userVisit, batch) : null));
         }
 
         return salesOrderBatchResultTransfers;

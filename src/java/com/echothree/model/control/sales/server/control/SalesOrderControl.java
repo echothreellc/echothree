@@ -17,9 +17,9 @@
 package com.echothree.model.control.sales.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.sales.common.transfer.SalesOrderResultTransfer;
 import com.echothree.model.control.sales.common.workflow.SalesOrderStatusConstants;
+import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
 import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.order.common.pk.OrderPK;
@@ -32,22 +32,32 @@ import com.echothree.model.data.sales.server.factory.SalesOrderFactory;
 import com.echothree.model.data.sales.server.factory.SalesOrderLineFactory;
 import com.echothree.model.data.sales.server.value.SalesOrderLineValue;
 import com.echothree.model.data.sales.server.value.SalesOrderValue;
+import com.echothree.model.data.search.common.CachedExecutedSearchResultConstants;
+import com.echothree.model.data.search.common.SearchResultConstants;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
+import com.echothree.model.data.search.server.factory.CachedExecutedSearchResultFactory;
 import com.echothree.model.data.search.server.factory.SearchResultFactory;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.CACHED_EXECUTED_SEARCH_RESULTS_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_RESULTS_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.sales.SalesOrderLines.SalesOrderLines;
+import static com.echothree.model.jooq.server.tables.sales.SalesOrders.SalesOrders;
+import static com.echothree.model.jooq.server.tables.search.CachedExecutedSearchResults.CachedExecutedSearchResults;
+import static com.echothree.model.jooq.server.tables.search.SearchResults.SearchResults;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
+import org.jooq.Select;
 
 @CommandScope
 public class SalesOrderControl
-        extends BaseSalesControl {
+        extends BaseModelControl {
 
     /** Creates a new instance of SalesOrderControl */
 
@@ -62,6 +72,9 @@ public class SalesOrderControl
     @Inject
     protected SalesOrderFactory salesOrderFactory;
 
+    @Inject
+    private SearchControl searchControl;
+
     public SalesOrder createSalesOrder(Order order, OfferUse offerUse, AssociateReferral associateReferral, BasePK createdBy) {
         var salesOrder = salesOrderFactory.create(order, offerUse, associateReferral,
                 session.getStartTime(), Session.MAX_TIME);
@@ -72,55 +85,38 @@ public class SalesOrderControl
     }
 
     public long countSalesOrdersByOfferUse(final OfferUse offerUse) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM salesorders
-                        WHERE salord_ofruse_offeruseid = ? AND salord_thrutime = ?
-                        """,
-                offerUse, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(SalesOrders)
+                .where(SalesOrders.OFFER_USE.eq(offerUse.getPrimaryKey()),
+                        SalesOrders.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countSalesOrdersByAssociateReferral(final AssociateReferral associateReferral) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM salesorders
-                        WHERE salord_ascrfr_associatereferralid = ? AND salord_thrutime = ?
-                        """,
-                associateReferral, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(SalesOrders)
+                .where(SalesOrders.ASSOCIATE_REFERRAL.eq(associateReferral.getPrimaryKey()),
+                        SalesOrders.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private SalesOrder getSalesOrder(Order order, EntityPermission entityPermission) {
-        SalesOrder salesOrder;
+        var baseQuery = session.getDslContext()
+                .select(SalesOrders.fields())
+                .from(SalesOrders)
+                .where(SalesOrders.ORDER.eq(order.getPrimaryKey()),
+                        SalesOrders.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM salesorders
-                        WHERE salord_ord_orderid = ? AND salord_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM salesorders
-                        WHERE salord_ord_orderid = ? AND salord_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = salesOrderFactory.prepareStatement(query);
-
-            ps.setLong(1, order.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            salesOrder = salesOrderFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return salesOrder;
+        return salesOrderFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SalesOrder getSalesOrder(Order order) {
@@ -182,55 +178,38 @@ public class SalesOrderControl
     }
 
     public long countSalesOrderLinesByOfferUse(final OfferUse offerUse) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM salesorderlines
-                        WHERE salordl_ofruse_offeruseid = ? AND salordl_thrutime = ?
-                        """,
-                offerUse, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(SalesOrderLines)
+                .where(SalesOrderLines.OFFER_USE.eq(offerUse.getPrimaryKey()),
+                        SalesOrderLines.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countSalesOrderLinesByAssociateReferral(final AssociateReferral associateReferral) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM salesorderlines
-                        WHERE salordl_ascrfr_associatereferralid = ? AND salordl_thrutime = ?
-                        """,
-                associateReferral, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(SalesOrderLines)
+                .where(SalesOrderLines.ASSOCIATE_REFERRAL.eq(associateReferral.getPrimaryKey()),
+                        SalesOrderLines.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private SalesOrderLine getSalesOrderLine(OrderLine orderLine, EntityPermission entityPermission) {
-        SalesOrderLine salesOrderLine;
+        var baseQuery = session.getDslContext()
+                .select(SalesOrderLines.fields())
+                .from(SalesOrderLines)
+                .where(SalesOrderLines.ORDER_LINE.eq(orderLine.getPrimaryKey()),
+                        SalesOrderLines.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM salesorderlines
-                        WHERE salordl_ordl_orderlineid = ? AND salordl_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM salesorderlines
-                        WHERE salordl_ordl_orderlineid = ? AND salordl_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = salesOrderLineFactory.prepareStatement(query);
-
-            ps.setLong(1, orderLine.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-
-            salesOrderLine = salesOrderLineFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return salesOrderLine;
+        return salesOrderLineFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SalesOrderLine getSalesOrderLine(OrderLine orderLine) {
@@ -288,37 +267,48 @@ public class SalesOrderControl
     @Inject
     protected SearchResultFactory searchResultFactory;
 
-    public List<SalesOrderResultTransfer> getSalesOrderResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
+    private List<Long> getSalesOrderIdsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
-        var salesOrderResultTransfers = new ArrayList<SalesOrderResultTransfer>();
+        var cachedSearch = search.getCachedSearch();
+        Select<?> query;
 
-        try {
-            var ps = searchResultFactory.prepareStatement("""
-                            SELECT eni_entityuniqueid
-                            FROM searchresults, entityinstances
-                            WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid
-                            ORDER BY srchr_sortorder, srchr_eni_entityinstanceid
-                            _LIMIT_
-                            """);
+        if(cachedSearch == null) {
+            query = session.applyLimit(session.getDslContext()
+                    .select(EntityInstances.ENTITY_UNIQUE)
+                    .from(SearchResults)
+                    .join(EntityInstances).onKey(SEARCH_RESULTS_ENTITY_INSTANCE_FK)
+                    .where(SearchResults.SEARCH.eq(search.getPrimaryKey()))
+                    .orderBy(SearchResults.SORT_ORDER, SearchResults.ENTITY_INSTANCE), SearchResultFactory.class);
+        } else {
+            var cachedExecutedSearch = searchControl.getCachedExecutedSearch(cachedSearch);
 
-            ps.setLong(1, search.getPrimaryKey().getEntityId());
+            session.copyLimit(SearchResultConstants.ENTITY_TYPE_NAME, CachedExecutedSearchResultConstants.ENTITY_TYPE_NAME);
 
-            try (var rs = ps.executeQuery()) {
-                while(rs.next()) {
-                    var orderPK = new OrderPK(rs.getLong(1));
-                    var order = orderFactory.getEntityFromPK(EntityPermission.READ_ONLY, orderPK);
+            query = session.applyLimit(session.getDslContext()
+                    .select(EntityInstances.ENTITY_UNIQUE)
+                    .from(CachedExecutedSearchResults)
+                    .join(EntityInstances).onKey(CACHED_EXECUTED_SEARCH_RESULTS_ENTITY_INSTANCE_FK)
+                    .where(CachedExecutedSearchResults.CACHED_EXECUTED_SEARCH.eq(cachedExecutedSearch.getPrimaryKey()))
+                    .orderBy(CachedExecutedSearchResults.SORT_ORDER, CachedExecutedSearchResults.ENTITY_INSTANCE),
+                    CachedExecutedSearchResultFactory.class);
+        }
 
-                    var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(orderPK);
-                    var orderStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
-                            SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS, entityInstance);
+        return query.fetch(EntityInstances.ENTITY_UNIQUE);
+    }
 
-                    salesOrderResultTransfers.add(new SalesOrderResultTransfer(order.getLastDetail().getOrderName(), orderStatusTransfer));
-                }
-            } catch (SQLException se) {
-                throw new PersistenceDatabaseException(se);
-            }
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
+    public List<SalesOrderResultTransfer> getSalesOrderResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
+        var entityIds = getSalesOrderIdsFromUserVisitSearch(userVisitSearch);
+        var salesOrderResultTransfers = new ArrayList<SalesOrderResultTransfer>(entityIds.size());
+
+        for(var entityUniqueId : entityIds) {
+            var orderPK = new OrderPK(entityUniqueId);
+            var order = orderFactory.getEntityFromPK(EntityPermission.READ_ONLY, orderPK);
+
+            var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(orderPK);
+            var orderStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+                    SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS, entityInstance);
+
+            salesOrderResultTransfers.add(new SalesOrderResultTransfer(order.getLastDetail().getOrderName(), orderStatusTransfer));
         }
 
         return salesOrderResultTransfers;
