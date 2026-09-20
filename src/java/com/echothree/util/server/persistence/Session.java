@@ -147,22 +147,21 @@ public class Session {
         return CDI.current().select(modelController).get();
     }
     
-    private String getStringFromBaseFactory(final Class<? extends BaseFactory<? extends BasePK, ? extends BaseEntity>> entityFactory,
-            final Map<Class<? extends BaseFactory<? extends BasePK, ? extends BaseEntity>>, String> cache, final String methodName) {
-        var result = cache.get(entityFactory);
+    private String getEntityTypeNameFromFactory(final Class<? extends BaseFactory<? extends BasePK, ? extends BaseEntity>> entityFactory) {
+        var result = Session.entityNameCache.get(entityFactory);
         
         if(result == null) {
             try {
                 var entityInstance = entityFactory.getDeclaredMethod(GET_INSTANCE).invoke(entityFactory);
 
                 if(entityInstance != null) {
-                    result = (String)entityFactory.getDeclaredMethod(methodName).invoke(entityInstance);
+                    result = (String)entityFactory.getDeclaredMethod(Session.GET_ENTITY_TYPE_NAME).invoke(entityInstance);
                 }
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                 throw new RuntimeException(e);
             }
             
-            cache.put(entityFactory, result);
+            Session.entityNameCache.put(entityFactory, result);
         }
         
         return result;
@@ -177,7 +176,7 @@ public class Session {
     }
     
     public boolean hasLimit(final Class<? extends BaseFactory<? extends BasePK, ? extends BaseEntity>> entityFactory) {
-        return hasLimits() && limits.get(getStringFromBaseFactory(entityFactory, entityNameCache, GET_ENTITY_TYPE_NAME)) != null;
+        return hasLimits() && limits.get(getEntityTypeNameFromFactory(entityFactory)) != null;
     }
     
     public void copyLimit(final String sourceEntityName, final String destinationEntityName) {
@@ -195,7 +194,7 @@ public class Session {
         var result = query;
 
         if(hasLimits()) {
-            var limit = limits.get(getStringFromBaseFactory(entityFactory, entityNameCache, GET_ENTITY_TYPE_NAME));
+            var limit = limits.get(getEntityTypeNameFromFactory(entityFactory));
 
             if(limit != null && limit.getCount() != null) {
                 var count = Long.valueOf(limit.getCount());
@@ -221,8 +220,7 @@ public class Session {
      * @return Returns a PreparedStatement
      * @throws PersistenceDatabaseException Thrown if the PreparedStatement was unable to be created
      */
-    public PreparedStatement prepareStatement(final Class<? extends BaseFactory<? extends BasePK, ? extends BaseEntity>> entityFactory,
-            final String sql) {
+    public PreparedStatement prepareStatement(final String sql) {
         PreparedStatement preparedStatement = null;
 
         if(sql != null) {
@@ -255,17 +253,6 @@ public class Session {
         return preparedStatement;
     }
     
-    /**
-     * Creates a <code>PreparedStatement</code> object for sending
-     * parameterized SQL statements to the database.
-     * @param sql SQL statement to use for the PreparedStatement
-     * @return Returns a PreparedStatement
-     * @throws PersistenceDatabaseException Thrown if the PreparedStatement was unable to be created
-     */
-    public PreparedStatement prepareStatement(final String sql) {
-        return prepareStatement(null, sql);
-    }
-
     public static void setQueryParams(final PreparedStatement ps, final Object... params) {
         try {
             for(var param = 0; param < params.length; param++) {
@@ -295,69 +282,6 @@ public class Session {
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
-    }
-
-    public Integer queryForInteger(final String sql, final Object... params) {
-        Integer result = null;
-
-        try {
-            var ps = prepareStatement(sql);
-
-            setQueryParams(ps, params);
-
-            ps.executeQuery();
-            
-            try(var rs = ps.getResultSet()) {
-                if(rs.next()) {
-                    result = rs.getInt(1);
-                }
-
-                if(rs.wasNull()) {
-                    result = null;
-                }
-
-                if(rs.next()) {
-                    throw new PersistenceDatabaseException("queryForInteger result contains multiple ints");
-                }
-            } catch (SQLException se) {
-                throw new PersistenceDatabaseException(se);
-            }
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        } 
-
-        return result;
-    }
-
-    public Long queryForLong(final String sql, final Object... params) {
-        Long result = null;
-        
-        try {
-            var ps = prepareStatement(sql);
-            
-            setQueryParams(ps, params);
-            
-            ps.executeQuery();
-            try(var rs = ps.getResultSet()) {
-                if(rs.next()) {
-                    result = rs.getLong(1);
-
-                    if(rs.wasNull()) {
-                        result = null;
-                    }
-
-                    if(rs.next()) {
-                        throw new PersistenceDatabaseException("queryForLong result contains multiple longs");
-                    }
-                }
-            } catch (SQLException se) {
-                throw new PersistenceDatabaseException(se);
-            }
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return result;
     }
     
     private void freePreparedStatementCache() {
