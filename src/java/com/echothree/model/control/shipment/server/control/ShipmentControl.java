@@ -30,6 +30,15 @@ import com.echothree.model.control.shipment.common.transfer.ShipmentTransfer;
 import com.echothree.model.control.shipment.common.transfer.ShipmentTypeDescriptionTransfer;
 import com.echothree.model.control.shipment.common.transfer.ShipmentTypeShippingMethodTransfer;
 import com.echothree.model.control.shipment.common.transfer.ShipmentTypeTransfer;
+import com.echothree.model.control.shipment.server.transfer.ShipmentAliasTransferCache;
+import com.echothree.model.control.shipment.server.transfer.ShipmentAliasTypeDescriptionTransferCache;
+import com.echothree.model.control.shipment.server.transfer.ShipmentAliasTypeTransferCache;
+import com.echothree.model.control.shipment.server.transfer.ShipmentTimeTransferCache;
+import com.echothree.model.control.shipment.server.transfer.ShipmentTimeTypeDescriptionTransferCache;
+import com.echothree.model.control.shipment.server.transfer.ShipmentTimeTypeTransferCache;
+import com.echothree.model.control.shipment.server.transfer.ShipmentTypeDescriptionTransferCache;
+import com.echothree.model.control.shipment.server.transfer.ShipmentTypeShippingMethodTransferCache;
+import com.echothree.model.control.shipment.server.transfer.ShipmentTypeTransferCache;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
@@ -72,26 +81,56 @@ import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.shipment.ShipmentForeignKeys.SHIPMENTS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.shipment.ShipmentForeignKeys.SHIPMENT_ALIASES_SHIPMENT_ALIAS_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.shipment.ShipmentForeignKeys.SHIPMENT_ALIASES_SHIPMENT_FK;
+import static com.echothree.model.jooq.server.keys.shipment.ShipmentForeignKeys.SHIPMENT_ALIAS_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.shipment.ShipmentForeignKeys.SHIPMENT_ALIAS_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.shipment.ShipmentForeignKeys.SHIPMENT_ALIAS_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.shipment.ShipmentForeignKeys.SHIPMENT_TIMES_SHIPMENT_FK;
+import static com.echothree.model.jooq.server.keys.shipment.ShipmentForeignKeys.SHIPMENT_TIMES_SHIPMENT_TIME_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.shipment.ShipmentForeignKeys.SHIPMENT_TIME_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.shipment.ShipmentForeignKeys.SHIPMENT_TIME_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.shipment.ShipmentForeignKeys.SHIPMENT_TIME_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.shipment.ShipmentForeignKeys.SHIPMENT_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.shipment.ShipmentForeignKeys.SHIPMENT_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.shipment.ShipmentForeignKeys.SHIPMENT_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.shipment.ShipmentForeignKeys.SHIPMENT_TYPE_SHIPPING_METHODS_SHIPMENT_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.shipment.ShipmentForeignKeys.SHIPMENT_TYPE_SHIPPING_METHODS_SHIPPING_METHOD_FK;
+import static com.echothree.model.jooq.server.keys.shipping.ShippingForeignKeys.SHIPPING_METHODS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.shipment.ShipmentAliasTypeDescriptions.ShipmentAliasTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.shipment.ShipmentAliasTypeDetails.ShipmentAliasTypeDetails;
+import static com.echothree.model.jooq.server.tables.shipment.ShipmentAliasTypes.ShipmentAliasTypes;
+import static com.echothree.model.jooq.server.tables.shipment.ShipmentAliases.ShipmentAliases;
+import static com.echothree.model.jooq.server.tables.shipment.ShipmentDetails.ShipmentDetails;
+import static com.echothree.model.jooq.server.tables.shipment.ShipmentTimeTypeDescriptions.ShipmentTimeTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.shipment.ShipmentTimeTypeDetails.ShipmentTimeTypeDetails;
+import static com.echothree.model.jooq.server.tables.shipment.ShipmentTimeTypes.ShipmentTimeTypes;
+import static com.echothree.model.jooq.server.tables.shipment.ShipmentTimes.ShipmentTimes;
+import static com.echothree.model.jooq.server.tables.shipment.ShipmentTypeDescriptions.ShipmentTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.shipment.ShipmentTypeDetails.ShipmentTypeDetails;
+import static com.echothree.model.jooq.server.tables.shipment.ShipmentTypeShippingMethods.ShipmentTypeShippingMethods;
+import static com.echothree.model.jooq.server.tables.shipment.ShipmentTypes.ShipmentTypes;
+import static com.echothree.model.jooq.server.tables.shipment.Shipments.Shipments;
+import static com.echothree.model.jooq.server.tables.shipping.ShippingMethodDetails.ShippingMethodDetails;
+import static com.echothree.model.jooq.server.tables.shipping.ShippingMethods.ShippingMethods;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import javax.inject.Inject;
 
 @CommandScope
 public class ShipmentControl
-        extends BaseShipmentControl {
+        extends BaseModelControl {
     
     /** Creates a new instance of ShipmentControl */
     protected ShipmentControl() {
@@ -103,10 +142,13 @@ public class ShipmentControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ShipmentTypeDetailFactory shipmentTypeDetailFactory;
+
+    @Inject
     protected ShipmentTypeFactory shipmentTypeFactory;
 
     @Inject
-    protected ShipmentTypeDetailFactory shipmentTypeDetailFactory;
+    private ShipmentTypeTransferCache shipmentTypeTransferCache;
 
     public ShipmentType createShipmentType(String shipmentTypeName, ShipmentType parentShipmentType, SequenceType shipmentSequenceType,
             SequenceType shipmentPackageSequenceType, Workflow shipmentWorkflow, WorkflowEntrance shipmentWorkflowEntrance, Boolean isDefault, Integer sortOrder,
@@ -156,81 +198,77 @@ public class ShipmentControl
     }
 
     public long countShipmentTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM shipmenttypes
-                        JOIN shipmenttypedetails ON shptypdt_shipmenttypedetailid = shptyp_activedetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ShipmentTypes)
+                .join(ShipmentTypeDetails).onKey(SHIPMENT_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countShipmentTypesByParentShipmentType(final ShipmentType parentShipmentType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM shipmenttypes
-                        JOIN shipmenttypedetails ON shptypdt_shipmenttypedetailid = shptyp_activedetailid
-                        WHERE shptypdt_parentshipmenttypeid = ?
-                        """, parentShipmentType);
+        return session.getDslContext()
+                .selectCount()
+                .from(ShipmentTypes)
+                .join(ShipmentTypeDetails).onKey(SHIPMENT_TYPES_ACTIVE_DETAIL_FK)
+                .where(ShipmentTypeDetails.PARENT_SHIPMENT_TYPE.eq(parentShipmentType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countShipmentTypesByShipmentSequenceType(final SequenceType shipmentSequenceType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM shipmenttypes
-                        JOIN shipmenttypedetails ON shptypdt_shipmenttypedetailid = shptyp_activedetailid
-                        WHERE shptypdt_shipmentsequencetypeid = ?
-                        """, shipmentSequenceType);
+        return session.getDslContext()
+                .selectCount()
+                .from(ShipmentTypes)
+                .join(ShipmentTypeDetails).onKey(SHIPMENT_TYPES_ACTIVE_DETAIL_FK)
+                .where(ShipmentTypeDetails.SHIPMENT_SEQUENCE_TYPE.eq(shipmentSequenceType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countShipmentTypesByShipmentPackageSequenceType(final SequenceType shipmentPackageSequenceType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM shipmenttypes
-                        JOIN shipmenttypedetails ON shptypdt_shipmenttypedetailid = shptyp_activedetailid
-                        WHERE shptypdt_shipmentpackagesequencetypeid = ?
-                        """, shipmentPackageSequenceType);
+        return session.getDslContext()
+                .selectCount()
+                .from(ShipmentTypes)
+                .join(ShipmentTypeDetails).onKey(SHIPMENT_TYPES_ACTIVE_DETAIL_FK)
+                .where(ShipmentTypeDetails.SHIPMENT_PACKAGE_SEQUENCE_TYPE.eq(shipmentPackageSequenceType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countShipmentTypesByShipmentWorkflow(final Workflow shipmentWorkflow) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM shipmenttypes
-                        JOIN shipmenttypedetails ON shptypdt_shipmenttypedetailid = shptyp_activedetailid
-                        WHERE shptypdt_shipmentworkflowid = ?
-                        """, shipmentWorkflow);
+        return session.getDslContext()
+                .selectCount()
+                .from(ShipmentTypes)
+                .join(ShipmentTypeDetails).onKey(SHIPMENT_TYPES_ACTIVE_DETAIL_FK)
+                .where(ShipmentTypeDetails.SHIPMENT_WORKFLOW.eq(shipmentWorkflow.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countShipmentTypesByShipmentWorkflowEntrance(final WorkflowEntrance shipmentWorkflowEntrance) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM shipmenttypes
-                        JOIN shipmenttypedetails ON shptypdt_shipmenttypedetailid = shptyp_activedetailid
-                        WHERE shptypdt_shipmentworkflowentranceid = ?
-                        """, shipmentWorkflowEntrance);
-    }
-
-    private static final Map<EntityPermission, String> getShipmentTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM shipmenttypes, shipmenttypedetails
-                        WHERE shptyp_activedetailid = shptypdt_shipmenttypedetailid
-                        AND shptypdt_shipmenttypename = ?
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM shipmenttypes, shipmenttypedetails
-                        WHERE shptyp_activedetailid = shptypdt_shipmenttypedetailid
-                        AND shptypdt_shipmenttypename = ?
-                        FOR UPDATE
-                        """);
-        getShipmentTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(ShipmentTypes)
+                .join(ShipmentTypeDetails).onKey(SHIPMENT_TYPES_ACTIVE_DETAIL_FK)
+                .where(ShipmentTypeDetails.SHIPMENT_WORKFLOW_ENTRANCE.eq(shipmentWorkflowEntrance.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ShipmentType getShipmentTypeByName(String shipmentTypeName, EntityPermission entityPermission) {
-        return shipmentTypeFactory.getEntityFromQuery(entityPermission, getShipmentTypeByNameQueries, shipmentTypeName);
+        var baseQuery = session.getDslContext()
+                .select(ShipmentTypes.fields())
+                .from(ShipmentTypes)
+                .join(ShipmentTypeDetails).onKey(SHIPMENT_TYPES_ACTIVE_DETAIL_FK)
+                .where(ShipmentTypeDetails.SHIPMENT_TYPE_NAME.eq(shipmentTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return shipmentTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ShipmentType getShipmentTypeByName(String shipmentTypeName) {
@@ -249,29 +287,19 @@ public class ShipmentControl
         return getShipmentTypeDetailValueForUpdate(getShipmentTypeByNameForUpdate(shipmentTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultShipmentTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM shipmenttypes, shipmenttypedetails
-                        WHERE shptyp_activedetailid = shptypdt_shipmenttypedetailid
-                        AND shptypdt_isdefault = 1
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM shipmenttypes, shipmenttypedetails
-                        WHERE shptyp_activedetailid = shptypdt_shipmenttypedetailid
-                        AND shptypdt_isdefault = 1
-                        FOR UPDATE
-                        """);
-        getDefaultShipmentTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ShipmentType getDefaultShipmentType(EntityPermission entityPermission) {
-        return shipmentTypeFactory.getEntityFromQuery(entityPermission, getDefaultShipmentTypeQueries);
+        var baseQuery = session.getDslContext()
+                .select(ShipmentTypes.fields())
+                .from(ShipmentTypes)
+                .join(ShipmentTypeDetails).onKey(SHIPMENT_TYPES_ACTIVE_DETAIL_FK)
+                .where(ShipmentTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return shipmentTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ShipmentType getDefaultShipmentType() {
@@ -286,29 +314,20 @@ public class ShipmentControl
         return getDefaultShipmentTypeForUpdate().getLastDetailForUpdate().getShipmentTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getShipmentTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM shipmenttypes, shipmenttypedetails
-                        WHERE shptyp_activedetailid = shptypdt_shipmenttypedetailid
-                        ORDER BY shptypdt_sortorder, shptypdt_shipmenttypename
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM shipmenttypes, shipmenttypedetails
-                        WHERE shptyp_activedetailid = shptypdt_shipmenttypedetailid
-                        FOR UPDATE
-                        """);
-        getShipmentTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ShipmentType> getShipmentTypes(EntityPermission entityPermission) {
-        return shipmentTypeFactory.getEntitiesFromQuery(entityPermission, getShipmentTypesQueries);
+        var baseQuery = session.getDslContext()
+                .select(ShipmentTypes.fields())
+                .from(ShipmentTypes)
+                .join(ShipmentTypeDetails).onKey(SHIPMENT_TYPES_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ShipmentTypeDetails.SORT_ORDER, ShipmentTypeDetails.SHIPMENT_TYPE_NAME),
+                    ShipmentTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return shipmentTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ShipmentType> getShipmentTypes() {
@@ -319,31 +338,22 @@ public class ShipmentControl
         return getShipmentTypes(EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getShipmentTypesByParentShipmentTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM shipmenttypes, shipmenttypedetails
-                        WHERE shptyp_activedetailid = shptypdt_shipmenttypedetailid AND shptypdt_parentshipmenttypeid = ?
-                        ORDER BY shptypdt_sortorder, shptypdt_shipmenttypename
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM shipmenttypes, shipmenttypedetails
-                        WHERE shptyp_activedetailid = shptypdt_shipmenttypedetailid AND shptypdt_parentshipmenttypeid = ?
-                        FOR UPDATE
-                        """);
-        getShipmentTypesByParentShipmentTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ShipmentType> getShipmentTypesByParentShipmentType(ShipmentType parentShipmentType,
             EntityPermission entityPermission) {
-        return shipmentTypeFactory.getEntitiesFromQuery(entityPermission, getShipmentTypesByParentShipmentTypeQueries,
-                parentShipmentType);
+        var baseQuery = session.getDslContext()
+                .select(ShipmentTypes.fields())
+                .from(ShipmentTypes)
+                .join(ShipmentTypeDetails).onKey(SHIPMENT_TYPES_ACTIVE_DETAIL_FK)
+                .where(ShipmentTypeDetails.PARENT_SHIPMENT_TYPE.eq(parentShipmentType.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ShipmentTypeDetails.SORT_ORDER, ShipmentTypeDetails.SHIPMENT_TYPE_NAME),
+                    ShipmentTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return shipmentTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ShipmentType> getShipmentTypesByParentShipmentType(ShipmentType parentShipmentType) {
@@ -538,6 +548,9 @@ public class ShipmentControl
     @Inject
     protected ShipmentTypeDescriptionFactory shipmentTypeDescriptionFactory;
 
+    @Inject
+    private ShipmentTypeDescriptionTransferCache shipmentTypeDescriptionTransferCache;
+
     public ShipmentTypeDescription createShipmentTypeDescription(ShipmentType shipmentType, Language language, String description, BasePK createdBy) {
         var shipmentTypeDescription = shipmentTypeDescriptionFactory.create(shipmentType, language, description,
                 session.getStartTime(), Session.MAX_TIME);
@@ -547,28 +560,20 @@ public class ShipmentControl
         return shipmentTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getShipmentTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM shipmenttypedescriptions
-                        WHERE shptypd_shptyp_shipmenttypeid = ? AND shptypd_lang_languageid = ? AND shptypd_thrutime = ?
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM shipmenttypedescriptions
-                        WHERE shptypd_shptyp_shipmenttypeid = ? AND shptypd_lang_languageid = ? AND shptypd_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getShipmentTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ShipmentTypeDescription getShipmentTypeDescription(ShipmentType shipmentType, Language language, EntityPermission entityPermission) {
-        return shipmentTypeDescriptionFactory.getEntityFromQuery(entityPermission, getShipmentTypeDescriptionQueries,
-                shipmentType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ShipmentTypeDescriptions.fields())
+                .from(ShipmentTypeDescriptions)
+                .where(ShipmentTypeDescriptions.SHIPMENT_TYPE.eq(shipmentType.getPrimaryKey()),
+                        ShipmentTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ShipmentTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return shipmentTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ShipmentTypeDescription getShipmentTypeDescription(ShipmentType shipmentType, Language language) {
@@ -587,30 +592,25 @@ public class ShipmentControl
         return getShipmentTypeDescriptionValue(getShipmentTypeDescriptionForUpdate(shipmentType, language));
     }
 
-    private static final Map<EntityPermission, String> getShipmentTypeDescriptionsByShipmentTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM shipmenttypedescriptions, languages
-                        WHERE shptypd_shptyp_shipmenttypeid = ? AND shptypd_thrutime = ? AND shptypd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM shipmenttypedescriptions
-                        WHERE shptypd_shptyp_shipmenttypeid = ? AND shptypd_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getShipmentTypeDescriptionsByShipmentTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ShipmentTypeDescription> getShipmentTypeDescriptionsByShipmentType(ShipmentType shipmentType, EntityPermission entityPermission) {
-        return shipmentTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getShipmentTypeDescriptionsByShipmentTypeQueries,
-                shipmentType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ShipmentTypeDescriptions.fields())
+                    .from(ShipmentTypeDescriptions)
+                    .join(Languages).onKey(SHIPMENT_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ShipmentTypeDescriptions.SHIPMENT_TYPE.eq(shipmentType.getPrimaryKey()),
+                            ShipmentTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ShipmentTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ShipmentTypeDescriptions.fields())
+                    .from(ShipmentTypeDescriptions)
+                    .where(ShipmentTypeDescriptions.SHIPMENT_TYPE.eq(shipmentType.getPrimaryKey()),
+                            ShipmentTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return shipmentTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ShipmentTypeDescription> getShipmentTypeDescriptionsByShipmentType(ShipmentType shipmentType) {
@@ -692,10 +692,13 @@ public class ShipmentControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ShipmentTimeTypeDetailFactory shipmentTimeTypeDetailFactory;
+
+    @Inject
     protected ShipmentTimeTypeFactory shipmentTimeTypeFactory;
 
     @Inject
-    protected ShipmentTimeTypeDetailFactory shipmentTimeTypeDetailFactory;
+    private ShipmentTimeTypeTransferCache shipmentTimeTypeTransferCache;
 
     public ShipmentTimeType createShipmentTimeType(ShipmentType shipmentType, String shipmentTimeTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultShipmentTimeType = getDefaultShipmentTimeType(shipmentType);
@@ -742,38 +745,29 @@ public class ShipmentControl
     }
 
     public long countShipmentTimeTypesByShipmentType(ShipmentType shipmentType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM shipmenttimetypes, shipmenttimetypedetails
-                        JOIN shipmenttimetypedetails ON shptimtypdt_shipmenttimetypedetailid = shptimtyp_activedetailid
-                        AND shptimtypdt_shptyp_shipmenttypeid = ?
-                        """, shipmentType);
-    }
-
-    private static final Map<EntityPermission, String> getShipmentTimeTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM shipmenttimetypes, shipmenttimetypedetails
-                        WHERE shptimtyp_activedetailid = shptimtypdt_shipmenttimetypedetailid
-                        AND shptimtypdt_shptyp_shipmenttypeid = ? AND shptimtypdt_shipmenttimetypename = ?
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM shipmenttimetypes, shipmenttimetypedetails
-                        WHERE shptimtyp_activedetailid = shptimtypdt_shipmenttimetypedetailid
-                        AND shptimtypdt_shptyp_shipmenttypeid = ? AND shptimtypdt_shipmenttimetypename = ?
-                        FOR UPDATE
-                        """);
-        getShipmentTimeTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(ShipmentTimeTypes)
+                .join(ShipmentTimeTypeDetails).onKey(SHIPMENT_TIME_TYPES_ACTIVE_DETAIL_FK)
+                .where(ShipmentTimeTypeDetails.SHIPMENT_TYPE.eq(shipmentType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ShipmentTimeType getShipmentTimeTypeByName(ShipmentType shipmentType, String shipmentTimeTypeName, EntityPermission entityPermission) {
-        return shipmentTimeTypeFactory.getEntityFromQuery(entityPermission, getShipmentTimeTypeByNameQueries,
-                shipmentType, shipmentTimeTypeName);
+        var baseQuery = session.getDslContext()
+                .select(ShipmentTimeTypes.fields())
+                .from(ShipmentTimeTypes)
+                .join(ShipmentTimeTypeDetails).onKey(SHIPMENT_TIME_TYPES_ACTIVE_DETAIL_FK)
+                .where(ShipmentTimeTypeDetails.SHIPMENT_TYPE.eq(shipmentType.getPrimaryKey()),
+                        ShipmentTimeTypeDetails.SHIPMENT_TIME_TYPE_NAME.eq(shipmentTimeTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return shipmentTimeTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ShipmentTimeType getShipmentTimeTypeByName(ShipmentType shipmentType, String shipmentTimeTypeName) {
@@ -792,30 +786,20 @@ public class ShipmentControl
         return getShipmentTimeTypeDetailValueForUpdate(getShipmentTimeTypeByNameForUpdate(shipmentType, shipmentTimeTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultShipmentTimeTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM shipmenttimetypes, shipmenttimetypedetails
-                        WHERE shptimtyp_activedetailid = shptimtypdt_shipmenttimetypedetailid
-                        AND shptimtypdt_shptyp_shipmenttypeid = ? AND shptimtypdt_isdefault = 1
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM shipmenttimetypes, shipmenttimetypedetails
-                        WHERE shptimtyp_activedetailid = shptimtypdt_shipmenttimetypedetailid
-                        AND shptimtypdt_shptyp_shipmenttypeid = ? AND shptimtypdt_isdefault = 1
-                        FOR UPDATE
-                        """);
-        getDefaultShipmentTimeTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ShipmentTimeType getDefaultShipmentTimeType(ShipmentType shipmentType, EntityPermission entityPermission) {
-        return shipmentTimeTypeFactory.getEntityFromQuery(entityPermission, getDefaultShipmentTimeTypeQueries,
-                shipmentType);
+        var baseQuery = session.getDslContext()
+                .select(ShipmentTimeTypes.fields())
+                .from(ShipmentTimeTypes)
+                .join(ShipmentTimeTypeDetails).onKey(SHIPMENT_TIME_TYPES_ACTIVE_DETAIL_FK)
+                .where(ShipmentTimeTypeDetails.SHIPMENT_TYPE.eq(shipmentType.getPrimaryKey()),
+                        ShipmentTimeTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return shipmentTimeTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ShipmentTimeType getDefaultShipmentTimeType(ShipmentType shipmentType) {
@@ -830,32 +814,21 @@ public class ShipmentControl
         return getDefaultShipmentTimeTypeForUpdate(shipmentType).getLastDetailForUpdate().getShipmentTimeTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getShipmentTimeTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM shipmenttimetypes, shipmenttimetypedetails
-                        WHERE shptimtyp_activedetailid = shptimtypdt_shipmenttimetypedetailid
-                        AND shptimtypdt_shptyp_shipmenttypeid = ?
-                        ORDER BY shptimtypdt_sortorder, shptimtypdt_shipmenttimetypename
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM shipmenttimetypes, shipmenttimetypedetails
-                        WHERE shptimtyp_activedetailid = shptimtypdt_shipmenttimetypedetailid
-                        AND shptimtypdt_shptyp_shipmenttypeid = ?
-                        FOR UPDATE
-                        """);
-        getShipmentTimeTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ShipmentTimeType> getShipmentTimeTypes(ShipmentType shipmentType, EntityPermission entityPermission) {
-        return shipmentTimeTypeFactory.getEntitiesFromQuery(entityPermission, getShipmentTimeTypesQueries,
-                shipmentType);
+        var baseQuery = session.getDslContext()
+                .select(ShipmentTimeTypes.fields())
+                .from(ShipmentTimeTypes)
+                .join(ShipmentTimeTypeDetails).onKey(SHIPMENT_TIME_TYPES_ACTIVE_DETAIL_FK)
+                .where(ShipmentTimeTypeDetails.SHIPMENT_TYPE.eq(shipmentType.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ShipmentTimeTypeDetails.SORT_ORDER, ShipmentTimeTypeDetails.SHIPMENT_TIME_TYPE_NAME),
+                    ShipmentTimeTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return shipmentTimeTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ShipmentTimeType> getShipmentTimeTypes(ShipmentType shipmentType) {
@@ -1003,6 +976,9 @@ public class ShipmentControl
     @Inject
     protected ShipmentTimeTypeDescriptionFactory shipmentTimeTypeDescriptionFactory;
 
+    @Inject
+    private ShipmentTimeTypeDescriptionTransferCache shipmentTimeTypeDescriptionTransferCache;
+
     public ShipmentTimeTypeDescription createShipmentTimeTypeDescription(ShipmentTimeType shipmentTimeType, Language language, String description, BasePK createdBy) {
         var shipmentTimeTypeDescription = shipmentTimeTypeDescriptionFactory.create(shipmentTimeType, language, description,
                 session.getStartTime(), Session.MAX_TIME);
@@ -1012,28 +988,20 @@ public class ShipmentControl
         return shipmentTimeTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getShipmentTimeTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM shipmenttimetypedescriptions
-                        WHERE shptimtypd_shptimtyp_shipmenttimetypeid = ? AND shptimtypd_lang_languageid = ? AND shptimtypd_thrutime = ?
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM shipmenttimetypedescriptions
-                        WHERE shptimtypd_shptimtyp_shipmenttimetypeid = ? AND shptimtypd_lang_languageid = ? AND shptimtypd_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getShipmentTimeTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ShipmentTimeTypeDescription getShipmentTimeTypeDescription(ShipmentTimeType shipmentTimeType, Language language, EntityPermission entityPermission) {
-        return shipmentTimeTypeDescriptionFactory.getEntityFromQuery(entityPermission, getShipmentTimeTypeDescriptionQueries,
-                shipmentTimeType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ShipmentTimeTypeDescriptions.fields())
+                .from(ShipmentTimeTypeDescriptions)
+                .where(ShipmentTimeTypeDescriptions.SHIPMENT_TIME_TYPE.eq(shipmentTimeType.getPrimaryKey()),
+                        ShipmentTimeTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ShipmentTimeTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return shipmentTimeTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ShipmentTimeTypeDescription getShipmentTimeTypeDescription(ShipmentTimeType shipmentTimeType, Language language) {
@@ -1052,30 +1020,25 @@ public class ShipmentControl
         return getShipmentTimeTypeDescriptionValue(getShipmentTimeTypeDescriptionForUpdate(shipmentTimeType, language));
     }
 
-    private static final Map<EntityPermission, String> getShipmentTimeTypeDescriptionsByShipmentTimeTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM shipmenttimetypedescriptions, languages
-                        WHERE shptimtypd_shptimtyp_shipmenttimetypeid = ? AND shptimtypd_thrutime = ? AND shptimtypd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM shipmenttimetypedescriptions
-                        WHERE shptimtypd_shptimtyp_shipmenttimetypeid = ? AND shptimtypd_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getShipmentTimeTypeDescriptionsByShipmentTimeTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ShipmentTimeTypeDescription> getShipmentTimeTypeDescriptionsByShipmentTimeType(ShipmentTimeType shipmentTimeType, EntityPermission entityPermission) {
-        return shipmentTimeTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getShipmentTimeTypeDescriptionsByShipmentTimeTypeQueries,
-                shipmentTimeType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ShipmentTimeTypeDescriptions.fields())
+                    .from(ShipmentTimeTypeDescriptions)
+                    .join(Languages).onKey(SHIPMENT_TIME_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ShipmentTimeTypeDescriptions.SHIPMENT_TIME_TYPE.eq(shipmentTimeType.getPrimaryKey()),
+                            ShipmentTimeTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ShipmentTimeTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ShipmentTimeTypeDescriptions.fields())
+                    .from(ShipmentTimeTypeDescriptions)
+                    .where(ShipmentTimeTypeDescriptions.SHIPMENT_TIME_TYPE.eq(shipmentTimeType.getPrimaryKey()),
+                            ShipmentTimeTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return shipmentTimeTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ShipmentTimeTypeDescription> getShipmentTimeTypeDescriptionsByShipmentTimeType(ShipmentTimeType shipmentTimeType) {
@@ -1159,6 +1122,9 @@ public class ShipmentControl
     @Inject
     protected ShipmentTypeShippingMethodFactory shipmentTypeShippingMethodFactory;
 
+    @Inject
+    private ShipmentTypeShippingMethodTransferCache shipmentTypeShippingMethodTransferCache;
+
     public ShipmentTypeShippingMethod createShipmentTypeShippingMethod(ShipmentType shipmentType, ShippingMethod shippingMethod, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
         var defaultShipmentTypeShippingMethod = getDefaultShipmentTypeShippingMethod(shipmentType);
@@ -1182,54 +1148,39 @@ public class ShipmentControl
     }
 
     public long countShipmentTypeShippingMethodsByShipmentType(final ShipmentType shipmentType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM shipmenttypeshippingmethods
-                        WHERE shptypshm_shptyp_shipmenttypeid = ? AND shptypshm_thrutime = ?
-                        """, shipmentType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ShipmentTypeShippingMethods)
+                .where(ShipmentTypeShippingMethods.SHIPMENT_TYPE.eq(shipmentType.getPrimaryKey()),
+                        ShipmentTypeShippingMethods.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countShipmentTypeShippingMethodsByShippingMethod(final ShippingMethod shippingMethod) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM shipmenttypeshippingmethods
-                        WHERE shptypshm_shm_shippingmethodid = ? AND shptypshm_thrutime = ?
-                        """, shippingMethod, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ShipmentTypeShippingMethods)
+                .where(ShipmentTypeShippingMethods.SHIPPING_METHOD.eq(shippingMethod.getPrimaryKey()),
+                        ShipmentTypeShippingMethods.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ShipmentTypeShippingMethod getShipmentTypeShippingMethod(ShipmentType shipmentType, ShippingMethod shippingMethod, EntityPermission entityPermission) {
-        ShipmentTypeShippingMethod shipmentTypeShippingMethod;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM shipmenttypeshippingmethods
-                        WHERE shptypshm_shptyp_shipmenttypeid = ? AND shptypshm_shm_shippingmethodid = ? AND shptypshm_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM shipmenttypeshippingmethods
-                        WHERE shptypshm_shptyp_shipmenttypeid = ? AND shptypshm_shm_shippingmethodid = ? AND shptypshm_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ShipmentTypeShippingMethods.fields())
+                .from(ShipmentTypeShippingMethods)
+                .where(ShipmentTypeShippingMethods.SHIPMENT_TYPE.eq(shipmentType.getPrimaryKey()),
+                        ShipmentTypeShippingMethods.SHIPPING_METHOD.eq(shippingMethod.getPrimaryKey()),
+                        ShipmentTypeShippingMethods.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = shipmentTypeShippingMethodFactory.prepareStatement(query);
-            
-            ps.setLong(1, shipmentType.getPrimaryKey().getEntityId());
-            ps.setLong(2, shippingMethod.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            shipmentTypeShippingMethod = shipmentTypeShippingMethodFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return shipmentTypeShippingMethod;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return shipmentTypeShippingMethodFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ShipmentTypeShippingMethod getShipmentTypeShippingMethod(ShipmentType shipmentType, ShippingMethod shippingMethod) {
@@ -1247,37 +1198,19 @@ public class ShipmentControl
     }
     
     private ShipmentTypeShippingMethod getDefaultShipmentTypeShippingMethod(ShipmentType shipmentType, EntityPermission entityPermission) {
-        ShipmentTypeShippingMethod shipmentTypeShippingMethod;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM shipmenttypeshippingmethods
-                        WHERE shptypshm_shptyp_shipmenttypeid = ? AND shptypshm_isdefault = 1 AND shptypshm_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM shipmenttypeshippingmethods
-                        WHERE shptypshm_shptyp_shipmenttypeid = ? AND shptypshm_isdefault = 1 AND shptypshm_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ShipmentTypeShippingMethods.fields())
+                .from(ShipmentTypeShippingMethods)
+                .where(ShipmentTypeShippingMethods.SHIPMENT_TYPE.eq(shipmentType.getPrimaryKey()),
+                        ShipmentTypeShippingMethods.IS_DEFAULT.eq(true),
+                        ShipmentTypeShippingMethods.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = shipmentTypeShippingMethodFactory.prepareStatement(query);
-            
-            ps.setLong(1, shipmentType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            shipmentTypeShippingMethod = shipmentTypeShippingMethodFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return shipmentTypeShippingMethod;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return shipmentTypeShippingMethodFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ShipmentTypeShippingMethod getDefaultShipmentTypeShippingMethod(ShipmentType shipmentType) {
@@ -1295,40 +1228,25 @@ public class ShipmentControl
     }
     
     private List<ShipmentTypeShippingMethod> getShipmentTypeShippingMethodsByShipmentType(ShipmentType shipmentType, EntityPermission entityPermission) {
-        List<ShipmentTypeShippingMethod> shipmentTypeShippingMethods;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM shipmenttypeshippingmethods, shippingmethods, shippingmethoddetails
-                        WHERE shptypshm_shptyp_shipmenttypeid = ? AND shptypshm_thrutime = ?
-                        AND shptypshm_shm_shippingmethodid = shm_shippingmethodid AND shm_lastdetailid = shmdt_shippingmethoddetailid
-                        ORDER BY shmdt_sortorder, shmdt_shippingmethodname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM shipmenttypeshippingmethods
-                        WHERE shptypshm_shptyp_shipmenttypeid = ? AND shptypshm_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ShipmentTypeShippingMethods.fields())
+                    .from(ShipmentTypeShippingMethods)
+                    .join(ShippingMethods).onKey(SHIPMENT_TYPE_SHIPPING_METHODS_SHIPPING_METHOD_FK)
+                    .join(ShippingMethodDetails).onKey(SHIPPING_METHODS_LAST_DETAIL_FK)
+                    .where(ShipmentTypeShippingMethods.SHIPMENT_TYPE.eq(shipmentType.getPrimaryKey()),
+                            ShipmentTypeShippingMethods.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ShippingMethodDetails.SORT_ORDER, ShippingMethodDetails.SHIPPING_METHOD_NAME),
+                    ShipmentTypeShippingMethodFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ShipmentTypeShippingMethods.fields())
+                    .from(ShipmentTypeShippingMethods)
+                    .where(ShipmentTypeShippingMethods.SHIPMENT_TYPE.eq(shipmentType.getPrimaryKey()),
+                            ShipmentTypeShippingMethods.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = shipmentTypeShippingMethodFactory.prepareStatement(query);
-            
-            ps.setLong(1, shipmentType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            shipmentTypeShippingMethods = shipmentTypeShippingMethodFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return shipmentTypeShippingMethods;
+        return shipmentTypeShippingMethodFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ShipmentTypeShippingMethod> getShipmentTypeShippingMethodsByShipmentType(ShipmentType shipmentType) {
@@ -1340,41 +1258,25 @@ public class ShipmentControl
     }
     
     private List<ShipmentTypeShippingMethod> getShipmentTypeShippingMethodsByShippingMethod(ShippingMethod shippingMethod, EntityPermission entityPermission) {
-        List<ShipmentTypeShippingMethod> shipmentTypeShippingMethods;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM shipmenttypeshippingmethods, shipmenttypes, shipmenttypedetails, returnkinds, returnkinddetails
-                        WHERE shptypshm_shm_shippingmethodid = ? AND shptypshm_thrutime = ?
-                        AND shptypshm_shptyp_shipmenttypeid = shptyp_shipmenttypeid AND shptyp_lastdetailid = shptypdt_shipmenttypedetailid
-                        AND shptypdt_rtnk_returnkindid = rtnk_returnkindid AND rtnk_lastdetailid = rtnkdt_returnkinddetailid
-                        ORDER BY shptypdt_sortorder, shptypdt_shipmenttypename, rtnkdt_sortorder, rtnkdt_returnkindname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM shipmenttypeshippingmethods
-                        WHERE shptypshm_shm_shippingmethodid = ? AND shptypshm_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ShipmentTypeShippingMethods.fields())
+                    .from(ShipmentTypeShippingMethods)
+                    .join(ShipmentTypes).onKey(SHIPMENT_TYPE_SHIPPING_METHODS_SHIPMENT_TYPE_FK)
+                    .join(ShipmentTypeDetails).onKey(SHIPMENT_TYPES_LAST_DETAIL_FK)
+                    .where(ShipmentTypeShippingMethods.SHIPPING_METHOD.eq(shippingMethod.getPrimaryKey()),
+                            ShipmentTypeShippingMethods.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ShipmentTypeDetails.SORT_ORDER, ShipmentTypeDetails.SHIPMENT_TYPE_NAME),
+                    ShipmentTypeShippingMethodFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ShipmentTypeShippingMethods.fields())
+                    .from(ShipmentTypeShippingMethods)
+                    .where(ShipmentTypeShippingMethods.SHIPPING_METHOD.eq(shippingMethod.getPrimaryKey()),
+                            ShipmentTypeShippingMethods.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = shipmentTypeShippingMethodFactory.prepareStatement(query);
-            
-            ps.setLong(1, shippingMethod.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            shipmentTypeShippingMethods = shipmentTypeShippingMethodFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return shipmentTypeShippingMethods;
+        return shipmentTypeShippingMethodFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ShipmentTypeShippingMethod> getShipmentTypeShippingMethodsByShippingMethod(ShippingMethod shippingMethod) {
@@ -1494,6 +1396,9 @@ public class ShipmentControl
     @Inject
     protected ShipmentTimeFactory shipmentTimeFactory;
 
+    @Inject
+    private ShipmentTimeTransferCache shipmentTimeTransferCache;
+
     public ShipmentTime createShipmentTime(Shipment shipment, ShipmentTimeType shipmentTimeType, Long time, BasePK createdBy) {
         var shipmentTime = shipmentTimeFactory.create(shipment, shipmentTimeType, time, session.getStartTime(), Session.MAX_TIME);
 
@@ -1503,42 +1408,39 @@ public class ShipmentControl
     }
 
     public long countShipmentTimesByShipment(Shipment shipment) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM shipmenttimes
-                        WHERE shptim_shp_shipmentid = ? AND shptim_thrutime = ?
-                        """, shipment, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ShipmentTimes)
+                .where(ShipmentTimes.SHIPMENT.eq(shipment.getPrimaryKey()),
+                        ShipmentTimes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countShipmentTimesByShipmentTimeType(ShipmentTimeType shipmentTimeType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM shipmenttimes
-                        WHERE shptim_shptimtyp_shipmenttimetypeid = ? AND shptim_thrutime = ?
-                        """, shipmentTimeType, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getShipmentTimeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM shipmenttimes
-                        WHERE shptim_shp_shipmentid = ? AND shptim_shptimtyp_shipmenttimetypeid = ? AND shptim_thrutime = ?
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM shipmenttimes
-                        WHERE shptim_shp_shipmentid = ? AND shptim_shptimtyp_shipmenttimetypeid = ? AND shptim_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getShipmentTimeQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(ShipmentTimes)
+                .where(ShipmentTimes.SHIPMENT_TIME_TYPE.eq(shipmentTimeType.getPrimaryKey()),
+                        ShipmentTimes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ShipmentTime getShipmentTime(Shipment shipment, ShipmentTimeType shipmentTimeType, EntityPermission entityPermission) {
-        return shipmentTimeFactory.getEntityFromQuery(entityPermission, getShipmentTimeQueries, shipment, shipmentTimeType, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ShipmentTimes.fields())
+                .from(ShipmentTimes)
+                .where(ShipmentTimes.SHIPMENT.eq(shipment.getPrimaryKey()),
+                        ShipmentTimes.SHIPMENT_TIME_TYPE.eq(shipmentTimeType.getPrimaryKey()),
+                        ShipmentTimes.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return shipmentTimeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ShipmentTime getShipmentTime(Shipment shipment, ShipmentTimeType shipmentTimeType) {
@@ -1557,30 +1459,26 @@ public class ShipmentControl
         return getShipmentTimeValue(getShipmentTimeForUpdate(shipment, shipmentTimeType));
     }
 
-    private static final Map<EntityPermission, String> getShipmentTimesByShipmentQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM shipmenttimes, shipmenttimetypes, shipmenttimetypedetails
-                        WHERE shptim_shp_shipmentid = ? AND shptim_thrutime = ?
-                        AND shptim_shptimtyp_shipmenttimetypeid = shptimtyp_shipmenttimetypeid AND shptimtyp_activedetailid = shptimtypdt_shipmenttimetypedetailid
-                        ORDER BY shptimtypdt_sortorder, shptimtypdt_shipmenttimetypename
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM shipmenttimes
-                        WHERE shptim_shp_shipmentid = ? AND shptim_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getShipmentTimesByShipmentQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ShipmentTime> getShipmentTimesByShipment(Shipment shipment, EntityPermission entityPermission) {
-        return shipmentTimeFactory.getEntitiesFromQuery(entityPermission, getShipmentTimesByShipmentQueries, shipment, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ShipmentTimes.fields())
+                    .from(ShipmentTimes)
+                    .join(ShipmentTimeTypes).onKey(SHIPMENT_TIMES_SHIPMENT_TIME_TYPE_FK)
+                    .join(ShipmentTimeTypeDetails).onKey(SHIPMENT_TIME_TYPES_LAST_DETAIL_FK)
+                    .where(ShipmentTimes.SHIPMENT.eq(shipment.getPrimaryKey()),
+                            ShipmentTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ShipmentTimeTypeDetails.SORT_ORDER, ShipmentTimeTypeDetails.SHIPMENT_TIME_TYPE_NAME),
+                    ShipmentTimeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ShipmentTimes.fields())
+                    .from(ShipmentTimes)
+                    .where(ShipmentTimes.SHIPMENT.eq(shipment.getPrimaryKey()),
+                            ShipmentTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return shipmentTimeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ShipmentTime> getShipmentTimesByShipment(Shipment shipment) {
@@ -1591,30 +1489,26 @@ public class ShipmentControl
         return getShipmentTimesByShipment(shipment, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getShipmentTimesByShipmentTimeTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM shipmenttimes, shipments, shipmentdetails
-                        WHERE shptim_shptimtyp_shipmenttimetypeid = ? AND shptim_thrutime = ?
-                        AND shptim_shp_shipmentid = shptim_shp_shipmentid AND shp_activedetailid = shpdt_shipmentdetailid
-                        ORDER BY shpdt_shipmentname
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM shipmenttimes
-                        WHERE shptim_shptimtyp_shipmenttimetypeid = ? AND shptim_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getShipmentTimesByShipmentTimeTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ShipmentTime> getShipmentTimesByShipmentTimeType(ShipmentTimeType shipmentTimeType, EntityPermission entityPermission) {
-        return shipmentTimeFactory.getEntitiesFromQuery(entityPermission, getShipmentTimesByShipmentTimeTypeQueries, shipmentTimeType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ShipmentTimes.fields())
+                    .from(ShipmentTimes)
+                    .join(Shipments).onKey(SHIPMENT_TIMES_SHIPMENT_FK)
+                    .join(ShipmentDetails).onKey(SHIPMENTS_LAST_DETAIL_FK)
+                    .where(ShipmentTimes.SHIPMENT_TIME_TYPE.eq(shipmentTimeType.getPrimaryKey()),
+                            ShipmentTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ShipmentDetails.SHIPMENT_NAME),
+                    ShipmentTimeFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ShipmentTimes.fields())
+                    .from(ShipmentTimes)
+                    .where(ShipmentTimes.SHIPMENT_TIME_TYPE.eq(shipmentTimeType.getPrimaryKey()),
+                            ShipmentTimes.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return shipmentTimeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ShipmentTime> getShipmentTimesByShipmentTimeType(ShipmentTimeType shipmentTimeType) {
@@ -1691,10 +1585,13 @@ public class ShipmentControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ShipmentAliasTypeDetailFactory shipmentAliasTypeDetailFactory;
+
+    @Inject
     protected ShipmentAliasTypeFactory shipmentAliasTypeFactory;
 
     @Inject
-    protected ShipmentAliasTypeDetailFactory shipmentAliasTypeDetailFactory;
+    private ShipmentAliasTypeTransferCache shipmentAliasTypeTransferCache;
 
     public ShipmentAliasType createShipmentAliasType(ShipmentType shipmentType, String shipmentAliasTypeName, String validationPattern, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -1741,38 +1638,29 @@ public class ShipmentControl
     }
 
     public long countShipmentAliasTypesByShipmentType(final ShipmentType shipmentType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM shipmentaliastypes
-                        JOIN shipmentaliastypedetails ON shpaltypdt_shipmentaliastypedetailid = shpaltyp_activedetailid
-                        WHERE shpaltypdt_shptyp_shipmenttypeid = ?
-                        """, shipmentType);
-    }
-
-    private static final Map<EntityPermission, String> getShipmentAliasTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM shipmentaliastypes, shipmentaliastypedetails
-                        WHERE shpaltyp_activedetailid = shpaltypdt_shipmentaliastypedetailid AND shpaltypdt_shptyp_shipmenttypeid = ?
-                        AND shpaltypdt_shipmentaliastypename = ?
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM shipmentaliastypes, shipmentaliastypedetails
-                        WHERE shpaltyp_activedetailid = shpaltypdt_shipmentaliastypedetailid AND shpaltypdt_shptyp_shipmenttypeid = ?
-                        AND shpaltypdt_shipmentaliastypename = ?
-                        FOR UPDATE
-                        """);
-        getShipmentAliasTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(ShipmentAliasTypes)
+                .join(ShipmentAliasTypeDetails).onKey(SHIPMENT_ALIAS_TYPES_ACTIVE_DETAIL_FK)
+                .where(ShipmentAliasTypeDetails.SHIPMENT_TYPE.eq(shipmentType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ShipmentAliasType getShipmentAliasTypeByName(ShipmentType shipmentType, String shipmentAliasTypeName, EntityPermission entityPermission) {
-        return shipmentAliasTypeFactory.getEntityFromQuery(entityPermission, getShipmentAliasTypeByNameQueries,
-                shipmentType, shipmentAliasTypeName);
+        var baseQuery = session.getDslContext()
+                .select(ShipmentAliasTypes.fields())
+                .from(ShipmentAliasTypes)
+                .join(ShipmentAliasTypeDetails).onKey(SHIPMENT_ALIAS_TYPES_ACTIVE_DETAIL_FK)
+                .where(ShipmentAliasTypeDetails.SHIPMENT_TYPE.eq(shipmentType.getPrimaryKey()),
+                        ShipmentAliasTypeDetails.SHIPMENT_ALIAS_TYPE_NAME.eq(shipmentAliasTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return shipmentAliasTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ShipmentAliasType getShipmentAliasTypeByName(ShipmentType shipmentType, String shipmentAliasTypeName) {
@@ -1792,29 +1680,20 @@ public class ShipmentControl
         return getShipmentAliasTypeDetailValueForUpdate(getShipmentAliasTypeByNameForUpdate(shipmentType, shipmentAliasTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultShipmentAliasTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM shipmentaliastypes, shipmentaliastypedetails
-                        WHERE shpaltyp_activedetailid = shpaltypdt_shipmentaliastypedetailid AND shpaltypdt_shptyp_shipmenttypeid = ?
-                        AND shpaltypdt_isdefault = 1
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM shipmentaliastypes, shipmentaliastypedetails
-                        WHERE shpaltyp_activedetailid = shpaltypdt_shipmentaliastypedetailid AND shpaltypdt_shptyp_shipmenttypeid = ?
-                        AND shpaltypdt_isdefault = 1
-                        FOR UPDATE
-                        """);
-        getDefaultShipmentAliasTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ShipmentAliasType getDefaultShipmentAliasType(ShipmentType shipmentType, EntityPermission entityPermission) {
-        return shipmentAliasTypeFactory.getEntityFromQuery(entityPermission, getDefaultShipmentAliasTypeQueries, shipmentType);
+        var baseQuery = session.getDslContext()
+                .select(ShipmentAliasTypes.fields())
+                .from(ShipmentAliasTypes)
+                .join(ShipmentAliasTypeDetails).onKey(SHIPMENT_ALIAS_TYPES_ACTIVE_DETAIL_FK)
+                .where(ShipmentAliasTypeDetails.SHIPMENT_TYPE.eq(shipmentType.getPrimaryKey()),
+                        ShipmentAliasTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return shipmentAliasTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ShipmentAliasType getDefaultShipmentAliasType(ShipmentType shipmentType) {
@@ -1829,29 +1708,21 @@ public class ShipmentControl
         return getDefaultShipmentAliasTypeForUpdate(shipmentType).getLastDetailForUpdate().getShipmentAliasTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getShipmentAliasTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM shipmentaliastypes, shipmentaliastypedetails
-                        WHERE shpaltyp_activedetailid = shpaltypdt_shipmentaliastypedetailid AND shpaltypdt_shptyp_shipmenttypeid = ?
-                        ORDER BY shpaltypdt_sortorder, shpaltypdt_shipmentaliastypename
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM shipmentaliastypes, shipmentaliastypedetails
-                        WHERE shpaltyp_activedetailid = shpaltypdt_shipmentaliastypedetailid AND shpaltypdt_shptyp_shipmenttypeid = ?
-                        FOR UPDATE
-                        """);
-        getShipmentAliasTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ShipmentAliasType> getShipmentAliasTypes(ShipmentType shipmentType, EntityPermission entityPermission) {
-        return shipmentAliasTypeFactory.getEntitiesFromQuery(entityPermission, getShipmentAliasTypesQueries, shipmentType);
+        var baseQuery = session.getDslContext()
+                .select(ShipmentAliasTypes.fields())
+                .from(ShipmentAliasTypes)
+                .join(ShipmentAliasTypeDetails).onKey(SHIPMENT_ALIAS_TYPES_ACTIVE_DETAIL_FK)
+                .where(ShipmentAliasTypeDetails.SHIPMENT_TYPE.eq(shipmentType.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ShipmentAliasTypeDetails.SORT_ORDER, ShipmentAliasTypeDetails.SHIPMENT_ALIAS_TYPE_NAME),
+                    ShipmentAliasTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return shipmentAliasTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ShipmentAliasType> getShipmentAliasTypes(ShipmentType shipmentType) {
@@ -2010,6 +1881,9 @@ public class ShipmentControl
     @Inject
     protected ShipmentAliasTypeDescriptionFactory shipmentAliasTypeDescriptionFactory;
 
+    @Inject
+    private ShipmentAliasTypeDescriptionTransferCache shipmentAliasTypeDescriptionTransferCache;
+
     public ShipmentAliasTypeDescription createShipmentAliasTypeDescription(ShipmentAliasType shipmentAliasType, Language language, String description, BasePK createdBy) {
         var shipmentAliasTypeDescription = shipmentAliasTypeDescriptionFactory.create(shipmentAliasType, language,
                 description, session.getStartTime(), Session.MAX_TIME);
@@ -2019,28 +1893,20 @@ public class ShipmentControl
         return shipmentAliasTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getShipmentAliasTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM shipmentaliastypedescriptions
-                        WHERE shpaltypd_shpaltyp_shipmentaliastypeid = ? AND shpaltypd_lang_languageid = ? AND shpaltypd_thrutime = ?
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM shipmentaliastypedescriptions
-                        WHERE shpaltypd_shpaltyp_shipmentaliastypeid = ? AND shpaltypd_lang_languageid = ? AND shpaltypd_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getShipmentAliasTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ShipmentAliasTypeDescription getShipmentAliasTypeDescription(ShipmentAliasType shipmentAliasType, Language language, EntityPermission entityPermission) {
-        return shipmentAliasTypeDescriptionFactory.getEntityFromQuery(entityPermission, getShipmentAliasTypeDescriptionQueries,
-                shipmentAliasType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ShipmentAliasTypeDescriptions.fields())
+                .from(ShipmentAliasTypeDescriptions)
+                .where(ShipmentAliasTypeDescriptions.SHIPMENT_ALIAS_TYPE.eq(shipmentAliasType.getPrimaryKey()),
+                        ShipmentAliasTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ShipmentAliasTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return shipmentAliasTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ShipmentAliasTypeDescription getShipmentAliasTypeDescription(ShipmentAliasType shipmentAliasType, Language language) {
@@ -2059,30 +1925,25 @@ public class ShipmentControl
         return getShipmentAliasTypeDescriptionValue(getShipmentAliasTypeDescriptionForUpdate(shipmentAliasType, language));
     }
 
-    private static final Map<EntityPermission, String> getShipmentAliasTypeDescriptionsByShipmentAliasTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM shipmentaliastypedescriptions, languages
-                        WHERE shpaltypd_shpaltyp_shipmentaliastypeid = ? AND shpaltypd_thrutime = ? AND shpaltypd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM shipmentaliastypedescriptions
-                        WHERE shpaltypd_shpaltyp_shipmentaliastypeid = ? AND shpaltypd_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getShipmentAliasTypeDescriptionsByShipmentAliasTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ShipmentAliasTypeDescription> getShipmentAliasTypeDescriptionsByShipmentAliasType(ShipmentAliasType shipmentAliasType, EntityPermission entityPermission) {
-        return shipmentAliasTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getShipmentAliasTypeDescriptionsByShipmentAliasTypeQueries,
-                shipmentAliasType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ShipmentAliasTypeDescriptions.fields())
+                    .from(ShipmentAliasTypeDescriptions)
+                    .join(Languages).onKey(SHIPMENT_ALIAS_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ShipmentAliasTypeDescriptions.SHIPMENT_ALIAS_TYPE.eq(shipmentAliasType.getPrimaryKey()),
+                            ShipmentAliasTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ShipmentAliasTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ShipmentAliasTypeDescriptions.fields())
+                    .from(ShipmentAliasTypeDescriptions)
+                    .where(ShipmentAliasTypeDescriptions.SHIPMENT_ALIAS_TYPE.eq(shipmentAliasType.getPrimaryKey()),
+                            ShipmentAliasTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return shipmentAliasTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ShipmentAliasTypeDescription> getShipmentAliasTypeDescriptionsByShipmentAliasType(ShipmentAliasType shipmentAliasType) {
@@ -2166,6 +2027,9 @@ public class ShipmentControl
     @Inject
     protected ShipmentAliasFactory shipmentAliasFactory;
 
+    @Inject
+    private ShipmentAliasTransferCache shipmentAliasTransferCache;
+
     public ShipmentAlias createShipmentAlias(Shipment shipment, ShipmentAliasType shipmentAliasType, String alias, BasePK createdBy) {
         var shipmentAlias = shipmentAliasFactory.create(shipment, shipmentAliasType, alias, session.getStartTime(), Session.MAX_TIME);
 
@@ -2175,43 +2039,39 @@ public class ShipmentControl
     }
 
     public long countShipmentAliasesByShipment(final Shipment shipment) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM shipmentaliases
-                        WHERE shpal_shp_shipmentid = ? AND shpal_thrutime = ?
-                        """, shipment, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ShipmentAliases)
+                .where(ShipmentAliases.SHIPMENT.eq(shipment.getPrimaryKey()),
+                        ShipmentAliases.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countShipmentAliasesByShipmentAliasType(final ShipmentAliasType shipmentAliasType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM shipmentaliases
-                        WHERE shpal_shpaltyp_shipmentaliastypeid = ? AND shpal_thrutime = ?
-                        """, shipmentAliasType, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getShipmentAliasQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM shipmentaliases
-                        WHERE shpal_shp_shipmentid = ? AND shpal_shpaltyp_shipmentaliastypeid = ? AND shpal_thrutime = ?
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM shipmentaliases
-                        WHERE shpal_shp_shipmentid = ? AND shpal_shpaltyp_shipmentaliastypeid = ? AND shpal_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getShipmentAliasQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(ShipmentAliases)
+                .where(ShipmentAliases.SHIPMENT_ALIAS_TYPE.eq(shipmentAliasType.getPrimaryKey()),
+                        ShipmentAliases.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ShipmentAlias getShipmentAlias(Shipment shipment, ShipmentAliasType shipmentAliasType, EntityPermission entityPermission) {
-        return shipmentAliasFactory.getEntityFromQuery(entityPermission, getShipmentAliasQueries,
-                shipment, shipmentAliasType, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ShipmentAliases.fields())
+                .from(ShipmentAliases)
+                .where(ShipmentAliases.SHIPMENT.eq(shipment.getPrimaryKey()),
+                        ShipmentAliases.SHIPMENT_ALIAS_TYPE.eq(shipmentAliasType.getPrimaryKey()),
+                        ShipmentAliases.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return shipmentAliasFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ShipmentAlias getShipmentAlias(Shipment shipment, ShipmentAliasType shipmentAliasType) {
@@ -2230,27 +2090,20 @@ public class ShipmentControl
         return getShipmentAliasValue(getShipmentAliasForUpdate(shipment, shipmentAliasType));
     }
 
-    private static final Map<EntityPermission, String> getShipmentAliasByAliasQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM shipmentaliases
-                        WHERE shpal_shpaltyp_shipmentaliastypeid = ? AND shpal_alias = ? AND shpal_thrutime = ?
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM shipmentaliases
-                        WHERE shpal_shpaltyp_shipmentaliastypeid = ? AND shpal_alias = ? AND shpal_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getShipmentAliasByAliasQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private ShipmentAlias getShipmentAliasByAlias(ShipmentAliasType shipmentAliasType, String alias, EntityPermission entityPermission) {
-        return shipmentAliasFactory.getEntityFromQuery(entityPermission, getShipmentAliasByAliasQueries, shipmentAliasType, alias, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(ShipmentAliases.fields())
+                .from(ShipmentAliases)
+                .where(ShipmentAliases.SHIPMENT_ALIAS_TYPE.eq(shipmentAliasType.getPrimaryKey()),
+                        ShipmentAliases.ALIAS.eq(alias),
+                        ShipmentAliases.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return shipmentAliasFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ShipmentAlias getShipmentAliasByAlias(ShipmentAliasType shipmentAliasType, String alias) {
@@ -2261,31 +2114,26 @@ public class ShipmentControl
         return getShipmentAliasByAlias(shipmentAliasType, alias, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getShipmentAliasesByShipmentQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM shipmentaliases, shipmentaliastypes, shipmentaliastypedetails
-                        WHERE shpal_shp_shipmentid = ? AND shpal_thrutime = ?
-                        AND shpal_shpaltyp_shipmentaliastypeid = shpaltyp_shipmentaliastypeid AND shpaltyp_lastdetailid = shpaltypdt_shipmentaliastypedetailid
-                        ORDER BY shpaltypdt_sortorder, shpaltypdt_shipmentaliastypename
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM shipmentaliases
-                        WHERE shpal_shp_shipmentid = ? AND shpal_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getShipmentAliasesByShipmentQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ShipmentAlias> getShipmentAliasesByShipment(Shipment shipment, EntityPermission entityPermission) {
-        return shipmentAliasFactory.getEntitiesFromQuery(entityPermission, getShipmentAliasesByShipmentQueries,
-                shipment, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ShipmentAliases.fields())
+                    .from(ShipmentAliases)
+                    .join(ShipmentAliasTypes).onKey(SHIPMENT_ALIASES_SHIPMENT_ALIAS_TYPE_FK)
+                    .join(ShipmentAliasTypeDetails).onKey(SHIPMENT_ALIAS_TYPES_LAST_DETAIL_FK)
+                    .where(ShipmentAliases.SHIPMENT.eq(shipment.getPrimaryKey()),
+                            ShipmentAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ShipmentAliasTypeDetails.SORT_ORDER, ShipmentAliasTypeDetails.SHIPMENT_ALIAS_TYPE_NAME),
+                    ShipmentAliasFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ShipmentAliases.fields())
+                    .from(ShipmentAliases)
+                    .where(ShipmentAliases.SHIPMENT.eq(shipment.getPrimaryKey()),
+                            ShipmentAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return shipmentAliasFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ShipmentAlias> getShipmentAliasesByShipment(Shipment shipment) {
@@ -2296,31 +2144,26 @@ public class ShipmentControl
         return getShipmentAliasesByShipment(shipment, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getShipmentAliasesByShipmentAliasTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                        SELECT _ALL_
-                        FROM shipmentaliases, shipmentes, shipmentdetails
-                        WHERE shpal_shpaltyp_shipmentaliastypeid = ? AND shpal_thrutime = ?
-                        AND shpal_shp_shipmentid = shp_shipmentid AND shp_lastdetailid = shpdt_shipmentdetailid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                        SELECT _ALL_
-                        FROM shipmentaliases
-                        WHERE shpal_shpaltyp_shipmentaliastypeid = ? AND shpal_thrutime = ?
-                        FOR UPDATE
-                        """);
-        getShipmentAliasesByShipmentAliasTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ShipmentAlias> getShipmentAliasesByShipmentAliasType(ShipmentAliasType shipmentAliasType, EntityPermission entityPermission) {
-        return shipmentAliasFactory.getEntitiesFromQuery(entityPermission, getShipmentAliasesByShipmentAliasTypeQueries,
-                shipmentAliasType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ShipmentAliases.fields())
+                    .from(ShipmentAliases)
+                    .join(Shipments).onKey(SHIPMENT_ALIASES_SHIPMENT_FK)
+                    .join(ShipmentDetails).onKey(SHIPMENTS_LAST_DETAIL_FK)
+                    .where(ShipmentAliases.SHIPMENT_ALIAS_TYPE.eq(shipmentAliasType.getPrimaryKey()),
+                            ShipmentAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ShipmentDetails.SHIPMENT_NAME),
+                    ShipmentAliasFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ShipmentAliases.fields())
+                    .from(ShipmentAliases)
+                    .where(ShipmentAliases.SHIPMENT_ALIAS_TYPE.eq(shipmentAliasType.getPrimaryKey()),
+                            ShipmentAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return shipmentAliasFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ShipmentAlias> getShipmentAliasesByShipmentAliasType(ShipmentAliasType shipmentAliasType) {
