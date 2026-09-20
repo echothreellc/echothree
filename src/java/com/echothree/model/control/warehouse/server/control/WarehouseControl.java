@@ -16,13 +16,14 @@
 
 package com.echothree.model.control.warehouse.server.control;
 
+
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.inventory.server.control.InventoryLocationControl;
-import com.echothree.model.control.inventory.server.control.InventoryTransactionLineControl;
 import com.echothree.model.control.inventory.server.control.InventoryLocationGroupControl;
+import com.echothree.model.control.inventory.server.control.InventoryTransactionLineControl;
 import com.echothree.model.control.search.common.SearchOptions;
-import com.echothree.model.control.search.server.control.SearchControl;
 import static com.echothree.model.control.search.server.control.SearchControl.ENI_ENTITYUNIQUEID_COLUMN_INDEX;
+import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.warehouse.common.choice.LocationChoicesBean;
 import com.echothree.model.control.warehouse.common.choice.LocationStatusChoicesBean;
 import com.echothree.model.control.warehouse.common.choice.LocationTypeChoicesBean;
@@ -42,6 +43,17 @@ import com.echothree.model.control.warehouse.common.transfer.WarehouseTypeDescri
 import com.echothree.model.control.warehouse.common.transfer.WarehouseTypeTransfer;
 import com.echothree.model.control.warehouse.common.workflow.LocationStatusConstants;
 import com.echothree.model.control.warehouse.server.graphql.WarehouseObject;
+import com.echothree.model.control.warehouse.server.transfer.LocationCapacityTransferCache;
+import com.echothree.model.control.warehouse.server.transfer.LocationDescriptionTransferCache;
+import com.echothree.model.control.warehouse.server.transfer.LocationNameElementDescriptionTransferCache;
+import com.echothree.model.control.warehouse.server.transfer.LocationNameElementTransferCache;
+import com.echothree.model.control.warehouse.server.transfer.LocationTransferCache;
+import com.echothree.model.control.warehouse.server.transfer.LocationTypeDescriptionTransferCache;
+import com.echothree.model.control.warehouse.server.transfer.LocationTypeTransferCache;
+import com.echothree.model.control.warehouse.server.transfer.LocationVolumeTransferCache;
+import com.echothree.model.control.warehouse.server.transfer.WarehouseTransferCache;
+import com.echothree.model.control.warehouse.server.transfer.WarehouseTypeDescriptionTransferCache;
+import com.echothree.model.control.warehouse.server.transfer.WarehouseTypeTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
 import com.echothree.model.data.party.common.pk.PartyPK;
@@ -92,28 +104,52 @@ import com.echothree.model.data.warehouse.server.value.LocationVolumeValue;
 import com.echothree.model.data.warehouse.server.value.WarehouseTypeDescriptionValue;
 import com.echothree.model.data.warehouse.server.value.WarehouseTypeDetailValue;
 import com.echothree.model.data.warehouse.server.value.WarehouseValue;
+import static com.echothree.model.jooq.server.keys.warehouse.WarehouseForeignKeys.LOCATIONS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.warehouse.WarehouseForeignKeys.LOCATION_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.warehouse.WarehouseForeignKeys.LOCATION_NAME_ELEMENTS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.warehouse.WarehouseForeignKeys.LOCATION_NAME_ELEMENT_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.warehouse.WarehouseForeignKeys.LOCATION_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.warehouse.WarehouseForeignKeys.LOCATION_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.warehouse.WarehouseForeignKeys.WAREHOUSE_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.warehouse.WarehouseForeignKeys.WAREHOUSE_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureKindDetails.UnitOfMeasureKindDetails;
+import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureTypeDetails.UnitOfMeasureTypeDetails;
+import static com.echothree.model.jooq.server.tables.warehouse.LocationCapacities.LocationCapacities;
+import static com.echothree.model.jooq.server.tables.warehouse.LocationDescriptions.LocationDescriptions;
+import static com.echothree.model.jooq.server.tables.warehouse.LocationDetails.LocationDetails;
+import static com.echothree.model.jooq.server.tables.warehouse.LocationNameElementDescriptions.LocationNameElementDescriptions;
+import static com.echothree.model.jooq.server.tables.warehouse.LocationNameElementDetails.LocationNameElementDetails;
+import static com.echothree.model.jooq.server.tables.warehouse.LocationNameElements.LocationNameElements;
+import static com.echothree.model.jooq.server.tables.warehouse.LocationTypeDescriptions.LocationTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.warehouse.LocationTypeDetails.LocationTypeDetails;
+import static com.echothree.model.jooq.server.tables.warehouse.LocationTypes.LocationTypes;
+import static com.echothree.model.jooq.server.tables.warehouse.LocationVolumes.LocationVolumes;
+import static com.echothree.model.jooq.server.tables.warehouse.Locations.Locations;
+import static com.echothree.model.jooq.server.tables.warehouse.WarehouseTypeDescriptions.WarehouseTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.warehouse.WarehouseTypeDetails.WarehouseTypeDetails;
+import static com.echothree.model.jooq.server.tables.warehouse.WarehouseTypes.WarehouseTypes;
+import static com.echothree.model.jooq.server.tables.warehouse.Warehouses.Warehouses;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 @CommandScope
 public class WarehouseControl
-        extends BaseWarehouseControl {
+        extends BaseModelControl {
 
     @Inject
     protected InventoryLocationControl inventoryLocationControl;
@@ -137,10 +173,13 @@ public class WarehouseControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected WarehouseTypeDetailFactory warehouseTypeDetailFactory;
+
+    @Inject
     protected WarehouseTypeFactory warehouseTypeFactory;
 
     @Inject
-    protected WarehouseTypeDetailFactory warehouseTypeDetailFactory;
+    WarehouseTypeTransferCache warehouseTypeTransferCache;
 
     public WarehouseType createWarehouseType(String warehouseTypeName, Integer priority, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultWarehouseType = getDefaultWarehouseType();
@@ -172,12 +211,12 @@ public class WarehouseControl
     }
 
     public long countWarehouseTypes() {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM warehousetypes, warehousetypedetails
-                WHERE whsetyp_activedetailid = whsetypdt_warehousetypedetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(WarehouseTypes)
+                .join(WarehouseTypeDetails).onKey(WAREHOUSE_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.WarehouseType */
@@ -195,30 +234,19 @@ public class WarehouseControl
         return getWarehouseTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getWarehouseTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM warehousetypes, warehousetypedetails
-                WHERE whsetyp_activedetailid = whsetypdt_warehousetypedetailid AND whsetypdt_warehousetypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM warehousetypes, warehousetypedetails
-                WHERE whsetyp_activedetailid = whsetypdt_warehousetypedetailid AND whsetypdt_warehousetypename = ?
-                FOR UPDATE
-                """);
-        getWarehouseTypeByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public WarehouseType getWarehouseTypeByName(String warehouseTypeName, EntityPermission entityPermission) {
-        return warehouseTypeFactory.getEntityFromQuery(entityPermission, getWarehouseTypeByNameQueries,
-                warehouseTypeName);
+        var baseQuery = session.getDslContext()
+                .select(WarehouseTypes.fields())
+                .from(WarehouseTypes)
+                .join(WarehouseTypeDetails).onKey(WAREHOUSE_TYPES_ACTIVE_DETAIL_FK)
+                .where(WarehouseTypeDetails.WAREHOUSE_TYPE_NAME.eq(warehouseTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return warehouseTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public WarehouseType getWarehouseTypeByName(String warehouseTypeName) {
@@ -237,29 +265,19 @@ public class WarehouseControl
         return getWarehouseTypeDetailValueForUpdate(getWarehouseTypeByNameForUpdate(warehouseTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultWarehouseTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM warehousetypes, warehousetypedetails
-                WHERE whsetyp_activedetailid = whsetypdt_warehousetypedetailid AND whsetypdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM warehousetypes, warehousetypedetails
-                WHERE whsetyp_activedetailid = whsetypdt_warehousetypedetailid AND whsetypdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultWarehouseTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public WarehouseType getDefaultWarehouseType(EntityPermission entityPermission) {
-        return warehouseTypeFactory.getEntityFromQuery(entityPermission, getDefaultWarehouseTypeQueries);
+        var baseQuery = session.getDslContext()
+                .select(WarehouseTypes.fields())
+                .from(WarehouseTypes)
+                .join(WarehouseTypeDetails).onKey(WAREHOUSE_TYPES_ACTIVE_DETAIL_FK)
+                .where(WarehouseTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return warehouseTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public WarehouseType getDefaultWarehouseType() {
@@ -274,31 +292,20 @@ public class WarehouseControl
         return getDefaultWarehouseType(EntityPermission.READ_WRITE).getLastDetailForUpdate().getWarehouseTypeDetailValue();
     }
 
-    private static final Map<EntityPermission, String> getWarehouseTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM warehousetypes, warehousetypedetails
-                WHERE whsetyp_activedetailid = whsetypdt_warehousetypedetailid
-                ORDER BY whsetypdt_sortorder, whsetypdt_warehousetypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM warehousetypes, warehousetypedetails
-                WHERE whsetyp_activedetailid = whsetypdt_warehousetypedetailid
-                FOR UPDATE
-                """);
-        getWarehouseTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<WarehouseType> getWarehouseTypes(EntityPermission entityPermission) {
-        return warehouseTypeFactory.getEntitiesFromQuery(entityPermission, getWarehouseTypesQueries);
+        var baseQuery = session.getDslContext()
+                .select(WarehouseTypes.fields())
+                .from(WarehouseTypes)
+                .join(WarehouseTypeDetails).onKey(WAREHOUSE_TYPES_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(WarehouseTypeDetails.SORT_ORDER, WarehouseTypeDetails.WAREHOUSE_TYPE_NAME),
+                    WarehouseTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return warehouseTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<WarehouseType> getWarehouseTypes() {
@@ -440,6 +447,9 @@ public class WarehouseControl
     @Inject
     protected WarehouseTypeDescriptionFactory warehouseTypeDescriptionFactory;
 
+    @Inject
+    WarehouseTypeDescriptionTransferCache warehouseTypeDescriptionTransferCache;
+
     public WarehouseTypeDescription createWarehouseTypeDescription(WarehouseType warehouseType, Language language, String description,
             BasePK createdBy) {
         var warehouseTypeDescription = warehouseTypeDescriptionFactory.create(warehouseType,
@@ -450,30 +460,20 @@ public class WarehouseControl
         return warehouseTypeDescription;
     }
 
-    private static final Map<EntityPermission, String> getWarehouseTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM warehousetypedescriptions
-                WHERE whsetypd_whsetyp_warehousetypeid = ? AND whsetypd_lang_languageid = ? AND whsetypd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM warehousetypedescriptions
-                WHERE whsetypd_whsetyp_warehousetypeid = ? AND whsetypd_lang_languageid = ? AND whsetypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getWarehouseTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private WarehouseTypeDescription getWarehouseTypeDescription(WarehouseType warehouseType, Language language, EntityPermission entityPermission) {
-        return warehouseTypeDescriptionFactory.getEntityFromQuery(entityPermission, getWarehouseTypeDescriptionQueries,
-                warehouseType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(WarehouseTypeDescriptions.fields())
+                .from(WarehouseTypeDescriptions)
+                .where(WarehouseTypeDescriptions.WAREHOUSE_TYPE.eq(warehouseType.getPrimaryKey()),
+                        WarehouseTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        WarehouseTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return warehouseTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public WarehouseTypeDescription getWarehouseTypeDescription(WarehouseType warehouseType, Language language) {
@@ -492,32 +492,25 @@ public class WarehouseControl
         return getWarehouseTypeDescriptionValue(getWarehouseTypeDescriptionForUpdate(warehouseType, language));
     }
 
-    private static final Map<EntityPermission, String> getWarehouseTypeDescriptionsByWarehouseTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM warehousetypedescriptions, languages
-                WHERE whsetypd_whsetyp_warehousetypeid = ? AND whsetypd_thrutime = ? AND whsetypd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM warehousetypedescriptions
-                WHERE whsetypd_whsetyp_warehousetypeid = ? AND whsetypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getWarehouseTypeDescriptionsByWarehouseTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<WarehouseTypeDescription> getWarehouseTypeDescriptionsByWarehouseType(WarehouseType warehouseType, EntityPermission entityPermission) {
-        return warehouseTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getWarehouseTypeDescriptionsByWarehouseTypeQueries,
-                warehouseType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(WarehouseTypeDescriptions.fields())
+                    .from(WarehouseTypeDescriptions)
+                    .join(Languages).onKey(WAREHOUSE_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(WarehouseTypeDescriptions.WAREHOUSE_TYPE.eq(warehouseType.getPrimaryKey()),
+                            WarehouseTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    WarehouseTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(WarehouseTypeDescriptions.fields())
+                    .from(WarehouseTypeDescriptions)
+                    .where(WarehouseTypeDescriptions.WAREHOUSE_TYPE.eq(warehouseType.getPrimaryKey()),
+                            WarehouseTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return warehouseTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<WarehouseTypeDescription> getWarehouseTypeDescriptionsByWarehouseType(WarehouseType warehouseType) {
@@ -601,6 +594,9 @@ public class WarehouseControl
     @Inject
     protected WarehouseFactory warehouseFactory;
 
+    @Inject
+    WarehouseTransferCache warehouseTransferCache;
+
     public Warehouse createWarehouse(Party party, String warehouseName, WarehouseType warehouseType, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
         var defaultWarehouse = getDefaultWarehouse();
@@ -624,53 +620,37 @@ public class WarehouseControl
     }
 
     public long countWarehouses() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM warehouses
-                WHERE whse_thrutime = ?
-                """, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(Warehouses)
+                .where(Warehouses.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countWarehousesByWarehouseType(final WarehouseType warehouseType) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM warehouses
-                WHERE whse_whsetyp_warehousetypeid = ? AND whse_thrutime = ?
-                """, warehouseType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(Warehouses)
+                .where(Warehouses.WAREHOUSE_TYPE.eq(warehouseType.getPrimaryKey()),
+                        Warehouses.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public Warehouse getWarehouse(Party party, EntityPermission entityPermission) {
-        Warehouse warehouse;
+        var baseQuery = session.getDslContext()
+                .select(Warehouses.fields())
+                .from(Warehouses)
+                .where(Warehouses.PARTY.eq(party.getPrimaryKey()),
+                        Warehouses.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM warehouses
-                        WHERE whse_par_partyid = ? AND whse_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM warehouses
-                        WHERE whse_par_partyid = ? AND whse_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = warehouseFactory.prepareStatement(query);
-            
-            ps.setLong(1, party.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            warehouse = warehouseFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return warehouse;
+        return warehouseFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Warehouse getWarehouse(Party party) {
@@ -686,37 +666,18 @@ public class WarehouseControl
     }
     
     public Warehouse getWarehouseByName(String warehouseName, EntityPermission entityPermission) {
-        Warehouse warehouse;
+        var baseQuery = session.getDslContext()
+                .select(Warehouses.fields())
+                .from(Warehouses)
+                .where(Warehouses.WAREHOUSE_NAME.eq(warehouseName),
+                        Warehouses.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM warehouses
-                        WHERE whse_warehousename = ? AND whse_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM warehouses
-                        WHERE whse_warehousename = ? AND whse_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = warehouseFactory.prepareStatement(query);
-            
-            ps.setString(1, warehouseName);
-            ps.setLong(2, Session.MAX_TIME);
-            
-            warehouse = warehouseFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return warehouse;
+        return warehouseFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Warehouse getWarehouseByName(String warehouseName) {
@@ -728,36 +689,18 @@ public class WarehouseControl
     }
     
     public Warehouse getDefaultWarehouse(EntityPermission entityPermission) {
-        Warehouse warehouse;
+        var baseQuery = session.getDslContext()
+                .select(Warehouses.fields())
+                .from(Warehouses)
+                .where(Warehouses.IS_DEFAULT.eq(true),
+                        Warehouses.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM warehouses
-                        WHERE whse_isdefault = 1 AND whse_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM warehouses
-                        WHERE whse_isdefault = 1 AND whse_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = warehouseFactory.prepareStatement(query);
-            
-            ps.setLong(1, Session.MAX_TIME);
-            
-            warehouse = warehouseFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return warehouse;
+        return warehouseFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Warehouse getDefaultWarehouse() {
@@ -773,38 +716,19 @@ public class WarehouseControl
     }
     
     private List<Warehouse> getWarehouses(EntityPermission entityPermission) {
-        List<Warehouse> warehouses;
+        var baseQuery = session.getDslContext()
+                .select(Warehouses.fields())
+                .from(Warehouses)
+                .where(Warehouses.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(Warehouses.SORT_ORDER, Warehouses.WAREHOUSE_NAME),
+                    WarehouseFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM warehouses
-                        WHERE whse_thrutime = ?
-                        ORDER BY whse_sortorder, whse_warehousename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM warehouses
-                        WHERE whse_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = warehouseFactory.prepareStatement(query);
-            
-            ps.setLong(1, Session.MAX_TIME);
-            
-            warehouses = warehouseFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return warehouses;
+        return warehouseFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<Warehouse> getWarehouses() {
@@ -959,10 +883,13 @@ public class WarehouseControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected LocationTypeDetailFactory locationTypeDetailFactory;
+
+    @Inject
     protected LocationTypeFactory locationTypeFactory;
 
     @Inject
-    protected LocationTypeDetailFactory locationTypeDetailFactory;
+    LocationTypeTransferCache locationTypeTransferCache;
 
     public LocationType createLocationType(Party warehouseParty, String locationTypeName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -982,50 +909,29 @@ public class WarehouseControl
     }
 
     public long countLocationTypesByWarehouseParty(Party warehouseParty) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM locationtypes, locationtypedetails
-                WHERE loctyp_activedetailid = loctypdt_locationtypedetailid
-                AND loctypdt_warehousepartyid = ?
-                """,
-                warehouseParty);
+        return session.getDslContext()
+                .selectCount()
+                .from(LocationTypes)
+                .join(LocationTypeDetails).onKey(LOCATION_TYPES_ACTIVE_DETAIL_FK)
+                .where(LocationTypeDetails.WAREHOUSE_PARTY.eq(warehouseParty.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public LocationType getLocationTypeByName(Party warehouseParty, String locationTypeName, EntityPermission entityPermission) {
-        LocationType locationType;
+        var baseQuery = session.getDslContext()
+                .select(LocationTypes.fields())
+                .from(LocationTypes)
+                .join(LocationTypeDetails).onKey(LOCATION_TYPES_ACTIVE_DETAIL_FK)
+                .where(LocationTypeDetails.WAREHOUSE_PARTY.eq(warehouseParty.getPrimaryKey()),
+                        LocationTypeDetails.LOCATION_TYPE_NAME.eq(locationTypeName));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locationtypes, locationtypedetails
-                        WHERE loctyp_activedetailid = loctypdt_locationtypedetailid AND loctypdt_warehousepartyid = ?
-                        AND loctypdt_locationtypename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locationtypes, locationtypedetails
-                        WHERE loctyp_activedetailid = loctypdt_locationtypedetailid AND loctypdt_warehousepartyid = ?
-                        AND loctypdt_locationtypename = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = locationTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, warehouseParty.getPrimaryKey().getEntityId());
-            ps.setString(2, locationTypeName);
-
-            locationType = locationTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return locationType;
+        return locationTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public LocationType getLocationTypeByName(Party warehouseParty, String locationTypeName) {
@@ -1045,38 +951,19 @@ public class WarehouseControl
     }
     
     private LocationType getDefaultLocationType(Party warehouseParty, EntityPermission entityPermission) {
-        LocationType locationType;
+        var baseQuery = session.getDslContext()
+                .select(LocationTypes.fields())
+                .from(LocationTypes)
+                .join(LocationTypeDetails).onKey(LOCATION_TYPES_ACTIVE_DETAIL_FK)
+                .where(LocationTypeDetails.WAREHOUSE_PARTY.eq(warehouseParty.getPrimaryKey()),
+                        LocationTypeDetails.IS_DEFAULT.eq(true));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locationtypes, locationtypedetails
-                        WHERE loctyp_activedetailid = loctypdt_locationtypedetailid AND loctypdt_warehousepartyid = ?
-                        AND loctypdt_isdefault = 1
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locationtypes, locationtypedetails
-                        WHERE loctyp_activedetailid = loctypdt_locationtypedetailid AND loctypdt_warehousepartyid = ?
-                        AND loctypdt_isdefault = 1
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = locationTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, warehouseParty.getPrimaryKey().getEntityId());
-
-            locationType = locationTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return locationType;
+        return locationTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public LocationType getDefaultLocationType(Party warehouseParty) {
@@ -1092,38 +979,20 @@ public class WarehouseControl
     }
     
     private List<LocationType> getLocationTypesByWarehouseParty(Party warehouseParty, EntityPermission entityPermission) {
-        List<LocationType> locationTypes;
+        var baseQuery = session.getDslContext()
+                .select(LocationTypes.fields())
+                .from(LocationTypes)
+                .join(LocationTypeDetails).onKey(LOCATION_TYPES_ACTIVE_DETAIL_FK)
+                .where(LocationTypeDetails.WAREHOUSE_PARTY.eq(warehouseParty.getPrimaryKey()));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(LocationTypeDetails.SORT_ORDER, LocationTypeDetails.LOCATION_TYPE_NAME),
+                    LocationTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locationtypes, locationtypedetails
-                        WHERE loctyp_activedetailid = loctypdt_locationtypedetailid AND loctypdt_warehousepartyid = ?
-                        ORDER BY loctypdt_sortorder, loctypdt_locationtypename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locationtypes, locationtypedetails
-                        WHERE loctyp_activedetailid = loctypdt_locationtypedetailid AND loctypdt_warehousepartyid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = locationTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, warehouseParty.getPrimaryKey().getEntityId());
-
-            locationTypes = locationTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return locationTypes;
+        return locationTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<LocationType> getLocationTypesByWarehouseParty(Party warehouseParty) {
@@ -1283,6 +1152,9 @@ public class WarehouseControl
     @Inject
     protected LocationTypeDescriptionFactory locationTypeDescriptionFactory;
 
+    @Inject
+    LocationTypeDescriptionTransferCache locationTypeDescriptionTransferCache;
+
     public LocationTypeDescription createLocationTypeDescription(LocationType locationType, Language language, String description, BasePK createdBy) {
         var locationTypeDescription = locationTypeDescriptionFactory.create(locationType, language, description, session.getStartTime(),
                 Session.MAX_TIME);
@@ -1293,38 +1165,19 @@ public class WarehouseControl
     }
     
     public LocationTypeDescription getLocationTypeDescription(LocationType locationType, Language language, EntityPermission entityPermission) {
-        LocationTypeDescription locationTypeDescription;
+        var baseQuery = session.getDslContext()
+                .select(LocationTypeDescriptions.fields())
+                .from(LocationTypeDescriptions)
+                .where(LocationTypeDescriptions.LOCATION_TYPE.eq(locationType.getPrimaryKey()),
+                        LocationTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        LocationTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locationtypedescriptions
-                        WHERE loctypd_loctyp_locationtypeid = ? AND loctypd_lang_languageid = ? AND loctypd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locationtypedescriptions
-                        WHERE loctypd_loctyp_locationtypeid = ? AND loctypd_lang_languageid = ? AND loctypd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = locationTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, locationType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            locationTypeDescription = locationTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return locationTypeDescription;
+        return locationTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public LocationTypeDescription getLocationTypeDescription(LocationType locationType, Language language) {
@@ -1344,39 +1197,24 @@ public class WarehouseControl
     }
     
     private List<LocationTypeDescription> getLocationTypeDescriptionsByLocationType(LocationType locationType, EntityPermission entityPermission) {
-        List<LocationTypeDescription> locationTypeDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locationtypedescriptions, languages
-                        WHERE loctypd_loctyp_locationtypeid = ? AND loctypd_thrutime = ? AND loctypd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locationtypedescriptions
-                        WHERE loctypd_loctyp_locationtypeid = ? AND loctypd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(LocationTypeDescriptions.fields())
+                    .from(LocationTypeDescriptions)
+                    .join(Languages).onKey(LOCATION_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(LocationTypeDescriptions.LOCATION_TYPE.eq(locationType.getPrimaryKey()),
+                            LocationTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    LocationTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(LocationTypeDescriptions.fields())
+                    .from(LocationTypeDescriptions)
+                    .where(LocationTypeDescriptions.LOCATION_TYPE.eq(locationType.getPrimaryKey()),
+                            LocationTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = locationTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, locationType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            locationTypeDescriptions = locationTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return locationTypeDescriptions;
+        return locationTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<LocationTypeDescription> getLocationTypeDescriptionsByLocationType(LocationType locationType) {
@@ -1462,10 +1300,13 @@ public class WarehouseControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected LocationNameElementDetailFactory locationNameElementDetailFactory;
+
+    @Inject
     protected LocationNameElementFactory locationNameElementFactory;
 
     @Inject
-    protected LocationNameElementDetailFactory locationNameElementDetailFactory;
+    LocationNameElementTransferCache locationNameElementTransferCache;
 
     public LocationNameElement createLocationNameElement(LocationType locationType, String locationNameElementName, Integer offset,
             Integer length, String validationPattern, BasePK createdBy) {
@@ -1501,50 +1342,29 @@ public class WarehouseControl
     }
 
     public long countLocationNameElementsByLocationType(LocationType locationType) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM locationnameelements, locationnameelementdetails
-                WHERE locne_activedetailid = locnedt_locationnameelementdetailid
-                AND locnedt_loctyp_locationtypeid = ?
-                """,
-                locationType);
+        return session.getDslContext()
+                .selectCount()
+                .from(LocationNameElements)
+                .join(LocationNameElementDetails).onKey(LOCATION_NAME_ELEMENTS_ACTIVE_DETAIL_FK)
+                .where(LocationNameElementDetails.LOCATION_TYPE.eq(locationType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public LocationNameElement getLocationNameElementByName(LocationType locationType, String locationNameElementName, EntityPermission entityPermission) {
-        LocationNameElement locationNameElement;
+        var baseQuery = session.getDslContext()
+                .select(LocationNameElements.fields())
+                .from(LocationNameElements)
+                .join(LocationNameElementDetails).onKey(LOCATION_NAME_ELEMENTS_ACTIVE_DETAIL_FK)
+                .where(LocationNameElementDetails.LOCATION_TYPE.eq(locationType.getPrimaryKey()),
+                        LocationNameElementDetails.LOCATION_NAME_ELEMENT_NAME.eq(locationNameElementName));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locationnameelements, locationnameelementdetails
-                        WHERE locne_activedetailid = locnedt_locationnameelementdetailid AND locnedt_loctyp_locationtypeid = ?
-                        AND locnedt_locationnameelementname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locationnameelements, locationnameelementdetails
-                        WHERE locne_activedetailid = locnedt_locationnameelementdetailid AND locnedt_loctyp_locationtypeid = ?
-                        AND locnedt_locationnameelementname = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = locationNameElementFactory.prepareStatement(query);
-            
-            ps.setLong(1, locationType.getPrimaryKey().getEntityId());
-            ps.setString(2, locationNameElementName);
-
-            locationNameElement = locationNameElementFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return locationNameElement;
+        return locationNameElementFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public LocationNameElement getLocationNameElementByName(LocationType locationType, String locationNameElementName) {
@@ -1564,38 +1384,20 @@ public class WarehouseControl
     }
     
     private List<LocationNameElement> getLocationNameElementsByLocationType(LocationType locationType, EntityPermission entityPermission) {
-        List<LocationNameElement> locationNameElements;
+        var baseQuery = session.getDslContext()
+                .select(LocationNameElements.fields())
+                .from(LocationNameElements)
+                .join(LocationNameElementDetails).onKey(LOCATION_NAME_ELEMENTS_ACTIVE_DETAIL_FK)
+                .where(LocationNameElementDetails.LOCATION_TYPE.eq(locationType.getPrimaryKey()));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(LocationNameElementDetails.OFFSET),
+                    LocationNameElementFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locationnameelements, locationnameelementdetails
-                        WHERE locne_activedetailid = locnedt_locationnameelementdetailid AND locnedt_loctyp_locationtypeid = ?
-                        ORDER BY locnedt_offset
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locationnameelements, locationnameelementdetails
-                        WHERE locne_activedetailid = locnedt_locationnameelementdetailid AND locnedt_loctyp_locationtypeid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = locationNameElementFactory.prepareStatement(query);
-            
-            ps.setLong(1, locationType.getPrimaryKey().getEntityId());
-
-            locationNameElements = locationNameElementFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return locationNameElements;
+        return locationNameElementFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<LocationNameElement> getLocationNameElementsByLocationType(LocationType locationType) {
@@ -1683,6 +1485,9 @@ public class WarehouseControl
     @Inject
     protected LocationNameElementDescriptionFactory locationNameElementDescriptionFactory;
 
+    @Inject
+    LocationNameElementDescriptionTransferCache locationNameElementDescriptionTransferCache;
+
     public LocationNameElementDescription createLocationNameElementDescription(LocationNameElement locationNameElement, Language language,
             String description, BasePK createdBy) {
         var locationNameElementDescription = locationNameElementDescriptionFactory.create(
@@ -1695,38 +1500,19 @@ public class WarehouseControl
     
     public LocationNameElementDescription getLocationNameElementDescription(LocationNameElement locationNameElement, Language language,
             EntityPermission entityPermission) {
-        LocationNameElementDescription locationNameElementDescription;
+        var baseQuery = session.getDslContext()
+                .select(LocationNameElementDescriptions.fields())
+                .from(LocationNameElementDescriptions)
+                .where(LocationNameElementDescriptions.LOCATION_NAME_ELEMENT.eq(locationNameElement.getPrimaryKey()),
+                        LocationNameElementDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        LocationNameElementDescriptions.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locationnameelementdescriptions
-                        WHERE locned_locne_locationnameelementid = ? AND locned_lang_languageid = ? AND locned_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locationnameelementdescriptions
-                        WHERE locned_locne_locationnameelementid = ? AND locned_lang_languageid = ? AND locned_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = locationNameElementDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, locationNameElement.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            locationNameElementDescription = locationNameElementDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return locationNameElementDescription;
+        return locationNameElementDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public LocationNameElementDescription getLocationNameElementDescription(LocationNameElement locationNameElement, Language language) {
@@ -1746,39 +1532,24 @@ public class WarehouseControl
     }
     
     private List<LocationNameElementDescription> getLocationNameElementDescriptionsByLocationNameElement(LocationNameElement locationNameElement, EntityPermission entityPermission) {
-        List<LocationNameElementDescription> locationNameElementDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locationnameelementdescriptions, languages
-                        WHERE locned_locne_locationnameelementid = ? AND locned_thrutime = ? AND locned_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locationnameelementdescriptions
-                        WHERE locned_locne_locationnameelementid = ? AND locned_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(LocationNameElementDescriptions.fields())
+                    .from(LocationNameElementDescriptions)
+                    .join(Languages).onKey(LOCATION_NAME_ELEMENT_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(LocationNameElementDescriptions.LOCATION_NAME_ELEMENT.eq(locationNameElement.getPrimaryKey()),
+                            LocationNameElementDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    LocationNameElementDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(LocationNameElementDescriptions.fields())
+                    .from(LocationNameElementDescriptions)
+                    .where(LocationNameElementDescriptions.LOCATION_NAME_ELEMENT.eq(locationNameElement.getPrimaryKey()),
+                            LocationNameElementDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = locationNameElementDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, locationNameElement.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            locationNameElementDescriptions = locationNameElementDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return locationNameElementDescriptions;
+        return locationNameElementDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<LocationNameElementDescription> getLocationNameElementDescriptionsByLocationNameElement(LocationNameElement locationNameElement) {
@@ -1863,10 +1634,13 @@ public class WarehouseControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected LocationDetailFactory locationDetailFactory;
+
+    @Inject
     protected LocationFactory locationFactory;
 
     @Inject
-    protected LocationDetailFactory locationDetailFactory;
+    LocationTransferCache locationTransferCache;
 
     public Location createLocation(Party warehouseParty, String locationName, LocationType locationType,
             LocationUseType locationUseType, Integer velocity, InventoryLocationGroup inventoryLocationGroup, BasePK createdBy) {
@@ -1901,83 +1675,70 @@ public class WarehouseControl
     }
 
     public long countLocationsByWarehouseParty(Party warehouseParty) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM locations, locationdetails
-                WHERE loc_activedetailid = locdt_locationdetailid AND locdt_warehousepartyid = ?
-                """,
-                warehouseParty);
+        return session.getDslContext()
+                .selectCount()
+                .from(Locations)
+                .join(LocationDetails).onKey(LOCATIONS_ACTIVE_DETAIL_FK)
+                .where(LocationDetails.WAREHOUSE_PARTY.eq(warehouseParty.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countLocationsByLocationType(LocationType locationType) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM locations, locationdetails
-                WHERE loc_activedetailid = locdt_locationdetailid AND locdt_loctyp_locationtypeid = ?
-                """, locationType);
+        return session.getDslContext()
+                .selectCount()
+                .from(Locations)
+                .join(LocationDetails).onKey(LOCATIONS_ACTIVE_DETAIL_FK)
+                .where(LocationDetails.LOCATION_TYPE.eq(locationType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countLocationsByLocationUseType(LocationUseType locationUseType) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM locations, locationdetails
-                WHERE loc_activedetailid = locdt_locationdetailid AND locdt_locutyp_locationusetypeid = ?
-                """, locationUseType);
+        return session.getDslContext()
+                .selectCount()
+                .from(Locations)
+                .join(LocationDetails).onKey(LOCATIONS_ACTIVE_DETAIL_FK)
+                .where(LocationDetails.LOCATION_USE_TYPE.eq(locationUseType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countLocationsByInventoryLocationGroup(InventoryLocationGroup inventoryLocationGroup) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM locations, locationdetails
-                WHERE loc_activedetailid = locdt_locationdetailid AND locdt_invlocgrp_inventorylocationgroupid = ?
-                """, inventoryLocationGroup);
+        return session.getDslContext()
+                .selectCount()
+                .from(Locations)
+                .join(LocationDetails).onKey(LOCATIONS_ACTIVE_DETAIL_FK)
+                .where(LocationDetails.INVENTORY_LOCATION_GROUP.eq(inventoryLocationGroup.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countLocationsByLocationUseType(Party warehouseParty, LocationUseType locationUseType) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM locations, locationdetails
-                WHERE loc_activedetailid = locdt_locationdetailid AND locdt_warehousepartyid = ? AND locdt_locutyp_locationusetypeid = ?
-                """, warehouseParty, locationUseType);
+        return session.getDslContext()
+                .selectCount()
+                .from(Locations)
+                .join(LocationDetails).onKey(LOCATIONS_ACTIVE_DETAIL_FK)
+                .where(LocationDetails.WAREHOUSE_PARTY.eq(warehouseParty.getPrimaryKey()),
+                        LocationDetails.LOCATION_USE_TYPE.eq(locationUseType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public Location getLocationByName(Party warehouseParty, String locationName, EntityPermission entityPermission) {
-        Location location;
+        var baseQuery = session.getDslContext()
+                .select(Locations.fields())
+                .from(Locations)
+                .join(LocationDetails).onKey(LOCATIONS_ACTIVE_DETAIL_FK)
+                .where(LocationDetails.WAREHOUSE_PARTY.eq(warehouseParty.getPrimaryKey()),
+                        LocationDetails.LOCATION_NAME.eq(locationName));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locations, locationdetails
-                        WHERE loc_activedetailid = locdt_locationdetailid AND locdt_warehousepartyid = ? AND locdt_locationname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locations, locationdetails
-                        WHERE loc_activedetailid = locdt_locationdetailid AND locdt_warehousepartyid = ? AND locdt_locationname = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = locationFactory.prepareStatement(query);
-            
-            ps.setLong(1, warehouseParty.getPrimaryKey().getEntityId());
-            ps.setString(2, locationName);
-
-            location = locationFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return location;
+        return locationFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Location getLocationByName(Party warehouseParty, String locationName) {
@@ -1997,38 +1758,20 @@ public class WarehouseControl
     }
 
     private List<Location> getLocationsByWarehouseParty(Party warehouseParty, EntityPermission entityPermission) {
-        List<Location> locations;
+        var baseQuery = session.getDslContext()
+                .select(Locations.fields())
+                .from(Locations)
+                .join(LocationDetails).onKey(LOCATIONS_ACTIVE_DETAIL_FK)
+                .where(LocationDetails.WAREHOUSE_PARTY.eq(warehouseParty.getPrimaryKey()));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(LocationDetails.LOCATION_NAME),
+                    LocationFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locations, locationdetails
-                        WHERE loc_activedetailid = locdt_locationdetailid AND locdt_warehousepartyid = ?
-                        ORDER BY locdt_locationname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locations, locationdetails
-                        WHERE loc_activedetailid = locdt_locationdetailid AND locdt_warehousepartyid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = locationFactory.prepareStatement(query);
-
-            ps.setLong(1, warehouseParty.getPrimaryKey().getEntityId());
-
-            locations = locationFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return locations;
+        return locationFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Location> getLocationsByWarehouseParty(Party warehouseParty) {
@@ -2040,38 +1783,20 @@ public class WarehouseControl
     }
 
     private List<Location> getLocationsByName(String locationName, EntityPermission entityPermission) {
-        List<Location> locations;
+        var baseQuery = session.getDslContext()
+                .select(Locations.fields())
+                .from(Locations)
+                .join(LocationDetails).onKey(LOCATIONS_ACTIVE_DETAIL_FK)
+                .where(LocationDetails.LOCATION_NAME.eq(locationName));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(LocationDetails.LOCATION_NAME),
+                    LocationFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locations, locationdetails
-                        WHERE loc_activedetailid = locdt_locationdetailid AND locdt_locationname = ?
-                        ORDER BY locdt_locationname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locations, locationdetails
-                        WHERE loc_activedetailid = locdt_locationdetailid AND locdt_locationname = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = locationFactory.prepareStatement(query);
-
-            ps.setString(1, locationName);
-
-            locations = locationFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return locations;
+        return locationFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Location> getLocationsByName(String locationName) {
@@ -2083,38 +1808,20 @@ public class WarehouseControl
     }
 
     private List<Location> getLocationsByLocationType(LocationType locationType, EntityPermission entityPermission) {
-        List<Location> locations;
+        var baseQuery = session.getDslContext()
+                .select(Locations.fields())
+                .from(Locations)
+                .join(LocationDetails).onKey(LOCATIONS_ACTIVE_DETAIL_FK)
+                .where(LocationDetails.LOCATION_TYPE.eq(locationType.getPrimaryKey()));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(LocationDetails.LOCATION_NAME),
+                    LocationFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locations, locationdetails
-                        WHERE loc_activedetailid = locdt_locationdetailid AND locdt_loctyp_locationtypeid = ?
-                        ORDER BY locdt_locationname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locations, locationdetails
-                        WHERE loc_activedetailid = locdt_locationdetailid AND locdt_loctyp_locationtypeid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = locationFactory.prepareStatement(query);
-            
-            ps.setLong(1, locationType.getPrimaryKey().getEntityId());
-
-            locations = locationFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return locations;
+        return locationFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<Location> getLocationsByLocationType(LocationType locationType) {
@@ -2126,38 +1833,20 @@ public class WarehouseControl
     }
     
     private List<Location> getLocationsByInventoryLocationGroup(InventoryLocationGroup inventoryLocationGroup, EntityPermission entityPermission) {
-        List<Location> locations;
+        var baseQuery = session.getDslContext()
+                .select(Locations.fields())
+                .from(Locations)
+                .join(LocationDetails).onKey(LOCATIONS_ACTIVE_DETAIL_FK)
+                .where(LocationDetails.INVENTORY_LOCATION_GROUP.eq(inventoryLocationGroup.getPrimaryKey()));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(LocationDetails.LOCATION_NAME),
+                    LocationFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locations, locationdetails
-                        WHERE loc_activedetailid = locdt_locationdetailid AND locdt_invlocgrp_inventorylocationgroupid = ?
-                        ORDER BY locdt_locationname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locations, locationdetails
-                        WHERE loc_activedetailid = locdt_locationdetailid AND locdt_invlocgrp_inventorylocationgroupid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = locationFactory.prepareStatement(query);
-            
-            ps.setLong(1, inventoryLocationGroup.getPrimaryKey().getEntityId());
-
-            locations = locationFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return locations;
+        return locationFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<Location> getLocationsByInventoryLocationGroup(InventoryLocationGroup inventoryLocationGroup) {
@@ -2307,6 +1996,9 @@ public class WarehouseControl
     @Inject
     protected LocationDescriptionFactory locationDescriptionFactory;
 
+    @Inject
+    LocationDescriptionTransferCache locationDescriptionTransferCache;
+
     public LocationDescription createLocationDescription(Location location, Language language, String description, BasePK createdBy) {
         var locationDescription = locationDescriptionFactory.create(location, language, description, session.getStartTime(),
                 Session.MAX_TIME);
@@ -2317,38 +2009,19 @@ public class WarehouseControl
     }
     
     public LocationDescription getLocationDescription(Location location, Language language, EntityPermission entityPermission) {
-        LocationDescription locationDescription;
+        var baseQuery = session.getDslContext()
+                .select(LocationDescriptions.fields())
+                .from(LocationDescriptions)
+                .where(LocationDescriptions.LOCATION.eq(location.getPrimaryKey()),
+                        LocationDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        LocationDescriptions.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locationdescriptions
-                        WHERE locd_loc_locationid = ? AND locd_lang_languageid = ? AND locd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locationdescriptions
-                        WHERE locd_loc_locationid = ? AND locd_lang_languageid = ? AND locd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = locationDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, location.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            locationDescription = locationDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return locationDescription;
+        return locationDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public LocationDescription getLocationDescription(Location location, Language language) {
@@ -2368,39 +2041,24 @@ public class WarehouseControl
     }
     
     private List<LocationDescription> getLocationDescriptionsByLocation(Location location, EntityPermission entityPermission) {
-        List<LocationDescription> locationDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locationdescriptions, languages
-                        WHERE locd_loc_locationid = ? AND locd_thrutime = ? AND locd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locationdescriptions
-                        WHERE locd_loc_locationid = ? AND locd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(LocationDescriptions.fields())
+                    .from(LocationDescriptions)
+                    .join(Languages).onKey(LOCATION_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(LocationDescriptions.LOCATION.eq(location.getPrimaryKey()),
+                            LocationDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    LocationDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(LocationDescriptions.fields())
+                    .from(LocationDescriptions)
+                    .where(LocationDescriptions.LOCATION.eq(location.getPrimaryKey()),
+                            LocationDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = locationDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, location.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            locationDescriptions = locationDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return locationDescriptions;
+        return locationDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<LocationDescription> getLocationDescriptionsByLocation(Location location) {
@@ -2487,6 +2145,9 @@ public class WarehouseControl
     @Inject
     protected LocationVolumeFactory locationVolumeFactory;
 
+    @Inject
+    LocationVolumeTransferCache locationVolumeTransferCache;
+
     public LocationVolume createLocationVolume(Location location, Long height, Long width, Long depth, BasePK createdBy) {
         var locationVolume = locationVolumeFactory.create(location, height, width, depth,
                 session.getStartTime(), Session.MAX_TIME);
@@ -2497,37 +2158,18 @@ public class WarehouseControl
     }
     
     public LocationVolume getLocationVolume(Location location, EntityPermission entityPermission) {
-        LocationVolume locationVolume;
+        var baseQuery = session.getDslContext()
+                .select(LocationVolumes.fields())
+                .from(LocationVolumes)
+                .where(LocationVolumes.LOCATION.eq(location.getPrimaryKey()),
+                        LocationVolumes.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locationvolumes
-                        WHERE locvol_loc_locationid = ? AND locvol_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locationvolumes
-                        WHERE locvol_loc_locationid = ? AND locvol_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = locationVolumeFactory.prepareStatement(query);
-            
-            ps.setLong(1, location.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            locationVolume = locationVolumeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return locationVolume;
+        return locationVolumeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public LocationVolume getLocationVolume(Location location) {
@@ -2594,6 +2236,9 @@ public class WarehouseControl
     @Inject
     protected LocationCapacityFactory locationCapacityFactory;
 
+    @Inject
+    LocationCapacityTransferCache locationCapacityTransferCache;
+
     public LocationCapacity createLocationCapacity(Location location, UnitOfMeasureType unitOfMeasureType,
             Long capacity, BasePK createdBy) {
         var locationCapacity = locationCapacityFactory.create(location,
@@ -2605,62 +2250,47 @@ public class WarehouseControl
     }
 
     public long countLocationCapacitiesByLocation(Location location) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM locationcapacities
-                        WHERE loccap_loc_locationid = ? AND loccap_thrutime = ?
-                        """, location, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(LocationCapacities)
+                .where(LocationCapacities.LOCATION.eq(location.getPrimaryKey()),
+                        LocationCapacities.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countLocationCapacitiesByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM locationcapacities
-                        WHERE loccap_uomt_unitofmeasuretypeid = ? AND loccap_thrutime = ?
-                        """, unitOfMeasureType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(LocationCapacities)
+                .where(LocationCapacities.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        LocationCapacities.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<LocationCapacity> getLocationCapacitiesByLocation(Location location, EntityPermission entityPermission) {
-        List<LocationCapacity> locationCapacities;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locationcapacities, unitofmeasuretypedetails, unitofmeasurekinddetails
-                        WHERE loccap_loc_locationid = ? AND loccap_thrutime = ?
-                        AND loccap_uomt_unitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_thrutime = ?
-                        AND uomtdt_uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ?
-                        ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename, uomkdt_sortorder, uomkdt_unitofmeasurekindname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locationcapacities
-                        WHERE loccap_loc_locationid = ? AND loccap_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(LocationCapacities.fields())
+                    .from(LocationCapacities)
+                    .join(UnitOfMeasureTypeDetails).on(LocationCapacities.UNIT_OF_MEASURE_TYPE.eq(UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE))
+                    .join(UnitOfMeasureKindDetails).on(UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_KIND.eq(UnitOfMeasureKindDetails.UNIT_OF_MEASURE_KIND))
+                    .where(LocationCapacities.LOCATION.eq(location.getPrimaryKey()),
+                            LocationCapacities.THRU_TIME.eq(Session.MAX_TIME),
+                            UnitOfMeasureTypeDetails.THRU_TIME.eq(Session.MAX_TIME),
+                            UnitOfMeasureKindDetails.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME, UnitOfMeasureKindDetails.SORT_ORDER, UnitOfMeasureKindDetails.UNIT_OF_MEASURE_KIND_NAME),
+                    LocationCapacityFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(LocationCapacities.fields())
+                    .from(LocationCapacities)
+                    .where(LocationCapacities.LOCATION.eq(location.getPrimaryKey()),
+                            LocationCapacities.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = locationCapacityFactory.prepareStatement(query);
-            
-            ps.setLong(1, location.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                ps.setLong(3, Session.MAX_TIME);
-                ps.setLong(4, Session.MAX_TIME);
-            }
-            
-            locationCapacities = locationCapacityFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return locationCapacities;
+        return locationCapacityFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<LocationCapacity> getLocationCapacitiesByLocation(Location location) {
@@ -2672,38 +2302,19 @@ public class WarehouseControl
     }
     
     public LocationCapacity getLocationCapacity(Location location, UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        LocationCapacity locationCapacity;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locationcapacities
-                        WHERE loccap_loc_locationid = ? AND loccap_uomt_unitofmeasuretypeid = ? AND loccap_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM locationcapacities
-                        WHERE loccap_loc_locationid = ? AND loccap_uomt_unitofmeasuretypeid = ? AND loccap_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(LocationCapacities.fields())
+                .from(LocationCapacities)
+                .where(LocationCapacities.LOCATION.eq(location.getPrimaryKey()),
+                        LocationCapacities.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        LocationCapacities.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = locationCapacityFactory.prepareStatement(query);
-            
-            ps.setLong(1, location.getPrimaryKey().getEntityId());
-            ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            locationCapacity = locationCapacityFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return locationCapacity;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return locationCapacityFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public LocationCapacity getLocationCapacity(Location location, UnitOfMeasureType unitOfMeasureType) {
