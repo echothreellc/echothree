@@ -92,20 +92,55 @@ import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
+import static com.echothree.model.jooq.server.keys.financial.FinancialForeignKeys.FINANCIAL_ACCOUNTS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.financial.FinancialForeignKeys.FINANCIAL_ACCOUNTS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.financial.FinancialForeignKeys.FINANCIAL_ACCOUNT_ALIASES_FINANCIAL_ACCOUNT_ALIAS_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.financial.FinancialForeignKeys.FINANCIAL_ACCOUNT_ALIASES_FINANCIAL_ACCOUNT_FK;
+import static com.echothree.model.jooq.server.keys.financial.FinancialForeignKeys.FINANCIAL_ACCOUNT_ALIAS_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.financial.FinancialForeignKeys.FINANCIAL_ACCOUNT_ALIAS_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.financial.FinancialForeignKeys.FINANCIAL_ACCOUNT_ALIAS_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.financial.FinancialForeignKeys.FINANCIAL_ACCOUNT_DETAILS_FINANCIAL_ACCOUNT_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.financial.FinancialForeignKeys.FINANCIAL_ACCOUNT_ROLES_FINANCIAL_ACCOUNT_ROLE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.financial.FinancialForeignKeys.FINANCIAL_ACCOUNT_ROLES_PARTY_FK;
+import static com.echothree.model.jooq.server.keys.financial.FinancialForeignKeys.FINANCIAL_ACCOUNT_TRANSACTIONS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.financial.FinancialForeignKeys.FINANCIAL_ACCOUNT_TRANSACTION_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.financial.FinancialForeignKeys.FINANCIAL_ACCOUNT_TRANSACTION_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.financial.FinancialForeignKeys.FINANCIAL_ACCOUNT_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.financial.FinancialForeignKeys.FINANCIAL_ACCOUNT_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.financial.FinancialForeignKeys.FINANCIAL_ACCOUNT_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTIES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.financial.FinancialAccountAliasTypeDescriptions.FinancialAccountAliasTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.financial.FinancialAccountAliasTypeDetails.FinancialAccountAliasTypeDetails;
+import static com.echothree.model.jooq.server.tables.financial.FinancialAccountAliasTypes.FinancialAccountAliasTypes;
+import static com.echothree.model.jooq.server.tables.financial.FinancialAccountAliases.FinancialAccountAliases;
+import static com.echothree.model.jooq.server.tables.financial.FinancialAccountDetails.FinancialAccountDetails;
+import static com.echothree.model.jooq.server.tables.financial.FinancialAccountRoleTypeDescriptions.FinancialAccountRoleTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.financial.FinancialAccountRoleTypes.FinancialAccountRoleTypes;
+import static com.echothree.model.jooq.server.tables.financial.FinancialAccountRoles.FinancialAccountRoles;
+import static com.echothree.model.jooq.server.tables.financial.FinancialAccountStatuses.FinancialAccountStatuses;
+import static com.echothree.model.jooq.server.tables.financial.FinancialAccountTransactionDetails.FinancialAccountTransactionDetails;
+import static com.echothree.model.jooq.server.tables.financial.FinancialAccountTransactionTypeDescriptions.FinancialAccountTransactionTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.financial.FinancialAccountTransactionTypeDetails.FinancialAccountTransactionTypeDetails;
+import static com.echothree.model.jooq.server.tables.financial.FinancialAccountTransactionTypes.FinancialAccountTransactionTypes;
+import static com.echothree.model.jooq.server.tables.financial.FinancialAccountTransactions.FinancialAccountTransactions;
+import static com.echothree.model.jooq.server.tables.financial.FinancialAccountTypeDescriptions.FinancialAccountTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.financial.FinancialAccountTypeDetails.FinancialAccountTypeDetails;
+import static com.echothree.model.jooq.server.tables.financial.FinancialAccountTypes.FinancialAccountTypes;
+import static com.echothree.model.jooq.server.tables.financial.FinancialAccounts.FinancialAccounts;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.party.Parties.Parties;
+import static com.echothree.model.jooq.server.tables.party.PartyDetails.PartyDetails;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -118,75 +153,32 @@ public class FinancialControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Financial Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    @Inject
-    FinancialAccountRoleTypeTransferCache financialAccountRoleTypeTransferCache;
-
-    @Inject
-    FinancialAccountTypeTransferCache financialAccountTypeTransferCache;
-
-    @Inject
-    FinancialAccountTypeDescriptionTransferCache financialAccountTypeDescriptionTransferCache;
-
-    @Inject
-    FinancialAccountTransactionTypeTransferCache financialAccountTransactionTypeTransferCache;
-
-    @Inject
-    FinancialAccountTransactionTypeDescriptionTransferCache financialAccountTransactionTypeDescriptionTransferCache;
-
-    @Inject
-    FinancialAccountAliasTypeTransferCache financialAccountAliasTypeTransferCache;
-
-    @Inject
-    FinancialAccountAliasTypeDescriptionTransferCache financialAccountAliasTypeDescriptionTransferCache;
-
-    @Inject
-    FinancialAccountRoleTransferCache financialAccountRoleTransferCache;
-
-    @Inject
-    FinancialAccountTransferCache financialAccountTransferCache;
-
-    @Inject
-    FinancialAccountAliasTransferCache financialAccountAliasTransferCache;
-
-    @Inject
-    FinancialAccountTransactionTransferCache financialAccountTransactionTransferCache;
-
-    // --------------------------------------------------------------------------------
     //   Financial Account Role Types
     // --------------------------------------------------------------------------------
 
     @Inject
     protected FinancialAccountRoleTypeFactory financialAccountRoleTypeFactory;
 
+    @Inject
+    FinancialAccountRoleTypeTransferCache financialAccountRoleTypeTransferCache;
+
     public FinancialAccountRoleType createFinancialAccountRoleType(String financialAccountRoleTypeName, Integer sortOrder) {
         return financialAccountRoleTypeFactory.create(financialAccountRoleTypeName, sortOrder);
     }
     
-    private static final Map<EntityPermission, String> getFinancialAccountRoleTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccountroletypes
-                ORDER BY finatyp_sortorder, finatyp_financialaccountroletypename
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccountroletypes
-                FOR UPDATE
-                """);
-        getFinancialAccountRoleTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<FinancialAccountRoleType> getFinancialAccountRoleTypes(EntityPermission entityPermission) {
-        return financialAccountRoleTypeFactory.getEntitiesFromQuery(entityPermission, getFinancialAccountRoleTypesQueries);
+        var baseQuery = session.getDslContext()
+                .select(FinancialAccountRoleTypes.fields())
+                .from(FinancialAccountRoleTypes);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(FinancialAccountRoleTypes.SORT_ORDER, FinancialAccountRoleTypes.FINANCIAL_ACCOUNT_ROLE_TYPE_NAME),
+                    FinancialAccountRoleTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return financialAccountRoleTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<FinancialAccountRoleType> getFinancialAccountRoleTypes() {
@@ -197,30 +189,18 @@ public class FinancialControl
         return getFinancialAccountRoleTypes(EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getFinancialAccountRoleTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccountroletypes
-                WHERE finatyp_financialaccountroletypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccountroletypes
-                WHERE finatyp_financialaccountroletypename = ?
-                FOR UPDATE
-                """);
-        getFinancialAccountRoleTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private FinancialAccountRoleType getFinancialAccountRoleTypeByName(String financialAccountRoleTypeName, EntityPermission entityPermission) {
-        return financialAccountRoleTypeFactory.getEntityFromQuery(entityPermission, getFinancialAccountRoleTypeQueries,
-                financialAccountRoleTypeName);
+        var baseQuery = session.getDslContext()
+                .select(FinancialAccountRoleTypes.fields())
+                .from(FinancialAccountRoleTypes)
+                .where(FinancialAccountRoleTypes.FINANCIAL_ACCOUNT_ROLE_TYPE_NAME.eq(financialAccountRoleTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return financialAccountRoleTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public FinancialAccountRoleType getFinancialAccountRoleTypeByName(String financialAccountRoleTypeName) {
@@ -261,30 +241,19 @@ public class FinancialControl
         return financialAccountRoleTypeDescriptionFactory.create(financialAccountRoleType, language, description);
     }
     
-    private static final Map<EntityPermission, String> getFinancialAccountRoleTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccountroletypedescriptions
-                WHERE finatypd_finatyp_financialaccountroletypeid = ? AND finatypd_lang_languageid = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccountroletypedescriptions
-                WHERE finatypd_finatyp_financialaccountroletypeid = ? AND finatypd_lang_languageid = ?
-                FOR UPDATE
-                """);
-        getFinancialAccountRoleTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private FinancialAccountRoleTypeDescription getFinancialAccountRoleTypeDescription(FinancialAccountRoleType financialAccountRoleType, Language language, EntityPermission entityPermission) {
-        return financialAccountRoleTypeDescriptionFactory.getEntityFromQuery(entityPermission, getFinancialAccountRoleTypeDescriptionQueries,
-                financialAccountRoleType, language);
+        var baseQuery = session.getDslContext()
+                .select(FinancialAccountRoleTypeDescriptions.fields())
+                .from(FinancialAccountRoleTypeDescriptions)
+                .where(FinancialAccountRoleTypeDescriptions.FINANCIAL_ACCOUNT_ROLE_TYPE.eq(financialAccountRoleType.getPrimaryKey()),
+                        FinancialAccountRoleTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return financialAccountRoleTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public FinancialAccountRoleTypeDescription getFinancialAccountRoleTypeDescription(FinancialAccountRoleType financialAccountRoleType, Language language) {
@@ -317,10 +286,13 @@ public class FinancialControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected FinancialAccountTypeDetailFactory financialAccountTypeDetailFactory;
+
+    @Inject
     protected FinancialAccountTypeFactory financialAccountTypeFactory;
 
     @Inject
-    protected FinancialAccountTypeDetailFactory financialAccountTypeDetailFactory;
+    FinancialAccountTypeTransferCache financialAccountTypeTransferCache;
 
     public FinancialAccountType createFinancialAccountType(String financialAccountTypeName, FinancialAccountType parentFinancialAccountType,
             GlAccount defaultGlAccount, SequenceType financialAccountSequenceType, SequenceType financialAccountTransactionSequenceType,
@@ -354,31 +326,19 @@ public class FinancialControl
         return financialAccountType;
     }
     
-    private static final Map<EntityPermission, String> getFinancialAccountTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccounttypes, financialaccounttypedetails
-                WHERE fnatyp_activedetailid = fnatypdt_financialaccounttypedetailid
-                AND fnatypdt_financialaccounttypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccounttypes, financialaccounttypedetails
-                WHERE fnatyp_activedetailid = fnatypdt_financialaccounttypedetailid
-                AND fnatypdt_financialaccounttypename = ?
-                FOR UPDATE
-                """);
-        getFinancialAccountTypeByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private FinancialAccountType getFinancialAccountTypeByName(String financialAccountTypeName, EntityPermission entityPermission) {
-        return financialAccountTypeFactory.getEntityFromQuery(entityPermission, getFinancialAccountTypeByNameQueries, financialAccountTypeName);
+        var baseQuery = session.getDslContext()
+                .select(FinancialAccountTypes.fields())
+                .from(FinancialAccountTypes)
+                .join(FinancialAccountTypeDetails).onKey(FINANCIAL_ACCOUNT_TYPES_ACTIVE_DETAIL_FK)
+                .where(FinancialAccountTypeDetails.FINANCIAL_ACCOUNT_TYPE_NAME.eq(financialAccountTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return financialAccountTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public FinancialAccountType getFinancialAccountTypeByName(String financialAccountTypeName) {
@@ -397,31 +357,19 @@ public class FinancialControl
         return getFinancialAccountTypeDetailValueForUpdate(getFinancialAccountTypeByNameForUpdate(financialAccountTypeName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultFinancialAccountTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccounttypes, financialaccounttypedetails
-                WHERE fnatyp_activedetailid = fnatypdt_financialaccounttypedetailid
-                AND fnatypdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccounttypes, financialaccounttypedetails
-                WHERE fnatyp_activedetailid = fnatypdt_financialaccounttypedetailid
-                AND fnatypdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultFinancialAccountTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private FinancialAccountType getDefaultFinancialAccountType(EntityPermission entityPermission) {
-        return financialAccountTypeFactory.getEntityFromQuery(entityPermission, getDefaultFinancialAccountTypeQueries);
+        var baseQuery = session.getDslContext()
+                .select(FinancialAccountTypes.fields())
+                .from(FinancialAccountTypes)
+                .join(FinancialAccountTypeDetails).onKey(FINANCIAL_ACCOUNT_TYPES_ACTIVE_DETAIL_FK)
+                .where(FinancialAccountTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return financialAccountTypeFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public FinancialAccountType getDefaultFinancialAccountType() {
@@ -436,31 +384,20 @@ public class FinancialControl
         return getDefaultFinancialAccountTypeForUpdate().getLastDetailForUpdate().getFinancialAccountTypeDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getFinancialAccountTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccounttypes, financialaccounttypedetails
-                WHERE fnatyp_activedetailid = fnatypdt_financialaccounttypedetailid
-                ORDER BY fnatypdt_sortorder, fnatypdt_financialaccounttypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccounttypes, financialaccounttypedetails
-                WHERE fnatyp_activedetailid = fnatypdt_financialaccounttypedetailid
-                FOR UPDATE
-                """);
-        getFinancialAccountTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<FinancialAccountType> getFinancialAccountTypes(EntityPermission entityPermission) {
-        return financialAccountTypeFactory.getEntitiesFromQuery(entityPermission, getFinancialAccountTypesQueries);
+        var baseQuery = session.getDslContext()
+                .select(FinancialAccountTypes.fields())
+                .from(FinancialAccountTypes)
+                .join(FinancialAccountTypeDetails).onKey(FINANCIAL_ACCOUNT_TYPES_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(FinancialAccountTypeDetails.SORT_ORDER, FinancialAccountTypeDetails.FINANCIAL_ACCOUNT_TYPE_NAME),
+                    FinancialAccountTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return financialAccountTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<FinancialAccountType> getFinancialAccountTypes() {
@@ -471,33 +408,22 @@ public class FinancialControl
         return getFinancialAccountTypes(EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getFinancialAccountTypesByParentFinancialAccountTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccounttypes, financialaccounttypedetails
-                WHERE fnatyp_activedetailid = fnatypdt_financialaccounttypedetailid AND fnatypdt_parentfinancialaccounttypeid = ?
-                ORDER BY fnatypdt_sortorder, fnatypdt_financialaccounttypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccounttypes, financialaccounttypedetails
-                WHERE fnatyp_activedetailid = fnatypdt_financialaccounttypedetailid AND fnatypdt_parentfinancialaccounttypeid = ?
-                FOR UPDATE
-                """);
-        getFinancialAccountTypesByParentFinancialAccountTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<FinancialAccountType> getFinancialAccountTypesByParentFinancialAccountType(FinancialAccountType parentFinancialAccountType,
             EntityPermission entityPermission) {
-        return financialAccountTypeFactory.getEntitiesFromQuery(entityPermission, getFinancialAccountTypesByParentFinancialAccountTypeQueries,
-                parentFinancialAccountType);
+        var baseQuery = session.getDslContext()
+                .select(FinancialAccountTypes.fields())
+                .from(FinancialAccountTypes)
+                .join(FinancialAccountTypeDetails).onKey(FINANCIAL_ACCOUNT_TYPES_ACTIVE_DETAIL_FK)
+                .where(FinancialAccountTypeDetails.PARENT_FINANCIAL_ACCOUNT_TYPE.eq(parentFinancialAccountType.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(FinancialAccountTypeDetails.SORT_ORDER, FinancialAccountTypeDetails.FINANCIAL_ACCOUNT_TYPE_NAME),
+                    FinancialAccountTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return financialAccountTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<FinancialAccountType> getFinancialAccountTypesByParentFinancialAccountType(FinancialAccountType parentFinancialAccountType) {
@@ -690,6 +616,9 @@ public class FinancialControl
     @Inject
     protected FinancialAccountTypeDescriptionFactory financialAccountTypeDescriptionFactory;
 
+    @Inject
+    FinancialAccountTypeDescriptionTransferCache financialAccountTypeDescriptionTransferCache;
+
     public FinancialAccountTypeDescription createFinancialAccountTypeDescription(FinancialAccountType financialAccountType, Language language, String description, BasePK createdBy) {
         var financialAccountTypeDescription = financialAccountTypeDescriptionFactory.create(financialAccountType, language, description,
                 session.getStartTime(), Session.MAX_TIME);
@@ -699,30 +628,20 @@ public class FinancialControl
         return financialAccountTypeDescription;
     }
     
-    private static final Map<EntityPermission, String> getFinancialAccountTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccounttypedescriptions
-                WHERE fnatypd_fnatyp_financialaccounttypeid = ? AND fnatypd_lang_languageid = ? AND fnatypd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccounttypedescriptions
-                WHERE fnatypd_fnatyp_financialaccounttypeid = ? AND fnatypd_lang_languageid = ? AND fnatypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getFinancialAccountTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private FinancialAccountTypeDescription getFinancialAccountTypeDescription(FinancialAccountType financialAccountType, Language language, EntityPermission entityPermission) {
-        return financialAccountTypeDescriptionFactory.getEntityFromQuery(entityPermission, getFinancialAccountTypeDescriptionQueries,
-                financialAccountType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(FinancialAccountTypeDescriptions.fields())
+                .from(FinancialAccountTypeDescriptions)
+                .where(FinancialAccountTypeDescriptions.FINANCIAL_ACCOUNT_TYPE.eq(financialAccountType.getPrimaryKey()),
+                        FinancialAccountTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        FinancialAccountTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return financialAccountTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public FinancialAccountTypeDescription getFinancialAccountTypeDescription(FinancialAccountType financialAccountType, Language language) {
@@ -741,31 +660,25 @@ public class FinancialControl
         return getFinancialAccountTypeDescriptionValue(getFinancialAccountTypeDescriptionForUpdate(financialAccountType, language));
     }
     
-    private static final Map<EntityPermission, String> getFinancialAccountTypeDescriptionsByFinancialAccountTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccounttypedescriptions, languages
-                WHERE fnatypd_fnatyp_financialaccounttypeid = ? AND fnatypd_thrutime = ? AND fnatypd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccounttypedescriptions
-                WHERE fnatypd_fnatyp_financialaccounttypeid = ? AND fnatypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getFinancialAccountTypeDescriptionsByFinancialAccountTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<FinancialAccountTypeDescription> getFinancialAccountTypeDescriptionsByFinancialAccountType(FinancialAccountType financialAccountType, EntityPermission entityPermission) {
-        return financialAccountTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getFinancialAccountTypeDescriptionsByFinancialAccountTypeQueries,
-                financialAccountType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(FinancialAccountTypeDescriptions.fields())
+                    .from(FinancialAccountTypeDescriptions)
+                    .join(Languages).onKey(FINANCIAL_ACCOUNT_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(FinancialAccountTypeDescriptions.FINANCIAL_ACCOUNT_TYPE.eq(financialAccountType.getPrimaryKey()),
+                            FinancialAccountTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    FinancialAccountTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(FinancialAccountTypeDescriptions.fields())
+                    .from(FinancialAccountTypeDescriptions)
+                    .where(FinancialAccountTypeDescriptions.FINANCIAL_ACCOUNT_TYPE.eq(financialAccountType.getPrimaryKey()),
+                            FinancialAccountTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return financialAccountTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<FinancialAccountTypeDescription> getFinancialAccountTypeDescriptionsByFinancialAccountType(FinancialAccountType financialAccountType) {
@@ -847,10 +760,13 @@ public class FinancialControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected FinancialAccountTransactionTypeDetailFactory financialAccountTransactionTypeDetailFactory;
+
+    @Inject
     protected FinancialAccountTransactionTypeFactory financialAccountTransactionTypeFactory;
 
     @Inject
-    protected FinancialAccountTransactionTypeDetailFactory financialAccountTransactionTypeDetailFactory;
+    FinancialAccountTransactionTypeTransferCache financialAccountTransactionTypeTransferCache;
 
     public FinancialAccountTransactionType createFinancialAccountTransactionType(FinancialAccountType financialAccountType,
             String financialAccountTransactionTypeName, FinancialAccountTransactionType parentFinancialAccountTransactionType, GlAccount glAccount,
@@ -884,33 +800,21 @@ public class FinancialControl
         return financialAccountTransactionType;
     }
     
-    private static final Map<EntityPermission, String> getFinancialAccountTransactionTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccounttransactiontypes, financialaccounttransactiontypedetails
-                WHERE fnatrxtyp_activedetailid = fnatrxtypdt_financialaccounttransactiontypedetailid
-                AND fnatrxtypdt_fnatyp_financialaccounttypeid = ? AND fnatrxtypdt_financialaccounttransactiontypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccounttransactiontypes, financialaccounttransactiontypedetails
-                WHERE fnatrxtyp_activedetailid = fnatrxtypdt_financialaccounttransactiontypedetailid
-                AND fnatrxtypdt_fnatyp_financialaccounttypeid = ? AND fnatrxtypdt_financialaccounttransactiontypename = ?
-                FOR UPDATE
-                """);
-        getFinancialAccountTransactionTypeByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private FinancialAccountTransactionType getFinancialAccountTransactionTypeByName(FinancialAccountType financialAccountType,
             String financialAccountTransactionTypeName, EntityPermission entityPermission) {
-        return financialAccountTransactionTypeFactory.getEntityFromQuery(entityPermission,
-                getFinancialAccountTransactionTypeByNameQueries, financialAccountType, financialAccountTransactionTypeName);
+        var baseQuery = session.getDslContext()
+                .select(FinancialAccountTransactionTypes.fields())
+                .from(FinancialAccountTransactionTypes)
+                .join(FinancialAccountTransactionTypeDetails).onKey(FINANCIAL_ACCOUNT_TRANSACTION_TYPES_ACTIVE_DETAIL_FK)
+                .where(FinancialAccountTransactionTypeDetails.FINANCIAL_ACCOUNT_TYPE.eq(financialAccountType.getPrimaryKey()),
+                        FinancialAccountTransactionTypeDetails.FINANCIAL_ACCOUNT_TRANSACTION_TYPE_NAME.eq(financialAccountTransactionTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return financialAccountTransactionTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public FinancialAccountTransactionType getFinancialAccountTransactionTypeByName(FinancialAccountType financialAccountType,
@@ -933,33 +837,21 @@ public class FinancialControl
                 financialAccountTransactionTypeName));
     }
     
-    private static final Map<EntityPermission, String> getDefaultFinancialAccountTransactionTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccounttransactiontypes, financialaccounttransactiontypedetails
-                WHERE fnatrxtyp_activedetailid = fnatrxtypdt_financialaccounttransactiontypedetailid
-                AND fnatrxtypdt_fnatyp_financialaccounttypeid = ? AND fnatrxtypdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccounttransactiontypes, financialaccounttransactiontypedetails
-                WHERE fnatrxtyp_activedetailid = fnatrxtypdt_financialaccounttransactiontypedetailid
-                AND fnatrxtypdt_fnatyp_financialaccounttypeid = ? AND fnatrxtypdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultFinancialAccountTransactionTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private FinancialAccountTransactionType getDefaultFinancialAccountTransactionType(FinancialAccountType financialAccountType,
             EntityPermission entityPermission) {
-        return financialAccountTransactionTypeFactory.getEntityFromQuery(entityPermission,
-                getDefaultFinancialAccountTransactionTypeQueries, financialAccountType);
+        var baseQuery = session.getDslContext()
+                .select(FinancialAccountTransactionTypes.fields())
+                .from(FinancialAccountTransactionTypes)
+                .join(FinancialAccountTransactionTypeDetails).onKey(FINANCIAL_ACCOUNT_TRANSACTION_TYPES_ACTIVE_DETAIL_FK)
+                .where(FinancialAccountTransactionTypeDetails.FINANCIAL_ACCOUNT_TYPE.eq(financialAccountType.getPrimaryKey()),
+                        FinancialAccountTransactionTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return financialAccountTransactionTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public FinancialAccountTransactionType getDefaultFinancialAccountTransactionType(FinancialAccountType financialAccountType) {
@@ -974,34 +866,22 @@ public class FinancialControl
         return getDefaultFinancialAccountTransactionTypeForUpdate(financialAccountType).getLastDetailForUpdate().getFinancialAccountTransactionTypeDetailValue().clone();
     }
     
-    private static final Map<EntityPermission, String> getFinancialAccountTransactionTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccounttransactiontypes, financialaccounttransactiontypedetails
-                WHEREfnatrxtyp_activedetailid = fnatrxtypdt_financialaccounttransactiontypedetailid
-                AND fnatrxtypdt_fnatyp_financialaccounttypeid = ?
-                ORDER BY fnatrxtypdt_sortorder, fnatrxtypdt_financialaccounttransactiontypename
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccounttransactiontypes, financialaccounttransactiontypedetails
-                WHERE fnatrxtyp_activedetailid = fnatrxtypdt_financialaccounttransactiontypedetailid
-                AND fnatrxtypdt_fnatyp_financialaccounttypeid = ?
-                FOR UPDATE
-                """);
-        getFinancialAccountTransactionTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<FinancialAccountTransactionType> getFinancialAccountTransactionTypes(FinancialAccountType financialAccountType,
             EntityPermission entityPermission) {
-        return financialAccountTransactionTypeFactory.getEntitiesFromQuery(entityPermission, getFinancialAccountTransactionTypesQueries,
-                financialAccountType);
+        var baseQuery = session.getDslContext()
+                .select(FinancialAccountTransactionTypes.fields())
+                .from(FinancialAccountTransactionTypes)
+                .join(FinancialAccountTransactionTypeDetails).onKey(FINANCIAL_ACCOUNT_TRANSACTION_TYPES_ACTIVE_DETAIL_FK)
+                .where(FinancialAccountTransactionTypeDetails.FINANCIAL_ACCOUNT_TYPE.eq(financialAccountType.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(FinancialAccountTransactionTypeDetails.SORT_ORDER, FinancialAccountTransactionTypeDetails.FINANCIAL_ACCOUNT_TRANSACTION_TYPE_NAME),
+                    FinancialAccountTransactionTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return financialAccountTransactionTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<FinancialAccountTransactionType> getFinancialAccountTransactionTypes(FinancialAccountType financialAccountType) {
@@ -1012,33 +892,22 @@ public class FinancialControl
         return getFinancialAccountTransactionTypes(financialAccountType, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getFinancialAccountTransactionTypesByParentFinancialAccountTransactionTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccounttransactiontypes, financialaccounttransactiontypedetails
-                WHERE fnatrxtyp_activedetailid = fnatrxtypdt_financialaccounttransactiontypedetailid AND fnatrxtypdt_parentfinancialaccounttransactiontypeid = ?
-                ORDER BY fnatrxtypdt_sortorder, fnatrxtypdt_financialaccounttransactiontypename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccounttransactiontypes, financialaccounttransactiontypedetails
-                WHERE fnatrxtyp_activedetailid = fnatrxtypdt_financialaccounttransactiontypedetailid AND fnatrxtypdt_parentfinancialaccounttransactiontypeid = ?
-                FOR UPDATE
-                """);
-        getFinancialAccountTransactionTypesByParentFinancialAccountTransactionTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<FinancialAccountTransactionType> getFinancialAccountTransactionTypesByParentFinancialAccountTransactionType(FinancialAccountTransactionType parentFinancialAccountTransactionType,
             EntityPermission entityPermission) {
-        return financialAccountTransactionTypeFactory.getEntitiesFromQuery(entityPermission, getFinancialAccountTransactionTypesByParentFinancialAccountTransactionTypeQueries,
-                parentFinancialAccountTransactionType);
+        var baseQuery = session.getDslContext()
+                .select(FinancialAccountTransactionTypes.fields())
+                .from(FinancialAccountTransactionTypes)
+                .join(FinancialAccountTransactionTypeDetails).onKey(FINANCIAL_ACCOUNT_TRANSACTION_TYPES_ACTIVE_DETAIL_FK)
+                .where(FinancialAccountTransactionTypeDetails.PARENT_FINANCIAL_ACCOUNT_TRANSACTION_TYPE.eq(parentFinancialAccountTransactionType.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(FinancialAccountTransactionTypeDetails.SORT_ORDER, FinancialAccountTransactionTypeDetails.FINANCIAL_ACCOUNT_TRANSACTION_TYPE_NAME),
+                    FinancialAccountTransactionTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return financialAccountTransactionTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<FinancialAccountTransactionType> getFinancialAccountTransactionTypesByParentFinancialAccountTransactionType(FinancialAccountTransactionType parentFinancialAccountTransactionType) {
@@ -1232,6 +1101,9 @@ public class FinancialControl
     @Inject
     protected FinancialAccountTransactionTypeDescriptionFactory financialAccountTransactionTypeDescriptionFactory;
 
+    @Inject
+    FinancialAccountTransactionTypeDescriptionTransferCache financialAccountTransactionTypeDescriptionTransferCache;
+
     public FinancialAccountTransactionTypeDescription createFinancialAccountTransactionTypeDescription(FinancialAccountTransactionType financialAccountTransactionType,
             Language language, String description, BasePK createdBy) {
         var financialAccountTransactionTypeDescription = financialAccountTransactionTypeDescriptionFactory.create(
@@ -1242,31 +1114,21 @@ public class FinancialControl
         return financialAccountTransactionTypeDescription;
     }
     
-    private static final Map<EntityPermission, String> getFinancialAccountTransactionTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccounttransactiontypedescriptions
-                WHERE fnatrxtypd_fnatrxtyp_financialaccounttransactiontypeid = ? AND fnatrxtypd_lang_languageid = ? AND fnatrxtypd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccounttransactiontypedescriptions
-                WHERE fnatrxtypd_fnatrxtyp_financialaccounttransactiontypeid = ? AND fnatrxtypd_lang_languageid = ? AND fnatrxtypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getFinancialAccountTransactionTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private FinancialAccountTransactionTypeDescription getFinancialAccountTransactionTypeDescription(FinancialAccountTransactionType financialAccountTransactionType,
             Language language, EntityPermission entityPermission) {
-        return financialAccountTransactionTypeDescriptionFactory.getEntityFromQuery(entityPermission, getFinancialAccountTransactionTypeDescriptionQueries,
-                financialAccountTransactionType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(FinancialAccountTransactionTypeDescriptions.fields())
+                .from(FinancialAccountTransactionTypeDescriptions)
+                .where(FinancialAccountTransactionTypeDescriptions.FINANCIAL_ACCOUNT_TRANSACTION_TYPE.eq(financialAccountTransactionType.getPrimaryKey()),
+                        FinancialAccountTransactionTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        FinancialAccountTransactionTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return financialAccountTransactionTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public FinancialAccountTransactionTypeDescription getFinancialAccountTransactionTypeDescription(FinancialAccountTransactionType financialAccountTransactionType,
@@ -1288,32 +1150,26 @@ public class FinancialControl
         return getFinancialAccountTransactionTypeDescriptionValue(getFinancialAccountTransactionTypeDescriptionForUpdate(financialAccountTransactionType, language));
     }
     
-    private static final Map<EntityPermission, String> getFinancialAccountTransactionTypeDescriptionsByFinancialAccountTransactionTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccounttransactiontypedescriptions, languages
-                WHERE fnatrxtypd_fnatrxtyp_financialaccounttransactiontypeid = ? AND fnatrxtypd_thrutime = ? AND fnatrxtypd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccounttransactiontypedescriptions
-                WHERE fnatrxtypd_fnatrxtyp_financialaccounttransactiontypeid = ? AND fnatrxtypd_thrutime = ?
-                FOR UPDATE
-                """);
-        getFinancialAccountTransactionTypeDescriptionsByFinancialAccountTransactionTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<FinancialAccountTransactionTypeDescription> getFinancialAccountTransactionTypeDescriptionsByFinancialAccountTransactionType(FinancialAccountTransactionType financialAccountTransactionType,
             EntityPermission entityPermission) {
-        return financialAccountTransactionTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getFinancialAccountTransactionTypeDescriptionsByFinancialAccountTransactionTypeQueries,
-                financialAccountTransactionType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(FinancialAccountTransactionTypeDescriptions.fields())
+                    .from(FinancialAccountTransactionTypeDescriptions)
+                    .join(Languages).onKey(FINANCIAL_ACCOUNT_TRANSACTION_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(FinancialAccountTransactionTypeDescriptions.FINANCIAL_ACCOUNT_TRANSACTION_TYPE.eq(financialAccountTransactionType.getPrimaryKey()),
+                            FinancialAccountTransactionTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    FinancialAccountTransactionTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(FinancialAccountTransactionTypeDescriptions.fields())
+                    .from(FinancialAccountTransactionTypeDescriptions)
+                    .where(FinancialAccountTransactionTypeDescriptions.FINANCIAL_ACCOUNT_TRANSACTION_TYPE.eq(financialAccountTransactionType.getPrimaryKey()),
+                            FinancialAccountTransactionTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return financialAccountTransactionTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<FinancialAccountTransactionTypeDescription> getFinancialAccountTransactionTypeDescriptionsByFinancialAccountTransactionType(FinancialAccountTransactionType financialAccountTransactionType) {
@@ -1397,10 +1253,13 @@ public class FinancialControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected FinancialAccountAliasTypeDetailFactory financialAccountAliasTypeDetailFactory;
+
+    @Inject
     protected FinancialAccountAliasTypeFactory financialAccountAliasTypeFactory;
 
     @Inject
-    protected FinancialAccountAliasTypeDetailFactory financialAccountAliasTypeDetailFactory;
+    FinancialAccountAliasTypeTransferCache financialAccountAliasTypeTransferCache;
 
     public FinancialAccountAliasType createFinancialAccountAliasType(FinancialAccountType financialAccountType, String financialAccountAliasTypeName,
             String validationPattern, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -1432,33 +1291,21 @@ public class FinancialControl
         return financialAccountAliasType;
     }
     
-    private static final Map<EntityPermission, String> getFinancialAccountAliasTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccountaliastypes, financialaccountaliastypedetails
-                WHERE finaat_activedetailid = finaatdt_financialaccountaliastypedetailid AND finaatdt_geot_financialaccounttypeid = ?
-                AND finaatdt_financialaccountaliastypename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccountaliastypes, financialaccountaliastypedetails
-                WHERE finaat_activedetailid = finaatdt_financialaccountaliastypedetailid AND finaatdt_geot_financialaccounttypeid = ?
-                AND finaatdt_financialaccountaliastypename = ?
-                FOR UPDATE
-                """);
-        getFinancialAccountAliasTypeByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private FinancialAccountAliasType getFinancialAccountAliasTypeByName(FinancialAccountType financialAccountType, String financialAccountAliasTypeName,
             EntityPermission entityPermission) {
-        return financialAccountAliasTypeFactory.getEntityFromQuery(entityPermission, getFinancialAccountAliasTypeByNameQueries,
-                financialAccountType, financialAccountAliasTypeName);
+        var baseQuery = session.getDslContext()
+                .select(FinancialAccountAliasTypes.fields())
+                .from(FinancialAccountAliasTypes)
+                .join(FinancialAccountAliasTypeDetails).onKey(FINANCIAL_ACCOUNT_ALIAS_TYPES_ACTIVE_DETAIL_FK)
+                .where(FinancialAccountAliasTypeDetails.FINANCIAL_ACCOUNT_TYPE.eq(financialAccountType.getPrimaryKey()),
+                        FinancialAccountAliasTypeDetails.FINANCIAL_ACCOUNT_ALIAS_TYPE_NAME.eq(financialAccountAliasTypeName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return financialAccountAliasTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public FinancialAccountAliasType getFinancialAccountAliasTypeByName(FinancialAccountType financialAccountType, String financialAccountAliasTypeName) {
@@ -1478,31 +1325,20 @@ public class FinancialControl
         return getFinancialAccountAliasTypeDetailValueForUpdate(getFinancialAccountAliasTypeByNameForUpdate(financialAccountType, financialAccountAliasTypeName));
     }
     
-    private static final Map<EntityPermission, String> getDefaultFinancialAccountAliasTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccountaliastypes, financialaccountaliastypedetails
-                WHERE finaat_activedetailid = finaatdt_financialaccountaliastypedetailid AND finaatdt_geot_financialaccounttypeid = ?
-                AND finaatdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccountaliastypes, financialaccountaliastypedetails
-                WHERE finaat_activedetailid = finaatdt_financialaccountaliastypedetailid AND finaatdt_geot_financialaccounttypeid = ?
-                AND finaatdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultFinancialAccountAliasTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private FinancialAccountAliasType getDefaultFinancialAccountAliasType(FinancialAccountType financialAccountType, EntityPermission entityPermission) {
-        return financialAccountAliasTypeFactory.getEntityFromQuery(entityPermission, getDefaultFinancialAccountAliasTypeQueries, financialAccountType);
+        var baseQuery = session.getDslContext()
+                .select(FinancialAccountAliasTypes.fields())
+                .from(FinancialAccountAliasTypes)
+                .join(FinancialAccountAliasTypeDetails).onKey(FINANCIAL_ACCOUNT_ALIAS_TYPES_ACTIVE_DETAIL_FK)
+                .where(FinancialAccountAliasTypeDetails.FINANCIAL_ACCOUNT_TYPE.eq(financialAccountType.getPrimaryKey()),
+                        FinancialAccountAliasTypeDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return financialAccountAliasTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public FinancialAccountAliasType getDefaultFinancialAccountAliasType(FinancialAccountType financialAccountType) {
@@ -1517,30 +1353,21 @@ public class FinancialControl
         return getDefaultFinancialAccountAliasTypeForUpdate(financialAccountType).getLastDetailForUpdate().getFinancialAccountAliasTypeDetailValue().clone();
     }
     
-    private static final Map<EntityPermission, String> getFinancialAccountAliasTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccountaliastypes, financialaccountaliastypedetails
-                WHERE finaat_activedetailid = finaatdt_financialaccountaliastypedetailid AND finaatdt_geot_financialaccounttypeid = ?
-                ORDER BY finaatdt_sortorder, finaatdt_financialaccountaliastypename
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccountaliastypes, financialaccountaliastypedetails
-                WHERE finaat_activedetailid = finaatdt_financialaccountaliastypedetailid AND finaatdt_geot_financialaccounttypeid = ?
-                FOR UPDATE
-                """);
-        getFinancialAccountAliasTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<FinancialAccountAliasType> getFinancialAccountAliasTypes(FinancialAccountType financialAccountType, EntityPermission entityPermission) {
-        return financialAccountAliasTypeFactory.getEntitiesFromQuery(entityPermission, getFinancialAccountAliasTypesQueries, financialAccountType);
+        var baseQuery = session.getDslContext()
+                .select(FinancialAccountAliasTypes.fields())
+                .from(FinancialAccountAliasTypes)
+                .join(FinancialAccountAliasTypeDetails).onKey(FINANCIAL_ACCOUNT_ALIAS_TYPES_ACTIVE_DETAIL_FK)
+                .where(FinancialAccountAliasTypeDetails.FINANCIAL_ACCOUNT_TYPE.eq(financialAccountType.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(FinancialAccountAliasTypeDetails.SORT_ORDER, FinancialAccountAliasTypeDetails.FINANCIAL_ACCOUNT_ALIAS_TYPE_NAME),
+                    FinancialAccountAliasTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return financialAccountAliasTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<FinancialAccountAliasType> getFinancialAccountAliasTypes(FinancialAccountType financialAccountType) {
@@ -1697,6 +1524,9 @@ public class FinancialControl
     @Inject
     protected FinancialAccountAliasTypeDescriptionFactory financialAccountAliasTypeDescriptionFactory;
 
+    @Inject
+    FinancialAccountAliasTypeDescriptionTransferCache financialAccountAliasTypeDescriptionTransferCache;
+
     public FinancialAccountAliasTypeDescription createFinancialAccountAliasTypeDescription(FinancialAccountAliasType financialAccountAliasType,
             Language language, String description, BasePK createdBy) {
         var financialAccountAliasTypeDescription = financialAccountAliasTypeDescriptionFactory.create(
@@ -1707,31 +1537,21 @@ public class FinancialControl
         return financialAccountAliasTypeDescription;
     }
     
-    private static final Map<EntityPermission, String> getFinancialAccountAliasTypeDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccountaliastypedescriptions
-                WHERE finaatd_finaat_financialaccountaliastypeid = ? AND finaatd_lang_languageid = ? AND finaatd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccountaliastypedescriptions
-                WHERE finaatd_finaat_financialaccountaliastypeid = ? AND finaatd_lang_languageid = ? AND finaatd_thrutime = ?
-                FOR UPDATE
-                """);
-        getFinancialAccountAliasTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private FinancialAccountAliasTypeDescription getFinancialAccountAliasTypeDescription(FinancialAccountAliasType financialAccountAliasType, Language language,
             EntityPermission entityPermission) {
-        return financialAccountAliasTypeDescriptionFactory.getEntityFromQuery(entityPermission, getFinancialAccountAliasTypeDescriptionQueries,
-                financialAccountAliasType, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(FinancialAccountAliasTypeDescriptions.fields())
+                .from(FinancialAccountAliasTypeDescriptions)
+                .where(FinancialAccountAliasTypeDescriptions.FINANCIAL_ACCOUNT_ALIAS_TYPE.eq(financialAccountAliasType.getPrimaryKey()),
+                        FinancialAccountAliasTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        FinancialAccountAliasTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return financialAccountAliasTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public FinancialAccountAliasTypeDescription getFinancialAccountAliasTypeDescription(FinancialAccountAliasType financialAccountAliasType, Language language) {
@@ -1752,32 +1572,26 @@ public class FinancialControl
         return getFinancialAccountAliasTypeDescriptionValue(getFinancialAccountAliasTypeDescriptionForUpdate(financialAccountAliasType, language));
     }
     
-    private static final Map<EntityPermission, String> getFinancialAccountAliasTypeDescriptionsByFinancialAccountAliasTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccountaliastypedescriptions, languages
-                WHERE finaatd_finaat_financialaccountaliastypeid = ? AND finaatd_thrutime = ? AND finaatd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccountaliastypedescriptions
-                WHERE finaatd_finaat_financialaccountaliastypeid = ? AND finaatd_thrutime = ?
-                FOR UPDATE
-                """);
-        getFinancialAccountAliasTypeDescriptionsByFinancialAccountAliasTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<FinancialAccountAliasTypeDescription> getFinancialAccountAliasTypeDescriptionsByFinancialAccountAliasType(FinancialAccountAliasType financialAccountAliasType,
             EntityPermission entityPermission) {
-        return financialAccountAliasTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, getFinancialAccountAliasTypeDescriptionsByFinancialAccountAliasTypeQueries,
-                financialAccountAliasType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(FinancialAccountAliasTypeDescriptions.fields())
+                    .from(FinancialAccountAliasTypeDescriptions)
+                    .join(Languages).onKey(FINANCIAL_ACCOUNT_ALIAS_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(FinancialAccountAliasTypeDescriptions.FINANCIAL_ACCOUNT_ALIAS_TYPE.eq(financialAccountAliasType.getPrimaryKey()),
+                            FinancialAccountAliasTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    FinancialAccountAliasTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(FinancialAccountAliasTypeDescriptions.fields())
+                    .from(FinancialAccountAliasTypeDescriptions)
+                    .where(FinancialAccountAliasTypeDescriptions.FINANCIAL_ACCOUNT_ALIAS_TYPE.eq(financialAccountAliasType.getPrimaryKey()),
+                            FinancialAccountAliasTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return financialAccountAliasTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<FinancialAccountAliasTypeDescription> getFinancialAccountAliasTypeDescriptionsByFinancialAccountAliasType(FinancialAccountAliasType financialAccountAliasType) {
@@ -1864,6 +1678,9 @@ public class FinancialControl
     @Inject
     protected FinancialAccountRoleFactory financialAccountRoleFactory;
 
+    @Inject
+    FinancialAccountRoleTransferCache financialAccountRoleTransferCache;
+
     public FinancialAccountRole createFinancialAccountRoleUsingNames(FinancialAccount financialAccount, Party party,
             PartyContactMechanism partyContactMechanism, String financialAccountRoleTypeName, BasePK createdBy) {
         var financialAccountRoleType = getFinancialAccountRoleTypeByName(financialAccountRoleTypeName);
@@ -1881,31 +1698,21 @@ public class FinancialControl
         return financialAccountRole;
     }
     
-    private static final Map<EntityPermission, String> getFinancialAccountRoleQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccountroles
-                WHERE fnar_fina_financialaccountid = ? AND fnar_finatyp_financialaccountroletypeid = ? AND fnar_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccountroles
-                WHERE fnar_fina_financialaccountid = ? AND fnar_finatyp_financialaccountroletypeid = ? AND fnar_thrutime = ?
-                FOR UPDATE
-                """);
-        getFinancialAccountRoleQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private FinancialAccountRole getFinancialAccountRole(FinancialAccount financialAccount, FinancialAccountRoleType financialAccountRoleType,
             EntityPermission entityPermission) {
-        return financialAccountRoleFactory.getEntityFromQuery(entityPermission, getFinancialAccountRoleQueries,
-                financialAccount, financialAccountRoleType, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(FinancialAccountRoles.fields())
+                .from(FinancialAccountRoles)
+                .where(FinancialAccountRoles.FINANCIAL_ACCOUNT.eq(financialAccount.getPrimaryKey()),
+                        FinancialAccountRoles.FINANCIAL_ACCOUNT_ROLE_TYPE.eq(financialAccountRoleType.getPrimaryKey()),
+                        FinancialAccountRoles.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return financialAccountRoleFactory.getEntityFromQuery(entityPermission, query);
     }
     
      public FinancialAccountRole getFinancialAccountRole(FinancialAccount financialAccount, FinancialAccountRoleType financialAccountRoleType) {
@@ -1931,33 +1738,27 @@ public class FinancialControl
         return getFinancialAccountRoleValue(getFinancialAccountRoleForUpdate(financialAccount, party, financialAccountRoleType));
     }
     
-    private static final Map<EntityPermission, String> getFinancialAccountRolesByFinancialAccountQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccountroles, financialaccountroletypes, parties, partydetails
-                WHERE fnar_fina_financialaccountid = ? AND fnar_thrutime = ?
-                AND fnar_finatyp_financialaccountroletypeid = finatyp_financialaccountroletypeid
-                AND fnar_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid
-                ORDER BY finatyp_sortorder, finatyp_financialaccountroletypename, pardt_partyname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccountroles
-                WHERE fnar_fina_financialaccountid = ? AND fnar_thrutime = ?
-                FOR UPDATE
-                """);
-        getFinancialAccountRolesByFinancialAccountQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<FinancialAccountRole> getFinancialAccountRolesByFinancialAccount(FinancialAccount financialAccount, EntityPermission entityPermission) {
-        return financialAccountRoleFactory.getEntitiesFromQuery(entityPermission, getFinancialAccountRolesByFinancialAccountQueries,
-                financialAccount, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(FinancialAccountRoles.fields())
+                    .from(FinancialAccountRoles)
+                    .join(FinancialAccountRoleTypes).onKey(FINANCIAL_ACCOUNT_ROLES_FINANCIAL_ACCOUNT_ROLE_TYPE_FK)
+                    .join(Parties).onKey(FINANCIAL_ACCOUNT_ROLES_PARTY_FK)
+                    .join(PartyDetails).onKey(PARTIES_ACTIVE_DETAIL_FK)
+                    .where(FinancialAccountRoles.FINANCIAL_ACCOUNT.eq(financialAccount.getPrimaryKey()),
+                            FinancialAccountRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(FinancialAccountRoleTypes.SORT_ORDER, FinancialAccountRoleTypes.FINANCIAL_ACCOUNT_ROLE_TYPE_NAME, PartyDetails.PARTY_NAME),
+                    FinancialAccountRoleFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(FinancialAccountRoles.fields())
+                    .from(FinancialAccountRoles)
+                    .where(FinancialAccountRoles.FINANCIAL_ACCOUNT.eq(financialAccount.getPrimaryKey()),
+                            FinancialAccountRoles.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return financialAccountRoleFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<FinancialAccountRole> getFinancialAccountRolesByFinancialAccount(FinancialAccount financialAccount) {
@@ -2018,10 +1819,13 @@ public class FinancialControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected FinancialAccountDetailFactory financialAccountDetailFactory;
+
+    @Inject
     protected FinancialAccountFactory financialAccountFactory;
 
     @Inject
-    protected FinancialAccountDetailFactory financialAccountDetailFactory;
+    FinancialAccountTransferCache financialAccountTransferCache;
 
     public FinancialAccount createFinancialAccount(FinancialAccountType financialAccountType, String financialAccountName, Currency currency,
             GlAccount glAccount, String reference, String description, BasePK createdBy) {
@@ -2042,33 +1846,21 @@ public class FinancialControl
         return financialAccount;
     }
     
-    private static final Map<EntityPermission, String> getFinancialAccountByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccounts, financialaccountdetails
-                WHERE fina_activedetailid = finadt_financialaccountdetailid AND finadt_fnatyp_financialaccounttypeid = ?
-                AND btchdt_financialAccountname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccounts, financialaccountdetails
-                WHERE fina_activedetailid = finadt_financialaccountdetailid AND finadt_fnatyp_financialaccounttypeid = ?
-                AND btchdt_financialAccountname = ?
-                FOR UPDATE
-                """);
-        getFinancialAccountByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private FinancialAccount getFinancialAccountByName(FinancialAccountType financialAccountType, String financialAccountName,
             EntityPermission entityPermission) {
-        return financialAccountFactory.getEntityFromQuery(entityPermission, getFinancialAccountByNameQueries,
-                financialAccountType, financialAccountName);
+        var baseQuery = session.getDslContext()
+                .select(FinancialAccounts.fields())
+                .from(FinancialAccounts)
+                .join(FinancialAccountDetails).onKey(FINANCIAL_ACCOUNTS_ACTIVE_DETAIL_FK)
+                .where(FinancialAccountDetails.FINANCIAL_ACCOUNT_TYPE.eq(financialAccountType.getPrimaryKey()),
+                        FinancialAccountDetails.FINANCIAL_ACCOUNT_NAME.eq(financialAccountName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return financialAccountFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public FinancialAccount getFinancialAccountByName(FinancialAccountType financialAccountType, String financialAccountName) {
@@ -2088,31 +1880,21 @@ public class FinancialControl
         return getFinancialAccountDetailValueForUpdate(getFinancialAccountByNameForUpdate(financialAccountType, financialAccountName));
     }
     
-    private static final Map<EntityPermission, String> getFinancialAccountsQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccounts, financialaccountdetails
-                WHERE fina_activedetailid = finadt_financialaccountdetailid AND finadt_fnatyp_financialaccounttypeid = ?
-                ORDER BY finadt_financialaccountname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccounts, financialaccountdetails
-                WHERE fina_activedetailid = finadt_financialaccountdetailid AND finadt_fnatyp_financialaccounttypeid = ?
-                FOR UPDATE
-                """);
-        getFinancialAccountsQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<FinancialAccount> getFinancialAccounts(FinancialAccountType financialAccountType, EntityPermission entityPermission) {
-        return financialAccountFactory.getEntitiesFromQuery(entityPermission, getFinancialAccountsQueries,
-                financialAccountType);
+        var baseQuery = session.getDslContext()
+                .select(FinancialAccounts.fields())
+                .from(FinancialAccounts)
+                .join(FinancialAccountDetails).onKey(FINANCIAL_ACCOUNTS_ACTIVE_DETAIL_FK)
+                .where(FinancialAccountDetails.FINANCIAL_ACCOUNT_TYPE.eq(financialAccountType.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(FinancialAccountDetails.FINANCIAL_ACCOUNT_NAME),
+                    FinancialAccountFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return financialAccountFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<FinancialAccount> getFinancialAccounts(FinancialAccountType financialAccountType) {
@@ -2123,32 +1905,26 @@ public class FinancialControl
         return getFinancialAccounts(financialAccountType, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getFinancialAccountsByGlAccountQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccounts, financialaccountdetails, financialaccounttypes, financialaccounttypedetails
-                WHERE fina_activedetailid = finadt_financialaccountdetailid AND finadt_gla_glaccountid = ?
-                finadt_fnatyp_financialaccounttypeid = fnatyp_financialaccounttypeid AND fnatyp_lastdetailid = fnatypdt_financialaccounttypedetailid
-                ORDER BY fnatypdt_sortorder, fnatypdt_financialaccounttypename, finadt_financialaccountname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccounts, financialaccountdetails
-                WHERE fina_activedetailid = finadt_financialaccountdetailid AND finadt_gla_glaccountid = ?
-                FOR UPDATE
-                """);
-        getFinancialAccountsByGlAccountQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<FinancialAccount> getFinancialAccountsByGlAccount(GlAccount glAccount, EntityPermission entityPermission) {
-        return financialAccountFactory.getEntitiesFromQuery(entityPermission, getFinancialAccountsByGlAccountQueries,
-                glAccount);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(FinancialAccounts.fields())
+                    .from(FinancialAccounts)
+                    .join(FinancialAccountDetails).onKey(FINANCIAL_ACCOUNTS_ACTIVE_DETAIL_FK)
+                    .join(FinancialAccountTypes).onKey(FINANCIAL_ACCOUNT_DETAILS_FINANCIAL_ACCOUNT_TYPE_FK)
+                    .join(FinancialAccountTypeDetails).onKey(FINANCIAL_ACCOUNT_TYPES_LAST_DETAIL_FK)
+                    .where(FinancialAccountDetails.GL_ACCOUNT.eq(glAccount.getPrimaryKey()))
+                    .orderBy(FinancialAccountTypeDetails.SORT_ORDER, FinancialAccountTypeDetails.FINANCIAL_ACCOUNT_TYPE_NAME, FinancialAccountDetails.FINANCIAL_ACCOUNT_NAME),
+                    FinancialAccountFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(FinancialAccounts.fields())
+                    .from(FinancialAccounts)
+                    .join(FinancialAccountDetails).onKey(FINANCIAL_ACCOUNTS_ACTIVE_DETAIL_FK)
+                    .where(FinancialAccountDetails.GL_ACCOUNT.eq(glAccount.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return financialAccountFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<FinancialAccount> getFinancialAccountsByGlAccount(GlAccount glAccount) {
@@ -2241,30 +2017,18 @@ public class FinancialControl
         return financialAccountStatusFactory.create(financialAccount, Long.valueOf(0), Long.valueOf(0));
     }
     
-    private static final Map<EntityPermission, String> getFinancialAccountStatusQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccountstatuses
-                WHERE finast_fina_financialaccountid = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccountstatuses
-                WHERE finast_fina_financialaccountid = ?
-                FOR UPDATE
-                """);
-        getFinancialAccountStatusQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private FinancialAccountStatus getFinancialAccountStatus(FinancialAccount financialAccount, EntityPermission entityPermission) {
-        return financialAccountStatusFactory.getEntityFromQuery(entityPermission, getFinancialAccountStatusQueries,
-                financialAccount);
+        var baseQuery = session.getDslContext()
+                .select(FinancialAccountStatuses.fields())
+                .from(FinancialAccountStatuses)
+                .where(FinancialAccountStatuses.FINANCIAL_ACCOUNT.eq(financialAccount.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return financialAccountStatusFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public FinancialAccountStatus getFinancialAccountStatus(FinancialAccount financialAccount) {
@@ -2290,6 +2054,9 @@ public class FinancialControl
     @Inject
     protected FinancialAccountAliasFactory financialAccountAliasFactory;
 
+    @Inject
+    FinancialAccountAliasTransferCache financialAccountAliasTransferCache;
+
     public FinancialAccountAlias createFinancialAccountAlias(FinancialAccount financialAccount, FinancialAccountAliasType financialAccountAliasType,
             String alias, BasePK createdBy) {
         var financialAccountAlias = financialAccountAliasFactory.create(financialAccount, financialAccountAliasType,
@@ -2300,31 +2067,21 @@ public class FinancialControl
         return financialAccountAlias;
     }
     
-    private static final Map<EntityPermission, String> getFinancialAccountAliasQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccountaliases
-                WHERE finaal_finaa_financialAccountid = ? AND finaal_finaat_financialaccountaliastypeid = ? AND finaal_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccountaliases
-                WHERE finaal_finaa_financialAccountid = ? AND finaal_finaat_financialaccountaliastypeid = ? AND finaal_thrutime = ?
-                FOR UPDATE
-                """);
-        getFinancialAccountAliasQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private FinancialAccountAlias getFinancialAccountAlias(FinancialAccount financialAccount, FinancialAccountAliasType financialAccountAliasType,
             EntityPermission entityPermission) {
-        return financialAccountAliasFactory.getEntityFromQuery(entityPermission, getFinancialAccountAliasQueries,
-                financialAccount, financialAccountAliasType, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(FinancialAccountAliases.fields())
+                .from(FinancialAccountAliases)
+                .where(FinancialAccountAliases.FINANCIAL_ACCOUNT.eq(financialAccount.getPrimaryKey()),
+                        FinancialAccountAliases.FINANCIAL_ACCOUNT_ALIAS_TYPE.eq(financialAccountAliasType.getPrimaryKey()),
+                        FinancialAccountAliases.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return financialAccountAliasFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public FinancialAccountAlias getFinancialAccountAlias(FinancialAccount financialAccount, FinancialAccountAliasType financialAccountAliasType) {
@@ -2344,32 +2101,26 @@ public class FinancialControl
         return getFinancialAccountAliasValue(getFinancialAccountAliasForUpdate(financialAccount, financialAccountAliasType));
     }
     
-    private static final Map<EntityPermission, String> getFinancialAccountAliasesByFinancialAccountQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccountaliases, financialaccountaliastypes, financialaccountaliastypedetails
-                WHERE finaal_finaa_financialAccountid = ? AND finaal_thrutime = ?
-                AND finaal_finaat_financialaccountaliastypeid = finaat_financialaccountaliastypeid AND finaat_lastdetailid = finaatdt_financialaccountaliastypedetailid
-                ORDER BY finaatdt_sortorder, finaatdt_financialaccountaliastypename
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccountaliases
-                WHERE finaal_finaa_financialAccountid = ? AND finaal_thrutime = ?
-                FOR UPDATE
-                """);
-        getFinancialAccountAliasesByFinancialAccountQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<FinancialAccountAlias> getFinancialAccountAliasesByFinancialAccount(FinancialAccount financialAccount, EntityPermission entityPermission) {
-        return financialAccountAliasFactory.getEntitiesFromQuery(entityPermission, getFinancialAccountAliasesByFinancialAccountQueries,
-                financialAccount, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(FinancialAccountAliases.fields())
+                    .from(FinancialAccountAliases)
+                    .join(FinancialAccountAliasTypes).onKey(FINANCIAL_ACCOUNT_ALIASES_FINANCIAL_ACCOUNT_ALIAS_TYPE_FK)
+                    .join(FinancialAccountAliasTypeDetails).onKey(FINANCIAL_ACCOUNT_ALIAS_TYPES_LAST_DETAIL_FK)
+                    .where(FinancialAccountAliases.FINANCIAL_ACCOUNT.eq(financialAccount.getPrimaryKey()),
+                            FinancialAccountAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(FinancialAccountAliasTypeDetails.SORT_ORDER, FinancialAccountAliasTypeDetails.FINANCIAL_ACCOUNT_ALIAS_TYPE_NAME),
+                    FinancialAccountAliasFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(FinancialAccountAliases.fields())
+                    .from(FinancialAccountAliases)
+                    .where(FinancialAccountAliases.FINANCIAL_ACCOUNT.eq(financialAccount.getPrimaryKey()),
+                            FinancialAccountAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return financialAccountAliasFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<FinancialAccountAlias> getFinancialAccountAliasesByFinancialAccount(FinancialAccount financialAccount) {
@@ -2380,33 +2131,27 @@ public class FinancialControl
         return getFinancialAccountAliasesByFinancialAccount(financialAccount, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getFinancialAccountAliasesByFinancialAccountAliasTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccountaliases, financialaccounts, financialaccountdetails
-                WHERE finaal_finaat_financialaccountaliastypeid = ? AND finaal_thrutime = ?
-                AND finaal_finaa_financialAccountid = finaa_financialAccountid AND finaa_lastdetailid = finaadt_financialAccountdetailid
-                ORDER BY lang_sortorder, lang_languageisoname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccountaliases
-                WHERE finaal_finaat_financialaccountaliastypeid = ? AND finaal_thrutime = ?
-                FOR UPDATE
-                """);
-        getFinancialAccountAliasesByFinancialAccountAliasTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<FinancialAccountAlias> getFinancialAccountAliasesByFinancialAccountAliasType(FinancialAccountAliasType financialAccountAliasType,
             EntityPermission entityPermission) {
-        return financialAccountAliasFactory.getEntitiesFromQuery(entityPermission, getFinancialAccountAliasesByFinancialAccountAliasTypeQueries,
-                financialAccountAliasType, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(FinancialAccountAliases.fields())
+                    .from(FinancialAccountAliases)
+                    .join(FinancialAccounts).onKey(FINANCIAL_ACCOUNT_ALIASES_FINANCIAL_ACCOUNT_FK)
+                    .join(FinancialAccountDetails).onKey(FINANCIAL_ACCOUNTS_LAST_DETAIL_FK)
+                    .where(FinancialAccountAliases.FINANCIAL_ACCOUNT_ALIAS_TYPE.eq(financialAccountAliasType.getPrimaryKey()),
+                            FinancialAccountAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(FinancialAccountDetails.FINANCIAL_ACCOUNT_NAME),
+                    FinancialAccountAliasFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(FinancialAccountAliases.fields())
+                    .from(FinancialAccountAliases)
+                    .where(FinancialAccountAliases.FINANCIAL_ACCOUNT_ALIAS_TYPE.eq(financialAccountAliasType.getPrimaryKey()),
+                            FinancialAccountAliases.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return financialAccountAliasFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<FinancialAccountAlias> getFinancialAccountAliasesByFinancialAccountAliasType(FinancialAccountAliasType financialAccountAliasType) {
@@ -2479,10 +2224,13 @@ public class FinancialControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected FinancialAccountTransactionDetailFactory financialAccountTransactionDetailFactory;
+
+    @Inject
     protected FinancialAccountTransactionFactory financialAccountTransactionFactory;
 
     @Inject
-    protected FinancialAccountTransactionDetailFactory financialAccountTransactionDetailFactory;
+    FinancialAccountTransactionTransferCache financialAccountTransactionTransferCache;
 
     public FinancialAccountTransaction createFinancialAccountTransaction(String financialAccountTransactionName, FinancialAccount financialAccount,
             FinancialAccountTransactionType financialAccountTransactionType, Long amount, String comment, BasePK createdBy) {
@@ -2502,30 +2250,19 @@ public class FinancialControl
         return financialAccountTransaction;
     }
     
-    private static final Map<EntityPermission, String> getFinancialAccountTransactionByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccounttransactions, financialaccounttransactiondetails
-                WHERE finatrx_activedetailid = finatrxdt_financialaccounttransactiondetailid AND finatrxdt_financialaccounttransactionname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccounttransactions, financialaccounttransactiondetails
-                WHERE finatrx_activedetailid = finatrxdt_financialaccounttransactiondetailid AND finatrxdt_financialaccounttransactionname = ?
-                FOR UPDATE
-                """);
-        getFinancialAccountTransactionByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private FinancialAccountTransaction getFinancialAccountTransactionByName(String financialAccountTransactionName, EntityPermission entityPermission) {
-        return financialAccountTransactionFactory.getEntityFromQuery(entityPermission, getFinancialAccountTransactionByNameQueries,
-                financialAccountTransactionName);
+        var baseQuery = session.getDslContext()
+                .select(FinancialAccountTransactions.fields())
+                .from(FinancialAccountTransactions)
+                .join(FinancialAccountTransactionDetails).onKey(FINANCIAL_ACCOUNT_TRANSACTIONS_ACTIVE_DETAIL_FK)
+                .where(FinancialAccountTransactionDetails.FINANCIAL_ACCOUNT_TRANSACTION_NAME.eq(financialAccountTransactionName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return financialAccountTransactionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public FinancialAccountTransaction getFinancialAccountTransactionByName(String financialAccountTransactionName) {
@@ -2544,31 +2281,21 @@ public class FinancialControl
         return getFinancialAccountTransactionDetailValueForUpdate(getFinancialAccountTransactionByNameForUpdate(financialAccountTransactionName));
     }
     
-    private static final Map<EntityPermission, String> getFinancialAccountTransactionsByFinancialAccountQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccounttransactions, financialaccounttransactiondetails
-                WHERE finatrx_activedetailid = finatrxdt_financialaccounttransactiondetailid AND finatrxdt_fnatrxtyp_financialaccounttransactiontypeid = ?
-                ORDER BY finatrxdt_financialaccounttransactionname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccounttransactions, financialaccounttransactiondetails
-                WHERE finatrx_activedetailid = finatrxdt_financialaccounttransactiondetailid AND finatrxdt_fnatrxtyp_financialaccounttransactiontypeid = ?
-                FOR UPDATE
-                """);
-        getFinancialAccountTransactionsByFinancialAccountQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<FinancialAccountTransaction> getFinancialAccountTransactionsByFinancialAccount(FinancialAccount financialAccount, EntityPermission entityPermission) {
-        return financialAccountTransactionFactory.getEntitiesFromQuery(entityPermission, getFinancialAccountTransactionsByFinancialAccountQueries,
-                financialAccount);
+        var baseQuery = session.getDslContext()
+                .select(FinancialAccountTransactions.fields())
+                .from(FinancialAccountTransactions)
+                .join(FinancialAccountTransactionDetails).onKey(FINANCIAL_ACCOUNT_TRANSACTIONS_ACTIVE_DETAIL_FK)
+                .where(FinancialAccountTransactionDetails.FINANCIAL_ACCOUNT.eq(financialAccount.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(FinancialAccountTransactionDetails.FINANCIAL_ACCOUNT_TRANSACTION_NAME),
+                    FinancialAccountTransactionFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return financialAccountTransactionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<FinancialAccountTransaction> getFinancialAccountTransactionsByFinancialAccount(FinancialAccount financialAccount) {
@@ -2579,31 +2306,21 @@ public class FinancialControl
         return getFinancialAccountTransactionsByFinancialAccount(financialAccount, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getFinancialAccountTransactionsByFinancialAccountTransactionTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM financialaccounttransactions, financialaccounttransactiondetails
-                WHERE finatrx_activedetailid = finatrxdt_financialaccounttransactiondetailid AND finatrxdt_fnatrxtyp_financialaccounttransactiontypeid = ?
-                ORDER BY finatrxdt_financialaccounttransactionname
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM financialaccounttransactions, financialaccounttransactiondetails
-                WHERE finatrx_activedetailid = finatrxdt_financialaccounttransactiondetailid AND finatrxdt_fnatrxtyp_financialaccounttransactiontypeid = ?
-                FOR UPDATE
-                """);
-        getFinancialAccountTransactionsByFinancialAccountTransactionTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<FinancialAccountTransaction> getFinancialAccountTransactionsByFinancialAccountTransactionType(FinancialAccountTransactionType financialAccountTransactionType, EntityPermission entityPermission) {
-        return financialAccountTransactionFactory.getEntitiesFromQuery(entityPermission, getFinancialAccountTransactionsByFinancialAccountTransactionTypeQueries,
-                financialAccountTransactionType);
+        var baseQuery = session.getDslContext()
+                .select(FinancialAccountTransactions.fields())
+                .from(FinancialAccountTransactions)
+                .join(FinancialAccountTransactionDetails).onKey(FINANCIAL_ACCOUNT_TRANSACTIONS_ACTIVE_DETAIL_FK)
+                .where(FinancialAccountTransactionDetails.FINANCIAL_ACCOUNT_TRANSACTION_TYPE.eq(financialAccountTransactionType.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(FinancialAccountTransactionDetails.FINANCIAL_ACCOUNT_TRANSACTION_NAME),
+                    FinancialAccountTransactionFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return financialAccountTransactionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<FinancialAccountTransaction> getFinancialAccountTransactionsByFinancialAccountTransactionType(FinancialAccountTransactionType financialAccountTransactionType) {
