@@ -193,10 +193,6 @@ public class FactoryJavaGenerator extends JavaGenerator {
         pw.println("    final private static String SQL_DELETE = \"DELETE FROM " + dbTableName + " WHERE " + pkColumn + " = ?\";");
         pw.println("    final private static String SQL_VALID = \"SELECT COUNT(*) FROM " + dbTableName + " WHERE " + pkColumn + " = ?\";");
         pw.println("    ");
-        pw.println("    final private static String PK_COLUMN = \"" + pkColumn + "\";");
-        pw.println("    final private static String ALL_COLUMNS = \"" + allColumns + "\";");
-        pw.println("    final public static String TABLE_NAME = \"" + dbTableName + "\";");
-        pw.println("    ");
         
         for(var column:columns) {
             pw.println("    final public static String " + column.getDbColumnName().toUpperCase(Locale.getDefault()) + " = \"" + column.getDbColumnName() + "\";");
@@ -223,21 +219,6 @@ public class FactoryJavaGenerator extends JavaGenerator {
     }
     
     public void writeFactoryCoreFunctions(PrintWriter pw, Table theTable) {
-        pw.println("    @Override");
-        pw.println("    public String getPKColumn() {");
-        pw.println("        return PK_COLUMN;");
-        pw.println("    }");
-        pw.println("    ");
-        pw.println("    @Override");
-        pw.println("    public String getAllColumns() {");
-        pw.println("        return ALL_COLUMNS;");
-        pw.println("    }");
-        pw.println("    ");
-        pw.println("    @Override");
-        pw.println("    public String getTableName() {");
-        pw.println("        return TABLE_NAME;");
-        pw.println("    }");
-        pw.println("    ");
         pw.println("    @Override");
         pw.println("    public String getComponentVendorName() {");
         pw.println("        return " + theTable.getConstantsClass() + ".COMPONENT_VENDOR_NAME;");

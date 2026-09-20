@@ -21,12 +21,6 @@ import java.util.Collection;
 
 public interface BaseFactory<PK extends BasePK, BE extends BaseEntity> {
     
-    String getPKColumn();
-    
-    String getAllColumns();
-    
-    String getTableName();
-    
     String getComponentVendorName();
     
     String getEntityTypeName();
