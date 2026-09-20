@@ -189,7 +189,7 @@ public class CreateVendorCommand
 
                             if(glAccountCategoryName == null || glAccountCategoryName.equals(AccountingConstants.GlAccountCategory_ACCOUNTS_PAYABLE)) {
                                 var defaultItemAliasTypeName = form.getDefaultItemAliasTypeName();
-                                var defaultItemAliasType = itemControl.getItemAliasTypeByName(defaultItemAliasTypeName);
+                                var defaultItemAliasType = defaultItemAliasTypeName == null ? null : itemControl.getItemAliasTypeByName(defaultItemAliasTypeName);
 
                                 if(defaultItemAliasTypeName == null || defaultItemAliasType != null) {
                                     if(defaultItemAliasType == null || !defaultItemAliasType.getLastDetail().getAllowMultiple()) {

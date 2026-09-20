@@ -296,7 +296,7 @@ public class EditVendorCommand
                             if(glAccountCategoryName == null || glAccountCategoryName.equals(AccountingConstants.GlAccountCategory_ACCOUNTS_PAYABLE)) {
                                 var defaultItemAliasTypeName = edit.getDefaultItemAliasTypeName();
 
-                                defaultItemAliasType = itemControl.getItemAliasTypeByName(defaultItemAliasTypeName);
+                                defaultItemAliasType = defaultItemAliasTypeName == null ? null : itemControl.getItemAliasTypeByName(defaultItemAliasTypeName);
 
                                 if(defaultItemAliasTypeName == null || defaultItemAliasType != null) {
                                     if(defaultItemAliasType == null || !defaultItemAliasType.getLastDetail().getAllowMultiple()) {
