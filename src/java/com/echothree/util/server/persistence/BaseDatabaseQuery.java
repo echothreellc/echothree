@@ -129,11 +129,11 @@ public abstract class BaseDatabaseQuery<R extends BaseDatabaseResult> {
         }
     }
 
-    private List<DatabaseResultMethod> getDatabaseResultMethods(final Field<?>[] fields) {
-        final var methods = new ArrayList<DatabaseResultMethod>(fields.length);
+    private DatabaseResultMethod[] getDatabaseResultMethods(final Field<?>[] fields) {
+        final var methods = new DatabaseResultMethod[fields.length];
 
-        for(var field : fields) {
-            methods.add(getDatabaseResultMethod(field.getName()));
+        for(var columnIndex = 0; columnIndex < fields.length; columnIndex++) {
+            methods[columnIndex] = getDatabaseResultMethod(fields[columnIndex].getName());
         }
         return methods;
     }
@@ -176,8 +176,8 @@ public abstract class BaseDatabaseQuery<R extends BaseDatabaseResult> {
                         throw exception;
                     }
 
-                    for(var columnIndex = 0; columnIndex < methods.size(); columnIndex++) {
-                        final var method = methods.get(columnIndex);
+                    for(var columnIndex = 0; columnIndex < methods.length; columnIndex++) {
+                        final var method = methods[columnIndex];
 
                         try {
                             method.setMethod.invoke(result, getDatabaseResultValue(record, columnIndex, method));
