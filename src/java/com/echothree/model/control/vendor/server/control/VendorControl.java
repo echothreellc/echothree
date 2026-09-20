@@ -16,11 +16,11 @@
 
 package com.echothree.model.control.vendor.server.control;
 
+
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.search.common.SearchOptions;
-import com.echothree.model.control.search.server.control.SearchControl;
 import static com.echothree.model.control.search.server.control.SearchControl.ENI_ENTITYUNIQUEID_COLUMN_INDEX;
+import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.vendor.common.choice.ItemPurchasingCategoryChoicesBean;
 import com.echothree.model.control.vendor.common.choice.VendorItemStatusChoicesBean;
 import com.echothree.model.control.vendor.common.choice.VendorStatusChoicesBean;
@@ -88,9 +88,39 @@ import com.echothree.model.data.vendor.server.value.VendorItemDetailValue;
 import com.echothree.model.data.vendor.server.value.VendorTypeDescriptionValue;
 import com.echothree.model.data.vendor.server.value.VendorTypeDetailValue;
 import com.echothree.model.data.vendor.server.value.VendorValue;
+import static com.echothree.model.jooq.server.keys.inventory.InventoryForeignKeys.INVENTORY_CONDITIONS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEMS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.uom.UomForeignKeys.UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.vendor.VendorForeignKeys.ITEM_PURCHASING_CATEGORIES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.vendor.VendorForeignKeys.ITEM_PURCHASING_CATEGORY_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.vendor.VendorForeignKeys.VENDOR_ITEMS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.vendor.VendorForeignKeys.VENDOR_ITEM_COSTS_INVENTORY_CONDITION_FK;
+import static com.echothree.model.jooq.server.keys.vendor.VendorForeignKeys.VENDOR_ITEM_COSTS_UNIT_OF_MEASURE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.vendor.VendorForeignKeys.VENDOR_ITEM_COSTS_VENDOR_ITEM_FK;
+import static com.echothree.model.jooq.server.keys.vendor.VendorForeignKeys.VENDOR_ITEM_DETAILS_ITEM_FK;
+import static com.echothree.model.jooq.server.keys.vendor.VendorForeignKeys.VENDOR_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.vendor.VendorForeignKeys.VENDOR_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryConditionDetails.InventoryConditionDetails;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryConditions.InventoryConditions;
+import static com.echothree.model.jooq.server.tables.item.ItemDetails.ItemDetails;
+import static com.echothree.model.jooq.server.tables.item.Items.Items;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureTypeDetails.UnitOfMeasureTypeDetails;
+import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureTypes.UnitOfMeasureTypes;
+import static com.echothree.model.jooq.server.tables.vendor.ItemPurchasingCategories.ItemPurchasingCategories;
+import static com.echothree.model.jooq.server.tables.vendor.ItemPurchasingCategoryDescriptions.ItemPurchasingCategoryDescriptions;
+import static com.echothree.model.jooq.server.tables.vendor.ItemPurchasingCategoryDetails.ItemPurchasingCategoryDetails;
+import static com.echothree.model.jooq.server.tables.vendor.VendorItemCosts.VendorItemCosts;
+import static com.echothree.model.jooq.server.tables.vendor.VendorItemDetails.VendorItemDetails;
+import static com.echothree.model.jooq.server.tables.vendor.VendorItems.VendorItems;
+import static com.echothree.model.jooq.server.tables.vendor.VendorTypeDescriptions.VendorTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.vendor.VendorTypeDetails.VendorTypeDetails;
+import static com.echothree.model.jooq.server.tables.vendor.VendorTypes.VendorTypes;
+import static com.echothree.model.jooq.server.tables.vendor.Vendors.Vendors;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -98,14 +128,10 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -121,39 +147,17 @@ public class VendorControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Vendor Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    @Inject
-    VendorTypeTransferCache vendorTypeTransferCache;
-
-    @Inject
-    VendorTypeDescriptionTransferCache vendorTypeDescriptionTransferCache;
-
-    @Inject
-    VendorTransferCache vendorTransferCache;
-
-    @Inject
-    VendorItemTransferCache vendorItemTransferCache;
-
-    @Inject
-    VendorItemCostTransferCache vendorItemCostTransferCache;
-
-    @Inject
-    ItemPurchasingCategoryDescriptionTransferCache itemPurchasingCategoryDescriptionTransferCache;
-
-    @Inject
-    ItemPurchasingCategoryTransferCache itemPurchasingCategoryTransferCache;
-
-    // --------------------------------------------------------------------------------
     //   Vendor Types
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected VendorTypeDetailFactory vendorTypeDetailFactory;
 
     @Inject
     protected VendorTypeFactory vendorTypeFactory;
 
     @Inject
-    protected VendorTypeDetailFactory vendorTypeDetailFactory;
+    VendorTypeTransferCache vendorTypeTransferCache;
 
     public VendorType createVendorType(String vendorTypeName, Term defaultTerm, FreeOnBoard defaultFreeOnBoard,
             CancellationPolicy defaultCancellationPolicy, ReturnPolicy defaultReturnPolicy,
@@ -192,12 +196,12 @@ public class VendorControl
     }
 
     public long countVendorTypes() {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM vendortypes, vendortypedetails
-                WHERE vndrty_activedetailid = vndrtydt_vendortypedetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(VendorTypes)
+                .join(VendorTypeDetails).onKey(VENDOR_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.VendorType */
@@ -216,28 +220,19 @@ public class VendorControl
     }
 
     private List<VendorType> getVendorTypes(EntityPermission entityPermission) {
-        String query = null;
+        var baseQuery = session.getDslContext()
+                .select(VendorTypes.fields())
+                .from(VendorTypes)
+                .join(VendorTypeDetails).onKey(VENDOR_TYPES_ACTIVE_DETAIL_FK);
         
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM vendortypes, vendortypedetails
-                    WHERE vndrty_activedetailid = vndrtydt_vendortypedetailid
-                    ORDER BY vndrtydt_sortorder, vndrtydt_vendortypename
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM vendortypes, vendortypedetails
-                    WHERE vndrty_activedetailid = vndrtydt_vendortypedetailid
-                    FOR UPDATE
-                    """;
-        }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(VendorTypeDetails.SORT_ORDER, VendorTypeDetails.VENDOR_TYPE_NAME),
+                    VendorTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        var ps = vendorTypeFactory.prepareStatement(query);
-        
-        return vendorTypeFactory.getEntitiesFromQuery(entityPermission, ps);
+        return vendorTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<VendorType> getVendorTypes() {
@@ -249,26 +244,18 @@ public class VendorControl
     }
     
     public VendorType getDefaultVendorType(EntityPermission entityPermission) {
-        String query = null;
+        var baseQuery = session.getDslContext()
+                .select(VendorTypes.fields())
+                .from(VendorTypes)
+                .join(VendorTypeDetails).onKey(VENDOR_TYPES_ACTIVE_DETAIL_FK)
+                .where(VendorTypeDetails.IS_DEFAULT.eq(true));
         
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM vendortypes, vendortypedetails
-                    WHERE vndrty_activedetailid = vndrtydt_vendortypedetailid AND vndrtydt_isdefault = 1
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM vendortypes, vendortypedetails
-                    WHERE vndrty_activedetailid = vndrtydt_vendortypedetailid AND vndrtydt_isdefault = 1
-                    FOR UPDATE
-                    """;
-        }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        var ps = vendorTypeFactory.prepareStatement(query);
-        
-        return vendorTypeFactory.getEntityFromQuery(entityPermission, ps);
+        return vendorTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public VendorType getDefaultVendorType() {
@@ -284,36 +271,18 @@ public class VendorControl
     }
     
     public VendorType getVendorTypeByName(String vendorTypeName, EntityPermission entityPermission) {
-        VendorType vendorType;
+        var baseQuery = session.getDslContext()
+                .select(VendorTypes.fields())
+                .from(VendorTypes)
+                .join(VendorTypeDetails).onKey(VENDOR_TYPES_ACTIVE_DETAIL_FK)
+                .where(VendorTypeDetails.VENDOR_TYPE_NAME.eq(vendorTypeName));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM vendortypes, vendortypedetails
-                        WHERE vndrty_activedetailid = vndrtydt_vendortypedetailid AND vndrtydt_vendortypename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM vendortypes, vendortypedetails
-                        WHERE vndrty_activedetailid = vndrtydt_vendortypedetailid AND vndrtydt_vendortypename = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = vendorTypeFactory.prepareStatement(query);
-            
-            ps.setString(1, vendorTypeName);
-            
-            vendorType = vendorTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return vendorType;
+        return vendorTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public VendorType getVendorTypeByName(String vendorTypeName) {
@@ -484,6 +453,9 @@ public class VendorControl
     @Inject
     protected VendorTypeDescriptionFactory vendorTypeDescriptionFactory;
 
+    @Inject
+    VendorTypeDescriptionTransferCache vendorTypeDescriptionTransferCache;
+
     public VendorTypeDescription createVendorTypeDescription(VendorType vendorType, Language language, String description,
             BasePK createdBy) {
         var vendorTypeDescription = vendorTypeDescriptionFactory.create(vendorType,
@@ -497,38 +469,19 @@ public class VendorControl
     }
     
     private VendorTypeDescription getVendorTypeDescription(VendorType vendorType, Language language, EntityPermission entityPermission) {
-        VendorTypeDescription vendorTypeDescription;
+        var baseQuery = session.getDslContext()
+                .select(VendorTypeDescriptions.fields())
+                .from(VendorTypeDescriptions)
+                .where(VendorTypeDescriptions.VENDOR_TYPE.eq(vendorType.getPrimaryKey()),
+                        VendorTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        VendorTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM vendortypedescriptions
-                        WHERE vndrtyd_vndrty_vendortypeid = ? AND vndrtyd_lang_languageid = ? AND vndrtyd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM vendortypedescriptions
-                        WHERE vndrtyd_vndrty_vendortypeid = ? AND vndrtyd_lang_languageid = ? AND vndrtyd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = vendorTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, vendorType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            vendorTypeDescription = vendorTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return vendorTypeDescription;
+        return vendorTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public VendorTypeDescription getVendorTypeDescription(VendorType vendorType, Language language) {
@@ -548,39 +501,24 @@ public class VendorControl
     }
     
     private List<VendorTypeDescription> getVendorTypeDescriptionsByVendorType(VendorType vendorType, EntityPermission entityPermission) {
-        List<VendorTypeDescription> vendorTypeDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM vendortypedescriptions, languages
-                        WHERE vndrtyd_vndrty_vendortypeid = ? AND vndrtyd_thrutime = ? AND vndrtyd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM vendortypedescriptions
-                        WHERE vndrtyd_vndrty_vendortypeid = ? AND vndrtyd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(VendorTypeDescriptions.fields())
+                    .from(VendorTypeDescriptions)
+                    .join(Languages).onKey(VENDOR_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(VendorTypeDescriptions.VENDOR_TYPE.eq(vendorType.getPrimaryKey()),
+                            VendorTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    VendorTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(VendorTypeDescriptions.fields())
+                    .from(VendorTypeDescriptions)
+                    .where(VendorTypeDescriptions.VENDOR_TYPE.eq(vendorType.getPrimaryKey()),
+                            VendorTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = vendorTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, vendorType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            vendorTypeDescriptions = vendorTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return vendorTypeDescriptions;
+        return vendorTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<VendorTypeDescription> getVendorTypeDescriptionsByVendorType(VendorType vendorType) {
@@ -670,6 +608,9 @@ public class VendorControl
     @Inject
     protected VendorFactory vendorFactory;
 
+    @Inject
+    VendorTransferCache vendorTransferCache;
+
     public Vendor createVendor(Party party, String vendorName, VendorType vendorType, Integer minimumPurchaseOrderLines,
             Integer maximumPurchaseOrderLines, Long minimumPurchaseOrderAmount, Long maximumPurchaseOrderAmount,
             Boolean useItemPurchasingCategories, ItemAliasType defaultItemAliasType, CancellationPolicy cancellationPolicy,
@@ -689,58 +630,38 @@ public class VendorControl
     }
 
     public long countVendors() {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM vendors
-                WHERE vndr_thrutime = ?
-                """,
-                Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(Vendors)
+                .where(Vendors.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countVendorByFilter(Filter filter) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM vendors
-                WHERE vndr_vendoritemcostfilterid = ? AND vndr_thrutime = ?
-                """,
-                filter, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(Vendors)
+                .where(Vendors.VENDOR_ITEM_COST_FILTER.eq(filter.getPrimaryKey()),
+                        Vendors.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<Vendor> getVendors(EntityPermission entityPermission) {
-        List<Vendor> vendors;
+        var baseQuery = session.getDslContext()
+                .select(Vendors.fields())
+                .from(Vendors)
+                .where(Vendors.THRU_TIME.eq(Session.MAX_TIME));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(Vendors.VENDOR_NAME),
+                    VendorFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM vendors
-                        WHERE vndr_thrutime = ?
-                        ORDER BY vndr_vendorname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM vendors
-                        WHERE vndr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = vendorFactory.prepareStatement(query);
-
-            ps.setLong(1, Session.MAX_TIME);
-
-            vendors = vendorFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return vendors;
+        return vendorFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Vendor> getVendors() {
@@ -752,37 +673,18 @@ public class VendorControl
     }
 
     public Vendor getVendor(Party party, EntityPermission entityPermission) {
-        Vendor vendor;
+        var baseQuery = session.getDslContext()
+                .select(Vendors.fields())
+                .from(Vendors)
+                .where(Vendors.PARTY.eq(party.getPrimaryKey()),
+                        Vendors.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM vendors
-                        WHERE vndr_par_partyid = ? AND vndr_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM vendors
-                        WHERE vndr_par_partyid = ? AND vndr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = vendorFactory.prepareStatement(query);
-            
-            ps.setLong(1, party.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            vendor = vendorFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return vendor;
+        return vendorFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Vendor getVendor(Party party) {
@@ -794,37 +696,18 @@ public class VendorControl
     }
     
     public Vendor getVendorByName(String vendorName, EntityPermission entityPermission) {
-        Vendor vendor;
+        var baseQuery = session.getDslContext()
+                .select(Vendors.fields())
+                .from(Vendors)
+                .where(Vendors.VENDOR_NAME.eq(vendorName),
+                        Vendors.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM vendors
-                        WHERE vndr_vendorname = ? AND vndr_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM vendors
-                        WHERE vndr_vendorname = ? AND vndr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = vendorFactory.prepareStatement(query);
-            
-            ps.setString(1, vendorName);
-            ps.setLong(2, Session.MAX_TIME);
-            
-            vendor = vendorFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return vendor;
+        return vendorFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Vendor getVendorByName(String vendorName) {
@@ -836,38 +719,20 @@ public class VendorControl
     }
     
     private List<Vendor> getVendorsByDefaultItemAliasType(ItemAliasType defaultItemAliasType, EntityPermission entityPermission) {
-        List<Vendor> vendors;
+        var baseQuery = session.getDslContext()
+                .select(Vendors.fields())
+                .from(Vendors)
+                .where(Vendors.DEFAULT_ITEM_ALIAS_TYPE.eq(defaultItemAliasType.getPrimaryKey()),
+                        Vendors.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(Vendors.VENDOR_NAME),
+                    VendorFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM vendors
-                        WHERE vndr_defaultitemaliastypeid = ? AND vndr_thrutime = ?
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM vendors
-                        WHERE vndr_defaultitemaliastypeid = ? AND vndr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = vendorFactory.prepareStatement(query);
-            
-            ps.setLong(1, defaultItemAliasType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            vendors = vendorFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return vendors;
+        return vendorFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<Vendor> getVendorsByDefaultItemAliasType(ItemAliasType defaultItemAliasType) {
@@ -985,10 +850,13 @@ public class VendorControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected VendorItemDetailFactory vendorItemDetailFactory;
+
+    @Inject
     protected VendorItemFactory vendorItemFactory;
 
     @Inject
-    protected VendorItemDetailFactory vendorItemDetailFactory;
+    VendorItemTransferCache vendorItemTransferCache;
 
     public VendorItem createVendorItem(Item item, Party vendorParty, String vendorItemName, String description, Integer priority,
             CancellationPolicy cancellationPolicy, ReturnPolicy returnPolicy, BasePK createdBy) {
@@ -1009,47 +877,43 @@ public class VendorControl
     }
 
     public long countVendorItemsByItem(Item item) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM vendoritems, vendoritemdetails
-                WHERE vndritm_activedetailid = vndritmdt_vendoritemdetailid
-                AND vndritmdt_itm_itemid = ?
-                """,
-                item);
+        return session.getDslContext()
+                .selectCount()
+                .from(VendorItems)
+                .join(VendorItemDetails).onKey(VENDOR_ITEMS_ACTIVE_DETAIL_FK)
+                .where(VendorItemDetails.ITEM.eq(item.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countVendorItemsByVendorParty(Party vendorParty) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM vendoritems, vendoritemdetails
-                WHERE vndritm_activedetailid = vndritmdt_vendoritemdetailid
-                AND vndritmdt_vendorpartyid = ?
-                """,
-                vendorParty);
+        return session.getDslContext()
+                .selectCount()
+                .from(VendorItems)
+                .join(VendorItemDetails).onKey(VENDOR_ITEMS_ACTIVE_DETAIL_FK)
+                .where(VendorItemDetails.VENDOR_PARTY.eq(vendorParty.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countVendorItemsByCancellationPolicy(CancellationPolicy cancellationPolicy) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM vendoritems, vendoritemdetails
-                WHERE vndritm_activedetailid = vndritmdt_vendoritemdetailid
-                AND vndritmdt_cnclplcy_cancellationpolicyid = ?
-                """,
-                cancellationPolicy);
+        return session.getDslContext()
+                .selectCount()
+                .from(VendorItems)
+                .join(VendorItemDetails).onKey(VENDOR_ITEMS_ACTIVE_DETAIL_FK)
+                .where(VendorItemDetails.CANCELLATION_POLICY.eq(cancellationPolicy.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countVendorItemsByReturnPolicy(ReturnPolicy returnPolicy) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM vendoritems, vendoritemdetails
-                WHERE vndritm_activedetailid = vndritmdt_vendoritemdetailid
-                AND vndritmdt_rtnplcy_returnpolicyid = ?
-                """,
-                returnPolicy);
+        return session.getDslContext()
+                .selectCount()
+                .from(VendorItems)
+                .join(VendorItemDetails).onKey(VENDOR_ITEMS_ACTIVE_DETAIL_FK)
+                .where(VendorItemDetails.RETURN_POLICY.eq(returnPolicy.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.VendorItem */
@@ -1068,39 +932,19 @@ public class VendorControl
     }
     
     public VendorItem getVendorItemByVendorPartyAndVendorItemName(Party vendorParty, String vendorItemName, EntityPermission entityPermission) {
-        VendorItem vendorItem;
+        var baseQuery = session.getDslContext()
+                .select(VendorItems.fields())
+                .from(VendorItems)
+                .join(VendorItemDetails).onKey(VENDOR_ITEMS_ACTIVE_DETAIL_FK)
+                .where(VendorItemDetails.VENDOR_PARTY.eq(vendorParty.getPrimaryKey()),
+                        VendorItemDetails.VENDOR_ITEM_NAME.eq(vendorItemName));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM vendoritems, vendoritemdetails
-                        WHERE vndritm_activedetailid = vndritmdt_vendoritemdetailid AND vndritmdt_vendorpartyid = ?
-                        AND vndritmdt_vendoritemname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM vendoritems, vendoritemdetails
-                        WHERE vndritm_activedetailid = vndritmdt_vendoritemdetailid AND vndritmdt_vendorpartyid = ?
-                        AND vndritmdt_vendoritemname = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = vendorItemFactory.prepareStatement(query);
-            
-            ps.setLong(1, vendorParty.getPrimaryKey().getEntityId());
-            ps.setString(2, vendorItemName);
-            
-            vendorItem = vendorItemFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return vendorItem;
+        return vendorItemFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public VendorItem getVendorItemByVendorPartyAndVendorItemName(Party vendorParty, String vendorItemName) {
@@ -1120,40 +964,22 @@ public class VendorControl
     }
     
     private List<VendorItem> getVendorItemsByItem(Item item, EntityPermission entityPermission) {
-        List<VendorItem> vendorItems;
+        var baseQuery = session.getDslContext()
+                .select(VendorItems.fields())
+                .from(VendorItems)
+                .join(VendorItemDetails).onKey(VENDOR_ITEMS_ACTIVE_DETAIL_FK)
+                .join(Vendors).on(VendorItemDetails.VENDOR_PARTY.eq(Vendors.PARTY))
+                .where(VendorItemDetails.ITEM.eq(item.getPrimaryKey()),
+                        Vendors.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(Vendors.VENDOR_NAME),
+                    VendorItemFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM vendoritems, vendoritemdetails, vendors
-                        WHERE vndritm_activedetailid = vndritmdt_vendoritemdetailid AND vndritmdt_itm_itemid = ?
-                        AND vndritmdt_vendorpartyid = vndr_par_partyid AND vndr_thrutime = ?
-                        ORDER BY vndr_vendorname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM vendoritems, vendoritemdetails, vendors
-                        WHERE vndritm_activedetailid = vndritmdt_vendoritemdetailid AND vndritmdt_itm_itemid = ?
-                        AND vndritmdt_vendorpartyid = vndr_par_partyid AND vndr_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-            var ps = vendorItemFactory.prepareStatement(query);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            vendorItems = vendorItemFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return vendorItems;
+        return vendorItemFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<VendorItem> getVendorItemsByItem(Item item) {
@@ -1165,39 +991,22 @@ public class VendorControl
     }
     
     private List<VendorItem> getVendorItemsByVendorParty(Party vendorParty, EntityPermission entityPermission) {
-        List<VendorItem> vendorItems;
+        var baseQuery = session.getDslContext()
+                .select(VendorItems.fields())
+                .from(VendorItems)
+                .join(VendorItemDetails).onKey(VENDOR_ITEMS_ACTIVE_DETAIL_FK)
+                .join(Items).onKey(VENDOR_ITEM_DETAILS_ITEM_FK)
+                .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                .where(VendorItemDetails.VENDOR_PARTY.eq(vendorParty.getPrimaryKey()));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ItemDetails.ITEM_NAME),
+                    VendorItemFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM vendoritems, vendoritemdetails, items, itemdetails
-                        WHERE vndritm_activedetailid = vndritmdt_vendoritemdetailid AND vndritmdt_vendorpartyid = ?
-                        AND vndritmdt_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                        ORDER BY itmdt_itemname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM vendoritems, vendoritemdetails, items, itemdetails
-                        WHERE vndritm_activedetailid = vndritmdt_vendoritemdetailid AND vndritmdt_vendorpartyid = ?
-                        AND vndritmdt_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
-                        FOR UPDATE
-                        """;
-            }
-            var ps = vendorItemFactory.prepareStatement(query);
-            
-            ps.setLong(1, vendorParty.getPrimaryKey().getEntityId());
-            
-            vendorItems = vendorItemFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return vendorItems;
+        return vendorItemFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<VendorItem> getVendorItemsByVendorParty(Party vendorParty) {
@@ -1209,44 +1018,25 @@ public class VendorControl
     }
     
     private List<VendorItem> getVendorItemsByVendorItemName(String vendorItemName, EntityPermission entityPermission) {
-        List<VendorItem> vendorItems;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM vendoritems, vendoritemdetails, vendors
-                        WHERE vndritm_activedetailid = vndritmdt_vendoritemdetailid
-                        AND vndritmdt_vendoritemname = ?
-                        AND vndritmdt_vendorpartyid = vndr_par_partyid AND vndr_thrutime = ?
-                        ORDER BY vndr_vendorname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM vendoritems, vendoritemdetails
-                        WHERE vndritm_activedetailid = vndritmdt_vendoritemdetailid
-                        AND vndritmdt_vendoritemname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(VendorItems.fields())
+                    .from(VendorItems)
+                    .join(VendorItemDetails).onKey(VENDOR_ITEMS_ACTIVE_DETAIL_FK)
+                    .join(Vendors).on(VendorItemDetails.VENDOR_PARTY.eq(Vendors.PARTY))
+                    .where(VendorItemDetails.VENDOR_ITEM_NAME.eq(vendorItemName),
+                            Vendors.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Vendors.VENDOR_NAME),
+                    VendorItemFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(VendorItems.fields())
+                    .from(VendorItems)
+                    .join(VendorItemDetails).onKey(VENDOR_ITEMS_ACTIVE_DETAIL_FK)
+                    .where(VendorItemDetails.VENDOR_ITEM_NAME.eq(vendorItemName))
+                    .forUpdate();
+        };
 
-            var ps = vendorItemFactory.prepareStatement(query);
-            
-            ps.setString(1, vendorItemName);
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                ps.setLong(2, Session.MAX_TIME);
-            }
-            
-            vendorItems = vendorItemFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return vendorItems;
+        return vendorItemFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<VendorItem> getVendorItemsByVendorItemName(String vendorItemName) {
@@ -1373,6 +1163,9 @@ public class VendorControl
     @Inject
     protected VendorItemCostFactory vendorItemCostFactory;
 
+    @Inject
+    VendorItemCostTransferCache vendorItemCostTransferCache;
+
     public VendorItemCost createVendorItemCost(VendorItem vendorItem, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, Long unitCost, BasePK createdBy) {
         var vendorItemCost = vendorItemCostFactory.create(vendorItem, inventoryCondition,
@@ -1384,33 +1177,33 @@ public class VendorControl
     }
 
     public long countVendorItemCostsByVendorItem(VendorItem vendorItem) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM vendoritemcosts
-                WHERE vndritmc_vndritm_vendoritemid = ? AND vndritmc_thrutime = ?
-                """,
-                vendorItem, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(VendorItemCosts)
+                .where(VendorItemCosts.VENDOR_ITEM.eq(vendorItem.getPrimaryKey()),
+                        VendorItemCosts.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countVendorItemCostsByInventoryCondition(InventoryCondition inventoryCondition) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM vendoritemcosts
-                WHERE vndritmc_invcon_inventoryconditionid = ? AND vndritmc_thrutime = ?
-                """,
-                inventoryCondition, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(VendorItemCosts)
+                .where(VendorItemCosts.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                        VendorItemCosts.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countVendorItemCostsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM vendoritemcosts
-                WHERE vndritmc_uomt_unitofmeasuretypeid = ? AND vndritmc_thrutime = ?
-                """,
-                unitOfMeasureType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(VendorItemCosts)
+                .where(VendorItemCosts.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        VendorItemCosts.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.VendorItemCost */
@@ -1430,41 +1223,20 @@ public class VendorControl
 
     public VendorItemCost getVendorItemCost(VendorItem vendorItem, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        VendorItemCost vendorItemCost;
+        var baseQuery = session.getDslContext()
+                .select(VendorItemCosts.fields())
+                .from(VendorItemCosts)
+                .where(VendorItemCosts.VENDOR_ITEM.eq(vendorItem.getPrimaryKey()),
+                        VendorItemCosts.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                        VendorItemCosts.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        VendorItemCosts.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM vendoritemcosts
-                        WHERE vndritmc_vndritm_vendoritemid = ? AND vndritmc_invcon_inventoryconditionid = ?
-                        AND vndritmc_uomt_unitofmeasuretypeid = ? AND vndritmc_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM vendoritemcosts
-                        WHERE vndritmc_vndritm_vendoritemid = ? AND vndritmc_invcon_inventoryconditionid = ?
-                        AND vndritmc_uomt_unitofmeasuretypeid = ? AND vndritmc_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = vendorItemCostFactory.prepareStatement(query);
-            
-            ps.setLong(1, vendorItem.getPrimaryKey().getEntityId());
-            ps.setLong(2, inventoryCondition.getPrimaryKey().getEntityId());
-            ps.setLong(3, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(4, Session.MAX_TIME);
-            
-            vendorItemCost = vendorItemCostFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return vendorItemCost;
+        return vendorItemCostFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public VendorItemCost getVendorItemCost(VendorItem vendorItem, InventoryCondition inventoryCondition,
@@ -1487,43 +1259,24 @@ public class VendorControl
     }
     
     private List<VendorItemCost> getVendorItemCostsByVendorItem(VendorItem vendorItem, EntityPermission entityPermission) {
-        List<VendorItemCost> vendorItemCosts;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM vendoritemcosts, inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, unitofmeasuretypedetails
-                        WHERE vndritmc_vndritm_vendoritemid = ? AND vndritmc_thrutime = ?
-                        AND vndritmc_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
-                        AND vndritmc_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
-                        ORDER BY invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM vendoritemcosts, inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, unitofmeasuretypedetails
-                        WHERE vndritmc_vndritm_vendoritemid = ? AND vndritmc_thrutime = ?
-                        AND vndritmc_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
-                        AND vndritmc_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(VendorItemCosts.fields())
+                .from(VendorItemCosts)
+                .join(InventoryConditions).onKey(VENDOR_ITEM_COSTS_INVENTORY_CONDITION_FK)
+                .join(InventoryConditionDetails).onKey(INVENTORY_CONDITIONS_LAST_DETAIL_FK)
+                .join(UnitOfMeasureTypes).onKey(VENDOR_ITEM_COSTS_UNIT_OF_MEASURE_TYPE_FK)
+                .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK)
+                .where(VendorItemCosts.VENDOR_ITEM.eq(vendorItem.getPrimaryKey()),
+                        VendorItemCosts.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = vendorItemCostFactory.prepareStatement(query);
-            
-            ps.setLong(1, vendorItem.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            vendorItemCosts = vendorItemCostFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return vendorItemCosts;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME, UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME),
+                    VendorItemCostFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return vendorItemCostFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<VendorItemCost> getVendorItemCostsByVendorItem(VendorItem vendorItem) {
@@ -1535,74 +1288,39 @@ public class VendorControl
     }
     
     public List<VendorItemCost> getVendorItemCostsByInventoryConditionForUpdate(InventoryCondition inventoryCondition) {
-        List<VendorItemCost> vendorItemCosts;
+        var query = session.getDslContext()
+                .select(VendorItemCosts.fields())
+                .from(VendorItemCosts)
+                .where(VendorItemCosts.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                        VendorItemCosts.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
         
-        try {
-            var ps = vendorItemCostFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM vendoritemcosts
-                    WHERE vndritmc_invcon_inventoryconditionid = ? AND vndritmc_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, inventoryCondition.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            vendorItemCosts = vendorItemCostFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return vendorItemCosts;
+        return vendorItemCostFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public List<VendorItemCost> getVendorItemCostsByUnitOfMeasureTypeForUpdate(UnitOfMeasureType unitOfMeasureType) {
-        List<VendorItemCost> vendorItemCosts;
+        var query = session.getDslContext()
+                .select(VendorItemCosts.fields())
+                .from(VendorItemCosts)
+                .where(VendorItemCosts.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        VendorItemCosts.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
         
-        try {
-            var ps = vendorItemCostFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM vendoritemcosts
-                    WHERE vndritmc_uomt_unitofmeasuretypeid = ? AND vndritmc_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            vendorItemCosts = vendorItemCostFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return vendorItemCosts;
+        return vendorItemCostFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public List<VendorItemCost> getVendorItemCostsByItemAndUnitOfMeasureTypeForUpdate(Item item, UnitOfMeasureType unitOfMeasureType) {
-        List<VendorItemCost> vendorItemCosts;
+        var query = session.getDslContext()
+                .select(VendorItemCosts.fields())
+                .from(VendorItemCosts)
+                .join(VendorItems).onKey(VENDOR_ITEM_COSTS_VENDOR_ITEM_FK)
+                .join(VendorItemDetails).onKey(VENDOR_ITEMS_ACTIVE_DETAIL_FK)
+                .where(VendorItemDetails.ITEM.eq(item.getPrimaryKey()),
+                        VendorItemCosts.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        VendorItemCosts.THRU_TIME.eq(Session.MAX_TIME))
+                .forUpdate();
         
-        try {
-            var ps = vendorItemCostFactory.prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM vendoritems, vendoritemdetails, vendoritemcosts
-                    WHERE vndritm_activedetailid = vndritmdt_vendoritemdetailid AND vndritmdt_itm_itemid = ?
-                    AND vndritm_vendoritemid = vndritmc_vndritm_vendoritemid AND vndritmc_uomt_unitofmeasuretypeid = ? AND vndritmc_thrutime = ?
-                    FOR UPDATE
-                    """);
-            
-            ps.setLong(1, item.getPrimaryKey().getEntityId());
-            ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            vendorItemCosts = vendorItemCostFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return vendorItemCosts;
+        return vendorItemCostFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
     }
     
     public VendorItemCostTransfer getVendorItemCostTransfer(UserVisit userVisit, VendorItemCost vendorItemCost) {
@@ -1676,10 +1394,13 @@ public class VendorControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ItemPurchasingCategoryDetailFactory itemPurchasingCategoryDetailFactory;
+
+    @Inject
     protected ItemPurchasingCategoryFactory itemPurchasingCategoryFactory;
 
     @Inject
-    protected ItemPurchasingCategoryDetailFactory itemPurchasingCategoryDetailFactory;
+    ItemPurchasingCategoryTransferCache itemPurchasingCategoryTransferCache;
 
     public ItemPurchasingCategory createItemPurchasingCategory(String itemPurchasingCategoryName,
             ItemPurchasingCategory parentItemPurchasingCategory, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -1713,12 +1434,12 @@ public class VendorControl
     }
 
     public long countItemPurchasingCategories() {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM itempurchasingcategories, itempurchasingcategorydetails
-                WHERE iprchc_activedetailid = iprchcdt_itempurchasingcategorydetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ItemPurchasingCategories)
+                .join(ItemPurchasingCategoryDetails).onKey(ITEM_PURCHASING_CATEGORIES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ItemPurchasingCategory */
@@ -1736,31 +1457,19 @@ public class VendorControl
         return getItemPurchasingCategoryByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getItemPurchasingCategoryByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM itempurchasingcategories, itempurchasingcategorydetails
-                WHERE iprchc_activedetailid = iprchcdt_itempurchasingcategorydetailid
-                AND iprchcdt_itempurchasingcategoryname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM itempurchasingcategories, itempurchasingcategorydetails
-                WHERE iprchc_activedetailid = iprchcdt_itempurchasingcategorydetailid
-                AND iprchcdt_itempurchasingcategoryname = ?
-                FOR UPDATE
-                """);
-        getItemPurchasingCategoryByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public ItemPurchasingCategory getItemPurchasingCategoryByName(String itemPurchasingCategoryName, EntityPermission entityPermission) {
-        return itemPurchasingCategoryFactory.getEntityFromQuery(entityPermission, getItemPurchasingCategoryByNameQueries, itemPurchasingCategoryName);
+        var baseQuery = session.getDslContext()
+                .select(ItemPurchasingCategories.fields())
+                .from(ItemPurchasingCategories)
+                .join(ItemPurchasingCategoryDetails).onKey(ITEM_PURCHASING_CATEGORIES_ACTIVE_DETAIL_FK)
+                .where(ItemPurchasingCategoryDetails.ITEM_PURCHASING_CATEGORY_NAME.eq(itemPurchasingCategoryName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemPurchasingCategoryFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemPurchasingCategory getItemPurchasingCategoryByName(String itemPurchasingCategoryName) {
@@ -1779,31 +1488,19 @@ public class VendorControl
         return getItemPurchasingCategoryDetailValueForUpdate(getItemPurchasingCategoryByNameForUpdate(itemPurchasingCategoryName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultItemPurchasingCategoryQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM itempurchasingcategories, itempurchasingcategorydetails
-                WHERE iprchc_activedetailid = iprchcdt_itempurchasingcategorydetailid
-                AND iprchcdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM itempurchasingcategories, itempurchasingcategorydetails
-                WHERE iprchc_activedetailid = iprchcdt_itempurchasingcategorydetailid
-                AND iprchcdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultItemPurchasingCategoryQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public ItemPurchasingCategory getDefaultItemPurchasingCategory(EntityPermission entityPermission) {
-        return itemPurchasingCategoryFactory.getEntityFromQuery(entityPermission, getDefaultItemPurchasingCategoryQueries);
+        var baseQuery = session.getDslContext()
+                .select(ItemPurchasingCategories.fields())
+                .from(ItemPurchasingCategories)
+                .join(ItemPurchasingCategoryDetails).onKey(ITEM_PURCHASING_CATEGORIES_ACTIVE_DETAIL_FK)
+                .where(ItemPurchasingCategoryDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemPurchasingCategoryFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public ItemPurchasingCategory getDefaultItemPurchasingCategory() {
@@ -1818,31 +1515,20 @@ public class VendorControl
         return getDefaultItemPurchasingCategoryForUpdate().getLastDetailForUpdate().getItemPurchasingCategoryDetailValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getItemPurchasingCategoriesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM itempurchasingcategories, itempurchasingcategorydetails
-                WHERE iprchc_activedetailid = iprchcdt_itempurchasingcategorydetailid
-                ORDER BY iprchcdt_sortorder, iprchcdt_itempurchasingcategoryname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM itempurchasingcategories, itempurchasingcategorydetails
-                WHERE iprchc_activedetailid = iprchcdt_itempurchasingcategorydetailid
-                FOR UPDATE
-                """);
-        getItemPurchasingCategoriesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ItemPurchasingCategory> getItemPurchasingCategories(EntityPermission entityPermission) {
-        return itemPurchasingCategoryFactory.getEntitiesFromQuery(entityPermission, getItemPurchasingCategoriesQueries);
+        var baseQuery = session.getDslContext()
+                .select(ItemPurchasingCategories.fields())
+                .from(ItemPurchasingCategories)
+                .join(ItemPurchasingCategoryDetails).onKey(ITEM_PURCHASING_CATEGORIES_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ItemPurchasingCategoryDetails.SORT_ORDER, ItemPurchasingCategoryDetails.ITEM_PURCHASING_CATEGORY_NAME),
+                    ItemPurchasingCategoryFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemPurchasingCategoryFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemPurchasingCategory> getItemPurchasingCategories() {
@@ -1853,33 +1539,22 @@ public class VendorControl
         return getItemPurchasingCategories(EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getItemPurchasingCategoriesByParentItemPurchasingCategoryQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM itempurchasingcategories, itempurchasingcategorydetails
-                WHERE iprchc_activedetailid = iprchcdt_itempurchasingcategorydetailid AND iprchcdt_parentitempurchasingcategoryid = ?
-                ORDER BY iprchcdt_sortorder, iprchcdt_itempurchasingcategoryname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM itempurchasingcategories, itempurchasingcategorydetails
-                WHERE iprchc_activedetailid = iprchcdt_itempurchasingcategorydetailid AND iprchcdt_parentitempurchasingcategoryid = ?
-                FOR UPDATE
-                """);
-        getItemPurchasingCategoriesByParentItemPurchasingCategoryQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<ItemPurchasingCategory> getItemPurchasingCategoriesByParentItemPurchasingCategory(ItemPurchasingCategory parentItemPurchasingCategory,
             EntityPermission entityPermission) {
-        return itemPurchasingCategoryFactory.getEntitiesFromQuery(entityPermission, getItemPurchasingCategoriesByParentItemPurchasingCategoryQueries,
-                parentItemPurchasingCategory);
+        var baseQuery = session.getDslContext()
+                .select(ItemPurchasingCategories.fields())
+                .from(ItemPurchasingCategories)
+                .join(ItemPurchasingCategoryDetails).onKey(ITEM_PURCHASING_CATEGORIES_ACTIVE_DETAIL_FK)
+                .where(ItemPurchasingCategoryDetails.PARENT_ITEM_PURCHASING_CATEGORY.eq(parentItemPurchasingCategory.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ItemPurchasingCategoryDetails.SORT_ORDER, ItemPurchasingCategoryDetails.ITEM_PURCHASING_CATEGORY_NAME),
+                    ItemPurchasingCategoryFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return itemPurchasingCategoryFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<ItemPurchasingCategory> getItemPurchasingCategoriesByParentItemPurchasingCategory(ItemPurchasingCategory parentItemPurchasingCategory) {
@@ -2068,6 +1743,9 @@ public class VendorControl
     @Inject
     protected ItemPurchasingCategoryDescriptionFactory itemPurchasingCategoryDescriptionFactory;
 
+    @Inject
+    ItemPurchasingCategoryDescriptionTransferCache itemPurchasingCategoryDescriptionTransferCache;
+
     public ItemPurchasingCategoryDescription createItemPurchasingCategoryDescription(ItemPurchasingCategory itemPurchasingCategory, Language language, String description, BasePK createdBy) {
         var itemPurchasingCategoryDescription = itemPurchasingCategoryDescriptionFactory.create(itemPurchasingCategory, language, description, session.getStartTime(),
                 Session.MAX_TIME);
@@ -2078,38 +1756,19 @@ public class VendorControl
     }
     
     public ItemPurchasingCategoryDescription getItemPurchasingCategoryDescription(ItemPurchasingCategory itemPurchasingCategory, Language language, EntityPermission entityPermission) {
-        ItemPurchasingCategoryDescription itemPurchasingCategoryDescription;
+        var baseQuery = session.getDslContext()
+                .select(ItemPurchasingCategoryDescriptions.fields())
+                .from(ItemPurchasingCategoryDescriptions)
+                .where(ItemPurchasingCategoryDescriptions.ITEM_PURCHASING_CATEGORY.eq(itemPurchasingCategory.getPrimaryKey()),
+                        ItemPurchasingCategoryDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ItemPurchasingCategoryDescriptions.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itempurchasingcategorydescriptions
-                        WHERE iprchcd_iprchc_itempurchasingcategoryid = ? AND iprchcd_lang_languageid = ? AND iprchcd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itempurchasingcategorydescriptions
-                        WHERE iprchcd_iprchc_itempurchasingcategoryid = ? AND iprchcd_lang_languageid = ? AND iprchcd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = itemPurchasingCategoryDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, itemPurchasingCategory.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            itemPurchasingCategoryDescription = itemPurchasingCategoryDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemPurchasingCategoryDescription;
+        return itemPurchasingCategoryDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ItemPurchasingCategoryDescription getItemPurchasingCategoryDescription(ItemPurchasingCategory itemPurchasingCategory, Language language) {
@@ -2129,39 +1788,24 @@ public class VendorControl
     }
     
     private List<ItemPurchasingCategoryDescription> getItemPurchasingCategoryDescriptionsByItemPurchasingCategory(ItemPurchasingCategory itemPurchasingCategory, EntityPermission entityPermission) {
-        List<ItemPurchasingCategoryDescription> itemPurchasingCategoryDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itempurchasingcategorydescriptions, languages
-                        WHERE iprchcd_iprchc_itempurchasingcategoryid = ? AND iprchcd_thrutime = ? AND iprchcd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM itempurchasingcategorydescriptions
-                        WHERE iprchcd_iprchc_itempurchasingcategoryid = ? AND iprchcd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ItemPurchasingCategoryDescriptions.fields())
+                    .from(ItemPurchasingCategoryDescriptions)
+                    .join(Languages).onKey(ITEM_PURCHASING_CATEGORY_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ItemPurchasingCategoryDescriptions.ITEM_PURCHASING_CATEGORY.eq(itemPurchasingCategory.getPrimaryKey()),
+                            ItemPurchasingCategoryDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ItemPurchasingCategoryDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ItemPurchasingCategoryDescriptions.fields())
+                    .from(ItemPurchasingCategoryDescriptions)
+                    .where(ItemPurchasingCategoryDescriptions.ITEM_PURCHASING_CATEGORY.eq(itemPurchasingCategory.getPrimaryKey()),
+                            ItemPurchasingCategoryDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = itemPurchasingCategoryDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, itemPurchasingCategory.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            itemPurchasingCategoryDescriptions = itemPurchasingCategoryDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return itemPurchasingCategoryDescriptions;
+        return itemPurchasingCategoryDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ItemPurchasingCategoryDescription> getItemPurchasingCategoryDescriptionsByItemPurchasingCategory(ItemPurchasingCategory itemPurchasingCategory) {
