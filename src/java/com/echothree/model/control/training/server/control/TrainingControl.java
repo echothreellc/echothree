@@ -19,7 +19,6 @@ package com.echothree.model.control.training.server.control;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.security.server.logic.PartySecurityRoleTemplateLogic;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
@@ -59,7 +58,6 @@ import com.echothree.model.control.training.server.transfer.TrainingClassSection
 import com.echothree.model.control.training.server.transfer.TrainingClassSectionTranslationTransferCache;
 import com.echothree.model.control.training.server.transfer.TrainingClassTransferCache;
 import com.echothree.model.control.training.server.transfer.TrainingClassTranslationTransferCache;
-import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.party.common.pk.PartyPK;
@@ -138,6 +136,85 @@ import com.echothree.model.data.training.server.value.TrainingClassTranslationVa
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.COMPONENT_VENDORS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_INSTANCES_ENTITY_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK;
+import static com.echothree.model.jooq.server.keys.party.PartyForeignKeys.PARTIES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.training.TrainingForeignKeys.PARTY_TRAINING_CLASSES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.training.TrainingForeignKeys.PARTY_TRAINING_CLASSES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.training.TrainingForeignKeys.PARTY_TRAINING_CLASS_DETAILS_PARTY_FK;
+import static com.echothree.model.jooq.server.keys.training.TrainingForeignKeys.PARTY_TRAINING_CLASS_DETAILS_TRAINING_CLASS_FK;
+import static com.echothree.model.jooq.server.keys.training.TrainingForeignKeys.PARTY_TRAINING_CLASS_SESSIONS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.training.TrainingForeignKeys.PARTY_TRAINING_CLASS_SESSIONS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.training.TrainingForeignKeys.PARTY_TRAINING_CLASS_SESSION_ANSWERS_PARTY_TRAINING_CLASS_SESSION_QUESTION_FK;
+import static com.echothree.model.jooq.server.keys.training.TrainingForeignKeys.PARTY_TRAINING_CLASS_SESSION_DETAILS_PARTY_TRAINING_CLASS_FK;
+import static com.echothree.model.jooq.server.keys.training.TrainingForeignKeys.PARTY_TRAINING_CLASS_SESSION_PAGES_PARTY_TRAINING_CLASS_SESSION_FK;
+import static com.echothree.model.jooq.server.keys.training.TrainingForeignKeys.PARTY_TRAINING_CLASS_SESSION_QUESTIONS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.training.TrainingForeignKeys.PARTY_TRAINING_CLASS_SESSION_QUESTIONS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.training.TrainingForeignKeys.PARTY_TRAINING_CLASS_SESSION_QUESTION_DETAILS_PARTY_TRAINING_CLASS_SESSION_FK;
+import static com.echothree.model.jooq.server.keys.training.TrainingForeignKeys.PARTY_TRAINING_CLASS_SESSION_QUESTION_DETAILS_TRAINING_CLASS_QUESTION_FK;
+import static com.echothree.model.jooq.server.keys.training.TrainingForeignKeys.PARTY_TRAINING_CLASS_SESSION_SECTIONS_PARTY_TRAINING_CLASS_SESSION_FK;
+import static com.echothree.model.jooq.server.keys.training.TrainingForeignKeys.PARTY_TRAINING_CLASS_SESSION_STATUSES_PARTY_TRAINING_CLASS_SESSION_FK;
+import static com.echothree.model.jooq.server.keys.training.TrainingForeignKeys.TRAINING_CLASSES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.training.TrainingForeignKeys.TRAINING_CLASSES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.training.TrainingForeignKeys.TRAINING_CLASS_ANSWERS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.training.TrainingForeignKeys.TRAINING_CLASS_ANSWER_TRANSLATIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.training.TrainingForeignKeys.TRAINING_CLASS_PAGES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.training.TrainingForeignKeys.TRAINING_CLASS_PAGE_TRANSLATIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.training.TrainingForeignKeys.TRAINING_CLASS_QUESTIONS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.training.TrainingForeignKeys.TRAINING_CLASS_QUESTIONS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.training.TrainingForeignKeys.TRAINING_CLASS_QUESTION_DETAILS_TRAINING_CLASS_SECTION_FK;
+import static com.echothree.model.jooq.server.keys.training.TrainingForeignKeys.TRAINING_CLASS_QUESTION_TRANSLATIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.training.TrainingForeignKeys.TRAINING_CLASS_SECTIONS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.training.TrainingForeignKeys.TRAINING_CLASS_SECTIONS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.training.TrainingForeignKeys.TRAINING_CLASS_SECTION_TRANSLATIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.training.TrainingForeignKeys.TRAINING_CLASS_TRANSLATIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.workflow.WorkflowForeignKeys.WORKFLOWS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.workflow.WorkflowForeignKeys.WORKFLOW_ENTITY_STATUSES_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.keys.workflow.WorkflowForeignKeys.WORKFLOW_ENTITY_STATUSES_WORKFLOW_STEP_FK;
+import static com.echothree.model.jooq.server.keys.workflow.WorkflowForeignKeys.WORKFLOW_STEPS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.workflow.WorkflowForeignKeys.WORKFLOW_STEP_DETAILS_WORKFLOW_FK;
+import static com.echothree.model.jooq.server.tables.core.ComponentVendorDetails.ComponentVendorDetails;
+import static com.echothree.model.jooq.server.tables.core.ComponentVendors.ComponentVendors;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.core.EntityTypeDetails.EntityTypeDetails;
+import static com.echothree.model.jooq.server.tables.core.EntityTypes.EntityTypes;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.party.Parties.Parties;
+import static com.echothree.model.jooq.server.tables.party.PartyDetails.PartyDetails;
+import static com.echothree.model.jooq.server.tables.training.PartyTrainingClassDetails.PartyTrainingClassDetails;
+import static com.echothree.model.jooq.server.tables.training.PartyTrainingClassSessionAnswers.PartyTrainingClassSessionAnswers;
+import static com.echothree.model.jooq.server.tables.training.PartyTrainingClassSessionDetails.PartyTrainingClassSessionDetails;
+import static com.echothree.model.jooq.server.tables.training.PartyTrainingClassSessionPages.PartyTrainingClassSessionPages;
+import static com.echothree.model.jooq.server.tables.training.PartyTrainingClassSessionQuestionDetails.PartyTrainingClassSessionQuestionDetails;
+import static com.echothree.model.jooq.server.tables.training.PartyTrainingClassSessionQuestionStatuses.PartyTrainingClassSessionQuestionStatuses;
+import static com.echothree.model.jooq.server.tables.training.PartyTrainingClassSessionQuestions.PartyTrainingClassSessionQuestions;
+import static com.echothree.model.jooq.server.tables.training.PartyTrainingClassSessionSections.PartyTrainingClassSessionSections;
+import static com.echothree.model.jooq.server.tables.training.PartyTrainingClassSessionStatuses.PartyTrainingClassSessionStatuses;
+import static com.echothree.model.jooq.server.tables.training.PartyTrainingClassSessions.PartyTrainingClassSessions;
+import static com.echothree.model.jooq.server.tables.training.PartyTrainingClassStatuses.PartyTrainingClassStatuses;
+import static com.echothree.model.jooq.server.tables.training.PartyTrainingClasses.PartyTrainingClasses;
+import static com.echothree.model.jooq.server.tables.training.TrainingClassAnswerDetails.TrainingClassAnswerDetails;
+import static com.echothree.model.jooq.server.tables.training.TrainingClassAnswerTranslations.TrainingClassAnswerTranslations;
+import static com.echothree.model.jooq.server.tables.training.TrainingClassAnswers.TrainingClassAnswers;
+import static com.echothree.model.jooq.server.tables.training.TrainingClassDetails.TrainingClassDetails;
+import static com.echothree.model.jooq.server.tables.training.TrainingClassPageDetails.TrainingClassPageDetails;
+import static com.echothree.model.jooq.server.tables.training.TrainingClassPageTranslations.TrainingClassPageTranslations;
+import static com.echothree.model.jooq.server.tables.training.TrainingClassPages.TrainingClassPages;
+import static com.echothree.model.jooq.server.tables.training.TrainingClassQuestionDetails.TrainingClassQuestionDetails;
+import static com.echothree.model.jooq.server.tables.training.TrainingClassQuestionTranslations.TrainingClassQuestionTranslations;
+import static com.echothree.model.jooq.server.tables.training.TrainingClassQuestions.TrainingClassQuestions;
+import static com.echothree.model.jooq.server.tables.training.TrainingClassSectionDetails.TrainingClassSectionDetails;
+import static com.echothree.model.jooq.server.tables.training.TrainingClassSectionTranslations.TrainingClassSectionTranslations;
+import static com.echothree.model.jooq.server.tables.training.TrainingClassSections.TrainingClassSections;
+import static com.echothree.model.jooq.server.tables.training.TrainingClassTranslations.TrainingClassTranslations;
+import static com.echothree.model.jooq.server.tables.training.TrainingClasses.TrainingClasses;
+import static com.echothree.model.jooq.server.tables.workflow.WorkflowDetails.WorkflowDetails;
+import static com.echothree.model.jooq.server.tables.workflow.WorkflowEntityStatuses.WorkflowEntityStatuses;
+import static com.echothree.model.jooq.server.tables.workflow.WorkflowStepDetails.WorkflowStepDetails;
+import static com.echothree.model.jooq.server.tables.workflow.WorkflowSteps.WorkflowSteps;
+import static com.echothree.model.jooq.server.tables.workflow.Workflows.Workflows;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
@@ -147,12 +224,9 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import javax.inject.Inject;
@@ -177,66 +251,17 @@ public class TrainingControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Training Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    @Inject
-    TrainingClassTransferCache trainingClassTransferCache;
-
-    @Inject
-    TrainingClassTranslationTransferCache trainingClassTranslationTransferCache;
-
-    @Inject
-    TrainingClassSectionTransferCache trainingClassSectionTransferCache;
-
-    @Inject
-    TrainingClassSectionTranslationTransferCache trainingClassSectionTranslationTransferCache;
-
-    @Inject
-    TrainingClassPageTransferCache trainingClassPageTransferCache;
-
-    @Inject
-    TrainingClassPageTranslationTransferCache trainingClassPageTranslationTransferCache;
-
-    @Inject
-    TrainingClassQuestionTransferCache trainingClassQuestionTransferCache;
-
-    @Inject
-    TrainingClassQuestionTranslationTransferCache trainingClassQuestionTranslationTransferCache;
-
-    @Inject
-    TrainingClassAnswerTransferCache trainingClassAnswerTransferCache;
-
-    @Inject
-    TrainingClassAnswerTranslationTransferCache trainingClassAnswerTranslationTransferCache;
-
-    @Inject
-    PartyTrainingClassTransferCache partyTrainingClassTransferCache;
-
-    @Inject
-    PartyTrainingClassSessionTransferCache partyTrainingClassSessionTransferCache;
-
-    @Inject
-    PartyTrainingClassSessionSectionTransferCache partyTrainingClassSessionSectionTransferCache;
-
-    @Inject
-    PartyTrainingClassSessionPageTransferCache partyTrainingClassSessionPageTransferCache;
-
-    @Inject
-    PartyTrainingClassSessionQuestionTransferCache partyTrainingClassSessionQuestionTransferCache;
-
-    @Inject
-    PartyTrainingClassSessionAnswerTransferCache partyTrainingClassSessionAnswerTransferCache;
-
-    // --------------------------------------------------------------------------------
     //   Training Classes
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected TrainingClassDetailFactory trainingClassDetailFactory;
 
     @Inject
     protected TrainingClassFactory trainingClassFactory;
 
     @Inject
-    protected TrainingClassDetailFactory trainingClassDetailFactory;
+    private TrainingClassTransferCache trainingClassTransferCache;
 
     public TrainingClass createTrainingClass(String trainingClassName, Long estimatedReadingTime, Long readingTimeAllowed, Long estimatedTestingTime,
             Long testingTimeAllowed, Long requiredCompletionTime, WorkEffortScope workEffortScope, Integer defaultPercentageToPass,
@@ -287,34 +312,27 @@ public class TrainingControl
     }
 
     public long countTrainingClasses() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM trainingclasses
-                        JOIN trainingclassdetails ON trnclsdt_trainingclassdetailid = trncls_activedetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(TrainingClasses)
+                .join(TrainingClassDetails).onKey(TRAINING_CLASSES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
-    private static final Map<EntityPermission, String> getTrainingClassByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM trainingclasses, trainingclassdetails
-                WHERE trncls_activedetailid = trnclsdt_trainingclassdetailid AND trnclsdt_trainingclassname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM trainingclasses, trainingclassdetails
-                WHERE trncls_activedetailid = trnclsdt_trainingclassdetailid AND trnclsdt_trainingclassname = ?
-                FOR UPDATE
-                """);
-        getTrainingClassByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     public TrainingClass getTrainingClassByName(String trainingClassName, EntityPermission entityPermission) {
-        return trainingClassFactory.getEntityFromQuery(entityPermission, getTrainingClassByNameQueries, trainingClassName);
+        var baseQuery = session.getDslContext()
+                .select(TrainingClasses.fields())
+                .from(TrainingClasses)
+                .join(TrainingClassDetails).onKey(TRAINING_CLASSES_ACTIVE_DETAIL_FK)
+                .where(TrainingClassDetails.TRAINING_CLASS_NAME.eq(trainingClassName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return trainingClassFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public TrainingClass getTrainingClassByName(String trainingClassName) {
@@ -333,27 +351,19 @@ public class TrainingControl
         return getTrainingClassDetailValueForUpdate(getTrainingClassByNameForUpdate(trainingClassName));
     }
     
-    private static final Map<EntityPermission, String> getDefaultTrainingClassQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM trainingclasses, trainingclassdetails
-                WHERE trncls_activedetailid = trnclsdt_trainingclassdetailid AND trnclsdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM trainingclasses, trainingclassdetails
-                WHERE trncls_activedetailid = trnclsdt_trainingclassdetailid AND trnclsdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultTrainingClassQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     public TrainingClass getDefaultTrainingClass(EntityPermission entityPermission) {
-        return trainingClassFactory.getEntityFromQuery(entityPermission, getDefaultTrainingClassQueries);
+        var baseQuery = session.getDslContext()
+                .select(TrainingClasses.fields())
+                .from(TrainingClasses)
+                .join(TrainingClassDetails).onKey(TRAINING_CLASSES_ACTIVE_DETAIL_FK)
+                .where(TrainingClassDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return trainingClassFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public TrainingClass getDefaultTrainingClass() {
@@ -368,29 +378,20 @@ public class TrainingControl
         return getDefaultTrainingClassForUpdate().getLastDetailForUpdate().getTrainingClassDetailValue().clone();
     }
     
-    private static final Map<EntityPermission, String> getTrainingClassesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM trainingclasses, trainingclassdetails
-                WHERE trncls_activedetailid = trnclsdt_trainingclassdetailid
-                ORDER BY trnclsdt_sortorder, trnclsdt_trainingclassname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM trainingclasses, trainingclassdetails
-                WHERE trncls_activedetailid = trnclsdt_trainingclassdetailid
-                FOR UPDATE
-                """);
-        getTrainingClassesQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<TrainingClass> getTrainingClasses(EntityPermission entityPermission) {
-        return trainingClassFactory.getEntitiesFromQuery(entityPermission, getTrainingClassesQueries);
+        var baseQuery = session.getDslContext()
+                .select(TrainingClasses.fields())
+                .from(TrainingClasses)
+                .join(TrainingClassDetails).onKey(TRAINING_CLASSES_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(TrainingClassDetails.SORT_ORDER, TrainingClassDetails.TRAINING_CLASS_NAME),
+                    TrainingClassFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return trainingClassFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<TrainingClass> getTrainingClasses() {
@@ -548,6 +549,9 @@ public class TrainingControl
     @Inject
     protected TrainingClassTranslationFactory trainingClassTranslationFactory;
 
+    @Inject
+    private TrainingClassTranslationTransferCache trainingClassTranslationTransferCache;
+
     public TrainingClassTranslation createTrainingClassTranslation(TrainingClass trainingClass, Language language, String description, MimeType overviewMimeType,
             String overview, MimeType introductionMimeType, String introduction, BasePK createdBy) {
         var trainingClassTranslation = trainingClassTranslationFactory.create(trainingClass, language, description,
@@ -558,28 +562,20 @@ public class TrainingControl
         return trainingClassTranslation;
     }
     
-    private static final Map<EntityPermission, String> getTrainingClassTranslationQueries;
-    
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM trainingclasstranslations
-                WHERE trnclstr_trncls_trainingclassid = ? AND trnclstr_lang_languageid = ? AND trnclstr_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM trainingclasstranslations
-                WHERE trnclstr_trncls_trainingclassid = ? AND trnclstr_lang_languageid = ? AND trnclstr_thrutime = ?
-                FOR UPDATE
-                """);
-        getTrainingClassTranslationQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private TrainingClassTranslation getTrainingClassTranslation(TrainingClass trainingClass, Language language, EntityPermission entityPermission) {
-        return trainingClassTranslationFactory.getEntityFromQuery(entityPermission, getTrainingClassTranslationQueries, trainingClass, language,
-                Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(TrainingClassTranslations.fields())
+                .from(TrainingClassTranslations)
+                .where(TrainingClassTranslations.TRAINING_CLASS.eq(trainingClass.getPrimaryKey()),
+                        TrainingClassTranslations.LANGUAGE.eq(language.getPrimaryKey()),
+                        TrainingClassTranslations.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return trainingClassTranslationFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public TrainingClassTranslation getTrainingClassTranslation(TrainingClass trainingClass, Language language) {
@@ -598,30 +594,25 @@ public class TrainingControl
         return getTrainingClassTranslationValue(getTrainingClassTranslationForUpdate(trainingClass, language));
     }
     
-    private static final Map<EntityPermission, String> getTrainingClassTranslationsByTrainingClassQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM trainingclasstranslations, languages
-                WHERE trnclstr_trncls_trainingclassid = ? AND trnclstr_thrutime = ? AND trnclstr_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM trainingclasstranslations
-                WHERE trnclstr_trncls_trainingclassid = ? AND trnclstr_thrutime = ?
-                FOR UPDATE
-                """);
-        getTrainingClassTranslationsByTrainingClassQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<TrainingClassTranslation> getTrainingClassTranslationsByTrainingClass(TrainingClass trainingClass, EntityPermission entityPermission) {
-        return trainingClassTranslationFactory.getEntitiesFromQuery(entityPermission, getTrainingClassTranslationsByTrainingClassQueries,
-                trainingClass, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(TrainingClassTranslations.fields())
+                    .from(TrainingClassTranslations)
+                    .join(Languages).onKey(TRAINING_CLASS_TRANSLATIONS_LANGUAGE_FK)
+                    .where(TrainingClassTranslations.TRAINING_CLASS.eq(trainingClass.getPrimaryKey()),
+                            TrainingClassTranslations.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    TrainingClassTranslationFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(TrainingClassTranslations.fields())
+                    .from(TrainingClassTranslations)
+                    .where(TrainingClassTranslations.TRAINING_CLASS.eq(trainingClass.getPrimaryKey()),
+                            TrainingClassTranslations.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return trainingClassTranslationFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<TrainingClassTranslation> getTrainingClassTranslationsByTrainingClass(TrainingClass trainingClass) {
@@ -700,10 +691,13 @@ public class TrainingControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected TrainingClassSectionDetailFactory trainingClassSectionDetailFactory;
+
+    @Inject
     protected TrainingClassSectionFactory trainingClassSectionFactory;
 
     @Inject
-    protected TrainingClassSectionDetailFactory trainingClassSectionDetailFactory;
+    private TrainingClassSectionTransferCache trainingClassSectionTransferCache;
 
     public TrainingClassSection createTrainingClassSection(TrainingClass trainingClass, String trainingClassSectionName, Integer percentageToPass,
             Integer questionCount, Integer sortOrder, BasePK createdBy) {
@@ -738,38 +732,29 @@ public class TrainingControl
     }
 
     public long countTrainingClassSectionsByTrainingClass(final TrainingClass trainingClass) {
-        return session.queryForLong("""
-               SELECT COUNT(*)
-               FROM trainingclasssections
-               JOIN trainingclasssectiondetails ON trnclssdt_trainingclasssectiondetailid = trnclss_activedetailid
-               WHERE trnclssdt_trncls_trainingclassid = ?
-               """, trainingClass);
+        return session.getDslContext()
+                .selectCount()
+                .from(TrainingClassSections)
+                .join(TrainingClassSectionDetails).onKey(TRAINING_CLASS_SECTIONS_ACTIVE_DETAIL_FK)
+                .where(TrainingClassSectionDetails.TRAINING_CLASS.eq(trainingClass.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
-    private static final Map<EntityPermission, String> getTrainingClassSectionByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM trainingclasssections, trainingclasssectiondetails
-                WHERE trnclss_activedetailid = trnclssdt_trainingclasssectiondetailid
-                AND trnclssdt_trncls_trainingclassid = ? AND trnclssdt_trainingclasssectionname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM trainingclasssections, trainingclasssectiondetails
-                WHERE trnclss_activedetailid = trnclssdt_trainingclasssectiondetailid
-                AND trnclssdt_trncls_trainingclassid = ? AND trnclssdt_trainingclasssectionname = ?
-                FOR UPDATE
-                """);
-        getTrainingClassSectionByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     public TrainingClassSection getTrainingClassSectionByName(TrainingClass trainingClass, String trainingClassSectionName, EntityPermission entityPermission) {
-        return trainingClassSectionFactory.getEntityFromQuery(entityPermission, getTrainingClassSectionByNameQueries, trainingClass,
-                trainingClassSectionName);
+        var baseQuery = session.getDslContext()
+                .select(TrainingClassSections.fields())
+                .from(TrainingClassSections)
+                .join(TrainingClassSectionDetails).onKey(TRAINING_CLASS_SECTIONS_ACTIVE_DETAIL_FK)
+                .where(TrainingClassSectionDetails.TRAINING_CLASS.eq(trainingClass.getPrimaryKey()),
+                        TrainingClassSectionDetails.TRAINING_CLASS_SECTION_NAME.eq(trainingClassSectionName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return trainingClassSectionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public TrainingClassSection getTrainingClassSectionByName(TrainingClass trainingClass, String trainingClassSectionName) {
@@ -788,31 +773,21 @@ public class TrainingControl
         return getTrainingClassSectionDetailValueForUpdate(getTrainingClassSectionByNameForUpdate(trainingClass, trainingClassSectionName));
     }
     
-    private static final Map<EntityPermission, String> getTrainingClassSectionsQueries;
+    private List<TrainingClassSection> getTrainingClassSections(EntityPermission entityPermission, TrainingClass trainingClass) {
+        var baseQuery = session.getDslContext()
+                .select(TrainingClassSections.fields())
+                .from(TrainingClassSections)
+                .join(TrainingClassSectionDetails).onKey(TRAINING_CLASS_SECTIONS_ACTIVE_DETAIL_FK)
+                .where(TrainingClassSectionDetails.TRAINING_CLASS.eq(trainingClass.getPrimaryKey()));
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(TrainingClassSectionDetails.SORT_ORDER, TrainingClassSectionDetails.TRAINING_CLASS_SECTION_NAME),
+                    TrainingClassSectionFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM trainingclasssections, trainingclasssectiondetails
-                WHERE trnclss_activedetailid = trnclssdt_trainingclasssectiondetailid
-                AND trnclssdt_trncls_trainingclassid = ?
-                ORDER BY trnclssdt_sortorder, trnclssdt_trainingclasssectionname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM trainingclasssections, trainingclasssectiondetails
-                WHERE trnclss_activedetailid = trnclssdt_trainingclasssectiondetailid
-                AND trnclssdt_trncls_trainingclassid = ?
-                FOR UPDATE
-                """);
-        getTrainingClassSectionsQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
-   private List<TrainingClassSection> getTrainingClassSections(EntityPermission entityPermission, TrainingClass trainingClass) {
-        return trainingClassSectionFactory.getEntitiesFromQuery(entityPermission, getTrainingClassSectionsQueries, trainingClass);
+        return trainingClassSectionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<TrainingClassSection> getTrainingClassSections(TrainingClass trainingClass) {
@@ -898,6 +873,9 @@ public class TrainingControl
     @Inject
     protected TrainingClassSectionTranslationFactory trainingClassSectionTranslationFactory;
 
+    @Inject
+    private TrainingClassSectionTranslationTransferCache trainingClassSectionTranslationTransferCache;
+
     public TrainingClassSectionTranslation createTrainingClassSectionTranslation(TrainingClassSection trainingClassSection, Language language,
             String description, MimeType overviewMimeType, String overview, MimeType introductionMimeType, String introduction, BasePK createdBy) {
         var trainingClassSectionTranslation = trainingClassSectionTranslationFactory.create(trainingClassSection,
@@ -908,28 +886,20 @@ public class TrainingControl
         return trainingClassSectionTranslation;
     }
     
-    private static final Map<EntityPermission, String> getTrainingClassSectionTranslationQueries;
-    
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM trainingclasssectiontranslations
-                WHERE trnclsstr_trnclss_trainingclasssectionid = ? AND trnclsstr_lang_languageid = ? AND trnclsstr_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM trainingclasssectiontranslations
-                WHERE trnclsstr_trnclss_trainingclasssectionid = ? AND trnclsstr_lang_languageid = ? AND trnclsstr_thrutime = ?
-                FOR UPDATE
-                """);
-        getTrainingClassSectionTranslationQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private TrainingClassSectionTranslation getTrainingClassSectionTranslation(TrainingClassSection trainingClassSection, Language language, EntityPermission entityPermission) {
-        return trainingClassSectionTranslationFactory.getEntityFromQuery(entityPermission, getTrainingClassSectionTranslationQueries, trainingClassSection, language,
-                Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(TrainingClassSectionTranslations.fields())
+                .from(TrainingClassSectionTranslations)
+                .where(TrainingClassSectionTranslations.TRAINING_CLASS_SECTION.eq(trainingClassSection.getPrimaryKey()),
+                        TrainingClassSectionTranslations.LANGUAGE.eq(language.getPrimaryKey()),
+                        TrainingClassSectionTranslations.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return trainingClassSectionTranslationFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public TrainingClassSectionTranslation getTrainingClassSectionTranslation(TrainingClassSection trainingClassSection, Language language) {
@@ -948,30 +918,25 @@ public class TrainingControl
         return getTrainingClassSectionTranslationValue(getTrainingClassSectionTranslationForUpdate(trainingClassSection, language));
     }
     
-    private static final Map<EntityPermission, String> getTrainingClassSectionTranslationsByTrainingClassSectionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM trainingclasssectiontranslations, languages
-                WHERE trnclsstr_trnclss_trainingclasssectionid = ? AND trnclsstr_thrutime = ? AND trnclsstr_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM trainingclasssectiontranslations
-                WHERE trnclsstr_trnclss_trainingclasssectionid = ? AND trnclsstr_thrutime = ?
-                FOR UPDATE
-                """);
-        getTrainingClassSectionTranslationsByTrainingClassSectionQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<TrainingClassSectionTranslation> getTrainingClassSectionTranslationsByTrainingClassSection(TrainingClassSection trainingClassSection, EntityPermission entityPermission) {
-        return trainingClassSectionTranslationFactory.getEntitiesFromQuery(entityPermission, getTrainingClassSectionTranslationsByTrainingClassSectionQueries,
-                trainingClassSection, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(TrainingClassSectionTranslations.fields())
+                    .from(TrainingClassSectionTranslations)
+                    .join(Languages).onKey(TRAINING_CLASS_SECTION_TRANSLATIONS_LANGUAGE_FK)
+                    .where(TrainingClassSectionTranslations.TRAINING_CLASS_SECTION.eq(trainingClassSection.getPrimaryKey()),
+                            TrainingClassSectionTranslations.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    TrainingClassSectionTranslationFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(TrainingClassSectionTranslations.fields())
+                    .from(TrainingClassSectionTranslations)
+                    .where(TrainingClassSectionTranslations.TRAINING_CLASS_SECTION.eq(trainingClassSection.getPrimaryKey()),
+                            TrainingClassSectionTranslations.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return trainingClassSectionTranslationFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<TrainingClassSectionTranslation> getTrainingClassSectionTranslationsByTrainingClassSection(TrainingClassSection trainingClassSection) {
@@ -1050,10 +1015,13 @@ public class TrainingControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected TrainingClassPageDetailFactory trainingClassPageDetailFactory;
+
+    @Inject
     protected TrainingClassPageFactory trainingClassPageFactory;
 
     @Inject
-    protected TrainingClassPageDetailFactory trainingClassPageDetailFactory;
+    private TrainingClassPageTransferCache trainingClassPageTransferCache;
 
     public TrainingClassPage createTrainingClassPage(TrainingClassSection trainingClassSection, String trainingClassPageName, Integer sortOrder,
             BasePK createdBy) {
@@ -1088,12 +1056,13 @@ public class TrainingControl
     }
 
     public long countTrainingClassPagesByTrainingClassSection(final TrainingClassSection trainingClassSection) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM trainingclasspages
-                        JOIN trainingclasspagedetails ON trnclspdt_trainingclasspagedetailid = trnclsp_activedetailid
-                        WHERE trnclspdt_trnclss_trainingclasssectionid = ?
-                        """, trainingClassSection);
+        return session.getDslContext()
+                .selectCount()
+                .from(TrainingClassPages)
+                .join(TrainingClassPageDetails).onKey(TRAINING_CLASS_PAGES_ACTIVE_DETAIL_FK)
+                .where(TrainingClassPageDetails.TRAINING_CLASS_SECTION.eq(trainingClassSection.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countTrainingClassPages(List<TrainingClassSection> trainingClassSections) {
@@ -1108,31 +1077,21 @@ public class TrainingControl
         return countTrainingClassPages(getTrainingClassSections(trainingClass));
     }
 
-    private static final Map<EntityPermission, String> getTrainingClassPageByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM trainingclasspages, trainingclasspagedetails
-                WHERE trnclsp_activedetailid = trnclspdt_trainingclasspagedetailid
-                AND trnclspdt_trnclss_trainingclasssectionid = ? AND trnclspdt_trainingclasspagename = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM trainingclasspages, trainingclasspagedetails
-                WHERE trnclsp_activedetailid = trnclspdt_trainingclasspagedetailid
-                AND trnclspdt_trnclss_trainingclasssectionid = ? AND trnclspdt_trainingclasspagename = ?
-                FOR UPDATE
-                """);
-        getTrainingClassPageByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     public TrainingClassPage getTrainingClassPageByName(TrainingClassSection trainingClassSection, String trainingClassPageName,
             EntityPermission entityPermission) {
-        return trainingClassPageFactory.getEntityFromQuery(entityPermission, getTrainingClassPageByNameQueries, trainingClassSection,
-                trainingClassPageName);
+        var baseQuery = session.getDslContext()
+                .select(TrainingClassPages.fields())
+                .from(TrainingClassPages)
+                .join(TrainingClassPageDetails).onKey(TRAINING_CLASS_PAGES_ACTIVE_DETAIL_FK)
+                .where(TrainingClassPageDetails.TRAINING_CLASS_SECTION.eq(trainingClassSection.getPrimaryKey()),
+                        TrainingClassPageDetails.TRAINING_CLASS_PAGE_NAME.eq(trainingClassPageName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return trainingClassPageFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public TrainingClassPage getTrainingClassPageByName(TrainingClassSection trainingClassSection, String trainingClassPageName) {
@@ -1151,31 +1110,21 @@ public class TrainingControl
         return getTrainingClassPageDetailValueForUpdate(getTrainingClassPageByNameForUpdate(trainingClassSection, trainingClassPageName));
     }
     
-    private static final Map<EntityPermission, String> getTrainingClassPagesQueries;
+    private List<TrainingClassPage> getTrainingClassPages(EntityPermission entityPermission, TrainingClassSection trainingClassSection) {
+        var baseQuery = session.getDslContext()
+                .select(TrainingClassPages.fields())
+                .from(TrainingClassPages)
+                .join(TrainingClassPageDetails).onKey(TRAINING_CLASS_PAGES_ACTIVE_DETAIL_FK)
+                .where(TrainingClassPageDetails.TRAINING_CLASS_SECTION.eq(trainingClassSection.getPrimaryKey()));
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(TrainingClassPageDetails.SORT_ORDER, TrainingClassPageDetails.TRAINING_CLASS_PAGE_NAME),
+                    TrainingClassPageFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM trainingclasspages, trainingclasspagedetails
-                WHERE trnclsp_activedetailid = trnclspdt_trainingclasspagedetailid
-                AND trnclspdt_trnclss_trainingclasssectionid = ?
-                ORDER BY trnclspdt_sortorder, trnclspdt_trainingclasspagename
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM trainingclasspages, trainingclasspagedetails
-                WHERE trnclsp_activedetailid = trnclspdt_trainingclasspagedetailid
-                AND trnclspdt_trnclss_trainingclasssectionid = ?
-                FOR UPDATE
-                """);
-        getTrainingClassPagesQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
-   private List<TrainingClassPage> getTrainingClassPages(EntityPermission entityPermission, TrainingClassSection trainingClassSection) {
-        return trainingClassPageFactory.getEntitiesFromQuery(entityPermission, getTrainingClassPagesQueries, trainingClassSection);
+        return trainingClassPageFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<TrainingClassPage> getTrainingClassPages(TrainingClassSection trainingClassSection) {
@@ -1257,6 +1206,9 @@ public class TrainingControl
     @Inject
     protected TrainingClassPageTranslationFactory trainingClassPageTranslationFactory;
 
+    @Inject
+    private TrainingClassPageTranslationTransferCache trainingClassPageTranslationTransferCache;
+
     public TrainingClassPageTranslation createTrainingClassPageTranslation(TrainingClassPage trainingClassPage, Language language, String description,
             MimeType pageMimeType, String page, BasePK createdBy) {
         var trainingClassPageTranslation = trainingClassPageTranslationFactory.create(trainingClassPage, language,
@@ -1267,29 +1219,21 @@ public class TrainingControl
         return trainingClassPageTranslation;
     }
     
-    private static final Map<EntityPermission, String> getTrainingClassPageTranslationQueries;
-    
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM trainingclasspagetranslations
-                WHERE trnclsptr_trnclsp_trainingclasspageid = ? AND trnclsptr_lang_languageid = ? AND trnclsptr_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM trainingclasspagetranslations
-                WHERE trnclsptr_trnclsp_trainingclasspageid = ? AND trnclsptr_lang_languageid = ? AND trnclsptr_thrutime = ?
-                FOR UPDATE
-                """);
-        getTrainingClassPageTranslationQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private TrainingClassPageTranslation getTrainingClassPageTranslation(TrainingClassPage trainingClassPage, Language language,
             EntityPermission entityPermission) {
-        return trainingClassPageTranslationFactory.getEntityFromQuery(entityPermission, getTrainingClassPageTranslationQueries, trainingClassPage,
-                language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(TrainingClassPageTranslations.fields())
+                .from(TrainingClassPageTranslations)
+                .where(TrainingClassPageTranslations.TRAINING_CLASS_PAGE.eq(trainingClassPage.getPrimaryKey()),
+                        TrainingClassPageTranslations.LANGUAGE.eq(language.getPrimaryKey()),
+                        TrainingClassPageTranslations.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return trainingClassPageTranslationFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public TrainingClassPageTranslation getTrainingClassPageTranslation(TrainingClassPage trainingClassPage, Language language) {
@@ -1308,31 +1252,26 @@ public class TrainingControl
         return getTrainingClassPageTranslationValue(getTrainingClassPageTranslationForUpdate(trainingClassPage, language));
     }
     
-    private static final Map<EntityPermission, String> getTrainingClassPageTranslationsByTrainingClassPageQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM trainingclasspagetranslations, languages
-                WHERE trnclsptr_trnclsp_trainingclasspageid = ? AND trnclsptr_thrutime = ? AND trnclsptr_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM trainingclasspagetranslations
-                WHERE trnclsptr_trnclsp_trainingclasspageid = ? AND trnclsptr_thrutime = ?
-                FOR UPDATE
-                """);
-        getTrainingClassPageTranslationsByTrainingClassPageQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<TrainingClassPageTranslation> getTrainingClassPageTranslationsByTrainingClassPage(TrainingClassPage trainingClassPage,
             EntityPermission entityPermission) {
-        return trainingClassPageTranslationFactory.getEntitiesFromQuery(entityPermission, getTrainingClassPageTranslationsByTrainingClassPageQueries,
-                trainingClassPage, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(TrainingClassPageTranslations.fields())
+                    .from(TrainingClassPageTranslations)
+                    .join(Languages).onKey(TRAINING_CLASS_PAGE_TRANSLATIONS_LANGUAGE_FK)
+                    .where(TrainingClassPageTranslations.TRAINING_CLASS_PAGE.eq(trainingClassPage.getPrimaryKey()),
+                            TrainingClassPageTranslations.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    TrainingClassPageTranslationFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(TrainingClassPageTranslations.fields())
+                    .from(TrainingClassPageTranslations)
+                    .where(TrainingClassPageTranslations.TRAINING_CLASS_PAGE.eq(trainingClassPage.getPrimaryKey()),
+                            TrainingClassPageTranslations.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return trainingClassPageTranslationFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<TrainingClassPageTranslation> getTrainingClassPageTranslationsByTrainingClassPage(TrainingClassPage trainingClassPage) {
@@ -1409,10 +1348,13 @@ public class TrainingControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected TrainingClassQuestionDetailFactory trainingClassQuestionDetailFactory;
+
+    @Inject
     protected TrainingClassQuestionFactory trainingClassQuestionFactory;
 
     @Inject
-    protected TrainingClassQuestionDetailFactory trainingClassQuestionDetailFactory;
+    private TrainingClassQuestionTransferCache trainingClassQuestionTransferCache;
 
     public TrainingClassQuestion createTrainingClassQuestion(TrainingClassSection trainingClassSection, String trainingClassQuestionName, Boolean askingRequired,
             Boolean passingRequired, Integer sortOrder, BasePK createdBy) {
@@ -1447,12 +1389,13 @@ public class TrainingControl
     }
 
     public long countTrainingClassQuestionsByTrainingClassSection(final TrainingClassSection trainingClassSection) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM trainingclassquestions
-                        JOIN trainingclassquestiondetails ON trnclsqusdt_trainingclassquestiondetailid = trnclsqus_activedetailid
-                        WHERE trnclsqusdt_trnclss_trainingclasssectionid = ?
-                        """, trainingClassSection);
+        return session.getDslContext()
+                .selectCount()
+                .from(TrainingClassQuestions)
+                .join(TrainingClassQuestionDetails).onKey(TRAINING_CLASS_QUESTIONS_ACTIVE_DETAIL_FK)
+                .where(TrainingClassQuestionDetails.TRAINING_CLASS_SECTION.eq(trainingClassSection.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countTrainingClassQuestions(List<TrainingClassSection> trainingClassSections) {
@@ -1467,31 +1410,21 @@ public class TrainingControl
         return countTrainingClassQuestions(getTrainingClassSections(trainingClass));
     }
 
-    private static final Map<EntityPermission, String> getTrainingClassQuestionByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM trainingclassquestions, trainingclassquestiondetails
-                WHERE trnclsqus_activedetailid = trnclsqusdt_trainingclassquestiondetailid
-                AND trnclsqusdt_trnclss_trainingclasssectionid = ? AND trnclsqusdt_trainingclassquestionname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM trainingclassquestions, trainingclassquestiondetails
-                WHERE trnclsqus_activedetailid = trnclsqusdt_trainingclassquestiondetailid
-                AND trnclsqusdt_trnclss_trainingclasssectionid = ? AND trnclsqusdt_trainingclassquestionname = ?
-                FOR UPDATE
-                """);
-        getTrainingClassQuestionByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     public TrainingClassQuestion getTrainingClassQuestionByName(TrainingClassSection trainingClassSection, String trainingClassQuestionName,
             EntityPermission entityPermission) {
-        return trainingClassQuestionFactory.getEntityFromQuery(entityPermission, getTrainingClassQuestionByNameQueries, trainingClassSection,
-                trainingClassQuestionName);
+        var baseQuery = session.getDslContext()
+                .select(TrainingClassQuestions.fields())
+                .from(TrainingClassQuestions)
+                .join(TrainingClassQuestionDetails).onKey(TRAINING_CLASS_QUESTIONS_ACTIVE_DETAIL_FK)
+                .where(TrainingClassQuestionDetails.TRAINING_CLASS_SECTION.eq(trainingClassSection.getPrimaryKey()),
+                        TrainingClassQuestionDetails.TRAINING_CLASS_QUESTION_NAME.eq(trainingClassQuestionName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return trainingClassQuestionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public TrainingClassQuestion getTrainingClassQuestionByName(TrainingClassSection trainingClassSection, String trainingClassQuestionName) {
@@ -1511,31 +1444,21 @@ public class TrainingControl
         return getTrainingClassQuestionDetailValueForUpdate(getTrainingClassQuestionByNameForUpdate(trainingClassSection, trainingClassQuestionName));
     }
     
-    private static final Map<EntityPermission, String> getTrainingClassQuestionsQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM trainingclassquestions, trainingclassquestiondetails
-                WHERE trnclsqus_activedetailid = trnclsqusdt_trainingclassquestiondetailid
-                AND trnclsqusdt_trnclss_trainingclasssectionid = ?
-                ORDER BY trnclsqusdt_sortorder, trnclsqusdt_trainingclassquestionname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM trainingclassquestions, trainingclassquestiondetails
-                WHERE trnclsqus_activedetailid = trnclsqusdt_trainingclassquestiondetailid
-                AND trnclsqusdt_trnclss_trainingclasssectionid = ?
-                FOR UPDATE
-                """);
-        getTrainingClassQuestionsQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<TrainingClassQuestion> getTrainingClassQuestions(EntityPermission entityPermission, TrainingClassSection trainingClassSection) {
-        return trainingClassQuestionFactory.getEntitiesFromQuery(entityPermission, getTrainingClassQuestionsQueries, trainingClassSection);
+        var baseQuery = session.getDslContext()
+                .select(TrainingClassQuestions.fields())
+                .from(TrainingClassQuestions)
+                .join(TrainingClassQuestionDetails).onKey(TRAINING_CLASS_QUESTIONS_ACTIVE_DETAIL_FK)
+                .where(TrainingClassQuestionDetails.TRAINING_CLASS_SECTION.eq(trainingClassSection.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(TrainingClassQuestionDetails.SORT_ORDER, TrainingClassQuestionDetails.TRAINING_CLASS_QUESTION_NAME),
+                    TrainingClassQuestionFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return trainingClassQuestionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<TrainingClassQuestion> getTrainingClassQuestions(TrainingClassSection trainingClassSection) {
@@ -1620,6 +1543,9 @@ public class TrainingControl
     @Inject
     protected TrainingClassQuestionTranslationFactory trainingClassQuestionTranslationFactory;
 
+    @Inject
+    private TrainingClassQuestionTranslationTransferCache trainingClassQuestionTranslationTransferCache;
+
     public TrainingClassQuestionTranslation createTrainingClassQuestionTranslation(TrainingClassQuestion trainingClassQuestion, Language language,
             MimeType questionMimeType, String question, BasePK createdBy) {
         var trainingClassQuestionTranslation = trainingClassQuestionTranslationFactory.create(trainingClassQuestion,
@@ -1630,29 +1556,21 @@ public class TrainingControl
         return trainingClassQuestionTranslation;
     }
     
-    private static final Map<EntityPermission, String> getTrainingClassQuestionTranslationQueries;
-    
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM trainingclassquestiontranslations
-                WHERE trnclsqustr_trnclsqus_trainingclassquestionid = ? AND trnclsqustr_lang_languageid = ? AND trnclsqustr_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM trainingclassquestiontranslations
-                WHERE trnclsqustr_trnclsqus_trainingclassquestionid = ? AND trnclsqustr_lang_languageid = ? AND trnclsqustr_thrutime = ?
-                FOR UPDATE
-                """);
-        getTrainingClassQuestionTranslationQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private TrainingClassQuestionTranslation getTrainingClassQuestionTranslation(TrainingClassQuestion trainingClassQuestion, Language language,
             EntityPermission entityPermission) {
-        return trainingClassQuestionTranslationFactory.getEntityFromQuery(entityPermission, getTrainingClassQuestionTranslationQueries,
-                trainingClassQuestion, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(TrainingClassQuestionTranslations.fields())
+                .from(TrainingClassQuestionTranslations)
+                .where(TrainingClassQuestionTranslations.TRAINING_CLASS_QUESTION.eq(trainingClassQuestion.getPrimaryKey()),
+                        TrainingClassQuestionTranslations.LANGUAGE.eq(language.getPrimaryKey()),
+                        TrainingClassQuestionTranslations.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return trainingClassQuestionTranslationFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public TrainingClassQuestionTranslation getTrainingClassQuestionTranslation(TrainingClassQuestion trainingClassQuestion, Language language) {
@@ -1671,31 +1589,26 @@ public class TrainingControl
         return getTrainingClassQuestionTranslationValue(getTrainingClassQuestionTranslationForUpdate(trainingClassQuestion, language));
     }
     
-    private static final Map<EntityPermission, String> getTrainingClassQuestionTranslationsByTrainingClassQuestionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM trainingclassquestiontranslations, languages
-                WHERE trnclsqustr_trnclsqus_trainingclassquestionid = ? AND trnclsqustr_thrutime = ? AND trnclsqustr_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM trainingclassquestiontranslations
-                WHERE trnclsqustr_trnclsqus_trainingclassquestionid = ? AND trnclsqustr_thrutime = ?
-                FOR UPDATE
-                """);
-        getTrainingClassQuestionTranslationsByTrainingClassQuestionQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<TrainingClassQuestionTranslation> getTrainingClassQuestionTranslationsByTrainingClassQuestion(TrainingClassQuestion trainingClassQuestion,
             EntityPermission entityPermission) {
-        return trainingClassQuestionTranslationFactory.getEntitiesFromQuery(entityPermission, getTrainingClassQuestionTranslationsByTrainingClassQuestionQueries,
-                trainingClassQuestion, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(TrainingClassQuestionTranslations.fields())
+                    .from(TrainingClassQuestionTranslations)
+                    .join(Languages).onKey(TRAINING_CLASS_QUESTION_TRANSLATIONS_LANGUAGE_FK)
+                    .where(TrainingClassQuestionTranslations.TRAINING_CLASS_QUESTION.eq(trainingClassQuestion.getPrimaryKey()),
+                            TrainingClassQuestionTranslations.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    TrainingClassQuestionTranslationFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(TrainingClassQuestionTranslations.fields())
+                    .from(TrainingClassQuestionTranslations)
+                    .where(TrainingClassQuestionTranslations.TRAINING_CLASS_QUESTION.eq(trainingClassQuestion.getPrimaryKey()),
+                            TrainingClassQuestionTranslations.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return trainingClassQuestionTranslationFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<TrainingClassQuestionTranslation> getTrainingClassQuestionTranslationsByTrainingClassQuestion(TrainingClassQuestion trainingClassQuestion) {
@@ -1771,10 +1684,13 @@ public class TrainingControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected TrainingClassAnswerDetailFactory trainingClassAnswerDetailFactory;
+
+    @Inject
     protected TrainingClassAnswerFactory trainingClassAnswerFactory;
 
     @Inject
-    protected TrainingClassAnswerDetailFactory trainingClassAnswerDetailFactory;
+    private TrainingClassAnswerTransferCache trainingClassAnswerTransferCache;
 
     public TrainingClassAnswer createTrainingClassAnswer(TrainingClassQuestion trainingClassQuestion, String trainingClassAnswerName, Boolean isCorrect,
             Integer sortOrder, BasePK createdBy) {
@@ -1809,37 +1725,29 @@ public class TrainingControl
     }
 
     public long countTrainingClassAnswersByTrainingClassQuestion(final TrainingClassQuestion trainingClassQuestion) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM trainingclassanswers
-                        JOIN trainingclassanswerdetails ON trnclsansdt_trainingclassanswerdetailid = trnclsans_activedetailid
-                        WHERE trnclsansdt_trnclsqus_trainingclassquestionid = ?
-                        """, trainingClassQuestion);
+        return session.getDslContext()
+                .selectCount()
+                .from(TrainingClassAnswers)
+                .join(TrainingClassAnswerDetails).onKey(TRAINING_CLASS_ANSWERS_ACTIVE_DETAIL_FK)
+                .where(TrainingClassAnswerDetails.TRAINING_CLASS_QUESTION.eq(trainingClassQuestion.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
-    private static final Map<EntityPermission, String> getTrainingClassAnswerByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM trainingclassanswers, trainingclassanswerdetails
-                WHERE trnclsans_activedetailid = trnclsansdt_trainingclassanswerdetailid
-                AND trnclsansdt_trnclsqus_trainingclassquestionid = ? AND trnclsansdt_trainingclassanswername = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM trainingclassanswers, trainingclassanswerdetails
-                WHERE trnclsans_activedetailid = trnclsansdt_trainingclassanswerdetailid
-                AND trnclsansdt_trnclsqus_trainingclassquestionid = ? AND trnclsansdt_trainingclassanswername = ?
-                FOR UPDATE
-                """);
-        getTrainingClassAnswerByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     public TrainingClassAnswer getTrainingClassAnswerByName(TrainingClassQuestion trainingClassQuestion, String trainingClassAnswerName, EntityPermission entityPermission) {
-        return trainingClassAnswerFactory.getEntityFromQuery(entityPermission, getTrainingClassAnswerByNameQueries, trainingClassQuestion, trainingClassAnswerName);
+        var baseQuery = session.getDslContext()
+                .select(TrainingClassAnswers.fields())
+                .from(TrainingClassAnswers)
+                .join(TrainingClassAnswerDetails).onKey(TRAINING_CLASS_ANSWERS_ACTIVE_DETAIL_FK)
+                .where(TrainingClassAnswerDetails.TRAINING_CLASS_QUESTION.eq(trainingClassQuestion.getPrimaryKey()),
+                        TrainingClassAnswerDetails.TRAINING_CLASS_ANSWER_NAME.eq(trainingClassAnswerName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return trainingClassAnswerFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public TrainingClassAnswer getTrainingClassAnswerByName(TrainingClassQuestion trainingClassQuestion, String trainingClassAnswerName) {
@@ -1858,31 +1766,21 @@ public class TrainingControl
         return getTrainingClassAnswerDetailValueForUpdate(getTrainingClassAnswerByNameForUpdate(trainingClassQuestion, trainingClassAnswerName));
     }
     
-    private static final Map<EntityPermission, String> getTrainingClassAnswersQueries;
+    private List<TrainingClassAnswer> getTrainingClassAnswers(EntityPermission entityPermission, TrainingClassQuestion trainingClassQuestion) {
+        var baseQuery = session.getDslContext()
+                .select(TrainingClassAnswers.fields())
+                .from(TrainingClassAnswers)
+                .join(TrainingClassAnswerDetails).onKey(TRAINING_CLASS_ANSWERS_ACTIVE_DETAIL_FK)
+                .where(TrainingClassAnswerDetails.TRAINING_CLASS_QUESTION.eq(trainingClassQuestion.getPrimaryKey()));
 
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(TrainingClassAnswerDetails.SORT_ORDER, TrainingClassAnswerDetails.TRAINING_CLASS_ANSWER_NAME),
+                    TrainingClassAnswerFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM trainingclassanswers, trainingclassanswerdetails
-                WHERE trnclsans_activedetailid = trnclsansdt_trainingclassanswerdetailid
-                AND trnclsansdt_trnclsqus_trainingclassquestionid = ?
-                ORDER BY trnclsansdt_sortorder, trnclsansdt_trainingclassanswername
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM trainingclassanswers, trainingclassanswerdetails
-                WHERE trnclsans_activedetailid = trnclsansdt_trainingclassanswerdetailid
-                AND trnclsansdt_trnclsqus_trainingclassquestionid = ?
-                FOR UPDATE
-                """);
-        getTrainingClassAnswersQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
-   private List<TrainingClassAnswer> getTrainingClassAnswers(EntityPermission entityPermission, TrainingClassQuestion trainingClassQuestion) {
-        return trainingClassAnswerFactory.getEntitiesFromQuery(entityPermission, getTrainingClassAnswersQueries, trainingClassQuestion);
+        return trainingClassAnswerFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<TrainingClassAnswer> getTrainingClassAnswers(TrainingClassQuestion trainingClassQuestion) {
@@ -1965,6 +1863,9 @@ public class TrainingControl
     @Inject
     protected TrainingClassAnswerTranslationFactory trainingClassAnswerTranslationFactory;
 
+    @Inject
+    private TrainingClassAnswerTranslationTransferCache trainingClassAnswerTranslationTransferCache;
+
     public TrainingClassAnswerTranslation createTrainingClassAnswerTranslation(TrainingClassAnswer trainingClassAnswer, Language language,
             MimeType answerMimeType, String answer, MimeType selectedMimeType, String selected, BasePK createdBy) {
         var trainingClassAnswerTranslation = trainingClassAnswerTranslationFactory.create(trainingClassAnswer,
@@ -1975,28 +1876,20 @@ public class TrainingControl
         return trainingClassAnswerTranslation;
     }
     
-    private static final Map<EntityPermission, String> getTrainingClassAnswerTranslationQueries;
-    
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM trainingclassanswertranslations
-                WHERE trnclsanstr_trnclsans_trainingclassanswerid = ? AND trnclsanstr_lang_languageid = ? AND trnclsanstr_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM trainingclassanswertranslations
-                WHERE trnclsanstr_trnclsans_trainingclassanswerid = ? AND trnclsanstr_lang_languageid = ? AND trnclsanstr_thrutime = ?
-                FOR UPDATE
-                """);
-        getTrainingClassAnswerTranslationQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private TrainingClassAnswerTranslation getTrainingClassAnswerTranslation(TrainingClassAnswer trainingClassAnswer, Language language, EntityPermission entityPermission) {
-        return trainingClassAnswerTranslationFactory.getEntityFromQuery(entityPermission, getTrainingClassAnswerTranslationQueries,
-                trainingClassAnswer, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(TrainingClassAnswerTranslations.fields())
+                .from(TrainingClassAnswerTranslations)
+                .where(TrainingClassAnswerTranslations.TRAINING_CLASS_ANSWER.eq(trainingClassAnswer.getPrimaryKey()),
+                        TrainingClassAnswerTranslations.LANGUAGE.eq(language.getPrimaryKey()),
+                        TrainingClassAnswerTranslations.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return trainingClassAnswerTranslationFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public TrainingClassAnswerTranslation getTrainingClassAnswerTranslation(TrainingClassAnswer trainingClassAnswer, Language language) {
@@ -2015,31 +1908,26 @@ public class TrainingControl
         return getTrainingClassAnswerTranslationValue(getTrainingClassAnswerTranslationForUpdate(trainingClassAnswer, language));
     }
     
-    private static final Map<EntityPermission, String> getTrainingClassAnswerTranslationsByTrainingClassAnswerQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM trainingclassanswertranslations, languages
-                WHERE trnclsanstr_trnclsans_trainingclassanswerid = ? AND trnclsanstr_thrutime = ? AND trnclsanstr_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM trainingclassanswertranslations
-                WHERE trnclsanstr_trnclsans_trainingclassanswerid = ? AND trnclsanstr_thrutime = ?
-                FOR UPDATE
-                """);
-        getTrainingClassAnswerTranslationsByTrainingClassAnswerQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<TrainingClassAnswerTranslation> getTrainingClassAnswerTranslationsByTrainingClassAnswer(TrainingClassAnswer trainingClassAnswer,
             EntityPermission entityPermission) {
-        return trainingClassAnswerTranslationFactory.getEntitiesFromQuery(entityPermission, getTrainingClassAnswerTranslationsByTrainingClassAnswerQueries,
-                trainingClassAnswer, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(TrainingClassAnswerTranslations.fields())
+                    .from(TrainingClassAnswerTranslations)
+                    .join(Languages).onKey(TRAINING_CLASS_ANSWER_TRANSLATIONS_LANGUAGE_FK)
+                    .where(TrainingClassAnswerTranslations.TRAINING_CLASS_ANSWER.eq(trainingClassAnswer.getPrimaryKey()),
+                            TrainingClassAnswerTranslations.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    TrainingClassAnswerTranslationFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(TrainingClassAnswerTranslations.fields())
+                    .from(TrainingClassAnswerTranslations)
+                    .where(TrainingClassAnswerTranslations.TRAINING_CLASS_ANSWER.eq(trainingClassAnswer.getPrimaryKey()),
+                            TrainingClassAnswerTranslations.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return trainingClassAnswerTranslationFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<TrainingClassAnswerTranslation> getTrainingClassAnswerTranslationsByTrainingClassAnswer(TrainingClassAnswer trainingClassAnswer) {
@@ -2117,10 +2005,13 @@ public class TrainingControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected PartyTrainingClassDetailFactory partyTrainingClassDetailFactory;
+
+    @Inject
     protected PartyTrainingClassFactory partyTrainingClassFactory;
 
     @Inject
-    protected PartyTrainingClassDetailFactory partyTrainingClassDetailFactory;
+    private PartyTrainingClassTransferCache partyTrainingClassTransferCache;
 
     public PartyTrainingClass createPartyTrainingClass(Party party, TrainingClass trainingClass, Long completedTime, Long validUntilTime, BasePK createdBy) {
         var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.PARTY_TRAINING_CLASS.name());
@@ -2164,38 +2055,44 @@ public class TrainingControl
     }
 
     public long countPartyTrainingClassesByParty(final Party party) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partytrainingclasses
-                        JOIN partytrainingclassdetails ON ptrnclsdt_partytrainingclassdetailid = ptrncls_activedetailid
-                        WHERE ptrnclsdt_par_partyid = ?
-                        """, party);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyTrainingClasses)
+                .join(PartyTrainingClassDetails).onKey(PARTY_TRAINING_CLASSES_ACTIVE_DETAIL_FK)
+                .where(PartyTrainingClassDetails.PARTY.eq(party.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyTrainingClassesByTrainingClass(final TrainingClass trainingClass) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partytrainingclasses
-                        JOIN partytrainingclassdetails ON ptrnclsdt_partytrainingclassdetailid = ptrncls_activedetailid
-                        WHERE ptrnclsdt_trncls_trainingclassid = ?
-                        """, trainingClass);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyTrainingClasses)
+                .join(PartyTrainingClassDetails).onKey(PARTY_TRAINING_CLASSES_ACTIVE_DETAIL_FK)
+                .where(PartyTrainingClassDetails.TRAINING_CLASS.eq(trainingClass.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyTrainingClasses(Party party, TrainingClass trainingClass, WorkflowStep workflowStep) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM partytrainingclasses, partytrainingclassdetails, componentvendors, componentvendordetails, entitytypes, entitytypedetails,
-                entityinstances, workflowentitystatuses
-                WHERE ptrncls_activedetailid = ptrnclsdt_partytrainingclassdetailid
-                AND ptrnclsdt_par_partyid = ? AND ptrnclsdt_trncls_trainingclassid = ?
-                AND cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ?
-                AND ent_activedetailid = entdt_entitytypedetailid
-                AND cvnd_componentvendorid = entdt_cvnd_componentvendorid
-                AND entdt_entitytypename = ?
-                AND ent_entitytypeid = eni_ent_entitytypeid AND ptrncls_partytrainingclassid = eni_entityuniqueid
-                AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?
-                """, party, trainingClass, ComponentVendors.ECHO_THREE.name(), EntityTypes.PartyTrainingClass.name(), workflowStep,
-                Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyTrainingClasses)
+                .join(PartyTrainingClassDetails).onKey(PARTY_TRAINING_CLASSES_ACTIVE_DETAIL_FK)
+                .join(EntityInstances).on(PartyTrainingClasses.PARTY_TRAINING_CLASS.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(EntityTypes).onKey(ENTITY_INSTANCES_ENTITY_TYPE_FK)
+                .join(EntityTypeDetails).onKey(ENTITY_TYPES_ACTIVE_DETAIL_FK)
+                .join(ComponentVendors).onKey(ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK)
+                .join(ComponentVendorDetails).onKey(COMPONENT_VENDORS_ACTIVE_DETAIL_FK)
+                .join(WorkflowEntityStatuses).onKey(WORKFLOW_ENTITY_STATUSES_ENTITY_INSTANCE_FK)
+                .where(PartyTrainingClassDetails.PARTY.eq(party.getPrimaryKey()),
+                        PartyTrainingClassDetails.TRAINING_CLASS.eq(trainingClass.getPrimaryKey()),
+                        ComponentVendorDetails.COMPONENT_VENDOR_NAME.eq(com.echothree.model.control.core.common.ComponentVendors.ECHO_THREE.name()),
+                        EntityTypeDetails.ENTITY_TYPE_NAME.eq(com.echothree.model.control.core.common.EntityTypes.PartyTrainingClass.name()),
+                        WorkflowEntityStatuses.WORKFLOW_STEP.eq(workflowStep.getPrimaryKey()),
+                        WorkflowEntityStatuses.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyTrainingClassesUsingNames(Party party, TrainingClass trainingClass, String workflowStepName) {
@@ -2205,27 +2102,19 @@ public class TrainingControl
         return countPartyTrainingClasses(party, trainingClass, workflowStep);
     }
 
-    private static final Map<EntityPermission, String> getPartyTrainingClassByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partytrainingclasses, partytrainingclassdetails
-                WHERE ptrncls_activedetailid = ptrnclsdt_partytrainingclassdetailid AND ptrnclsdt_partytrainingclassname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partytrainingclasses, partytrainingclassdetails
-                WHERE ptrncls_activedetailid = ptrnclsdt_partytrainingclassdetailid AND ptrnclsdt_partytrainingclassname = ?
-                FOR UPDATE
-                """);
-        getPartyTrainingClassByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public PartyTrainingClass getPartyTrainingClassByName(String partyTrainingClassName, EntityPermission entityPermission) {
-        return partyTrainingClassFactory.getEntityFromQuery(entityPermission, getPartyTrainingClassByNameQueries, partyTrainingClassName);
+        var baseQuery = session.getDslContext()
+                .select(PartyTrainingClasses.fields())
+                .from(PartyTrainingClasses)
+                .join(PartyTrainingClassDetails).onKey(PARTY_TRAINING_CLASSES_ACTIVE_DETAIL_FK)
+                .where(PartyTrainingClassDetails.PARTY_TRAINING_CLASS_NAME.eq(partyTrainingClassName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyTrainingClassFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PartyTrainingClass getPartyTrainingClassByName(String partyTrainingClassName) {
@@ -2244,30 +2133,26 @@ public class TrainingControl
         return getPartyTrainingClassDetailValueForUpdate(getPartyTrainingClassByNameForUpdate(partyTrainingClassName));
     }
     
-    private static final Map<EntityPermission, String> getPartyTrainingClassesByPartyQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partytrainingclasses, partytrainingclassdetails, trainingclasses, trainingclassdetails
-                WHERE ptrncls_activedetailid = ptrnclsdt_partytrainingclassdetailid AND ptrnclsdt_par_partyid = ?
-                AND ptrnclsdt_trncls_trainingclassid = trncls_trainingclassid AND trncls_lastdetailid = trnclsdt_trainingclassdetailid
-                ORDER BY trnclsdt_sortorder, trnclsdt_trainingclassname, ptrnclsdt_partytrainingclassname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partytrainingclasses, partytrainingclassdetails
-                WHERE ptrncls_activedetailid = ptrnclsdt_partytrainingclassdetailid AND ptrnclsdt_par_partyid = ?
-                FOR UPDATE
-                """);
-        getPartyTrainingClassesByPartyQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<PartyTrainingClass> getPartyTrainingClassesByParty(Party party, EntityPermission entityPermission) {
-        return partyTrainingClassFactory.getEntitiesFromQuery(entityPermission, getPartyTrainingClassesByPartyQueries, party);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyTrainingClasses.fields())
+                    .from(PartyTrainingClasses)
+                    .join(PartyTrainingClassDetails).onKey(PARTY_TRAINING_CLASSES_ACTIVE_DETAIL_FK)
+                    .join(TrainingClasses).onKey(PARTY_TRAINING_CLASS_DETAILS_TRAINING_CLASS_FK)
+                    .join(TrainingClassDetails).onKey(TRAINING_CLASSES_LAST_DETAIL_FK)
+                    .where(PartyTrainingClassDetails.PARTY.eq(party.getPrimaryKey()))
+                    .orderBy(TrainingClassDetails.SORT_ORDER, TrainingClassDetails.TRAINING_CLASS_NAME, PartyTrainingClassDetails.PARTY_TRAINING_CLASS_NAME),
+                    PartyTrainingClassFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyTrainingClasses.fields())
+                    .from(PartyTrainingClasses)
+                    .join(PartyTrainingClassDetails).onKey(PARTY_TRAINING_CLASSES_ACTIVE_DETAIL_FK)
+                    .where(PartyTrainingClassDetails.PARTY.eq(party.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return partyTrainingClassFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PartyTrainingClass> getPartyTrainingClassesByParty(Party party) {
@@ -2278,30 +2163,26 @@ public class TrainingControl
         return getPartyTrainingClassesByParty(party, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getPartyTrainingClassesByTrainingClassQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partytrainingclasses, partytrainingclassdetails, parties, partydetails
-                WHERE ptrncls_activedetailid = ptrnclsdt_partytrainingclassdetailid AND ptrnclsdt_trncls_trainingclassid = ?
-                AND ptrnclsdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
-                ORDER BY pardt_partyname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partytrainingclasses, partytrainingclassdetails
-                WHERE ptrncls_activedetailid = ptrnclsdt_partytrainingclassdetailid AND ptrnclsdt_trncls_trainingclassid = ?
-                FOR UPDATE
-                """);
-        getPartyTrainingClassesByTrainingClassQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<PartyTrainingClass> getPartyTrainingClassesByTrainingClass(TrainingClass trainingClass, EntityPermission entityPermission) {
-        return partyTrainingClassFactory.getEntitiesFromQuery(entityPermission, getPartyTrainingClassesByTrainingClassQueries, trainingClass);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyTrainingClasses.fields())
+                    .from(PartyTrainingClasses)
+                    .join(PartyTrainingClassDetails).onKey(PARTY_TRAINING_CLASSES_ACTIVE_DETAIL_FK)
+                    .join(Parties).onKey(PARTY_TRAINING_CLASS_DETAILS_PARTY_FK)
+                    .join(PartyDetails).onKey(PARTIES_LAST_DETAIL_FK)
+                    .where(PartyTrainingClassDetails.TRAINING_CLASS.eq(trainingClass.getPrimaryKey()))
+                    .orderBy(PartyDetails.PARTY_NAME),
+                    PartyTrainingClassFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyTrainingClasses.fields())
+                    .from(PartyTrainingClasses)
+                    .join(PartyTrainingClassDetails).onKey(PARTY_TRAINING_CLASSES_ACTIVE_DETAIL_FK)
+                    .where(PartyTrainingClassDetails.TRAINING_CLASS.eq(trainingClass.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return partyTrainingClassFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PartyTrainingClass> getPartyTrainingClassesByTrainingClass(TrainingClass trainingClass) {
@@ -2312,46 +2193,38 @@ public class TrainingControl
         return getPartyTrainingClassesByTrainingClass(trainingClass, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getPartyTrainingClassesByStatusQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partytrainingclasses, partytrainingclassdetails, workflows, workflowdetails, workflowsteps, workflowstepdetails, componentvendors,
-                componentvendordetails, entitytypes, entitytypedetails, entityinstances, workflowentitystatuses
-                WHERE ptrncls_activedetailid = ptrnclsdt_partytrainingclassdetailid AND ptrnclsdt_par_partyid = ? AND ptrnclsdt_trncls_trainingclassid = ?
-                AND wkfl_activedetailid = wkfldt_workflowdetailid AND wkfldt_workflowname = ?
-                AND wkfl_workflowid = wkflsdt_wkfl_workflowid AND wkfl_activedetailid = wkflsdt_workflowstepdetailid AND wkflsdt_workflowstepname = ?
-                AND cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ?
-                AND cvnd_componentvendorid = entdt_cvnd_componentvendorid AND ent_activedetailid = entdt_entitytypedetailid AND entdt_entitytypename = ?
-                AND ent_entitytypeid = eni_ent_entitytypeid AND ptrncls_partytrainingclassid = eni_entityuniqueid
-                AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfls_workflowstepid = wkfles_wkfls_workflowstepid AND wkfles_thrutime = ?
-                ORDER BY ptrnclsdt_partytrainingclassname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partytrainingclasses, partytrainingclassdetails, workflows, workflowdetails, workflowsteps, workflowstepdetails, componentvendors,
-                componentvendordetails, entitytypes, entitytypedetails, entityinstances, workflowentitystatuses
-                WHERE ptrncls_activedetailid = ptrnclsdt_partytrainingclassdetailid AND ptrnclsdt_par_partyid = ? AND ptrnclsdt_trncls_trainingclassid = ?
-                AND wkfl_activedetailid = wkfldt_workflowdetailid AND wkfldt_workflowname = ?
-                AND wkfl_workflowid = wkflsdt_wkfl_workflowid AND wkfl_activedetailid = wkflsdt_workflowstepdetailid AND wkflsdt_workflowstepname = ?
-                AND cvnd_activedetailid = cvndd_componentvendordetailid AND cvndd_componentvendorname = ?
-                AND cvnd_componentvendorid = entdt_cvnd_componentvendorid AND ent_activedetailid = entdt_entitytypedetailid AND entdt_entitytypename = ?
-                AND ent_entitytypeid = eni_ent_entitytypeid AND ptrncls_partytrainingclassid = eni_entityuniqueid
-                AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfls_workflowstepid = wkfles_wkfls_workflowstepid AND wkfles_thrutime = ?
-                FOR UPDATE
-                """);
-        getPartyTrainingClassesByStatusQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<PartyTrainingClass> getPartyTrainingClassesByStatus(Party party, TrainingClass trainingClass, String workflowStepName,
             EntityPermission entityPermission) {
-        return partyTrainingClassFactory.getEntitiesFromQuery(entityPermission, getPartyTrainingClassesByStatusQueries, party,
-                trainingClass, PartyTrainingClassStatusConstants.Workflow_PARTY_TRAINING_CLASS_STATUS, workflowStepName, ComponentVendors.ECHO_THREE.name(),
-                EntityTypes.PartyTrainingClass.name(), Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(PartyTrainingClasses.fields())
+                .from(PartyTrainingClasses)
+                .join(PartyTrainingClassDetails).onKey(PARTY_TRAINING_CLASSES_ACTIVE_DETAIL_FK)
+                .join(EntityInstances).on(PartyTrainingClasses.PARTY_TRAINING_CLASS.cast(Long.class).eq(EntityInstances.ENTITY_UNIQUE))
+                .join(EntityTypes).onKey(ENTITY_INSTANCES_ENTITY_TYPE_FK)
+                .join(EntityTypeDetails).onKey(ENTITY_TYPES_ACTIVE_DETAIL_FK)
+                .join(ComponentVendors).onKey(ENTITY_TYPE_DETAILS_COMPONENT_VENDOR_FK)
+                .join(ComponentVendorDetails).onKey(COMPONENT_VENDORS_ACTIVE_DETAIL_FK)
+                .join(WorkflowEntityStatuses).onKey(WORKFLOW_ENTITY_STATUSES_ENTITY_INSTANCE_FK)
+                .join(WorkflowSteps).onKey(WORKFLOW_ENTITY_STATUSES_WORKFLOW_STEP_FK)
+                .join(WorkflowStepDetails).onKey(WORKFLOW_STEPS_ACTIVE_DETAIL_FK)
+                .join(Workflows).onKey(WORKFLOW_STEP_DETAILS_WORKFLOW_FK)
+                .join(WorkflowDetails).onKey(WORKFLOWS_ACTIVE_DETAIL_FK)
+                .where(PartyTrainingClassDetails.PARTY.eq(party.getPrimaryKey()),
+                        PartyTrainingClassDetails.TRAINING_CLASS.eq(trainingClass.getPrimaryKey()),
+                        WorkflowDetails.WORKFLOW_NAME.eq(PartyTrainingClassStatusConstants.Workflow_PARTY_TRAINING_CLASS_STATUS),
+                        WorkflowStepDetails.WORKFLOW_STEP_NAME.eq(workflowStepName),
+                        ComponentVendorDetails.COMPONENT_VENDOR_NAME.eq(com.echothree.model.control.core.common.ComponentVendors.ECHO_THREE.name()),
+                        EntityTypeDetails.ENTITY_TYPE_NAME.eq(com.echothree.model.control.core.common.EntityTypes.PartyTrainingClass.name()),
+                        WorkflowEntityStatuses.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(PartyTrainingClassDetails.PARTY_TRAINING_CLASS_NAME),
+                    PartyTrainingClassFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyTrainingClassFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PartyTrainingClass> getPartyTrainingClassesByStatus(Party party, TrainingClass trainingClass, String workflowStepName) {
@@ -2506,27 +2379,18 @@ public class TrainingControl
         return partyTrainingClassStatusFactory.create(partyTrainingClass, 0, null);
     }
 
-    private static final Map<EntityPermission, String> getPartyTrainingClassStatusQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partytrainingclassstatuses
-                WHERE ptrnclsst_ptrncls_partytrainingclassid = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partytrainingclassstatuses
-                WHERE ptrnclsst_ptrncls_partytrainingclassid = ?
-                FOR UPDATE
-                """);
-        getPartyTrainingClassStatusQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private PartyTrainingClassStatus getPartyTrainingClassStatus(PartyTrainingClass partyTrainingClass, EntityPermission entityPermission) {
-        return partyTrainingClassStatusFactory.getEntityFromQuery(entityPermission, getPartyTrainingClassStatusQueries, partyTrainingClass);
+        var baseQuery = session.getDslContext()
+                .select(PartyTrainingClassStatuses.fields())
+                .from(PartyTrainingClassStatuses)
+                .where(PartyTrainingClassStatuses.PARTY_TRAINING_CLASS.eq(partyTrainingClass.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyTrainingClassStatusFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public PartyTrainingClassStatus getPartyTrainingClassStatus(PartyTrainingClass partyTrainingClass) {
@@ -2556,10 +2420,13 @@ public class TrainingControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected PartyTrainingClassSessionDetailFactory partyTrainingClassSessionDetailFactory;
+
+    @Inject
     protected PartyTrainingClassSessionFactory partyTrainingClassSessionFactory;
 
     @Inject
-    protected PartyTrainingClassSessionDetailFactory partyTrainingClassSessionDetailFactory;
+    private PartyTrainingClassSessionTransferCache partyTrainingClassSessionTransferCache;
 
     public PartyTrainingClassSession createPartyTrainingClassSession(PartyTrainingClass partyTrainingClass, BasePK createdBy) {
         var partyTrainingClassStatus = getPartyTrainingClassStatusForUpdate(partyTrainingClass);
@@ -2605,38 +2472,29 @@ public class TrainingControl
     }
 
     public long countPartyTrainingClassSessionsByPartyTrainingClass(final PartyTrainingClass partyTrainingClass) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partytrainingclasssessions
-                        JOIN partytrainingclasssessiondetails ON ptrnclssessdt_partytrainingclasssessiondetailid = ptrnclssess_activedetailid
-                        WHERE ptrnclssessdt_ptrncls_partytrainingclassid = ?
-                        """, partyTrainingClass);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyTrainingClassSessions)
+                .join(PartyTrainingClassSessionDetails).onKey(PARTY_TRAINING_CLASS_SESSIONS_ACTIVE_DETAIL_FK)
+                .where(PartyTrainingClassSessionDetails.PARTY_TRAINING_CLASS.eq(partyTrainingClass.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
-    private static final Map<EntityPermission, String> getPartyTrainingClassSessionBySequenceQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partytrainingclasssessions, partytrainingclasssessiondetails
-                WHERE ptrnclssess_activedetailid = ptrnclssessdt_partytrainingclasssessiondetailid
-                AND ptrnclssessdt_ptrncls_partytrainingclassid = ? AND ptrnclssessdt_partytrainingclasssessionsequence = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partytrainingclasssessions, partytrainingclasssessiondetails
-                WHERE ptrnclssess_activedetailid = ptrnclssessdt_partytrainingclasssessiondetailid
-                AND ptrnclssessdt_ptrncls_partytrainingclassid = ? AND ptrnclssessdt_partytrainingclasssessionsequence = ?
-                FOR UPDATE
-                """);
-        getPartyTrainingClassSessionBySequenceQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     public PartyTrainingClassSession getPartyTrainingClassSessionBySequence(PartyTrainingClass partyTrainingClass, Integer partyTrainingClassSessionSequence,
             EntityPermission entityPermission) {
-        return partyTrainingClassSessionFactory.getEntityFromQuery(entityPermission, getPartyTrainingClassSessionBySequenceQueries,
-                partyTrainingClass, partyTrainingClassSessionSequence);
+        var baseQuery = session.getDslContext()
+                .select(PartyTrainingClassSessions.fields())
+                .from(PartyTrainingClassSessions)
+                .join(PartyTrainingClassSessionDetails).onKey(PARTY_TRAINING_CLASS_SESSIONS_ACTIVE_DETAIL_FK)
+                .where(PartyTrainingClassSessionDetails.PARTY_TRAINING_CLASS.eq(partyTrainingClass.getPrimaryKey()),
+                        PartyTrainingClassSessionDetails.PARTY_TRAINING_CLASS_SESSION_SEQUENCE.eq(partyTrainingClassSessionSequence));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyTrainingClassSessionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PartyTrainingClassSession getPartyTrainingClassSessionBySequence(PartyTrainingClass partyTrainingClass, Integer partyTrainingClassSessionSequence) {
@@ -2655,33 +2513,22 @@ public class TrainingControl
         return getPartyTrainingClassSessionDetailValueForUpdate(getPartyTrainingClassSessionBySequenceForUpdate(partyTrainingClass, partyTrainingClassSessionSequence));
     }
     
-    private static final Map<EntityPermission, String> getPartyTrainingClassSessionsByPartyTrainingClassQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partytrainingclasssessions, partytrainingclasssessiondetails
-                WHERE ptrnclssess_activedetailid = ptrnclssessdt_partytrainingclasssessiondetailid
-                AND ptrnclssessdt_ptrncls_partytrainingclassid = ?
-                ORDER BY ptrnclssessdt_partytrainingclasssessionsequence
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partytrainingclasssessions, partytrainingclasssessiondetails
-                WHERE ptrnclssess_activedetailid = ptrnclssessdt_partytrainingclasssessiondetailid
-                AND ptrnclssessdt_ptrncls_partytrainingclassid = ?
-                FOR UPDATE
-                """);
-        getPartyTrainingClassSessionsByPartyTrainingClassQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
-   private List<PartyTrainingClassSession> getPartyTrainingClassSessionsByPartyTrainingClass(PartyTrainingClass partyTrainingClass,
+    private List<PartyTrainingClassSession> getPartyTrainingClassSessionsByPartyTrainingClass(PartyTrainingClass partyTrainingClass,
            EntityPermission entityPermission) {
-        return partyTrainingClassSessionFactory.getEntitiesFromQuery(entityPermission, getPartyTrainingClassSessionsByPartyTrainingClassQueries,
-                partyTrainingClass);
+        var baseQuery = session.getDslContext()
+                .select(PartyTrainingClassSessions.fields())
+                .from(PartyTrainingClassSessions)
+                .join(PartyTrainingClassSessionDetails).onKey(PARTY_TRAINING_CLASS_SESSIONS_ACTIVE_DETAIL_FK)
+                .where(PartyTrainingClassSessionDetails.PARTY_TRAINING_CLASS.eq(partyTrainingClass.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(PartyTrainingClassSessionDetails.PARTY_TRAINING_CLASS_SESSION_SEQUENCE),
+                    PartyTrainingClassSessionFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyTrainingClassSessionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PartyTrainingClassSession> getPartyTrainingClassSessionsByPartyTrainingClass(PartyTrainingClass partyTrainingClass) {
@@ -2767,29 +2614,19 @@ public class TrainingControl
         return partyTrainingClassSessionStatusFactory.create(partyTrainingClassSession, 0, 0, null, null, null);
     }
     
-    private static final Map<EntityPermission, String> getPartyTrainingClassSessionStatusQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionstatuses
-                WHERE ptrnclssessst_ptrnclssess_partytrainingclasssessionid = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionstatuses
-                WHERE ptrnclssessst_ptrnclssess_partytrainingclasssessionid = ?
-                FOR UPDATE
-                """);
-        getPartyTrainingClassSessionStatusQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private PartyTrainingClassSessionStatus getPartyTrainingClassSessionStatus(PartyTrainingClassSession partyTrainingClassSession,
             EntityPermission entityPermission) {
-        return partyTrainingClassSessionStatusFactory.getEntityFromQuery(entityPermission, getPartyTrainingClassSessionStatusQueries,
-                partyTrainingClassSession);
+        var baseQuery = session.getDslContext()
+                .select(PartyTrainingClassSessionStatuses.fields())
+                .from(PartyTrainingClassSessionStatuses)
+                .where(PartyTrainingClassSessionStatuses.PARTY_TRAINING_CLASS_SESSION.eq(partyTrainingClassSession.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyTrainingClassSessionStatusFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PartyTrainingClassSessionStatus getPartyTrainingClassSessionStatus(PartyTrainingClassSession partyTrainingClassSession) {
@@ -2800,72 +2637,84 @@ public class TrainingControl
         return getPartyTrainingClassSessionStatus(partyTrainingClassSession, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getPartyTrainingClassSessionStatusesByLastPartyTrainingClassSessionSectionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionstatuses
-                WHERE ptrnclssessst_lastpartytrainingclasssessionsectionid = ?
-                FOR UPDATE
-                """);
-        getPartyTrainingClassSessionStatusesByLastPartyTrainingClassSessionSectionQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<PartyTrainingClassSessionStatus> getPartyTrainingClassSessionStatusesByLastPartyTrainingClassSessionSection(PartyTrainingClassSessionSection lastPartyTrainingClassSessionSection,
             EntityPermission entityPermission) {
-        return partyTrainingClassSessionStatusFactory.getEntitiesFromQuery(entityPermission, getPartyTrainingClassSessionStatusesByLastPartyTrainingClassSessionSectionQueries,
-                lastPartyTrainingClassSessionSection);
+        var baseQuery = session.getDslContext()
+                .select(PartyTrainingClassSessionStatuses.fields())
+                .from(PartyTrainingClassSessionStatuses)
+                .where(PartyTrainingClassSessionStatuses.LAST_PARTY_TRAINING_CLASS_SESSION_SECTION.eq(lastPartyTrainingClassSessionSection.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyTrainingClassSessionStatuses.fields())
+                    .from(PartyTrainingClassSessionStatuses)
+                    .join(PartyTrainingClassSessions).onKey(PARTY_TRAINING_CLASS_SESSION_STATUSES_PARTY_TRAINING_CLASS_SESSION_FK)
+                    .join(PartyTrainingClassSessionDetails).onKey(PARTY_TRAINING_CLASS_SESSIONS_LAST_DETAIL_FK)
+                    .join(PartyTrainingClasses).onKey(PARTY_TRAINING_CLASS_SESSION_DETAILS_PARTY_TRAINING_CLASS_FK)
+                    .join(PartyTrainingClassDetails).onKey(PARTY_TRAINING_CLASSES_LAST_DETAIL_FK)
+                    .where(PartyTrainingClassSessionStatuses.LAST_PARTY_TRAINING_CLASS_SESSION_SECTION.eq(lastPartyTrainingClassSessionSection.getPrimaryKey()))
+                    .orderBy(PartyTrainingClassDetails.PARTY_TRAINING_CLASS_NAME, PartyTrainingClassSessionDetails.PARTY_TRAINING_CLASS_SESSION_SEQUENCE),
+                    PartyTrainingClassSessionStatusFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyTrainingClassSessionStatusFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PartyTrainingClassSessionStatus> getPartyTrainingClassSessionStatusesByLastPartyTrainingClassSessionSectionForUpdate(PartyTrainingClassSessionSection lastPartyTrainingClassSessionSection) {
         return getPartyTrainingClassSessionStatusesByLastPartyTrainingClassSessionSection(lastPartyTrainingClassSessionSection, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getPartyTrainingClassSessionStatusesByLastPartyTrainingClassSessionPageQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionstatuses
-                WHERE ptrnclssessst_lastpartytrainingclasssessionpageid = ?
-                FOR UPDATE
-                """);
-        getPartyTrainingClassSessionStatusesByLastPartyTrainingClassSessionPageQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<PartyTrainingClassSessionStatus> getPartyTrainingClassSessionStatusesByLastPartyTrainingClassSessionPage(PartyTrainingClassSessionPage lastPartyTrainingClassSessionPage,
             EntityPermission entityPermission) {
-        return partyTrainingClassSessionStatusFactory.getEntitiesFromQuery(entityPermission, getPartyTrainingClassSessionStatusesByLastPartyTrainingClassSessionPageQueries,
-                lastPartyTrainingClassSessionPage);
+        var baseQuery = session.getDslContext()
+                .select(PartyTrainingClassSessionStatuses.fields())
+                .from(PartyTrainingClassSessionStatuses)
+                .where(PartyTrainingClassSessionStatuses.LAST_PARTY_TRAINING_CLASS_SESSION_PAGE.eq(lastPartyTrainingClassSessionPage.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyTrainingClassSessionStatuses.fields())
+                    .from(PartyTrainingClassSessionStatuses)
+                    .join(PartyTrainingClassSessions).onKey(PARTY_TRAINING_CLASS_SESSION_STATUSES_PARTY_TRAINING_CLASS_SESSION_FK)
+                    .join(PartyTrainingClassSessionDetails).onKey(PARTY_TRAINING_CLASS_SESSIONS_LAST_DETAIL_FK)
+                    .join(PartyTrainingClasses).onKey(PARTY_TRAINING_CLASS_SESSION_DETAILS_PARTY_TRAINING_CLASS_FK)
+                    .join(PartyTrainingClassDetails).onKey(PARTY_TRAINING_CLASSES_LAST_DETAIL_FK)
+                    .where(PartyTrainingClassSessionStatuses.LAST_PARTY_TRAINING_CLASS_SESSION_PAGE.eq(lastPartyTrainingClassSessionPage.getPrimaryKey()))
+                    .orderBy(PartyTrainingClassDetails.PARTY_TRAINING_CLASS_NAME, PartyTrainingClassSessionDetails.PARTY_TRAINING_CLASS_SESSION_SEQUENCE),
+                    PartyTrainingClassSessionStatusFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyTrainingClassSessionStatusFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PartyTrainingClassSessionStatus> getPartyTrainingClassSessionStatusesByLastPartyTrainingClassSessionPageForUpdate(PartyTrainingClassSessionPage lastPartyTrainingClassSessionPage) {
         return getPartyTrainingClassSessionStatusesByLastPartyTrainingClassSessionPage(lastPartyTrainingClassSessionPage, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getPartyTrainingClassSessionStatusesByLastPartyTrainingClassSessionQuestionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionstatuses
-                WHERE ptrnclssessst_lastpartytrainingclasssessionquestionid = ?
-                FOR UPDATE
-                """);
-        getPartyTrainingClassSessionStatusesByLastPartyTrainingClassSessionQuestionQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<PartyTrainingClassSessionStatus> getPartyTrainingClassSessionStatusesByLastPartyTrainingClassSessionQuestion(PartyTrainingClassSessionQuestion lastPartyTrainingClassSessionQuestion,
             EntityPermission entityPermission) {
-        return partyTrainingClassSessionStatusFactory.getEntitiesFromQuery(entityPermission, getPartyTrainingClassSessionStatusesByLastPartyTrainingClassSessionQuestionQueries,
-                lastPartyTrainingClassSessionQuestion);
+        var baseQuery = session.getDslContext()
+                .select(PartyTrainingClassSessionStatuses.fields())
+                .from(PartyTrainingClassSessionStatuses)
+                .where(PartyTrainingClassSessionStatuses.LAST_PARTY_TRAINING_CLASS_SESSION_QUESTION.eq(lastPartyTrainingClassSessionQuestion.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyTrainingClassSessionStatuses.fields())
+                    .from(PartyTrainingClassSessionStatuses)
+                    .join(PartyTrainingClassSessions).onKey(PARTY_TRAINING_CLASS_SESSION_STATUSES_PARTY_TRAINING_CLASS_SESSION_FK)
+                    .join(PartyTrainingClassSessionDetails).onKey(PARTY_TRAINING_CLASS_SESSIONS_LAST_DETAIL_FK)
+                    .join(PartyTrainingClasses).onKey(PARTY_TRAINING_CLASS_SESSION_DETAILS_PARTY_TRAINING_CLASS_FK)
+                    .join(PartyTrainingClassDetails).onKey(PARTY_TRAINING_CLASSES_LAST_DETAIL_FK)
+                    .where(PartyTrainingClassSessionStatuses.LAST_PARTY_TRAINING_CLASS_SESSION_QUESTION.eq(lastPartyTrainingClassSessionQuestion.getPrimaryKey()))
+                    .orderBy(PartyTrainingClassDetails.PARTY_TRAINING_CLASS_NAME, PartyTrainingClassSessionDetails.PARTY_TRAINING_CLASS_SESSION_SEQUENCE),
+                    PartyTrainingClassSessionStatusFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyTrainingClassSessionStatusFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PartyTrainingClassSessionStatus> getPartyTrainingClassSessionStatusesByLastPartyTrainingClassSessionQuestionForUpdate(PartyTrainingClassSessionQuestion lastPartyTrainingClassSessionQuestion) {
@@ -2905,6 +2754,9 @@ public class TrainingControl
     @Inject
     protected PartyTrainingClassSessionSectionFactory partyTrainingClassSessionSectionFactory;
 
+    @Inject
+    private PartyTrainingClassSessionSectionTransferCache partyTrainingClassSessionSectionTransferCache;
+
     public PartyTrainingClassSessionSection createPartyTrainingClassSessionSection(PartyTrainingClassSession partyTrainingClassSession,
             TrainingClassSection trainingClassSection, Long readingStartTime, Long readingEndTime, BasePK createdBy) {
         var partyTrainingClassSessionStatus = getPartyTrainingClassSessionStatusForUpdate(partyTrainingClassSession);
@@ -2927,44 +2779,40 @@ public class TrainingControl
     }
 
     public long countPartyTrainingClassSessionSectionsByPartyTrainingClassSession(final PartyTrainingClassSession partyTrainingClassSession) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partytrainingclasssessionsections
-                        WHERE ptrnclss_ptrnclssess_partytrainingclasssessionid = ? AND ptrnclss_thrutime = ?
-                        """, partyTrainingClassSession, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyTrainingClassSessionSections)
+                .where(PartyTrainingClassSessionSections.PARTY_TRAINING_CLASS_SESSION.eq(partyTrainingClassSession.getPrimaryKey()),
+                        PartyTrainingClassSessionSections.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyTrainingClassSessionSectionsByTrainingClassSection(final TrainingClassSection trainingClassSection) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partytrainingclasssessionsections
-                        WHERE ptrnclss_trnclss_trainingclasssectionid = ? AND ptrnclss_thrutime = ?
-                        """, trainingClassSection, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyTrainingClassSessionSections)
+                .where(PartyTrainingClassSessionSections.TRAINING_CLASS_SECTION.eq(trainingClassSection.getPrimaryKey()),
+                        PartyTrainingClassSessionSections.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
-    private static final Map<EntityPermission, String> getPartyTrainingClassSessionSectionQueries;
-    
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionsections
-                WHERE ptrnclss_trnclsp_trainingclasssectionid = ? AND ptrnclss_partytrainingclasssessionsectionsequence = ? AND ptrnclss_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionsections
-                WHERE ptrnclss_trnclsp_trainingclasssectionid = ? AND ptrnclss_partytrainingclasssessionsectionsequence = ? AND ptrnclss_thrutime = ?
-                FOR UPDATE
-                """);
-        getPartyTrainingClassSessionSectionQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     public PartyTrainingClassSessionSection getPartyTrainingClassSessionSection(PartyTrainingClassSession partyTrainingClassSession,
             Integer partyTrainingClassSessionSectionSequence, EntityPermission entityPermission) {
-        return partyTrainingClassSessionSectionFactory.getEntityFromQuery(entityPermission, getPartyTrainingClassSessionSectionQueries,
-                partyTrainingClassSession, partyTrainingClassSessionSectionSequence, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(PartyTrainingClassSessionSections.fields())
+                .from(PartyTrainingClassSessionSections)
+                .where(PartyTrainingClassSessionSections.PARTY_TRAINING_CLASS_SESSION.eq(partyTrainingClassSession.getPrimaryKey()),
+                        PartyTrainingClassSessionSections.PARTY_TRAINING_CLASS_SESSION_SECTION_SEQUENCE.eq(partyTrainingClassSessionSectionSequence),
+                        PartyTrainingClassSessionSections.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyTrainingClassSessionSectionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PartyTrainingClassSessionSection getPartyTrainingClassSessionSection(PartyTrainingClassSession partyTrainingClassSession,
@@ -2986,31 +2834,22 @@ public class TrainingControl
         return getPartyTrainingClassSessionSectionValue(getPartyTrainingClassSessionSectionForUpdate(partyTrainingClassSession, partyTrainingClassSessionSectionSequence));
     }
     
-    private static final Map<EntityPermission, String> getPartyTrainingClassSessionSectionsByPartyTrainingClassSessionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionsections
-                WHERE ptrnclss_ptrnclssess_partytrainingclasssessionid = ? AND ptrnclss_thrutime = ?
-                ORDER BY ptrnclss_partytrainingclasssessionsectionsequence
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionsections
-                WHERE ptrnclss_ptrnclssess_partytrainingclasssessionid = ? AND ptrnclss_thrutime = ?
-                FOR UPDATE
-                """);
-        getPartyTrainingClassSessionSectionsByPartyTrainingClassSessionQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<PartyTrainingClassSessionSection> getPartyTrainingClassSessionSectionsByPartyTrainingClassSession(PartyTrainingClassSession partyTrainingClassSession,
             EntityPermission entityPermission) {
-        return partyTrainingClassSessionSectionFactory.getEntitiesFromQuery(entityPermission, getPartyTrainingClassSessionSectionsByPartyTrainingClassSessionQueries,
-                partyTrainingClassSession, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(PartyTrainingClassSessionSections.fields())
+                .from(PartyTrainingClassSessionSections)
+                .where(PartyTrainingClassSessionSections.PARTY_TRAINING_CLASS_SESSION.eq(partyTrainingClassSession.getPrimaryKey()),
+                        PartyTrainingClassSessionSections.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(PartyTrainingClassSessionSections.PARTY_TRAINING_CLASS_SESSION_SECTION_SEQUENCE),
+                    PartyTrainingClassSessionSectionFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyTrainingClassSessionSectionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PartyTrainingClassSessionSection> getPartyTrainingClassSessionSectionsByPartyTrainingClassSession(PartyTrainingClassSession partyTrainingClassSession) {
@@ -3021,33 +2860,29 @@ public class TrainingControl
         return getPartyTrainingClassSessionSectionsByPartyTrainingClassSession(partyTrainingClassSession, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getPartyTrainingClassSessionSectionsByTrainingClassSectionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionsections, trainingclasssections, trainingclasssectiondetails, trainingclasssections, trainingclasssectiondetails
-                WHERE ptrnclss_trnclsp_trainingclasssectionid = ? AND ptrnclss_thrutime = ?
-                AND ptrnclss_trnclsp_trainingclasssectionid = trnclsp_trainingclasssectionid AND trnclsp_lastdetailid = trnclspdt_trainingclasssectiondetailid
-                AND trnclspdt_trnclss_trainingclasssectionid = trnclss_trainingclasssectionid AND trnclss_lastdetailid = trnclssdt_trainingclasssectiondetailid
-                ORDER BY ptrnclss_partytrainingclasssessionsectionsequence, trnclspdt_sortorder, trnclspdt_trainingclasssectionname, trnclssdt_sortorder, trnclssdt_trainingclasssectionname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionsections
-                WHERE ptrnclss_trnclsp_trainingclasssectionid = ? AND ptrnclss_thrutime = ?
-                FOR UPDATE
-                """);
-        getPartyTrainingClassSessionSectionsByTrainingClassSectionQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<PartyTrainingClassSessionSection> getPartyTrainingClassSessionSectionsByTrainingClassSection(TrainingClassSection trainingClassSection,
             EntityPermission entityPermission) {
-        return partyTrainingClassSessionSectionFactory.getEntitiesFromQuery(entityPermission, getPartyTrainingClassSessionSectionsByTrainingClassSectionQueries,
-                trainingClassSection, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyTrainingClassSessionSections.fields())
+                    .from(PartyTrainingClassSessionSections)
+                    .join(PartyTrainingClassSessions).onKey(PARTY_TRAINING_CLASS_SESSION_SECTIONS_PARTY_TRAINING_CLASS_SESSION_FK)
+                    .join(PartyTrainingClassSessionDetails).onKey(PARTY_TRAINING_CLASS_SESSIONS_LAST_DETAIL_FK)
+                    .join(PartyTrainingClasses).onKey(PARTY_TRAINING_CLASS_SESSION_DETAILS_PARTY_TRAINING_CLASS_FK)
+                    .join(PartyTrainingClassDetails).onKey(PARTY_TRAINING_CLASSES_LAST_DETAIL_FK)
+                    .where(PartyTrainingClassSessionSections.TRAINING_CLASS_SECTION.eq(trainingClassSection.getPrimaryKey()),
+                            PartyTrainingClassSessionSections.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PartyTrainingClassDetails.PARTY_TRAINING_CLASS_NAME, PartyTrainingClassSessionDetails.PARTY_TRAINING_CLASS_SESSION_SEQUENCE, PartyTrainingClassSessionSections.PARTY_TRAINING_CLASS_SESSION_SECTION_SEQUENCE),
+                    PartyTrainingClassSessionSectionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyTrainingClassSessionSections.fields())
+                    .from(PartyTrainingClassSessionSections)
+                    .where(PartyTrainingClassSessionSections.TRAINING_CLASS_SECTION.eq(trainingClassSection.getPrimaryKey()),
+                            PartyTrainingClassSessionSections.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return partyTrainingClassSessionSectionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PartyTrainingClassSessionSection> getPartyTrainingClassSessionSectionsByTrainingClassSection(TrainingClassSection trainingClassSection) {
@@ -3128,6 +2963,9 @@ public class TrainingControl
     @Inject
     protected PartyTrainingClassSessionPageFactory partyTrainingClassSessionPageFactory;
 
+    @Inject
+    private PartyTrainingClassSessionPageTransferCache partyTrainingClassSessionPageTransferCache;
+
     public PartyTrainingClassSessionPage createPartyTrainingClassSessionPage(PartyTrainingClassSession partyTrainingClassSession,
             TrainingClassPage trainingClassPage, Long readingStartTime, Long readingEndTime, BasePK createdBy) {
         var partyTrainingClassSessionStatus = getPartyTrainingClassSessionStatusForUpdate(partyTrainingClassSession);
@@ -3150,44 +2988,40 @@ public class TrainingControl
     }
 
     public long countPartyTrainingClassSessionPagesByPartyTrainingClassSession(final PartyTrainingClassSession partyTrainingClassSession) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partytrainingclasssessionpages
-                        WHERE ptrnclsp_ptrnclssess_partytrainingclasssessionid = ? AND ptrnclsp_trnclsp_trainingclasspageid = ? AND ptrnclsp_thrutime = ?
-                        """, partyTrainingClassSession, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyTrainingClassSessionPages)
+                .where(PartyTrainingClassSessionPages.PARTY_TRAINING_CLASS_SESSION.eq(partyTrainingClassSession.getPrimaryKey()),
+                        PartyTrainingClassSessionPages.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyTrainingClassSessionPagesByTrainingClassPage(final TrainingClassPage trainingClassPage) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partytrainingclasssessionpages
-                        WHERE ptrnclsp_ptrnclssess_partytrainingclasssessionid = ? AND ptrnclsp_trnclsp_trainingclasspageid = ? AND ptrnclsp_thrutime = ?
-                        """, trainingClassPage, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyTrainingClassSessionPages)
+                .where(PartyTrainingClassSessionPages.TRAINING_CLASS_PAGE.eq(trainingClassPage.getPrimaryKey()),
+                        PartyTrainingClassSessionPages.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
-    private static final Map<EntityPermission, String> getPartyTrainingClassSessionPageQueries;
-    
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionpages
-                WHERE ptrnclsp_trnclsp_trainingclasspageid = ? AND ptrnclsp_partytrainingclasssessionpagesequence = ? AND ptrnclsp_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionpages
-                WHERE ptrnclsp_trnclsp_trainingclasspageid = ? AND ptrnclsp_partytrainingclasssessionpagesequence = ? AND ptrnclsp_thrutime = ?
-                FOR UPDATE
-                """);
-        getPartyTrainingClassSessionPageQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     public PartyTrainingClassSessionPage getPartyTrainingClassSessionPage(PartyTrainingClassSession partyTrainingClassSession,
             Integer partyTrainingClassSessionPageSequence, EntityPermission entityPermission) {
-        return partyTrainingClassSessionPageFactory.getEntityFromQuery(entityPermission, getPartyTrainingClassSessionPageQueries,
-                partyTrainingClassSession, partyTrainingClassSessionPageSequence, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(PartyTrainingClassSessionPages.fields())
+                .from(PartyTrainingClassSessionPages)
+                .where(PartyTrainingClassSessionPages.PARTY_TRAINING_CLASS_SESSION.eq(partyTrainingClassSession.getPrimaryKey()),
+                        PartyTrainingClassSessionPages.PARTY_TRAINING_CLASS_SESSION_PAGE_SEQUENCE.eq(partyTrainingClassSessionPageSequence),
+                        PartyTrainingClassSessionPages.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyTrainingClassSessionPageFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PartyTrainingClassSessionPage getPartyTrainingClassSessionPage(PartyTrainingClassSession partyTrainingClassSession,
@@ -3209,31 +3043,22 @@ public class TrainingControl
         return getPartyTrainingClassSessionPageValue(getPartyTrainingClassSessionPageForUpdate(partyTrainingClassSession, partyTrainingClassSessionPageSequence));
     }
     
-    private static final Map<EntityPermission, String> getPartyTrainingClassSessionPagesByPartyTrainingClassSessionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionpages
-                WHERE ptrnclsp_ptrnclssess_partytrainingclasssessionid = ? AND ptrnclsp_thrutime = ?
-                ORDER BY ptrnclsp_partytrainingclasssessionpagesequence
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionpages
-                WHERE ptrnclsp_ptrnclssess_partytrainingclasssessionid = ? AND ptrnclsp_thrutime = ?
-                FOR UPDATE
-                """);
-        getPartyTrainingClassSessionPagesByPartyTrainingClassSessionQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<PartyTrainingClassSessionPage> getPartyTrainingClassSessionPagesByPartyTrainingClassSession(PartyTrainingClassSession partyTrainingClassSession,
             EntityPermission entityPermission) {
-        return partyTrainingClassSessionPageFactory.getEntitiesFromQuery(entityPermission, getPartyTrainingClassSessionPagesByPartyTrainingClassSessionQueries,
-                partyTrainingClassSession, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(PartyTrainingClassSessionPages.fields())
+                .from(PartyTrainingClassSessionPages)
+                .where(PartyTrainingClassSessionPages.PARTY_TRAINING_CLASS_SESSION.eq(partyTrainingClassSession.getPrimaryKey()),
+                        PartyTrainingClassSessionPages.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(PartyTrainingClassSessionPages.PARTY_TRAINING_CLASS_SESSION_PAGE_SEQUENCE),
+                    PartyTrainingClassSessionPageFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyTrainingClassSessionPageFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PartyTrainingClassSessionPage> getPartyTrainingClassSessionPagesByPartyTrainingClassSession(PartyTrainingClassSession partyTrainingClassSession) {
@@ -3244,33 +3069,29 @@ public class TrainingControl
         return getPartyTrainingClassSessionPagesByPartyTrainingClassSession(partyTrainingClassSession, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getPartyTrainingClassSessionPagesByTrainingClassPageQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionpages, trainingclasspages, trainingclasspagedetails, trainingclasssections, trainingclasssectiondetails
-                WHERE ptrnclsp_trnclsp_trainingclasspageid = ? AND ptrnclsp_thrutime = ?
-                AND ptrnclsp_trnclsp_trainingclasspageid = trnclsp_trainingclasspageid AND trnclsp_lastdetailid = trnclspdt_trainingclasspagedetailid
-                AND trnclspdt_trnclss_trainingclasssectionid = trnclss_trainingclasssectionid AND trnclss_lastdetailid = trnclssdt_trainingclasssectiondetailid
-                ORDER BY ptrnclsp_partytrainingclasssessionpagesequence, trnclspdt_sortorder, trnclspdt_trainingclasspagename, trnclssdt_sortorder, trnclssdt_trainingclasssectionname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionpages
-                WHERE ptrnclsp_trnclsp_trainingclasspageid = ? AND ptrnclsp_thrutime = ?
-                FOR UPDATE
-                """);
-        getPartyTrainingClassSessionPagesByTrainingClassPageQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<PartyTrainingClassSessionPage> getPartyTrainingClassSessionPagesByTrainingClassPage(TrainingClassPage trainingClassPage,
             EntityPermission entityPermission) {
-        return partyTrainingClassSessionPageFactory.getEntitiesFromQuery(entityPermission, getPartyTrainingClassSessionPagesByTrainingClassPageQueries,
-                trainingClassPage, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyTrainingClassSessionPages.fields())
+                    .from(PartyTrainingClassSessionPages)
+                    .join(PartyTrainingClassSessions).onKey(PARTY_TRAINING_CLASS_SESSION_PAGES_PARTY_TRAINING_CLASS_SESSION_FK)
+                    .join(PartyTrainingClassSessionDetails).onKey(PARTY_TRAINING_CLASS_SESSIONS_LAST_DETAIL_FK)
+                    .join(PartyTrainingClasses).onKey(PARTY_TRAINING_CLASS_SESSION_DETAILS_PARTY_TRAINING_CLASS_FK)
+                    .join(PartyTrainingClassDetails).onKey(PARTY_TRAINING_CLASSES_LAST_DETAIL_FK)
+                    .where(PartyTrainingClassSessionPages.TRAINING_CLASS_PAGE.eq(trainingClassPage.getPrimaryKey()),
+                            PartyTrainingClassSessionPages.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PartyTrainingClassDetails.PARTY_TRAINING_CLASS_NAME, PartyTrainingClassSessionDetails.PARTY_TRAINING_CLASS_SESSION_SEQUENCE, PartyTrainingClassSessionPages.PARTY_TRAINING_CLASS_SESSION_PAGE_SEQUENCE),
+                    PartyTrainingClassSessionPageFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyTrainingClassSessionPages.fields())
+                    .from(PartyTrainingClassSessionPages)
+                    .where(PartyTrainingClassSessionPages.TRAINING_CLASS_PAGE.eq(trainingClassPage.getPrimaryKey()),
+                            PartyTrainingClassSessionPages.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return partyTrainingClassSessionPageFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PartyTrainingClassSessionPage> getPartyTrainingClassSessionPagesByTrainingClassPage(TrainingClassPage trainingClassPage) {
@@ -3349,10 +3170,13 @@ public class TrainingControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected PartyTrainingClassSessionQuestionDetailFactory partyTrainingClassSessionQuestionDetailFactory;
+
+    @Inject
     protected PartyTrainingClassSessionQuestionFactory partyTrainingClassSessionQuestionFactory;
 
     @Inject
-    protected PartyTrainingClassSessionQuestionDetailFactory partyTrainingClassSessionQuestionDetailFactory;
+    private PartyTrainingClassSessionQuestionTransferCache partyTrainingClassSessionQuestionTransferCache;
 
     public PartyTrainingClassSessionQuestion createPartyTrainingClassSessionQuestion(PartyTrainingClassSession partyTrainingClassSession,
             TrainingClassQuestion trainingClassQuestion, Integer sortOrder, BasePK createdBy) {
@@ -3389,48 +3213,40 @@ public class TrainingControl
     }
 
     public long countPartyTrainingClassSessionQuestionsByPartyTrainingClassSession(final PartyTrainingClassSession partyTrainingClassSession) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partytrainingclasssessionquestions
-                        JOIN partytrainingclasssessionquestiondetails ON ptrnclsqusdt_partytrainingclasssessionquestiondetailid = ptrnclsqus_activedetailid
-                        WHERE ptrnclsqusdt_ptrnclssess_partytrainingclasssessionid = ?
-                        """, partyTrainingClassSession);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyTrainingClassSessionQuestions)
+                .join(PartyTrainingClassSessionQuestionDetails).onKey(PARTY_TRAINING_CLASS_SESSION_QUESTIONS_ACTIVE_DETAIL_FK)
+                .where(PartyTrainingClassSessionQuestionDetails.PARTY_TRAINING_CLASS_SESSION.eq(partyTrainingClassSession.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countPartyTrainingClassSessionQuestionsByTrainingClassQuestion(final TrainingClassQuestion trainingClassQuestion) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM partytrainingclasssessionquestions
-                        JOIN partytrainingclasssessionquestiondetails ON ptrnclsqusdt_partytrainingclasssessionquestiondetailid = ptrnclsqus_activedetailid
-                        WHERE ptrnclsqusdt_trnclsqus_trainingclassquestionid = ?
-                        """, trainingClassQuestion);
+        return session.getDslContext()
+                .selectCount()
+                .from(PartyTrainingClassSessionQuestions)
+                .join(PartyTrainingClassSessionQuestionDetails).onKey(PARTY_TRAINING_CLASS_SESSION_QUESTIONS_ACTIVE_DETAIL_FK)
+                .where(PartyTrainingClassSessionQuestionDetails.TRAINING_CLASS_QUESTION.eq(trainingClassQuestion.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
-    private static final Map<EntityPermission, String> getPartyTrainingClassSessionQuestionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionquestions, partytrainingclasssessionquestiondetails
-                WHERE ptrnclsqus_activedetailid = ptrnclsqusdt_partytrainingclasssessionquestiondetailid
-                AND ptrnclsqusdt_ptrnclssess_partytrainingclasssessionid = ? AND ptrnclsqusdt_trnclsqus_trainingclassquestionid = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionquestions, partytrainingclasssessionquestiondetails
-                WHERE ptrnclsqus_activedetailid = ptrnclsqusdt_partytrainingclasssessionquestiondetailid
-                AND ptrnclsqusdt_ptrnclssess_partytrainingclasssessionid = ? AND ptrnclsqusdt_trnclsqus_trainingclassquestionid = ?
-                FOR UPDATE
-                """);
-        getPartyTrainingClassSessionQuestionQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     public PartyTrainingClassSessionQuestion getPartyTrainingClassSessionQuestion(PartyTrainingClassSession partyTrainingClassSession,
             TrainingClassQuestion trainingClassQuestion, EntityPermission entityPermission) {
-        return partyTrainingClassSessionQuestionFactory.getEntityFromQuery(entityPermission, getPartyTrainingClassSessionQuestionQueries,
-                partyTrainingClassSession, trainingClassQuestion);
+        var baseQuery = session.getDslContext()
+                .select(PartyTrainingClassSessionQuestions.fields())
+                .from(PartyTrainingClassSessionQuestions)
+                .join(PartyTrainingClassSessionQuestionDetails).onKey(PARTY_TRAINING_CLASS_SESSION_QUESTIONS_ACTIVE_DETAIL_FK)
+                .where(PartyTrainingClassSessionQuestionDetails.PARTY_TRAINING_CLASS_SESSION.eq(partyTrainingClassSession.getPrimaryKey()),
+                        PartyTrainingClassSessionQuestionDetails.TRAINING_CLASS_QUESTION.eq(trainingClassQuestion.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyTrainingClassSessionQuestionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PartyTrainingClassSessionQuestion getPartyTrainingClassSessionQuestion(PartyTrainingClassSession partyTrainingClassSession,
@@ -3452,35 +3268,29 @@ public class TrainingControl
         return getPartyTrainingClassSessionQuestionDetailValueForUpdate(getPartyTrainingClassSessionQuestionForUpdate(partyTrainingClassSession, trainingClassQuestion));
     }
     
-    private static final Map<EntityPermission, String> getPartyTrainingClassSessionQuestionsByPartyTrainingClassSessionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionquestions, partytrainingclasssessionquestiondetails, trainingclassquestions, trainingclassquestiondetails, trainingclasssections, trainingclasssectiondetails
-                WHERE ptrnclsqus_activedetailid = ptrnclsqusdt_partytrainingclasssessionquestiondetailid
-                AND ptrnclsqusdt_trnclsqus_trainingclassquestionid = trnclsqus_trainingclassquestionid AND trnclsqus_lastdetailid = trnclsqusdt_trainingclassquestiondetailid
-                AND trnclsqusdt_trnclss_trainingclasssectionid = trnclss_trainingclasssectionid AND trnclss_lastdetailid = trnclssdt_trainingclasssectiondetailid
-                AND ptrnclsqusdt_ptrnclssess_partytrainingclasssessionid = ?
-                ORDER BY ptrnclsqusdt_sortorder, trnclsqusdt_sortorder, trnclsqusdt_trainingclassquestionname, trnclssdt_sortorder, trnclssdt_trainingclasssectionname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionquestions, partytrainingclasssessionquestiondetails
-                WHERE ptrnclsqus_activedetailid = ptrnclsqusdt_partytrainingclasssessionquestiondetailid
-                AND ptrnclsqusdt_ptrnclssess_partytrainingclasssessionid = ?
-                FOR UPDATE
-                """);
-        getPartyTrainingClassSessionQuestionsByPartyTrainingClassSessionQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
-   private List<PartyTrainingClassSessionQuestion> getPartyTrainingClassSessionQuestionsByPartyTrainingClassSession(PartyTrainingClassSession partyTrainingClassSession,
+    private List<PartyTrainingClassSessionQuestion> getPartyTrainingClassSessionQuestionsByPartyTrainingClassSession(PartyTrainingClassSession partyTrainingClassSession,
            EntityPermission entityPermission) {
-        return partyTrainingClassSessionQuestionFactory.getEntitiesFromQuery(entityPermission, getPartyTrainingClassSessionQuestionsByPartyTrainingClassSessionQueries,
-                partyTrainingClassSession);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyTrainingClassSessionQuestions.fields())
+                    .from(PartyTrainingClassSessionQuestions)
+                    .join(PartyTrainingClassSessionQuestionDetails).onKey(PARTY_TRAINING_CLASS_SESSION_QUESTIONS_ACTIVE_DETAIL_FK)
+                    .join(TrainingClassQuestions).onKey(PARTY_TRAINING_CLASS_SESSION_QUESTION_DETAILS_TRAINING_CLASS_QUESTION_FK)
+                    .join(TrainingClassQuestionDetails).onKey(TRAINING_CLASS_QUESTIONS_LAST_DETAIL_FK)
+                    .join(TrainingClassSections).onKey(TRAINING_CLASS_QUESTION_DETAILS_TRAINING_CLASS_SECTION_FK)
+                    .join(TrainingClassSectionDetails).onKey(TRAINING_CLASS_SECTIONS_LAST_DETAIL_FK)
+                    .where(PartyTrainingClassSessionQuestionDetails.PARTY_TRAINING_CLASS_SESSION.eq(partyTrainingClassSession.getPrimaryKey()))
+                    .orderBy(PartyTrainingClassSessionQuestionDetails.SORT_ORDER, TrainingClassQuestionDetails.SORT_ORDER, TrainingClassQuestionDetails.TRAINING_CLASS_QUESTION_NAME, TrainingClassSectionDetails.SORT_ORDER, TrainingClassSectionDetails.TRAINING_CLASS_SECTION_NAME),
+                    PartyTrainingClassSessionQuestionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyTrainingClassSessionQuestions.fields())
+                    .from(PartyTrainingClassSessionQuestions)
+                    .join(PartyTrainingClassSessionQuestionDetails).onKey(PARTY_TRAINING_CLASS_SESSION_QUESTIONS_ACTIVE_DETAIL_FK)
+                    .where(PartyTrainingClassSessionQuestionDetails.PARTY_TRAINING_CLASS_SESSION.eq(partyTrainingClassSession.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return partyTrainingClassSessionQuestionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PartyTrainingClassSessionQuestion> getPartyTrainingClassSessionQuestionsByPartyTrainingClassSession(PartyTrainingClassSession partyTrainingClassSession) {
@@ -3491,34 +3301,29 @@ public class TrainingControl
         return getPartyTrainingClassSessionQuestionsByPartyTrainingClassSession(partyTrainingClassSession, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getPartyTrainingClassSessionQuestionsByTrainingClassQuestionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionquestions, partytrainingclasssessions, partytrainingclasssessiondetails, partytrainingclasses, partytrainingclassdetails
-                WHERE ptrnclsqus_activedetailid = ptrnclsqusdt_partytrainingclasssessionquestiondetailid
-                AND ptrnclsqusdt_ptrnclssess_partytrainingclasssessionid = ptrnclssess_partytrainingclasssessionid AND ptrnclssess_lastdetailid = ptrnclssessdt_partytrainingclasssessiondetailid
-                AND ptrnclssessdt_ptrncls_partytrainingclassid = ptrncls_partytrainingclassid AND ptrncls_lastdetailid = ptrnclsdt_partytrainingclassdetailid
-                ORDER BY ptrnclsqusdt_sortorder, ptrnclssessdt_partytrainingclasssessionsequence, ptrnclsdt_partytrainingclassname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionquestions, partytrainingclasssessionquestiondetails
-                WHERE ptrnclsqus_activedetailid = ptrnclsqusdt_partytrainingclasssessionquestiondetailid
-                AND ptrnclsqusdt_trnclsqus_trainingclassquestionid = ?
-                FOR UPDATE
-                """);
-        getPartyTrainingClassSessionQuestionsByTrainingClassQuestionQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
-   private List<PartyTrainingClassSessionQuestion> getPartyTrainingClassSessionQuestionsByTrainingClassQuestion(TrainingClassQuestion trainingClassQuestion,
+    private List<PartyTrainingClassSessionQuestion> getPartyTrainingClassSessionQuestionsByTrainingClassQuestion(TrainingClassQuestion trainingClassQuestion,
            EntityPermission entityPermission) {
-        return partyTrainingClassSessionQuestionFactory.getEntitiesFromQuery(entityPermission, getPartyTrainingClassSessionQuestionsByTrainingClassQuestionQueries,
-                trainingClassQuestion);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyTrainingClassSessionQuestions.fields())
+                    .from(PartyTrainingClassSessionQuestions)
+                    .join(PartyTrainingClassSessionQuestionDetails).onKey(PARTY_TRAINING_CLASS_SESSION_QUESTIONS_ACTIVE_DETAIL_FK)
+                    .join(PartyTrainingClassSessions).onKey(PARTY_TRAINING_CLASS_SESSION_QUESTION_DETAILS_PARTY_TRAINING_CLASS_SESSION_FK)
+                    .join(PartyTrainingClassSessionDetails).onKey(PARTY_TRAINING_CLASS_SESSIONS_LAST_DETAIL_FK)
+                    .join(PartyTrainingClasses).onKey(PARTY_TRAINING_CLASS_SESSION_DETAILS_PARTY_TRAINING_CLASS_FK)
+                    .join(PartyTrainingClassDetails).onKey(PARTY_TRAINING_CLASSES_LAST_DETAIL_FK)
+                    .where(PartyTrainingClassSessionQuestionDetails.TRAINING_CLASS_QUESTION.eq(trainingClassQuestion.getPrimaryKey()))
+                    .orderBy(PartyTrainingClassSessionQuestionDetails.SORT_ORDER, PartyTrainingClassSessionDetails.PARTY_TRAINING_CLASS_SESSION_SEQUENCE, PartyTrainingClassDetails.PARTY_TRAINING_CLASS_NAME),
+                    PartyTrainingClassSessionQuestionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyTrainingClassSessionQuestions.fields())
+                    .from(PartyTrainingClassSessionQuestions)
+                    .join(PartyTrainingClassSessionQuestionDetails).onKey(PARTY_TRAINING_CLASS_SESSION_QUESTIONS_ACTIVE_DETAIL_FK)
+                    .where(PartyTrainingClassSessionQuestionDetails.TRAINING_CLASS_QUESTION.eq(trainingClassQuestion.getPrimaryKey()))
+                    .forUpdate();
+        };
+
+        return partyTrainingClassSessionQuestionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PartyTrainingClassSessionQuestion> getPartyTrainingClassSessionQuestionsByTrainingClassQuestion(TrainingClassQuestion trainingClassQuestion) {
@@ -3613,29 +3418,19 @@ public class TrainingControl
         return partyTrainingClassSessionQuestionStatusFactory.create(partyTrainingClassSessionQuestion, 0);
     }
     
-    private static final Map<EntityPermission, String> getPartyTrainingClassSessionQuestionStatusQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionquestionstatuses
-                WHERE ptrnclsqusst_ptrnclsqus_partytrainingclasssessionquestionid = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionquestionstatuses
-                WHERE ptrnclsqusst_ptrnclsqus_partytrainingclasssessionquestionid = ?
-                FOR UPDATE
-                """);
-        getPartyTrainingClassSessionQuestionStatusQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private PartyTrainingClassSessionQuestionStatus getPartyTrainingClassSessionQuestionStatus(PartyTrainingClassSessionQuestion partyTrainingClassSessionQuestion,
             EntityPermission entityPermission) {
-        return partyTrainingClassSessionQuestionStatusFactory.getEntityFromQuery(entityPermission, getPartyTrainingClassSessionQuestionStatusQueries,
-                partyTrainingClassSessionQuestion);
+        var baseQuery = session.getDslContext()
+                .select(PartyTrainingClassSessionQuestionStatuses.fields())
+                .from(PartyTrainingClassSessionQuestionStatuses)
+                .where(PartyTrainingClassSessionQuestionStatuses.PARTY_TRAINING_CLASS_SESSION_QUESTION.eq(partyTrainingClassSessionQuestion.getPrimaryKey()));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyTrainingClassSessionQuestionStatusFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PartyTrainingClassSessionQuestionStatus getPartyTrainingClassSessionQuestionStatus(PartyTrainingClassSessionQuestion partyTrainingClassSessionQuestion) {
@@ -3661,6 +3456,9 @@ public class TrainingControl
     @Inject
     protected PartyTrainingClassSessionAnswerFactory partyTrainingClassSessionAnswerFactory;
 
+    @Inject
+    private PartyTrainingClassSessionAnswerTransferCache partyTrainingClassSessionAnswerTransferCache;
+
     public PartyTrainingClassSessionAnswer createPartyTrainingClassSessionAnswer(PartyTrainingClassSessionQuestion partyTrainingClassSessionQuestion,
             TrainingClassAnswer trainingClassAnswer, Long readingStartTime, Long readingEndTime, BasePK createdBy) {
         var partyTrainingClassSessionQuestionStatus = getPartyTrainingClassSessionQuestionStatusForUpdate(partyTrainingClassSessionQuestion);
@@ -3682,29 +3480,21 @@ public class TrainingControl
         return partyTrainingClassSessionAnswer;
     }
     
-    private static final Map<EntityPermission, String> getPartyTrainingClassSessionAnswerQueries;
-    
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionanswers
-                WHERE ptrnclsans_ptrnclsqus_partytrainingclasssessionquestionid = ? AND ptrnclsans_partytrainingclasssessionanswersequence = ? AND ptrnclsans_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionanswers
-                WHERE ptrnclsans_ptrnclsqus_partytrainingclasssessionquestionid = ? AND ptrnclsans_partytrainingclasssessionanswersequence = ? AND ptrnclsans_thrutime = ?
-                FOR UPDATE
-                """);
-        getPartyTrainingClassSessionAnswerQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     public PartyTrainingClassSessionAnswer getPartyTrainingClassSessionAnswer(PartyTrainingClassSessionQuestion partyTrainingClassSessionQuestion,
             Integer partyTrainingClassSessionAnswerSequence, EntityPermission entityPermission) {
-        return partyTrainingClassSessionAnswerFactory.getEntityFromQuery(entityPermission, getPartyTrainingClassSessionAnswerQueries,
-                partyTrainingClassSessionQuestion, partyTrainingClassSessionAnswerSequence, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(PartyTrainingClassSessionAnswers.fields())
+                .from(PartyTrainingClassSessionAnswers)
+                .where(PartyTrainingClassSessionAnswers.PARTY_TRAINING_CLASS_SESSION_QUESTION.eq(partyTrainingClassSessionQuestion.getPrimaryKey()),
+                        PartyTrainingClassSessionAnswers.PARTY_TRAINING_CLASS_SESSION_ANSWER_SEQUENCE.eq(partyTrainingClassSessionAnswerSequence),
+                        PartyTrainingClassSessionAnswers.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyTrainingClassSessionAnswerFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public PartyTrainingClassSessionAnswer getPartyTrainingClassSessionAnswer(PartyTrainingClassSessionQuestion partyTrainingClassSessionQuestion,
@@ -3726,31 +3516,22 @@ public class TrainingControl
         return getPartyTrainingClassSessionAnswerValue(getPartyTrainingClassSessionAnswerForUpdate(partyTrainingClassSessionQuestion, partyTrainingClassSessionAnswerSequence));
     }
     
-    private static final Map<EntityPermission, String> getPartyTrainingClassSessionAnswersByPartyTrainingClassSessionQuestionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionanswers
-                WHERE ptrnclsans_ptrnclsqus_partytrainingclasssessionquestionid = ? AND ptrnclsans_thrutime = ?
-                ORDER BY ptrnclsans_partytrainingclasssessionanswersequence
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionanswers
-                WHERE ptrnclsans_ptrnclsqus_partytrainingclasssessionquestionid = ? AND ptrnclsans_thrutime = ?
-                FOR UPDATE
-                """);
-        getPartyTrainingClassSessionAnswersByPartyTrainingClassSessionQuestionQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<PartyTrainingClassSessionAnswer> getPartyTrainingClassSessionAnswersByPartyTrainingClassSessionQuestion(PartyTrainingClassSessionQuestion partyTrainingClassSessionQuestion,
             EntityPermission entityPermission) {
-        return partyTrainingClassSessionAnswerFactory.getEntitiesFromQuery(entityPermission, getPartyTrainingClassSessionAnswersByPartyTrainingClassSessionQuestionQueries,
-                partyTrainingClassSessionQuestion, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(PartyTrainingClassSessionAnswers.fields())
+                .from(PartyTrainingClassSessionAnswers)
+                .where(PartyTrainingClassSessionAnswers.PARTY_TRAINING_CLASS_SESSION_QUESTION.eq(partyTrainingClassSessionQuestion.getPrimaryKey()),
+                        PartyTrainingClassSessionAnswers.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(PartyTrainingClassSessionAnswers.PARTY_TRAINING_CLASS_SESSION_ANSWER_SEQUENCE),
+                    PartyTrainingClassSessionAnswerFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return partyTrainingClassSessionAnswerFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PartyTrainingClassSessionAnswer> getPartyTrainingClassSessionAnswersByPartyTrainingClassSessionQuestion(PartyTrainingClassSessionQuestion partyTrainingClassSessionQuestion) {
@@ -3761,34 +3542,31 @@ public class TrainingControl
         return getPartyTrainingClassSessionAnswersByPartyTrainingClassSessionQuestion(partyTrainingClassSessionQuestion, EntityPermission.READ_WRITE);
     }
     
-    private static final Map<EntityPermission, String> getPartyTrainingClassSessionAnswersByTrainingClassAnswerQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionanswers, partytrainingclasssessionquestions, partytrainingclasssessionquestiondetails, partytrainingclasssessions, partytrainingclasssessiondetails, partytrainingclass, partytrainingclassdetails
-                WHERE ptrnclsans_trnclsans_trainingclassanswerid = ? AND ptrnclsans_thrutime = ?
-                AND ptrnclsans_ptrnclsqus_partytrainingclasssessionquestionid = ptrnclsqus_partytrainingclasssessionquestionid AND ptrnclsqus_lastdetailid = ptrnclsqusdt_partytrainingclasssessionquestiondetailid
-                AND ptrnclsqusdt_ptrnclssess_partytrainingclasssessionid = ptrnclssess_partytrainingclasssessionid AND ptrnclssess_lastdetailid = ptrnclssessdt_partytrainingclasssessiondetailid
-                AND ptrnclssessdt_ptrncls_partytrainingclassid = ptrncls_partytrainingclassid AND ptrncls_lastdetailid = ptrnclsdt_partytrainingclassdetailid
-                ORER BY ptrnclsans_partytrainingclasssessionanswersequence, ptrnclsqusdt_sortorder, ptrnclssessdt_partytrainingclasssessionsequence, ptrnclsdt_partytrainingclassname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM partytrainingclasssessionanswers
-                WHERE ptrnclsans_trnclsans_trainingclassanswerid = ? AND ptrnclsans_thrutime = ?
-                FOR UPDATE
-                """);
-        getPartyTrainingClassSessionAnswersByTrainingClassAnswerQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
     private List<PartyTrainingClassSessionAnswer> getPartyTrainingClassSessionAnswersByTrainingClassAnswer(TrainingClassAnswer trainingClassAnswer,
             EntityPermission entityPermission) {
-        return partyTrainingClassSessionAnswerFactory.getEntitiesFromQuery(entityPermission, getPartyTrainingClassSessionAnswersByTrainingClassAnswerQueries,
-                trainingClassAnswer, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(PartyTrainingClassSessionAnswers.fields())
+                    .from(PartyTrainingClassSessionAnswers)
+                    .join(PartyTrainingClassSessionQuestions).onKey(PARTY_TRAINING_CLASS_SESSION_ANSWERS_PARTY_TRAINING_CLASS_SESSION_QUESTION_FK)
+                    .join(PartyTrainingClassSessionQuestionDetails).onKey(PARTY_TRAINING_CLASS_SESSION_QUESTIONS_LAST_DETAIL_FK)
+                    .join(PartyTrainingClassSessions).onKey(PARTY_TRAINING_CLASS_SESSION_QUESTION_DETAILS_PARTY_TRAINING_CLASS_SESSION_FK)
+                    .join(PartyTrainingClassSessionDetails).onKey(PARTY_TRAINING_CLASS_SESSIONS_LAST_DETAIL_FK)
+                    .join(PartyTrainingClasses).onKey(PARTY_TRAINING_CLASS_SESSION_DETAILS_PARTY_TRAINING_CLASS_FK)
+                    .join(PartyTrainingClassDetails).onKey(PARTY_TRAINING_CLASSES_LAST_DETAIL_FK)
+                    .where(PartyTrainingClassSessionAnswers.TRAINING_CLASS_ANSWER.eq(trainingClassAnswer.getPrimaryKey()),
+                            PartyTrainingClassSessionAnswers.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(PartyTrainingClassSessionAnswers.PARTY_TRAINING_CLASS_SESSION_ANSWER_SEQUENCE, PartyTrainingClassSessionQuestionDetails.SORT_ORDER, PartyTrainingClassSessionDetails.PARTY_TRAINING_CLASS_SESSION_SEQUENCE, PartyTrainingClassDetails.PARTY_TRAINING_CLASS_NAME),
+                    PartyTrainingClassSessionAnswerFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(PartyTrainingClassSessionAnswers.fields())
+                    .from(PartyTrainingClassSessionAnswers)
+                    .where(PartyTrainingClassSessionAnswers.TRAINING_CLASS_ANSWER.eq(trainingClassAnswer.getPrimaryKey()),
+                            PartyTrainingClassSessionAnswers.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return partyTrainingClassSessionAnswerFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<PartyTrainingClassSessionAnswer> getPartyTrainingClassSessionAnswersByTrainingClassAnswer(TrainingClassAnswer trainingClassAnswer) {
