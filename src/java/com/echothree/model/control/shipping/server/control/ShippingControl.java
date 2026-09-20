@@ -23,6 +23,9 @@ import com.echothree.model.control.shipping.common.choice.ShippingMethodChoicesB
 import com.echothree.model.control.shipping.common.transfer.ShippingMethodCarrierServiceTransfer;
 import com.echothree.model.control.shipping.common.transfer.ShippingMethodDescriptionTransfer;
 import com.echothree.model.control.shipping.common.transfer.ShippingMethodTransfer;
+import com.echothree.model.control.shipping.server.transfer.ShippingMethodCarrierServiceTransferCache;
+import com.echothree.model.control.shipping.server.transfer.ShippingMethodDescriptionTransferCache;
+import com.echothree.model.control.shipping.server.transfer.ShippingMethodTransferCache;
 import com.echothree.model.data.carrier.server.entity.CarrierService;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
@@ -40,12 +43,24 @@ import com.echothree.model.data.shipping.server.value.ShippingMethodCarrierServi
 import com.echothree.model.data.shipping.server.value.ShippingMethodDescriptionValue;
 import com.echothree.model.data.shipping.server.value.ShippingMethodDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.carrier.CarrierForeignKeys.CARRIER_SERVICES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.shipping.ShippingForeignKeys.SHIPPING_METHODS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.shipping.ShippingForeignKeys.SHIPPING_METHODS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.shipping.ShippingForeignKeys.SHIPPING_METHOD_CARRIER_SERVICES_CARRIER_SERVICE_FK;
+import static com.echothree.model.jooq.server.keys.shipping.ShippingForeignKeys.SHIPPING_METHOD_CARRIER_SERVICES_SHIPPING_METHOD_FK;
+import static com.echothree.model.jooq.server.keys.shipping.ShippingForeignKeys.SHIPPING_METHOD_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.carrier.CarrierServiceDetails.CarrierServiceDetails;
+import static com.echothree.model.jooq.server.tables.carrier.CarrierServices.CarrierServices;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.shipping.ShippingMethodCarrierServices.ShippingMethodCarrierServices;
+import static com.echothree.model.jooq.server.tables.shipping.ShippingMethodDescriptions.ShippingMethodDescriptions;
+import static com.echothree.model.jooq.server.tables.shipping.ShippingMethodDetails.ShippingMethodDetails;
+import static com.echothree.model.jooq.server.tables.shipping.ShippingMethods.ShippingMethods;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -53,7 +68,7 @@ import javax.inject.Inject;
 
 @CommandScope
 public class ShippingControl
-        extends BaseShippingControl {
+        extends BaseModelControl {
     
     @Inject
     protected ReturnPolicyControl returnPolicyControl;
@@ -71,10 +86,13 @@ public class ShippingControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected ShippingMethodDetailFactory shippingMethodDetailFactory;
+
+    @Inject
     protected ShippingMethodFactory shippingMethodFactory;
 
     @Inject
-    protected ShippingMethodDetailFactory shippingMethodDetailFactory;
+    private ShippingMethodTransferCache shippingMethodTransferCache;
 
     public ShippingMethod createShippingMethod(String shippingMethodName, Selector geoCodeSelector, Selector itemSelector, Integer sortOrder,
             BasePK createdBy) {
@@ -111,54 +129,48 @@ public class ShippingControl
     }
 
     public long countShippingMethods() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM shippingmethods
-                        JOIN shippingmethoddetails ON shm_activedetailid = shmdt_shippingmethoddetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(ShippingMethods)
+                .join(ShippingMethodDetails).onKey(SHIPPING_METHODS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countShippingMethodsByGeoCodeSelector(final Selector geoCodeSelector) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM shippingmethods
-                        JOIN shippingmethoddetails ON shm_activedetailid = shmdt_shippingmethoddetailid
-                        WHERE shmdt_geocodeselectorid = ?
-                        """, geoCodeSelector);
+        return session.getDslContext()
+                .selectCount()
+                .from(ShippingMethods)
+                .join(ShippingMethodDetails).onKey(SHIPPING_METHODS_ACTIVE_DETAIL_FK)
+                .where(ShippingMethodDetails.GEO_CODE_SELECTOR.eq(geoCodeSelector.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countShippingMethodsByItemSelector(final Selector itemSelector) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM shippingmethods
-                        JOIN shippingmethoddetails ON shm_activedetailid = shmdt_shippingmethoddetailid
-                        WHERE shmdt_itemselectorid = ?
-                        """, itemSelector);
+        return session.getDslContext()
+                .selectCount()
+                .from(ShippingMethods)
+                .join(ShippingMethodDetails).onKey(SHIPPING_METHODS_ACTIVE_DETAIL_FK)
+                .where(ShippingMethodDetails.ITEM_SELECTOR.eq(itemSelector.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<ShippingMethod> getShippingMethods(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM shippingmethods, shippingmethoddetails
-                    WHERE shm_activedetailid = shmdt_shippingmethoddetailid
-                    ORDER BY shmdt_sortorder, shmdt_shippingmethodname
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM shippingmethods, carrierservicedetails
-                    WHERE shm_activedetailid = shmdt_shippingmethoddetailid
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(ShippingMethods.fields())
+                .from(ShippingMethods)
+                .join(ShippingMethodDetails).onKey(SHIPPING_METHODS_ACTIVE_DETAIL_FK);
 
-        var ps = shippingMethodFactory.prepareStatement(query);
-        
-        return shippingMethodFactory.getEntitiesFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(ShippingMethodDetails.SORT_ORDER, ShippingMethodDetails.SHIPPING_METHOD_NAME),
+                    ShippingMethodFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return shippingMethodFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ShippingMethod> getShippingMethods() {
@@ -170,38 +182,18 @@ public class ShippingControl
     }
     
     public ShippingMethod getShippingMethodByName(String shippingMethodName, EntityPermission entityPermission) {
-        ShippingMethod shippingMethod;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM shippingmethods, shippingmethoddetails
-                        WHERE shm_activedetailid = shmdt_shippingmethoddetailid
-                        AND shmdt_shippingmethodname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM shippingmethods, shippingmethoddetails
-                        WHERE shm_activedetailid = shmdt_shippingmethoddetailid
-                        AND shmdt_shippingmethodname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ShippingMethods.fields())
+                .from(ShippingMethods)
+                .join(ShippingMethodDetails).onKey(SHIPPING_METHODS_ACTIVE_DETAIL_FK)
+                .where(ShippingMethodDetails.SHIPPING_METHOD_NAME.eq(shippingMethodName));
 
-            var ps = shippingMethodFactory.prepareStatement(query);
-            
-            ps.setString(1, shippingMethodName);
-            
-            shippingMethod = shippingMethodFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return shippingMethod;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return shippingMethodFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ShippingMethod getShippingMethodByName(String shippingMethodName) {
@@ -358,6 +350,9 @@ public class ShippingControl
     @Inject
     protected ShippingMethodDescriptionFactory shippingMethodDescriptionFactory;
 
+    @Inject
+    private ShippingMethodDescriptionTransferCache shippingMethodDescriptionTransferCache;
+
     public ShippingMethodDescription createShippingMethodDescription(ShippingMethod shippingMethod, Language language, String description,
             BasePK createdBy) {
         var shippingMethodDescription = shippingMethodDescriptionFactory.create(shippingMethod,
@@ -370,38 +365,19 @@ public class ShippingControl
     }
     
     private ShippingMethodDescription getShippingMethodDescription(ShippingMethod shippingMethod, Language language, EntityPermission entityPermission) {
-        ShippingMethodDescription shippingMethodDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM shippingmethoddescriptions
-                        WHERE shmd_shm_shippingmethodid = ? AND shmd_lang_languageid = ? AND shmd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM shippingmethoddescriptions
-                        WHERE shmd_shm_shippingmethodid = ? AND shmd_lang_languageid = ? AND shmd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ShippingMethodDescriptions.fields())
+                .from(ShippingMethodDescriptions)
+                .where(ShippingMethodDescriptions.SHIPPING_METHOD.eq(shippingMethod.getPrimaryKey()),
+                        ShippingMethodDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        ShippingMethodDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = shippingMethodDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, shippingMethod.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            shippingMethodDescription = shippingMethodDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return shippingMethodDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return shippingMethodDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ShippingMethodDescription getShippingMethodDescription(ShippingMethod shippingMethod, Language language) {
@@ -421,39 +397,24 @@ public class ShippingControl
     }
     
     private List<ShippingMethodDescription> getShippingMethodDescriptionsByShippingMethod(ShippingMethod shippingMethod, EntityPermission entityPermission) {
-        List<ShippingMethodDescription> shippingMethodDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM shippingmethoddescriptions, languages
-                        WHERE shmd_shm_shippingmethodid = ? AND shmd_thrutime = ? AND shmd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM shippingmethoddescriptions
-                        WHERE shmd_shm_shippingmethodid = ? AND shmd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ShippingMethodDescriptions.fields())
+                    .from(ShippingMethodDescriptions)
+                    .join(Languages).onKey(SHIPPING_METHOD_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(ShippingMethodDescriptions.SHIPPING_METHOD.eq(shippingMethod.getPrimaryKey()),
+                            ShippingMethodDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    ShippingMethodDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ShippingMethodDescriptions.fields())
+                    .from(ShippingMethodDescriptions)
+                    .where(ShippingMethodDescriptions.SHIPPING_METHOD.eq(shippingMethod.getPrimaryKey()),
+                            ShippingMethodDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = shippingMethodDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, shippingMethod.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            shippingMethodDescriptions = shippingMethodDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return shippingMethodDescriptions;
+        return shippingMethodDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ShippingMethodDescription> getShippingMethodDescriptionsByShippingMethod(ShippingMethod shippingMethod) {
@@ -532,11 +493,14 @@ public class ShippingControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Carrier Service Options
+    //   Shipping Method Carrier Services
     // --------------------------------------------------------------------------------
 
     @Inject
     protected ShippingMethodCarrierServiceFactory shippingMethodCarrierServiceFactory;
+
+    @Inject
+    private ShippingMethodCarrierServiceTransferCache shippingMethodCarrierServiceTransferCache;
 
     public ShippingMethodCarrierService createShippingMethodCarrierService(ShippingMethod shippingMethod, CarrierService carrierService,
             BasePK createdBy) {
@@ -550,57 +514,40 @@ public class ShippingControl
     }
 
     public long countShippingMethodCarrierServicesByShippingMethod(final ShippingMethod shippingMethod) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM campaigns
-                        JOIN campaigndetails ON cmpgndt_campaigndetailid = cmpgn_activedetailid
-                        WHERE shmcrrsrv_shm_shippingmethodid = ? AND shmcrrsrv_thrutime = ?
-                        """, shippingMethod, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ShippingMethodCarrierServices)
+                .where(ShippingMethodCarrierServices.SHIPPING_METHOD.eq(shippingMethod.getPrimaryKey()),
+                        ShippingMethodCarrierServices.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countShippingMethodCarrierServicesByCarrierService(final CarrierService carrierService) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM campaigns
-                        JOIN campaigndetails ON cmpgndt_campaigndetailid = cmpgn_activedetailid
-                        WHERE shmcrrsrv_crrsrv_carrierserviceid = ? AND shmcrrsrv_thrutime = ?
-                        """, carrierService, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(ShippingMethodCarrierServices)
+                .where(ShippingMethodCarrierServices.CARRIER_SERVICE.eq(carrierService.getPrimaryKey()),
+                        ShippingMethodCarrierServices.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private ShippingMethodCarrierService getShippingMethodCarrierService(ShippingMethod shippingMethod, CarrierService carrierService,
             EntityPermission entityPermission) {
-        ShippingMethodCarrierService shippingMethodCarrierService;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM shippingmethodcarrierservices
-                        WHERE shmcrrsrv_shm_shippingmethodid = ? AND shmcrrsrv_crrsrv_carrierserviceid = ? AND shmcrrsrv_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM shippingmethodcarrierservices
-                        WHERE shmcrrsrv_shm_shippingmethodid = ? AND shmcrrsrv_crrsrv_carrierserviceid = ? AND shmcrrsrv_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(ShippingMethodCarrierServices.fields())
+                .from(ShippingMethodCarrierServices)
+                .where(ShippingMethodCarrierServices.SHIPPING_METHOD.eq(shippingMethod.getPrimaryKey()),
+                        ShippingMethodCarrierServices.CARRIER_SERVICE.eq(carrierService.getPrimaryKey()),
+                        ShippingMethodCarrierServices.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = shippingMethodCarrierServiceFactory.prepareStatement(query);
-            
-            ps.setLong(1, shippingMethod.getPrimaryKey().getEntityId());
-            ps.setLong(2, carrierService.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            shippingMethodCarrierService = shippingMethodCarrierServiceFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return shippingMethodCarrierService;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return shippingMethodCarrierServiceFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public ShippingMethodCarrierService getShippingMethodCarrierService(ShippingMethod shippingMethod, CarrierService carrierService) {
@@ -620,40 +567,25 @@ public class ShippingControl
     }
     
     private List<ShippingMethodCarrierService> getShippingMethodCarrierServicesByShippingMethod(ShippingMethod shippingMethod, EntityPermission entityPermission) {
-        List<ShippingMethodCarrierService> shippingMethodCarrierServices;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM shippingmethodcarrierservices, carrierservices, carrierservicedetails
-                        WHERE shmcrrsrv_shm_shippingmethodid = ? AND shmcrrsrv_thrutime = ?
-                        AND shmcrrsrv_crrsrv_carrierserviceid = crrsrv_carrierserviceid AND crrsrv_activedetailid = crrsrvdt_carrierservicedetailid
-                        ORDER BY crrsrvdt_sortorder, crrsrvdt_carrierservicename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM shippingmethodcarrierservices
-                        WHERE shmcrrsrv_shm_shippingmethodid = ? AND shmcrrsrv_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ShippingMethodCarrierServices.fields())
+                    .from(ShippingMethodCarrierServices)
+                    .join(CarrierServices).onKey(SHIPPING_METHOD_CARRIER_SERVICES_CARRIER_SERVICE_FK)
+                    .join(CarrierServiceDetails).onKey(CARRIER_SERVICES_LAST_DETAIL_FK)
+                    .where(ShippingMethodCarrierServices.SHIPPING_METHOD.eq(shippingMethod.getPrimaryKey()),
+                            ShippingMethodCarrierServices.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(CarrierServiceDetails.SORT_ORDER, CarrierServiceDetails.CARRIER_SERVICE_NAME),
+                    ShippingMethodCarrierServiceFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ShippingMethodCarrierServices.fields())
+                    .from(ShippingMethodCarrierServices)
+                    .where(ShippingMethodCarrierServices.SHIPPING_METHOD.eq(shippingMethod.getPrimaryKey()),
+                            ShippingMethodCarrierServices.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = shippingMethodCarrierServiceFactory.prepareStatement(query);
-            
-            ps.setLong(1, shippingMethod.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            shippingMethodCarrierServices = shippingMethodCarrierServiceFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return shippingMethodCarrierServices;
+        return shippingMethodCarrierServiceFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ShippingMethodCarrierService> getShippingMethodCarrierServicesByShippingMethod(ShippingMethod shippingMethod) {
@@ -665,40 +597,25 @@ public class ShippingControl
     }
     
     private List<ShippingMethodCarrierService> getShippingMethodCarrierServicesByCarrierService(CarrierService carrierService, EntityPermission entityPermission) {
-        List<ShippingMethodCarrierService> shippingMethodCarrierServices;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM shippingmethodcarrierservices, shippingmethods, shippingmethoddetails
-                        WHERE shmcrrsrv_crrsrv_carrierserviceid = ? AND shmcrrsrv_thrutime = ?
-                        AND shmcrrsrv_shm_shippingmethodid = shm_shippingmethodid AND shm_activedetailid = shmdt_shippingmethoddetailid
-                        ORDER BY shmdt_sortorder, shmdt_shippingmethodname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM shippingmethodcarrierservices
-                        WHERE shmcrrsrv_crrsrv_carrierserviceid = ? AND shmcrrsrv_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(ShippingMethodCarrierServices.fields())
+                    .from(ShippingMethodCarrierServices)
+                    .join(ShippingMethods).onKey(SHIPPING_METHOD_CARRIER_SERVICES_SHIPPING_METHOD_FK)
+                    .join(ShippingMethodDetails).onKey(SHIPPING_METHODS_LAST_DETAIL_FK)
+                    .where(ShippingMethodCarrierServices.CARRIER_SERVICE.eq(carrierService.getPrimaryKey()),
+                            ShippingMethodCarrierServices.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ShippingMethodDetails.SORT_ORDER, ShippingMethodDetails.SHIPPING_METHOD_NAME),
+                    ShippingMethodCarrierServiceFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(ShippingMethodCarrierServices.fields())
+                    .from(ShippingMethodCarrierServices)
+                    .where(ShippingMethodCarrierServices.CARRIER_SERVICE.eq(carrierService.getPrimaryKey()),
+                            ShippingMethodCarrierServices.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = shippingMethodCarrierServiceFactory.prepareStatement(query);
-            
-            ps.setLong(1, carrierService.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            shippingMethodCarrierServices = shippingMethodCarrierServiceFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return shippingMethodCarrierServices;
+        return shippingMethodCarrierServiceFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<ShippingMethodCarrierService> getShippingMethodCarrierServicesByCarrierService(CarrierService carrierService) {
