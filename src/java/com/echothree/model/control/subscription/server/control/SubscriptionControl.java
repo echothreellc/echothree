@@ -67,19 +67,35 @@ import com.echothree.model.data.subscription.server.value.SubscriptionTypeChainV
 import com.echothree.model.data.subscription.server.value.SubscriptionTypeDescriptionValue;
 import com.echothree.model.data.subscription.server.value.SubscriptionTypeDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.chain.ChainForeignKeys.CHAINS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.subscription.SubscriptionForeignKeys.SUBSCRIPTIONS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.subscription.SubscriptionForeignKeys.SUBSCRIPTION_DETAILS_SUBSCRIPTION_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.subscription.SubscriptionForeignKeys.SUBSCRIPTION_KINDS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.subscription.SubscriptionForeignKeys.SUBSCRIPTION_KIND_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.subscription.SubscriptionForeignKeys.SUBSCRIPTION_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.subscription.SubscriptionForeignKeys.SUBSCRIPTION_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.subscription.SubscriptionForeignKeys.SUBSCRIPTION_TYPE_CHAINS_CHAIN_FK;
+import static com.echothree.model.jooq.server.keys.subscription.SubscriptionForeignKeys.SUBSCRIPTION_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.chain.ChainDetails.ChainDetails;
+import static com.echothree.model.jooq.server.tables.chain.Chains.Chains;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.subscription.SubscriptionDetails.SubscriptionDetails;
+import static com.echothree.model.jooq.server.tables.subscription.SubscriptionKindDescriptions.SubscriptionKindDescriptions;
+import static com.echothree.model.jooq.server.tables.subscription.SubscriptionKindDetails.SubscriptionKindDetails;
+import static com.echothree.model.jooq.server.tables.subscription.SubscriptionKinds.SubscriptionKinds;
+import static com.echothree.model.jooq.server.tables.subscription.SubscriptionTypeChains.SubscriptionTypeChains;
+import static com.echothree.model.jooq.server.tables.subscription.SubscriptionTypeDescriptions.SubscriptionTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.subscription.SubscriptionTypeDetails.SubscriptionTypeDetails;
+import static com.echothree.model.jooq.server.tables.subscription.SubscriptionTypes.SubscriptionTypes;
+import static com.echothree.model.jooq.server.tables.subscription.Subscriptions.Subscriptions;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import javax.inject.Inject;
 
@@ -102,36 +118,17 @@ public class SubscriptionControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Subscription Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    @Inject
-    SubscriptionKindTransferCache subscriptionKindTransferCache;
-
-    @Inject
-    SubscriptionKindDescriptionTransferCache subscriptionKindDescriptionTransferCache;
-
-    @Inject
-    SubscriptionTypeTransferCache subscriptionTypeTransferCache;
-
-    @Inject
-    SubscriptionTypeDescriptionTransferCache subscriptionTypeDescriptionTransferCache;
-
-    @Inject
-    SubscriptionTransferCache subscriptionTransferCache;
-
-    @Inject
-    SubscriptionTypeChainTransferCache subscriptionTypeChainTransferCache;
-
-    // --------------------------------------------------------------------------------
     //   Subscription Kinds
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected SubscriptionKindDetailFactory subscriptionKindDetailFactory;
 
     @Inject
     protected SubscriptionKindFactory subscriptionKindFactory;
 
     @Inject
-    protected SubscriptionKindDetailFactory subscriptionKindDetailFactory;
+    private SubscriptionKindTransferCache subscriptionKindTransferCache;
 
     public SubscriptionKind createSubscriptionKind(String subscriptionKindName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultSubscriptionKind = getDefaultSubscriptionKind();
@@ -178,35 +175,27 @@ public class SubscriptionControl
     }
 
     public long countSubscriptionKinds() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM subscriptionkinds
-                        JOIN subscriptionkinddetails ON subscrkdt_subscriptionkinddetailid = subscrk_activedetailid
-                        """);
-    }
-
-    private static final Map<EntityPermission, String> getSubscriptionKindByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM subscriptionkinds, subscriptionkinddetails
-                WHERE subscrk_activedetailid = subscrkdt_subscriptionkinddetailid AND subscrkdt_subscriptionkindname = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM subscriptionkinds, subscriptionkinddetails
-                WHERE subscrk_activedetailid = subscrkdt_subscriptionkinddetailid AND subscrkdt_subscriptionkindname = ?
-                FOR UPDATE
-                """);
-        getSubscriptionKindByNameQueries = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(SubscriptionKinds)
+                .join(SubscriptionKindDetails).onKey(SUBSCRIPTION_KINDS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public SubscriptionKind getSubscriptionKindByName(String subscriptionKindName, EntityPermission entityPermission) {
-        return subscriptionKindFactory.getEntityFromQuery(entityPermission, getSubscriptionKindByNameQueries,
-                subscriptionKindName);
+        var baseQuery = session.getDslContext()
+                .select(SubscriptionKinds.fields())
+                .from(SubscriptionKinds)
+                .join(SubscriptionKindDetails).onKey(SUBSCRIPTION_KINDS_ACTIVE_DETAIL_FK)
+                .where(SubscriptionKindDetails.SUBSCRIPTION_KIND_NAME.eq(subscriptionKindName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return subscriptionKindFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SubscriptionKind getSubscriptionKindByName(String subscriptionKindName) {
@@ -225,27 +214,19 @@ public class SubscriptionControl
         return getSubscriptionKindDetailValueForUpdate(getSubscriptionKindByNameForUpdate(subscriptionKindName));
     }
 
-    private static final Map<EntityPermission, String> getDefaultSubscriptionKindQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM subscriptionkinds, subscriptionkinddetails
-                WHERE subscrk_activedetailid = subscrkdt_subscriptionkinddetailid AND subscrkdt_isdefault = 1
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM subscriptionkinds, subscriptionkinddetails
-                WHERE subscrk_activedetailid = subscrkdt_subscriptionkinddetailid AND subscrkdt_isdefault = 1
-                FOR UPDATE
-                """);
-        getDefaultSubscriptionKindQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public SubscriptionKind getDefaultSubscriptionKind(EntityPermission entityPermission) {
-        return subscriptionKindFactory.getEntityFromQuery(entityPermission, getDefaultSubscriptionKindQueries);
+        var baseQuery = session.getDslContext()
+                .select(SubscriptionKinds.fields())
+                .from(SubscriptionKinds)
+                .join(SubscriptionKindDetails).onKey(SUBSCRIPTION_KINDS_ACTIVE_DETAIL_FK)
+                .where(SubscriptionKindDetails.IS_DEFAULT.eq(true));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return subscriptionKindFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SubscriptionKind getDefaultSubscriptionKind() {
@@ -260,29 +241,20 @@ public class SubscriptionControl
         return getDefaultSubscriptionKind(EntityPermission.READ_WRITE).getLastDetailForUpdate().getSubscriptionKindDetailValue();
     }
 
-    private static final Map<EntityPermission, String> getSubscriptionKindsQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM subscriptionkinds, subscriptionkinddetails
-                WHERE subscrk_activedetailid = subscrkdt_subscriptionkinddetailid
-                ORDER BY subscrkdt_sortorder, subscrkdt_subscriptionkindname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM subscriptionkinds, subscriptionkinddetails
-                WHERE subscrk_activedetailid = subscrkdt_subscriptionkinddetailid
-                FOR UPDATE
-                """);
-        getSubscriptionKindsQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public List<SubscriptionKind> getSubscriptionKinds(EntityPermission entityPermission) {
-        return subscriptionKindFactory.getEntitiesFromQuery(entityPermission, getSubscriptionKindsQueries);
+        var baseQuery = session.getDslContext()
+                .select(SubscriptionKinds.fields())
+                .from(SubscriptionKinds)
+                .join(SubscriptionKindDetails).onKey(SUBSCRIPTION_KINDS_ACTIVE_DETAIL_FK);
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SubscriptionKindDetails.SORT_ORDER, SubscriptionKindDetails.SUBSCRIPTION_KIND_NAME),
+                    SubscriptionKindFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return subscriptionKindFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<SubscriptionKind> getSubscriptionKinds() {
@@ -423,6 +395,9 @@ public class SubscriptionControl
     @Inject
     protected SubscriptionKindDescriptionFactory subscriptionKindDescriptionFactory;
 
+    @Inject
+    private SubscriptionKindDescriptionTransferCache subscriptionKindDescriptionTransferCache;
+
     public SubscriptionKindDescription createSubscriptionKindDescription(SubscriptionKind subscriptionKind, Language language, String description,
             BasePK createdBy) {
         var subscriptionKindDescription = subscriptionKindDescriptionFactory.create(subscriptionKind,
@@ -433,28 +408,20 @@ public class SubscriptionControl
         return subscriptionKindDescription;
     }
 
-    private static final Map<EntityPermission, String> getSubscriptionKindDescriptionQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM subscriptionkinddescriptions
-                WHERE subscrkd_subscrk_subscriptionkindid = ? AND subscrkd_lang_languageid = ? AND subscrkd_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM subscriptionkinddescriptions
-                WHERE subscrkd_subscrk_subscriptionkindid = ? AND subscrkd_lang_languageid = ? AND subscrkd_thrutime = ?
-                FOR UPDATE
-                """);
-        getSubscriptionKindDescriptionQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private SubscriptionKindDescription getSubscriptionKindDescription(SubscriptionKind subscriptionKind, Language language, EntityPermission entityPermission) {
-        return subscriptionKindDescriptionFactory.getEntityFromQuery(entityPermission, getSubscriptionKindDescriptionQueries,
-                subscriptionKind, language, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(SubscriptionKindDescriptions.fields())
+                .from(SubscriptionKindDescriptions)
+                .where(SubscriptionKindDescriptions.SUBSCRIPTION_KIND.eq(subscriptionKind.getPrimaryKey()),
+                        SubscriptionKindDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        SubscriptionKindDescriptions.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return subscriptionKindDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public SubscriptionKindDescription getSubscriptionKindDescription(SubscriptionKind subscriptionKind, Language language) {
@@ -473,30 +440,25 @@ public class SubscriptionControl
         return getSubscriptionKindDescriptionValue(getSubscriptionKindDescriptionForUpdate(subscriptionKind, language));
     }
 
-    private static final Map<EntityPermission, String> getSubscriptionKindDescriptionsBySubscriptionKindQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY, """
-                SELECT _ALL_
-                FROM subscriptionkinddescriptions, languages
-                WHERE subscrkd_subscrk_subscriptionkindid = ? AND subscrkd_thrutime = ? AND subscrkd_lang_languageid = lang_languageid
-                ORDER BY lang_sortorder, lang_languageisoname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE, """
-                SELECT _ALL_
-                FROM subscriptionkinddescriptions
-                WHERE subscrkd_subscrk_subscriptionkindid = ? AND subscrkd_thrutime = ?
-                FOR UPDATE
-                """);
-        getSubscriptionKindDescriptionsBySubscriptionKindQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<SubscriptionKindDescription> getSubscriptionKindDescriptionsBySubscriptionKind(SubscriptionKind subscriptionKind, EntityPermission entityPermission) {
-        return subscriptionKindDescriptionFactory.getEntitiesFromQuery(entityPermission, getSubscriptionKindDescriptionsBySubscriptionKindQueries,
-                subscriptionKind, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(SubscriptionKindDescriptions.fields())
+                    .from(SubscriptionKindDescriptions)
+                    .join(Languages).onKey(SUBSCRIPTION_KIND_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(SubscriptionKindDescriptions.SUBSCRIPTION_KIND.eq(subscriptionKind.getPrimaryKey()),
+                            SubscriptionKindDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    SubscriptionKindDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(SubscriptionKindDescriptions.fields())
+                    .from(SubscriptionKindDescriptions)
+                    .where(SubscriptionKindDescriptions.SUBSCRIPTION_KIND.eq(subscriptionKind.getPrimaryKey()),
+                            SubscriptionKindDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return subscriptionKindDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<SubscriptionKindDescription> getSubscriptionKindDescriptionsBySubscriptionKind(SubscriptionKind subscriptionKind) {
@@ -578,10 +540,13 @@ public class SubscriptionControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected SubscriptionTypeDetailFactory subscriptionTypeDetailFactory;
+
+    @Inject
     protected SubscriptionTypeFactory subscriptionTypeFactory;
 
     @Inject
-    protected SubscriptionTypeDetailFactory subscriptionTypeDetailFactory;
+    private SubscriptionTypeTransferCache subscriptionTypeTransferCache;
 
     public SubscriptionType createSubscriptionType(SubscriptionKind subscriptionKind, String subscriptionTypeName,
             Sequence subscriptionSequence, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -630,59 +595,41 @@ public class SubscriptionControl
     }
 
     public long countSubscriptionTypesBySubscriptionKind(final SubscriptionKind subscriptionKind) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM subscriptiontypes
-                        JOIN subscriptiontypedetails ON subscrtypdt_subscriptiontypedetailid = subscrtyp_activedetailid
-                        WHERE subscrtypdt_subscrk_subscriptionkindid = ?
-                        """, subscriptionKind);
+        return session.getDslContext()
+                .selectCount()
+                .from(SubscriptionTypes)
+                .join(SubscriptionTypeDetails).onKey(SUBSCRIPTION_TYPES_ACTIVE_DETAIL_FK)
+                .where(SubscriptionTypeDetails.SUBSCRIPTION_KIND.eq(subscriptionKind.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countSubscriptionTypesBySubscriptionSequence(final Sequence subscriptionSequence) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM subscriptiontypes
-                        JOIN subscriptiontypedetails ON subscrtypdt_subscriptiontypedetailid = subscrtyp_activedetailid
-                        WHERE subscrtypdt_subscriptionsequenceid = ?
-                        """, subscriptionSequence);
+        return session.getDslContext()
+                .selectCount()
+                .from(SubscriptionTypes)
+                .join(SubscriptionTypeDetails).onKey(SUBSCRIPTION_TYPES_ACTIVE_DETAIL_FK)
+                .where(SubscriptionTypeDetails.SUBSCRIPTION_SEQUENCE.eq(subscriptionSequence.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<SubscriptionType> getSubscriptionTypesBySubscriptionKind(SubscriptionKind subscriptionKind,
             EntityPermission entityPermission) {
-        List<SubscriptionType> subscriptionTypes;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM subscriptiontypes, subscriptiontypedetails
-                        WHERE subscrtyp_activedetailid = subscrtypdt_subscriptiontypedetailid
-                        AND subscrtypdt_subscrk_subscriptionkindid = ?
-                        ORDER BY subscrtypdt_sortorder, subscrtypdt_subscriptiontypename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM subscriptiontypes, subscriptiontypedetails
-                        WHERE subscrtyp_activedetailid = subscrtypdt_subscriptiontypedetailid
-                        AND subscrtypdt_subscrk_subscriptionkindid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SubscriptionTypes.fields())
+                .from(SubscriptionTypes)
+                .join(SubscriptionTypeDetails).onKey(SUBSCRIPTION_TYPES_ACTIVE_DETAIL_FK)
+                .where(SubscriptionTypeDetails.SUBSCRIPTION_KIND.eq(subscriptionKind.getPrimaryKey()));
 
-            var ps = subscriptionTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, subscriptionKind.getPrimaryKey().getEntityId());
-            
-            subscriptionTypes = subscriptionTypeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return subscriptionTypes;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SubscriptionTypeDetails.SORT_ORDER, SubscriptionTypeDetails.SUBSCRIPTION_TYPE_NAME),
+                    SubscriptionTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return subscriptionTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<SubscriptionType> getSubscriptionTypesBySubscriptionKind(SubscriptionKind subscriptionKind) {
@@ -694,38 +641,19 @@ public class SubscriptionControl
     }
     
     public SubscriptionType getDefaultSubscriptionType(SubscriptionKind subscriptionKind, EntityPermission entityPermission) {
-        SubscriptionType subscriptionType;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM subscriptiontypes, subscriptiontypedetails
-                        WHERE subscrtyp_activedetailid = subscrtypdt_subscriptiontypedetailid
-                        AND subscrtypdt_subscrk_subscriptionkindid = ? AND subscrtypdt_isdefault = 1
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM subscriptiontypes, subscriptiontypedetails
-                        WHERE subscrtyp_activedetailid = subscrtypdt_subscriptiontypedetailid
-                        AND subscrtypdt_subscrk_subscriptionkindid = ? AND subscrtypdt_isdefault = 1
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SubscriptionTypes.fields())
+                .from(SubscriptionTypes)
+                .join(SubscriptionTypeDetails).onKey(SUBSCRIPTION_TYPES_ACTIVE_DETAIL_FK)
+                .where(SubscriptionTypeDetails.SUBSCRIPTION_KIND.eq(subscriptionKind.getPrimaryKey()),
+                        SubscriptionTypeDetails.IS_DEFAULT.eq(true));
 
-            var ps = subscriptionTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, subscriptionKind.getPrimaryKey().getEntityId());
-            
-            subscriptionType = subscriptionTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return subscriptionType;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return subscriptionTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public SubscriptionType getDefaultSubscriptionType(SubscriptionKind subscriptionKind) {
@@ -742,39 +670,19 @@ public class SubscriptionControl
     
     public SubscriptionType getSubscriptionTypeByName(SubscriptionKind subscriptionKind, String subscriptionTypeName,
             EntityPermission entityPermission) {
-        SubscriptionType subscriptionType;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM subscriptiontypes, subscriptiontypedetails
-                        WHERE subscrtyp_activedetailid = subscrtypdt_subscriptiontypedetailid
-                        AND subscrtypdt_subscrk_subscriptionkindid = ? AND subscrtypdt_subscriptiontypename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM subscriptiontypes, subscriptiontypedetails
-                        WHERE subscrtyp_activedetailid = subscrtypdt_subscriptiontypedetailid
-                        AND subscrtypdt_subscrk_subscriptionkindid = ? AND subscrtypdt_subscriptiontypename = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SubscriptionTypes.fields())
+                .from(SubscriptionTypes)
+                .join(SubscriptionTypeDetails).onKey(SUBSCRIPTION_TYPES_ACTIVE_DETAIL_FK)
+                .where(SubscriptionTypeDetails.SUBSCRIPTION_KIND.eq(subscriptionKind.getPrimaryKey()),
+                        SubscriptionTypeDetails.SUBSCRIPTION_TYPE_NAME.eq(subscriptionTypeName));
 
-            var ps = subscriptionTypeFactory.prepareStatement(query);
-            
-            ps.setLong(1, subscriptionKind.getPrimaryKey().getEntityId());
-            ps.setString(2, subscriptionTypeName);
-            
-            subscriptionType = subscriptionTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return subscriptionType;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return subscriptionTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public SubscriptionType getSubscriptionTypeByName(SubscriptionKind subscriptionKind, String subscriptionTypeName) {
@@ -931,6 +839,9 @@ public class SubscriptionControl
     @Inject
     protected SubscriptionTypeDescriptionFactory subscriptionTypeDescriptionFactory;
 
+    @Inject
+    private SubscriptionTypeDescriptionTransferCache subscriptionTypeDescriptionTransferCache;
+
     public SubscriptionTypeDescription createSubscriptionTypeDescription(SubscriptionType subscriptionType, Language language,
             String description, BasePK createdBy) {
         var subscriptionTypeDescription = subscriptionTypeDescriptionFactory.create(
@@ -944,41 +855,19 @@ public class SubscriptionControl
     
     private SubscriptionTypeDescription getSubscriptionTypeDescription(SubscriptionType subscriptionType, Language language,
             EntityPermission entityPermission) {
-        SubscriptionTypeDescription subscriptionTypeDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM subscriptiontypedescriptions
-                        WHERE subscrtypd_subscrtyp_subscriptiontypeid = ? AND subscrtypd_lang_languageid = ?
-                        AND subscrtypd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM subscriptiontypedescriptions
-                        WHERE subscrtypd_subscrtyp_subscriptiontypeid = ? AND subscrtypd_lang_languageid = ?
-                        AND subscrtypd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SubscriptionTypeDescriptions.fields())
+                .from(SubscriptionTypeDescriptions)
+                .where(SubscriptionTypeDescriptions.SUBSCRIPTION_TYPE.eq(subscriptionType.getPrimaryKey()),
+                        SubscriptionTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        SubscriptionTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = subscriptionTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, subscriptionType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            subscriptionTypeDescription = subscriptionTypeDescriptionFactory.getEntityFromQuery(
-                    entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return subscriptionTypeDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return subscriptionTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public SubscriptionTypeDescription getSubscriptionTypeDescription(SubscriptionType subscriptionType, Language language) {
@@ -1001,41 +890,24 @@ public class SubscriptionControl
     
     private List<SubscriptionTypeDescription> getSubscriptionTypeDescriptionsBySubscriptionType(SubscriptionType subscriptionType,
             EntityPermission entityPermission) {
-        List<SubscriptionTypeDescription> subscriptionTypeDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM subscriptiontypedescriptions, languages
-                        WHERE subscrtypd_subscrtyp_subscriptiontypeid = ? AND subscrtypd_thrutime = ?
-                        AND subscrtypd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM subscriptiontypedescriptions
-                        WHERE subscrtypd_subscrtyp_subscriptiontypeid = ? AND subscrtypd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(SubscriptionTypeDescriptions.fields())
+                    .from(SubscriptionTypeDescriptions)
+                    .join(Languages).onKey(SUBSCRIPTION_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(SubscriptionTypeDescriptions.SUBSCRIPTION_TYPE.eq(subscriptionType.getPrimaryKey()),
+                            SubscriptionTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    SubscriptionTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(SubscriptionTypeDescriptions.fields())
+                    .from(SubscriptionTypeDescriptions)
+                    .where(SubscriptionTypeDescriptions.SUBSCRIPTION_TYPE.eq(subscriptionType.getPrimaryKey()),
+                            SubscriptionTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = subscriptionTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, subscriptionType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            subscriptionTypeDescriptions = subscriptionTypeDescriptionFactory.getEntitiesFromQuery(
-                    entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return subscriptionTypeDescriptions;
+        return subscriptionTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<SubscriptionTypeDescription> getSubscriptionTypeDescriptionsBySubscriptionType(SubscriptionType subscriptionType) {
@@ -1127,6 +999,9 @@ public class SubscriptionControl
     @Inject
     protected SubscriptionTypeChainFactory subscriptionTypeChainFactory;
 
+    @Inject
+    private SubscriptionTypeChainTransferCache subscriptionTypeChainTransferCache;
+
     public SubscriptionTypeChain createSubscriptionTypeChain(SubscriptionType subscriptionType, Chain chain, Long remainingTime,
             BasePK createdBy) {
         var subscriptionTypeChain = subscriptionTypeChainFactory.create(subscriptionType,
@@ -1139,57 +1014,40 @@ public class SubscriptionControl
     }
 
     public long countSubscriptionTypeChainsBySubscriptionType(final SubscriptionType subscriptionType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM subscriptiontypechains
-                        WHERE subscrtypchn_subscrtyp_subscriptiontypeid = ? AND subscrtypchn_thrutime = ?
-                        """, subscriptionType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(SubscriptionTypeChains)
+                .where(SubscriptionTypeChains.SUBSCRIPTION_TYPE.eq(subscriptionType.getPrimaryKey()),
+                        SubscriptionTypeChains.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countSubscriptionTypeChainsByChain(final Chain chain) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM subscriptiontypechains
-                        WHERE subscrtypchn_chn_chainid = ? AND subscrtypchn_thrutime = ?
-                        """, chain, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(SubscriptionTypeChains)
+                .where(SubscriptionTypeChains.CHAIN.eq(chain.getPrimaryKey()),
+                        SubscriptionTypeChains.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private SubscriptionTypeChain getSubscriptionTypeChain(SubscriptionType subscriptionType, Chain chain,
             EntityPermission entityPermission) {
-        SubscriptionTypeChain subscriptionTypeChain;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM subscriptiontypechains
-                        WHERE subscrtypchn_subscrtyp_subscriptiontypeid = ? AND subscrtypchn_chn_chainid = ?
-                        AND subscrtypchn_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM subscriptiontypechains
-                        WHERE subscrtypchn_subscrtyp_subscriptiontypeid = ? AND subscrtypchn_chn_chainid = ?
-                        AND subscrtypchn_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(SubscriptionTypeChains.fields())
+                .from(SubscriptionTypeChains)
+                .where(SubscriptionTypeChains.SUBSCRIPTION_TYPE.eq(subscriptionType.getPrimaryKey()),
+                        SubscriptionTypeChains.CHAIN.eq(chain.getPrimaryKey()),
+                        SubscriptionTypeChains.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = subscriptionTypeChainFactory.prepareStatement(query);
-            
-            ps.setLong(1, subscriptionType.getPrimaryKey().getEntityId());
-            ps.setLong(2, chain.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            subscriptionTypeChain = subscriptionTypeChainFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return subscriptionTypeChain;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return subscriptionTypeChainFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public SubscriptionTypeChain getSubscriptionTypeChain(SubscriptionType subscriptionType, Chain chain) {
@@ -1210,40 +1068,25 @@ public class SubscriptionControl
     
     private List<SubscriptionTypeChain> getSubscriptionTypeChainsBySubscriptionType(SubscriptionType subscriptionType,
             EntityPermission entityPermission) {
-        List<SubscriptionTypeChain> subscriptionTypeChains;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM subscriptiontypechains, chains, chaindetails
-                        WHERE subscrtypchn_subscrtyp_subscriptiontypeid = ? AND subscrtypchn_thrutime = ?
-                        AND subscrtypchn_chn_chainid = chn_chainid AND chn_lastdetailid = chndt_chaindetailid
-                        ORDER BY chndt_sortorder, chndt_chainname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM subscriptiontypechains
-                        WHERE subscrtypchn_subscrtyp_subscriptiontypeid = ? AND subscrtypchn_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(SubscriptionTypeChains.fields())
+                    .from(SubscriptionTypeChains)
+                    .join(Chains).onKey(SUBSCRIPTION_TYPE_CHAINS_CHAIN_FK)
+                    .join(ChainDetails).onKey(CHAINS_LAST_DETAIL_FK)
+                    .where(SubscriptionTypeChains.SUBSCRIPTION_TYPE.eq(subscriptionType.getPrimaryKey()),
+                            SubscriptionTypeChains.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ChainDetails.SORT_ORDER, ChainDetails.CHAIN_NAME),
+                    SubscriptionTypeChainFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(SubscriptionTypeChains.fields())
+                    .from(SubscriptionTypeChains)
+                    .where(SubscriptionTypeChains.SUBSCRIPTION_TYPE.eq(subscriptionType.getPrimaryKey()),
+                            SubscriptionTypeChains.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = subscriptionTypeChainFactory.prepareStatement(query);
-            
-            ps.setLong(1, subscriptionType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            subscriptionTypeChains = subscriptionTypeChainFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return subscriptionTypeChains;
+        return subscriptionTypeChainFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<SubscriptionTypeChain> getSubscriptionTypeChainsBySubscriptionType(SubscriptionType subscriptionType) {
@@ -1256,40 +1099,29 @@ public class SubscriptionControl
     
     private List<SubscriptionTypeChain> getSubscriptionTypeChainsBySubscriptionTypeAndChainType(SubscriptionType subscriptionType, ChainType chainType,
             EntityPermission entityPermission) {
-        List<SubscriptionTypeChain> subscriptionTypeChains;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM subscriptiontypechains, chains, chaindetails
-                        WHERE subscrtypchn_subscrtyp_subscriptiontypeid = ? AND subscrtypchn_thrutime = ?
-                        AND subscrtypchn_chn_chainid = chn_chainid AND chn_lastdetailid = chndt_chaindetailid AND chndt_chntyp_chaintypeid = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM subscriptiontypechains
-                        WHERE subscrtypchn_subscrtyp_subscriptiontypeid = ? AND subscrtypchn_thrutime = ?
-                        AND subscrtypchn_chn_chainid = chn_chainid AND chn_lastdetailid = chndt_chaindetailid AND chndt_chntyp_chaintypeid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(SubscriptionTypeChains.fields())
+                    .from(SubscriptionTypeChains)
+                    .join(Chains).onKey(SUBSCRIPTION_TYPE_CHAINS_CHAIN_FK)
+                    .join(ChainDetails).onKey(CHAINS_LAST_DETAIL_FK)
+                    .where(SubscriptionTypeChains.SUBSCRIPTION_TYPE.eq(subscriptionType.getPrimaryKey()),
+                            SubscriptionTypeChains.THRU_TIME.eq(Session.MAX_TIME),
+                            ChainDetails.CHAIN_TYPE.eq(chainType.getPrimaryKey()))
+                    .orderBy(ChainDetails.SORT_ORDER, ChainDetails.CHAIN_NAME),
+                    SubscriptionTypeChainFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(SubscriptionTypeChains.fields())
+                    .from(SubscriptionTypeChains)
+                    .join(Chains).onKey(SUBSCRIPTION_TYPE_CHAINS_CHAIN_FK)
+                    .join(ChainDetails).onKey(CHAINS_LAST_DETAIL_FK)
+                    .where(SubscriptionTypeChains.SUBSCRIPTION_TYPE.eq(subscriptionType.getPrimaryKey()),
+                            SubscriptionTypeChains.THRU_TIME.eq(Session.MAX_TIME),
+                            ChainDetails.CHAIN_TYPE.eq(chainType.getPrimaryKey()))
+                    .forUpdate();
+        };
 
-            var ps = subscriptionTypeChainFactory.prepareStatement(query);
-            
-            ps.setLong(1, subscriptionType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            ps.setLong(3, chainType.getPrimaryKey().getEntityId());
-            
-            subscriptionTypeChains = subscriptionTypeChainFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return subscriptionTypeChains;
+        return subscriptionTypeChainFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<SubscriptionTypeChain> getSubscriptionTypeChainsBySubscriptionTypeAndChainType(SubscriptionType subscriptionType, ChainType chainType) {
@@ -1357,17 +1189,20 @@ public class SubscriptionControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected SubscriptionDetailFactory subscriptionDetailFactory;
+
+    @Inject
     protected SubscriptionFactory subscriptionFactory;
 
     @Inject
-    protected SubscriptionDetailFactory subscriptionDetailFactory;
+    private SubscriptionTransferCache subscriptionTransferCache;
 
     public Subscription createSubscription(SubscriptionType subscriptionType, Party party, Long startTime, Long endTime,
             BasePK createdBy) {
         var sequence = subscriptionType.getLastDetail().getSubscriptionSequence();
         
         if(sequence == null) {
-            var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SUBSCRIPTION.name());
+            var sequenceType = sequenceControl.getSequenceTypeByName(com.echothree.model.control.sequence.common.SequenceTypes.SUBSCRIPTION.name());
             sequence = sequenceControl.getDefaultSequence(sequenceType);
         }
 
@@ -1404,65 +1239,48 @@ public class SubscriptionControl
     }
 
     public long countSubscriptions() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM subscriptions
-                        JOIN subscriptiondetails ON subscrdt_subscriptiondetailid = subscr_activedetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(Subscriptions)
+                .join(SubscriptionDetails).onKey(SUBSCRIPTIONS_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countSubscriptionsBySubscriptionType(final SubscriptionType subscriptionType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM subscriptions
-                        JOIN subscriptiondetails ON subscrdt_subscriptiondetailid = subscr_activedetailid
-                        WHERE subscrdt_subscrtyp_subscriptiontypeid = ?
-                        """, subscriptionType);
+        return session.getDslContext()
+                .selectCount()
+                .from(Subscriptions)
+                .join(SubscriptionDetails).onKey(SUBSCRIPTIONS_ACTIVE_DETAIL_FK)
+                .where(SubscriptionDetails.SUBSCRIPTION_TYPE.eq(subscriptionType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countSubscriptionsByParty(final Party party) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM subscriptions
-                        JOIN subscriptiondetails ON subscrdt_subscriptiondetailid = subscr_activedetailid
-                        WHERE subscrdt_par_partyid = ?
-                        """, party);
+        return session.getDslContext()
+                .selectCount()
+                .from(Subscriptions)
+                .join(SubscriptionDetails).onKey(SUBSCRIPTIONS_ACTIVE_DETAIL_FK)
+                .where(SubscriptionDetails.PARTY.eq(party.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private Subscription getSubscription(SubscriptionType subscriptionType, Party party, EntityPermission entityPermission) {
-        Subscription subscription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM subscriptions, subscriptiondetails
-                        WHERE subscr_activedetailid = subscrdt_subscriptiondetailid AND subscrdt_subscrtyp_subscriptiontypeid = ?
-                        AND subscrdt_par_partyid = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM subscriptions, subscriptiondetails
-                        WHERE subscr_activedetailid = subscrdt_subscriptiondetailid AND subscrdt_subscrtyp_subscriptiontypeid = ?
-                        AND subscrdt_par_partyid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Subscriptions.fields())
+                .from(Subscriptions)
+                .join(SubscriptionDetails).onKey(SUBSCRIPTIONS_ACTIVE_DETAIL_FK)
+                .where(SubscriptionDetails.SUBSCRIPTION_TYPE.eq(subscriptionType.getPrimaryKey()),
+                        SubscriptionDetails.PARTY.eq(party.getPrimaryKey()));
 
-            var ps = subscriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, subscriptionType.getPrimaryKey().getEntityId());
-            ps.setLong(2, party.getPrimaryKey().getEntityId());
-            
-            subscription = subscriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return subscription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return subscriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Subscription getSubscription(SubscriptionType subscriptionType, Party party) {
@@ -1474,36 +1292,18 @@ public class SubscriptionControl
     }
     
     public Subscription getSubscriptionByName(String subscriptionName, EntityPermission entityPermission) {
-        Subscription subscription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM subscriptions, subscriptiondetails
-                        WHERE subscr_activedetailid = subscrdt_subscriptiondetailid AND subscrdt_subscriptionname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM subscriptions, subscriptiondetails
-                        WHERE subscr_activedetailid = subscrdt_subscriptiondetailid AND subscrdt_subscriptionname = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Subscriptions.fields())
+                .from(Subscriptions)
+                .join(SubscriptionDetails).onKey(SUBSCRIPTIONS_ACTIVE_DETAIL_FK)
+                .where(SubscriptionDetails.SUBSCRIPTION_NAME.eq(subscriptionName));
 
-            var ps = subscriptionFactory.prepareStatement(query);
-            
-            ps.setString(1, subscriptionName);
-            
-            subscription = subscriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return subscription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return subscriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public Subscription getSubscriptionByName(String subscriptionName) {
@@ -1520,38 +1320,20 @@ public class SubscriptionControl
     
     private List<Subscription> getSubscriptionsBySubscriptionType(SubscriptionType subscriptionType,
             EntityPermission entityPermission) {
-        List<Subscription> subscriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM subscriptions, subscriptiondetails
-                        WHERE subscr_activedetailid = subscrdt_subscriptiondetailid AND subscrdt_subscrtyp_subscriptiontypeid = ?
-                        ORDER BY subscrdt_subscriptionname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM subscriptions, subscriptiondetails
-                        WHERE subscr_activedetailid = subscrdt_subscriptiondetailid AND subscrdt_subscrtyp_subscriptiontypeid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(Subscriptions.fields())
+                .from(Subscriptions)
+                .join(SubscriptionDetails).onKey(SUBSCRIPTIONS_ACTIVE_DETAIL_FK)
+                .where(SubscriptionDetails.SUBSCRIPTION_TYPE.eq(subscriptionType.getPrimaryKey()));
 
-            var ps = subscriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, subscriptionType.getPrimaryKey().getEntityId());
-            
-            subscriptions = subscriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return subscriptions;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SubscriptionDetails.SUBSCRIPTION_NAME),
+                    SubscriptionFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return subscriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<Subscription> getSubscriptionsBySubscriptionType(SubscriptionType subscriptionType) {
@@ -1563,40 +1345,25 @@ public class SubscriptionControl
     }
     
     private List<Subscription> getSubscriptionsByParty(Party party, EntityPermission entityPermission) {
-        List<Subscription> subscriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM subscriptions, subscriptiondetails, subscriptiontypes, subscriptiontypedetails
-                        WHERE subscr_activedetailid = subscrdt_subscriptiondetailid AND subscrdt_par_partyid = ?
-                        AND subscrdt_subscrtyp_subscriptiontypeid = subscrtyp_subscriptiontypeid
-                        AND subscrtyp_lastdetailid = subscrtypdt_subscriptiontypedetailid
-                        ORDER BY subscrtypdt_sortorder, subscrtypdt_subscriptiontypename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM subscriptions, subscriptiondetails
-                        WHERE subscr_activedetailid = subscrdt_subscriptiondetailid AND subscrdt_par_partyid = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(Subscriptions.fields())
+                    .from(Subscriptions)
+                    .join(SubscriptionDetails).onKey(SUBSCRIPTIONS_ACTIVE_DETAIL_FK)
+                    .join(SubscriptionTypes).onKey(SUBSCRIPTION_DETAILS_SUBSCRIPTION_TYPE_FK)
+                    .join(SubscriptionTypeDetails).onKey(SUBSCRIPTION_TYPES_LAST_DETAIL_FK)
+                    .where(SubscriptionDetails.PARTY.eq(party.getPrimaryKey()))
+                    .orderBy(SubscriptionTypeDetails.SORT_ORDER, SubscriptionTypeDetails.SUBSCRIPTION_TYPE_NAME),
+                    SubscriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(Subscriptions.fields())
+                    .from(Subscriptions)
+                    .join(SubscriptionDetails).onKey(SUBSCRIPTIONS_ACTIVE_DETAIL_FK)
+                    .where(SubscriptionDetails.PARTY.eq(party.getPrimaryKey()))
+                    .forUpdate();
+        };
 
-            var ps = subscriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, party.getPrimaryKey().getEntityId());
-            
-            subscriptions = subscriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return subscriptions;
+        return subscriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<Subscription> getSubscriptionsByParty(Party party) {
