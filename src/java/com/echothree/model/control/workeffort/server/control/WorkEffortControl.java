@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.workeffort.server.control;
 
+
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.workeffort.common.choice.WorkEffortScopeChoicesBean;
 import com.echothree.model.control.workeffort.common.transfer.WorkEffortScopeDescriptionTransfer;
@@ -55,13 +56,25 @@ import com.echothree.model.data.workeffort.server.value.WorkEffortScopeDescripti
 import com.echothree.model.data.workeffort.server.value.WorkEffortScopeDetailValue;
 import com.echothree.model.data.workeffort.server.value.WorkEffortTypeDescriptionValue;
 import com.echothree.model.data.workeffort.server.value.WorkEffortTypeDetailValue;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.workeffort.WorkEffortForeignKeys.WORK_EFFORTS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.workeffort.WorkEffortForeignKeys.WORK_EFFORT_SCOPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.workeffort.WorkEffortForeignKeys.WORK_EFFORT_SCOPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.workeffort.WorkEffortForeignKeys.WORK_EFFORT_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.workeffort.WorkEffortForeignKeys.WORK_EFFORT_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.workeffort.WorkEffortDetails.WorkEffortDetails;
+import static com.echothree.model.jooq.server.tables.workeffort.WorkEffortScopeDescriptions.WorkEffortScopeDescriptions;
+import static com.echothree.model.jooq.server.tables.workeffort.WorkEffortScopeDetails.WorkEffortScopeDetails;
+import static com.echothree.model.jooq.server.tables.workeffort.WorkEffortScopes.WorkEffortScopes;
+import static com.echothree.model.jooq.server.tables.workeffort.WorkEffortTypeDescriptions.WorkEffortTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.workeffort.WorkEffortTypeDetails.WorkEffortTypeDetails;
+import static com.echothree.model.jooq.server.tables.workeffort.WorkEffortTypes.WorkEffortTypes;
+import static com.echothree.model.jooq.server.tables.workeffort.WorkEfforts.WorkEfforts;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -81,33 +94,17 @@ public class WorkEffortControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Work Effort Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    @Inject
-    WorkEffortTransferCache workEffortTransferCache;
-
-    @Inject
-    WorkEffortTypeTransferCache workEffortTypeTransferCache;
-
-    @Inject
-    WorkEffortTypeDescriptionTransferCache workEffortTypeDescriptionTransferCache;
-
-    @Inject
-    WorkEffortScopeTransferCache workEffortScopeTransferCache;
-
-    @Inject
-    WorkEffortScopeDescriptionTransferCache workEffortScopeDescriptionTransferCache;
-
-    // --------------------------------------------------------------------------------
     //   Work Effort Types
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected WorkEffortTypeDetailFactory workEffortTypeDetailFactory;
 
     @Inject
     protected WorkEffortTypeFactory workEffortTypeFactory;
 
     @Inject
-    protected WorkEffortTypeDetailFactory workEffortTypeDetailFactory;
+    WorkEffortTypeTransferCache workEffortTypeTransferCache;
 
     public WorkEffortType createWorkEffortType(String workEffortTypeName, EntityType entityType, Sequence workEffortSequence, Long scheduledTime,
             Long estimatedTimeAllowed, Long maximumTimeAllowed, Integer sortOrder, BasePK createdBy) {
@@ -142,54 +139,48 @@ public class WorkEffortControl
     }
 
     public long countWorkEffortTypes() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM workefforttypes
-                        JOIN workefforttypedetails ON wetdt_workefforttypedetailid = wet_activedetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(WorkEffortTypes)
+                .join(WorkEffortTypeDetails).onKey(WORK_EFFORT_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countWorkEffortTypesByEntityType(final EntityType entityType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM workefforttypes
-                        JOIN workefforttypedetails ON wetdt_workefforttypedetailid = wet_activedetailid
-                        WHERE wetdt_ent_entitytypeid = ?
-                        """, entityType);
+        return session.getDslContext()
+                .selectCount()
+                .from(WorkEffortTypes)
+                .join(WorkEffortTypeDetails).onKey(WORK_EFFORT_TYPES_ACTIVE_DETAIL_FK)
+                .where(WorkEffortTypeDetails.ENTITY_TYPE.eq(entityType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countWorkEffortTypesBySequence(final Sequence workEffortSequence) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM workefforttypes
-                        JOIN workefforttypedetails ON wetdt_workefforttypedetailid = wet_activedetailid
-                        WHERE wetdt_workeffortsequenceid = ?
-                        """, workEffortSequence);
+        return session.getDslContext()
+                .selectCount()
+                .from(WorkEffortTypes)
+                .join(WorkEffortTypeDetails).onKey(WORK_EFFORT_TYPES_ACTIVE_DETAIL_FK)
+                .where(WorkEffortTypeDetails.WORK_EFFORT_SEQUENCE.eq(workEffortSequence.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<WorkEffortType> getWorkEffortTypes(EntityPermission entityPermission) {
-        String query = null;
+        var baseQuery = session.getDslContext()
+                .select(WorkEffortTypes.fields())
+                .from(WorkEffortTypes)
+                .join(WorkEffortTypeDetails).onKey(WORK_EFFORT_TYPES_ACTIVE_DETAIL_FK);
         
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM workefforttypes, workefforttypedetails
-                    WHERE wet_activedetailid = wetdt_workefforttypedetailid
-                    ORDER BY wetdt_sortorder, wetdt_workefforttypename
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM workefforttypes, workeffortscopedetails
-                    WHERE wet_activedetailid = wetdt_workefforttypedetailid
-                    FOR UPDATE
-                    """;
-        }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(WorkEffortTypeDetails.SORT_ORDER, WorkEffortTypeDetails.WORK_EFFORT_TYPE_NAME),
+                    WorkEffortTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        var ps = workEffortTypeFactory.prepareStatement(query);
-        
-        return workEffortTypeFactory.getEntitiesFromQuery(entityPermission, ps);
+        return workEffortTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<WorkEffortType> getWorkEffortTypes() {
@@ -201,38 +192,18 @@ public class WorkEffortControl
     }
     
     private WorkEffortType getWorkEffortTypeByName(String workEffortTypeName, EntityPermission entityPermission) {
-        WorkEffortType workEffortType;
+        var baseQuery = session.getDslContext()
+                .select(WorkEffortTypes.fields())
+                .from(WorkEffortTypes)
+                .join(WorkEffortTypeDetails).onKey(WORK_EFFORT_TYPES_ACTIVE_DETAIL_FK)
+                .where(WorkEffortTypeDetails.WORK_EFFORT_TYPE_NAME.eq(workEffortTypeName));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workefforttypes, workefforttypedetails
-                        WHERE wet_activedetailid = wetdt_workefforttypedetailid
-                        AND wetdt_workefforttypename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workefforttypes, workefforttypedetails
-                        WHERE wet_activedetailid = wetdt_workefforttypedetailid
-                        AND wetdt_workefforttypename = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = workEffortTypeFactory.prepareStatement(query);
-            
-            ps.setString(1, workEffortTypeName);
-            
-            workEffortType = workEffortTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return workEffortType;
+        return workEffortTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public WorkEffortType getWorkEffortTypeByName(String workEffortTypeName) {
@@ -318,6 +289,9 @@ public class WorkEffortControl
     @Inject
     protected WorkEffortTypeDescriptionFactory workEffortTypeDescriptionFactory;
 
+    @Inject
+    WorkEffortTypeDescriptionTransferCache workEffortTypeDescriptionTransferCache;
+
     public WorkEffortTypeDescription createWorkEffortTypeDescription(WorkEffortType workEffortType, Language language,
             String description, BasePK createdBy) {
         var workEffortTypeDescription = workEffortTypeDescriptionFactory.create(workEffortType,
@@ -331,38 +305,19 @@ public class WorkEffortControl
     
     private WorkEffortTypeDescription getWorkEffortTypeDescription(WorkEffortType workEffortType, Language language,
             EntityPermission entityPermission) {
-        WorkEffortTypeDescription workEffortTypeDescription;
+        var baseQuery = session.getDslContext()
+                .select(WorkEffortTypeDescriptions.fields())
+                .from(WorkEffortTypeDescriptions)
+                .where(WorkEffortTypeDescriptions.WORK_EFFORT_TYPE.eq(workEffortType.getPrimaryKey()),
+                        WorkEffortTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        WorkEffortTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workefforttypedescriptions
-                        WHERE wetd_wet_workefforttypeid = ? AND wetd_lang_languageid = ? AND wetd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workefforttypedescriptions
-                        WHERE wetd_wet_workefforttypeid = ? AND wetd_lang_languageid = ? AND wetd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = workEffortTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, workEffortType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            workEffortTypeDescription = workEffortTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return workEffortTypeDescription;
+        return workEffortTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public WorkEffortTypeDescription getWorkEffortTypeDescription(WorkEffortType workEffortType, Language language) {
@@ -382,39 +337,24 @@ public class WorkEffortControl
     }
     
     private List<WorkEffortTypeDescription> getWorkEffortTypeDescriptionsByWorkEffortType(WorkEffortType workEffortType, EntityPermission entityPermission) {
-        List<WorkEffortTypeDescription> workEffortTypeDescriptions;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(WorkEffortTypeDescriptions.fields())
+                    .from(WorkEffortTypeDescriptions)
+                    .join(Languages).onKey(WORK_EFFORT_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(WorkEffortTypeDescriptions.WORK_EFFORT_TYPE.eq(workEffortType.getPrimaryKey()),
+                            WorkEffortTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    WorkEffortTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(WorkEffortTypeDescriptions.fields())
+                    .from(WorkEffortTypeDescriptions)
+                    .where(WorkEffortTypeDescriptions.WORK_EFFORT_TYPE.eq(workEffortType.getPrimaryKey()),
+                            WorkEffortTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workefforttypedescriptions, languages
-                        WHERE wetd_wet_workefforttypeid = ? AND wetd_thrutime = ? AND wetd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workefforttypedescriptions
-                        WHERE wetd_wet_workefforttypeid = ? AND wetd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = workEffortTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, workEffortType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            workEffortTypeDescriptions = workEffortTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return workEffortTypeDescriptions;
+        return workEffortTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<WorkEffortTypeDescription> getWorkEffortTypeDescriptionsByWorkEffortType(WorkEffortType workEffortType) {
@@ -497,10 +437,13 @@ public class WorkEffortControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected WorkEffortScopeDetailFactory workEffortScopeDetailFactory;
+
+    @Inject
     protected WorkEffortScopeFactory workEffortScopeFactory;
 
     @Inject
-    protected WorkEffortScopeDetailFactory workEffortScopeDetailFactory;
+    WorkEffortScopeTransferCache workEffortScopeTransferCache;
 
     public WorkEffortScope createWorkEffortScope(WorkEffortType workEffortType, String workEffortScopeName,
             Sequence workEffortSequence, Long scheduledTime, Long estimatedTimeAllowed, Long maximumTimeAllowed, Boolean isDefault,
@@ -550,56 +493,40 @@ public class WorkEffortControl
     }
 
     public long countWorkEffortScopesByWorkEffortType(final WorkEffortType workEffortType) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM workeffortscopes
-                        JOIN workeffortscopedetails ON wesdt_workeffortscopedetailid = wes_activedetailid
-                        WHERE wesdt_wet_workefforttypeid = ?
-                        """, workEffortType);
+        return session.getDslContext()
+                .selectCount()
+                .from(WorkEffortScopes)
+                .join(WorkEffortScopeDetails).onKey(WORK_EFFORT_SCOPES_ACTIVE_DETAIL_FK)
+                .where(WorkEffortScopeDetails.WORK_EFFORT_TYPE.eq(workEffortType.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countWorkEffortScopesByWorkEffortSequence(final Sequence workEffortSequence) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM workeffortscopes
-                        JOIN workeffortscopedetails ON wesdt_workeffortscopedetailid = wes_activedetailid
-                        WHERE wesdt_workeffortsequenceid = ?
-                        """, workEffortSequence);
+        return session.getDslContext()
+                .selectCount()
+                .from(WorkEffortScopes)
+                .join(WorkEffortScopeDetails).onKey(WORK_EFFORT_SCOPES_ACTIVE_DETAIL_FK)
+                .where(WorkEffortScopeDetails.WORK_EFFORT_SEQUENCE.eq(workEffortSequence.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<WorkEffortScope> getWorkEffortScopesByWorkEffortType(WorkEffortType workEffortType, EntityPermission entityPermission) {
-        List<WorkEffortScope> workEffortScopes;
+        var baseQuery = session.getDslContext()
+                .select(WorkEffortScopes.fields())
+                .from(WorkEffortScopes)
+                .join(WorkEffortScopeDetails).onKey(WORK_EFFORT_SCOPES_ACTIVE_DETAIL_FK)
+                .where(WorkEffortScopeDetails.WORK_EFFORT_TYPE.eq(workEffortType.getPrimaryKey()));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(WorkEffortScopeDetails.SORT_ORDER, WorkEffortScopeDetails.WORK_EFFORT_SCOPE_NAME),
+                    WorkEffortScopeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workeffortscopes, workeffortscopedetails
-                        WHERE wes_activedetailid = wesdt_workeffortscopedetailid AND wesdt_wet_workefforttypeid = ?
-                        ORDER BY wesdt_sortorder, wesdt_workeffortscopename
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workeffortscopes, workeffortscopedetails
-                        WHERE wes_activedetailid = wesdt_workeffortscopedetailid AND wesdt_wet_workefforttypeid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = workEffortScopeFactory.prepareStatement(query);
-            
-            ps.setLong(1, workEffortType.getPrimaryKey().getEntityId());
-            
-            workEffortScopes = workEffortScopeFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return workEffortScopes;
+        return workEffortScopeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<WorkEffortScope> getWorkEffortScopesByWorkEffortType(WorkEffortType workEffortType) {
@@ -611,38 +538,19 @@ public class WorkEffortControl
     }
     
     private WorkEffortScope getDefaultWorkEffortScope(WorkEffortType workEffortType, EntityPermission entityPermission) {
-        WorkEffortScope workEffortScope;
+        var baseQuery = session.getDslContext()
+                .select(WorkEffortScopes.fields())
+                .from(WorkEffortScopes)
+                .join(WorkEffortScopeDetails).onKey(WORK_EFFORT_SCOPES_ACTIVE_DETAIL_FK)
+                .where(WorkEffortScopeDetails.WORK_EFFORT_TYPE.eq(workEffortType.getPrimaryKey()),
+                        WorkEffortScopeDetails.IS_DEFAULT.eq(true));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workeffortscopes, workeffortscopedetails
-                        WHERE wes_activedetailid = wesdt_workeffortscopedetailid
-                        AND wesdt_wet_workefforttypeid = ? AND wesdt_isdefault = 1
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workeffortscopes, workeffortscopedetails
-                        WHERE wes_activedetailid = wesdt_workeffortscopedetailid
-                        AND wesdt_wet_workefforttypeid = ? AND wesdt_isdefault = 1
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = workEffortScopeFactory.prepareStatement(query);
-            
-            ps.setLong(1, workEffortType.getPrimaryKey().getEntityId());
-            
-            workEffortScope = workEffortScopeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return workEffortScope;
+        return workEffortScopeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public WorkEffortScope getDefaultWorkEffortScope(WorkEffortType workEffortType) {
@@ -658,39 +566,19 @@ public class WorkEffortControl
     }
     
     private WorkEffortScope getWorkEffortScopeByName(WorkEffortType workEffortType, String workEffortScopeName, EntityPermission entityPermission) {
-        WorkEffortScope workEffortScope;
+        var baseQuery = session.getDslContext()
+                .select(WorkEffortScopes.fields())
+                .from(WorkEffortScopes)
+                .join(WorkEffortScopeDetails).onKey(WORK_EFFORT_SCOPES_ACTIVE_DETAIL_FK)
+                .where(WorkEffortScopeDetails.WORK_EFFORT_TYPE.eq(workEffortType.getPrimaryKey()),
+                        WorkEffortScopeDetails.WORK_EFFORT_SCOPE_NAME.eq(workEffortScopeName));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workeffortscopes, workeffortscopedetails
-                        WHERE wes_activedetailid = wesdt_workeffortscopedetailid
-                        AND wesdt_wet_workefforttypeid = ? AND wesdt_workeffortscopename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workeffortscopes, workeffortscopedetails
-                        WHERE wes_activedetailid = wesdt_workeffortscopedetailid
-                        AND wesdt_wet_workefforttypeid = ? AND wesdt_workeffortscopename = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = workEffortScopeFactory.prepareStatement(query);
-            
-            ps.setLong(1, workEffortType.getPrimaryKey().getEntityId());
-            ps.setString(2, workEffortScopeName);
-            
-            workEffortScope = workEffortScopeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return workEffortScope;
+        return workEffortScopeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public WorkEffortScope getWorkEffortScopeByName(WorkEffortType workEffortType, String workEffortScopeName) {
@@ -875,6 +763,9 @@ public class WorkEffortControl
     @Inject
     protected WorkEffortScopeDescriptionFactory workEffortScopeDescriptionFactory;
 
+    @Inject
+    WorkEffortScopeDescriptionTransferCache workEffortScopeDescriptionTransferCache;
+
     public WorkEffortScopeDescription createWorkEffortScopeDescription(WorkEffortScope workEffortScope, Language language,
             String description, BasePK createdBy) {
         var workEffortScopeDescription = workEffortScopeDescriptionFactory.create(workEffortScope,
@@ -888,38 +779,19 @@ public class WorkEffortControl
     
     private WorkEffortScopeDescription getWorkEffortScopeDescription(WorkEffortScope workEffortScope, Language language,
             EntityPermission entityPermission) {
-        WorkEffortScopeDescription workEffortScopeDescription;
+        var baseQuery = session.getDslContext()
+                .select(WorkEffortScopeDescriptions.fields())
+                .from(WorkEffortScopeDescriptions)
+                .where(WorkEffortScopeDescriptions.WORK_EFFORT_SCOPE.eq(workEffortScope.getPrimaryKey()),
+                        WorkEffortScopeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        WorkEffortScopeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
         
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
             
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workeffortscopedescriptions
-                        WHERE wesd_wes_workeffortscopeid = ? AND wesd_lang_languageid = ? AND wesd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workeffortscopedescriptions
-                        WHERE wesd_wes_workeffortscopeid = ? AND wesd_lang_languageid = ? AND wesd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = workEffortScopeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, workEffortScope.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            workEffortScopeDescription = workEffortScopeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return workEffortScopeDescription;
+        return workEffortScopeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public WorkEffortScopeDescription getWorkEffortScopeDescription(WorkEffortScope workEffortScope, Language language) {
@@ -939,39 +811,24 @@ public class WorkEffortControl
     }
     
     private List<WorkEffortScopeDescription> getWorkEffortScopeDescriptionsByWorkEffortScope(WorkEffortScope workEffortScope, EntityPermission entityPermission) {
-        List<WorkEffortScopeDescription> workEffortScopeDescriptions;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(WorkEffortScopeDescriptions.fields())
+                    .from(WorkEffortScopeDescriptions)
+                    .join(Languages).onKey(WORK_EFFORT_SCOPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(WorkEffortScopeDescriptions.WORK_EFFORT_SCOPE.eq(workEffortScope.getPrimaryKey()),
+                            WorkEffortScopeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    WorkEffortScopeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(WorkEffortScopeDescriptions.fields())
+                    .from(WorkEffortScopeDescriptions)
+                    .where(WorkEffortScopeDescriptions.WORK_EFFORT_SCOPE.eq(workEffortScope.getPrimaryKey()),
+                            WorkEffortScopeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
         
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workeffortscopedescriptions, languages
-                        WHERE wesd_wes_workeffortscopeid = ? AND wesd_thrutime = ? AND wesd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workeffortscopedescriptions
-                        WHERE wesd_wes_workeffortscopeid = ? AND wesd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = workEffortScopeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, workEffortScope.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            workEffortScopeDescriptions = workEffortScopeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return workEffortScopeDescriptions;
+        return workEffortScopeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<WorkEffortScopeDescription> getWorkEffortScopeDescriptionsByWorkEffortScope(WorkEffortScope workEffortScope) {
@@ -1054,10 +911,13 @@ public class WorkEffortControl
     // --------------------------------------------------------------------------------
 
     @Inject
+    protected WorkEffortDetailFactory workEffortDetailFactory;
+
+    @Inject
     protected WorkEffortFactory workEffortFactory;
 
     @Inject
-    protected WorkEffortDetailFactory workEffortDetailFactory;
+    WorkEffortTransferCache workEffortTransferCache;
 
     public WorkEffort createWorkEffort(String workEffortName, EntityInstance owningEntityInstanceId, WorkEffortScope workEffortScope, Long scheduledTime,
             Long scheduledStartTime, Long scheduledEndTime, Long estimatedTimeAllowed, Long maximumTimeAllowed, BasePK createdBy) {
@@ -1093,58 +953,40 @@ public class WorkEffortControl
     }
 
     public long countWorkEffortsByOwningEntityInstanceId(final EntityInstance owningEntityInstanceId) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM workefforts
-                        JOIN workeffortdetails ON weffdt_workeffortdetailid = weff_activedetailid
-                        WHERE weffdt_owningentityinstanceid = ?
-                        """, owningEntityInstanceId);
+        return session.getDslContext()
+                .selectCount()
+                .from(WorkEfforts)
+                .join(WorkEffortDetails).onKey(WORK_EFFORTS_ACTIVE_DETAIL_FK)
+                .where(WorkEffortDetails.OWNING_ENTITY_INSTANCE.eq(owningEntityInstanceId.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countWorkEffortsByWorkEffortScope(final WorkEffortScope workEffortScope) {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM workefforts
-                        JOIN workeffortdetails ON weffdt_workeffortdetailid = weff_activedetailid
-                        WHERE weffdt_wes_workeffortscopeid = ?
-                        """, workEffortScope);
+        return session.getDslContext()
+                .selectCount()
+                .from(WorkEfforts)
+                .join(WorkEffortDetails).onKey(WORK_EFFORTS_ACTIVE_DETAIL_FK)
+                .where(WorkEffortDetails.WORK_EFFORT_SCOPE.eq(workEffortScope.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<WorkEffort> getWorkEffortsByWorkEffortScope(WorkEffortScope workEffortScope, EntityPermission entityPermission) {
-        List<WorkEffort> workEfforts;
+        var baseQuery = session.getDslContext()
+                .select(WorkEfforts.fields())
+                .from(WorkEfforts)
+                .join(WorkEffortDetails).onKey(WORK_EFFORTS_ACTIVE_DETAIL_FK)
+                .where(WorkEffortDetails.WORK_EFFORT_SCOPE.eq(workEffortScope.getPrimaryKey()));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(WorkEffortDetails.WORK_EFFORT_NAME),
+                    WorkEffortFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workefforts, workeffortdetails
-                        WHERE weff_activedetailid = weffdt_workeffortdetailid
-                        AND weffdt_wes_workeffortscopeid = ?
-                        ORDER BY weffdt_workeffortname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workefforts, workeffortdetails
-                        WHERE weff_activedetailid = weffdt_workeffortdetailid
-                        AND weffdt_wes_workeffortscopeid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = workEffortFactory.prepareStatement(query);
-
-            ps.setLong(1, workEffortScope.getPrimaryKey().getEntityId());
-
-            workEfforts = workEffortFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return workEfforts;
+        return workEffortFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<WorkEffort> getWorkEffortsByWorkEffortScope(WorkEffortScope workEffortScope) {
@@ -1156,40 +998,20 @@ public class WorkEffortControl
     }
 
     private List<WorkEffort> getWorkEffortsByOwningEntityInstance(EntityInstance owningEntityInstanceId, EntityPermission entityPermission) {
-        List<WorkEffort> workEfforts;
+        var baseQuery = session.getDslContext()
+                .select(WorkEfforts.fields())
+                .from(WorkEfforts)
+                .join(WorkEffortDetails).onKey(WORK_EFFORTS_ACTIVE_DETAIL_FK)
+                .where(WorkEffortDetails.OWNING_ENTITY_INSTANCE.eq(owningEntityInstanceId.getPrimaryKey()));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(WorkEffortDetails.WORK_EFFORT_NAME),
+                    WorkEffortFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workefforts, workeffortdetails
-                        WHERE weff_activedetailid = weffdt_workeffortdetailid
-                        AND weffdt_owningentityinstanceid = ?
-                        ORDER BY weffdt_workeffortname
-                        _LIMIT_
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workefforts, workeffortdetails
-                        WHERE weff_activedetailid = weffdt_workeffortdetailid
-                        AND weffdt_owningentityinstanceid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = workEffortFactory.prepareStatement(query);
-
-            ps.setLong(1, owningEntityInstanceId.getPrimaryKey().getEntityId());
-
-            workEfforts = workEffortFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return workEfforts;
+        return workEffortFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<WorkEffort> getWorkEffortsByOwningEntityInstance(EntityInstance owningEntityInstanceId) {
@@ -1201,38 +1023,18 @@ public class WorkEffortControl
     }
 
     private WorkEffort getWorkEffortByName(String workEffortName, EntityPermission entityPermission) {
-        WorkEffort workEffort;
+        var baseQuery = session.getDslContext()
+                .select(WorkEfforts.fields())
+                .from(WorkEfforts)
+                .join(WorkEffortDetails).onKey(WORK_EFFORTS_ACTIVE_DETAIL_FK)
+                .where(WorkEffortDetails.WORK_EFFORT_NAME.eq(workEffortName));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workefforts, workeffortdetails
-                        WHERE weff_activedetailid = weffdt_workeffortdetailid
-                        AND weffdt_workeffortname = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workefforts, workeffortdetails
-                        WHERE weff_activedetailid = weffdt_workeffortdetailid
-                        AND weffdt_workeffortname = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = workEffortFactory.prepareStatement(query);
-
-            ps.setString(1, workEffortName);
-
-            workEffort = workEffortFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return workEffort;
+        return workEffortFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public WorkEffort getWorkEffortByName(String workEffortName) {
@@ -1244,39 +1046,19 @@ public class WorkEffortControl
     }
 
     private WorkEffort getWorkEffort(EntityInstance owningEntityInstanceId, WorkEffortScope workEffortScope, EntityPermission entityPermission) {
-        WorkEffort workEffort;
+        var baseQuery = session.getDslContext()
+                .select(WorkEfforts.fields())
+                .from(WorkEfforts)
+                .join(WorkEffortDetails).onKey(WORK_EFFORTS_ACTIVE_DETAIL_FK)
+                .where(WorkEffortDetails.OWNING_ENTITY_INSTANCE.eq(owningEntityInstanceId.getPrimaryKey()),
+                        WorkEffortDetails.WORK_EFFORT_SCOPE.eq(workEffortScope.getPrimaryKey()));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workefforts, workeffortdetails
-                        WHERE weff_activedetailid = weffdt_workeffortdetailid
-                        AND weffdt_owningentityinstanceid = ? AND weffdt_wes_workeffortscopeid = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM workefforts, workeffortdetails
-                        WHERE weff_activedetailid = weffdt_workeffortdetailid
-                        AND weffdt_owningentityinstanceid = ? AND weffdt_wes_workeffortscopeid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = workEffortFactory.prepareStatement(query);
-
-            ps.setLong(1, owningEntityInstanceId.getPrimaryKey().getEntityId());
-            ps.setLong(2, workEffortScope.getPrimaryKey().getEntityId());
-
-            workEffort = workEffortFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return workEffort;
+        return workEffortFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public WorkEffort getWorkEffort(EntityInstance owningEntityInstanceId, WorkEffortScope workEffortScope) {
