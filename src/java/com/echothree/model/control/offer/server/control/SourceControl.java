@@ -19,6 +19,7 @@ package com.echothree.model.control.offer.server.control;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.offer.common.choice.SourceChoicesBean;
 import com.echothree.model.control.offer.common.transfer.SourceTransfer;
+import com.echothree.model.control.offer.server.transfer.SourceTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.offer.common.pk.SourcePK;
 import com.echothree.model.data.offer.server.entity.OfferUse;
@@ -28,24 +29,26 @@ import com.echothree.model.data.offer.server.factory.SourceFactory;
 import com.echothree.model.data.offer.server.value.SourceDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.offer.OfferForeignKeys.SOURCES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.offer.SourceDetails.SourceDetails;
+import static com.echothree.model.jooq.server.tables.offer.Sources.Sources;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
 public class SourceControl
-        extends BaseOfferControl {
+        extends BaseModelControl {
 
     @Inject
-    protected OfferControl offerControl;
+    private OfferControl offerControl;
 
     @Inject
     protected UseControl useControl;
@@ -60,10 +63,13 @@ public class SourceControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected SourceFactory sourceFactory;
+    protected SourceDetailFactory sourceDetailFactory;
 
     @Inject
-    protected SourceDetailFactory sourceDetailFactory;
+    private SourceFactory sourceFactory;
+
+    @Inject
+    private SourceTransferCache sourceTransferCache;
 
     public Source createSource(String sourceName, OfferUse offerUse, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultSource = getDefaultSource();
@@ -95,21 +101,22 @@ public class SourceControl
     }
 
     public long countSources() {
-        return session.queryForLong("""
-                        SELECT COUNT(*)
-                        FROM sources
-                        JOIN sourcedetails ON srcdt_sourcedetailid = src_activedetailid
-                        """);
+        return session.getDslContext()
+                .selectCount()
+                .from(Sources)
+                .join(SourceDetails).onKey(SOURCES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countSourcesByOfferUse(OfferUse offerUse) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM sources, sourcedetails
-                WHERE src_activedetailid = srcdt_sourcedetailid AND srcdt_ofruse_offeruseid = ?
-                """,
-                offerUse);
+        return session.getDslContext()
+                .selectCount()
+                .from(Sources)
+                .join(SourceDetails).onKey(SOURCES_ACTIVE_DETAIL_FK)
+                .where(SourceDetails.OFFER_USE.eq(offerUse.getPrimaryKey()))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Source */
@@ -121,26 +128,18 @@ public class SourceControl
     }
 
     private Source getDefaultSource(EntityPermission entityPermission) {
-        String query = null;
+        var baseQuery = session.getDslContext()
+                .select(Sources.fields())
+                .from(Sources)
+                .join(SourceDetails).onKey(SOURCES_ACTIVE_DETAIL_FK)
+                .where(SourceDetails.IS_DEFAULT.eq(true));
 
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM sources, sourcedetails
-                    WHERE src_activedetailid = srcdt_sourcedetailid AND srcdt_isdefault = 1
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM sources, sourcedetails
-                    WHERE src_activedetailid = srcdt_sourcedetailid AND srcdt_isdefault = 1
-                    FOR UPDATE
-                    """;
-        }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        var ps = sourceFactory.prepareStatement(query);
-
-        return sourceFactory.getEntityFromQuery(entityPermission, ps);
+        return sourceFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public Source getDefaultSource() {
@@ -156,28 +155,19 @@ public class SourceControl
     }
 
     private List<Source> getSources(EntityPermission entityPermission) {
-        String query = null;
+        var baseQuery = session.getDslContext()
+                .select(Sources.fields())
+                .from(Sources)
+                .join(SourceDetails).onKey(SOURCES_ACTIVE_DETAIL_FK);
 
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM sources, sourcedetails
-                    WHERE src_activedetailid = srcdt_sourcedetailid
-                    ORDER BY srcdt_sortorder, srcdt_sourcename
-                    _LIMIT_
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM sources, sourcedetails
-                    WHERE src_activedetailid = srcdt_sourcedetailid
-                    FOR UPDATE
-                    """;
-        }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SourceDetails.SORT_ORDER, SourceDetails.SOURCE_NAME),
+                    SourceFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-        var ps = sourceFactory.prepareStatement(query);
-
-        return sourceFactory.getEntitiesFromQuery(entityPermission, ps);
+        return sourceFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Source> getSources() {
@@ -189,36 +179,18 @@ public class SourceControl
     }
 
     private Source getSourceByName(String sourceName, EntityPermission entityPermission) {
-        Source source;
+        var baseQuery = session.getDslContext()
+                .select(Sources.fields())
+                .from(Sources)
+                .join(SourceDetails).onKey(SOURCES_ACTIVE_DETAIL_FK)
+                .where(SourceDetails.SOURCE_NAME.eq(sourceName));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM sources, sourcedetails
-                        WHERE src_activedetailid = srcdt_sourcedetailid AND srcdt_sourcename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM sources, sourcedetails
-                        WHERE src_activedetailid = srcdt_sourcedetailid AND srcdt_sourcename = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = sourceFactory.prepareStatement(query);
-
-            ps.setString(1, sourceName);
-
-            source = sourceFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return source;
+        return sourceFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public Source getSourceByName(String sourceName) {
@@ -238,37 +210,20 @@ public class SourceControl
     }
 
     private List<Source> getSourcesByOfferUse(OfferUse offerUse, EntityPermission entityPermission) {
-        List<Source> sources;
+        var baseQuery = session.getDslContext()
+                .select(Sources.fields())
+                .from(Sources)
+                .join(SourceDetails).onKey(SOURCES_ACTIVE_DETAIL_FK)
+                .where(SourceDetails.OFFER_USE.eq(offerUse.getPrimaryKey()));
 
-        try {
-            String query = null;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(SourceDetails.SORT_ORDER, SourceDetails.SOURCE_NAME),
+                    SourceFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
 
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM sources, sourcedetails
-                        WHERE src_activedetailid = srcdt_sourcedetailid AND srcdt_ofruse_offeruseid = ?
-                        ORDER BY srcdt_sortorder, srcdt_sourcename
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM sources, sourcedetails
-                        WHERE src_activedetailid = srcdt_sourcedetailid AND srcdt_ofruse_offeruseid = ?
-                        FOR UPDATE
-                        """;
-            }
-
-            var ps = sourceFactory.prepareStatement(query);
-
-            ps.setLong(1, offerUse.getPrimaryKey().getEntityId());
-
-            sources = sourceFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return sources;
+        return sourceFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<Source> getSourcesByOfferUse(OfferUse offerUse) {

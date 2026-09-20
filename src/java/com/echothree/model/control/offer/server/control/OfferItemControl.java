@@ -21,6 +21,8 @@ import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.offer.common.transfer.OfferItemPriceTransfer;
 import com.echothree.model.control.offer.common.transfer.OfferItemTransfer;
 import com.echothree.model.control.offer.server.logic.OfferItemLogic;
+import com.echothree.model.control.offer.server.transfer.OfferItemPriceTransferCache;
+import com.echothree.model.control.offer.server.transfer.OfferItemTransferCache;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
@@ -39,26 +41,47 @@ import com.echothree.model.data.offer.server.value.OfferItemFixedPriceValue;
 import com.echothree.model.data.offer.server.value.OfferItemVariablePriceValue;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import static com.echothree.model.jooq.server.keys.inventory.InventoryForeignKeys.INVENTORY_CONDITIONS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.item.ItemForeignKeys.ITEMS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.offer.OfferForeignKeys.OFFERS_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.offer.OfferForeignKeys.OFFER_ITEMS_ITEM_FK;
+import static com.echothree.model.jooq.server.keys.offer.OfferForeignKeys.OFFER_ITEMS_OFFER_FK;
+import static com.echothree.model.jooq.server.keys.offer.OfferForeignKeys.OFFER_ITEM_PRICES_CURRENCY_FK;
+import static com.echothree.model.jooq.server.keys.offer.OfferForeignKeys.OFFER_ITEM_PRICES_INVENTORY_CONDITION_FK;
+import static com.echothree.model.jooq.server.keys.offer.OfferForeignKeys.OFFER_ITEM_PRICES_OFFER_ITEM_FK;
+import static com.echothree.model.jooq.server.keys.offer.OfferForeignKeys.OFFER_ITEM_PRICES_UNIT_OF_MEASURE_TYPE_FK;
+import static com.echothree.model.jooq.server.keys.uom.UomForeignKeys.UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.accounting.Currencies.Currencies;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryConditionDetails.InventoryConditionDetails;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryConditions.InventoryConditions;
+import static com.echothree.model.jooq.server.tables.item.ItemDetails.ItemDetails;
+import static com.echothree.model.jooq.server.tables.item.Items.Items;
+import static com.echothree.model.jooq.server.tables.offer.OfferDetails.OfferDetails;
+import static com.echothree.model.jooq.server.tables.offer.OfferItemFixedPrices.OfferItemFixedPrices;
+import static com.echothree.model.jooq.server.tables.offer.OfferItemPrices.OfferItemPrices;
+import static com.echothree.model.jooq.server.tables.offer.OfferItemVariablePrices.OfferItemVariablePrices;
+import static com.echothree.model.jooq.server.tables.offer.OfferItems.OfferItems;
+import static com.echothree.model.jooq.server.tables.offer.Offers.Offers;
+import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureTypeDetails.UnitOfMeasureTypeDetails;
+import static com.echothree.model.jooq.server.tables.uom.UnitOfMeasureTypes.UnitOfMeasureTypes;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.transfer.HistoryTransfer;
 import com.echothree.util.common.transfer.ListWrapper;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
 public class OfferItemControl
-        extends BaseOfferControl {
+        extends BaseModelControl {
 
     @Inject
-    protected OfferItemLogic offerItemLogic;
+    private OfferItemLogic offerItemLogic;
 
     /** Creates a new instance of OfferItemControl */
     protected OfferItemControl() {
@@ -70,7 +93,10 @@ public class OfferItemControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OfferItemFactory offerItemFactory;
+    private OfferItemFactory offerItemFactory;
+
+    @Inject
+    private OfferItemTransferCache offerItemTransferCache;
 
     /** Use the function in OfferLogic instead. */
     public OfferItem createOfferItem(Offer offer, Item item, BasePK createdBy) {
@@ -82,23 +108,23 @@ public class OfferItemControl
     }
 
     public long countOfferItemsByOffer(Offer offer) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM offeritems
-                WHERE ofri_ofr_offerid = ? AND ofri_thrutime = ?
-                """,
-                offer, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(OfferItems)
+                .where(OfferItems.OFFER.eq(offer.getPrimaryKey()),
+                        OfferItems.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countOfferItemsByItem(Item item) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM offeritems
-                WHERE ofri_itm_itemid = ? AND ofri_thrutime = ?
-                """,
-                item, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(OfferItems)
+                .where(OfferItems.ITEM.eq(item.getPrimaryKey()),
+                        OfferItems.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.OfferItem */
@@ -117,30 +143,20 @@ public class OfferItemControl
         return getOfferItemByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getOfferItemQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM offeritems
-                WHERE ofri_ofr_offerid = ? AND ofri_itm_itemid = ? AND ofri_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM offeritems
-                WHERE ofri_ofr_offerid = ? AND ofri_itm_itemid = ? AND ofri_thrutime = ?
-                FOR UPDATE
-                """);
-        getOfferItemQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public OfferItem getOfferItem(Offer offer, Item item, EntityPermission entityPermission) {
-        return offerItemFactory.getEntityFromQuery(entityPermission, getOfferItemQueries,
-                offer, item, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(OfferItems.fields())
+                .from(OfferItems)
+                .where(OfferItems.OFFER.eq(offer.getPrimaryKey()),
+                        OfferItems.ITEM.eq(item.getPrimaryKey()),
+                        OfferItems.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return offerItemFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OfferItem getOfferItem(Offer offer, Item item) {
@@ -151,33 +167,26 @@ public class OfferItemControl
         return getOfferItem(offer, item, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getOfferItemsByOfferQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM offeritems, items, itemdetails
-                WHERE ofri_ofr_offerid = ? AND ofri_thrutime = ?
-                AND ofri_itm_itemid = itm_itemid AND itm_activedetailid = itmdt_itemdetailid
-                ORDER BY itmdt_itemname
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM offeritems
-                WHERE ofri_ofr_offerid = ? AND ofri_thrutime = ?
-                FOR UPDATE
-                """);
-        getOfferItemsByOfferQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<OfferItem> getOfferItemsByOffer(Offer offer, EntityPermission entityPermission) {
-        return offerItemFactory.getEntitiesFromQuery(entityPermission, getOfferItemsByOfferQueries,
-                offer, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OfferItems.fields())
+                    .from(OfferItems)
+                    .join(Items).onKey(OFFER_ITEMS_ITEM_FK)
+                    .join(ItemDetails).onKey(ITEMS_LAST_DETAIL_FK)
+                    .where(OfferItems.OFFER.eq(offer.getPrimaryKey()),
+                            OfferItems.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(ItemDetails.ITEM_NAME),
+                    OfferItemFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(OfferItems.fields())
+                    .from(OfferItems)
+                    .where(OfferItems.OFFER.eq(offer.getPrimaryKey()),
+                            OfferItems.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return offerItemFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OfferItem> getOfferItemsByOffer(Offer offer) {
@@ -188,33 +197,26 @@ public class OfferItemControl
         return getOfferItemsByOffer(offer, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getOfferItemsByItemQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM offeritems, offers, offerdetails
-                WHERE ofri_itm_itemid = ? AND ofri_thrutime = ?
-                AND ofri_ofr_offerid = ofr_offerid AND ofr_activedetailid = ofrdt_offerdetailid
-                ORDER BY ofrdt_sortorder, ofrdt_offername
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM offeritems
-                WHERE ofri_itm_itemid = ? AND ofri_thrutime = ?
-                FOR UPDATE
-                """);
-        getOfferItemsByItemQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<OfferItem> getOfferItemsByItem(Item item, EntityPermission entityPermission) {
-        return offerItemFactory.getEntitiesFromQuery(entityPermission, getOfferItemsByItemQueries,
-                item, Session.MAX_TIME);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OfferItems.fields())
+                    .from(OfferItems)
+                    .join(Offers).onKey(OFFER_ITEMS_OFFER_FK)
+                    .join(OfferDetails).onKey(OFFERS_LAST_DETAIL_FK)
+                    .where(OfferItems.ITEM.eq(item.getPrimaryKey()),
+                            OfferItems.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(OfferDetails.SORT_ORDER, OfferDetails.OFFER_NAME),
+                    OfferItemFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(OfferItems.fields())
+                    .from(OfferItems)
+                    .where(OfferItems.ITEM.eq(item.getPrimaryKey()),
+                            OfferItems.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
+
+        return offerItemFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OfferItem> getOfferItemsByItem(Item item) {
@@ -262,7 +264,10 @@ public class OfferItemControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OfferItemPriceFactory offerItemPriceFactory;
+    private OfferItemPriceFactory offerItemPriceFactory;
+
+    @Inject
+    private OfferItemPriceTransferCache offerItemPriceTransferCache;
 
     /** Use the function in OfferItemLogic instead. */
     public OfferItemPrice createOfferItemPrice(OfferItem offerItem, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
@@ -276,73 +281,81 @@ public class OfferItemControl
     }
 
     public long countOfferItemPricesByItem(Item item) {
-        return session.queryForLong(
-                """
-                SELECT COUNT(*)
-                FROM offeritems, offeritemprices
-                WHERE ofri_itm_itemid = ? AND ofri_thrutime = ?
-                AND ofri_offeritemid = ofritmp_ofri_offeritemid AND ofritmp_thrutime = ?
-                """,
-                item, Session.MAX_TIME, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(OfferItems)
+                .join(OfferItemPrices).onKey(OFFER_ITEM_PRICES_OFFER_ITEM_FK)
+                .where(OfferItems.ITEM.eq(item.getPrimaryKey()),
+                        OfferItems.THRU_TIME.eq(Session.MAX_TIME),
+                        OfferItemPrices.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countOfferItemPricesByOfferItem(OfferItem offerItem) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM offeritemprices
-                WHERE ofritmp_ofri_offeritemid = ? AND ofritmp_thrutime = ?""",
-                offerItem, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(OfferItemPrices)
+                .where(OfferItemPrices.OFFER_ITEM.eq(offerItem.getPrimaryKey()),
+                        OfferItemPrices.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countOfferItemPricesByInventoryCondition(InventoryCondition inventoryCondition) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM offeritemprices
-                WHERE ofritmp_invcon_inventoryconditionid = ? AND ofritmp_thrutime = ?""",
-                inventoryCondition, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(OfferItemPrices)
+                .where(OfferItemPrices.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                        OfferItemPrices.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countOfferItemPricesByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM itempofferitempricesrices
-                WHERE ofritmp_uomt_unitofmeasuretypeid = ? AND ofritmp_thrutime = ?""",
-                unitOfMeasureType, Session.MAX_TIME);
+        return session.getDslContext()
+                .selectCount()
+                .from(OfferItemPrices)
+                .where(OfferItemPrices.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        OfferItemPrices.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     public long countOfferItemPricesByCurrency(Currency currency) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM offeritemprices
-                WHERE ofritmp_cur_currencyid = ? AND ofritmp_thrutime = ?""",
-                currency, Session.MAX_TIME);
-    }
-
-    private static final Map<EntityPermission, String> getOfferItemPricesByOfferItemQueries1;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM offeritemprices
-                WHERE ofritmp_ofri_offeritemid = ? AND ofritmp_thrutime = ?
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM offeritemprices
-                WHERE ofritmp_ofri_offeritemid = ? AND ofritmp_thrutime = ?
-                FOR UPDATE
-                """);
-        getOfferItemPricesByOfferItemQueries1 = Collections.unmodifiableMap(queryMap);
+        return session.getDslContext()
+                .selectCount()
+                .from(OfferItemPrices)
+                .where(OfferItemPrices.CURRENCY.eq(currency.getPrimaryKey()),
+                        OfferItemPrices.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<OfferItemPrice> getOfferItemPricesByOfferItem(OfferItem offerItem, EntityPermission entityPermission) {
-        return offerItemPriceFactory.getEntitiesFromQuery(entityPermission, getOfferItemPricesByOfferItemQueries1,
-                offerItem, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(OfferItemPrices.fields())
+                .from(OfferItemPrices)
+                .where(OfferItemPrices.OFFER_ITEM.eq(offerItem.getPrimaryKey()),
+                        OfferItemPrices.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OfferItemPrices.fields())
+                    .from(OfferItemPrices)
+                    .join(InventoryConditions).onKey(OFFER_ITEM_PRICES_INVENTORY_CONDITION_FK)
+                    .join(InventoryConditionDetails).onKey(INVENTORY_CONDITIONS_LAST_DETAIL_FK)
+                    .join(UnitOfMeasureTypes).onKey(OFFER_ITEM_PRICES_UNIT_OF_MEASURE_TYPE_FK)
+                    .join(UnitOfMeasureTypeDetails).onKey(UNIT_OF_MEASURE_TYPES_LAST_DETAIL_FK)
+                    .join(Currencies).onKey(OFFER_ITEM_PRICES_CURRENCY_FK)
+                    .where(OfferItemPrices.OFFER_ITEM.eq(offerItem.getPrimaryKey()),
+                            OfferItemPrices.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME, UnitOfMeasureTypeDetails.SORT_ORDER, UnitOfMeasureTypeDetails.UNIT_OF_MEASURE_TYPE_NAME, Currencies.SORT_ORDER, Currencies.CURRENCY_ISO_NAME),
+                    OfferItemPriceFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return offerItemPriceFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OfferItemPrice> getOfferItemPricesByOfferItem(OfferItem offerItem) {
@@ -353,33 +366,36 @@ public class OfferItemControl
         return getOfferItemPricesByOfferItem(offerItem, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getOfferItemPricesByItemAndUnitOfMeasureTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM offeritems, offeritemprices
-                WHERE ofri_itm_itemid = ? AND ofri_thrutime = ?
-                AND ofri_offeritemid = ofritmp_ofri_offeritemid AND ofritmp_uomt_unitofmeasuretypeid = ? AND ofritmp_thrutime = ?
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM offeritems, offeritemprices
-                WHERE ofri_itm_itemid = ? AND ofri_thrutime = ?
-                AND ofri_offeritemid = ofritmp_ofri_offeritemid AND ofritmp_uomt_unitofmeasuretypeid = ? AND ofritmp_thrutime = ?
-                FOR UPDATE
-                """);
-        getOfferItemPricesByItemAndUnitOfMeasureTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<OfferItemPrice> getOfferItemPricesByItemAndUnitOfMeasureType(Item item, UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
-        return offerItemPriceFactory.getEntitiesFromQuery(entityPermission, getOfferItemPricesByItemAndUnitOfMeasureTypeQueries,
-                item, Session.MAX_TIME, unitOfMeasureType, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(OfferItemPrices.fields())
+                .from(OfferItemPrices)
+                .join(OfferItems).onKey(OFFER_ITEM_PRICES_OFFER_ITEM_FK)
+                .where(OfferItems.ITEM.eq(item.getPrimaryKey()),
+                        OfferItems.THRU_TIME.eq(Session.MAX_TIME),
+                        OfferItemPrices.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        OfferItemPrices.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OfferItemPrices.fields())
+                    .from(OfferItemPrices)
+                    .join(OfferItems).onKey(OFFER_ITEM_PRICES_OFFER_ITEM_FK)
+                    .join(Offers).onKey(OFFER_ITEMS_OFFER_FK)
+                    .join(OfferDetails).onKey(OFFERS_LAST_DETAIL_FK)
+                    .join(InventoryConditions).onKey(OFFER_ITEM_PRICES_INVENTORY_CONDITION_FK)
+                    .join(InventoryConditionDetails).onKey(INVENTORY_CONDITIONS_LAST_DETAIL_FK)
+                    .join(Currencies).onKey(OFFER_ITEM_PRICES_CURRENCY_FK)
+                    .where(OfferItems.ITEM.eq(item.getPrimaryKey()),
+                            OfferItems.THRU_TIME.eq(Session.MAX_TIME),
+                            OfferItemPrices.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                            OfferItemPrices.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(OfferDetails.SORT_ORDER, OfferDetails.OFFER_NAME, InventoryConditionDetails.SORT_ORDER, InventoryConditionDetails.INVENTORY_CONDITION_NAME, Currencies.SORT_ORDER, Currencies.CURRENCY_ISO_NAME),
+                    OfferItemPriceFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return offerItemPriceFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OfferItemPrice> getOfferItemPricesByItemAndUnitOfMeasureType(Item item, UnitOfMeasureType unitOfMeasureType) {
@@ -390,34 +406,31 @@ public class OfferItemControl
         return getOfferItemPricesByItemAndUnitOfMeasureType(item, unitOfMeasureType, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getOfferItemPricesByOfferItemQueries2;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM offeritemprices
-                WHERE ofritmp_ofri_offeritemid = ? AND ofritmp_invcon_inventoryconditionid = ?
-                AND ofritmp_uomt_unitofmeasuretypeid = ? AND ofritmp_thrutime = ?
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM offeritemprices
-                WHERE ofritmp_ofri_offeritemid = ? AND ofritmp_invcon_inventoryconditionid = ?
-                AND ofritmp_uomt_unitofmeasuretypeid = ? AND ofritmp_thrutime = ?
-                FOR UPDATE
-                """);
-        getOfferItemPricesByOfferItemQueries2 = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<OfferItemPrice> getOfferItemPricesByOfferItem(OfferItem offerItem, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
             EntityPermission entityPermission) {
-        return offerItemPriceFactory.getEntitiesFromQuery(entityPermission, getOfferItemPricesByOfferItemQueries2,
-                offerItem, inventoryCondition, unitOfMeasureType, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(OfferItemPrices.fields())
+                .from(OfferItemPrices)
+                .where(OfferItemPrices.OFFER_ITEM.eq(offerItem.getPrimaryKey()),
+                        OfferItemPrices.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                        OfferItemPrices.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        OfferItemPrices.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OfferItemPrices.fields())
+                    .from(OfferItemPrices)
+                    .join(Currencies).onKey(OFFER_ITEM_PRICES_CURRENCY_FK)
+                    .where(OfferItemPrices.OFFER_ITEM.eq(offerItem.getPrimaryKey()),
+                            OfferItemPrices.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                            OfferItemPrices.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                            OfferItemPrices.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Currencies.SORT_ORDER, Currencies.CURRENCY_ISO_NAME),
+                    OfferItemPriceFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return offerItemPriceFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OfferItemPrice> getOfferItemPricesByOfferItem(OfferItem offerItem, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType) {
@@ -428,36 +441,38 @@ public class OfferItemControl
         return getOfferItemPricesByOfferItem(offerItem, inventoryCondition, unitOfMeasureType, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getOfferItemPricesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM offeritems, offeritemprices
-                WHERE ofri_itm_itemid = ? AND ofri_thrutime = ? AND ofri_offeritemid = ofritmp_ofri_offeritemid
-                AND ofritmp_invcon_inventoryconditionid = ? AND ofritmp_uomt_unitofmeasuretypeid = ?
-                AND ofritmp_cur_currencyid = ? AND ofritmp_thrutime = ?
-                _LIMIT_
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM offeritems, offeritemprices
-                WHERE ofri_itm_itemid = ? AND ofri_thrutime = ? AND ofri_offeritemid = ofritmp_ofri_offeritemid
-                AND ofritmp_invcon_inventoryconditionid = ? AND ofritmp_uomt_unitofmeasuretypeid = ?
-                AND ofritmp_cur_currencyid = ? AND ofritmp_thrutime = ?
-                FOR UPDATE
-                """);
-        getOfferItemPricesQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private List<OfferItemPrice> getOfferItemPrices(Item item, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, Currency currency, EntityPermission entityPermission) {
-        return offerItemPriceFactory.getEntitiesFromQuery(entityPermission, getOfferItemPricesQueries,
-                item, Session.MAX_TIME, inventoryCondition, unitOfMeasureType, currency, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(OfferItemPrices.fields())
+                .from(OfferItemPrices)
+                .join(OfferItems).onKey(OFFER_ITEM_PRICES_OFFER_ITEM_FK)
+                .where(OfferItems.ITEM.eq(item.getPrimaryKey()),
+                        OfferItems.THRU_TIME.eq(Session.MAX_TIME),
+                        OfferItemPrices.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                        OfferItemPrices.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        OfferItemPrices.CURRENCY.eq(currency.getPrimaryKey()),
+                        OfferItemPrices.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(OfferItemPrices.fields())
+                    .from(OfferItemPrices)
+                    .join(OfferItems).onKey(OFFER_ITEM_PRICES_OFFER_ITEM_FK)
+                    .join(Offers).onKey(OFFER_ITEMS_OFFER_FK)
+                    .join(OfferDetails).onKey(OFFERS_LAST_DETAIL_FK)
+                    .where(OfferItems.ITEM.eq(item.getPrimaryKey()),
+                            OfferItems.THRU_TIME.eq(Session.MAX_TIME),
+                            OfferItemPrices.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                            OfferItemPrices.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                            OfferItemPrices.CURRENCY.eq(currency.getPrimaryKey()),
+                            OfferItemPrices.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(OfferDetails.SORT_ORDER, OfferDetails.OFFER_NAME),
+                    OfferItemPriceFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return offerItemPriceFactory.getEntitiesFromQuery(entityPermission, query);
     }
 
     public List<OfferItemPrice> getOfferItemPrices(Item item, InventoryCondition inventoryCondition,
@@ -470,33 +485,23 @@ public class OfferItemControl
         return getOfferItemPrices(item, inventoryCondition, unitOfMeasureType, currency, EntityPermission.READ_WRITE);
     }
 
-    private static final Map<EntityPermission, String> getOfferItemPriceQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM offeritemprices
-                WHERE ofritmp_ofri_offeritemid = ? AND ofritmp_invcon_inventoryconditionid = ?
-                AND ofritmp_uomt_unitofmeasuretypeid = ? AND ofritmp_cur_currencyid = ? AND ofritmp_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM offeritemprices
-                WHERE ofritmp_ofri_offeritemid = ? AND ofritmp_invcon_inventoryconditionid = ?
-                AND ofritmp_uomt_unitofmeasuretypeid = ? AND ofritmp_cur_currencyid = ? AND ofritmp_thrutime = ?
-                FOR UPDATE
-                """);
-        getOfferItemPriceQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private OfferItemPrice getOfferItemPrice(OfferItem offerItem, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
             Currency currency, EntityPermission entityPermission) {
-        return offerItemPriceFactory.getEntityFromQuery(entityPermission, getOfferItemPriceQueries,
-                offerItem, inventoryCondition, unitOfMeasureType, currency, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(OfferItemPrices.fields())
+                .from(OfferItemPrices)
+                .where(OfferItemPrices.OFFER_ITEM.eq(offerItem.getPrimaryKey()),
+                        OfferItemPrices.INVENTORY_CONDITION.eq(inventoryCondition.getPrimaryKey()),
+                        OfferItemPrices.UNIT_OF_MEASURE_TYPE.eq(unitOfMeasureType.getPrimaryKey()),
+                        OfferItemPrices.CURRENCY.eq(currency.getPrimaryKey()),
+                        OfferItemPrices.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return offerItemPriceFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OfferItemPrice getOfferItemPrice(OfferItem offerItem, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
@@ -559,7 +564,7 @@ public class OfferItemControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OfferItemFixedPriceFactory offerItemFixedPriceFactory;
+    private OfferItemFixedPriceFactory offerItemFixedPriceFactory;
 
     /** Use the function in OfferItemLogic instead. */
     public OfferItemFixedPrice createOfferItemFixedPrice(OfferItemPrice offerItemPrice, Long unitPrice, BasePK createdBy) {
@@ -572,30 +577,19 @@ public class OfferItemControl
         return offerItemFixedPrice;
     }
 
-    private static final Map<EntityPermission, String> getOfferItemFixedPriceQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM offeritemfixedprices
-                WHERE ofritmfp_ofritmp_offeritempriceid = ? AND ofritmfp_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM offeritemfixedprices
-                WHERE ofritmfp_ofritmp_offeritempriceid = ? AND ofritmfp_thrutime = ?
-                FOR UPDATE
-                """);
-        getOfferItemFixedPriceQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private OfferItemFixedPrice getOfferItemFixedPrice(OfferItemPrice offerItemPrice, EntityPermission entityPermission) {
-        return offerItemFixedPriceFactory.getEntityFromQuery(entityPermission, getOfferItemFixedPriceQueries,
-                offerItemPrice, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(OfferItemFixedPrices.fields())
+                .from(OfferItemFixedPrices)
+                .where(OfferItemFixedPrices.OFFER_ITEM_PRICE.eq(offerItemPrice.getPrimaryKey()),
+                        OfferItemFixedPrices.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return offerItemFixedPriceFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OfferItemFixedPrice getOfferItemFixedPrice(OfferItemPrice offerItemPrice) {
@@ -612,24 +606,15 @@ public class OfferItemControl
         return offerItemFixedPrice == null? null: offerItemFixedPrice.getOfferItemFixedPriceValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getOfferItemFixedPriceHistoryQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM offeritemfixedprices
-                WHERE ofritmfp_ofritmp_offeritempriceid = ?
-                ORDER BY ofritmfp_thrutime
-                """);
-        getOfferItemFixedPriceHistoryQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public List<OfferItemFixedPrice> getOfferItemFixedPriceHistory(OfferItemPrice offerItemPrice) {
-        return offerItemFixedPriceFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getOfferItemFixedPriceHistoryQueries,
-                offerItemPrice);
+        var query = session.applyLimit(session.getDslContext()
+                .select(OfferItemFixedPrices.fields())
+                .from(OfferItemFixedPrices)
+                .where(OfferItemFixedPrices.OFFER_ITEM_PRICE.eq(offerItemPrice.getPrimaryKey()))
+                .orderBy(OfferItemFixedPrices.THRU_TIME),
+                OfferItemFixedPriceFactory.class);
+
+        return offerItemFixedPriceFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     /** Use the function in OfferItemLogic instead. */
@@ -669,7 +654,7 @@ public class OfferItemControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected OfferItemVariablePriceFactory offerItemVariablePriceFactory;
+    private OfferItemVariablePriceFactory offerItemVariablePriceFactory;
 
     /** Use the function in OfferItemLogic instead. */
     public OfferItemVariablePrice createOfferItemVariablePrice(OfferItemPrice offerItemPrice, Long minimumUnitPrice, Long maximumUnitPrice,
@@ -683,30 +668,19 @@ public class OfferItemControl
         return offerItemVariablePrice;
     }
 
-    private static final Map<EntityPermission, String> getOfferItemVariablePriceQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM offeritemvariableprices
-                WHERE ofritmvp_ofritmp_offeritempriceid = ? AND ofritmvp_thrutime = ?
-                """);
-        queryMap.put(EntityPermission.READ_WRITE,
-                """
-                SELECT _ALL_
-                FROM offeritemvariableprices
-                WHERE ofritmvp_ofritmp_offeritempriceid = ? AND ofritmvp_thrutime = ?
-                FOR UPDATE
-                """);
-        getOfferItemVariablePriceQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     private OfferItemVariablePrice getOfferItemVariablePrice(OfferItemPrice offerItemPrice, EntityPermission entityPermission) {
-        return offerItemVariablePriceFactory.getEntityFromQuery(entityPermission, getOfferItemVariablePriceQueries,
-                offerItemPrice, Session.MAX_TIME);
+        var baseQuery = session.getDslContext()
+                .select(OfferItemVariablePrices.fields())
+                .from(OfferItemVariablePrices)
+                .where(OfferItemVariablePrices.OFFER_ITEM_PRICE.eq(offerItemPrice.getPrimaryKey()),
+                        OfferItemVariablePrices.THRU_TIME.eq(Session.MAX_TIME));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return offerItemVariablePriceFactory.getEntityFromQuery(entityPermission, query);
     }
 
     public OfferItemVariablePrice getOfferItemVariablePrice(OfferItemPrice offerItemPrice) {
@@ -723,24 +697,15 @@ public class OfferItemControl
         return offerItemVariablePrice == null? null: offerItemVariablePrice.getOfferItemVariablePriceValue().clone();
     }
 
-    private static final Map<EntityPermission, String> getOfferItemVariablePriceHistoryQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                """
-                SELECT _ALL_
-                FROM offeritemvariableprices
-                WHERE ofritmvp_ofritmp_offeritempriceid = ?
-                ORDER BY ofritmvp_thrutime
-                """);
-        getOfferItemVariablePriceHistoryQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public List<OfferItemVariablePrice> getOfferItemVariablePriceHistory(OfferItemPrice offerItemPrice) {
-        return offerItemVariablePriceFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getOfferItemVariablePriceHistoryQueries,
-                offerItemPrice);
+        var query = session.applyLimit(session.getDslContext()
+                .select(OfferItemVariablePrices.fields())
+                .from(OfferItemVariablePrices)
+                .where(OfferItemVariablePrices.OFFER_ITEM_PRICE.eq(offerItemPrice.getPrimaryKey()))
+                .orderBy(OfferItemVariablePrices.THRU_TIME),
+                OfferItemVariablePriceFactory.class);
+
+        return offerItemVariablePriceFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
     /** Use the function in OfferItemLogic instead. */

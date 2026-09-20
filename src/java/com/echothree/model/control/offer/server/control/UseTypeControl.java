@@ -21,7 +21,10 @@ import com.echothree.model.control.offer.common.choice.UseTypeChoicesBean;
 import com.echothree.model.control.offer.common.transfer.UseTypeDescriptionTransfer;
 import com.echothree.model.control.offer.common.transfer.UseTypeResultTransfer;
 import com.echothree.model.control.offer.common.transfer.UseTypeTransfer;
+import com.echothree.model.control.offer.server.transfer.UseTypeDescriptionTransferCache;
+import com.echothree.model.control.offer.server.transfer.UseTypeTransferCache;
 import com.echothree.model.control.search.common.SearchOptions;
+import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.offer.common.pk.UseTypePK;
 import com.echothree.model.data.offer.server.entity.UseType;
@@ -32,24 +35,41 @@ import com.echothree.model.data.offer.server.factory.UseTypeFactory;
 import com.echothree.model.data.offer.server.value.UseTypeDescriptionValue;
 import com.echothree.model.data.offer.server.value.UseTypeDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.search.common.CachedExecutedSearchResultConstants;
+import com.echothree.model.data.search.common.SearchResultConstants;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
+import com.echothree.model.data.search.server.factory.CachedExecutedSearchResultFactory;
 import com.echothree.model.data.search.server.factory.SearchResultFactory;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
+import static com.echothree.model.jooq.server.keys.offer.OfferForeignKeys.USE_TYPES_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.offer.OfferForeignKeys.USE_TYPE_DESCRIPTIONS_LANGUAGE_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.CACHED_EXECUTED_SEARCH_RESULTS_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.keys.search.SearchForeignKeys.SEARCH_RESULTS_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.offer.UseTypeDescriptions.UseTypeDescriptions;
+import static com.echothree.model.jooq.server.tables.offer.UseTypeDetails.UseTypeDetails;
+import static com.echothree.model.jooq.server.tables.offer.UseTypes.UseTypes;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
+import static com.echothree.model.jooq.server.tables.search.CachedExecutedSearchResults.CachedExecutedSearchResults;
+import static com.echothree.model.jooq.server.tables.search.SearchResults.SearchResults;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
+import org.jooq.Select;
 
 @CommandScope
 public class UseTypeControl
-        extends BaseOfferControl {
+        extends BaseModelControl {
+
+    @Inject
+    private SearchControl searchControl;
 
     @Inject
     protected UseControl useControl;
@@ -64,10 +84,13 @@ public class UseTypeControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected UseTypeFactory useTypeFactory;
+    protected UseTypeDetailFactory useTypeDetailFactory;
 
     @Inject
-    protected UseTypeDetailFactory useTypeDetailFactory;
+    private UseTypeFactory useTypeFactory;
+
+    @Inject
+    private UseTypeTransferCache useTypeTransferCache;
 
     public UseType createUseType(String useTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultUseType = getDefaultUseType();
@@ -114,36 +137,28 @@ public class UseTypeControl
     }
 
     public long countUseTypes() {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM usetypes, usetypedetails
-                WHERE usetyp_activedetailid = usetypdt_usetypedetailid
-                """);
+        return session.getDslContext()
+                .selectCount()
+                .from(UseTypes)
+                .join(UseTypeDetails).onKey(USE_TYPES_ACTIVE_DETAIL_FK)
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
     }
 
     private List<UseType> getUseTypes(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM usetypes, usetypedetails
-                    WHERE usetyp_activedetailid = usetypdt_usetypedetailid
-                    ORDER BY usetypdt_sortorder, usetypdt_usetypename
-                    _LIMIT_
-                    """;
-        } else if (entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM usetypes, usetypedetails
-                    WHERE usetyp_activedetailid = usetypdt_usetypedetailid
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(UseTypes.fields())
+                .from(UseTypes)
+                .join(UseTypeDetails).onKey(USE_TYPES_ACTIVE_DETAIL_FK);
 
-        var ps = useTypeFactory.prepareStatement(query);
-        
-        return useTypeFactory.getEntitiesFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(baseQuery
+                    .orderBy(UseTypeDetails.SORT_ORDER, UseTypeDetails.USE_TYPE_NAME),
+                    UseTypeFactory.class);
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return useTypeFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<UseType> getUseTypes() {
@@ -155,36 +170,18 @@ public class UseTypeControl
     }
 
     public UseType getUseTypeByName(String useTypeName, EntityPermission entityPermission) {
-        UseType useType;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM usetypes, usetypedetails
-                        WHERE usetyp_activedetailid = usetypdt_usetypedetailid AND usetypdt_usetypename = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM usetypes, usetypedetails
-                        WHERE usetyp_activedetailid = usetypdt_usetypedetailid AND usetypdt_usetypename = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(UseTypes.fields())
+                .from(UseTypes)
+                .join(UseTypeDetails).onKey(USE_TYPES_ACTIVE_DETAIL_FK)
+                .where(UseTypeDetails.USE_TYPE_NAME.eq(useTypeName));
 
-            var ps = useTypeFactory.prepareStatement(query);
-            
-            ps.setString(1, useTypeName);
-            
-            useType = useTypeFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return useType;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return useTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public UseType getUseTypeByName(String useTypeName) {
@@ -204,26 +201,18 @@ public class UseTypeControl
     }
     
     public UseType getDefaultUseType(EntityPermission entityPermission) {
-        String query = null;
-        
-        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = """
-                    SELECT _ALL_
-                    FROM usetypes, usetypedetails
-                    WHERE usetyp_activedetailid = usetypdt_usetypedetailid AND usetypdt_isdefault = 1
-                    """;
-        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = """
-                    SELECT _ALL_
-                    FROM usetypes, usetypedetails
-                    WHERE usetyp_activedetailid = usetypdt_usetypedetailid AND usetypdt_isdefault = 1
-                    FOR UPDATE
-                    """;
-        }
+        var baseQuery = session.getDslContext()
+                .select(UseTypes.fields())
+                .from(UseTypes)
+                .join(UseTypeDetails).onKey(USE_TYPES_ACTIVE_DETAIL_FK)
+                .where(UseTypeDetails.IS_DEFAULT.eq(true));
 
-        var ps = useTypeFactory.prepareStatement(query);
-        
-        return useTypeFactory.getEntityFromQuery(entityPermission, ps);
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return useTypeFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public UseType getDefaultUseType() {
@@ -370,7 +359,10 @@ public class UseTypeControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected UseTypeDescriptionFactory useTypeDescriptionFactory;
+    private UseTypeDescriptionFactory useTypeDescriptionFactory;
+
+    @Inject
+    private UseTypeDescriptionTransferCache useTypeDescriptionTransferCache;
 
     public UseTypeDescription createUseTypeDescription(UseType useType, Language language, String description, BasePK createdBy) {
         var useTypeDescription = useTypeDescriptionFactory.create(useType, language,
@@ -383,38 +375,19 @@ public class UseTypeControl
     }
     
     private UseTypeDescription getUseTypeDescription(UseType useType, Language language, EntityPermission entityPermission) {
-        UseTypeDescription useTypeDescription;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM usetypedescriptions
-                        WHERE usetypd_usetyp_usetypeid = ? AND usetypd_lang_languageid = ? AND usetypd_thrutime = ?
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM usetypedescriptions
-                        WHERE usetypd_usetyp_usetypeid = ? AND usetypd_lang_languageid = ? AND usetypd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var baseQuery = session.getDslContext()
+                .select(UseTypeDescriptions.fields())
+                .from(UseTypeDescriptions)
+                .where(UseTypeDescriptions.USE_TYPE.eq(useType.getPrimaryKey()),
+                        UseTypeDescriptions.LANGUAGE.eq(language.getPrimaryKey()),
+                        UseTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME));
 
-            var ps = useTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, useType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            ps.setLong(3, Session.MAX_TIME);
-            
-            useTypeDescription = useTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return useTypeDescription;
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return useTypeDescriptionFactory.getEntityFromQuery(entityPermission, query);
     }
     
     public UseTypeDescription getUseTypeDescription(UseType useType, Language language) {
@@ -434,38 +407,24 @@ public class UseTypeControl
     }
     
     private List<UseTypeDescription> getUseTypeDescriptionsByUseType(UseType useType, EntityPermission entityPermission) {
-        List<UseTypeDescription> useTypeDescriptions;
-        
-        try {
-            String query = null;
-            
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = """
-                        SELECT _ALL_
-                        FROM usetypedescriptions, languages
-                        WHERE usetypd_usetyp_usetypeid = ? AND usetypd_thrutime = ? AND usetypd_lang_languageid = lang_languageid
-                        ORDER BY lang_sortorder, lang_languageisoname
-                        """;
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = """
-                        SELECT _ALL_
-                        FROM usetypedescriptions
-                        WHERE usetypd_usetyp_usetypeid = ? AND usetypd_thrutime = ?
-                        FOR UPDATE
-                        """;
-            }
+        var query = switch(entityPermission) {
+            case READ_ONLY -> session.applyLimit(session.getDslContext()
+                    .select(UseTypeDescriptions.fields())
+                    .from(UseTypeDescriptions)
+                    .join(Languages).onKey(USE_TYPE_DESCRIPTIONS_LANGUAGE_FK)
+                    .where(UseTypeDescriptions.USE_TYPE.eq(useType.getPrimaryKey()),
+                            UseTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .orderBy(Languages.SORT_ORDER, Languages.LANGUAGE_ISO_NAME),
+                    UseTypeDescriptionFactory.class);
+            case READ_WRITE -> session.getDslContext()
+                    .select(UseTypeDescriptions.fields())
+                    .from(UseTypeDescriptions)
+                    .where(UseTypeDescriptions.USE_TYPE.eq(useType.getPrimaryKey()),
+                            UseTypeDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                    .forUpdate();
+        };
 
-            var ps = useTypeDescriptionFactory.prepareStatement(query);
-            
-            ps.setLong(1, useType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
-            useTypeDescriptions = useTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return useTypeDescriptions;
+        return useTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, query);
     }
     
     public List<UseTypeDescription> getUseTypeDescriptionsByUseType(UseType useType) {
@@ -548,44 +507,49 @@ public class UseTypeControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected SearchResultFactory searchResultFactory;
+    private SearchResultFactory searchResultFactory;
 
-    public List<UseTypeResultTransfer> getUseTypeResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
+    private List<Long> getUseTypeIdsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
-        var useTypeResultTransfers = new ArrayList<UseTypeResultTransfer>();
-        var includeUseType = false;
+        var cachedSearch = search.getCachedSearch();
+        Select<?> query;
 
-        var options = session.getOptions();
-        if(options != null) {
-            includeUseType = options.contains(SearchOptions.UseTypeResultIncludeUseType);
+        if(cachedSearch == null) {
+            query = session.applyLimit(session.getDslContext()
+                    .select(EntityInstances.ENTITY_UNIQUE)
+                    .from(SearchResults)
+                    .join(EntityInstances).onKey(SEARCH_RESULTS_ENTITY_INSTANCE_FK)
+                    .where(SearchResults.SEARCH.eq(search.getPrimaryKey()))
+                    .orderBy(SearchResults.SORT_ORDER, SearchResults.ENTITY_INSTANCE), SearchResultFactory.class);
+        } else {
+            var cachedExecutedSearch = searchControl.getCachedExecutedSearch(cachedSearch);
+
+            session.copyLimit(SearchResultConstants.ENTITY_TYPE_NAME, CachedExecutedSearchResultConstants.ENTITY_TYPE_NAME);
+
+            query = session.applyLimit(session.getDslContext()
+                    .select(EntityInstances.ENTITY_UNIQUE)
+                    .from(CachedExecutedSearchResults)
+                    .join(EntityInstances).onKey(CACHED_EXECUTED_SEARCH_RESULTS_ENTITY_INSTANCE_FK)
+                    .where(CachedExecutedSearchResults.CACHED_EXECUTED_SEARCH.eq(cachedExecutedSearch.getPrimaryKey()))
+                    .orderBy(CachedExecutedSearchResults.SORT_ORDER, CachedExecutedSearchResults.ENTITY_INSTANCE),
+                    CachedExecutedSearchResultFactory.class);
         }
 
-        try {
-            var useTypeControl = this;
-            var ps = searchResultFactory.prepareStatement(
-                    """
-                    SELECT eni_entityuniqueid
-                    FROM searchresults, entityinstances
-                    WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid
-                    ORDER BY srchr_sortorder, srchr_eni_entityinstanceid
-                    _LIMIT_
-                    """);
+        return query.fetch(EntityInstances.ENTITY_UNIQUE);
+    }
 
-            ps.setLong(1, search.getPrimaryKey().getEntityId());
+    public List<UseTypeResultTransfer> getUseTypeResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
+        var entityIds = getUseTypeIdsFromUserVisitSearch(userVisitSearch);
+        var useTypeResultTransfers = new ArrayList<UseTypeResultTransfer>(entityIds.size());
+        var options = session.getOptions();
+        var includeUseType = options != null && options.contains(SearchOptions.UseTypeResultIncludeUseType);
 
-            try (var rs = ps.executeQuery()) {
-                while(rs.next()) {
-                    var useType = useTypeFactory.getEntityFromPK(EntityPermission.READ_ONLY, new UseTypePK(rs.getLong(1)));
-                    var useTypeDetail = useType.getLastDetail();
+        for(var entityUniqueId : entityIds) {
+            var useType = useTypeFactory.getEntityFromPK(EntityPermission.READ_ONLY, new UseTypePK(entityUniqueId));
+            var useTypeDetail = useType.getLastDetail();
 
-                    useTypeResultTransfers.add(new UseTypeResultTransfer(useTypeDetail.getUseTypeName(),
-                            includeUseType ? useTypeControl.getUseTypeTransfer(userVisit, useType) : null));
-                }
-            } catch (SQLException se) {
-                throw new PersistenceDatabaseException(se);
-            }
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
+            useTypeResultTransfers.add(new UseTypeResultTransfer(useTypeDetail.getUseTypeName(),
+                    includeUseType ? getUseTypeTransfer(userVisit, useType) : null));
         }
 
         return useTypeResultTransfers;
