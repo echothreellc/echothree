@@ -53,8 +53,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
-import org.jooq.impl.DSL;
-import org.jooq.impl.SQLDataType;
 
 @CommandScope
 public class EntityInstanceControl
@@ -273,7 +271,7 @@ public class EntityInstanceControl
         var baseQuery = session.getDslContext()
                 .select(EntityInstances.fields())
                 .from(EntityInstances)
-                .where(EntityInstances.UUID.eq(DSL.function("UUID_TO_BIN", SQLDataType.BINARY, DSL.val(uuid))));
+                .where(EntityInstances.UUID.eq(EntityInstanceFactory.uuidToBytes(uuid)));
 
         var query = switch(entityPermission) {
             case READ_ONLY -> baseQuery;

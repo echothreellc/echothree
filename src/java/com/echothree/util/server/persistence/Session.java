@@ -262,6 +262,7 @@ public class Session {
                     case Long l -> ps.setLong(param + 1, l);
                     case Integer i -> ps.setInt(param + 1, i);
                     case String s -> ps.setString(param + 1, s);
+                    case byte[] bytes -> ps.setBytes(param + 1, bytes);
                     case Boolean b -> ps.setBoolean(param + 1, b);
                     case null -> throw new PersistenceDatabaseException("null Object in setQueryParams, index = " + param);
                     default -> throw new PersistenceDatabaseException("unsupported Object in setQueryParams, " + params[param].getClass().getCanonicalName() + ", index = " + param);

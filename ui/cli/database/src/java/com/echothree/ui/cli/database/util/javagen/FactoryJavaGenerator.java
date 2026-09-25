@@ -153,10 +153,7 @@ public class FactoryJavaGenerator extends JavaGenerator {
             } else {
                 if(!allColumnsExceptPk.isEmpty())
                     allColumnsExceptPk += ", ";
-                if(type == ColumnDataType.UUID)
-                    allColumnsExceptPk += "BIN_TO_UUID(" + column.getDbColumnName() + ") AS " + column.getDbColumnName();
-                else
-                    allColumnsExceptPk += column.getDbColumnName();
+                allColumnsExceptPk += column.getDbColumnName();
 
                 if(!insertAllColumns.isEmpty())
                     insertAllColumns += ", ";
@@ -165,18 +162,12 @@ public class FactoryJavaGenerator extends JavaGenerator {
                 if(!updateColumns.isEmpty())
                     updateColumns += ", ";
                 updateColumns += column.getDbColumnName();
-                if(type == ColumnDataType.UUID)
-                    updateColumns += " = UUID_TO_BIN(?)";
-                else
-                    updateColumns += " = ?";
+                updateColumns += " = ?";
             }
             
             if(!questionMarks.isEmpty())
                 questionMarks += ", ";
-            if(type == ColumnDataType.UUID)
-                questionMarks += "UUID_TO_BIN(?)";
-            else
-                questionMarks += "?";
+            questionMarks += "?";
         }
 
         // These two Strings need to have the PK added to the beginning of them.
@@ -422,7 +413,7 @@ public class FactoryJavaGenerator extends JavaGenerator {
                     case ColumnDataType.CLOB ->
                             pw.println("                _ps.setCharacterStream(" + parameterCount + ", new StringReader(" + dbColumnName + "), " + dbColumnName + ".length());");
                     case ColumnDataType.UUID ->
-                            pw.println("                _ps.setString(" + parameterCount + ", " + dbColumnName + ");");
+                            pw.println("                _ps.setBytes(" + parameterCount + ", uuidToBytes(" + dbColumnName + "));");
                     default -> pw.println("<error>");
                 }
 
@@ -610,7 +601,7 @@ public class FactoryJavaGenerator extends JavaGenerator {
                     case ColumnDataType.CLOB ->
                             pw.println("            _ps.setCharacterStream(" + parameterCount + ", new StringReader(" + dbColumnName + "), " + dbColumnName + ".length());");
                     case ColumnDataType.UUID ->
-                            pw.println("            _ps.setString(" + parameterCount + ", " + dbColumnName + ");");
+                            pw.println("            _ps.setBytes(" + parameterCount + ", uuidToBytes(" + dbColumnName + "));");
                     default -> pw.println("<error>");
                 }
                 
@@ -803,7 +794,7 @@ public class FactoryJavaGenerator extends JavaGenerator {
                         valueParameters += ", " + dbColumnName + " == null? null: " + dbColumnName + ".getSubString(1L, (int)" + dbColumnName + ".length())";
                     }
                     case ColumnDataType.UUID -> {
-                        pw.println("                String " + dbColumnName + " = rs.getString(" + dbColumnName.toUpperCase(Locale.ROOT) + ");");
+                        pw.println("                String " + dbColumnName + " = getUuidFromResultSet(rs, " + dbColumnName.toUpperCase(Locale.ROOT) + ");");
                         valueParameters += ", " + dbColumnName;
                     }
                     default -> pw.println("<error>");
@@ -1176,7 +1167,7 @@ public class FactoryJavaGenerator extends JavaGenerator {
                         valueParameters += ", " + dbColumnName + " == null? null: " + dbColumnName + ".getSubString(1L, (int)" + dbColumnName + ".length())";
                     }
                     case ColumnDataType.UUID -> {
-                        pw.println("                String " + dbColumnName + " = rs.getString(" + dbColumnName.toUpperCase(Locale.ROOT) + ");");
+                        pw.println("                String " + dbColumnName + " = getUuidFromResultSet(rs, " + dbColumnName.toUpperCase(Locale.ROOT) + ");");
                         valueParameters += ", " + dbColumnName;
                     }
                     default -> pw.println("<error>");
@@ -1209,6 +1200,42 @@ public class FactoryJavaGenerator extends JavaGenerator {
         pw.println("    ");
     }
     
+    public void writeFactoryUuidFunction(PrintWriter pw) {
+        pw.println("""
+                    public static byte[] uuidToBytes(String value) {
+                        byte[] bytes = null;
+
+                        if(value != null) {
+                            var uuid = java.util.UUID.fromString(value);
+                            bytes = java.nio.ByteBuffer.allocate(16)
+                                    .putLong(uuid.getMostSignificantBits())
+                                    .putLong(uuid.getLeastSignificantBits())
+                                    .array();
+                        }
+
+                        return bytes;
+                    }
+
+                    private static String getUuidFromResultSet(ResultSet rs, String columnName)
+                            throws SQLException, PersistenceDatabaseException {
+                        var bytes = rs.getBytes(columnName);
+                        String uuid = null;
+
+                        if(bytes != null) {
+                            if(bytes.length != 16) {
+                                throw new PersistenceDatabaseException("Expected 16 bytes for UUID column " + columnName);
+                            }
+
+                            var buffer = java.nio.ByteBuffer.wrap(bytes);
+                            uuid = new java.util.UUID(buffer.getLong(), buffer.getLong()).toString();
+                        }
+
+                        return uuid;
+                    }
+
+                """);
+    }
+
     public void writeFactoryValidFunction(PrintWriter pw, Table theTable) {
         pw.println("    @Override");
         pw.println("    public boolean validPK(" + theTable.getPKClass() + " pk)");
@@ -1260,6 +1287,9 @@ public class FactoryJavaGenerator extends JavaGenerator {
         
         writeFactoryPrepareFunction(pw, theTable);
         writeFactoryPkFunctions(pw, theTable);
+        if(theTable.getColumns().stream().anyMatch(column -> column.getType() == ColumnDataType.UUID)) {
+            writeFactoryUuidFunction(pw);
+        }
         writeFactoryValueFunctions(pw, theTable);
         writeFactoryEntityFunctions(pw, theTable);
         
