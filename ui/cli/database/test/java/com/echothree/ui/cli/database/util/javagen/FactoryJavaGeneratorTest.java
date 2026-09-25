@@ -32,6 +32,7 @@ import javax.sql.rowset.RowSetProvider;
 import javax.tools.ToolProvider;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -66,12 +67,23 @@ public class FactoryJavaGeneratorTest {
         assertFalse(sql.contains("BIN_TO_UUID("));
         assertEquals(2, sql.lines().filter(line -> line.contains("SQL_SELECT_READ_")
                 && line.contains(", eni_uuid FROM entityinstances")).count());
-        assertTrue(sql.contains("eni_uuid = UUID_TO_BIN(?)"));
-        assertTrue(sql.contains("VALUES (?, ?, ?, UUID_TO_BIN(?))"));
+        assertFalse(sql.contains("UUID_TO_BIN("));
+        assertTrue(sql.contains("eni_uuid = ?"));
+        assertTrue(sql.contains("VALUES (?, ?, ?, ?)"));
+
+        var bindings = new StringWriter();
+        try(var writer = new PrintWriter(bindings)) {
+            generator.writeFactoryCreateFunctions(writer, table);
+            generator.writeFactoryStoreFunctions(writer, table);
+        }
+        assertTrue(bindings.toString().contains("_ps.setBytes(4, uuidToBytes(eni_uuid))"));
+        assertTrue(bindings.toString().contains("_ps.setBytes(3, uuidToBytes(eni_uuid))"));
+        assertTrue(bindings.toString().contains("_ps.setNull(4, Types.BINARY)"));
+        assertTrue(bindings.toString().contains("_ps.setNull(3, Types.BINARY)"));
     }
 
     @Test
-    public void generatedUuidReaderSupportsBinaryAndNullResults() throws Exception {
+    public void generatedUuidConversionsSupportBinaryAndNullRoundTrips() throws Exception {
         var source = new StringWriter();
         try(var writer = new PrintWriter(source)) {
             writer.println("import java.sql.*; public class UuidReader {");
@@ -90,8 +102,13 @@ public class FactoryJavaGeneratorTest {
             var reader = loader.loadClass("UuidReader").getDeclaredMethod("getUuidFromResultSet", ResultSet.class, String.class);
             reader.setAccessible(true);
 
-            // Fixed MySQL UUID_TO_BIN vector, including high-bit bytes and leading zeroes.
+            var writer = loader.loadClass("UuidReader").getDeclaredMethod("uuidToBytes", String.class);
+            // Fixed database byte representation, including high-bit bytes and leading zeroes.
             var uuid = "00112233-4455-6677-8899-aabbccddeeff";
+            var bytes = (byte[])writer.invoke(null, uuid);
+            assertArrayEquals(HexFormat.of().parseHex("00112233445566778899aabbccddeeff"), bytes);
+            assertArrayEquals(bytes, (byte[])writer.invoke(null, "00112233-4455-6677-8899-AABBCCDDEEFF"));
+            assertNull(writer.invoke(null, (Object)null));
             var metadata = new RowSetMetaDataImpl();
             metadata.setColumnCount(1);
             metadata.setColumnName(1, "eni_uuid");
@@ -100,7 +117,7 @@ public class FactoryJavaGeneratorTest {
             try(var rows = RowSetProvider.newFactory().createCachedRowSet()) {
                 rows.setMetaData(metadata);
                 rows.moveToInsertRow();
-                rows.updateBytes(1, HexFormat.of().parseHex("00112233445566778899aabbccddeeff"));
+                rows.updateBytes(1, bytes);
                 rows.insertRow();
                 rows.moveToCurrentRow();
                 rows.beforeFirst();

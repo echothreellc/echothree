@@ -162,18 +162,12 @@ public class FactoryJavaGenerator extends JavaGenerator {
                 if(!updateColumns.isEmpty())
                     updateColumns += ", ";
                 updateColumns += column.getDbColumnName();
-                if(type == ColumnDataType.UUID)
-                    updateColumns += " = UUID_TO_BIN(?)";
-                else
-                    updateColumns += " = ?";
+                updateColumns += " = ?";
             }
             
             if(!questionMarks.isEmpty())
                 questionMarks += ", ";
-            if(type == ColumnDataType.UUID)
-                questionMarks += "UUID_TO_BIN(?)";
-            else
-                questionMarks += "?";
+            questionMarks += "?";
         }
 
         // These two Strings need to have the PK added to the beginning of them.
@@ -419,7 +413,7 @@ public class FactoryJavaGenerator extends JavaGenerator {
                     case ColumnDataType.CLOB ->
                             pw.println("                _ps.setCharacterStream(" + parameterCount + ", new StringReader(" + dbColumnName + "), " + dbColumnName + ".length());");
                     case ColumnDataType.UUID ->
-                            pw.println("                _ps.setString(" + parameterCount + ", " + dbColumnName + ");");
+                            pw.println("                _ps.setBytes(" + parameterCount + ", uuidToBytes(" + dbColumnName + "));");
                     default -> pw.println("<error>");
                 }
 
@@ -607,7 +601,7 @@ public class FactoryJavaGenerator extends JavaGenerator {
                     case ColumnDataType.CLOB ->
                             pw.println("            _ps.setCharacterStream(" + parameterCount + ", new StringReader(" + dbColumnName + "), " + dbColumnName + ".length());");
                     case ColumnDataType.UUID ->
-                            pw.println("            _ps.setString(" + parameterCount + ", " + dbColumnName + ");");
+                            pw.println("            _ps.setBytes(" + parameterCount + ", uuidToBytes(" + dbColumnName + "));");
                     default -> pw.println("<error>");
                 }
                 
@@ -1208,6 +1202,20 @@ public class FactoryJavaGenerator extends JavaGenerator {
     
     public void writeFactoryUuidFunction(PrintWriter pw) {
         pw.println("""
+                    public static byte[] uuidToBytes(String value) {
+                        byte[] bytes = null;
+
+                        if(value != null) {
+                            var uuid = java.util.UUID.fromString(value);
+                            bytes = java.nio.ByteBuffer.allocate(16)
+                                    .putLong(uuid.getMostSignificantBits())
+                                    .putLong(uuid.getLeastSignificantBits())
+                                    .array();
+                        }
+
+                        return bytes;
+                    }
+
                     private static String getUuidFromResultSet(ResultSet rs, String columnName)
                             throws SQLException, PersistenceDatabaseException {
                         var bytes = rs.getBytes(columnName);
@@ -1217,11 +1225,11 @@ public class FactoryJavaGenerator extends JavaGenerator {
                             if(bytes.length != 16) {
                                 throw new PersistenceDatabaseException("Expected 16 bytes for UUID column " + columnName);
                             }
-                            
+
                             var buffer = java.nio.ByteBuffer.wrap(bytes);
                             uuid = new java.util.UUID(buffer.getLong(), buffer.getLong()).toString();
                         }
-                        
+
                         return uuid;
                     }
 
