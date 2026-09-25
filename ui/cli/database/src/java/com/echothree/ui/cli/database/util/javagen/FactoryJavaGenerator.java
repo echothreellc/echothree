@@ -153,10 +153,7 @@ public class FactoryJavaGenerator extends JavaGenerator {
             } else {
                 if(!allColumnsExceptPk.isEmpty())
                     allColumnsExceptPk += ", ";
-                if(type == ColumnDataType.UUID)
-                    allColumnsExceptPk += "BIN_TO_UUID(" + column.getDbColumnName() + ") AS " + column.getDbColumnName();
-                else
-                    allColumnsExceptPk += column.getDbColumnName();
+                allColumnsExceptPk += column.getDbColumnName();
 
                 if(!insertAllColumns.isEmpty())
                     insertAllColumns += ", ";
@@ -1213,21 +1210,16 @@ public class FactoryJavaGenerator extends JavaGenerator {
         pw.println("""
                     private static String getUuidFromResultSet(ResultSet rs, String columnName)
                             throws SQLException, PersistenceDatabaseException {
-                        // jOOQ selects raw BINARY(16); legacy queries may already apply BIN_TO_UUID.
-                        var value = rs.getObject(columnName);
-                        String uuid;
-                        
-                        // Includes null check.
-                        if(value instanceof byte[] bytes) {
+                        var bytes = rs.getBytes(columnName);
+                        String uuid = null;
+
+                        if(bytes != null) {
                             if(bytes.length != 16) {
                                 throw new PersistenceDatabaseException("Expected 16 bytes for UUID column " + columnName);
                             }
                             
-                            // UUID_TO_BIN is used without the optional time-part swap flag.
                             var buffer = java.nio.ByteBuffer.wrap(bytes);
                             uuid = new java.util.UUID(buffer.getLong(), buffer.getLong()).toString();
-                        } else {
-                            uuid = (String)value;
                         }
                         
                         return uuid;

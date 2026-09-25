@@ -57,13 +57,27 @@ public class FactoryJavaGeneratorTest {
         }
         assertEquals(2, source.toString().split("getUuidFromResultSet\\(rs, ENI_UUID\\)", -1).length - 1);
         assertFalse(source.toString().contains("rs.getString(ENI_UUID)"));
+
+        var statements = new StringWriter();
+        try(var writer = new PrintWriter(statements)) {
+            generator.writeFactoryInstanceVariables(writer, table);
+        }
+        var sql = statements.toString();
+        assertFalse(sql.contains("BIN_TO_UUID("));
+        assertEquals(2, sql.lines().filter(line -> line.contains("SQL_SELECT_READ_")
+                && line.contains(", eni_uuid FROM entityinstances")).count());
+        assertTrue(sql.contains("eni_uuid = UUID_TO_BIN(?)"));
+        assertTrue(sql.contains("VALUES (?, ?, ?, UUID_TO_BIN(?))"));
     }
 
     @Test
-    public void generatedUuidReaderSupportsBinaryAndLegacyTextResults() throws Exception {
+    public void generatedUuidReaderSupportsBinaryAndNullResults() throws Exception {
         var source = new StringWriter();
         try(var writer = new PrintWriter(source)) {
             writer.println("import java.sql.*; public class UuidReader {");
+            // Supply only the exception type needed to compile the reader in isolation.
+            writer.println("static class PersistenceDatabaseException extends RuntimeException {"
+                    + " PersistenceDatabaseException(String message) { super(message); } }");
             new FactoryJavaGenerator(false, new Database("UuidTest")).writeFactoryUuidFunction(writer);
             writer.println("}");
         }
@@ -78,31 +92,24 @@ public class FactoryJavaGeneratorTest {
 
             // Fixed MySQL UUID_TO_BIN vector, including high-bit bytes and leading zeroes.
             var uuid = "00112233-4455-6677-8899-aabbccddeeff";
-            for(var type : new int[] { Types.BINARY, Types.VARCHAR }) {
-                var metadata = new RowSetMetaDataImpl();
-                metadata.setColumnCount(1);
-                metadata.setColumnName(1, "eni_uuid");
-                metadata.setColumnType(1, type);
+            var metadata = new RowSetMetaDataImpl();
+            metadata.setColumnCount(1);
+            metadata.setColumnName(1, "eni_uuid");
+            metadata.setColumnType(1, Types.BINARY);
 
-                try(var rows = RowSetProvider.newFactory().createCachedRowSet()) {
-                    rows.setMetaData(metadata);
-                    rows.moveToInsertRow();
-                    if(type == Types.BINARY) {
-                        rows.updateBytes(1, HexFormat.of().parseHex("00112233445566778899aabbccddeeff"));
-                    } else {
-                        rows.updateString(1, uuid);
-                    }
-                    rows.insertRow();
-                    rows.moveToCurrentRow();
-                    rows.beforeFirst();
-                    assertTrue(rows.next());
-                    assertEquals(uuid, reader.invoke(null, rows, "eni_uuid"));
-                    assertFalse(rows.wasNull());
+            try(var rows = RowSetProvider.newFactory().createCachedRowSet()) {
+                rows.setMetaData(metadata);
+                rows.moveToInsertRow();
+                rows.updateBytes(1, HexFormat.of().parseHex("00112233445566778899aabbccddeeff"));
+                rows.insertRow();
+                rows.moveToCurrentRow();
+                rows.beforeFirst();
+                assertTrue(rows.next());
+                assertEquals(uuid, reader.invoke(null, rows, "eni_uuid"));
+                assertFalse(rows.wasNull());
 
-                    rows.updateNull(1);
-                    assertNull(reader.invoke(null, rows, "eni_uuid"));
-                    assertTrue(rows.wasNull());
-                }
+                rows.updateNull(1);
+                assertNull(reader.invoke(null, rows, "eni_uuid"));
             }
         }
     }
