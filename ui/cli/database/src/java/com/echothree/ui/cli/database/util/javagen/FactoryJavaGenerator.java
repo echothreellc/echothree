@@ -803,7 +803,7 @@ public class FactoryJavaGenerator extends JavaGenerator {
                         valueParameters += ", " + dbColumnName + " == null? null: " + dbColumnName + ".getSubString(1L, (int)" + dbColumnName + ".length())";
                     }
                     case ColumnDataType.UUID -> {
-                        pw.println("                String " + dbColumnName + " = rs.getString(" + dbColumnName.toUpperCase(Locale.ROOT) + ");");
+                        pw.println("                String " + dbColumnName + " = getUuidFromResultSet(rs, " + dbColumnName.toUpperCase(Locale.ROOT) + ");");
                         valueParameters += ", " + dbColumnName;
                     }
                     default -> pw.println("<error>");
@@ -1176,7 +1176,7 @@ public class FactoryJavaGenerator extends JavaGenerator {
                         valueParameters += ", " + dbColumnName + " == null? null: " + dbColumnName + ".getSubString(1L, (int)" + dbColumnName + ".length())";
                     }
                     case ColumnDataType.UUID -> {
-                        pw.println("                String " + dbColumnName + " = rs.getString(" + dbColumnName.toUpperCase(Locale.ROOT) + ");");
+                        pw.println("                String " + dbColumnName + " = getUuidFromResultSet(rs, " + dbColumnName.toUpperCase(Locale.ROOT) + ");");
                         valueParameters += ", " + dbColumnName;
                     }
                     default -> pw.println("<error>");
@@ -1209,6 +1209,33 @@ public class FactoryJavaGenerator extends JavaGenerator {
         pw.println("    ");
     }
     
+    public void writeFactoryUuidFunction(PrintWriter pw) {
+        pw.println("""
+                    private static String getUuidFromResultSet(ResultSet rs, String columnName)
+                            throws SQLException, PersistenceDatabaseException {
+                        // jOOQ selects raw BINARY(16); legacy queries may already apply BIN_TO_UUID.
+                        var value = rs.getObject(columnName);
+                        String uuid;
+                        
+                        // Includes null check.
+                        if(value instanceof byte[] bytes) {
+                            if(bytes.length != 16) {
+                                throw new PersistenceDatabaseException("Expected 16 bytes for UUID column " + columnName);
+                            }
+                            
+                            // UUID_TO_BIN is used without the optional time-part swap flag.
+                            var buffer = java.nio.ByteBuffer.wrap(bytes);
+                            uuid = new java.util.UUID(buffer.getLong(), buffer.getLong()).toString();
+                        } else {
+                            uuid = (String)value;
+                        }
+                        
+                        return uuid;
+                    }
+
+                """);
+    }
+
     public void writeFactoryValidFunction(PrintWriter pw, Table theTable) {
         pw.println("    @Override");
         pw.println("    public boolean validPK(" + theTable.getPKClass() + " pk)");
@@ -1260,6 +1287,9 @@ public class FactoryJavaGenerator extends JavaGenerator {
         
         writeFactoryPrepareFunction(pw, theTable);
         writeFactoryPkFunctions(pw, theTable);
+        if(theTable.getColumns().stream().anyMatch(column -> column.getType() == ColumnDataType.UUID)) {
+            writeFactoryUuidFunction(pw);
+        }
         writeFactoryValueFunctions(pw, theTable);
         writeFactoryEntityFunctions(pw, theTable);
         
