@@ -105,14 +105,12 @@ public class ItemObject
 
     @GraphQLField
     @GraphQLDescription("item type")
-    @GraphQLNonNull
     public ItemTypeObject getItemType(final DataFetchingEnvironment env) {
         return ItemSecurityUtils.getHasItemTypeAccess(env) ? new ItemTypeObject(getItemDetail().getItemType()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("item use type")
-    @GraphQLNonNull
     public ItemUseTypeObject getItemUseType(final DataFetchingEnvironment env) {
         return ItemSecurityUtils.getHasItemUseTypeAccess(env) ? new ItemUseTypeObject(getItemDetail().getItemUseType()) : null;
     }
@@ -137,7 +135,6 @@ public class ItemObject
 
     @GraphQLField
     @GraphQLDescription("company")
-    @GraphQLNonNull
     public CompanyObject getCompany(final DataFetchingEnvironment env) {
         var companyParty = getItemDetail().getCompanyParty();
 
@@ -146,14 +143,12 @@ public class ItemObject
 
     @GraphQLField
     @GraphQLDescription("item delivery type")
-    @GraphQLNonNull
     public ItemDeliveryTypeObject getItemDeliveryType(final DataFetchingEnvironment env) {
         return ItemSecurityUtils.getHasItemDeliveryTypeAccess(env) ? new ItemDeliveryTypeObject(getItemDetail().getItemDeliveryType()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("item inventory type")
-    @GraphQLNonNull
     public ItemInventoryTypeObject getItemInventoryType(final DataFetchingEnvironment env) {
         return ItemSecurityUtils.getHasItemInventoryTypeAccess(env) ? new ItemInventoryTypeObject(getItemDetail().getItemInventoryType()) : null;
     }
