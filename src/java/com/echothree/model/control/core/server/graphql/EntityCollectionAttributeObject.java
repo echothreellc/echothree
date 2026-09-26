@@ -17,27 +17,34 @@
 package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.data.core.common.EntityCollectionAttributeConstants;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
+import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.stream.Collectors;
 
-@GraphQLDescription("entity multiple list item attributes object")
+@GraphQLDescription("entity collection attribute object")
 @GraphQLName("EntityCollectionAttributes")
-public class EntityCollectionAttributesObject
+public class EntityCollectionAttributeObject
         implements BaseGraphQl, AttributeInterface {
 
     private final EntityAttribute entityAttribute; // Always Present
     private final EntityInstance entityInstance; // Always Present
 
-    public EntityCollectionAttributesObject(final EntityAttribute entityAttribute, final EntityInstance entityInstance) {
+    public EntityCollectionAttributeObject(final EntityAttribute entityAttribute, final EntityInstance entityInstance) {
         this.entityAttribute = entityAttribute;
         this.entityInstance = entityInstance;
     }
@@ -56,20 +63,28 @@ public class EntityCollectionAttributesObject
 
     @GraphQLField
     @GraphQLDescription("entity instance attributes")
-    public Collection<EntityInstanceObject> getEntityInstanceAttributes(final DataFetchingEnvironment env) {
-        List<EntityInstanceObject> entityCollectionAttributeObjects = null;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<EntityInstanceObject> getEntityInstanceAttributes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<EntityInstanceObject> entityInstanceObjects;
 
         if(CoreSecurityUtils.getHasEntityInstanceAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
-            var entityCollectionAttributes = coreControl.getEntityCollectionAttributes(entityAttribute, entityInstance);
-            entityCollectionAttributeObjects = new ArrayList<>(entityCollectionAttributes.size());
+            var totalCount = coreControl.countEntityCollectionAttributes(entityAttribute, entityInstance);
 
-            for(var entityCollectionAttribute : entityCollectionAttributes) {
-                entityCollectionAttributeObjects.add(new EntityInstanceObject(entityCollectionAttribute.getEntityInstanceAttribute()));
+            try(var objectLimiter = new ObjectLimiter(env, EntityCollectionAttributeConstants.COMPONENT_VENDOR_NAME, EntityCollectionAttributeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = coreControl.getEntityCollectionAttributes(entityAttribute, entityInstance);
+                var entityInstances = entities.stream()
+                        .map(entity -> new EntityInstanceObject(entity.getEntityInstanceAttribute()))
+                        .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                entityInstanceObjects = new CountedObjects<>(objectLimiter, entityInstances);
             }
+        } else {
+            entityInstanceObjects = Connections.emptyConnection();
         }
 
-        return entityCollectionAttributeObjects;
+        return entityInstanceObjects;
     }
     
 }

@@ -1835,20 +1835,26 @@
                         <index type="PrimaryKey">
                             <indexColumn name="EntityCollectionAttributeId" />
                         </index>
-                        <index type="Multiple" name="Index1">
+                        <index type="Unique" name="Index1">
                             <indexColumn name="EntityAttributeId" />
                             <indexColumn name="EntityInstanceId" />
+                            <indexColumn name="EntityInstanceAttributeId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index2">
                             <indexColumn name="EntityAttributeId" />
-                            <indexColumn name="ThruTime" />
-                        </index>
-                        <index type="Multiple" name="Index3">
                             <indexColumn name="EntityInstanceId" />
                             <indexColumn name="ThruTime" />
                         </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="EntityAttributeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
                         <index type="Multiple" name="Index4">
+                            <indexColumn name="EntityInstanceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
                             <indexColumn name="EntityInstanceAttributeId" />
                             <indexColumn name="ThruTime" />
                         </index>

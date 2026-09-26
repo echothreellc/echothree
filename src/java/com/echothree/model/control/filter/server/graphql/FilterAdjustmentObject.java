@@ -18,8 +18,16 @@ package com.echothree.model.control.filter.server.graphql;
 
 import com.echothree.model.control.filter.server.control.FilterAdjustmentControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.filter.common.FilterAdjustmentAmountConstants;
+import com.echothree.model.data.filter.common.FilterAdjustmentFixedAmountConstants;
+import com.echothree.model.data.filter.common.FilterAdjustmentPercentConstants;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentDetail;
 import com.echothree.util.server.persistence.Session;
@@ -27,9 +35,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("filter adjustment object")
 @GraphQLName("FilterAdjustment")
@@ -107,37 +116,47 @@ public class FilterAdjustmentObject
 
     @GraphQLField
     @GraphQLDescription("filter adjustment amounts")
-    public Collection<FilterAdjustmentAmountObject> getFilterAdjustmentAmounts(final DataFetchingEnvironment env) {
-        Collection<FilterAdjustmentAmountObject> filterAdjustmentAmountObjects = null;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<FilterAdjustmentAmountObject> getFilterAdjustmentAmounts(final DataFetchingEnvironment env) {
+        CountingPaginatedData<FilterAdjustmentAmountObject> filterAdjustmentAmountObjects;
 
         if(FilterSecurityUtils.getHasFilterAdjustmentAmountsAccess(env)) {
             var filterAdjustmentControl = Session.getModelController(FilterAdjustmentControl.class);
-            var filterAdjustmentAmounts = filterAdjustmentControl.getFilterAdjustmentAmounts(filterAdjustment);
+            var totalCount = filterAdjustmentControl.countFilterAdjustmentAmountsByFilterAdjustment(filterAdjustment);
 
-            filterAdjustmentAmountObjects = new ArrayList<>(filterAdjustmentAmounts.size());
+            try(var objectLimiter = new ObjectLimiter(env, FilterAdjustmentAmountConstants.COMPONENT_VENDOR_NAME, FilterAdjustmentAmountConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = filterAdjustmentControl.getFilterAdjustmentAmounts(filterAdjustment);
+                var items = entities.stream().map(FilterAdjustmentAmountObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-            filterAdjustmentAmounts.stream()
-                    .map(FilterAdjustmentAmountObject::new)
-                    .forEachOrdered(filterAdjustmentAmountObjects::add);
+                filterAdjustmentAmountObjects = new CountedObjects<>(objectLimiter, items);
+            }
+        } else {
+            filterAdjustmentAmountObjects = Connections.emptyConnection();
         }
 
         return filterAdjustmentAmountObjects;
     }
 
     @GraphQLField
-    @GraphQLDescription("filter adjustment amounts")
-    public Collection<FilterAdjustmentFixedAmountObject> getFilterAdjustmentFixedAmounts(final DataFetchingEnvironment env) {
-        Collection<FilterAdjustmentFixedAmountObject> filterAdjustmentFixedAmountObjects = null;
+    @GraphQLDescription("filter adjustment fixed amounts")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<FilterAdjustmentFixedAmountObject> getFilterAdjustmentFixedAmounts(final DataFetchingEnvironment env) {
+        CountingPaginatedData<FilterAdjustmentFixedAmountObject> filterAdjustmentFixedAmountObjects;
 
         if(FilterSecurityUtils.getHasFilterAdjustmentFixedAmountsAccess(env)) {
             var filterAdjustmentControl = Session.getModelController(FilterAdjustmentControl.class);
-            var filterAdjustmentFixedAmounts = filterAdjustmentControl.getFilterAdjustmentFixedAmounts(filterAdjustment);
+            var totalCount = filterAdjustmentControl.countFilterAdjustmentFixedAmountsByFilterAdjustment(filterAdjustment);
 
-            filterAdjustmentFixedAmountObjects = new ArrayList<>(filterAdjustmentFixedAmounts.size());
+            try(var objectLimiter = new ObjectLimiter(env, FilterAdjustmentFixedAmountConstants.COMPONENT_VENDOR_NAME, FilterAdjustmentFixedAmountConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = filterAdjustmentControl.getFilterAdjustmentFixedAmounts(filterAdjustment);
+                var items = entities.stream().map(FilterAdjustmentFixedAmountObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-            filterAdjustmentFixedAmounts.stream()
-                    .map(FilterAdjustmentFixedAmountObject::new)
-                    .forEachOrdered(filterAdjustmentFixedAmountObjects::add);
+                filterAdjustmentFixedAmountObjects = new CountedObjects<>(objectLimiter, items);
+            }
+        } else {
+            filterAdjustmentFixedAmountObjects = Connections.emptyConnection();
         }
 
         return filterAdjustmentFixedAmountObjects;
@@ -145,18 +164,23 @@ public class FilterAdjustmentObject
 
     @GraphQLField
     @GraphQLDescription("filter adjustment percents")
-    public Collection<FilterAdjustmentPercentObject> getFilterAdjustmentPercents(final DataFetchingEnvironment env) {
-        Collection<FilterAdjustmentPercentObject> filterAdjustmentPercentObjects = null;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<FilterAdjustmentPercentObject> getFilterAdjustmentPercents(final DataFetchingEnvironment env) {
+        CountingPaginatedData<FilterAdjustmentPercentObject> filterAdjustmentPercentObjects;
 
         if(FilterSecurityUtils.getHasFilterAdjustmentPercentsAccess(env)) {
             var filterAdjustmentControl = Session.getModelController(FilterAdjustmentControl.class);
-            var filterAdjustmentPercents = filterAdjustmentControl.getFilterAdjustmentPercents(filterAdjustment);
+            var totalCount = filterAdjustmentControl.countFilterAdjustmentPercentsByFilterAdjustment(filterAdjustment);
 
-            filterAdjustmentPercentObjects = new ArrayList<>(filterAdjustmentPercents.size());
+            try(var objectLimiter = new ObjectLimiter(env, FilterAdjustmentPercentConstants.COMPONENT_VENDOR_NAME, FilterAdjustmentPercentConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = filterAdjustmentControl.getFilterAdjustmentPercents(filterAdjustment);
+                var items = entities.stream().map(FilterAdjustmentPercentObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-            filterAdjustmentPercents.stream()
-                    .map(FilterAdjustmentPercentObject::new)
-                    .forEachOrdered(filterAdjustmentPercentObjects::add);
+                filterAdjustmentPercentObjects = new CountedObjects<>(objectLimiter, items);
+            }
+        } else {
+            filterAdjustmentPercentObjects = Connections.emptyConnection();
         }
 
         return filterAdjustmentPercentObjects;

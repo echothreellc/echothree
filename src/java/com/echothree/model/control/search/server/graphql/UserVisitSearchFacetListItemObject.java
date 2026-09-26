@@ -40,7 +40,6 @@ public class UserVisitSearchFacetListItemObject  {
 
     @GraphQLField
     @GraphQLDescription("entity list item")
-    @GraphQLNonNull
     public EntityListItemObject getEntityListItem(final DataFetchingEnvironment env) {
         return CoreSecurityUtils.getHasEntityListItemAccess(env) ? new EntityListItemObject(entityListItem) : null;
     }

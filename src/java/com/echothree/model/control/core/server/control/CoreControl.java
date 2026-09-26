@@ -314,6 +314,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import javax.inject.Inject;
+import org.jooq.Condition;
 
 @CommandScope
 public class CoreControl
@@ -6427,6 +6428,32 @@ public class CoreControl
         return entityCollectionAttribute;
     }
     
+    private long countEntityCollectionAttributes(Condition condition) {
+        return session.getDslContext()
+                .selectCount()
+                .from(EntityCollectionAttributes)
+                .where(condition, EntityCollectionAttributes.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
+    }
+
+    public long countEntityCollectionAttributesByEntityAttribute(EntityAttribute entityAttribute) {
+        return countEntityCollectionAttributes(EntityCollectionAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey()));
+    }
+
+    public long countEntityCollectionAttributesByEntityInstance(EntityInstance entityInstance) {
+        return countEntityCollectionAttributes(EntityCollectionAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey()));
+    }
+
+    public long countEntityCollectionAttributesByEntityInstanceAttribute(EntityInstance entityInstanceAttribute) {
+        return countEntityCollectionAttributes(EntityCollectionAttributes.ENTITY_INSTANCE_ATTRIBUTE.eq(entityInstanceAttribute.getPrimaryKey()));
+    }
+
+    public long countEntityCollectionAttributes(EntityAttribute entityAttribute, EntityInstance entityInstance) {
+        return countEntityCollectionAttributes(EntityCollectionAttributes.ENTITY_ATTRIBUTE.eq(entityAttribute.getPrimaryKey())
+                .and(EntityCollectionAttributes.ENTITY_INSTANCE.eq(entityInstance.getPrimaryKey())));
+    }
+
     public List<EntityCollectionAttribute> getEntityCollectionAttributes(EntityAttribute entityAttribute, EntityInstance entityInstance) {
         var query = session.applyLimit(session.getDslContext()
                 .select(EntityCollectionAttributes.fields())

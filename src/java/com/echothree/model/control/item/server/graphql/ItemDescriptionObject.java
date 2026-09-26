@@ -31,7 +31,6 @@ import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("item description object")
@@ -95,7 +94,6 @@ public class ItemDescriptionObject
 
     @GraphQLField
     @GraphQLDescription("item description type")
-    @GraphQLNonNull
     public ItemDescriptionTypeObject getItemDescriptionType(final DataFetchingEnvironment env) {
         var itemDescriptionType = getItemDescriptionDetail().getItemDescriptionType();
 
@@ -104,7 +102,6 @@ public class ItemDescriptionObject
 
     @GraphQLField
     @GraphQLDescription("item")
-    @GraphQLNonNull
     public ItemObject getItem(final DataFetchingEnvironment env) {
         var item = getItemDescriptionDetail().getItem();
 
@@ -113,7 +110,6 @@ public class ItemDescriptionObject
 
     @GraphQLField
     @GraphQLDescription("language")
-    @GraphQLNonNull
     public LanguageObject getLanguage(final DataFetchingEnvironment env) {
         var mimeType = getItemDescriptionDetail().getLanguage();
 

@@ -50,7 +50,6 @@ public class RelatedItemObject
 
     @GraphQLField
     @GraphQLDescription("related item type")
-    @GraphQLNonNull
     public RelatedItemTypeObject getRelatedItemType(final DataFetchingEnvironment env) {
         return ItemSecurityUtils.getHasItemAliasTypeAccess(env) ? new RelatedItemTypeObject(getRelatedItemDetail().getRelatedItemType(), null) : null;
     }
@@ -62,7 +61,7 @@ public class RelatedItemObject
     }
 
     @GraphQLField
-    @GraphQLDescription("toitem")
+    @GraphQLDescription("to item")
     public ItemObject getToItem(final DataFetchingEnvironment env) {
         return ItemSecurityUtils.getHasItemAccess(env) ? new ItemObject(getRelatedItemDetail().getToItem()) : null;
     }

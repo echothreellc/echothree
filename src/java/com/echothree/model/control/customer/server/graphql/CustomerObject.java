@@ -71,7 +71,6 @@ public class CustomerObject
 
     @GraphQLField
     @GraphQLDescription("customer type")
-    @GraphQLNonNull
     public CustomerTypeObject getCustomerType(final DataFetchingEnvironment env) {
         return CustomerSecurityUtils.getHasCustomerTypeAccess(env) ?
                 new CustomerTypeObject(getCustomer().getCustomerType()) : null;
@@ -79,7 +78,6 @@ public class CustomerObject
 
     @GraphQLField
     @GraphQLDescription("initial offer use")
-    @GraphQLNonNull
     public OfferUseObject getInitialOfferUse(final DataFetchingEnvironment env) {
         return OfferSecurityUtils.getHasOfferUseAccess(env) ?
                 new OfferUseObject(getCustomer().getInitialOfferUse()) : null;

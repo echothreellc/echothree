@@ -61,10 +61,10 @@ public class InventoryTransactionRoleTypeObject
 
     @GraphQLField
     @GraphQLDescription("inventory transaction type")
-    @GraphQLNonNull
     public InventoryTransactionTypeObject getInventoryTransactionType(final DataFetchingEnvironment env) {
-        return InventorySecurityUtils.getHasInventoryTransactionTypeAccess(
-                env) ? new InventoryTransactionTypeObject(getInventoryTransactionRoleTypeDetail().getInventoryTransactionType()) : null;
+        return InventorySecurityUtils.getHasInventoryTransactionTypeAccess(env) ?
+                new InventoryTransactionTypeObject(getInventoryTransactionRoleTypeDetail().getInventoryTransactionType()) :
+                null;
     }
 
     @GraphQLField

@@ -79,7 +79,6 @@ public class ContentCatalogObject
 
     @GraphQLField
     @GraphQLDescription("default offer use")
-    @GraphQLNonNull
     public OfferUseObject getDefaultOfferUse(final DataFetchingEnvironment env) {
         return OfferSecurityUtils.getHasOfferUseAccess(env) ?
                 new OfferUseObject(getContentCatalogDetail().getDefaultOfferUse()) : null;

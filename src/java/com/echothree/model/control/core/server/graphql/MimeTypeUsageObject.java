@@ -21,7 +21,6 @@ import com.echothree.model.data.core.server.entity.MimeTypeUsage;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("mime type usage object")
@@ -37,14 +36,12 @@ public class MimeTypeUsageObject
 
     @GraphQLField
     @GraphQLDescription("mime type")
-    @GraphQLNonNull
     public MimeTypeObject getMimeType(final DataFetchingEnvironment env) {
         return CoreSecurityUtils.getHasMimeTypeAccess(env) ? new MimeTypeObject(mimeTypeUsage.getMimeType()) : null;
     }
     
     @GraphQLField
     @GraphQLDescription("mime type usage type")
-    @GraphQLNonNull
     public MimeTypeUsageTypeObject getMimeTypeUsageType(final DataFetchingEnvironment env) {
         return CoreSecurityUtils.getHasMimeTypeUsageTypeAccess(env) ? new MimeTypeUsageTypeObject(mimeTypeUsage.getMimeTypeUsageType()) : null;
     }

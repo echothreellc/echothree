@@ -61,7 +61,6 @@ public class InventoryDispositionAdjustmentObject
 
     @GraphQLField
     @GraphQLDescription("inventory adjustment type")
-    @GraphQLNonNull
     public InventoryAdjustmentTypeObject getInventoryAdjustmentType(final DataFetchingEnvironment env) {
         return InventorySecurityUtils.getHasInventoryAdjustmentTypeAccess(env)
                 ? new InventoryAdjustmentTypeObject(getInventoryDispositionAdjustmentDetail().getInventoryAdjustmentType()) : null;
@@ -69,7 +68,6 @@ public class InventoryDispositionAdjustmentObject
 
     @GraphQLField
     @GraphQLDescription("inventory bucket type")
-    @GraphQLNonNull
     public InventoryBucketTypeObject getInventoryBucketType(final DataFetchingEnvironment env) {
         return InventorySecurityUtils.getHasInventoryBucketTypeAccess(env)
                 ? new InventoryBucketTypeObject(getInventoryDispositionAdjustmentDetail().getInventoryBucketType()) : null;
@@ -77,7 +75,6 @@ public class InventoryDispositionAdjustmentObject
 
     @GraphQLField
     @GraphQLDescription("inventory disposition")
-    @GraphQLNonNull
     public InventoryDispositionObject getInventoryDisposition(final DataFetchingEnvironment env) {
         return InventorySecurityUtils.getHasInventoryDispositionAccess(
                 env) ? new InventoryDispositionObject(getInventoryDispositionAdjustmentDetail().getInventoryDisposition()) : null;

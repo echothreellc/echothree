@@ -237,7 +237,6 @@ public class ContactPostalAddressObject
 
     @GraphQLField
     @GraphQLDescription("country geo code")
-    @GraphQLNonNull
     public GeoCodeObject getCountryGeoCode(final DataFetchingEnvironment env) {
         if(GeoSecurityUtils.getHasGeoCodeAccess(env)) {
             return new GeoCodeObject(contactPostalAddress.getCountryGeoCode());

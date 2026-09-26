@@ -38,7 +38,6 @@ public class OrderTimeObject
 
     @GraphQLField
     @GraphQLDescription("order time type")
-    @GraphQLNonNull
     public OrderTimeTypeObject getOrderTimeType(final DataFetchingEnvironment env) {
         return OrderSecurityUtils.getHasOrderTimeTypeAccess(env) ? new OrderTimeTypeObject(orderTime.getOrderTimeType()) : null;
     }

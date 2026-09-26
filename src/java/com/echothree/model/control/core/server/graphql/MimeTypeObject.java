@@ -72,7 +72,6 @@ public class MimeTypeObject
 
     @GraphQLField
     @GraphQLDescription("entity attribute type")
-    @GraphQLNonNull
     public EntityAttributeTypeObject getEntityAttributeType(final DataFetchingEnvironment env) {
         return CoreSecurityUtils.getHasEntityAttributeTypeAccess(env) ? new EntityAttributeTypeObject(getMimeTypeDetail().getEntityAttributeType()) : null;
     }

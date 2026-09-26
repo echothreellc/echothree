@@ -23,7 +23,6 @@ import com.echothree.model.data.order.server.entity.OrderRole;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("order role type object")
@@ -47,7 +46,6 @@ public class OrderRoleObject
 
     @GraphQLField
     @GraphQLDescription("order role type")
-    @GraphQLNonNull
     public OrderRoleTypeObject getOrderRoleType(final DataFetchingEnvironment env) {
         return OrderSecurityUtils.getHasOrderRoleTypeAccess(env) ? new OrderRoleTypeObject(orderRole.getOrderRoleType()) : null;
     }

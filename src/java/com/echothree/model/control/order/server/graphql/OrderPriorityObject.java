@@ -61,7 +61,6 @@ public class OrderPriorityObject
 
     @GraphQLField
     @GraphQLDescription("order type")
-    @GraphQLNonNull
     public OrderTypeObject getOrderType(final DataFetchingEnvironment env) {
         return OrderSecurityUtils.getHasOrderTypeAccess(env) ? new OrderTypeObject(getOrderPriorityDetail().getOrderType()) : null;
     }

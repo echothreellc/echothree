@@ -23,7 +23,6 @@ import com.echothree.model.data.workflow.server.entity.WorkflowDestinationSelect
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("workflow destination selector object")
@@ -45,7 +44,6 @@ public class WorkflowDestinationSelectorObject
 
     @GraphQLField
     @GraphQLDescription("selector")
-    @GraphQLNonNull
     public SelectorObject getSelector(final DataFetchingEnvironment env) {
         return SelectorSecurityUtils.getHasSelectorAccess(env) ? new SelectorObject(workflowDestinationSelector.getSelector()) : null;
     }

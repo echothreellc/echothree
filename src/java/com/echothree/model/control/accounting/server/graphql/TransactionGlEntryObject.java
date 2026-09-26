@@ -40,7 +40,6 @@ public class TransactionGlEntryObject
 
     @GraphQLField
     @GraphQLDescription("transaction")
-    @GraphQLNonNull
     public TransactionObject getTransaction(final DataFetchingEnvironment env) {
         return AccountingSecurityUtils.getHasTransactionAccess(env) ?
                 new TransactionObject(transactionGlEntry.getTransaction()) :
@@ -56,7 +55,6 @@ public class TransactionGlEntryObject
 
     @GraphQLField
     @GraphQLDescription("group party")
-    @GraphQLNonNull
     public PartyObject getGroupParty(final DataFetchingEnvironment env) {
         var groupParty = transactionGlEntry.getGroupParty();
 
@@ -78,7 +76,6 @@ public class TransactionGlEntryObject
 
     @GraphQLField
     @GraphQLDescription("GL account")
-    @GraphQLNonNull
     public GlAccountObject getGlAccount(final DataFetchingEnvironment env) {
         return AccountingSecurityUtils.getHasGlAccountAccess(env) ?
                 new GlAccountObject(transactionGlEntry.getGlAccount()) :
@@ -87,7 +84,6 @@ public class TransactionGlEntryObject
 
     @GraphQLField
     @GraphQLDescription("original currency")
-    @GraphQLNonNull
     public CurrencyObject getOriginalCurrency(final DataFetchingEnvironment env) {
         return AccountingSecurityUtils.getHasCurrencyAccess(env) ?
                 new CurrencyObject(transactionGlEntry.getOriginalCurrency()) :

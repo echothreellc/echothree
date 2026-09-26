@@ -92,7 +92,6 @@ public abstract class BasePartyObject
 
     @GraphQLField
     @GraphQLDescription("party type")
-    @GraphQLNonNull
     public PartyTypeObject getPartyType(final DataFetchingEnvironment env) {
         return PartySecurityUtils.getHasPartyTypeAccess(env) ? new PartyTypeObject(getPartyDetail().getPartyType()) : null;
     }
