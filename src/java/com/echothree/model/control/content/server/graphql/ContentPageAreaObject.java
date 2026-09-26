@@ -95,7 +95,6 @@ public class ContentPageAreaObject
 
     @GraphQLField
     @GraphQLDescription("content page")
-    @GraphQLNonNull
     public ContentPageObject getContentPage(final DataFetchingEnvironment env) {
         return ContentSecurityUtils.getHasContentPageAccess(env) ? new ContentPageObject(getContentPageAreaDetail().getContentPage()) : null;
     }
@@ -109,14 +108,12 @@ public class ContentPageAreaObject
 
     @GraphQLField
     @GraphQLDescription("language")
-    @GraphQLNonNull
     public LanguageObject getLanguage(final DataFetchingEnvironment env) {
         return PartySecurityUtils.getHasLanguageAccess(env) ? new LanguageObject(getContentPageAreaDetail().getLanguage()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("mime type")
-    @GraphQLNonNull
     public MimeTypeObject getMimeType(final DataFetchingEnvironment env) {
         return CoreSecurityUtils.getHasMimeTypeAccess(env) ? new MimeTypeObject(getContentPageAreaDetail().getMimeType()) : null;
     }

@@ -57,7 +57,6 @@ public abstract class BaseOrderObject
 
     @GraphQLField
     @GraphQLDescription("order type")
-    @GraphQLNonNull
     public OrderTypeObject getOrderType(final DataFetchingEnvironment env) {
         return OrderSecurityUtils.getHasOrderTypeAccess(env) ? new OrderTypeObject(getOrderDetail().getOrderType()) : null;
     }
@@ -80,7 +79,6 @@ public abstract class BaseOrderObject
 
     @GraphQLField
     @GraphQLDescription("currency")
-    @GraphQLNonNull
     public CurrencyObject getCurrency(final DataFetchingEnvironment env) {
         return AccountingSecurityUtils.getHasCurrencyAccess(env) ?
                 new CurrencyObject(getOrderDetail().getCurrency()) : null;

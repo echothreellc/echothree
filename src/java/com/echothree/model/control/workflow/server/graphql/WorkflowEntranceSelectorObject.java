@@ -23,7 +23,6 @@ import com.echothree.model.data.workflow.server.entity.WorkflowEntranceSelector;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("workflow entrance selector object")
@@ -45,7 +44,6 @@ public class WorkflowEntranceSelectorObject
 
     @GraphQLField
     @GraphQLDescription("selector")
-    @GraphQLNonNull
     public SelectorObject getSelector(final DataFetchingEnvironment env) {
         return SelectorSecurityUtils.getHasSelectorAccess(env) ? new SelectorObject(workflowEntranceSelector.getSelector()) : null;
     }

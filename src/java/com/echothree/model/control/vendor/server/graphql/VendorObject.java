@@ -86,7 +86,6 @@ public class VendorObject
 
     @GraphQLField
     @GraphQLDescription("vendor type")
-    @GraphQLNonNull
     public VendorTypeObject getVendorType(final DataFetchingEnvironment env) {
         return VendorSecurityUtils.getHasVendorTypeAccess(env) ?
                 new VendorTypeObject(getVendor().getVendorType()) : null;

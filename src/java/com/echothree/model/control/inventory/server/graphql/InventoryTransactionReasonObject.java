@@ -61,18 +61,18 @@ public class InventoryTransactionReasonObject
 
     @GraphQLField
     @GraphQLDescription("inventory transaction type")
-    @GraphQLNonNull
     public InventoryTransactionTypeObject getInventoryTransactionType(final DataFetchingEnvironment env) {
-        return InventorySecurityUtils.getHasInventoryTransactionTypeAccess(
-                env) ? new InventoryTransactionTypeObject(getInventoryTransactionReasonDetail().getInventoryTransactionType()) : null;
+        return InventorySecurityUtils.getHasInventoryTransactionTypeAccess(env) ?
+                new InventoryTransactionTypeObject(getInventoryTransactionReasonDetail().getInventoryTransactionType()) :
+                null;
     }
 
     @GraphQLField
     @GraphQLDescription("inventory disposition")
-    @GraphQLNonNull
     public InventoryDispositionObject getInventoryDisposition(final DataFetchingEnvironment env) {
-        return InventorySecurityUtils.getHasInventoryDispositionAccess(
-                env) ? new InventoryDispositionObject(getInventoryTransactionReasonDetail().getInventoryDisposition()) : null;
+        return InventorySecurityUtils.getHasInventoryDispositionAccess(env) ?
+                new InventoryDispositionObject(getInventoryTransactionReasonDetail().getInventoryDisposition()) :
+                null;
     }
 
     @GraphQLField

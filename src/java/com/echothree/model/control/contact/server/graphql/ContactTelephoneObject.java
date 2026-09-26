@@ -26,7 +26,6 @@ import com.echothree.util.common.persistence.BasePK;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("contact telephone object")
@@ -45,7 +44,6 @@ public class ContactTelephoneObject
 
     @GraphQLField
     @GraphQLDescription("country geo code")
-    @GraphQLNonNull
     public GeoCodeObject getCountryGeoCode(final DataFetchingEnvironment env) {
         if(GeoSecurityUtils.getHasGeoCodeAccess(env)) {
             return new GeoCodeObject(contactTelephone.getCountryGeoCode());

@@ -23,7 +23,6 @@ import com.echothree.model.data.tag.server.entity.EntityTag;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("entity tag object")
@@ -39,14 +38,12 @@ public class EntityTagObject
 
     @GraphQLField
     @GraphQLDescription("tagged entity instance")
-    @GraphQLNonNull
     public EntityInstanceObject getTaggedEntityInstance(final DataFetchingEnvironment env) {
         return CoreSecurityUtils.getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityTag.getTaggedEntityInstance()): null;
     }
 
     @GraphQLField
     @GraphQLDescription("tag")
-    @GraphQLNonNull
     public TagObject getTag(final DataFetchingEnvironment env) {
         return TagSecurityUtils.getHasTagAccess(env) ? new TagObject(entityTag.getTag()): null;
     }

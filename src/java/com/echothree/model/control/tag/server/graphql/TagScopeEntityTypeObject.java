@@ -23,7 +23,6 @@ import com.echothree.model.data.tag.server.entity.TagScopeEntityType;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("tag scope entity type object")
@@ -39,14 +38,12 @@ public class TagScopeEntityTypeObject
 
     @GraphQLField
     @GraphQLDescription("tag scope")
-    @GraphQLNonNull
     public TagScopeObject getTagScope(final DataFetchingEnvironment env) {
         return TagSecurityUtils.getHasTagScopeAccess(env) ? new TagScopeObject(tagScopeEntityType.getTagScope(), null): null;
     }
 
     @GraphQLField
     @GraphQLDescription("entity type")
-    @GraphQLNonNull
     public EntityTypeObject getEntityType(final DataFetchingEnvironment env) {
         return CoreSecurityUtils.getHasEntityTypeAccess(env) ? new EntityTypeObject(tagScopeEntityType.getEntityType()): null;
     }

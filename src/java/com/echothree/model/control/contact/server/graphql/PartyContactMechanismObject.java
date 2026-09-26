@@ -62,7 +62,6 @@ public class PartyContactMechanismObject
 
     @GraphQLField
     @GraphQLDescription("party")
-    @GraphQLNonNull
     public PartyObject getParty(final DataFetchingEnvironment env) {
         var party = partyContactMechanismDetail.getParty();
 

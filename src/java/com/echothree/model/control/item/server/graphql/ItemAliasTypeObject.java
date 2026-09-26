@@ -76,7 +76,6 @@ public class ItemAliasTypeObject
 
     @GraphQLField
     @GraphQLDescription("item alias checksum type")
-    @GraphQLNonNull
     public ItemAliasChecksumTypeObject getItemAliasChecksumType(final DataFetchingEnvironment env) {
         return ItemSecurityUtils.getHasItemAliasChecksumTypeAccess(env) ? new ItemAliasChecksumTypeObject(getItemAliasTypeDetail().getItemAliasChecksumType()) : null;
     }

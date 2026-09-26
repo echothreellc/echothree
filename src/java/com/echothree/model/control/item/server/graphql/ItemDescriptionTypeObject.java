@@ -101,7 +101,6 @@ public class ItemDescriptionTypeObject
 
     @GraphQLField
     @GraphQLDescription("mime type usage type")
-    @GraphQLNonNull
     public MimeTypeUsageTypeObject getMimeTypeUsageType(final DataFetchingEnvironment env) {
         var mimeTypeUsageType = getItemDescriptionTypeDetail().getMimeTypeUsageType();
 

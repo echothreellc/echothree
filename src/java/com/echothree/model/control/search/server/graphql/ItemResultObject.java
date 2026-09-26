@@ -22,7 +22,6 @@ import com.echothree.model.data.item.server.entity.Item;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("item result object")
@@ -37,7 +36,6 @@ public class ItemResultObject {
 
     @GraphQLField
     @GraphQLDescription("item")
-    @GraphQLNonNull
     public ItemObject getItem(final DataFetchingEnvironment env) {
         return ItemSecurityUtils.getHasItemAccess(env) ? new ItemObject(item) : null;
     }

@@ -56,7 +56,6 @@ public class TransactionEntityRoleTypeObject
     
     @GraphQLField
     @GraphQLDescription("transaction type")
-    @GraphQLNonNull
     public TransactionTypeObject getTransactionType(final DataFetchingEnvironment env) {
         return AccountingSecurityUtils.getHasTransactionTypeAccess(env) ?
                 new TransactionTypeObject(getTransactionEntityRoleTypeDetail().getTransactionType()) :

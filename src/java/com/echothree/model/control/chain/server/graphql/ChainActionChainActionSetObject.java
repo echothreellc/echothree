@@ -39,14 +39,12 @@ public class ChainActionChainActionSetObject
 
     @GraphQLField
     @GraphQLDescription("chain action")
-    @GraphQLNonNull
     public ChainActionObject getChainAction(final DataFetchingEnvironment env) {
         return ChainSecurityUtils.getHasChainActionAccess(env) ? new ChainActionObject(chainActionChainActionSet.getChainAction()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("next chain action set")
-    @GraphQLNonNull
     public ChainActionSetObject getNextChainActionSet(final DataFetchingEnvironment env) {
         return ChainSecurityUtils.getHasChainActionSetAccess(env) ? new ChainActionSetObject(chainActionChainActionSet.getNextChainActionSet()) : null;
     }
