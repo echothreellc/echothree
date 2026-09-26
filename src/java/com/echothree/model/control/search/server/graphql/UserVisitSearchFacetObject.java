@@ -34,7 +34,7 @@ public class UserVisitSearchFacetObject {
     final private Collection<UserVisitSearchFacetIntegerObject> userVisitSearchFacetIntegers;
     final private Collection<UserVisitSearchFacetLongObject> userVisitSearchFacetLongs;
 
-    /** Creates a new instance of UserVisitSearchFacetIntegerObject */
+    /** Creates a new instance of UserVisitSearchFacetObject */
     public UserVisitSearchFacetObject(EntityAttribute entityAttribute, Collection<UserVisitSearchFacetListItemObject> userVisitSearchFacetListItems,
             Collection<UserVisitSearchFacetIntegerObject> userVisitSearchFacetIntegers, Collection<UserVisitSearchFacetLongObject> userVisitSearchFacetLongs) {
         this.entityAttribute = entityAttribute;
