@@ -422,7 +422,7 @@ public class EntityAttributeObject
                     attributeInterface = entityClobAttribute == null ? null : new EntityClobAttributeObject(entityClobAttribute);
                 }
                 case COLLECTION -> {
-                    attributeInterface = new EntityCollectionAttributesObject(entityAttribute, entityInstance);
+                    attributeInterface = new EntityCollectionAttributeObject(entityAttribute, entityInstance);
                 }
                 case DATE -> {
                     var entityDateAttribute = coreControl.getEntityDateAttribute(entityAttribute, entityInstance);
