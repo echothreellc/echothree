@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 @GraphQLDescription("entity collection attribute object")
-@GraphQLName("EntityCollectionAttributes")
+@GraphQLName("EntityCollectionAttribute")
 public class EntityCollectionAttributeObject
         implements BaseGraphQl, AttributeInterface {
 

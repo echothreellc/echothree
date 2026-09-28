@@ -455,7 +455,7 @@ public class EntityAttributeObject
                     attributeInterface = entityLongAttribute == null ? null : new EntityLongAttributeObject(entityLongAttribute);
                 }
                 case MULTIPLELISTITEM -> {
-                    attributeInterface = new EntityMultipleListItemAttributesObject(entityAttribute, entityInstance);
+                    attributeInterface = new EntityMultipleListItemAttributeObject(entityAttribute, entityInstance);
                 }
                 case NAME -> {
                     var entityNameAttribute = coreControl.getEntityNameAttribute(entityAttribute, entityInstance);
