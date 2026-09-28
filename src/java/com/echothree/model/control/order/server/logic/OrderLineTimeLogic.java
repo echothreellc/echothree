@@ -126,7 +126,7 @@ public class OrderLineTimeLogic
         }
     }
 
-    private OrderLineTime getOrderLineTimeEntity(final ExecutionErrorAccumulator eea, final OrderLine orderLine, final String orderTimeTypeName) {
+    public OrderLineTime getOrderLineTime(final ExecutionErrorAccumulator eea, final OrderLine orderLine, final String orderTimeTypeName) {
         var orderLineDetail = orderLine.getLastDetail();
         var orderDetail = orderLineDetail.getOrder().getLastDetail();
         var orderType = orderDetail.getOrderType();
@@ -145,15 +145,9 @@ public class OrderLineTimeLogic
         return result;
     }
 
-    public Long getOrderLineTime(final ExecutionErrorAccumulator eea, final OrderLine orderLine, final String orderTimeTypeName) {
-        var orderLineTime = getOrderLineTimeEntity(eea, orderLine, orderTimeTypeName);
-        
-        return orderLineTime == null ? null : orderLineTime.getTime();
-    }
-
     public OrderLineTimeTransfer getOrderLineTimeTransfer(final ExecutionErrorAccumulator eea, final UserVisit userVisit, final OrderLine orderLine,
             final String orderTimeTypeName) {
-        var orderLineTime = getOrderLineTimeEntity(eea, orderLine, orderTimeTypeName);
+        var orderLineTime = getOrderLineTime(eea, orderLine, orderTimeTypeName);
         
         return orderLineTime == null ? null : orderTimeControl.getOrderLineTimeTransfer(userVisit, orderLineTime);
     }
