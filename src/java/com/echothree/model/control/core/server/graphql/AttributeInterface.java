@@ -20,7 +20,7 @@ import graphql.annotations.annotationTypes.GraphQLUnion;
 
 @GraphQLUnion(possibleTypes = {EntityBooleanAttributeObject.class, EntityCollectionAttributeObject.class, EntityClobAttributeObject.class,
         EntityDateAttributeObject.class, EntityEntityAttributeObject.class, EntityGeoPointAttributeObject.class, EntityIntegerAttributeObject.class,
-        EntityListItemAttributeObject.class, EntityLongAttributeObject.class, EntityMultipleListItemAttributesObject.class, EntityNameAttributeObject.class,
+        EntityListItemAttributeObject.class, EntityLongAttributeObject.class, EntityMultipleListItemAttributeObject.class, EntityNameAttributeObject.class,
         EntityStringAttributeObject.class, EntityTimeAttributeObject.class, EntityWorkflowAttributeObject.class})
 public interface AttributeInterface {
 
