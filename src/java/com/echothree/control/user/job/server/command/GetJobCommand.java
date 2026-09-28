@@ -23,12 +23,12 @@ import com.echothree.model.control.job.server.control.JobControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.job.server.entity.Job;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetJobCommand
-        extends BaseSimpleCommand<GetJobForm> {
+        extends BaseSingleEntityCommand<Job, GetJobForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -59,26 +59,33 @@ public class GetJobCommand
     @Inject
     JobControl jobControl;
 
-    
     /** Creates a new instance of GetJobCommand */
     public GetJobCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = JobResultFactory.getGetJobResult();
+    protected Job getEntity() {
         var jobName = form.getJobName();
         var job = jobControl.getJobByName(jobName);
         
         if(job != null) {
-            result.setJob(jobControl.getJobTransfer(getUserVisit(), job));
-            
             sendEvent(job.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownJobName.name(), jobName);
         }
         
+        return job;
+    }
+
+    @Override
+    protected BaseResult getResult(Job job) {
+        var result = JobResultFactory.getGetJobResult();
+
+        if(job != null) {
+            result.setJob(jobControl.getJobTransfer(getUserVisit(), job));
+        }
+
         return result;
     }
     
