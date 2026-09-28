@@ -18,19 +18,21 @@ package com.echothree.control.user.sales.server.command;
 
 import com.echothree.control.user.sales.common.form.GetSalesOrderLineTimeForm;
 import com.echothree.control.user.sales.common.result.SalesResultFactory;
-import com.echothree.model.control.sales.server.logic.SalesOrderLineTimeLogic;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.order.server.control.OrderTimeControl;
+import com.echothree.model.control.order.server.logic.OrderLineTimeLogic;
+import com.echothree.model.control.sales.server.logic.SalesOrderLineLogic;
+import com.echothree.model.data.order.server.entity.OrderLineTime;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetSalesOrderLineTimeCommand
-        extends BaseSimpleCommand<GetSalesOrderLineTimeForm> {
+        extends BaseSingleEntityCommand<OrderLineTime, GetSalesOrderLineTimeForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -43,24 +45,35 @@ public class GetSalesOrderLineTimeCommand
     }
 
     @Inject
-    SalesOrderLineTimeLogic salesOrderLineTimeLogic;
+    OrderTimeControl orderTimeControl;
 
-    
+    @Inject
+    OrderLineTimeLogic orderLineTimeLogic;
+
+    @Inject
+    SalesOrderLineLogic salesOrderLineLogic;
+
     /** Creates a new instance of GetSalesOrderLineTimeCommand */
     public GetSalesOrderLineTimeCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
-    protected BaseResult execute() {
+    protected OrderLineTime getEntity() {
+        var orderLine = salesOrderLineLogic.getOrderLineByName(this, form.getOrderName(), form.getOrderLineSequence());
+
+        return hasExecutionErrors() ? null : orderLineTimeLogic.getOrderLineTime(this, orderLine, form.getOrderTimeTypeName());
+    }
+
+    @Override
+    protected BaseResult getResult(OrderLineTime orderLineTime) {
         var result = SalesResultFactory.getGetSalesOrderLineTimeResult();
-        var orderName = form.getOrderName();
-        var orderLineSequence = form.getOrderLineSequence();
-        var orderTimeTypeName = form.getOrderTimeTypeName();
-        
-        result.setOrderLineTime(salesOrderLineTimeLogic.getOrderLineTimeTransfer(this, getUserVisit(), orderName, orderLineSequence, orderTimeTypeName));
-        
+
+        if(!hasExecutionErrors()) {
+            result.setOrderLineTime(orderTimeControl.getOrderLineTimeTransfer(getUserVisit(), orderLineTime));
+        }
+
         return result;
     }
-    
+
 }
