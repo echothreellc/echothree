@@ -22,17 +22,17 @@ import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.employee.common.workflow.EmployeeAvailabilityConstants;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.user.server.entity.UserSession;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetUserSessionCommand
-        extends BaseSimpleCommand<GetUserSessionForm> {
+        extends BaseSingleEntityCommand<UserSession, GetUserSessionForm> {
     
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -53,9 +53,13 @@ public class GetUserSessionCommand
     }
     
     @Override
-    protected BaseResult execute() {
+    protected UserSession getEntity() {
+        return getUserSession();
+    }
+
+    @Override
+    protected BaseResult getResult(UserSession userSession) {
         var result = UserResultFactory.getGetUserSessionResult();
-        var userSession = getUserSession();
         
         if(userSession != null) {
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(getPartyPK());
