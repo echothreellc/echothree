@@ -24,11 +24,12 @@ import com.echothree.model.control.payment.server.control.PartyPaymentMethodCont
 import com.echothree.model.control.payment.server.logic.PartyPaymentMethodLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.payment.server.entity.PartyPaymentMethod;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +39,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetPartyPaymentMethodCommand
-        extends BaseSimpleCommand<GetPartyPaymentMethodForm> {
+        extends BaseSingleEntityCommand<PartyPaymentMethod, GetPartyPaymentMethodForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -63,7 +64,6 @@ public class GetPartyPaymentMethodCommand
     @Inject
     PartyPaymentMethodLogic partyPaymentMethodLogic;
 
-    
     /** Creates a new instance of GetPartyPaymentMethodCommand */
     public GetPartyPaymentMethodCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -71,8 +71,7 @@ public class GetPartyPaymentMethodCommand
     
     
     @Override
-    protected BaseResult execute() {
-        var result = PaymentResultFactory.getGetPartyPaymentMethodResult();
+    protected PartyPaymentMethod getEntity() {
         var partyPaymentMethodName = form.getPartyPaymentMethodName();
         var partyPaymentMethod = partyPaymentMethodLogic.getPartyPaymentMethodByName(this, partyPaymentMethodName);
         
@@ -91,11 +90,20 @@ public class GetPartyPaymentMethodCommand
         }
 
         if(!hasExecutionErrors()) {
-            result.setPartyPaymentMethod(partyPaymentMethodControl.getPartyPaymentMethodTransfer(getUserVisit(), partyPaymentMethod));
-
             sendEvent(partyPaymentMethod.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
         
+        return partyPaymentMethod;
+    }
+
+    @Override
+    protected BaseResult getResult(PartyPaymentMethod partyPaymentMethod) {
+        var result = PaymentResultFactory.getGetPartyPaymentMethodResult();
+
+        if(!hasExecutionErrors()) {
+            result.setPartyPaymentMethod(partyPaymentMethodControl.getPartyPaymentMethodTransfer(getUserVisit(), partyPaymentMethod));
+        }
+
         return result;
     }
     
