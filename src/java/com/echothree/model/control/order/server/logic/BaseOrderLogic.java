@@ -23,14 +23,12 @@ import com.echothree.model.control.order.common.exception.DuplicateOrderPaymentP
 import com.echothree.model.control.order.common.exception.MustSpecifyPartyPaymentMethodException;
 import com.echothree.model.control.order.common.exception.MustSpecifyPaymentMethodOrPartyPaymentMethodException;
 import com.echothree.model.control.order.common.exception.MustSpecifyWasPresentException;
-import com.echothree.model.control.order.common.exception.UnknownOrderAliasTypeNameException;
 import com.echothree.model.control.order.common.exception.UnknownOrderNameException;
 import com.echothree.model.control.order.common.exception.UnknownOrderPaymentPreferenceSequenceException;
 import com.echothree.model.control.order.common.exception.UnknownOrderRoleTypeNameException;
 import com.echothree.model.control.order.common.exception.UnknownOrderSequenceException;
 import com.echothree.model.control.order.common.exception.UnknownOrderSequenceTypeException;
 import com.echothree.model.control.order.common.exception.UnknownOrderTypeNameException;
-import com.echothree.model.control.order.server.control.OrderAliasControl;
 import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.order.server.control.OrderLineControl;
 import com.echothree.model.control.order.server.control.OrderPaymentPreferenceControl;
@@ -45,7 +43,6 @@ import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.order.server.entity.Order;
-import com.echothree.model.data.order.server.entity.OrderAliasType;
 import com.echothree.model.data.order.server.entity.OrderPaymentPreference;
 import com.echothree.model.data.order.server.entity.OrderPriority;
 import com.echothree.model.data.order.server.entity.OrderRoleType;
@@ -66,15 +63,10 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.HashSet;
 import java.util.Set;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 public class BaseOrderLogic
         extends BaseLogic {
-
-    @Inject
-    OrderAliasControl orderAliasControl;
 
     @Inject
     OrderControl orderControl;
@@ -188,17 +180,6 @@ public class BaseOrderLogic
         }
 
         return order;
-    }
-
-    public OrderAliasType getOrderAliasTypeByName(final ExecutionErrorAccumulator eea, final OrderType orderType, final String orderAliasTypeName) {
-        var orderAliasType = orderAliasControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
-
-        if(orderAliasType == null) {
-            handleExecutionError(UnknownOrderAliasTypeNameException.class, eea, ExecutionErrors.UnknownOrderAliasTypeName.name(),
-                    orderType.getLastDetail().getOrderTypeName(), orderAliasTypeName);
-        }
-
-        return orderAliasType;
     }
 
     private Order getOrderByName(final ExecutionErrorAccumulator eea, final String orderTypeName, final String orderName,

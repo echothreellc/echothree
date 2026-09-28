@@ -19,6 +19,7 @@ package com.echothree.control.user.search.server.command;
 import com.echothree.control.user.search.common.form.SearchSalesOrdersForm;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.order.common.OrderTypes;
+import com.echothree.model.control.order.server.logic.OrderAliasLogic;
 import com.echothree.model.control.order.server.logic.OrderLogic;
 import com.echothree.model.control.sales.common.workflow.SalesOrderStatusConstants;
 import com.echothree.model.control.sales.server.search.SalesOrderSearchEvaluator;
@@ -61,6 +62,9 @@ public class SearchSalesOrdersCommand
     WorkflowControl workflowControl;
 
     @Inject
+    OrderAliasLogic orderAliasLogic;
+
+    @Inject
     OrderLogic orderLogic;
 
     @Inject
@@ -90,7 +94,7 @@ public class SearchSalesOrdersCommand
 
                     if(!hasExecutionErrors()) {
                         var orderAliasTypeName = form.getOrderAliasTypeName();
-                        var orderAliasType = orderAliasTypeName == null ? null : orderLogic.getOrderAliasTypeByName(this, orderType, orderAliasTypeName);
+                        var orderAliasType = orderAliasTypeName == null ? null : orderAliasLogic.getOrderAliasTypeByName(this, orderType, orderAliasTypeName);
 
                         if(!hasExecutionErrors()) {
                             var salesOrderSearchEvaluator = new SalesOrderSearchEvaluator(getUserVisit(), searchType,

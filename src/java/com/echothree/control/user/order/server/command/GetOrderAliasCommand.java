@@ -20,6 +20,7 @@ import com.echothree.control.user.order.common.form.GetOrderAliasForm;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.control.user.order.server.command.util.OrderAliasUtil;
 import com.echothree.model.control.order.server.control.OrderAliasControl;
+import com.echothree.model.control.order.server.logic.OrderAliasLogic;
 import com.echothree.model.control.order.server.logic.OrderLogic;
 import com.echothree.model.control.order.server.logic.OrderTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -55,6 +56,9 @@ public class GetOrderAliasCommand
     OrderAliasControl orderAliasControl;
 
     @Inject
+    OrderAliasLogic orderAliasLogic;
+
+    @Inject
     OrderLogic orderLogic;
 
     @Inject
@@ -88,7 +92,7 @@ public class GetOrderAliasCommand
 
             if(!hasExecutionErrors()) {
                 var orderAliasTypeName = form.getOrderAliasTypeName();
-                var orderAliasType = orderLogic.getOrderAliasTypeByName(this, orderType, orderAliasTypeName);
+                var orderAliasType = orderAliasLogic.getOrderAliasTypeByName(this, orderType, orderAliasTypeName);
 
                 if(!hasExecutionErrors()) {
                     orderAlias = orderAliasControl.getOrderAlias(order, orderAliasType);
