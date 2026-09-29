@@ -94,7 +94,7 @@ public class LocationUseTypeLogic
                     }
                 } else if(universalEntitySpec != null){
                     var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalEntitySpec,
-                            ComponentVendors.ECHO_THREE.name(), EntityTypes.Party.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.LocationUseType.name());
 
                     if(eea == null || !eea.hasExecutionErrors()) {
                         locationUseType = locationUseTypeControl.getLocationUseTypeByEntityInstance(entityInstance, entityPermission);
