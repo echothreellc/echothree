@@ -81,7 +81,7 @@ public class VendorItemLogic
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
             var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
-                    ComponentVendors.ECHO_THREE.name(), EntityTypes.WorkflowStep.name());
+                    ComponentVendors.ECHO_THREE.name(), EntityTypes.VendorItem.name());
 
             if(eea == null || !eea.hasExecutionErrors()) {
                 vendorItem = vendorControl.getVendorItemByEntityInstance(entityInstance, entityPermission);

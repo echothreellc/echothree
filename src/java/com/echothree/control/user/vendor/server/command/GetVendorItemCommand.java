@@ -54,7 +54,7 @@ public class GetVendorItemCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("VendorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("VendorItemName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("VendorItemName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
