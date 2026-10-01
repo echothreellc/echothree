@@ -72,10 +72,12 @@ public class InventoryTransactionControl
     protected InventoryTransactionFactory inventoryTransactionFactory;
 
     public InventoryTransaction createInventoryTransaction(InventoryTransactionType inventoryTransactionType, String inventoryTransactionName,
-            Party companyParty, InventoryTransactionReason inventoryTransactionReason, String reference, String description, BasePK createdBy) {
+            Party companyParty, Party locationParty, InventoryTransactionReason inventoryTransactionReason, String reference, String description,
+            BasePK createdBy) {
         var inventoryTransaction = inventoryTransactionFactory.create();
         var inventoryTransactionDetail = inventoryTransactionDetailFactory.create(inventoryTransaction, inventoryTransactionType,
-                inventoryTransactionName, companyParty, inventoryTransactionReason, reference, description, session.getStartTime(), Session.MAX_TIME);
+                inventoryTransactionName, companyParty, locationParty, inventoryTransactionReason, reference, description,
+                session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         inventoryTransaction = inventoryTransactionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
@@ -129,6 +131,10 @@ public class InventoryTransactionControl
 
     public long countInventoryTransactionsByCompanyParty(Party companyParty) {
         return countInventoryTransactions(InventoryTransactionDetails.COMPANY_PARTY.eq(companyParty.getPrimaryKey()));
+    }
+
+    public long countInventoryTransactionsByLocationParty(Party locationParty) {
+        return countInventoryTransactions(InventoryTransactionDetails.LOCATION_PARTY.eq(locationParty.getPrimaryKey()));
     }
 
     public long countInventoryTransactionsByInventoryTransactionReason(InventoryTransactionReason inventoryTransactionReason) {
@@ -196,6 +202,30 @@ public class InventoryTransactionControl
         return getInventoryTransactions(inventoryTransactionType, EntityPermission.READ_WRITE);
     }
 
+    private List<InventoryTransaction> getInventoryTransactionsForUpdate(Condition condition) {
+        var query = session.getDslContext()
+                .select(InventoryTransactions.fields())
+                .from(InventoryTransactions)
+                .join(InventoryTransactionDetails).onKey(INVENTORY_TRANSACTIONS_ACTIVE_DETAIL_FK)
+                .where(condition)
+                .forUpdate();
+
+        return inventoryTransactionFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, query);
+    }
+
+    public List<InventoryTransaction> getInventoryTransactionsByCompanyPartyForUpdate(Party companyParty) {
+        return getInventoryTransactionsForUpdate(InventoryTransactionDetails.COMPANY_PARTY.eq(companyParty.getPrimaryKey()));
+    }
+
+    public List<InventoryTransaction> getInventoryTransactionsByLocationPartyForUpdate(Party locationParty) {
+        return getInventoryTransactionsForUpdate(InventoryTransactionDetails.LOCATION_PARTY.eq(locationParty.getPrimaryKey()));
+    }
+
+    public List<InventoryTransaction> getInventoryTransactionsByInventoryTransactionReasonForUpdate(
+            InventoryTransactionReason inventoryTransactionReason) {
+        return getInventoryTransactionsForUpdate(InventoryTransactionDetails.INVENTORY_TRANSACTION_REASON.eq(inventoryTransactionReason.getPrimaryKey()));
+    }
+
     public void updateInventoryTransactionFromValue(InventoryTransactionDetailValue inventoryTransactionDetailValue, BasePK updatedBy) {
         if(inventoryTransactionDetailValue.hasBeenModified()) {
             var inventoryTransaction = inventoryTransactionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
@@ -209,12 +239,13 @@ public class InventoryTransactionControl
             var inventoryTransactionTypePK = inventoryTransactionDetail.getInventoryTransactionTypePK(); // Not updated
             var inventoryTransactionName = inventoryTransactionDetailValue.getInventoryTransactionName();
             var companyPartyPK = inventoryTransactionDetailValue.getCompanyPartyPK();
+            var locationPartyPK = inventoryTransactionDetailValue.getLocationPartyPK();
             var inventoryTransactionReasonPK = inventoryTransactionDetailValue.getInventoryTransactionReasonPK();
             var reference = inventoryTransactionDetailValue.getReference();
             var description = inventoryTransactionDetailValue.getDescription();
 
             inventoryTransactionDetail = inventoryTransactionDetailFactory.create(inventoryTransactionPK, inventoryTransactionTypePK,
-                    inventoryTransactionName, companyPartyPK, inventoryTransactionReasonPK, reference, description,
+                    inventoryTransactionName, companyPartyPK, locationPartyPK, inventoryTransactionReasonPK, reference, description,
                     session.getStartTime(), Session.MAX_TIME);
 
             inventoryTransaction.setActiveDetail(inventoryTransactionDetail);
@@ -241,6 +272,24 @@ public class InventoryTransactionControl
 
     public void deleteInventoryTransactionsByInventoryTransactionType(InventoryTransactionType inventoryTransactionType, BasePK deletedBy) {
         var inventoryTransactions = getInventoryTransactionsForUpdate(inventoryTransactionType);
+
+        inventoryTransactions.forEach(inventoryTransaction -> deleteInventoryTransaction(inventoryTransaction, deletedBy));
+    }
+
+    public void deleteInventoryTransactionsByCompanyParty(Party companyParty, BasePK deletedBy) {
+        var inventoryTransactions = getInventoryTransactionsByCompanyPartyForUpdate(companyParty);
+
+        inventoryTransactions.forEach(inventoryTransaction -> deleteInventoryTransaction(inventoryTransaction, deletedBy));
+    }
+
+    public void deleteInventoryTransactionsByLocationParty(Party locationParty, BasePK deletedBy) {
+        var inventoryTransactions = getInventoryTransactionsByLocationPartyForUpdate(locationParty);
+
+        inventoryTransactions.forEach(inventoryTransaction -> deleteInventoryTransaction(inventoryTransaction, deletedBy));
+    }
+
+    public void deleteInventoryTransactionsByInventoryTransactionReason(InventoryTransactionReason inventoryTransactionReason, BasePK deletedBy) {
+        var inventoryTransactions = getInventoryTransactionsByInventoryTransactionReasonForUpdate(inventoryTransactionReason);
 
         inventoryTransactions.forEach(inventoryTransaction -> deleteInventoryTransaction(inventoryTransaction, deletedBy));
     }

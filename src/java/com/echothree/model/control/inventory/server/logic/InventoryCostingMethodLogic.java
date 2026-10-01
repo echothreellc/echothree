@@ -34,7 +34,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -49,10 +48,6 @@ public class InventoryCostingMethodLogic
 
     protected InventoryCostingMethodLogic() {
         super();
-    }
-
-    public static InventoryCostingMethodLogic getInstance() {
-        return CDI.current().select(InventoryCostingMethodLogic.class).get();
     }
 
     public InventoryCostingMethod createInventoryCostingMethod(final ExecutionErrorAccumulator eea, final String inventoryCostingMethodName,

@@ -38,7 +38,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -68,13 +67,9 @@ public class InventoryTransactionLogic
     //   Inventory Transactions
     // --------------------------------------------------------------------------------
 
-    public static InventoryTransactionLogic getInstance() {
-        return CDI.current().select(InventoryTransactionLogic.class).get();
-    }
-
     public InventoryTransaction createInventoryTransaction(final ExecutionErrorAccumulator eea, final String inventoryTransactionTypeName,
-            String inventoryTransactionName, final Party companyParty, final InventoryTransactionReason inventoryTransactionReason,
-            final String reference, final String description, final BasePK createdBy) {
+            String inventoryTransactionName, final Party companyParty, final Party locationParty,
+            final InventoryTransactionReason inventoryTransactionReason, final String reference, final String description, final BasePK createdBy) {
         var inventoryTransactionType = inventoryTransactionTypeLogic.getInventoryTransactionTypeByName(eea, inventoryTransactionTypeName);
         InventoryTransaction inventoryTransaction = null;
 
@@ -89,7 +84,7 @@ public class InventoryTransactionLogic
 
             if(eea == null || !eea.hasExecutionErrors()) {
                 inventoryTransaction = createInventoryTransaction(eea, inventoryTransactionType, inventoryTransactionName, companyParty,
-                        inventoryTransactionReason, reference, description, createdBy);
+                        locationParty, inventoryTransactionReason, reference, description, createdBy);
 
                 if(eea == null || !eea.hasExecutionErrors()) {
                     var inventoryTransactionWorkflowEntrance = inventoryTransactionType.getLastDetail().getInventoryTransactionWorkflowEntrance();
@@ -107,12 +102,13 @@ public class InventoryTransactionLogic
 
     public InventoryTransaction createInventoryTransaction(final ExecutionErrorAccumulator eea,
             final InventoryTransactionType inventoryTransactionType, final String inventoryTransactionName, final Party companyParty,
-            final InventoryTransactionReason inventoryTransactionReason, final String reference, final String description, final BasePK createdBy) {
+            final Party locationParty, final InventoryTransactionReason inventoryTransactionReason, final String reference, final String description,
+            final BasePK createdBy) {
         var inventoryTransaction = inventoryTransactionControl.getInventoryTransactionByName(inventoryTransactionType, inventoryTransactionName);
 
         if(inventoryTransaction == null) {
             inventoryTransaction = inventoryTransactionControl.createInventoryTransaction(inventoryTransactionType, inventoryTransactionName,
-                    companyParty, inventoryTransactionReason, reference, description, createdBy);
+                    companyParty, locationParty, inventoryTransactionReason, reference, description, createdBy);
         } else {
             handleExecutionError(DuplicateInventoryTransactionNameException.class, eea, ExecutionErrors.DuplicateInventoryTransactionName.name(),
                     inventoryTransactionType.getLastDetail().getInventoryTransactionTypeName(), inventoryTransactionName);

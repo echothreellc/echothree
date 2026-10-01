@@ -22,7 +22,6 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -33,10 +32,6 @@ public class LotTimeLogic {
 
     protected LotTimeLogic() {
         super();
-    }
-
-    public static LotTimeLogic getInstance() {
-        return CDI.current().select(LotTimeLogic.class).get();
     }
 
     public void createOrUpdateLotTimeIfNotNull(final ExecutionErrorAccumulator ema, final Lot lot, final String lotTimeTypeName, final Long time,
