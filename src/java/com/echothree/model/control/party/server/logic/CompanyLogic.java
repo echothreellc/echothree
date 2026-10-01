@@ -30,7 +30,6 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -48,10 +47,6 @@ public class CompanyLogic
 
     protected CompanyLogic() {
         super();
-    }
-
-    public static CompanyLogic getInstance() {
-        return CDI.current().select(CompanyLogic.class).get();
     }
 
     public PartyCompany getPartyCompanyByName(final ExecutionErrorAccumulator eea, final String companyName,

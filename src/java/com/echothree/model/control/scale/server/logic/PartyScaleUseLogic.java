@@ -25,7 +25,6 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -37,10 +36,6 @@ public class PartyScaleUseLogic
 
     protected PartyScaleUseLogic() {
         super();
-    }
-
-    public static PartyScaleUseLogic getInstance() {
-        return CDI.current().select(PartyScaleUseLogic.class).get();
     }
 
     public PartyScaleUse getPartyScaleUse(final ExecutionErrorAccumulator ema, final Party party, final ScaleUseType scaleUseType,

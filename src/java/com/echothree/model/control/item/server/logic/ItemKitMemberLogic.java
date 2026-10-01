@@ -27,7 +27,6 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @Dependent
@@ -48,10 +47,6 @@ public class ItemKitMemberLogic
 
     private ItemKitMemberLogic() {
         super();
-    }
-
-    public static ItemKitMemberLogic getInstance() {
-        return CDI.current().select(ItemKitMemberLogic.class).get();
     }
 
     public ItemKitMember getItemKitMember(final ExecutionErrorAccumulator eea, final String itemName, final String inventoryConditionName,

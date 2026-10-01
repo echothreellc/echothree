@@ -59,7 +59,6 @@ import com.echothree.util.server.string.AmountUtils;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -104,10 +103,6 @@ public class SalesOrderBatchLogic
 
     protected SalesOrderBatchLogic() {
         super();
-    }
-
-    public static SalesOrderBatchLogic getInstance() {
-        return CDI.current().select(SalesOrderBatchLogic.class).get();
     }
 
     public Batch createBatch(final ExecutionErrorAccumulator eea, final Currency currency, final PaymentMethod paymentMethod, final Long count,

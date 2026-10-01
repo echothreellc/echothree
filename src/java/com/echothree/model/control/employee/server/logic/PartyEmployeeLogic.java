@@ -32,7 +32,6 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -53,10 +52,6 @@ public class PartyEmployeeLogic
 
     protected PartyEmployeeLogic() {
         super();
-    }
-
-    public static PartyEmployeeLogic getInstance() {
-        return CDI.current().select(PartyEmployeeLogic.class).get();
     }
 
     public PartyEmployee getPartyEmployeeByName(final ExecutionErrorAccumulator eea, final String partyEmployeeName, final String partyName,

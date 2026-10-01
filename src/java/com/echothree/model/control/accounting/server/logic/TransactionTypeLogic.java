@@ -29,7 +29,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -44,10 +43,6 @@ public class TransactionTypeLogic
 
     protected TransactionTypeLogic() {
         super();
-    }
-
-    public static TransactionTypeLogic getInstance() {
-        return CDI.current().select(TransactionTypeLogic.class).get();
     }
 
     public TransactionType getTransactionTypeByName(final ExecutionErrorAccumulator eea, final String transactionTypeName,

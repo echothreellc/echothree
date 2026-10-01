@@ -1431,6 +1431,7 @@
                         <column name="InventoryTransactionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryTransactionTypes" destinationColumn="InventoryTransactionTypeId" />
                         <column name="InventoryTransactionName" type="Name" nullAllowed="false" />
                         <column name="CompanyPartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="LocationPartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
                         <column name="InventoryTransactionReasonId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="InventoryTransactionReasons" destinationColumn="InventoryTransactionReasonId" />
                         <column name="Reference" type="Reference" nullAllowed="true" />
                         <column name="Description" type="Description" nullAllowed="true" />
@@ -1458,6 +1459,9 @@
                             <indexColumn name="CompanyPartyId" />
                         </index>
                         <index type="Multiple" name="Index5">
+                            <indexColumn name="LocationPartyId" />
+                        </index>
+                        <index type="Multiple" name="Index6">
                             <indexColumn name="InventoryTransactionReasonId" />
                         </index>
                     </indexes>

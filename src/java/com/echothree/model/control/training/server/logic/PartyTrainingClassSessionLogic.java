@@ -44,7 +44,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -59,10 +58,6 @@ public class PartyTrainingClassSessionLogic
 
     protected PartyTrainingClassSessionLogic() {
         super();
-    }
-
-    public static PartyTrainingClassSessionLogic getInstance() {
-        return CDI.current().select(PartyTrainingClassSessionLogic.class).get();
     }
 
     private PartyTrainingClassSession getPartyTrainingClassSession(final ExecutionErrorAccumulator eea, final PartyTrainingClass partyTrainingClass,

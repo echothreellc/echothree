@@ -45,7 +45,6 @@ import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -66,10 +65,6 @@ public class ItemAliasTypeLogic
 
     protected ItemAliasTypeLogic() {
         super();
-    }
-
-    public static ItemAliasTypeLogic getInstance() {
-        return CDI.current().select(ItemAliasTypeLogic.class).get();
     }
 
     public ItemAliasType createItemAliasType(final ExecutionErrorAccumulator eea, final String itemAliasTypeName,

@@ -32,7 +32,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -56,10 +55,6 @@ public class TrackLogic
 
     protected TrackLogic() {
         super();
-    }
-
-    public static TrackLogic getInstance() {
-        return CDI.current().select(TrackLogic.class).get();
     }
     
     public Track getTrackByName(final ExecutionErrorAccumulator eea, final String trackName) {

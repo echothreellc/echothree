@@ -23,7 +23,6 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -35,10 +34,6 @@ public class ColorLogic
 
     protected ColorLogic() {
         super();
-    }
-
-    public static ColorLogic getInstance() {
-        return CDI.current().select(ColorLogic.class).get();
     }
 
     public Color getColorByName(final ExecutionErrorAccumulator eea, final String colorName) {

@@ -35,7 +35,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -56,10 +55,6 @@ public class LotLogic
 
     protected LotLogic() {
         super();
-    }
-
-    public static LotLogic getInstance() {
-        return CDI.current().select(LotLogic.class).get();
     }
 
     public Lot createLot(final ExecutionErrorAccumulator eea, final Item item, String lotIdentifier,

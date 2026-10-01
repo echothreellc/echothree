@@ -31,7 +31,6 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -55,10 +54,6 @@ public class SubscriptionChainLogic
 
     protected SubscriptionChainLogic() {
         super();
-    }
-
-    public static SubscriptionChainLogic getInstance() {
-        return CDI.current().select(SubscriptionChainLogic.class).get();
     }
     
     /** createChainInstance is different than the version in BaseChainLogic, it requires a Subscription parameter. Subscriptions

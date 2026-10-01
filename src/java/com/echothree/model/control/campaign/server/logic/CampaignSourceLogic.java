@@ -38,7 +38,6 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -65,10 +64,6 @@ public class CampaignSourceLogic
 
     protected CampaignSourceLogic() {
         super();
-    }
-
-    public static CampaignSourceLogic getInstance() {
-        return CDI.current().select(CampaignSourceLogic.class).get();
     }
 
     public CampaignSource getCampaignSourceByName(final ExecutionErrorAccumulator eea, final String campaignSourceName,

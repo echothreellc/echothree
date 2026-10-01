@@ -35,7 +35,6 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -53,10 +52,6 @@ public class TransactionGlAccountCategoryLogic
 
     protected TransactionGlAccountCategoryLogic() {
         super();
-    }
-
-    public static TransactionGlAccountCategoryLogic getInstance() {
-        return CDI.current().select(TransactionGlAccountCategoryLogic.class).get();
     }
 
     public TransactionGlAccountCategory createTransactionGlAccountCategory(final ExecutionErrorAccumulator eea, final String transactionTypeName,

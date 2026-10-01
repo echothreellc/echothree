@@ -33,7 +33,6 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -51,10 +50,6 @@ public class SalesOrderShipmentGroupLogic
 
     protected SalesOrderShipmentGroupLogic() {
         super();
-    }
-
-    public static SalesOrderShipmentGroupLogic getInstance() {
-        return CDI.current().select(SalesOrderShipmentGroupLogic.class).get();
     }
     
     /**

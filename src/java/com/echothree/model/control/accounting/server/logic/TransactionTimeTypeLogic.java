@@ -35,7 +35,6 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -50,10 +49,6 @@ public class TransactionTimeTypeLogic
 
     protected TransactionTimeTypeLogic() {
         super();
-    }
-
-    public static TransactionTimeTypeLogic getInstance() {
-        return CDI.current().select(TransactionTimeTypeLogic.class).get();
     }
 
     public TransactionTimeType createTransactionTimeType(final ExecutionErrorAccumulator eea, final String transactionTimeTypeName,

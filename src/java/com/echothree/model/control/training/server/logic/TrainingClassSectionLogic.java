@@ -25,7 +25,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -37,10 +36,6 @@ public class TrainingClassSectionLogic
 
     protected TrainingClassSectionLogic() {
         super();
-    }
-
-    public static TrainingClassSectionLogic getInstance() {
-        return CDI.current().select(TrainingClassSectionLogic.class).get();
     }
 
     private TrainingClassSection getTrainingClassSectionByName(final ExecutionErrorAccumulator eea, final TrainingClass trainingClass,

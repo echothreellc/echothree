@@ -52,7 +52,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -73,10 +72,6 @@ public class ContentLogic
 
     protected ContentLogic() {
         super();
-    }
-
-    public static ContentLogic getInstance() {
-        return CDI.current().select(ContentLogic.class).get();
     }
 
     public ContentCollection getContentCollectionByName(final ExecutionErrorAccumulator eea, final String contentCollectionName,

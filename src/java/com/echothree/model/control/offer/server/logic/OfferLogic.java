@@ -42,7 +42,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -69,10 +68,6 @@ public class OfferLogic
 
     protected OfferLogic() {
         super();
-    }
-
-    public static OfferLogic getInstance() {
-        return CDI.current().select(OfferLogic.class).get();
     }
 
     public Offer createOffer(final ExecutionErrorAccumulator eea, final String offerName, final Sequence salesOrderSequence,

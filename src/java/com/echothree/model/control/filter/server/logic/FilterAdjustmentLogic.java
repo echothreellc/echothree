@@ -42,7 +42,6 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -75,10 +74,6 @@ public class FilterAdjustmentLogic
 
     protected FilterAdjustmentLogic() {
         super();
-    }
-
-    public static FilterAdjustmentLogic getInstance() {
-        return CDI.current().select(FilterAdjustmentLogic.class).get();
     }
 
     public FilterAdjustment createFilterAdjustment(final ExecutionErrorAccumulator eea, final String filterKindName,

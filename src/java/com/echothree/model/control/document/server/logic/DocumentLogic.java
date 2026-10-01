@@ -40,7 +40,6 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.lowagie.text.pdf.PdfReader;
 import java.io.IOException;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -55,10 +54,6 @@ public class DocumentLogic
 
     protected DocumentLogic() {
         super();
-    }
-
-    public static DocumentLogic getInstance() {
-        return CDI.current().select(DocumentLogic.class).get();
     }
 
     public Integer getPages(final MimeType mimeType, final ByteArray blob, final String clob) {

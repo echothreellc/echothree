@@ -25,7 +25,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.enterprise.inject.spi.CDI;
 
 @ApplicationScoped
 public class UnitOfMeasureKindLogic
@@ -36,10 +35,6 @@ public class UnitOfMeasureKindLogic
 
     protected UnitOfMeasureKindLogic() {
         super();
-    }
-
-    public static UnitOfMeasureKindLogic getInstance() {
-        return CDI.current().select(UnitOfMeasureKindLogic.class).get();
     }
 
     public UnitOfMeasureKind getUnitOfMeasureKindByName(final ExecutionErrorAccumulator eea, final String unitOfMeasureKindName) {

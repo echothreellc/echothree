@@ -48,7 +48,6 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -84,10 +83,6 @@ public class TransactionLogic
 
     protected TransactionLogic() {
         super();
-    }
-
-    public static TransactionLogic getInstance() {
-        return CDI.current().select(TransactionLogic.class).get();
     }
     
     public Transaction createTransactionUsingNames(final Session session, final Party groupParty, final String transactionTypeName,

@@ -42,7 +42,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -63,10 +62,6 @@ public class WorkflowStepLogic
 
     protected WorkflowStepLogic() {
         super();
-    }
-
-    public static WorkflowStepLogic getInstance() {
-        return CDI.current().select(WorkflowStepLogic.class).get();
     }
 
     public WorkflowStep getWorkflowStepByName(final Class<? extends BaseException> unknownWorkflowException, final ExecutionErrors unknownWorkflowExecutionError,

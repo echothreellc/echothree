@@ -95,7 +95,6 @@ public class UpdateIndexesCommand
     @Inject
     SearchLogic searchLogic;
 
-    
     /** Creates a new instance of UpdateIndexesCommand */
     public UpdateIndexesCommand() {
         super(COMMAND_SECURITY_DEFINITION, null, false);
@@ -201,7 +200,7 @@ public class UpdateIndexesCommand
         var entityType = entityInstance.getEntityType();
         var baseIndexers = indexersMap.get(entityType);
 
-        log.info("indexing {}", PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance).toString());
+        log.info("Indexing {}", PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance).toString());
 
         for(var baseIndexer : baseIndexers) {
             baseIndexer.updateIndex(entityInstance);

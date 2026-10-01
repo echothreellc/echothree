@@ -55,7 +55,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -82,10 +81,6 @@ public class WorkflowDestinationLogic
 
     protected WorkflowDestinationLogic() {
         super();
-    }
-
-    public static WorkflowDestinationLogic getInstance() {
-        return CDI.current().select(WorkflowDestinationLogic.class).get();
     }
     
     public WorkflowDestination getWorkflowDestinationByName(final ExecutionErrorAccumulator eea, final WorkflowStep workflowStep,

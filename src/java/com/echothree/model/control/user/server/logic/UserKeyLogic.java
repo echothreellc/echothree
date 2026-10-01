@@ -24,7 +24,6 @@ import com.echothree.model.data.user.server.factory.UserKeyFactory;
 import com.echothree.util.server.persistence.EntityPermission;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -38,10 +37,6 @@ public class UserKeyLogic {
 
     protected UserKeyLogic() {
         super();
-    }
-
-    public static UserKeyLogic getInstance() {
-        return CDI.current().select(UserKeyLogic.class).get();
     }
     
     public void removeInactiveUserKeys(final Long remainingTime, final Long inactiveTime) {

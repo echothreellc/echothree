@@ -37,7 +37,6 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -55,10 +54,6 @@ public class AssociateLogic
 
     protected AssociateLogic() {
         super();
-    }
-
-    public static AssociateLogic getInstance() {
-        return CDI.current().select(AssociateLogic.class).get();
     }
 
     public Associate createAssociate(final ExecutionErrorAccumulator eea, final String associateProgramName,

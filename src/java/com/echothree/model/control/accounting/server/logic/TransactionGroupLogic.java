@@ -29,7 +29,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -44,10 +43,6 @@ public class TransactionGroupLogic
 
     protected TransactionGroupLogic() {
         super();
-    }
-
-    public static TransactionGroupLogic getInstance() {
-        return CDI.current().select(TransactionGroupLogic.class).get();
     }
 
     public TransactionGroup getTransactionGroupByName(final ExecutionErrorAccumulator eea, final String transactionGroupName,

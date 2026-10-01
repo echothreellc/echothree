@@ -43,7 +43,6 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -58,10 +57,6 @@ public class ShippingMethodLogic
 
     protected ShippingMethodLogic() {
         super();
-    }
-
-    public static ShippingMethodLogic getInstance() {
-        return CDI.current().select(ShippingMethodLogic.class).get();
     }
 
     public ShippingMethod createShippingMethod(final ExecutionErrorAccumulator eea, final String shippingMethodName,

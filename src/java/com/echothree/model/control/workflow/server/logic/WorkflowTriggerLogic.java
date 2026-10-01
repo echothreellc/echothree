@@ -31,7 +31,6 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -45,10 +44,6 @@ public class WorkflowTriggerLogic {
 
     protected WorkflowTriggerLogic() {
         super();
-    }
-
-    public static WorkflowTriggerLogic getInstance() {
-        return CDI.current().select(WorkflowTriggerLogic.class).get();
     }
     
     // TODO: configure using a property file.

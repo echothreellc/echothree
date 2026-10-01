@@ -24,7 +24,6 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -36,10 +35,6 @@ public class IndexFieldLogic
 
     protected IndexFieldLogic() {
         super();
-    }
-
-    public static IndexFieldLogic getInstance() {
-        return CDI.current().select(IndexFieldLogic.class).get();
     }
 
     public IndexField getIndexFieldByName(final ExecutionErrorAccumulator eea, final IndexType indexType, final String indexFieldName) {

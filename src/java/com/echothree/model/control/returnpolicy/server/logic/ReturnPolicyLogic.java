@@ -44,7 +44,6 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -77,10 +76,6 @@ public class ReturnPolicyLogic
 
     protected ReturnPolicyLogic() {
         super();
-    }
-
-    public static ReturnPolicyLogic getInstance() {
-        return CDI.current().select(ReturnPolicyLogic.class).get();
     }
 
     public ReturnPolicy createReturnPolicy(final ExecutionErrorAccumulator eea, final String returnKindName, final String returnPolicyName,

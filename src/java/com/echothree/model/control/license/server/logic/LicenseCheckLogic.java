@@ -33,7 +33,6 @@ import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.client.config.RequestConfig;
@@ -59,10 +58,6 @@ public class LicenseCheckLogic
 
         licenseValidUntilTime = new AtomicLong(initializedTime + DEMO_LICENSE_DURATION);
         log.info("Demo license installed for this instance.");
-    }
-
-    public static LicenseCheckLogic getInstance() {
-        return CDI.current().select(LicenseCheckLogic.class).get();
     }
 
     public List<String> getFoundServerNames() {

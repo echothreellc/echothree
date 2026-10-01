@@ -71,7 +71,6 @@ import com.echothree.util.server.message.DummyExecutionErrorAccumulator;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -125,10 +124,6 @@ public class SalesOrderLineLogic
 
     protected SalesOrderLineLogic() {
         super();
-    }
-
-    public static SalesOrderLineLogic getInstance() {
-        return CDI.current().select(SalesOrderLineLogic.class).get();
     }
 
     /**

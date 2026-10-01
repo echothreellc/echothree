@@ -37,7 +37,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -58,10 +57,6 @@ public class PaymentProcessorTypeCodeTypeLogic
 
     protected PaymentProcessorTypeCodeTypeLogic() {
         super();
-    }
-
-    public static PaymentProcessorTypeCodeTypeLogic getInstance() {
-        return CDI.current().select(PaymentProcessorTypeCodeTypeLogic.class).get();
     }
 
     public PaymentProcessorTypeCodeType createPaymentProcessorTypeCodeType(final ExecutionErrorAccumulator eea,

@@ -42,7 +42,6 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -68,10 +67,6 @@ public class PurchaseInvoiceLogic {
 
     protected PurchaseInvoiceLogic() {
         super();
-    }
-
-    public static PurchaseInvoiceLogic getInstance() {
-        return CDI.current().select(PurchaseInvoiceLogic.class).get();
     }
     
     public Invoice getInvoiceByName(String invoiceName) {

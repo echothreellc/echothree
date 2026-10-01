@@ -34,7 +34,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -49,10 +48,6 @@ public class GlAccountClassLogic
 
     protected GlAccountClassLogic() {
         super();
-    }
-
-    public static GlAccountClassLogic getInstance() {
-        return CDI.current().select(GlAccountClassLogic.class).get();
     }
 
     public GlAccountClass createGlAccountClass(final ExecutionErrorAccumulator eea, final String glAccountClassName,

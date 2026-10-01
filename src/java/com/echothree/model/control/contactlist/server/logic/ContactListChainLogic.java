@@ -31,7 +31,6 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -52,10 +51,6 @@ public class ContactListChainLogic
 
     protected ContactListChainLogic() {
         super();
-    }
-
-    public static ContactListChainLogic getInstance() {
-        return CDI.current().select(ContactListChainLogic.class).get();
     }
     
     /** In looking for the Chain, the following are checked:

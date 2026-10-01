@@ -33,7 +33,6 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -51,10 +50,6 @@ public class SubscriptionLogic
 
     protected SubscriptionLogic() {
         super();
-    }
-
-    public static SubscriptionLogic getInstance() {
-        return CDI.current().select(SubscriptionLogic.class).get();
     }
 
     public Subscription createSubscription(final ExecutionErrorAccumulator eea, final Session session, final SubscriptionType subscriptionType, final Party party,

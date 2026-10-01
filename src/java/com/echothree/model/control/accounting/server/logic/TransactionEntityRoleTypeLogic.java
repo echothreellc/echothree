@@ -35,7 +35,6 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -53,10 +52,6 @@ public class TransactionEntityRoleTypeLogic
 
     protected TransactionEntityRoleTypeLogic() {
         super();
-    }
-
-    public static TransactionEntityRoleTypeLogic getInstance() {
-        return CDI.current().select(TransactionEntityRoleTypeLogic.class).get();
     }
 
     public TransactionEntityRoleType createTransactionEntityRoleType(final ExecutionErrorAccumulator eea, final String transactionTypeName,

@@ -24,7 +24,6 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -35,10 +34,6 @@ public class LockoutPolicyLogic {
 
     protected LockoutPolicyLogic() {
         super();
-    }
-
-    public static LockoutPolicyLogic getInstance() {
-        return CDI.current().select(LockoutPolicyLogic.class).get();
     }
     
     private void resetFailureCount(final Session session, final UserLoginStatus userLoginStatus,

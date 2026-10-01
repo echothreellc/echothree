@@ -27,7 +27,6 @@ import com.echothree.model.data.user.server.factory.UserVisitFactory;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -54,10 +53,6 @@ public class UserVisitLogic
 
     protected UserVisitLogic() {
         super();
-    }
-
-    public static UserVisitLogic getInstance() {
-        return CDI.current().select(UserVisitLogic.class).get();
     }
     
     private void cleanupUserVisitDependencies(final UserVisit userVisit, final Long endTime, final PartyPK cleanedUpBy) {

@@ -53,7 +53,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -83,10 +82,6 @@ public class ItemLogic
 
     protected ItemLogic() {
         super();
-    }
-
-    public static ItemLogic getInstance() {
-        return CDI.current().select(ItemLogic.class).get();
     }
     
     public ItemType getItemTypeByName(final ExecutionErrorAccumulator eea, final String itemTypeName) {

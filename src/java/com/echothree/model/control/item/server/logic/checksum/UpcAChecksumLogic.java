@@ -19,7 +19,6 @@ package com.echothree.model.control.item.server.logic.checksum;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 
 @ApplicationScoped
 public class UpcAChecksumLogic
@@ -28,10 +27,6 @@ public class UpcAChecksumLogic
 
     protected UpcAChecksumLogic() {
         super();
-    }
-
-    public static UpcAChecksumLogic getInstance() {
-        return CDI.current().select(UpcAChecksumLogic.class).get();
     }
 
     @Override

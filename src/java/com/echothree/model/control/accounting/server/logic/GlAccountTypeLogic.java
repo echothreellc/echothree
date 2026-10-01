@@ -31,7 +31,6 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -46,10 +45,6 @@ public class GlAccountTypeLogic
 
     protected GlAccountTypeLogic() {
         super();
-    }
-
-    public static GlAccountTypeLogic getInstance() {
-        return CDI.current().select(GlAccountTypeLogic.class).get();
     }
 
     public GlAccountType createGlAccountType(final ExecutionErrorAccumulator eea, final String glAccountTypeName,

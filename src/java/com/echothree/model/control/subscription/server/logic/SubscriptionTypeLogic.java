@@ -41,7 +41,6 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -61,10 +60,6 @@ public class SubscriptionTypeLogic
 
     protected SubscriptionTypeLogic() {
         super();
-    }
-
-    public static SubscriptionTypeLogic getInstance() {
-        return CDI.current().select(SubscriptionTypeLogic.class).get();
     }
 
     public SubscriptionType getSubscriptionTypeByName(final ExecutionErrorAccumulator eea, final SubscriptionKind subscriptionKind,

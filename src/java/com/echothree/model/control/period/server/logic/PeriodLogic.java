@@ -24,7 +24,6 @@ import com.echothree.model.data.period.server.entity.Period;
 import com.echothree.model.data.period.server.entity.PeriodKind;
 import com.echothree.model.data.period.server.entity.PeriodType;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -41,10 +40,6 @@ public class PeriodLogic {
 
     protected PeriodLogic() {
         super();
-    }
-
-    public static PeriodLogic getInstance() {
-        return CDI.current().select(PeriodLogic.class).get();
     }
     
     public Period createPeriod(final PeriodKind periodKind, final String periodName, final Period parentPeriod,

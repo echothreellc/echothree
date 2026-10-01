@@ -36,7 +36,6 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -54,10 +53,6 @@ public class SearchTypeLogic
 
     protected SearchTypeLogic() {
         super();
-    }
-
-    public static SearchTypeLogic getInstance() {
-        return CDI.current().select(SearchTypeLogic.class).get();
     }
 
     public SearchType createSearchType(final ExecutionErrorAccumulator eea, final String searchKindName, final String searchTypeName,

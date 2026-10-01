@@ -25,7 +25,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -40,10 +39,6 @@ public class SalesOrderTimeLogic
 
     protected SalesOrderTimeLogic() {
         super();
-    }
-
-    public static SalesOrderTimeLogic getInstance() {
-        return CDI.current().select(SalesOrderTimeLogic.class).get();
     }
 
     public void createOrderTime(final ExecutionErrorAccumulator eea, final String orderName, final String orderTimeTypeName, final Long time, final BasePK createdBy) {

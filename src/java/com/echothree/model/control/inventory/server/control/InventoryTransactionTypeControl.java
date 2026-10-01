@@ -60,13 +60,16 @@ public class InventoryTransactionTypeControl
     InventoryDispositionControl inventoryDispositionControl;
 
     @Inject
-    InventoryTransactionTimeControl inventoryTransactionTimeControl;
+    InventoryTransactionControl inventoryTransactionControl;
+
+    @Inject
+    InventoryTransactionReasonControl inventoryTransactionReasonControl;
 
     @Inject
     InventoryTransactionRoleControl inventoryTransactionRoleControl;
 
     @Inject
-    InventoryTransactionReasonControl inventoryTransactionReasonControl;
+    InventoryTransactionTimeControl inventoryTransactionTimeControl;
 
     @Inject
     InventoryTransactionTypeTransferCache inventoryTransactionTypeTransferCache;
@@ -341,11 +344,11 @@ public class InventoryTransactionTypeControl
         var inventoryTransactionTypeDetail = inventoryTransactionType.getLastDetailForUpdate();
 
         deleteInventoryTransactionTypeDescriptionsByInventoryTransactionType(inventoryTransactionType, deletedBy);
+        inventoryTransactionControl.deleteInventoryTransactionsByInventoryTransactionType(inventoryTransactionType, deletedBy);
         inventoryTransactionTimeControl.deleteInventoryTransactionTimeTypesByInventoryTransactionType(inventoryTransactionType, deletedBy);
         inventoryTransactionReasonControl.deleteInventoryTransactionReasonsByInventoryTransactionType(inventoryTransactionType, deletedBy);
         inventoryDispositionControl.deleteInventoryDispositionsByInventoryTransactionType(inventoryTransactionType, deletedBy);
         inventoryTransactionRoleControl.deleteInventoryTransactionRoleTypesByInventoryTransactionType(inventoryTransactionType, deletedBy);
-        // TODO: deleteInventoryTransactionsByInventoryTransactionType(inventoryTransactionType, deletedBy);
 
         inventoryTransactionTypeDetail.setThruTime(session.getStartTime());
         inventoryTransactionType.setActiveDetail(null);

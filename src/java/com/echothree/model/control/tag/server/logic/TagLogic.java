@@ -32,7 +32,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -50,10 +49,6 @@ public class TagLogic
 
     protected TagLogic() {
         super();
-    }
-
-    public static TagLogic getInstance() {
-        return CDI.current().select(TagLogic.class).get();
     }
 
     public Tag createTag(final ExecutionErrorAccumulator eea, final TagScope tagScope, final String tagName,

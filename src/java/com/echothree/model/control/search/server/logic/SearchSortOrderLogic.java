@@ -36,7 +36,6 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -54,10 +53,6 @@ public class SearchSortOrderLogic
 
     protected SearchSortOrderLogic() {
         super();
-    }
-
-    public static SearchSortOrderLogic getInstance() {
-        return CDI.current().select(SearchSortOrderLogic.class).get();
     }
 
     public SearchSortOrder createSearchSortOrder(final ExecutionErrorAccumulator eea, final String searchKindName, final String searchSortOrderName,

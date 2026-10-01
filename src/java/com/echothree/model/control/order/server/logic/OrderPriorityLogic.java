@@ -17,7 +17,6 @@
 package com.echothree.model.control.order.server.logic;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 
 @ApplicationScoped
 public class OrderPriorityLogic
@@ -25,10 +24,6 @@ public class OrderPriorityLogic
 
     protected OrderPriorityLogic() {
         super();
-    }
-
-    public static OrderPriorityLogic getInstance() {
-        return CDI.current().select(OrderPriorityLogic.class).get();
     }
     
 }

@@ -23,7 +23,6 @@ import com.echothree.model.data.queue.server.entity.QueuedEntity;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -38,10 +37,6 @@ public class QueuedEntityLogic
 
     protected QueuedEntityLogic() {
         super();
-    }
-
-    public static QueuedEntityLogic getInstance() {
-        return CDI.current().select(QueuedEntityLogic.class).get();
     }
     
     public QueuedEntity createQueuedEntityUsingNames(final ExecutionErrorAccumulator eea, final String queueTypeName, final EntityInstance entityInstance) {

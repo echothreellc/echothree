@@ -23,7 +23,6 @@ import com.echothree.model.data.geo.server.value.GeoCodeAliasValue;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -38,10 +37,6 @@ public class GeoCodeAliasLogic
 
     protected GeoCodeAliasLogic() {
         super();
-    }
-
-    public static GeoCodeAliasLogic getInstance() {
-        return CDI.current().select(GeoCodeAliasLogic.class).get();
     }
 
     public GeoCodeAlias getGeoCodeAliasUsingNames(final ExecutionErrorAccumulator eea, final GeoCode geoCode,

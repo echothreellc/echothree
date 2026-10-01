@@ -25,7 +25,6 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -37,10 +36,6 @@ public class PartyPrinterGroupUseLogic
 
     protected PartyPrinterGroupUseLogic() {
         super();
-    }
-
-    public static PartyPrinterGroupUseLogic getInstance() {
-        return CDI.current().select(PartyPrinterGroupUseLogic.class).get();
     }
 
     public PartyPrinterGroupUse getPartyPrinterGroupUse(final ExecutionErrorAccumulator ema, final Party party, final PrinterGroupUseType printerGroupUseType,

@@ -36,7 +36,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -54,10 +53,6 @@ public class PaymentProcessorTransactionLogic
 
     protected PaymentProcessorTransactionLogic() {
         super();
-    }
-
-    public static PaymentProcessorTransactionLogic getInstance() {
-        return CDI.current().select(PaymentProcessorTransactionLogic.class).get();
     }
 
     public PaymentProcessorTransaction createPaymentProcessorTransaction(final ExecutionErrorAccumulator eea, String paymentProcessorTransactionName,

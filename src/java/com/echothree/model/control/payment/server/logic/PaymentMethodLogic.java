@@ -34,7 +34,6 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -46,10 +45,6 @@ public class PaymentMethodLogic
 
     protected PaymentMethodLogic() {
         super();
-    }
-
-    public static PaymentMethodLogic getInstance() {
-        return CDI.current().select(PaymentMethodLogic.class).get();
     }
 
     private PaymentMethod getPaymentMethodByName(final ExecutionErrorAccumulator eea, final String paymentMethodName, final EntityPermission entityPermission) {

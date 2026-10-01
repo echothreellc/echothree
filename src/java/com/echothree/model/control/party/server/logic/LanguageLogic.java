@@ -30,7 +30,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -45,10 +44,6 @@ public class LanguageLogic
 
     protected LanguageLogic() {
         super();
-    }
-
-    public static LanguageLogic getInstance() {
-        return CDI.current().select(LanguageLogic.class).get();
     }
     
     public Language getLanguageByName(final ExecutionErrorAccumulator eea, final String languageIsoName,

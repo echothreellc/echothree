@@ -30,7 +30,6 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -51,10 +50,6 @@ public class ContactEmailAddressLogic
 
     protected ContactEmailAddressLogic() {
         super();
-    }
-
-    public static ContactEmailAddressLogic getInstance() {
-        return CDI.current().select(ContactEmailAddressLogic.class).get();
     }
     
     public PartyContactMechanism createContactEmailAddress(Party party, String emailAddress, Boolean allowSolicitation,

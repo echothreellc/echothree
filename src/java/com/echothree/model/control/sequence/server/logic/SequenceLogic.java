@@ -38,7 +38,6 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -59,10 +58,6 @@ public class SequenceLogic
 
     protected SequenceLogic() {
         super();
-    }
-
-    public static SequenceLogic getInstance() {
-        return CDI.current().select(SequenceLogic.class).get();
     }
     
     public Sequence createSequence(final ExecutionErrorAccumulator eea, final String sequenceTypeName, final String sequenceName,

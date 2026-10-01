@@ -26,7 +26,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import java.util.regex.Pattern;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -41,10 +40,6 @@ public class LocationLogic
 
     protected LocationLogic() {
         super();
-    }
-
-    public static LocationLogic getInstance() {
-        return CDI.current().select(LocationLogic.class).get();
     }
 
     public Location getLocation(final ExecutionErrorAccumulator eea, final String partyName,
