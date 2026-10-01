@@ -58,7 +58,7 @@ public class BasePK
     }
     
     /**
-     * Returns String representation of this PK in the form of "componentVendorName.entityTypeName.entityId"..
+     * Returns String representation of this PK in the form of "componentVendorName.entityTypeName.entityId".
      * @return String representation of this PK in the form of "componentVendorName.entityTypeName.entityId".
      */
     @Nonnull
@@ -71,7 +71,7 @@ public class BasePK
     }
 
     /**
-     * Returns String representation of this PK in the form of "[componentVendorName.entityTypeName.entityId]"..
+     * Returns String representation of this PK in the form of "[componentVendorName.entityTypeName.entityId]".
      * @return String representation of this PK in the form of "[componentVendorName.entityTypeName.entityId]".
      */
     @Override
