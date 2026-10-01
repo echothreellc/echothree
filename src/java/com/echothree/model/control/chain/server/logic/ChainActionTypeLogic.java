@@ -34,7 +34,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -49,10 +48,6 @@ public class ChainActionTypeLogic
 
     protected ChainActionTypeLogic() {
         super();
-    }
-
-    public static ChainActionTypeLogic getInstance() {
-        return CDI.current().select(ChainActionTypeLogic.class).get();
     }
 
     public ChainActionType createChainActionType(final ExecutionErrorAccumulator eea, final String chainActionTypeName,

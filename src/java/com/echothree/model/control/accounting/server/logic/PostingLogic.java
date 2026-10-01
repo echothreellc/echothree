@@ -30,7 +30,6 @@ import com.echothree.model.data.period.server.entity.Period;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -50,10 +49,6 @@ public class PostingLogic {
 
     protected PostingLogic() {
         super();
-    }
-
-    public static PostingLogic getInstance() {
-        return CDI.current().select(PostingLogic.class).get();
     }
     
     private void updateGlAccountSummary(final AccountingControl accountingControl, final GlAccount glAccount,

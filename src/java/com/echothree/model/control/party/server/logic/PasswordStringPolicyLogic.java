@@ -36,7 +36,6 @@ import com.echothree.util.server.string.UnitOfMeasureUtils;
 import java.util.HashMap;
 import java.util.Map;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -53,10 +52,6 @@ public class PasswordStringPolicyLogic {
 
     protected PasswordStringPolicyLogic() {
         super();
-    }
-
-    public static PasswordStringPolicyLogic getInstance() {
-        return CDI.current().select(PasswordStringPolicyLogic.class).get();
     }
     
     private void checkAllowChange(final ExecutionErrorAccumulator ema, final PartyTypePasswordStringPolicyDetail policyDetail) {

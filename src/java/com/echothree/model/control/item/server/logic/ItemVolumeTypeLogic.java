@@ -35,7 +35,6 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -50,10 +49,6 @@ public class ItemVolumeTypeLogic
 
     protected ItemVolumeTypeLogic() {
         super();
-    }
-
-    public static ItemVolumeTypeLogic getInstance() {
-        return CDI.current().select(ItemVolumeTypeLogic.class).get();
     }
 
     public ItemVolumeType createItemVolumeType(final ExecutionErrorAccumulator eea, final String itemVolumeTypeName,

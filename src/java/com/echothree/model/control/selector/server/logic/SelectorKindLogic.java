@@ -33,7 +33,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -48,10 +47,6 @@ public class SelectorKindLogic
 
     protected SelectorKindLogic() {
         super();
-    }
-
-    public static SelectorKindLogic getInstance() {
-        return CDI.current().select(SelectorKindLogic.class).get();
     }
 
     public SelectorKind createSelectorKind(final ExecutionErrorAccumulator eea, final String selectorKindName,

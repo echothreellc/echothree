@@ -32,7 +32,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -44,10 +43,6 @@ public class OrderTimeLogic
 
     protected OrderTimeLogic() {
         super();
-    }
-
-    public static OrderTimeLogic getInstance() {
-        return CDI.current().select(OrderTimeLogic.class).get();
     }
 
     private String getOrderTypeName(OrderType orderType) {

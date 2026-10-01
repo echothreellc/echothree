@@ -19,7 +19,6 @@ package com.echothree.model.control.item.server.logic.checksum;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 
 @ApplicationScoped
 public class Ean13ChecksumLogic
@@ -28,10 +27,6 @@ public class Ean13ChecksumLogic
 
     protected Ean13ChecksumLogic() {
         super();
-    }
-
-    public static Ean13ChecksumLogic getInstance() {
-        return CDI.current().select(Ean13ChecksumLogic.class).get();
     }
 
     @Override

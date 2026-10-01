@@ -32,7 +32,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -50,10 +49,6 @@ public class SalesOrderPaymentPreferenceLogic
 
     protected SalesOrderPaymentPreferenceLogic() {
         super();
-    }
-
-    public static SalesOrderPaymentPreferenceLogic getInstance() {
-        return CDI.current().select(SalesOrderPaymentPreferenceLogic.class).get();
     }
     
     /**

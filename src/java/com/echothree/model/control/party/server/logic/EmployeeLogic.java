@@ -38,7 +38,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -74,10 +73,6 @@ public class EmployeeLogic
 
     protected EmployeeLogic() {
         super();
-    }
-
-    public static EmployeeLogic getInstance() {
-        return CDI.current().select(EmployeeLogic.class).get();
     }
 
     public PartyEmployee getPartyEmployeeByName(final ExecutionErrorAccumulator eea, final String employeeName, final String partyName) {

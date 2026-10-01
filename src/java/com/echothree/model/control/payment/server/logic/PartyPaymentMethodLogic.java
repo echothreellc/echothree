@@ -41,7 +41,6 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.regex.Pattern;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -65,10 +64,6 @@ public class PartyPaymentMethodLogic
 
     protected PartyPaymentMethodLogic() {
         super();
-    }
-
-    public static PartyPaymentMethodLogic getInstance() {
-        return CDI.current().select(PartyPaymentMethodLogic.class).get();
     }
 
     private String getDigitsOnly(String s) {

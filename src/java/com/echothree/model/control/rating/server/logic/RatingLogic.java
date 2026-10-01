@@ -23,7 +23,6 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -35,10 +34,6 @@ public class RatingLogic
 
     protected RatingLogic() {
         super();
-    }
-
-    public static RatingLogic getInstance() {
-        return CDI.current().select(RatingLogic.class).get();
     }
     
     public Rating getRatingByName(final ExecutionErrorAccumulator eea, final String ratingName) {

@@ -28,7 +28,6 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -40,10 +39,6 @@ public class ApplicationLogic
 
     protected ApplicationLogic() {
         super();
-    }
-
-    public static ApplicationLogic getInstance() {
-        return CDI.current().select(ApplicationLogic.class).get();
     }
     
     public Application getApplicationByName(final ExecutionErrorAccumulator eea, final String applicationName) {

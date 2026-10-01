@@ -28,7 +28,6 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -42,10 +41,6 @@ public class BillingAccountLogic {
 
     protected BillingAccountLogic() {
         super();
-    }
-
-    public static BillingAccountLogic getInstance() {
-        return CDI.current().select(BillingAccountLogic.class).get();
     }
 
     public BillingAccount getBillingAccount(final ExecutionErrorAccumulator ema, final Party billFrom, PartyContactMechanism billFromPartyContactMechanism,

@@ -34,7 +34,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -49,10 +48,6 @@ public class ItemImageTypeLogic
 
     protected ItemImageTypeLogic() {
         super();
-    }
-
-    public static ItemImageTypeLogic getInstance() {
-        return CDI.current().select(ItemImageTypeLogic.class).get();
     }
 
     public ItemImageType createItemImageType(final ExecutionErrorAccumulator eea, final String itemImageTypeName,

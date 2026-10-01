@@ -24,7 +24,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -36,10 +35,6 @@ public class ClubLogic
 
     protected ClubLogic() {
         super();
-    }
-
-    public static ClubLogic getInstance() {
-        return CDI.current().select(ClubLogic.class).get();
     }
 
     public Club getClubByName(final ExecutionErrorAccumulator eea, final String clubName,

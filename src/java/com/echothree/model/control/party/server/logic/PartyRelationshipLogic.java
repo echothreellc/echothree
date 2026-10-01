@@ -37,7 +37,6 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -58,10 +57,6 @@ public class PartyRelationshipLogic
 
     protected PartyRelationshipLogic() {
         super();
-    }
-
-    public static PartyRelationshipLogic getInstance() {
-        return CDI.current().select(PartyRelationshipLogic.class).get();
     }
 
     public PartyRelationshipType getPartyRelationshipTypeByName(final ExecutionErrorAccumulator eea, final String partyRelationshipTypeName) {

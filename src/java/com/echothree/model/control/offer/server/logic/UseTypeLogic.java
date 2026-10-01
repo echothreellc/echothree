@@ -35,7 +35,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -53,10 +52,6 @@ public class UseTypeLogic
 
     protected UseTypeLogic() {
         super();
-    }
-
-    public static UseTypeLogic getInstance() {
-        return CDI.current().select(UseTypeLogic.class).get();
     }
 
     public UseType createUseType(final ExecutionErrorAccumulator eea, final String useTypeName,

@@ -32,7 +32,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -47,10 +46,6 @@ public class UseNameElementLogic
 
     protected UseNameElementLogic() {
         super();
-    }
-
-    public static UseNameElementLogic getInstance() {
-        return CDI.current().select(UseNameElementLogic.class).get();
     }
 
     public UseNameElement createUseNameElement(final ExecutionErrorAccumulator eea, final String useNameElementName,

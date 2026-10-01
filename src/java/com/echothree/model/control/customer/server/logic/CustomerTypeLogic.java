@@ -43,7 +43,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -58,10 +57,6 @@ public class CustomerTypeLogic
 
     protected CustomerTypeLogic() {
         super();
-    }
-
-    public static CustomerTypeLogic getInstance() {
-        return CDI.current().select(CustomerTypeLogic.class).get();
     }
 
     public CustomerType createCustomerType(final ExecutionErrorAccumulator eea, final String customerTypeName, final Sequence customerSequence,

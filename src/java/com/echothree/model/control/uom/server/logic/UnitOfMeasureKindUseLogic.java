@@ -28,7 +28,6 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -46,10 +45,6 @@ public class UnitOfMeasureKindUseLogic
 
     protected UnitOfMeasureKindUseLogic() {
         super();
-    }
-
-    public static UnitOfMeasureKindUseLogic getInstance() {
-        return CDI.current().select(UnitOfMeasureKindUseLogic.class).get();
     }
 
     public UnitOfMeasureKindUseType getUnitOfMeasureKindUseTypeByName(final ExecutionErrorAccumulator eea, final String unitOfMeasureKindUseTypeName) {

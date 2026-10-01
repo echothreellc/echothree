@@ -26,7 +26,6 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -43,10 +42,6 @@ public class WorkflowSecurityLogic {
 
     protected WorkflowSecurityLogic() {
         super();
-    }
-
-    public static WorkflowSecurityLogic getInstance() {
-        return CDI.current().select(WorkflowSecurityLogic.class).get();
     }
     
     public boolean checkWorkflowEntranceAvailable(final WorkflowEntrance workflowEntrance, final PartyPK partyPK) {

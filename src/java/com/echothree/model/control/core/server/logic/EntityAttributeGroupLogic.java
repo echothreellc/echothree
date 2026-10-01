@@ -35,7 +35,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -59,10 +58,6 @@ public class EntityAttributeGroupLogic
 
     protected EntityAttributeGroupLogic() {
         super();
-    }
-
-    public static EntityAttributeGroupLogic getInstance() {
-        return CDI.current().select(EntityAttributeGroupLogic.class).get();
     }
     
     public EntityAttributeGroup createEntityAttributeGroup(final ExecutionErrorAccumulator eea, final EntityType entityType, String entityAttributeGroupName,

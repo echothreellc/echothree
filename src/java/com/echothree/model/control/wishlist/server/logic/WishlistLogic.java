@@ -38,7 +38,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -65,10 +64,6 @@ public class WishlistLogic
 
     protected WishlistLogic() {
         super();
-    }
-
-    public static WishlistLogic getInstance() {
-        return CDI.current().select(WishlistLogic.class).get();
     }
 
     private OfferUse getOrderOfferUse(final UserVisit userVisit, final OfferUse offerUse, final Party companyParty) {

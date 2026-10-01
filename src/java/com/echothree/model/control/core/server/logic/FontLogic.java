@@ -25,7 +25,6 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -37,10 +36,6 @@ public class FontLogic
 
     protected FontLogic() {
         super();
-    }
-
-    public static FontLogic getInstance() {
-        return CDI.current().select(FontLogic.class).get();
     }
     
     public FontStyle getFontStyleByName(final ExecutionErrorAccumulator eea, final String fontStyleName) {

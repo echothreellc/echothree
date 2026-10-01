@@ -53,7 +53,6 @@ import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -80,10 +79,6 @@ public class EntityAliasTypeLogic
 
     protected EntityAliasTypeLogic() {
         super();
-    }
-
-    public static EntityAliasTypeLogic getInstance() {
-        return CDI.current().select(EntityAliasTypeLogic.class).get();
     }
 
     public EntityAliasType createEntityAliasType(final ExecutionErrorAccumulator eea, final EntityType entityType,

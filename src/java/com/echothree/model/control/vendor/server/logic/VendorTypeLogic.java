@@ -39,7 +39,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -54,10 +53,6 @@ public class VendorTypeLogic
 
     protected VendorTypeLogic() {
         super();
-    }
-
-    public static VendorTypeLogic getInstance() {
-        return CDI.current().select(VendorTypeLogic.class).get();
     }
 
     public VendorType createVendorType(final ExecutionErrorAccumulator eea, final String vendorTypeName, final Term defaultTerm,

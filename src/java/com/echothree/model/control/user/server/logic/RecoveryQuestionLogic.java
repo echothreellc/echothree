@@ -23,7 +23,6 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -35,10 +34,6 @@ public class RecoveryQuestionLogic
 
     protected RecoveryQuestionLogic() {
         super();
-    }
-
-    public static RecoveryQuestionLogic getInstance() {
-        return CDI.current().select(RecoveryQuestionLogic.class).get();
     }
     
     public RecoveryQuestion getRecoveryQuestionByName(final ExecutionErrorAccumulator eea, final String recoveryQuestionName) {

@@ -38,7 +38,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -59,10 +58,6 @@ public class LeaveLogic
 
     protected LeaveLogic() {
         super();
-    }
-
-    public static LeaveLogic getInstance() {
-        return CDI.current().select(LeaveLogic.class).get();
     }
     
     public LeaveType getLeaveTypeByName(final ExecutionErrorAccumulator eea, final String leaveTypeName) {

@@ -23,7 +23,6 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -35,10 +34,6 @@ public class SelectorNodeTypeLogic
 
     protected SelectorNodeTypeLogic() {
         super();
-    }
-
-    public static SelectorNodeTypeLogic getInstance() {
-        return CDI.current().select(SelectorNodeTypeLogic.class).get();
     }
     
     public SelectorNodeType getSelectorNodeTypeByName(final ExecutionErrorAccumulator eea, final String selectorNodeTypeName) {

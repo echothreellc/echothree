@@ -30,7 +30,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -45,10 +44,6 @@ public class ContactMechanismAliasTypeLogic
 
     protected ContactMechanismAliasTypeLogic() {
         super();
-    }
-
-    public static ContactMechanismAliasTypeLogic getInstance() {
-        return CDI.current().select(ContactMechanismAliasTypeLogic.class).get();
     }
 
     public ContactMechanismAliasType getContactMechanismAliasTypeByName(final ExecutionErrorAccumulator eea, final String contactMechanismAliasTypeName,

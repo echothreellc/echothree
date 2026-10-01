@@ -28,7 +28,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -46,10 +45,6 @@ public class PersonalTitleLogic
 
     protected PersonalTitleLogic() {
         super();
-    }
-
-    public static PersonalTitleLogic getInstance() {
-        return CDI.current().select(PersonalTitleLogic.class).get();
     }
 
     private PersonalTitle getPersonalTitleById(final ExecutionErrorAccumulator eea, final String personalTitleId,

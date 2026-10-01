@@ -33,7 +33,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -48,10 +47,6 @@ public class SearchUseTypeLogic
 
     protected SearchUseTypeLogic() {
         super();
-    }
-
-    public static SearchUseTypeLogic getInstance() {
-        return CDI.current().select(SearchUseTypeLogic.class).get();
     }
 
     public SearchUseType createSearchUseType(final ExecutionErrorAccumulator eea, final String searchUseTypeName,

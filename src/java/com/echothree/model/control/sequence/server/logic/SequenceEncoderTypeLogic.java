@@ -23,7 +23,6 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -35,10 +34,6 @@ public class SequenceEncoderTypeLogic
 
     protected SequenceEncoderTypeLogic() {
         super();
-    }
-
-    public static SequenceEncoderTypeLogic getInstance() {
-        return CDI.current().select(SequenceEncoderTypeLogic.class).get();
     }
 
     public SequenceEncoderType getSequenceEncoderTypeByName(final ExecutionErrorAccumulator eea, final String sequenceEncoderTypeName) {

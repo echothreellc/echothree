@@ -33,7 +33,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -48,10 +47,6 @@ public class SearchKindLogic
 
     protected SearchKindLogic() {
         super();
-    }
-
-    public static SearchKindLogic getInstance() {
-        return CDI.current().select(SearchKindLogic.class).get();
     }
 
     public SearchKind createSearchKind(final ExecutionErrorAccumulator eea, final String searchKindName,

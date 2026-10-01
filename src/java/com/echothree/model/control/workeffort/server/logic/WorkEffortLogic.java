@@ -28,7 +28,6 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -45,10 +44,6 @@ public class WorkEffortLogic {
 
     protected WorkEffortLogic() {
         super();
-    }
-
-    public static WorkEffortLogic getInstance() {
-        return CDI.current().select(WorkEffortLogic.class).get();
     }
 
     public static class PreparedWorkEffort {

@@ -23,7 +23,6 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -34,10 +33,6 @@ public class PicklistTimeLogic {
 
     protected PicklistTimeLogic() {
         super();
-    }
-
-    public static PicklistTimeLogic getInstance() {
-        return CDI.current().select(PicklistTimeLogic.class).get();
     }
 
     private String getPicklistTypeName(PicklistType picklistType) {

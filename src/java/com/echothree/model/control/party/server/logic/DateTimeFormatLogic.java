@@ -23,7 +23,6 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -35,10 +34,6 @@ public class DateTimeFormatLogic
 
     protected DateTimeFormatLogic() {
         super();
-    }
-
-    public static DateTimeFormatLogic getInstance() {
-        return CDI.current().select(DateTimeFormatLogic.class).get();
     }
     
     public DateTimeFormat getDateTimeFormatByName(final ExecutionErrorAccumulator eea, final String dateTimeFormatName) {

@@ -39,16 +39,11 @@ import com.echothree.util.server.persistence.EntityPermission;
 import java.util.HashSet;
 import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
 public class ChainInstanceLogic
         extends BaseLogic {
-
-    public static ChainInstanceLogic getInstance() {
-        return CDI.current().select(ChainInstanceLogic.class).get();
-    }
 
     @Inject
     protected ChainControl chainControl;

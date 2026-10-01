@@ -19,7 +19,6 @@ package com.echothree.model.control.item.server.logic.checksum;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 
 @ApplicationScoped
 public class Gtin14ChecksumLogic
@@ -28,10 +27,6 @@ public class Gtin14ChecksumLogic
 
     protected Gtin14ChecksumLogic() {
         super();
-    }
-
-    public static Gtin14ChecksumLogic getInstance() {
-        return CDI.current().select(Gtin14ChecksumLogic.class).get();
     }
 
     @Override

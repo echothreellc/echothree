@@ -33,7 +33,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -48,10 +47,6 @@ public class TermTypeLogic
 
     protected TermTypeLogic() {
         super();
-    }
-
-    public static TermTypeLogic getInstance() {
-        return CDI.current().select(TermTypeLogic.class).get();
     }
 
     public TermType createTermType(final ExecutionErrorAccumulator eea, final String termTypeName,

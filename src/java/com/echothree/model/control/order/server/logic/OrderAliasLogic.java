@@ -24,7 +24,6 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -36,10 +35,6 @@ public class OrderAliasLogic
 
     protected OrderAliasLogic() {
         super();
-    }
-
-    public static OrderAliasLogic getInstance() {
-        return CDI.current().select(OrderAliasLogic.class).get();
     }
 
     public OrderAliasType getOrderAliasTypeByName(final ExecutionErrorAccumulator eea, final OrderType orderType, final String orderAliasTypeName) {

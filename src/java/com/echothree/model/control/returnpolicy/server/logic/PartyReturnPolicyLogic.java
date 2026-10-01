@@ -36,7 +36,6 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -54,10 +53,6 @@ public class PartyReturnPolicyLogic
 
     protected PartyReturnPolicyLogic() {
         super();
-    }
-
-    public static PartyReturnPolicyLogic getInstance() {
-        return CDI.current().select(PartyReturnPolicyLogic.class).get();
     }
 
     public WorkflowEntrance insertPartyReturnPolicyIntoWorkflow(EntityInstance entityInstance, BasePK createdBy) {

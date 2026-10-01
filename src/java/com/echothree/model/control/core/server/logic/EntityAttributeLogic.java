@@ -151,7 +151,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -190,10 +189,6 @@ public class EntityAttributeLogic
 
     protected EntityAttributeLogic() {
         super();
-    }
-
-    public static EntityAttributeLogic getInstance() {
-        return CDI.current().select(EntityAttributeLogic.class).get();
     }
     
     public EntityAttributeType getEntityAttributeTypeByName(final ExecutionErrorAccumulator eea, final String entityAttributeTypeName) {

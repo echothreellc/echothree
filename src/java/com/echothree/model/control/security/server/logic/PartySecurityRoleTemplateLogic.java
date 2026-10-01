@@ -37,7 +37,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -55,10 +54,6 @@ public class PartySecurityRoleTemplateLogic
 
     protected PartySecurityRoleTemplateLogic() {
         super();
-    }
-
-    public static PartySecurityRoleTemplateLogic getInstance() {
-        return CDI.current().select(PartySecurityRoleTemplateLogic.class).get();
     }
 
     // --------------------------------------------------------------------------------

@@ -37,7 +37,6 @@ import com.echothree.model.data.workrequirement.server.entity.WorkTime;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -63,10 +62,6 @@ public class WorkRequirementLogic {
 
     protected WorkRequirementLogic() {
         super();
-    }
-
-    public static WorkRequirementLogic getInstance() {
-        return CDI.current().select(WorkRequirementLogic.class).get();
     }
 
     public WorkRequirement createWorkRequirementUsingNames(final Session session, final WorkEffort workEffort, final String workRequirementTypeName,

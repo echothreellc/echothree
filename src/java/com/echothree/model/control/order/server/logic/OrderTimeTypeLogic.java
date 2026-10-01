@@ -38,7 +38,6 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -59,10 +58,6 @@ public class OrderTimeTypeLogic
 
     protected OrderTimeTypeLogic() {
         super();
-    }
-
-    public static OrderTimeTypeLogic getInstance() {
-        return CDI.current().select(OrderTimeTypeLogic.class).get();
     }
 
     public OrderTimeType createOrderTimeType(final ExecutionErrorAccumulator eea, final String orderTypeName, final String orderTimeTypeName,

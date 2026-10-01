@@ -28,7 +28,6 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -52,10 +51,6 @@ public class PartyChainLogic
 
     protected PartyChainLogic() {
         super();
-    }
-
-    public static PartyChainLogic getInstance() {
-        return CDI.current().select(PartyChainLogic.class).get();
     }
     
     protected ChainInstance createPartyChainInstance(final ExecutionErrorAccumulator eea, final String chainTypeName, final Party party,

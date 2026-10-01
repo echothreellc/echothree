@@ -38,7 +38,6 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -56,10 +55,6 @@ public class AssociateReferralLogic
 
     protected AssociateReferralLogic() {
         super();
-    }
-
-    public static AssociateReferralLogic getInstance() {
-        return CDI.current().select(AssociateReferralLogic.class).get();
     }
 
     public AssociateReferral createAssociateReferral(final ExecutionErrorAccumulator eea,

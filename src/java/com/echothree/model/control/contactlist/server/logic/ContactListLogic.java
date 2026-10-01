@@ -48,7 +48,6 @@ import com.echothree.util.server.persistence.EntityPermission;
 import java.util.HashSet;
 import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -78,10 +77,6 @@ public class ContactListLogic
 
     protected ContactListLogic() {
         super();
-    }
-
-    public static ContactListLogic getInstance() {
-        return CDI.current().select(ContactListLogic.class).get();
     }
 
     public ContactList getContactListByName(final ExecutionErrorAccumulator eea, final String contactListName,

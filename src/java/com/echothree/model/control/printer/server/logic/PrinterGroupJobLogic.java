@@ -32,7 +32,6 @@ import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -53,10 +52,6 @@ public class PrinterGroupJobLogic
 
     protected PrinterGroupJobLogic() {
         super();
-    }
-
-    public static PrinterGroupJobLogic getInstance() {
-        return CDI.current().select(PrinterGroupJobLogic.class).get();
     }
     
     private void insertPrinterGroupJobIntoWorkflow(final PrinterGroupJob printerGroupJob, final PartyPK createdBy) {
