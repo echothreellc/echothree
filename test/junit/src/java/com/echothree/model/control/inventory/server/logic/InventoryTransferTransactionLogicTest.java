@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.inventory.server.logic;
 
-import com.echothree.model.control.inventory.server.control.InventoryTransactionControl;
 import com.echothree.model.control.inventory.server.control.InventoryTransferTransactionControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.inventory.common.pk.InventoryTransactionPK;
@@ -69,10 +68,11 @@ class InventoryTransferTransactionLogicTest {
     @BeforeEach
     void injectDependencies() {
         logic.inventoryTransferTransactionControl = control;
-        logic.inventoryTransactionControl = new InventoryTransactionControl() {
+        logic.inventoryTransactionTypeLogic = new InventoryTransactionTypeLogic() {
             @Override
-            public InventoryTransaction getInventoryTransactionByPK(InventoryTransactionPK pk) {
-                return pk.equals(source.getPrimaryKey()) ? source : destination;
+            public InventoryTransactionType getInventoryTransactionTypeByName(ExecutionErrorAccumulator eea, String name) {
+                assertEquals("TYPE", name);
+                return type;
             }
         };
         logic.sequenceGeneratorLogic = new SequenceGeneratorLogic() {
@@ -100,33 +100,10 @@ class InventoryTransferTransactionLogicTest {
     }
 
     @Test
-    void missingNameWithoutSequenceIsRejected() {
-        assertNull(create(type(null), null));
-        assertError("MissingInventoryTransferTransactionName", "TYPE");
-        assertFalse(control.created);
-    }
-
-    @Test
     void duplicateNameIsRejected() {
         control.byName = existing;
-        assertNull(create(type, "DUPLICATE"));
+        assertSame(existing, create(type, "DUPLICATE"));
         assertError("DuplicateInventoryTransferTransactionName", "TYPE", "DUPLICATE");
-        assertFalse(control.created);
-    }
-
-    @Test
-    void duplicateSourceIsRejected() {
-        control.bySource = existing;
-        assertNull(create(type, "NEW"));
-        assertError("DuplicateInventoryTransferTransactionSource", "TYPE", "SOURCE");
-        assertFalse(control.created);
-    }
-
-    @Test
-    void duplicateDestinationIsRejected() {
-        control.byDestination = existing;
-        assertNull(create(type, "NEW"));
-        assertError("DuplicateInventoryTransferTransactionDestination", "TYPE", "DESTINATION");
         assertFalse(control.created);
     }
 
@@ -144,20 +121,9 @@ class InventoryTransferTransactionLogicTest {
     }
 
     @Test
-    void updatingOwnNameAndTransactionsDoesNotReportDuplicates() {
-        control.byName = existing;
-        control.bySource = existing;
-        control.byDestination = existing;
+    void updateDelegatesToControl() {
         logic.updateInventoryTransferTransactionFromValue(detailValue(), null);
         assertTrue(control.updated);
-    }
-
-    @Test
-    void updateCannotTakeAnotherTransfersSource() {
-        control.bySource = transfer(200L);
-        logic.updateInventoryTransferTransactionFromValue(errors, detailValue(), null);
-        assertError("DuplicateInventoryTransferTransactionSource", "TYPE", "SOURCE");
-        assertFalse(control.updated);
     }
 
     private void assertError(String key, Object... values) {
@@ -192,7 +158,7 @@ class InventoryTransferTransactionLogicTest {
     }
 
     private InventoryTransferTransaction create(InventoryTransactionType transactionType, String name) {
-        return logic.createInventoryTransferTransaction(errors, transactionType, name, source, destination,
+        return logic.createInventoryTransferTransaction(errors, transactionType.getLastDetail().getInventoryTransactionTypeName(), name, source, destination,
                 "REFERENCE", "DESCRIPTION", null);
     }
 
@@ -259,8 +225,6 @@ class InventoryTransferTransactionLogicTest {
 
     private class TestControl extends InventoryTransferTransactionControl {
         InventoryTransferTransaction byName;
-        InventoryTransferTransaction bySource;
-        InventoryTransferTransaction byDestination;
         EntityPermission permission;
         String createdName;
         boolean created;
@@ -285,21 +249,6 @@ class InventoryTransferTransactionLogicTest {
                 String name, EntityPermission entityPermission) {
             permission = entityPermission;
             return byName;
-        }
-
-        @Override
-        public InventoryTransferTransaction getInventoryTransferTransactionBySourceInventoryTransaction(InventoryTransaction transaction) {
-            return bySource;
-        }
-
-        @Override
-        public InventoryTransferTransaction getInventoryTransferTransactionByDestinationInventoryTransaction(InventoryTransaction transaction) {
-            return byDestination;
-        }
-
-        @Override
-        public InventoryTransferTransaction getInventoryTransferTransactionByPK(InventoryTransferTransactionPK pk) {
-            return existing;
         }
 
         @Override

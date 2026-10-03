@@ -72,6 +72,9 @@ public class InventoryTransactionTypeControl
     InventoryTransactionTimeControl inventoryTransactionTimeControl;
 
     @Inject
+    InventoryTransferTransactionControl inventoryTransferTransactionControl;
+
+    @Inject
     InventoryTransactionTypeTransferCache inventoryTransactionTypeTransferCache;
 
     @Inject
@@ -94,8 +97,10 @@ public class InventoryTransactionTypeControl
     @Inject
     protected InventoryTransactionTypeDetailFactory inventoryTransactionTypeDetailFactory;
 
-    public InventoryTransactionType createInventoryTransactionType(String inventoryTransactionTypeName, SequenceType inventoryTransactionSequenceType, Workflow inventoryTransactionWorkflow,
-            WorkflowEntrance inventoryTransactionWorkflowEntrance, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
+    public InventoryTransactionType createInventoryTransactionType(String inventoryTransactionTypeName,
+            SequenceType inventoryTransferTransactionSequenceType, SequenceType inventoryTransactionSequenceType,
+            Workflow inventoryTransactionWorkflow, WorkflowEntrance inventoryTransactionWorkflowEntrance,
+            Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultInventoryTransactionType = getDefaultInventoryTransactionType();
         var defaultFound = defaultInventoryTransactionType != null;
 
@@ -109,7 +114,8 @@ public class InventoryTransactionTypeControl
         }
 
         var inventoryTransactionType = inventoryTransactionTypeFactory.create();
-        var inventoryTransactionTypeDetail = inventoryTransactionTypeDetailFactory.create(inventoryTransactionType, inventoryTransactionTypeName, inventoryTransactionSequenceType,
+        var inventoryTransactionTypeDetail = inventoryTransactionTypeDetailFactory.create(inventoryTransactionType,
+                inventoryTransactionTypeName, inventoryTransferTransactionSequenceType, inventoryTransactionSequenceType,
                 inventoryTransactionWorkflow, inventoryTransactionWorkflowEntrance, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
 
@@ -304,6 +310,7 @@ public class InventoryTransactionTypeControl
 
             var inventoryTransactionTypePK = inventoryTransactionTypeDetail.getInventoryTransactionTypePK(); // Not updated
             var inventoryTransactionTypeName = inventoryTransactionTypeDetailValue.getInventoryTransactionTypeName();
+            var inventoryTransferTransactionSequenceTypePK = inventoryTransactionTypeDetailValue.getInventoryTransferTransactionSequenceTypePK();
             var inventoryTransactionSequenceTypePK = inventoryTransactionTypeDetailValue.getInventoryTransactionSequenceTypePK();
             var inventoryTransactionWorkflowPK = inventoryTransactionTypeDetailValue.getInventoryTransactionWorkflowPK();
             var inventoryTransactionWorkflowEntrancePK = inventoryTransactionTypeDetailValue.getInventoryTransactionWorkflowEntrancePK();
@@ -326,7 +333,8 @@ public class InventoryTransactionTypeControl
                 }
             }
 
-            inventoryTransactionTypeDetail = inventoryTransactionTypeDetailFactory.create(inventoryTransactionTypePK, inventoryTransactionTypeName, inventoryTransactionSequenceTypePK,
+            inventoryTransactionTypeDetail = inventoryTransactionTypeDetailFactory.create(inventoryTransactionTypePK,
+                    inventoryTransactionTypeName, inventoryTransferTransactionSequenceTypePK, inventoryTransactionSequenceTypePK,
                     inventoryTransactionWorkflowPK, inventoryTransactionWorkflowEntrancePK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             inventoryTransactionType.setActiveDetail(inventoryTransactionTypeDetail);
@@ -344,6 +352,7 @@ public class InventoryTransactionTypeControl
         var inventoryTransactionTypeDetail = inventoryTransactionType.getLastDetailForUpdate();
 
         deleteInventoryTransactionTypeDescriptionsByInventoryTransactionType(inventoryTransactionType, deletedBy);
+        inventoryTransferTransactionControl.deleteInventoryTransferTransactionsByInventoryTransactionType(inventoryTransactionType, deletedBy);
         inventoryTransactionControl.deleteInventoryTransactionsByInventoryTransactionType(inventoryTransactionType, deletedBy);
         inventoryTransactionTimeControl.deleteInventoryTransactionTimeTypesByInventoryTransactionType(inventoryTransactionType, deletedBy);
         inventoryTransactionReasonControl.deleteInventoryTransactionReasonsByInventoryTransactionType(inventoryTransactionType, deletedBy);

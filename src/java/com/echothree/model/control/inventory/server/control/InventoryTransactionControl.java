@@ -30,8 +30,8 @@ import com.echothree.model.data.inventory.server.value.InventoryTransactionDetai
 import com.echothree.model.data.party.server.entity.Party;
 import static com.echothree.model.jooq.server.keys.inventory.InventoryForeignKeys.INVENTORY_TRANSACTIONS_ACTIVE_DETAIL_FK;
 import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactionDetails.InventoryTransactionDetails;
-import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactions.InventoryTransactions;
 import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactionStatuses.InventoryTransactionStatuses;
+import static com.echothree.model.jooq.server.tables.inventory.InventoryTransactions.InventoryTransactions;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
@@ -53,6 +53,9 @@ public class InventoryTransactionControl
 
     @Inject
     InventoryTransactionTimeControl inventoryTransactionTimeControl;
+
+    @Inject
+    InventoryTransferTransactionControl inventoryTransferTransactionControl;
 
     /**
      * Creates a new instance of InventoryTransactionControl
@@ -259,6 +262,8 @@ public class InventoryTransactionControl
         var inventoryTransactionDetail = inventoryTransaction.getLastDetailForUpdate();
 
         removeInventoryTransactionStatusByInventoryTransaction(inventoryTransaction);
+        inventoryTransferTransactionControl.deleteInventoryTransferTransactionBySourceInventoryTransaction(inventoryTransaction, deletedBy);
+        inventoryTransferTransactionControl.deleteInventoryTransferTransactionByDestinationInventoryTransaction(inventoryTransaction, deletedBy);
         inventoryTransactionTimeControl.deleteInventoryTransactionTimesByInventoryTransaction(inventoryTransaction, deletedBy);
         inventoryTransactionRoleControl.deleteInventoryTransactionRolesByInventoryTransaction(inventoryTransaction, deletedBy);
         inventoryTransactionLineControl.deleteInventoryTransactionLinesByInventoryTransaction(inventoryTransaction, deletedBy);

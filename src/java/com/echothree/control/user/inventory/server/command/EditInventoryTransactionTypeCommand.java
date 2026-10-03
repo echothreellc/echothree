@@ -71,6 +71,7 @@ public class EditInventoryTransactionTypeCommand
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InventoryTransactionTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("InventoryTransferTransactionSequenceTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("InventoryTransactionSequenceTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("InventoryTransactionWorkflowName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("InventoryTransactionWorkflowEntranceName", FieldType.ENTITY_NAME, false, null, null),
@@ -135,6 +136,7 @@ public class EditInventoryTransactionTypeCommand
         result.setInventoryTransactionType(inventoryTransactionTypeControl.getInventoryTransactionTypeTransfer(getUserVisit(), inventoryTransactionType));
     }
 
+    SequenceType inventoryTransferTransactionSequenceType = null;
     SequenceType inventoryTransactionSequenceType = null;
     Workflow inventoryTransactionWorkflow = null;
     WorkflowEntrance inventoryTransactionWorkflowEntrance = null;
@@ -144,11 +146,13 @@ public class EditInventoryTransactionTypeCommand
         var inventoryTransactionTypeDescription = inventoryTransactionTypeControl.getInventoryTransactionTypeDescription(inventoryTransactionType, getPreferredLanguage());
         var inventoryTransactionTypeDetail = inventoryTransactionType.getLastDetail();
 
+        inventoryTransferTransactionSequenceType = inventoryTransactionTypeDetail.getInventoryTransferTransactionSequenceType();
         inventoryTransactionSequenceType = inventoryTransactionTypeDetail.getInventoryTransactionSequenceType();
         inventoryTransactionWorkflow = inventoryTransactionTypeDetail.getInventoryTransactionWorkflow();
         inventoryTransactionWorkflowEntrance = inventoryTransactionTypeDetail.getInventoryTransactionWorkflowEntrance();
 
         edit.setInventoryTransactionTypeName(inventoryTransactionTypeDetail.getInventoryTransactionTypeName());
+        edit.setInventoryTransferTransactionSequenceTypeName(inventoryTransferTransactionSequenceType == null ? null : inventoryTransferTransactionSequenceType.getLastDetail().getSequenceTypeName());
         edit.setInventoryTransactionSequenceTypeName(inventoryTransactionSequenceType == null ? null : inventoryTransactionSequenceType.getLastDetail().getSequenceTypeName());
         edit.setInventoryTransactionWorkflowName(inventoryTransactionWorkflow == null ? null : inventoryTransactionWorkflow.getLastDetail().getWorkflowName());
         edit.setInventoryTransactionWorkflowEntranceName(inventoryTransactionWorkflowEntrance == null ? null : inventoryTransactionWorkflowEntrance.getLastDetail().getWorkflowEntranceName());
@@ -166,7 +170,11 @@ public class EditInventoryTransactionTypeCommand
         var duplicateInventoryTransactionType = inventoryTransactionTypeControl.getInventoryTransactionTypeByName(inventoryTransactionTypeName);
 
         if(duplicateInventoryTransactionType == null || inventoryTransactionType.equals(duplicateInventoryTransactionType)) {
+            var inventoryTransferTransactionSequenceTypeName = edit.getInventoryTransferTransactionSequenceTypeName();
             var inventoryTransactionSequenceTypeName = edit.getInventoryTransactionSequenceTypeName();
+
+            inventoryTransferTransactionSequenceType = inventoryTransferTransactionSequenceTypeName == null ? null :
+                    sequenceTypeLogic.getSequenceTypeByName(this, inventoryTransferTransactionSequenceTypeName);
 
             inventoryTransactionSequenceType = inventoryTransactionSequenceTypeName == null ? null :
                     sequenceTypeLogic.getSequenceTypeByName(this, inventoryTransactionSequenceTypeName);
@@ -203,6 +211,7 @@ public class EditInventoryTransactionTypeCommand
         var description = edit.getDescription();
 
         inventoryTransactionTypeDetailValue.setInventoryTransactionTypeName(edit.getInventoryTransactionTypeName());
+        inventoryTransactionTypeDetailValue.setInventoryTransferTransactionSequenceTypePK(inventoryTransferTransactionSequenceType == null ? null : inventoryTransferTransactionSequenceType.getPrimaryKey());
         inventoryTransactionTypeDetailValue.setInventoryTransactionSequenceTypePK(inventoryTransactionSequenceType == null ? null : inventoryTransactionSequenceType.getPrimaryKey());
         inventoryTransactionTypeDetailValue.setInventoryTransactionWorkflowPK(inventoryTransactionWorkflow == null ? null : inventoryTransactionWorkflow.getPrimaryKey());
         inventoryTransactionTypeDetailValue.setInventoryTransactionWorkflowEntrancePK(inventoryTransactionWorkflow == null ? null : inventoryTransactionWorkflowEntrance.getPrimaryKey());

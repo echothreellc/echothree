@@ -16,12 +16,6 @@
 
 package com.echothree.model.control.inventory.server.graphql;
 
-import com.echothree.model.control.inventory.server.control.InventoryDispositionControl;
-import com.echothree.model.data.inventory.common.InventoryDispositionConstants;
-import com.echothree.model.control.inventory.server.control.InventoryTransactionReasonControl;
-import com.echothree.model.data.inventory.common.InventoryTransactionReasonConstants;
-import com.echothree.model.control.inventory.server.control.InventoryTransactionRoleControl;
-import com.echothree.model.data.inventory.common.InventoryTransactionRoleTypeConstants;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
@@ -29,6 +23,9 @@ import com.echothree.model.control.graphql.server.graphql.count.CountingDataConn
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.control.inventory.server.control.InventoryDispositionControl;
+import com.echothree.model.control.inventory.server.control.InventoryTransactionReasonControl;
+import com.echothree.model.control.inventory.server.control.InventoryTransactionRoleControl;
 import com.echothree.model.control.inventory.server.control.InventoryTransactionTimeControl;
 import com.echothree.model.control.inventory.server.control.InventoryTransactionTypeControl;
 import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
@@ -37,6 +34,9 @@ import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntranceObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowSecurityUtils;
+import com.echothree.model.data.inventory.common.InventoryDispositionConstants;
+import com.echothree.model.data.inventory.common.InventoryTransactionReasonConstants;
+import com.echothree.model.data.inventory.common.InventoryTransactionRoleTypeConstants;
 import com.echothree.model.data.inventory.common.InventoryTransactionTimeTypeConstants;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionType;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionTypeDetail;
@@ -78,6 +78,14 @@ public class InventoryTransactionTypeObject
     @GraphQLNonNull
     public String getInventoryTransactionTypeName() {
         return getInventoryTransactionTypeDetail().getInventoryTransactionTypeName();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("inventory transfer transaction sequence type")
+    public SequenceTypeObject getInventoryTransferTransactionSequenceType(final DataFetchingEnvironment env) {
+        var inventoryTransferTransactionSequenceType = getInventoryTransactionTypeDetail().getInventoryTransferTransactionSequenceType();
+
+        return inventoryTransferTransactionSequenceType == null ? null : (SequenceSecurityUtils.getHasSequenceTypeAccess(env) ? new SequenceTypeObject(inventoryTransferTransactionSequenceType) : null);
     }
 
     @GraphQLField

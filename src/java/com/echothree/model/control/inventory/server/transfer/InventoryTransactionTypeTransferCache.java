@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.inventory.server.transfer;
 
-import javax.inject.Inject;
 import com.echothree.model.control.inventory.common.transfer.InventoryTransactionTypeTransfer;
 import com.echothree.model.control.inventory.server.control.InventoryTransactionTypeControl;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
@@ -24,6 +23,7 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class InventoryTransactionTypeTransferCache
@@ -52,6 +52,8 @@ public class InventoryTransactionTypeTransferCache
         if(inventoryTransactionTypeTransfer == null) {
             var inventoryTransactionTypeDetail = inventoryTransactionType.getLastDetail();
             var inventoryTransactionTypeName = inventoryTransactionTypeDetail.getInventoryTransactionTypeName();
+            var inventoryTransferTransactionSequenceType = inventoryTransactionTypeDetail.getInventoryTransferTransactionSequenceType();
+            var inventoryTransferTransactionSequenceTypeTransfer = inventoryTransferTransactionSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, inventoryTransferTransactionSequenceType);
             var inventoryTransactionSequenceType = inventoryTransactionTypeDetail.getInventoryTransactionSequenceType();
             var inventoryTransactionSequenceTypeTransfer = inventoryTransactionSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, inventoryTransactionSequenceType);
             var inventoryTransactionWorkflow = inventoryTransactionTypeDetail.getInventoryTransactionWorkflow();
@@ -62,7 +64,7 @@ public class InventoryTransactionTypeTransferCache
             var sortOrder = inventoryTransactionTypeDetail.getSortOrder();
             var description = inventoryTransactionTypeControl.getBestInventoryTransactionTypeDescription(inventoryTransactionType, getLanguage(userVisit));
             
-            inventoryTransactionTypeTransfer = new InventoryTransactionTypeTransfer(inventoryTransactionTypeName, inventoryTransactionSequenceTypeTransfer, inventoryTransactionWorkflowTransfer,
+            inventoryTransactionTypeTransfer = new InventoryTransactionTypeTransfer(inventoryTransactionTypeName, inventoryTransferTransactionSequenceTypeTransfer, inventoryTransactionSequenceTypeTransfer, inventoryTransactionWorkflowTransfer,
                     inventoryTransactionWorkflowEntranceTransfer, isDefault, sortOrder, description);
             put(userVisit, inventoryTransactionType, inventoryTransactionTypeTransfer);
         }

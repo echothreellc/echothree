@@ -25,6 +25,7 @@ public class InventoryTransactionTypeTransfer
         extends BaseTransfer {
     
     private String inventoryTransactionTypeName;
+    private SequenceTypeTransfer inventoryTransferTransactionSequenceType;
     private SequenceTypeTransfer inventoryTransactionSequenceType;
     private WorkflowTransfer inventoryTransactionWorkflow;
     private WorkflowEntranceTransfer inventoryTransactionWorkflowEntrance;
@@ -33,10 +34,12 @@ public class InventoryTransactionTypeTransfer
     private String description;
     
     /** Creates a new instance of InventoryTransactionTypeTransfer */
-    public InventoryTransactionTypeTransfer(String inventoryTransactionTypeName, SequenceTypeTransfer inventoryTransactionSequenceType,
+    public InventoryTransactionTypeTransfer(String inventoryTransactionTypeName,
+            SequenceTypeTransfer inventoryTransferTransactionSequenceType, SequenceTypeTransfer inventoryTransactionSequenceType,
             WorkflowTransfer inventoryTransactionWorkflow, WorkflowEntranceTransfer inventoryTransactionWorkflowEntrance, Boolean isDefault, Integer sortOrder,
             String description) {
         this.inventoryTransactionTypeName = inventoryTransactionTypeName;
+        this.inventoryTransferTransactionSequenceType = inventoryTransferTransactionSequenceType;
         this.inventoryTransactionSequenceType = inventoryTransactionSequenceType;
         this.inventoryTransactionWorkflow = inventoryTransactionWorkflow;
         this.inventoryTransactionWorkflowEntrance = inventoryTransactionWorkflowEntrance;
@@ -51,6 +54,14 @@ public class InventoryTransactionTypeTransfer
 
     public void setInventoryTransactionTypeName(String inventoryTransactionTypeName) {
         this.inventoryTransactionTypeName = inventoryTransactionTypeName;
+    }
+
+    public SequenceTypeTransfer getInventoryTransferTransactionSequenceType() {
+        return inventoryTransferTransactionSequenceType;
+    }
+
+    public void setInventoryTransferTransactionSequenceType(SequenceTypeTransfer inventoryTransferTransactionSequenceType) {
+        this.inventoryTransferTransactionSequenceType = inventoryTransferTransactionSequenceType;
     }
 
     public SequenceTypeTransfer getInventoryTransactionSequenceType() {
