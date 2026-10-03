@@ -60,6 +60,7 @@
                 </fileset>
                 <fileset dir="../../build/jars">
                     <include name="echothree-client.jar"/>
+                    <include name="echothree-server.jar"/>
                 </fileset>
             </classpath>
             <compilerarg value="-processorpath"/>
@@ -106,6 +107,7 @@
                 </fileset>
                 <fileset dir="../../build/jars">
                     <include name="echothree-client.jar"/>
+                    <include name="echothree-server.jar"/>
                 </fileset>
                 <pathelement path="${test.junit.classes.dir}" />
                 <pathelement path="${test.junit.pathelement.1}" />
