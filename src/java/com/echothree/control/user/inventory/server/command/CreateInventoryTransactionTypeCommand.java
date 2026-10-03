@@ -58,6 +58,7 @@ public class CreateInventoryTransactionTypeCommand
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InventoryTransactionTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("InventoryTransferTransactionSequenceTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("InventoryTransactionSequenceTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("InventoryTransactionWorkflowName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("InventoryTransactionWorkflowEntranceName", FieldType.ENTITY_NAME, false, null, null),
@@ -87,6 +88,8 @@ public class CreateInventoryTransactionTypeCommand
     @Override
     protected BaseResult execute() {
         var result = InventoryResultFactory.getCreateInventoryTransactionTypeResult();
+        var inventoryTransferTransactionSequenceTypeName = form.getInventoryTransferTransactionSequenceTypeName();
+        var inventoryTransferTransactionSequenceType = inventoryTransferTransactionSequenceTypeName == null ? null : sequenceTypeLogic.getSequenceTypeByName(this, inventoryTransferTransactionSequenceTypeName);
         var inventoryTransactionSequenceTypeName = form.getInventoryTransactionSequenceTypeName();
         var inventoryTransactionSequenceType = inventoryTransactionSequenceTypeName == null ? null : sequenceTypeLogic.getSequenceTypeByName(this, inventoryTransactionSequenceTypeName);
         InventoryTransactionType inventoryTransactionType = null;
@@ -112,7 +115,7 @@ public class CreateInventoryTransactionTypeCommand
                         var description = form.getDescription();
                         var partyPK = getPartyPK();
 
-                        inventoryTransactionType = inventoryTransactionTypeLogic.createInventoryTransactionType(this, inventoryTransactionTypeName, inventoryTransactionSequenceType, inventoryTransactionWorkflow,
+                        inventoryTransactionType = inventoryTransactionTypeLogic.createInventoryTransactionType(this, inventoryTransactionTypeName, inventoryTransferTransactionSequenceType, inventoryTransactionSequenceType, inventoryTransactionWorkflow,
                                 inventoryTransactionWorkflowEntrance, isDefault, sortOrder, getPreferredLanguage(), description, partyPK);
                     }
                 } else {

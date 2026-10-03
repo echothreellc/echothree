@@ -54,13 +54,14 @@ public class InventoryTransactionTypeLogic
     }
 
     public InventoryTransactionType createInventoryTransactionType(final ExecutionErrorAccumulator eea, final String inventoryTransactionTypeName,
-            final SequenceType inventoryTransactionSequenceType, final Workflow inventoryTransactionWorkflow,
+            final SequenceType inventoryTransferTransactionSequenceType, final SequenceType inventoryTransactionSequenceType, final Workflow inventoryTransactionWorkflow,
             final WorkflowEntrance inventoryTransactionWorkflowEntrance, final Boolean isDefault, final Integer sortOrder,
             final Language language, final String description, final BasePK createdBy) {
         var inventoryTransactionType = inventoryTransactionTypeControl.getInventoryTransactionTypeByName(inventoryTransactionTypeName);
 
         if(inventoryTransactionType == null) {
-            inventoryTransactionType = inventoryTransactionTypeControl.createInventoryTransactionType(inventoryTransactionTypeName, inventoryTransactionSequenceType, inventoryTransactionWorkflow,
+            inventoryTransactionType = inventoryTransactionTypeControl.createInventoryTransactionType(inventoryTransactionTypeName,
+                    inventoryTransferTransactionSequenceType, inventoryTransactionSequenceType, inventoryTransactionWorkflow,
                     inventoryTransactionWorkflowEntrance, isDefault, sortOrder, createdBy);
 
             if(description != null) {

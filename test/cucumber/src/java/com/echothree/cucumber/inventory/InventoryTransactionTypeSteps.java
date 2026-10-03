@@ -19,6 +19,7 @@ package com.echothree.cucumber.inventory;
 import com.echothree.control.user.inventory.common.InventoryUtil;
 import com.echothree.control.user.inventory.common.result.CreateInventoryTransactionTypeResult;
 import com.echothree.control.user.inventory.common.result.EditInventoryTransactionTypeResult;
+import com.echothree.control.user.inventory.common.result.GetInventoryTransactionTypeResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -140,6 +141,19 @@ public class InventoryTransactionTypeSteps implements En {
                     persona.inventoryTransactionTypeEdit = null;
                 });
 
+        And("^the user abandons editing the last inventory transaction type added$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var spec = InventoryUtil.getHome().getInventoryTransactionTypeUniversalSpec();
+                    spec.setInventoryTransactionTypeName(persona.lastInventoryTransactionTypeName);
+
+                    var commandForm = InventoryUtil.getHome().getEditInventoryTransactionTypeForm();
+                    commandForm.setSpec(spec);
+                    commandForm.setEditMode(EditMode.ABANDON);
+
+                    LastCommandResult.commandResult = InventoryUtil.getHome().editInventoryTransactionType(persona.userVisitPK, commandForm);
+                });
+
         And("^the user sets the inventory transaction type's inventory transaction type name to \"([a-zA-Z0-9-_]*)\"$",
                 (String inventoryTransactionTypeName) -> {
                     var persona = CurrentPersona.persona;
@@ -202,6 +216,74 @@ public class InventoryTransactionTypeSteps implements En {
                     assertThat(inventoryTransactionTypeEdit).isNotNull();
 
                     inventoryTransactionTypeEdit.setInventoryTransactionTypeName(inventoryTransactionTypeName);
+                });
+
+        And("^the user sets the inventory transaction type's inventory transfer transaction sequence type name to \"([^\"]*)\"$",
+                (String sequenceTypeName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createForm = persona.createInventoryTransactionTypeForm;
+                    var edit = persona.inventoryTransactionTypeEdit;
+
+                    assertThat(createForm != null || edit != null).isTrue();
+
+                    if(createForm != null) {
+                        createForm.setInventoryTransferTransactionSequenceTypeName(sequenceTypeName.isEmpty() ? null : sequenceTypeName);
+                    } else {
+                        edit.setInventoryTransferTransactionSequenceTypeName(sequenceTypeName.isEmpty() ? null : sequenceTypeName);
+                    }
+                });
+
+        Then("^the inventory transaction type's inventory transfer transaction sequence type name should be \"([^\"]*)\"$",
+                (String sequenceTypeName) -> {
+                    var persona = CurrentPersona.persona;
+                    var form = InventoryUtil.getHome().getGetInventoryTransactionTypeForm();
+                    form.setInventoryTransactionTypeName(persona.lastInventoryTransactionTypeName);
+
+                    var commandResult = InventoryUtil.getHome().getInventoryTransactionType(persona.userVisitPK, form);
+                    assertThat(commandResult.getHasErrors()).isFalse();
+                    var result = (GetInventoryTransactionTypeResult)commandResult.getExecutionResult().getResult();
+                    var sequenceType = result.getInventoryTransactionType().getInventoryTransferTransactionSequenceType();
+
+                    if(sequenceTypeName.isEmpty()) {
+                        assertThat(sequenceType).isNull();
+                    } else {
+                        assertThat(sequenceType).isNotNull();
+                        assertThat(sequenceType.getSequenceTypeName()).isEqualTo(sequenceTypeName);
+                    }
+                });
+
+        And("^the user sets the inventory transaction type's inventory transaction sequence type name to \"([^\"]*)\"$",
+                (String sequenceTypeName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createForm = persona.createInventoryTransactionTypeForm;
+                    var edit = persona.inventoryTransactionTypeEdit;
+
+                    assertThat(createForm != null || edit != null).isTrue();
+
+                    if(createForm != null) {
+                        createForm.setInventoryTransactionSequenceTypeName(sequenceTypeName.isEmpty() ? null : sequenceTypeName);
+                    } else {
+                        edit.setInventoryTransactionSequenceTypeName(sequenceTypeName.isEmpty() ? null : sequenceTypeName);
+                    }
+                });
+
+        Then("^the inventory transaction type's inventory transaction sequence type name should be \"([^\"]*)\"$",
+                (String sequenceTypeName) -> {
+                    var persona = CurrentPersona.persona;
+                    var form = InventoryUtil.getHome().getGetInventoryTransactionTypeForm();
+                    form.setInventoryTransactionTypeName(persona.lastInventoryTransactionTypeName);
+
+                    var commandResult = InventoryUtil.getHome().getInventoryTransactionType(persona.userVisitPK, form);
+                    assertThat(commandResult.getHasErrors()).isFalse();
+                    var result = (GetInventoryTransactionTypeResult)commandResult.getExecutionResult().getResult();
+                    var sequenceType = result.getInventoryTransactionType().getInventoryTransactionSequenceType();
+
+                    if(sequenceTypeName.isEmpty()) {
+                        assertThat(sequenceType).isNull();
+                    } else {
+                        assertThat(sequenceType).isNotNull();
+                        assertThat(sequenceType.getSequenceTypeName()).isEqualTo(sequenceTypeName);
+                    }
                 });
 
         And("^the user sets the inventory transaction type to (be|not be) the default$",

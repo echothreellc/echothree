@@ -1063,6 +1063,9 @@
             <entityType entityTypeName="InventoryTransactionReasonDescription" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Inventory Transaction Reason Description" />
             </entityType>
+            <entityType entityTypeName="InventoryTransferTransaction" keepAllHistory="false" isExtensible="true" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Inventory Transfer Transaction" />
+            </entityType>
             <entityType entityTypeName="InventoryTransaction" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Inventory Transaction" />
             </entityType>

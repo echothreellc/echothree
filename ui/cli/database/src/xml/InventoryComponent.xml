@@ -948,6 +948,7 @@
                         <column name="InventoryTransactionTypeDetailId" type="EID" nullAllowed="false" />
                         <column name="InventoryTransactionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryTransactionTypes" destinationColumn="InventoryTransactionTypeId" />
                         <column name="InventoryTransactionTypeName" type="Name" nullAllowed="false" />
+                        <column name="InventoryTransferTransactionSequenceTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="SequenceTypes" destinationColumn="SequenceTypeId" />
                         <column name="InventoryTransactionSequenceTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="SequenceTypes" destinationColumn="SequenceTypeId" />
                         <column name="InventoryTransactionWorkflowId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Workflows" destinationColumn="WorkflowId" />
                         <column name="InventoryTransactionWorkflowEntranceId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="WorkflowEntrances" destinationColumn="WorkflowEntranceId" />
@@ -969,18 +970,22 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index3">
-                            <indexColumn name="InventoryTransactionSequenceTypeId" />
+                            <indexColumn name="InventoryTransferTransactionSequenceTypeId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index4">
-                            <indexColumn name="InventoryTransactionWorkflowId" />
+                            <indexColumn name="InventoryTransactionSequenceTypeId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index5">
-                            <indexColumn name="InventoryTransactionWorkflowEntranceId" />
+                            <indexColumn name="InventoryTransactionWorkflowId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index6">
+                            <indexColumn name="InventoryTransactionWorkflowEntranceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
                             <indexColumn name="IsDefault" />
                             <indexColumn name="ThruTime" />
                         </index>
@@ -1403,6 +1408,64 @@
                         <index type="Multiple" name="Index3">
                             <indexColumn name="LanguageId" />
                             <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="InventoryTransferTransactions" nameSingular="InventoryTransferTransaction" columnPrefix="invtxtrx">
+                    <columns>
+                        <column name="InventoryTransferTransactionId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="InventoryTransferTransactionDetails" destinationColumn="InventoryTransferTransactionDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="InventoryTransferTransactionDetails" destinationColumn="InventoryTransferTransactionDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="InventoryTransferTransactionId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="InventoryTransferTransactionDetails" nameSingular="InventoryTransferTransactionDetail" columnPrefix="invtxtrxdt">
+                    <columns>
+                        <column name="InventoryTransferTransactionDetailId" type="EID" nullAllowed="false" />
+                        <column name="InventoryTransferTransactionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryTransferTransactions" destinationColumn="InventoryTransferTransactionId" />
+                        <column name="InventoryTransactionTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryTransactionTypes" destinationColumn="InventoryTransactionTypeId" />
+                        <column name="InventoryTransferTransactionName" type="Name" nullAllowed="false" />
+                        <column name="SourceInventoryTransactionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryTransactions" destinationColumn="InventoryTransactionId" />
+                        <column name="DestinationInventoryTransactionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryTransactions" destinationColumn="InventoryTransactionId" />
+                        <column name="Reference" type="Reference" nullAllowed="true" />
+                        <column name="Description" type="Description" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="InventoryTransferTransactionDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="InventoryTransferTransactionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="InventoryTransactionTypeId" />
+                            <indexColumn name="InventoryTransferTransactionName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="InventoryTransactionTypeId" />
+                            <indexColumn name="Reference" />
+                        </index>
+                        <index type="Unique" name="Index4">
+                            <indexColumn name="SourceInventoryTransactionId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index5">
+                            <indexColumn name="DestinationInventoryTransactionId" />
+                            <indexColumn name="ThruTime" />
                         </index>
                     </indexes>
                 </table>

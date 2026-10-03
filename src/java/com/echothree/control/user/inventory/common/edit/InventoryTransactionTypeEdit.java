@@ -21,6 +21,9 @@ import com.echothree.control.user.inventory.common.spec.InventoryTransactionType
 public interface InventoryTransactionTypeEdit
         extends InventoryTransactionTypeSpec, InventoryTransactionTypeDescriptionEdit {
     
+    String getInventoryTransferTransactionSequenceTypeName();
+    void setInventoryTransferTransactionSequenceTypeName(String inventoryTransferTransactionSequenceTypeName);
+
     String getInventoryTransactionSequenceTypeName();
     void setInventoryTransactionSequenceTypeName(String inventoryTransactionSequenceTypeName);
 

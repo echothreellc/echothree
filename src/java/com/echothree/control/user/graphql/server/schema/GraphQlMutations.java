@@ -4557,6 +4557,7 @@ public interface GraphQlMutations {
     @GraphQLRelayMutation
     static MutationResultWithIdObject createInventoryTransactionType(final DataFetchingEnvironment env,
             @GraphQLName("inventoryTransactionTypeName") @GraphQLNonNull final String inventoryTransactionTypeName,
+            @GraphQLName("inventoryTransferTransactionSequenceTypeName") final String inventoryTransferTransactionSequenceTypeName,
             @GraphQLName("inventoryTransactionSequenceTypeName") final String inventoryTransactionSequenceTypeName,
             @GraphQLName("inventoryTransactionWorkflowName") final String inventoryTransactionWorkflowName,
             @GraphQLName("inventoryTransactionWorkflowEntranceName") final String inventoryTransactionWorkflowEntranceName,
@@ -4569,6 +4570,7 @@ public interface GraphQlMutations {
             var commandForm = InventoryUtil.getHome().getCreateInventoryTransactionTypeForm();
 
             commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
+            commandForm.setInventoryTransferTransactionSequenceTypeName(inventoryTransferTransactionSequenceTypeName);
             commandForm.setInventoryTransactionSequenceTypeName(inventoryTransactionSequenceTypeName);
             commandForm.setInventoryTransactionWorkflowName(inventoryTransactionWorkflowName);
             commandForm.setInventoryTransactionWorkflowEntranceName(inventoryTransactionWorkflowEntranceName);
@@ -4597,6 +4599,7 @@ public interface GraphQlMutations {
             @GraphQLName("originalInventoryTransactionTypeName") final String originalInventoryTransactionTypeName,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("inventoryTransactionTypeName") final String inventoryTransactionTypeName,
+            @GraphQLName("inventoryTransferTransactionSequenceTypeName") final String inventoryTransferTransactionSequenceTypeName,
             @GraphQLName("inventoryTransactionSequenceTypeName") final String inventoryTransactionSequenceTypeName,
             @GraphQLName("inventoryTransactionWorkflowName") final String inventoryTransactionWorkflowName,
             @GraphQLName("inventoryTransactionWorkflowEntranceName") final String inventoryTransactionWorkflowEntranceName,
@@ -4628,6 +4631,8 @@ public interface GraphQlMutations {
 
                 if(arguments.containsKey("inventoryTransactionTypeName"))
                     edit.setInventoryTransactionTypeName(inventoryTransactionTypeName);
+                if(arguments.containsKey("inventoryTransferTransactionSequenceTypeName"))
+                    edit.setInventoryTransferTransactionSequenceTypeName(inventoryTransferTransactionSequenceTypeName);
                 if(arguments.containsKey("inventoryTransactionSequenceTypeName"))
                     edit.setInventoryTransactionSequenceTypeName(inventoryTransactionSequenceTypeName);
                 if(arguments.containsKey("inventoryTransactionWorkflowName"))
