@@ -18,6 +18,8 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.CreateInventoryTransactionTypeForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
+import com.echothree.model.control.inventory.common.exception.UnknownInventoryTransferTransactionWorkflowEntranceNameException;
+import com.echothree.model.control.inventory.common.exception.UnknownInventoryTransferTransactionWorkflowNameException;
 import com.echothree.model.control.inventory.common.exception.UnknownInventoryTransactionWorkflowEntranceNameException;
 import com.echothree.model.control.inventory.common.exception.UnknownInventoryTransactionWorkflowNameException;
 import com.echothree.model.control.inventory.server.logic.InventoryTransactionTypeLogic;
@@ -28,6 +30,7 @@ import com.echothree.model.control.sequence.server.logic.SequenceTypeLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowEntranceLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionType;
+import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -60,6 +63,8 @@ public class CreateInventoryTransactionTypeCommand
                 new FieldDefinition("InventoryTransactionTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("InventoryTransferTransactionSequenceTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("InventoryTransactionSequenceTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("InventoryTransferTransactionWorkflowName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("InventoryTransferTransactionWorkflowEntranceName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("InventoryTransactionWorkflowName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("InventoryTransactionWorkflowEntranceName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
@@ -94,6 +99,24 @@ public class CreateInventoryTransactionTypeCommand
         var inventoryTransactionSequenceType = inventoryTransactionSequenceTypeName == null ? null : sequenceTypeLogic.getSequenceTypeByName(this, inventoryTransactionSequenceTypeName);
         InventoryTransactionType inventoryTransactionType = null;
 
+        var inventoryTransferTransactionWorkflowName = form.getInventoryTransferTransactionWorkflowName();
+        var inventoryTransferTransactionWorkflow = inventoryTransferTransactionWorkflowName == null ? null : workflowLogic.getWorkflowByName(
+                UnknownInventoryTransferTransactionWorkflowNameException.class, ExecutionErrors.UnknownInventoryTransferTransactionWorkflowName, this,
+                inventoryTransferTransactionWorkflowName, EntityPermission.READ_ONLY);
+        WorkflowEntrance inventoryTransferTransactionWorkflowEntrance = null;
+
+        if(!hasExecutionErrors()) {
+            var inventoryTransferTransactionWorkflowEntranceName = form.getInventoryTransferTransactionWorkflowEntranceName();
+
+            if(inventoryTransferTransactionWorkflowEntranceName == null || inventoryTransferTransactionWorkflow != null) {
+                inventoryTransferTransactionWorkflowEntrance = inventoryTransferTransactionWorkflowEntranceName == null ? null : workflowEntranceLogic.getWorkflowEntranceByName(
+                        UnknownInventoryTransferTransactionWorkflowEntranceNameException.class, ExecutionErrors.UnknownInventoryTransferTransactionWorkflowEntranceName, this,
+                        inventoryTransferTransactionWorkflow, inventoryTransferTransactionWorkflowEntranceName);
+            } else {
+                addExecutionError(ExecutionErrors.MissingRequiredInventoryTransferTransactionWorkflowName.name());
+            }
+        }
+
         if(!hasExecutionErrors()) {
             var inventoryTransactionWorkflowName = form.getInventoryTransactionWorkflowName();
             var inventoryTransactionWorkflow = inventoryTransactionWorkflowName == null ? null : workflowLogic.getWorkflowByName(
@@ -115,7 +138,8 @@ public class CreateInventoryTransactionTypeCommand
                         var description = form.getDescription();
                         var partyPK = getPartyPK();
 
-                        inventoryTransactionType = inventoryTransactionTypeLogic.createInventoryTransactionType(this, inventoryTransactionTypeName, inventoryTransferTransactionSequenceType, inventoryTransactionSequenceType, inventoryTransactionWorkflow,
+                        inventoryTransactionType = inventoryTransactionTypeLogic.createInventoryTransactionType(this, inventoryTransactionTypeName, inventoryTransferTransactionSequenceType,
+                                inventoryTransferTransactionWorkflow, inventoryTransferTransactionWorkflowEntrance, inventoryTransactionSequenceType, inventoryTransactionWorkflow,
                                 inventoryTransactionWorkflowEntrance, isDefault, sortOrder, getPreferredLanguage(), description, partyPK);
                     }
                 } else {

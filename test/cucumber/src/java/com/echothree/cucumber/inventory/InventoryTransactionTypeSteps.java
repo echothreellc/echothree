@@ -51,7 +51,7 @@ public class InventoryTransactionTypeSteps implements En {
                             createInventoryTransactionTypeForm);
 
                     LastCommandResult.commandResult = commandResult;
-                    var result = (CreateInventoryTransactionTypeResult)commandResult.getExecutionResult().getResult();
+                    var result = commandResult.getExecutionResult().getResult();
 
                     if(result != null) {
                         persona.lastInventoryTransactionTypeName = commandResult.getHasErrors() ? null : result.getInventoryTransactionTypeName();
@@ -112,7 +112,7 @@ public class InventoryTransactionTypeSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditInventoryTransactionTypeResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     if(!executionResult.getHasErrors()) {
                         persona.inventoryTransactionTypeEdit = result.getEdit();
@@ -218,6 +218,152 @@ public class InventoryTransactionTypeSteps implements En {
                     inventoryTransactionTypeEdit.setInventoryTransactionTypeName(inventoryTransactionTypeName);
                 });
 
+        And("^the user sets the inventory transaction type's inventory transfer transaction workflow name to \"([^\"]*)\"$",
+                (String workflowName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createForm = persona.createInventoryTransactionTypeForm;
+                    var edit = persona.inventoryTransactionTypeEdit;
+
+                    assertThat(createForm != null || edit != null).isTrue();
+
+                    if(createForm != null) {
+                        createForm.setInventoryTransferTransactionWorkflowName(workflowName.isEmpty() ? null : workflowName);
+                    } else {
+                        edit.setInventoryTransferTransactionWorkflowName(workflowName.isEmpty() ? null : workflowName);
+                    }
+                });
+
+        Then("^the inventory transaction type's inventory transfer transaction workflow name should be \"([^\"]*)\"$",
+                (String workflowName) -> {
+                    var persona = CurrentPersona.persona;
+                    var form = InventoryUtil.getHome().getGetInventoryTransactionTypeForm();
+
+                    form.setInventoryTransactionTypeName(persona.lastInventoryTransactionTypeName);
+
+                    var commandResult = InventoryUtil.getHome().getInventoryTransactionType(persona.userVisitPK, form);
+
+                    assertThat(commandResult.getHasErrors()).isFalse();
+
+                    var result = commandResult.getExecutionResult().getResult();
+                    var workflow = result.getInventoryTransactionType().getInventoryTransferTransactionWorkflow();
+
+                    if(workflowName.isEmpty()) {
+                        assertThat(workflow).isNull();
+                    } else {
+                        assertThat(workflow).isNotNull();
+                        assertThat(workflow.getWorkflowName()).isEqualTo(workflowName);
+                    }
+                });
+
+        And("^the user sets the inventory transaction type's inventory transfer transaction workflow entrance name to \"([^\"]*)\"$",
+                (String workflowEntranceName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createForm = persona.createInventoryTransactionTypeForm;
+                    var edit = persona.inventoryTransactionTypeEdit;
+
+                    assertThat(createForm != null || edit != null).isTrue();
+
+                    if(createForm != null) {
+                        createForm.setInventoryTransferTransactionWorkflowEntranceName(workflowEntranceName.isEmpty() ? null : workflowEntranceName);
+                    } else {
+                        edit.setInventoryTransferTransactionWorkflowEntranceName(workflowEntranceName.isEmpty() ? null : workflowEntranceName);
+                    }
+                });
+
+        Then("^the inventory transaction type's inventory transfer transaction workflow entrance name should be \"([^\"]*)\"$",
+                (String workflowEntranceName) -> {
+                    var persona = CurrentPersona.persona;
+                    var form = InventoryUtil.getHome().getGetInventoryTransactionTypeForm();
+                    form.setInventoryTransactionTypeName(persona.lastInventoryTransactionTypeName);
+
+                    var commandResult = InventoryUtil.getHome().getInventoryTransactionType(persona.userVisitPK, form);
+
+                    assertThat(commandResult.getHasErrors()).isFalse();
+
+                    var result = commandResult.getExecutionResult().getResult();
+                    var workflowEntrance = result.getInventoryTransactionType().getInventoryTransferTransactionWorkflowEntrance();
+
+                    if(workflowEntranceName.isEmpty()) {
+                        assertThat(workflowEntrance).isNull();
+                    } else {
+                        assertThat(workflowEntrance).isNotNull();
+                        assertThat(workflowEntrance.getWorkflowEntranceName()).isEqualTo(workflowEntranceName);
+                    }
+                });
+
+        And("^the user sets the inventory transaction type's inventory transaction workflow name to \"([^\"]*)\"$",
+                (String workflowName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createForm = persona.createInventoryTransactionTypeForm;
+                    var edit = persona.inventoryTransactionTypeEdit;
+
+                    assertThat(createForm != null || edit != null).isTrue();
+
+                    if(createForm != null) {
+                        createForm.setInventoryTransactionWorkflowName(workflowName.isEmpty() ? null : workflowName);
+                    } else {
+                        edit.setInventoryTransactionWorkflowName(workflowName.isEmpty() ? null : workflowName);
+                    }
+                });
+
+        Then("^the inventory transaction type's inventory transaction workflow name should be \"([^\"]*)\"$",
+                (String workflowName) -> {
+                    var persona = CurrentPersona.persona;
+                    var form = InventoryUtil.getHome().getGetInventoryTransactionTypeForm();
+                    form.setInventoryTransactionTypeName(persona.lastInventoryTransactionTypeName);
+
+                    var commandResult = InventoryUtil.getHome().getInventoryTransactionType(persona.userVisitPK, form);
+
+                    assertThat(commandResult.getHasErrors()).isFalse();
+
+                    var result = commandResult.getExecutionResult().getResult();
+                    var workflow = result.getInventoryTransactionType().getInventoryTransactionWorkflow();
+
+                    if(workflowName.isEmpty()) {
+                        assertThat(workflow).isNull();
+                    } else {
+                        assertThat(workflow).isNotNull();
+                        assertThat(workflow.getWorkflowName()).isEqualTo(workflowName);
+                    }
+                });
+
+        And("^the user sets the inventory transaction type's inventory transaction workflow entrance name to \"([^\"]*)\"$",
+                (String workflowEntranceName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createForm = persona.createInventoryTransactionTypeForm;
+                    var edit = persona.inventoryTransactionTypeEdit;
+
+                    assertThat(createForm != null || edit != null).isTrue();
+
+                    if(createForm != null) {
+                        createForm.setInventoryTransactionWorkflowEntranceName(workflowEntranceName.isEmpty() ? null : workflowEntranceName);
+                    } else {
+                        edit.setInventoryTransactionWorkflowEntranceName(workflowEntranceName.isEmpty() ? null : workflowEntranceName);
+                    }
+                });
+
+        Then("^the inventory transaction type's inventory transaction workflow entrance name should be \"([^\"]*)\"$",
+                (String workflowEntranceName) -> {
+                    var persona = CurrentPersona.persona;
+                    var form = InventoryUtil.getHome().getGetInventoryTransactionTypeForm();
+
+                    form.setInventoryTransactionTypeName(persona.lastInventoryTransactionTypeName);
+
+                    var commandResult = InventoryUtil.getHome().getInventoryTransactionType(persona.userVisitPK, form);
+
+                    assertThat(commandResult.getHasErrors()).isFalse();
+
+                    var result = commandResult.getExecutionResult().getResult();
+                    var workflowEntrance = result.getInventoryTransactionType().getInventoryTransactionWorkflowEntrance();
+
+                    if(workflowEntranceName.isEmpty()) {
+                        assertThat(workflowEntrance).isNull();
+                    } else {
+                        assertThat(workflowEntrance).isNotNull();
+                        assertThat(workflowEntrance.getWorkflowEntranceName()).isEqualTo(workflowEntranceName);
+                    }
+                });
+
         And("^the user sets the inventory transaction type's inventory transfer transaction sequence type name to \"([^\"]*)\"$",
                 (String sequenceTypeName) -> {
                     var persona = CurrentPersona.persona;
@@ -275,7 +421,7 @@ public class InventoryTransactionTypeSteps implements En {
 
                     var commandResult = InventoryUtil.getHome().getInventoryTransactionType(persona.userVisitPK, form);
                     assertThat(commandResult.getHasErrors()).isFalse();
-                    var result = (GetInventoryTransactionTypeResult)commandResult.getExecutionResult().getResult();
+                    var result = commandResult.getExecutionResult().getResult();
                     var sequenceType = result.getInventoryTransactionType().getInventoryTransactionSequenceType();
 
                     if(sequenceTypeName.isEmpty()) {

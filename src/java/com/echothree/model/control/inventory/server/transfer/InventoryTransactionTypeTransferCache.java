@@ -56,6 +56,10 @@ public class InventoryTransactionTypeTransferCache
             var inventoryTransferTransactionSequenceTypeTransfer = inventoryTransferTransactionSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, inventoryTransferTransactionSequenceType);
             var inventoryTransactionSequenceType = inventoryTransactionTypeDetail.getInventoryTransactionSequenceType();
             var inventoryTransactionSequenceTypeTransfer = inventoryTransactionSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, inventoryTransactionSequenceType);
+            var inventoryTransferTransactionWorkflow = inventoryTransactionTypeDetail.getInventoryTransferTransactionWorkflow();
+            var inventoryTransferTransactionWorkflowTransfer = inventoryTransferTransactionWorkflow == null? null: workflowControl.getWorkflowTransfer(userVisit, inventoryTransferTransactionWorkflow);
+            var inventoryTransferTransactionWorkflowEntrance = inventoryTransactionTypeDetail.getInventoryTransferTransactionWorkflowEntrance();
+            var inventoryTransferTransactionWorkflowEntranceTransfer = inventoryTransferTransactionWorkflowEntrance == null? null: workflowControl.getWorkflowEntranceTransfer(userVisit, inventoryTransferTransactionWorkflowEntrance);
             var inventoryTransactionWorkflow = inventoryTransactionTypeDetail.getInventoryTransactionWorkflow();
             var inventoryTransactionWorkflowTransfer = inventoryTransactionWorkflow == null? null: workflowControl.getWorkflowTransfer(userVisit, inventoryTransactionWorkflow);
             var inventoryTransactionWorkflowEntrance = inventoryTransactionTypeDetail.getInventoryTransactionWorkflowEntrance();
@@ -64,7 +68,8 @@ public class InventoryTransactionTypeTransferCache
             var sortOrder = inventoryTransactionTypeDetail.getSortOrder();
             var description = inventoryTransactionTypeControl.getBestInventoryTransactionTypeDescription(inventoryTransactionType, getLanguage(userVisit));
             
-            inventoryTransactionTypeTransfer = new InventoryTransactionTypeTransfer(inventoryTransactionTypeName, inventoryTransferTransactionSequenceTypeTransfer, inventoryTransactionSequenceTypeTransfer, inventoryTransactionWorkflowTransfer,
+            inventoryTransactionTypeTransfer = new InventoryTransactionTypeTransfer(inventoryTransactionTypeName, inventoryTransferTransactionSequenceTypeTransfer,
+                    inventoryTransferTransactionWorkflowTransfer, inventoryTransferTransactionWorkflowEntranceTransfer, inventoryTransactionSequenceTypeTransfer, inventoryTransactionWorkflowTransfer,
                     inventoryTransactionWorkflowEntranceTransfer, isDefault, sortOrder, description);
             put(userVisit, inventoryTransactionType, inventoryTransactionTypeTransfer);
         }

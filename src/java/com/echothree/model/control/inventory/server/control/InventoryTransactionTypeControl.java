@@ -98,7 +98,8 @@ public class InventoryTransactionTypeControl
     protected InventoryTransactionTypeDetailFactory inventoryTransactionTypeDetailFactory;
 
     public InventoryTransactionType createInventoryTransactionType(String inventoryTransactionTypeName,
-            SequenceType inventoryTransferTransactionSequenceType, SequenceType inventoryTransactionSequenceType,
+            SequenceType inventoryTransferTransactionSequenceType, Workflow inventoryTransferTransactionWorkflow,
+            WorkflowEntrance inventoryTransferTransactionWorkflowEntrance, SequenceType inventoryTransactionSequenceType,
             Workflow inventoryTransactionWorkflow, WorkflowEntrance inventoryTransactionWorkflowEntrance,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultInventoryTransactionType = getDefaultInventoryTransactionType();
@@ -115,7 +116,8 @@ public class InventoryTransactionTypeControl
 
         var inventoryTransactionType = inventoryTransactionTypeFactory.create();
         var inventoryTransactionTypeDetail = inventoryTransactionTypeDetailFactory.create(inventoryTransactionType,
-                inventoryTransactionTypeName, inventoryTransferTransactionSequenceType, inventoryTransactionSequenceType,
+                inventoryTransactionTypeName, inventoryTransferTransactionSequenceType, inventoryTransferTransactionWorkflow,
+                inventoryTransferTransactionWorkflowEntrance, inventoryTransactionSequenceType,
                 inventoryTransactionWorkflow, inventoryTransactionWorkflowEntrance, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
 
@@ -312,6 +314,8 @@ public class InventoryTransactionTypeControl
             var inventoryTransactionTypeName = inventoryTransactionTypeDetailValue.getInventoryTransactionTypeName();
             var inventoryTransferTransactionSequenceTypePK = inventoryTransactionTypeDetailValue.getInventoryTransferTransactionSequenceTypePK();
             var inventoryTransactionSequenceTypePK = inventoryTransactionTypeDetailValue.getInventoryTransactionSequenceTypePK();
+            var inventoryTransferTransactionWorkflowPK = inventoryTransactionTypeDetailValue.getInventoryTransferTransactionWorkflowPK();
+            var inventoryTransferTransactionWorkflowEntrancePK = inventoryTransactionTypeDetailValue.getInventoryTransferTransactionWorkflowEntrancePK();
             var inventoryTransactionWorkflowPK = inventoryTransactionTypeDetailValue.getInventoryTransactionWorkflowPK();
             var inventoryTransactionWorkflowEntrancePK = inventoryTransactionTypeDetailValue.getInventoryTransactionWorkflowEntrancePK();
             var isDefault = inventoryTransactionTypeDetailValue.getIsDefault();
@@ -334,7 +338,8 @@ public class InventoryTransactionTypeControl
             }
 
             inventoryTransactionTypeDetail = inventoryTransactionTypeDetailFactory.create(inventoryTransactionTypePK,
-                    inventoryTransactionTypeName, inventoryTransferTransactionSequenceTypePK, inventoryTransactionSequenceTypePK,
+                    inventoryTransactionTypeName, inventoryTransferTransactionSequenceTypePK, inventoryTransferTransactionWorkflowPK,
+                    inventoryTransferTransactionWorkflowEntrancePK, inventoryTransactionSequenceTypePK,
                     inventoryTransactionWorkflowPK, inventoryTransactionWorkflowEntrancePK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             inventoryTransactionType.setActiveDetail(inventoryTransactionTypeDetail);

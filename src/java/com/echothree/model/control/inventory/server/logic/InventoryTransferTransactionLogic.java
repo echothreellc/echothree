@@ -26,6 +26,7 @@ import com.echothree.model.control.inventory.common.exception.InvalidInventoryTr
 import com.echothree.model.control.inventory.common.exception.UnknownInventoryTransferTransactionNameException;
 import com.echothree.model.control.inventory.server.control.InventoryTransferTransactionControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.inventory.server.entity.InventoryTransaction;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionType;
 import com.echothree.model.data.inventory.server.entity.InventoryTransferTransaction;
@@ -44,6 +45,9 @@ public class InventoryTransferTransactionLogic
 
     @Inject
     InventoryTransferTransactionControl inventoryTransferTransactionControl;
+
+    @Inject
+    WorkflowControl workflowControl;
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
@@ -81,6 +85,15 @@ public class InventoryTransferTransactionLogic
             if(eea == null || !eea.hasExecutionErrors()) {
                 inventoryTransferTransaction = createInventoryTransferTransaction(eea, inventoryTransactionType, inventoryTransferTransactionName,
                         sourceInventoryTransaction, destinationInventoryTransaction, reference, description, createdBy);
+
+                if(eea == null || !eea.hasExecutionErrors()) {
+                    var inventoryTransferTransactionWorkflowEntrance = inventoryTransactionType.getLastDetail().getInventoryTransferTransactionWorkflowEntrance();
+
+                    if(inventoryTransferTransactionWorkflowEntrance != null) {
+                        workflowControl.addEntityToWorkflow(inventoryTransferTransactionWorkflowEntrance,
+                                getEntityInstanceByBaseEntity(inventoryTransferTransaction), null, null, createdBy);
+                    }
+                }
             }
         }
 

@@ -27,6 +27,12 @@ public interface InventoryTransactionTypeEdit
     String getInventoryTransactionSequenceTypeName();
     void setInventoryTransactionSequenceTypeName(String inventoryTransactionSequenceTypeName);
 
+    String getInventoryTransferTransactionWorkflowName();
+    void setInventoryTransferTransactionWorkflowName(String inventoryTransferTransactionWorkflowName);
+
+    String getInventoryTransferTransactionWorkflowEntranceName();
+    void setInventoryTransferTransactionWorkflowEntranceName(String inventoryTransferTransactionWorkflowEntranceName);
+
     String getInventoryTransactionWorkflowName();
     void setInventoryTransactionWorkflowName(String inventoryTransactionWorkflowName);
 

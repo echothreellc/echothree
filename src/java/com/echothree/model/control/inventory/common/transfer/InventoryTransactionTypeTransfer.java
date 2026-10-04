@@ -27,6 +27,8 @@ public class InventoryTransactionTypeTransfer
     private String inventoryTransactionTypeName;
     private SequenceTypeTransfer inventoryTransferTransactionSequenceType;
     private SequenceTypeTransfer inventoryTransactionSequenceType;
+    private WorkflowTransfer inventoryTransferTransactionWorkflow;
+    private WorkflowEntranceTransfer inventoryTransferTransactionWorkflowEntrance;
     private WorkflowTransfer inventoryTransactionWorkflow;
     private WorkflowEntranceTransfer inventoryTransactionWorkflowEntrance;
     private Boolean isDefault;
@@ -35,12 +37,15 @@ public class InventoryTransactionTypeTransfer
     
     /** Creates a new instance of InventoryTransactionTypeTransfer */
     public InventoryTransactionTypeTransfer(String inventoryTransactionTypeName,
-            SequenceTypeTransfer inventoryTransferTransactionSequenceType, SequenceTypeTransfer inventoryTransactionSequenceType,
+            SequenceTypeTransfer inventoryTransferTransactionSequenceType, WorkflowTransfer inventoryTransferTransactionWorkflow,
+            WorkflowEntranceTransfer inventoryTransferTransactionWorkflowEntrance, SequenceTypeTransfer inventoryTransactionSequenceType,
             WorkflowTransfer inventoryTransactionWorkflow, WorkflowEntranceTransfer inventoryTransactionWorkflowEntrance, Boolean isDefault, Integer sortOrder,
             String description) {
         this.inventoryTransactionTypeName = inventoryTransactionTypeName;
         this.inventoryTransferTransactionSequenceType = inventoryTransferTransactionSequenceType;
         this.inventoryTransactionSequenceType = inventoryTransactionSequenceType;
+        this.inventoryTransferTransactionWorkflow = inventoryTransferTransactionWorkflow;
+        this.inventoryTransferTransactionWorkflowEntrance = inventoryTransferTransactionWorkflowEntrance;
         this.inventoryTransactionWorkflow = inventoryTransactionWorkflow;
         this.inventoryTransactionWorkflowEntrance = inventoryTransactionWorkflowEntrance;
         this.isDefault = isDefault;
@@ -70,6 +75,22 @@ public class InventoryTransactionTypeTransfer
 
     public void setInventoryTransactionSequenceType(SequenceTypeTransfer inventoryTransactionSequenceType) {
         this.inventoryTransactionSequenceType = inventoryTransactionSequenceType;
+    }
+
+    public WorkflowTransfer getInventoryTransferTransactionWorkflow() {
+        return inventoryTransferTransactionWorkflow;
+    }
+
+    public void setInventoryTransferTransactionWorkflow(WorkflowTransfer inventoryTransferTransactionWorkflow) {
+        this.inventoryTransferTransactionWorkflow = inventoryTransferTransactionWorkflow;
+    }
+
+    public WorkflowEntranceTransfer getInventoryTransferTransactionWorkflowEntrance() {
+        return inventoryTransferTransactionWorkflowEntrance;
+    }
+
+    public void setInventoryTransferTransactionWorkflowEntrance(WorkflowEntranceTransfer inventoryTransferTransactionWorkflowEntrance) {
+        this.inventoryTransferTransactionWorkflowEntrance = inventoryTransferTransactionWorkflowEntrance;
     }
 
     public WorkflowTransfer getInventoryTransactionWorkflow() {
