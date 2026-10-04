@@ -97,6 +97,22 @@ public class InventoryTransactionTypeObject
     }
 
     @GraphQLField
+    @GraphQLDescription("inventory transfer transaction workflow")
+    public WorkflowObject getInventoryTransferTransactionWorkflow(final DataFetchingEnvironment env) {
+        var inventoryTransferTransactionWorkflow = getInventoryTransactionTypeDetail().getInventoryTransferTransactionWorkflow();
+
+        return inventoryTransferTransactionWorkflow == null ? null : (WorkflowSecurityUtils.getHasWorkflowAccess(env) ? new WorkflowObject(inventoryTransferTransactionWorkflow) : null);
+    }
+
+    @GraphQLField
+    @GraphQLDescription("inventory transfer transaction workflow entrance")
+    public WorkflowEntranceObject getInventoryTransferTransactionWorkflowEntrance(final DataFetchingEnvironment env) {
+        var inventoryTransferTransactionWorkflowEntrance = getInventoryTransactionTypeDetail().getInventoryTransferTransactionWorkflowEntrance();
+
+        return inventoryTransferTransactionWorkflowEntrance == null ? null : (WorkflowSecurityUtils.getHasWorkflowEntranceAccess(env) ? new WorkflowEntranceObject(inventoryTransferTransactionWorkflowEntrance) : null);
+    }
+
+    @GraphQLField
     @GraphQLDescription("inventory workflow")
     public WorkflowObject getInventoryTransactionWorkflow(final DataFetchingEnvironment env) {
         var inventoryTransactionWorkflow = getInventoryTransactionTypeDetail().getInventoryTransactionWorkflow();

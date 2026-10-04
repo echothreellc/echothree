@@ -18,6 +18,13 @@ package com.echothree.model.control.inventory.server.logic;
 
 import com.echothree.model.control.inventory.server.control.InventoryTransferTransactionControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
+import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.workflow.common.pk.WorkflowEntrancePK;
+import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
+import com.echothree.model.data.workflow.server.value.WorkflowEntranceValue;
+import com.echothree.model.data.workeffort.server.entity.WorkEffort;
+import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.model.data.inventory.common.pk.InventoryTransactionPK;
 import com.echothree.model.data.inventory.common.pk.InventoryTransactionTypePK;
 import com.echothree.model.data.inventory.common.pk.InventoryTransferTransactionPK;
@@ -60,7 +67,15 @@ class InventoryTransferTransactionLogicTest {
     private final InventoryTransaction destination = transaction(20L, "DESTINATION");
     private final InventoryTransferTransaction existing = transfer(100L);
     private final TestControl control = new TestControl();
-    private final InventoryTransferTransactionLogic logic = new InventoryTransferTransactionLogic();
+    private final InventoryTransferTransactionLogic logic = new InventoryTransferTransactionLogic() {
+        @Override
+        public EntityInstance getEntityInstanceByBaseEntity(BaseEntity entity) {
+            assertSame(existing, entity);
+            return null;
+        }
+    };
+    private WorkflowEntrance transferEntrance;
+    private int workflowCalls;
     private int sequenceCalls;
     private final Errors errors = new Errors();
 
@@ -68,6 +83,14 @@ class InventoryTransferTransactionLogicTest {
     @BeforeEach
     void injectDependencies() {
         logic.inventoryTransferTransactionControl = control;
+        logic.workflowControl = new WorkflowControl() {
+            @Override
+            public void addEntityToWorkflow(WorkflowEntrance entrance, EntityInstance entityInstance, WorkEffort workEffort,
+                    Long triggerTime, BasePK createdBy) {
+                assertSame(transferEntrance, entrance);
+                workflowCalls++;
+            }
+        };
         logic.inventoryTransactionTypeLogic = new InventoryTransactionTypeLogic() {
             @Override
             public InventoryTransactionType getInventoryTransactionTypeByName(ExecutionErrorAccumulator eea, String name) {
@@ -105,6 +128,30 @@ class InventoryTransferTransactionLogicTest {
         assertSame(existing, create(type, "DUPLICATE"));
         assertError("DuplicateInventoryTransferTransactionName", "TYPE", "DUPLICATE");
         assertFalse(control.created);
+    }
+
+    @Test
+    void configuredEntranceIsUsedAfterCreation() {
+        transferEntrance = new WorkflowEntrance(
+                new WorkflowEntranceValue(new WorkflowEntrancePK(1L), null, null), EntityPermission.READ_ONLY);
+        assertSame(existing, create(type, "WITH_WORKFLOW"));
+        assertEquals(1, workflowCalls);
+    }
+
+    @Test
+    void absentEntranceDoesNotEnterWorkflow() {
+        assertSame(existing, create(type, "WITHOUT_WORKFLOW"));
+        assertEquals(0, workflowCalls);
+    }
+
+    @Test
+    void duplicateDoesNotEnterWorkflow() {
+        transferEntrance = new WorkflowEntrance(
+                new WorkflowEntranceValue(new WorkflowEntrancePK(1L), null, null), EntityPermission.READ_ONLY);
+        control.byName = existing;
+        create(type, "DUPLICATE");
+        assertError("DuplicateInventoryTransferTransactionName", "TYPE", "DUPLICATE");
+        assertEquals(0, workflowCalls);
     }
 
     @Test
@@ -170,8 +217,18 @@ class InventoryTransferTransactionLogicTest {
     private InventoryTransactionType type(SequenceType sequence) {
         var pk = new InventoryTransactionTypePK(1L);
         var detail = new InventoryTransactionTypeDetail(new InventoryTransactionTypeDetailValue(pk, "TYPE",
-                sequence == null ? null : sequence.getPrimaryKey(), null, null, null, false, 0, 0L, Long.MAX_VALUE),
+                sequence == null ? null : sequence.getPrimaryKey(), null, null, null, null, null, false, 0, 0L, Long.MAX_VALUE),
                 EntityPermission.READ_ONLY) {
+            @Override
+            public WorkflowEntrance getInventoryTransferTransactionWorkflowEntrance() {
+                return transferEntrance;
+            }
+
+            @Override
+            public WorkflowEntrance getInventoryTransactionWorkflowEntrance() {
+                throw new AssertionError("Transfer creation must use the transfer workflow entrance");
+            }
+
             @Override
             public SequenceType getInventoryTransferTransactionSequenceType() {
                 return sequence;

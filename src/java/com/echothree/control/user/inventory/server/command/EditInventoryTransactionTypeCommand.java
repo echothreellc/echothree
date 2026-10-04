@@ -21,6 +21,8 @@ import com.echothree.control.user.inventory.common.edit.InventoryTransactionType
 import com.echothree.control.user.inventory.common.result.EditInventoryTransactionTypeResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.control.user.inventory.common.spec.InventoryTransactionTypeUniversalSpec;
+import com.echothree.model.control.inventory.common.exception.UnknownInventoryTransferTransactionWorkflowEntranceNameException;
+import com.echothree.model.control.inventory.common.exception.UnknownInventoryTransferTransactionWorkflowNameException;
 import com.echothree.model.control.inventory.common.exception.UnknownInventoryTransactionWorkflowEntranceNameException;
 import com.echothree.model.control.inventory.common.exception.UnknownInventoryTransactionWorkflowNameException;
 import com.echothree.model.control.inventory.server.control.InventoryTransactionTypeControl;
@@ -73,6 +75,8 @@ public class EditInventoryTransactionTypeCommand
                 new FieldDefinition("InventoryTransactionTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("InventoryTransferTransactionSequenceTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("InventoryTransactionSequenceTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("InventoryTransferTransactionWorkflowName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("InventoryTransferTransactionWorkflowEntranceName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("InventoryTransactionWorkflowName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("InventoryTransactionWorkflowEntranceName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
@@ -138,6 +142,8 @@ public class EditInventoryTransactionTypeCommand
 
     SequenceType inventoryTransferTransactionSequenceType = null;
     SequenceType inventoryTransactionSequenceType = null;
+    Workflow inventoryTransferTransactionWorkflow = null;
+    WorkflowEntrance inventoryTransferTransactionWorkflowEntrance = null;
     Workflow inventoryTransactionWorkflow = null;
     WorkflowEntrance inventoryTransactionWorkflowEntrance = null;
 
@@ -148,12 +154,16 @@ public class EditInventoryTransactionTypeCommand
 
         inventoryTransferTransactionSequenceType = inventoryTransactionTypeDetail.getInventoryTransferTransactionSequenceType();
         inventoryTransactionSequenceType = inventoryTransactionTypeDetail.getInventoryTransactionSequenceType();
+        inventoryTransferTransactionWorkflow = inventoryTransactionTypeDetail.getInventoryTransferTransactionWorkflow();
+        inventoryTransferTransactionWorkflowEntrance = inventoryTransactionTypeDetail.getInventoryTransferTransactionWorkflowEntrance();
         inventoryTransactionWorkflow = inventoryTransactionTypeDetail.getInventoryTransactionWorkflow();
         inventoryTransactionWorkflowEntrance = inventoryTransactionTypeDetail.getInventoryTransactionWorkflowEntrance();
 
         edit.setInventoryTransactionTypeName(inventoryTransactionTypeDetail.getInventoryTransactionTypeName());
         edit.setInventoryTransferTransactionSequenceTypeName(inventoryTransferTransactionSequenceType == null ? null : inventoryTransferTransactionSequenceType.getLastDetail().getSequenceTypeName());
         edit.setInventoryTransactionSequenceTypeName(inventoryTransactionSequenceType == null ? null : inventoryTransactionSequenceType.getLastDetail().getSequenceTypeName());
+        edit.setInventoryTransferTransactionWorkflowName(inventoryTransferTransactionWorkflow == null ? null : inventoryTransferTransactionWorkflow.getLastDetail().getWorkflowName());
+        edit.setInventoryTransferTransactionWorkflowEntranceName(inventoryTransferTransactionWorkflowEntrance == null ? null : inventoryTransferTransactionWorkflowEntrance.getLastDetail().getWorkflowEntranceName());
         edit.setInventoryTransactionWorkflowName(inventoryTransactionWorkflow == null ? null : inventoryTransactionWorkflow.getLastDetail().getWorkflowName());
         edit.setInventoryTransactionWorkflowEntranceName(inventoryTransactionWorkflowEntrance == null ? null : inventoryTransactionWorkflowEntrance.getLastDetail().getWorkflowEntranceName());
         edit.setIsDefault(inventoryTransactionTypeDetail.getIsDefault().toString());
@@ -180,6 +190,26 @@ public class EditInventoryTransactionTypeCommand
                     sequenceTypeLogic.getSequenceTypeByName(this, inventoryTransactionSequenceTypeName);
 
             if(!hasExecutionErrors()) {
+                var inventoryTransferTransactionWorkflowName = edit.getInventoryTransferTransactionWorkflowName();
+
+                inventoryTransferTransactionWorkflow = inventoryTransferTransactionWorkflowName == null ? null : workflowLogic.getWorkflowByName(
+                        UnknownInventoryTransferTransactionWorkflowNameException.class, ExecutionErrors.UnknownInventoryTransferTransactionWorkflowName, this,
+                        inventoryTransferTransactionWorkflowName, EntityPermission.READ_ONLY);
+
+                if(!hasExecutionErrors()) {
+                    var inventoryTransferTransactionWorkflowEntranceName = edit.getInventoryTransferTransactionWorkflowEntranceName();
+
+                    if(inventoryTransferTransactionWorkflowEntranceName == null || inventoryTransferTransactionWorkflow != null) {
+                        inventoryTransferTransactionWorkflowEntrance = inventoryTransferTransactionWorkflowEntranceName == null ? null : workflowEntranceLogic.getWorkflowEntranceByName(
+                                UnknownInventoryTransferTransactionWorkflowEntranceNameException.class, ExecutionErrors.UnknownInventoryTransferTransactionWorkflowEntranceName, this,
+                                inventoryTransferTransactionWorkflow, inventoryTransferTransactionWorkflowEntranceName);
+                    } else {
+                        addExecutionError(ExecutionErrors.MissingRequiredInventoryTransferTransactionWorkflowName.name());
+                    }
+                }
+            }
+
+            if(!hasExecutionErrors()) {
                 var inventoryTransactionWorkflowName = edit.getInventoryTransactionWorkflowName();
 
                 inventoryTransactionWorkflow = inventoryTransactionWorkflowName == null ? null : workflowLogic.getWorkflowByName(
@@ -190,9 +220,9 @@ public class EditInventoryTransactionTypeCommand
                     var inventoryTransactionWorkflowEntranceName = edit.getInventoryTransactionWorkflowEntranceName();
 
                     if(inventoryTransactionWorkflowEntranceName == null || inventoryTransactionWorkflow != null) {
-                            inventoryTransactionWorkflowEntrance = inventoryTransactionWorkflowEntranceName == null ? null : workflowEntranceLogic.getWorkflowEntranceByName(
-                                    UnknownInventoryTransactionWorkflowEntranceNameException.class, ExecutionErrors.UnknownInventoryTransactionWorkflowEntranceName, this,
-                                    inventoryTransactionWorkflow, inventoryTransactionWorkflowEntranceName);
+                        inventoryTransactionWorkflowEntrance = inventoryTransactionWorkflowEntranceName == null ? null : workflowEntranceLogic.getWorkflowEntranceByName(
+                                UnknownInventoryTransactionWorkflowEntranceNameException.class, ExecutionErrors.UnknownInventoryTransactionWorkflowEntranceName, this,
+                                inventoryTransactionWorkflow, inventoryTransactionWorkflowEntranceName);
                     } else {
                         addExecutionError(ExecutionErrors.MissingRequiredInventoryTransactionWorkflowName.name());
                     }
@@ -213,8 +243,10 @@ public class EditInventoryTransactionTypeCommand
         inventoryTransactionTypeDetailValue.setInventoryTransactionTypeName(edit.getInventoryTransactionTypeName());
         inventoryTransactionTypeDetailValue.setInventoryTransferTransactionSequenceTypePK(inventoryTransferTransactionSequenceType == null ? null : inventoryTransferTransactionSequenceType.getPrimaryKey());
         inventoryTransactionTypeDetailValue.setInventoryTransactionSequenceTypePK(inventoryTransactionSequenceType == null ? null : inventoryTransactionSequenceType.getPrimaryKey());
+        inventoryTransactionTypeDetailValue.setInventoryTransferTransactionWorkflowPK(inventoryTransferTransactionWorkflow == null ? null : inventoryTransferTransactionWorkflow.getPrimaryKey());
+        inventoryTransactionTypeDetailValue.setInventoryTransferTransactionWorkflowEntrancePK(inventoryTransferTransactionWorkflowEntrance == null ? null : inventoryTransferTransactionWorkflowEntrance.getPrimaryKey());
         inventoryTransactionTypeDetailValue.setInventoryTransactionWorkflowPK(inventoryTransactionWorkflow == null ? null : inventoryTransactionWorkflow.getPrimaryKey());
-        inventoryTransactionTypeDetailValue.setInventoryTransactionWorkflowEntrancePK(inventoryTransactionWorkflow == null ? null : inventoryTransactionWorkflowEntrance.getPrimaryKey());
+        inventoryTransactionTypeDetailValue.setInventoryTransactionWorkflowEntrancePK(inventoryTransactionWorkflowEntrance == null ? null : inventoryTransactionWorkflowEntrance.getPrimaryKey());
         inventoryTransactionTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         inventoryTransactionTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 

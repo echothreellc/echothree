@@ -4559,6 +4559,8 @@ public interface GraphQlMutations {
             @GraphQLName("inventoryTransactionTypeName") @GraphQLNonNull final String inventoryTransactionTypeName,
             @GraphQLName("inventoryTransferTransactionSequenceTypeName") final String inventoryTransferTransactionSequenceTypeName,
             @GraphQLName("inventoryTransactionSequenceTypeName") final String inventoryTransactionSequenceTypeName,
+            @GraphQLName("inventoryTransferTransactionWorkflowName") final String inventoryTransferTransactionWorkflowName,
+            @GraphQLName("inventoryTransferTransactionWorkflowEntranceName") final String inventoryTransferTransactionWorkflowEntranceName,
             @GraphQLName("inventoryTransactionWorkflowName") final String inventoryTransactionWorkflowName,
             @GraphQLName("inventoryTransactionWorkflowEntranceName") final String inventoryTransactionWorkflowEntranceName,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
@@ -4572,6 +4574,8 @@ public interface GraphQlMutations {
             commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
             commandForm.setInventoryTransferTransactionSequenceTypeName(inventoryTransferTransactionSequenceTypeName);
             commandForm.setInventoryTransactionSequenceTypeName(inventoryTransactionSequenceTypeName);
+            commandForm.setInventoryTransferTransactionWorkflowName(inventoryTransferTransactionWorkflowName);
+            commandForm.setInventoryTransferTransactionWorkflowEntranceName(inventoryTransferTransactionWorkflowEntranceName);
             commandForm.setInventoryTransactionWorkflowName(inventoryTransactionWorkflowName);
             commandForm.setInventoryTransactionWorkflowEntranceName(inventoryTransactionWorkflowEntranceName);
             commandForm.setIsDefault(isDefault);
@@ -4601,6 +4605,8 @@ public interface GraphQlMutations {
             @GraphQLName("inventoryTransactionTypeName") final String inventoryTransactionTypeName,
             @GraphQLName("inventoryTransferTransactionSequenceTypeName") final String inventoryTransferTransactionSequenceTypeName,
             @GraphQLName("inventoryTransactionSequenceTypeName") final String inventoryTransactionSequenceTypeName,
+            @GraphQLName("inventoryTransferTransactionWorkflowName") final String inventoryTransferTransactionWorkflowName,
+            @GraphQLName("inventoryTransferTransactionWorkflowEntranceName") final String inventoryTransferTransactionWorkflowEntranceName,
             @GraphQLName("inventoryTransactionWorkflowName") final String inventoryTransactionWorkflowName,
             @GraphQLName("inventoryTransactionWorkflowEntranceName") final String inventoryTransactionWorkflowEntranceName,
             @GraphQLName("isDefault") final String isDefault,
@@ -4635,6 +4641,10 @@ public interface GraphQlMutations {
                     edit.setInventoryTransferTransactionSequenceTypeName(inventoryTransferTransactionSequenceTypeName);
                 if(arguments.containsKey("inventoryTransactionSequenceTypeName"))
                     edit.setInventoryTransactionSequenceTypeName(inventoryTransactionSequenceTypeName);
+                if(arguments.containsKey("inventoryTransferTransactionWorkflowName"))
+                    edit.setInventoryTransferTransactionWorkflowName(inventoryTransferTransactionWorkflowName);
+                if(arguments.containsKey("inventoryTransferTransactionWorkflowEntranceName"))
+                    edit.setInventoryTransferTransactionWorkflowEntranceName(inventoryTransferTransactionWorkflowEntranceName);
                 if(arguments.containsKey("inventoryTransactionWorkflowName"))
                     edit.setInventoryTransactionWorkflowName(inventoryTransactionWorkflowName);
                 if(arguments.containsKey("inventoryTransactionWorkflowEntranceName"))
