@@ -530,7 +530,10 @@ public abstract class DatabaseUtilities {
         if(theColumn != null && theColumn.getType() == ColumnDataType.FOREIGN_KEY) {
             var cfk = ct.getForeignKeyByColumnName(firstColumnName);
 
-            neededUpdates.addExtraForeignKey(cfk);
+            if(cfk != null) {
+                neededUpdates.addExtraForeignKey(cfk);
+            }
+
             neededUpdates.addForeignKey(theColumn);
         }
     }
