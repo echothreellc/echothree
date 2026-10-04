@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.sales;
 import com.echothree.control.user.sales.common.SalesUtil;
 import com.echothree.control.user.sales.common.SalesService;
 import com.echothree.control.user.sales.common.form.SalesFormFactory;
-import com.echothree.control.user.sales.common.result.CreateSalesOrderBatchResult;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -54,7 +53,7 @@ public class SalesOrderBatchesHandler
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (CreateSalesOrderBatchResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 var batchName = result.getBatchName();
 
                 // TODO

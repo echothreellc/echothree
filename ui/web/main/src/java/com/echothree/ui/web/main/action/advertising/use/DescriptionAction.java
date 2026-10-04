@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.advertising.use;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.result.GetUseDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class DescriptionAction
 
             var commandResult = OfferUtil.getHome().getUseDescriptions(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetUseDescriptionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var useTransfer = result.getUse();
             
             request.setAttribute(AttributeConstants.USE, useTransfer);

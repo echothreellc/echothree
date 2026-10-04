@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.uservisitgroup;
 
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.result.GetUserVisitGroupResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -56,7 +55,7 @@ public class ReviewAction
 
         var commandResult = UserUtil.getHome().getUserVisitGroup(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetUserVisitGroupResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var userVisitGroup = result.getUserVisitGroup();
 
         if(userVisitGroup == null) {

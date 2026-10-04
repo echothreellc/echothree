@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.itemdescriptiontypeuse;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemDescriptionTypeUseResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
@@ -68,7 +67,7 @@ public class DeleteAction
         var commandResult = ItemUtil.getHome().getItemDescriptionTypeUse(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemDescriptionTypeUseResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             request.setAttribute(AttributeConstants.ITEM_DESCRIPTION_TYPE_USE, result.getItemDescriptionTypeUse());
         }

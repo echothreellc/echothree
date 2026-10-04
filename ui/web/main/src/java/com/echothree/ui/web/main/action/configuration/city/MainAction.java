@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.city;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.result.GetCitiesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -61,7 +60,7 @@ public class MainAction
 
             var commandResult = GeoUtil.getHome().getCities(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCitiesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.STATE, result.getState());
             request.setAttribute(AttributeConstants.CITIES, result.getCities());

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.workrequirementscope;
 
 import com.echothree.control.user.workrequirement.common.WorkRequirementUtil;
-import com.echothree.control.user.workrequirement.common.result.GetWorkRequirementScopesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -63,7 +62,7 @@ public class MainAction
 
             var commandResult = WorkRequirementUtil.getHome().getWorkRequirementScopes(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetWorkRequirementScopesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var workRequirementType = result.getWorkRequirementType();
             var workEffortScope = result.getWorkEffortScope();
             

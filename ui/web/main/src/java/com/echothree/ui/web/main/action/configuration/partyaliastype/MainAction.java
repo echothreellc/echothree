@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.partyaliastype;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetPartyAliasTypesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -56,7 +55,7 @@ public class MainAction
         var commandResult = PartyUtil.getHome().getPartyAliasTypes(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPartyAliasTypesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.PARTY_TYPE, result.getPartyType());
             request.setAttribute(AttributeConstants.PARTY_ALIAS_TYPES, result.getPartyAliasTypes());

@@ -18,7 +18,6 @@ package com.echothree.ui.web.main.action.customer.customercontactlist;
 
 import com.echothree.control.user.comment.common.CommentUtil;
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.result.GetPartyContactListResult;
 import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
@@ -62,7 +61,7 @@ public class CommentAddAction
 
         var commandResult = ContactListUtil.getHome().getPartyContactList(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetPartyContactListResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var partyContactList = result.getPartyContactList();
         
         request.setAttribute(AttributeConstants.PARTY_CONTACT_LIST, partyContactList);

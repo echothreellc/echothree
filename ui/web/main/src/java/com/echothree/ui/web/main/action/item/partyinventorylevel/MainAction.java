@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.partyinventorylevel;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.result.GetPartyInventoryLevelsResult;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -62,7 +61,7 @@ public class MainAction
 
         var commandResult = InventoryUtil.getHome().getPartyInventoryLevels(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetPartyInventoryLevelsResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.ITEM, result.getItem());
         request.setAttribute(AttributeConstants.PARTY_INVENTORY_LEVELS, result.getPartyInventoryLevels());

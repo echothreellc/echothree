@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.forum.forumgroup;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.result.GetForumGroupDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class DescriptionAction
 
             var commandResult = ForumUtil.getHome().getForumGroupDescriptions(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetForumGroupDescriptionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var forumGroupTransfer = result.getForumGroup();
             
             request.setAttribute(AttributeConstants.FORUM_GROUP, forumGroupTransfer);

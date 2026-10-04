@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.contactlist.contactlist;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.result.GetContactListResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
@@ -64,7 +63,7 @@ public class DeleteAction
 
         var commandResult = ContactListUtil.getHome().getContactList(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetContactListResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.CONTACT_LIST, result.getContactList());
     }

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.returnpolicy.returntype;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.result.GetReturnTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -61,7 +60,7 @@ public class ReviewAction
 
             var commandResult = ReturnPolicyUtil.getHome().getReturnType(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetReturnTypeResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.RETURN_TYPE, result.getReturnType());
             forwardKey = ForwardConstants.DISPLAY;

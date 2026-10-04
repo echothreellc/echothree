@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.returnpolicy.returntype;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.result.GetReturnKindResult;
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.result.GetSequenceChoicesResult;
 import com.echothree.model.control.sequence.common.choice.SequenceChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -50,7 +48,7 @@ public class AddActionForm
 
         var commandResult = ReturnPolicyUtil.getHome().getReturnKind(userVisitPK, commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetReturnKindResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var returnKindTransfer = result.getReturnKind();
         
         return returnKindTransfer.getReturnSequenceType().getSequenceTypeName();
@@ -67,7 +65,7 @@ public class AddActionForm
 
             var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSequenceChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             returnSequenceChoices = result.getSequenceChoices();
 
             if(returnSequenceChoice == null)

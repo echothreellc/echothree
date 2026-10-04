@@ -25,7 +25,6 @@ import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.control.user.warehouse.common.WarehouseService;
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
 import com.echothree.control.user.warehouse.common.form.WarehouseFormFactory;
-import com.echothree.control.user.warehouse.common.result.CreateLocationResult;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.contact.ContactMechanismsHandler;
@@ -93,7 +92,7 @@ public class WarehouseHandler
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (CreateLocationResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 initialDataParser.pushHandler(new LocationHandler(initialDataParser, this, warehouseName, result.getLocationName(), result.getEntityRef()));
             }

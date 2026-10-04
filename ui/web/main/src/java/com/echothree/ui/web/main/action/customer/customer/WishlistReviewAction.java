@@ -18,7 +18,6 @@ package com.echothree.ui.web.main.action.customer.customer;
 
 
 import com.echothree.control.user.wishlist.common.WishlistUtil;
-import com.echothree.control.user.wishlist.common.result.GetWishlistLinesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -63,7 +62,7 @@ public class WishlistReviewAction
 
             var commandResult = WishlistUtil.getHome().getWishlistLines(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetWishlistLinesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.WISHLIST_LINES, result.getWishlistLines());
             request.setAttribute(AttributeConstants.CUSTOMER_NAME, customerName);

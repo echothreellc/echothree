@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.entitylistitem;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.EditEntityListItemDescriptionResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -99,7 +98,7 @@ public class DescriptionEditAction
                         var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            var result = (EditEntityListItemDescriptionResult)executionResult.getResult();
+                            var result = executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -115,7 +114,7 @@ public class DescriptionEditAction
 
                     var commandResult = CoreUtil.getHome().editEntityListItemDescription(getUserVisitPK(request), commandForm);
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditEntityListItemDescriptionResult)executionResult.getResult();
+                    var result = executionResult.getResult();
                     
                     if(result != null) {
                         var edit = result.getEdit();

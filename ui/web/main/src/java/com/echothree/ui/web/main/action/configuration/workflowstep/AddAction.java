@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.workflowstep;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.result.GetWorkflowResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -65,7 +64,7 @@ public class AddAction
 
         var commandResult = WorkflowUtil.getHome().getWorkflow(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetWorkflowResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.WORKFLOW, result.getWorkflow());
     }

@@ -62,7 +62,7 @@ public class DescriptionAction
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
             
-            result = (GetApplicationEditorUseDescriptionsResult) executionResult.getResult();
+            result = executionResult.getResult();
             applicationEditorUse = result.getApplicationEditorUse();
         }
         

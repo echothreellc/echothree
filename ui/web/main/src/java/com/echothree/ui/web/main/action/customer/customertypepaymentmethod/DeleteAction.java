@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customertypepaymentmethod;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.result.GetCustomerTypePaymentMethodResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
@@ -68,7 +67,7 @@ public class DeleteAction
         var commandResult = CustomerUtil.getHome().getCustomerTypePaymentMethod(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCustomerTypePaymentMethodResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CUSTOMER_TYPE_PAYMENT_METHOD, result.getCustomerTypePaymentMethod());
         }

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.model.control.comment.common.CommentOptions;
 import com.echothree.model.control.contact.common.ContactOptions;
 import com.echothree.model.control.contactlist.common.ContactListOptions;
@@ -112,7 +111,7 @@ public class ReviewAction
 
         var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetCustomerResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var customer = result.getCustomer();
         
         if(customer == null) {

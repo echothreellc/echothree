@@ -18,10 +18,6 @@ package com.echothree.ui.web.main.action.configuration.partysecurityroletemplate
 
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.result.GetPartySecurityRoleTemplateResult;
-import com.echothree.control.user.security.common.result.GetSecurityRoleGroupResult;
-import com.echothree.control.user.security.common.result.GetSecurityRoleGroupsResult;
-import com.echothree.control.user.security.common.result.GetSecurityRolesResult;
 import com.echothree.model.control.security.common.SecurityOptions;
 import com.echothree.model.control.security.common.transfer.PartySecurityRoleTemplateTransfer;
 import com.echothree.model.control.security.common.transfer.SecurityRoleGroupTransfer;
@@ -66,7 +62,7 @@ public class Step1Action
 
         var commandResult = SecurityUtil.getHome().getPartySecurityRoleTemplate(userVisitPK, commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetPartySecurityRoleTemplateResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         return result.getPartySecurityRoleTemplate();
     }
@@ -79,7 +75,7 @@ public class Step1Action
 
         var commandResult = SecurityUtil.getHome().getSecurityRoleGroup(userVisitPK, commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetSecurityRoleGroupResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         return result.getSecurityRoleGroup();
     }
@@ -96,7 +92,7 @@ public class Step1Action
 
         var commandResult = SecurityUtil.getHome().getSecurityRoleGroups(userVisitPK, commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetSecurityRoleGroupsResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         return result.getSecurityRoleGroups();
     }
@@ -109,7 +105,7 @@ public class Step1Action
 
         var commandResult = SecurityUtil.getHome().getSecurityRoles(userVisitPK, commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetSecurityRolesResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         return result.getSecurityRoles();
     }

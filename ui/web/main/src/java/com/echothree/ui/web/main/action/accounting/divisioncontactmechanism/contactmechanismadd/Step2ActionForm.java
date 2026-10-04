@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.divisioncontactmechanism.contactmechanismadd;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.result.GetCountryChoicesResult;
 import com.echothree.model.control.geo.common.choice.CountryChoicesBean;
 import com.echothree.view.client.web.struts.BaseLanguageActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -44,7 +43,7 @@ public class Step2ActionForm
 
                 var commandResult = GeoUtil.getHome().getCountryChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetCountryChoicesResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 countryChoices = result.getCountryChoices();
 
                 if(countryChoice == null) {

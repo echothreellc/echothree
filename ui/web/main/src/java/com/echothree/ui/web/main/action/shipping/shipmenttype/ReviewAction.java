@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.shipping.shipmenttype;
 
 import com.echothree.control.user.shipment.common.ShipmentUtil;
-import com.echothree.control.user.shipment.common.result.GetShipmentTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class ReviewAction
 
             var commandResult = ShipmentUtil.getHome().getShipmentType(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetShipmentTypeResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var shipmentType = result.getShipmentType();
             
             if(shipmentType == null) {

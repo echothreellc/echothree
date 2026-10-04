@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.workflowdestination;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.result.GetWorkflowDestinationResult;
 import com.echothree.model.control.workflow.common.transfer.WorkflowDestinationTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -61,7 +60,7 @@ public class ReviewAction
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetWorkflowDestinationResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             workflowDestination = result.getWorkflowDestination();
         }

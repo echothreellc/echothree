@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.employeedocument;
 
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.common.result.GetDocumentDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -57,7 +56,7 @@ public class DescriptionAction
         var commandResult = DocumentUtil.getHome().getDocumentDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetDocumentDescriptionsResult) executionResult.getResult();
+            var result = executionResult.getResult();
             var documentTransfer = result.getDocument();
 
 

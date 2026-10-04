@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.workeffortscope;
 
 import com.echothree.control.user.workeffort.common.WorkEffortUtil;
-import com.echothree.control.user.workeffort.common.result.GetWorkEffortScopeResult;
 import com.echothree.model.control.workeffort.common.transfer.WorkEffortScopeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -60,7 +59,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetWorkEffortScopeResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             workEffortScope = result.getWorkEffortScope();
         }

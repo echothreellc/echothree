@@ -19,8 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.item;
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.ItemService;
 import com.echothree.control.user.item.common.form.ItemFormFactory;
-import com.echothree.control.user.item.common.result.CreateItemResult;
-import com.echothree.control.user.item.common.result.GetItemResult;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -74,7 +72,7 @@ public class ItemsHandler
 
                 var commandResult = itemService.createItem(initialDataParser.getUserVisit(), commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var result = (CreateItemResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 
                 itemName = result.getItemName();
                 entityRef = result.getEntityRef();
@@ -87,7 +85,7 @@ public class ItemsHandler
                 
                 if(!commandResult.hasErrors()) {
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (GetItemResult)executionResult.getResult();
+                    var result = executionResult.getResult();
                     var item = result.getItem();
                     
                     companyName = item.getCompany().getCompanyName();

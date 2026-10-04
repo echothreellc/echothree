@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.postaladdressformat;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.result.GetPostalAddressFormatsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -53,7 +52,7 @@ public class MainAction
         try {
             var commandResult = ContactUtil.getHome().getPostalAddressFormats(getUserVisitPK(request), null);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPostalAddressFormatsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.POSTAL_ADDRESS_FORMATS, result.getPostalAddressFormats());
             forwardKey = ForwardConstants.DISPLAY;

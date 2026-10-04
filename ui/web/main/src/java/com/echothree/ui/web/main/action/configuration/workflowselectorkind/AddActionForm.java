@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.workflowselectorkind;
 
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.common.result.GetSelectorKindChoicesResult;
 import com.echothree.model.control.selector.common.choice.SelectorKindChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -44,7 +43,7 @@ public class AddActionForm
 
                 var commandResult = SelectorUtil.getHome().getSelectorKindChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetSelectorKindChoicesResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 selectorKindChoices = result.getSelectorKindChoices();
                 
                 if(selectorKindChoice == null)

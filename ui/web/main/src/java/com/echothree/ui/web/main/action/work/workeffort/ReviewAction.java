@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.work.workeffort;
 
 import com.echothree.control.user.workeffort.common.WorkEffortUtil;
-import com.echothree.control.user.workeffort.common.result.GetWorkEffortResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.workeffort.common.WorkEffortOptions;
 import com.echothree.model.control.workeffort.common.transfer.WorkEffortTransfer;
@@ -68,7 +67,7 @@ public class ReviewAction
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetWorkEffortResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             workEffort = result.getWorkEffort();
         }

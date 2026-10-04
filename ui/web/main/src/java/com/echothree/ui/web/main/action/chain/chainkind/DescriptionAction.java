@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.chain.chainkind;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.common.result.GetChainKindDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -56,7 +55,7 @@ public class DescriptionAction
         var commandResult = ChainUtil.getHome().getChainKindDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetChainKindDescriptionsResult) executionResult.getResult();
+            var result = executionResult.getResult();
             var chainKindTransfer = result.getChainKind();
 
             request.setAttribute(AttributeConstants.CHAIN_KIND, chainKindTransfer);

@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.shipping.shippingmethod;
 
 import com.echothree.control.user.comment.common.CommentUtil;
-import com.echothree.control.user.comment.common.result.GetCommentResult;
 import com.echothree.control.user.shipping.common.ShippingUtil;
-import com.echothree.control.user.shipping.common.result.GetShippingMethodResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
@@ -67,7 +65,7 @@ public class CommentDeleteAction
 
         var commandResult = ShippingUtil.getHome().getShippingMethod(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetShippingMethodResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.SHIPPING_METHOD, result.getShippingMethod());
     }
@@ -80,7 +78,7 @@ public class CommentDeleteAction
 
         var commandResult = CommentUtil.getHome().getComment(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetCommentResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.COMMENT, result.getComment());
     }

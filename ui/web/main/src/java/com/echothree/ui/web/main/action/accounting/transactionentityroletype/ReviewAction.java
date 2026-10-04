@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.transactionentityroletype;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetTransactionEntityRoleTypeResult;
 import com.echothree.model.control.accounting.common.transfer.TransactionEntityRoleTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -60,7 +59,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetTransactionEntityRoleTypeResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             transactionEntityRoleType = result.getTransactionEntityRoleType();
         }

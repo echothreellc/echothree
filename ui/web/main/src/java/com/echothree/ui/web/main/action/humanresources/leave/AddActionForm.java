@@ -17,13 +17,8 @@
 package com.echothree.ui.web.main.action.humanresources.leave;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.result.GetLeaveReasonChoicesResult;
-import com.echothree.control.user.employee.common.result.GetLeaveStatusChoicesResult;
-import com.echothree.control.user.employee.common.result.GetLeaveTypeChoicesResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetCompanyChoicesResult;
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.result.GetUnitOfMeasureTypeChoicesResult;
 import com.echothree.model.control.employee.common.choice.LeaveReasonChoicesBean;
 import com.echothree.model.control.employee.common.choice.LeaveStatusChoicesBean;
 import com.echothree.model.control.employee.common.choice.LeaveTypeChoicesBean;
@@ -67,7 +62,7 @@ public class AddActionForm
 
             var commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCompanyChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             companyChoices = result.getCompanyChoices();
 
             if(companyChoice == null) {
@@ -86,7 +81,7 @@ public class AddActionForm
 
             var commandResult = EmployeeUtil.getHome().getLeaveTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetLeaveTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             leaveTypeChoices = result.getLeaveTypeChoices();
 
             if(leaveTypeChoice == null) {
@@ -105,7 +100,7 @@ public class AddActionForm
 
             var commandResult = EmployeeUtil.getHome().getLeaveReasonChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetLeaveReasonChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             leaveReasonChoices = result.getLeaveReasonChoices();
 
             if(leaveReasonChoice == null) {
@@ -125,7 +120,7 @@ public class AddActionForm
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            var getUnitOfMeasureTypeChoicesResult = executionResult.getResult();
             totalTimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
 
             if(totalTimeUnitOfMeasureTypeChoice == null) {
@@ -144,7 +139,7 @@ public class AddActionForm
 
             var commandResult = EmployeeUtil.getHome().getLeaveStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetLeaveStatusChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             leaveStatusChoices = result.getLeaveStatusChoices();
 
             if(leaveStatusChoice == null) {

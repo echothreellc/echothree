@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.itemvolume;
 
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.result.GetUnitOfMeasureTypeChoicesResult;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.common.choice.UnitOfMeasureTypeChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
@@ -55,7 +54,7 @@ public class EditActionForm
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            var getUnitOfMeasureTypeChoicesResult = executionResult.getResult();
             heightUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
 
             if(heightUnitOfMeasureTypeChoice == null) {
@@ -75,7 +74,7 @@ public class EditActionForm
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            var getUnitOfMeasureTypeChoicesResult = executionResult.getResult();
             widthUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
 
             if(widthUnitOfMeasureTypeChoice == null) {
@@ -95,7 +94,7 @@ public class EditActionForm
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            var getUnitOfMeasureTypeChoicesResult = executionResult.getResult();
             depthUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
 
             if(depthUnitOfMeasureTypeChoice == null) {

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.geocode;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.result.GetGeoCodeDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -57,7 +56,7 @@ public class DescriptionAction
         var commandResult = GeoUtil.getHome().getGeoCodeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetGeoCodeDescriptionsResult) executionResult.getResult();
+            var result = executionResult.getResult();
             var geoCodeTransfer = result.getGeoCode();
 
             request.setAttribute(AttributeConstants.GEO_CODE, geoCodeTransfer);

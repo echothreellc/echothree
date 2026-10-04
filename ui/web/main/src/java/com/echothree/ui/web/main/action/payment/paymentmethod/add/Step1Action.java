@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.payment.paymentmethod.add;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.result.GetPaymentMethodTypesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -49,7 +48,7 @@ public class Step1Action
             throws Exception {
         var commandResult = PaymentUtil.getHome().getPaymentMethodTypes(getUserVisitPK(request), null);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetPaymentMethodTypesResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.PAYMENT_METHOD_TYPES, result.getPaymentMethodTypes());
         

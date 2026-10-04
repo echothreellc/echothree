@@ -18,9 +18,6 @@ package com.echothree.control.user.core.client.helper;
 
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
-import com.echothree.control.user.core.common.result.ChangeBaseKeysResult;
-import com.echothree.control.user.core.common.result.GenerateBaseKeysResult;
-import com.echothree.control.user.core.common.result.GetBaseEncryptionKeyResult;
 import com.echothree.model.control.core.common.transfer.BaseEncryptionKeyTransfer;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.persistence.BaseKey;
@@ -96,7 +93,7 @@ public class BaseKeysHelper {
             throws NamingException, IOException {
         var commandResult = CoreUtil.getHome().generateBaseKeys(userVisitPK);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GenerateBaseKeysResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var baseKeys = result.getBaseKeys();
 
         if(baseKeys != null) {
@@ -110,7 +107,7 @@ public class BaseKeysHelper {
         var commandForm = CoreFormFactory.getGetBaseEncryptionKeyForm();
         var commandResult = CoreUtil.getHome().getBaseEncryptionKey(userVisitPK, commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetBaseEncryptionKeyResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         baseEncryptionKey = result.getBaseEncryptionKey();
 
@@ -183,7 +180,7 @@ public class BaseKeysHelper {
 
             var commandResult = CoreUtil.getHome().changeBaseKeys(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (ChangeBaseKeysResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             writeBaseKeysToFiles(result.getBaseKeys());
         } else {

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.shipping.shippingmethod;
 
 import com.echothree.control.user.shipping.common.ShippingUtil;
-import com.echothree.control.user.shipping.common.result.GetShippingMethodResult;
 import com.echothree.model.control.comment.common.CommentOptions;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.shipping.common.ShippingOptions;
@@ -74,7 +73,7 @@ public class ReviewAction
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetShippingMethodResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             shippingMethod = result.getShippingMethod();
         }

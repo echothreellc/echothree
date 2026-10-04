@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.partytrainingclass;
 
 import com.echothree.control.user.training.common.TrainingUtil;
-import com.echothree.control.user.training.common.result.GetPartyTrainingClassesResult;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.training.common.transfer.PartyTrainingClassTransfer;
@@ -74,7 +73,7 @@ public class MainAction
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPartyTrainingClassesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             party = result.getParty();
             trainingClass = result.getTrainingClass();

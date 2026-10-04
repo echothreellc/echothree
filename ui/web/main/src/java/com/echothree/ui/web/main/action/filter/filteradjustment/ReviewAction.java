@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.filter.filteradjustment;
 
 import com.echothree.control.user.filter.common.FilterUtil;
-import com.echothree.control.user.filter.common.result.GetFilterAdjustmentResult;
 import com.echothree.model.control.filter.common.FilterOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -70,7 +69,7 @@ public class ReviewAction
 
             var commandResult = FilterUtil.getHome().getFilterAdjustment(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetFilterAdjustmentResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.FILTER_ADJUSTMENT, result.getFilterAdjustment());
             forwardKey = ForwardConstants.DISPLAY;

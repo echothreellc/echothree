@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.itemdescriptiontypeuse;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemDescriptionTypeUseTypeChoicesResult;
 import com.echothree.model.control.item.common.choice.ItemDescriptionTypeUseTypeChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -44,7 +43,7 @@ public class AddActionForm
 
             var commandResult = ItemUtil.getHome().getItemDescriptionTypeUseTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getItemDescriptionTypeUseTypeChoicesResult = (GetItemDescriptionTypeUseTypeChoicesResult)executionResult.getResult();
+            var getItemDescriptionTypeUseTypeChoicesResult = executionResult.getResult();
             itemDescriptionTypeUseTypeChoices = getItemDescriptionTypeUseTypeChoicesResult.getItemDescriptionTypeUseTypeChoices();
 
             if(itemDescriptionTypeUseTypeChoice == null) {

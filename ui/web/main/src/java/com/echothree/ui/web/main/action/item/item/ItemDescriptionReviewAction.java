@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.item;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemDescriptionResult;
 import com.echothree.model.control.item.common.ItemOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -69,7 +68,7 @@ public class ItemDescriptionReviewAction
         var commandResult = ItemUtil.getHome().getItemDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemDescriptionResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var itemDescription = result.getItemDescription();
 
             if(itemDescription != null) {

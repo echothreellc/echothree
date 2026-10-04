@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.entityattribute;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetEntityAttributeEntityAttributeGroupResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
@@ -72,7 +71,7 @@ public class EntityAttributeGroupDeleteAction
         var commandResult = CoreUtil.getHome().getEntityAttributeEntityAttributeGroup(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEntityAttributeEntityAttributeGroupResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             request.setAttribute(AttributeConstants.ENTITY_ATTRIBUTE_ENTITY_ATTRIBUTE_GROUP, result.getEntityAttributeEntityAttributeGroup());
         }

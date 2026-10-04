@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.chain.chainkind;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.common.result.GetChainKindDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
@@ -68,7 +67,7 @@ public class DescriptionDeleteAction
         var commandResult = ChainUtil.getHome().getChainKindDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetChainKindDescriptionResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             request.setAttribute(AttributeConstants.CHAIN_KIND_DESCRIPTION, result.getChainKindDescription());
         }

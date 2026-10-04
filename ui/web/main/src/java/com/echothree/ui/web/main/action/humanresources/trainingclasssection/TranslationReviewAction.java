@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.trainingclasssection;
 
 import com.echothree.control.user.training.common.TrainingUtil;
-import com.echothree.control.user.training.common.result.GetTrainingClassSectionTranslationResult;
 import com.echothree.model.control.training.common.transfer.TrainingClassSectionTranslationTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -61,7 +60,7 @@ public class TranslationReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetTrainingClassSectionTranslationResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             trainingClassSectionTranslation = result.getTrainingClassSectionTranslation();
         }

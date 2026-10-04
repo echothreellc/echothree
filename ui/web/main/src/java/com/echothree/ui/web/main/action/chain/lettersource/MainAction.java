@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.chain.lettersource;
 
 import com.echothree.control.user.letter.common.LetterUtil;
-import com.echothree.control.user.letter.common.result.GetLetterSourcesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -49,7 +48,7 @@ public class MainAction
             throws Exception {
         var commandResult = LetterUtil.getHome().getLetterSources(getUserVisitPK(request), null);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetLetterSourcesResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.LETTER_SOURCES, result.getLetterSources());
         

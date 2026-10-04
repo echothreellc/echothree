@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.ratingtype;
 
 import com.echothree.control.user.rating.common.RatingUtil;
-import com.echothree.control.user.rating.common.result.EditRatingTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -95,7 +94,7 @@ public class EditAction
                         var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            var result = (EditRatingTypeResult)executionResult.getResult();
+                            var result = executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -111,7 +110,7 @@ public class EditAction
 
                     var commandResult = RatingUtil.getHome().editRatingType(getUserVisitPK(request), commandForm);
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditRatingTypeResult)executionResult.getResult();
+                    var result = executionResult.getResult();
                     
                     if(result != null) {
                         var edit = result.getEdit();

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.service;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetProtocolChoicesResult;
 import com.echothree.model.control.core.common.choice.ProtocolChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -50,7 +49,7 @@ public class AddActionForm
 
             var commandResult = CoreUtil.getHome().getProtocolChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getProtocolChoicesResult = (GetProtocolChoicesResult)executionResult.getResult();
+            var getProtocolChoicesResult = executionResult.getResult();
             protocolChoices = getProtocolChoicesResult.getProtocolChoices();
 
             if(protocolChoice == null) {

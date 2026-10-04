@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.advertising.offeritemprice;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetCurrencyChoicesResult;
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.result.GetInventoryConditionChoicesResult;
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.result.GetUnitOfMeasureTypeChoicesResult;
 import com.echothree.model.control.accounting.common.choice.CurrencyChoicesBean;
 import com.echothree.model.control.inventory.common.InventoryConditionUseTypes;
 import com.echothree.model.control.inventory.common.choice.InventoryConditionChoicesBean;
@@ -61,7 +58,7 @@ public class AddActionForm
 
             var commandResult = InventoryUtil.getHome().getInventoryConditionChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getInventoryConditionChoicesResult = (GetInventoryConditionChoicesResult)executionResult.getResult();
+            var getInventoryConditionChoicesResult = executionResult.getResult();
             inventoryConditionChoices = getInventoryConditionChoicesResult.getInventoryConditionChoices();
 
             if(inventoryConditionChoice == null)
@@ -80,7 +77,7 @@ public class AddActionForm
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            var getUnitOfMeasureTypeChoicesResult = executionResult.getResult();
             unitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
 
             if(unitOfMeasureTypeChoice == null)
@@ -98,7 +95,7 @@ public class AddActionForm
 
             var commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
+            var getCurrencyChoicesResult = executionResult.getResult();
             currencyChoices = getCurrencyChoicesResult.getCurrencyChoices();
 
             if(currencyChoice == null)

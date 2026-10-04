@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.purchasing.vendoritem;
 
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
-import com.echothree.control.user.cancellationpolicy.common.result.GetCancellationPolicyChoicesResult;
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.result.GetReturnPolicyChoicesResult;
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.common.choice.CancellationPolicyChoicesBean;
 import com.echothree.model.control.returnpolicy.common.ReturnKinds;
@@ -56,7 +54,7 @@ public class AddActionForm
 
             var commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCancellationPolicyChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             cancellationPolicyChoices = result.getCancellationPolicyChoices();
 
             if(cancellationPolicyChoice == null) {
@@ -76,7 +74,7 @@ public class AddActionForm
 
             var commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetReturnPolicyChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             returnPolicyChoices = result.getReturnPolicyChoices();
 
             if(returnPolicyChoice == null) {

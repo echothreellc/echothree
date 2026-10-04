@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.item;
 
 import com.echothree.control.user.rating.common.RatingUtil;
-import com.echothree.control.user.rating.common.result.GetRatingTypeListItemChoicesResult;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.rating.common.choice.RatingTypeListItemChoicesBean;
@@ -55,7 +54,7 @@ public class RatingAddActionForm
 
                 var commandResult = RatingUtil.getHome().getRatingTypeListItemChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var getRatingTypeListItemChoicesResult = (GetRatingTypeListItemChoicesResult)executionResult.getResult();
+                var getRatingTypeListItemChoicesResult = executionResult.getResult();
                 ratingTypeListItemChoices = getRatingTypeListItemChoicesResult.getRatingTypeListItemChoices();
                 
                 if(ratingTypeListItemChoice == null) {

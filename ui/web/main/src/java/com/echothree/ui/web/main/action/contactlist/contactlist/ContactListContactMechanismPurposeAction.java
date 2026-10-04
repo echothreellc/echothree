@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.contactlist.contactlist;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.result.GetContactListContactMechanismPurposesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -57,7 +56,7 @@ public class ContactListContactMechanismPurposeAction
         var commandResult = ContactListUtil.getHome().getContactListContactMechanismPurposes(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetContactListContactMechanismPurposesResult) executionResult.getResult();
+            var result = executionResult.getResult();
             var contactListTransfer = result.getContactList();
 
             request.setAttribute(AttributeConstants.CONTACT_LIST, contactListTransfer);

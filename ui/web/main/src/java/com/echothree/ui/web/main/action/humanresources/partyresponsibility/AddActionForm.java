@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.partyresponsibility;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.result.GetResponsibilityTypeChoicesResult;
 import com.echothree.model.control.employee.common.choice.ResponsibilityTypeChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -44,7 +43,7 @@ public class AddActionForm
 
             var commandResult = EmployeeUtil.getHome().getResponsibilityTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetResponsibilityTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             responsibilityTypeChoices = result.getResponsibilityTypeChoices();
 
             if(responsibilityTypeChoice == null)

@@ -20,7 +20,6 @@ import com.echothree.control.user.accounting.common.AccountingUtil;
 import com.echothree.control.user.accounting.common.edit.TransactionEntityRoleTypeDescriptionEdit;
 import com.echothree.control.user.accounting.common.form.EditTransactionEntityRoleTypeDescriptionForm;
 import com.echothree.control.user.accounting.common.result.EditTransactionEntityRoleTypeDescriptionResult;
-import com.echothree.control.user.accounting.common.result.GetTransactionEntityRoleTypeResult;
 import com.echothree.control.user.accounting.common.spec.TransactionEntityRoleTypeDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
@@ -90,7 +89,7 @@ public class DescriptionEditAction
             throws Exception {
         var commandResult = AccountingUtil.getHome().editTransactionEntityRoleTypeDescription(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (EditTransactionEntityRoleTypeDescriptionResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         var transactionEntityRoleTypeDescription = result.getTransactionEntityRoleTypeDescription();
         if(transactionEntityRoleTypeDescription != null) {
@@ -117,7 +116,7 @@ public class DescriptionEditAction
         var commandResult = AccountingUtil.getHome().getTransactionEntityRoleType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetTransactionEntityRoleTypeResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.TRANSACTION_ENTITY_ROLE_TYPE, result.getTransactionEntityRoleType());
         }

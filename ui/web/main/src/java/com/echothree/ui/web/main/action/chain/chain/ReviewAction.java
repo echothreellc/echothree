@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.chain.chain;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.common.result.GetChainResult;
 import com.echothree.model.control.chain.common.transfer.ChainTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -61,7 +60,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetChainResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             chain = result.getChain();
         }

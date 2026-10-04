@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.purchasing.vendorcarrier;
 
 import com.echothree.control.user.carrier.common.CarrierUtil;
-import com.echothree.control.user.carrier.common.result.GetCarrierChoicesResult;
 import com.echothree.model.control.carrier.common.choice.CarrierChoicesBean;
 import com.echothree.view.client.web.struts.BaseLanguageActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -44,7 +43,7 @@ public class AddActionForm
 
                 var commandResult = CarrierUtil.getHome().getCarrierChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetCarrierChoicesResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 carrierChoices = result.getCarrierChoices();
 
                 if(carrierChoice == null) {

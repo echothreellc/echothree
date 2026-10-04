@@ -18,7 +18,6 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.result.SearchEmployeesResult;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
@@ -244,7 +243,7 @@ public class SearchEmployeesTag
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (SearchEmployeesResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 if(countVar != null) {
                     pageContext.setAttribute(countVar, result.getCount(), scope);

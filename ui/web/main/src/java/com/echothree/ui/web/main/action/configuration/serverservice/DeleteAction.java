@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.serverservice;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetServerServiceResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
@@ -68,7 +67,7 @@ public class DeleteAction
         var commandResult = CoreUtil.getHome().getServerService(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetServerServiceResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             request.setAttribute(AttributeConstants.SERVER_SERVICE, result.getServerService());
         }

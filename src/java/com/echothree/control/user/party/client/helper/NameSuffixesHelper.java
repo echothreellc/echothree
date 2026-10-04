@@ -18,7 +18,6 @@ package com.echothree.control.user.party.client.helper;
 
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
-import com.echothree.control.user.party.common.result.GetNameSuffixChoicesResult;
 import com.echothree.model.control.party.common.choice.NameSuffixChoicesBean;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import javax.naming.NamingException;
@@ -47,7 +46,7 @@ public class NameSuffixesHelper {
         var commandResult = PartyUtil.getHome().getNameSuffixChoices(userVisitPK, commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetNameSuffixChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             nameSuffixChoices = result.getNameSuffixChoices();
         }

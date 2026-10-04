@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.itemaliastype;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemAliasTypeDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -57,7 +56,7 @@ public class DescriptionAction
         var commandResult = ItemUtil.getHome().getItemAliasTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemAliasTypeDescriptionsResult) executionResult.getResult();
+            var result = executionResult.getResult();
             var itemAliasTypeTransfer = result.getItemAliasType();
 
             request.setAttribute(AttributeConstants.ITEM_ALIAS_TYPE, itemAliasTypeTransfer);

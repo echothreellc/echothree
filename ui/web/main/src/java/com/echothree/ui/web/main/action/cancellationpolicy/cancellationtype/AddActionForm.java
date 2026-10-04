@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.cancellationpolicy.cancellationtype;
 
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
-import com.echothree.control.user.cancellationpolicy.common.result.GetCancellationKindResult;
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.result.GetSequenceChoicesResult;
 import com.echothree.model.control.sequence.common.choice.SequenceChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -50,7 +48,7 @@ public class AddActionForm
 
         var commandResult = CancellationPolicyUtil.getHome().getCancellationKind(userVisitPK, commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetCancellationKindResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var cancellationKindTransfer = result.getCancellationKind();
         
         return cancellationKindTransfer.getCancellationSequenceType().getSequenceTypeName();
@@ -67,7 +65,7 @@ public class AddActionForm
 
             var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSequenceChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             cancellationSequenceChoices = result.getSequenceChoices();
 
             if(cancellationSequenceChoice == null)

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.content.contentcategory;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.result.GetContentCategoryChoicesResult;
 import com.echothree.model.control.content.common.choice.ContentCategoryChoicesBean;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -45,7 +44,7 @@ public class EditActionForm
 
             var commandResult = ContentUtil.getHome().getContentCategoryChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getContentCategoryChoicesResult = (GetContentCategoryChoicesResult)executionResult.getResult();
+            var getContentCategoryChoicesResult = executionResult.getResult();
             parentContentCategoryChoices = getContentCategoryChoicesResult.getContentCategoryChoices();
 
             if(parentContentCategoryChoice == null) {

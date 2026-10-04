@@ -18,7 +18,6 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.result.GetOffersResult;
 import com.echothree.model.data.offer.common.OfferConstants;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.Limit;
@@ -127,7 +126,7 @@ public class OffersTag
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetOffersResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getOffers()), scope);
 

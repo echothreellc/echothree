@@ -18,7 +18,6 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.result.GetUserSessionResult;
 import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
@@ -98,7 +97,7 @@ public class UserSessionTag
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetUserSessionResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getUserSession(), scope);
             }

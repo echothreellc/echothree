@@ -17,8 +17,6 @@
 package com.echothree.cucumber.offer;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.result.CreateUseResult;
-import com.echothree.control.user.offer.common.result.EditUseResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -53,7 +51,7 @@ public class UseSteps implements En {
                     var commandResult = useService.createUse(persona.userVisitPK, createUseForm);
 
                     LastCommandResult.commandResult = commandResult;
-                    var result = (CreateUseResult)commandResult.getExecutionResult().getResult();
+                    var result = commandResult.getExecutionResult().getResult();
 
                     if(result != null) {
                         persona.lastUseName = commandResult.getHasErrors() ? null : result.getUseName();
@@ -113,7 +111,7 @@ public class UseSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditUseResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     if(!executionResult.getHasErrors()) {
                         persona.useEdit = result.getEdit();

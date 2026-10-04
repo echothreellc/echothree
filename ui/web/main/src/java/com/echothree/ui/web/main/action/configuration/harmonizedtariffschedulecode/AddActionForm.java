@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.configuration.harmonizedtariffschedulecode;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetMimeTypeChoicesResult;
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetHarmonizedTariffScheduleCodeUnitChoicesResult;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.core.common.choice.MimeTypeChoicesBean;
 import com.echothree.model.control.item.common.choice.HarmonizedTariffScheduleCodeUnitChoicesBean;
@@ -59,7 +57,7 @@ public class AddActionForm
 
             var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnitChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getHarmonizedTariffScheduleCodeUnitChoicesResult = (GetHarmonizedTariffScheduleCodeUnitChoicesResult)executionResult.getResult();
+            var getHarmonizedTariffScheduleCodeUnitChoicesResult = executionResult.getResult();
             firstHarmonizedTariffScheduleCodeUnitChoices = getHarmonizedTariffScheduleCodeUnitChoicesResult.getHarmonizedTariffScheduleCodeUnitChoices();
 
             if(firstHarmonizedTariffScheduleCodeUnitChoice == null) {
@@ -78,7 +76,7 @@ public class AddActionForm
 
             var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnitChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getHarmonizedTariffScheduleCodeUnitChoicesResult = (GetHarmonizedTariffScheduleCodeUnitChoicesResult)executionResult.getResult();
+            var getHarmonizedTariffScheduleCodeUnitChoicesResult = executionResult.getResult();
             secondHarmonizedTariffScheduleCodeUnitChoices = getHarmonizedTariffScheduleCodeUnitChoicesResult.getHarmonizedTariffScheduleCodeUnitChoices();
 
             if(secondHarmonizedTariffScheduleCodeUnitChoice == null) {
@@ -98,7 +96,7 @@ public class AddActionForm
 
             var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetMimeTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             overviewMimeTypeChoices = result.getMimeTypeChoices();
 
             if(overviewMimeTypeChoice == null) {

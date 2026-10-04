@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.trainingclasspage;
 
 import com.echothree.control.user.training.common.TrainingUtil;
-import com.echothree.control.user.training.common.result.GetTrainingClassPageResult;
 import com.echothree.model.control.training.common.transfer.TrainingClassPageTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -61,7 +60,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetTrainingClassPageResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             trainingClassPage = result.getTrainingClassPage();
         }

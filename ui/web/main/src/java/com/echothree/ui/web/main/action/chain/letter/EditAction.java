@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.chain.letter;
 
 import com.echothree.control.user.letter.common.LetterUtil;
-import com.echothree.control.user.letter.common.result.EditLetterResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -96,7 +95,7 @@ public class EditAction
                 var executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {
-                    var result = (EditLetterResult)executionResult.getResult();
+                    var result = executionResult.getResult();
                     
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -112,7 +111,7 @@ public class EditAction
 
             var commandResult = LetterUtil.getHome().editLetter(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (EditLetterResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             if(result != null) {
                 var edit = result.getEdit();

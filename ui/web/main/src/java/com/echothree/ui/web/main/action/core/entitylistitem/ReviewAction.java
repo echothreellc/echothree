@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.entitylistitem;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetEntityListItemResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.EntityListItemTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -76,7 +75,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEntityListItemResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             entityListItem = result.getEntityListItem();
         }

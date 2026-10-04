@@ -18,7 +18,6 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetCacheEntryResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.CacheEntryDependencyTransfer;
@@ -212,7 +211,7 @@ public class CacheTag
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetCacheEntryResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 
                 existingCacheEntry = result.getCacheEntry();
 

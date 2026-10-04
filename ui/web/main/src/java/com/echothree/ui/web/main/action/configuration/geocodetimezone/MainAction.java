@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.geocodetimezone;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.result.GetGeoCodeTimeZonesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class MainAction
 
             var commandResult = GeoUtil.getHome().getGeoCodeTimeZones(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetGeoCodeTimeZonesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var geoCode = result.getGeoCode();
             
             if(geoCode == null) {

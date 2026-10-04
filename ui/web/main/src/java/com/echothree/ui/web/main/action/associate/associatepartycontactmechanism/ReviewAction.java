@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.associate.associatepartycontactmechanism;
 
 import com.echothree.control.user.associate.common.AssociateUtil;
-import com.echothree.control.user.associate.common.result.GetAssociatePartyContactMechanismResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -63,7 +62,7 @@ public class ReviewAction
 
             var commandResult = AssociateUtil.getHome().getAssociatePartyContactMechanism(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetAssociatePartyContactMechanismResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var associatePartyContactMechanismTransfer = result.getAssociatePartyContactMechanism();
             
             request.setAttribute(AttributeConstants.ASSOCIATE_PARTY_CONTACT_MECHANISM, associatePartyContactMechanismTransfer);

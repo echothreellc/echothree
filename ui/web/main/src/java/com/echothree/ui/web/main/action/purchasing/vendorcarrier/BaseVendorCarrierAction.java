@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.purchasing.vendorcarrier;
 
 import com.echothree.control.user.carrier.common.CarrierUtil;
-import com.echothree.control.user.carrier.common.result.GetPartyCarrierResult;
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.result.GetVendorResult;
 import com.echothree.model.control.carrier.common.transfer.PartyCarrierTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -40,7 +38,7 @@ public abstract class BaseVendorCarrierAction<A
 
         var commandResult = VendorUtil.getHome().getVendor(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetVendorResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.VENDOR, result.getVendor());
     }
@@ -59,7 +57,7 @@ public abstract class BaseVendorCarrierAction<A
 
         var commandResult = CarrierUtil.getHome().getPartyCarrier(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetPartyCarrierResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         return result.getPartyCarrier();
     }

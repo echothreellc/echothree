@@ -17,12 +17,8 @@
 package com.echothree.ui.web.main.action.humanresources.employee;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetMimeTypeChoicesResult;
 import com.echothree.control.user.icon.common.IconUtil;
-import com.echothree.control.user.icon.common.result.GetIconChoicesResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetBirthdayFormatChoicesResult;
-import com.echothree.control.user.party.common.result.GetGenderChoicesResult;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.core.common.choice.MimeTypeChoicesBean;
 import com.echothree.model.control.icon.common.IconConstants;
@@ -75,7 +71,7 @@ public class EmployeeProfileAddActionForm
 
             var commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetIconChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             iconChoices = result.getIconChoices();
 
             if(iconChoice == null) {
@@ -94,7 +90,7 @@ public class EmployeeProfileAddActionForm
 
             var commandResult = PartyUtil.getHome().getGenderChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetGenderChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             genderChoices = result.getGenderChoices();
 
             if(genderChoice == null) {
@@ -113,7 +109,7 @@ public class EmployeeProfileAddActionForm
 
             var commandResult = PartyUtil.getHome().getBirthdayFormatChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetBirthdayFormatChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             birthdayFormatChoices = result.getBirthdayFormatChoices();
 
             if(birthdayFormatChoice == null) {
@@ -133,7 +129,7 @@ public class EmployeeProfileAddActionForm
 
             var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetMimeTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             bioMimeTypeChoices = result.getMimeTypeChoices();
 
             if(bioMimeTypeChoice == null) {
@@ -153,7 +149,7 @@ public class EmployeeProfileAddActionForm
 
             var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetMimeTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             signatureMimeTypeChoices = result.getMimeTypeChoices();
 
             if(signatureMimeTypeChoice == null) {

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.workflowentrancesecurityrole;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.result.GetWorkflowEntranceSecurityRoleResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
@@ -71,7 +70,7 @@ public class DeleteAction
 
         var commandResult = WorkflowUtil.getHome().getWorkflowEntranceSecurityRole(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetWorkflowEntranceSecurityRoleResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.WORKFLOW_ENTRANCE_SECURITY_ROLE, result.getWorkflowEntranceSecurityRole());
     }

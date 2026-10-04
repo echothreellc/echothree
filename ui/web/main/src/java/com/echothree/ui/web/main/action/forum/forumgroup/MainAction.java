@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.forum.forumgroup;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.result.GetForumGroupsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -49,7 +48,7 @@ public class MainAction
             throws Exception {
         var commandResult = ForumUtil.getHome().getForumGroups(getUserVisitPK(request), null);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetForumGroupsResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.FORUM_GROUPS, result.getForumGroups());
 

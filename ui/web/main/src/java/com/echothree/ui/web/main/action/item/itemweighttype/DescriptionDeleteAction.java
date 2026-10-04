@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.itemweighttype;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemWeightTypeDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
@@ -68,7 +67,7 @@ public class DescriptionDeleteAction
         var commandResult = ItemUtil.getHome().getItemWeightTypeDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemWeightTypeDescriptionResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             request.setAttribute(AttributeConstants.ITEM_WEIGHT_TYPE_DESCRIPTION, result.getItemWeightTypeDescription());
         }

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.subscription.subscriptiontypechain;
 
 import com.echothree.control.user.subscription.common.SubscriptionUtil;
-import com.echothree.control.user.subscription.common.result.GetSubscriptionTypeChainsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -61,7 +60,7 @@ public class MainAction
 
             var commandResult = SubscriptionUtil.getHome().getSubscriptionTypeChains(getUserVisitPK(request), getSubscriptionTypeChainsForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSubscriptionTypeChainsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SUBSCRIPTION_TYPE, result.getSubscriptionType());
             request.setAttribute(AttributeConstants.SUBSCRIPTION_TYPE_CHAINS, result.getSubscriptionTypeChains());

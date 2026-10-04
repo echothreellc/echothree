@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.returnpolicy.returntype;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.result.EditReturnTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -92,7 +91,7 @@ public class EditAction
                         var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            var result = (EditReturnTypeResult)executionResult.getResult();
+                            var result = executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -108,7 +107,7 @@ public class EditAction
 
                     var commandResult = ReturnPolicyUtil.getHome().editReturnType(getUserVisitPK(request), commandForm);
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditReturnTypeResult)executionResult.getResult();
+                    var result = executionResult.getResult();
                     
                     if(result != null) {
                         var edit = result.getEdit();

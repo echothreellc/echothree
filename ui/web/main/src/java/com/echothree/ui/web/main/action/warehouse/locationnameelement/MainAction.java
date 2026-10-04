@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.warehouse.locationnameelement;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.result.GetLocationNameElementsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -61,7 +60,7 @@ public class MainAction
 
             var commandResult = WarehouseUtil.getHome().getLocationNameElements(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetLocationNameElementsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.WAREHOUSE, result.getWarehouse());
             request.setAttribute(AttributeConstants.LOCATION_TYPE, result.getLocationType());

@@ -17,8 +17,6 @@
 package com.echothree.cucumber.item;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.CreateItemDescriptionTypeUseTypeResult;
-import com.echothree.control.user.item.common.result.EditItemDescriptionTypeUseTypeResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -50,7 +48,7 @@ public class ItemDescriptionTypeUseTypeSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (CreateItemDescriptionTypeUseTypeResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     assertThat(persona).isNotNull();
                     assertThat(commandResult).isNotNull();
@@ -110,7 +108,7 @@ public class ItemDescriptionTypeUseTypeSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditItemDescriptionTypeUseTypeResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     if(!executionResult.getHasErrors()) {
                         persona.itemDescriptionTypeUseTypeEdit = result.getEdit();

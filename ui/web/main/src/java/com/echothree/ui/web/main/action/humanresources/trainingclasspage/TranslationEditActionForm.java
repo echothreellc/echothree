@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.trainingclasspage;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetMimeTypeChoicesResult;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.core.common.choice.MimeTypeChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
@@ -51,7 +50,7 @@ public class TranslationEditActionForm
 
                 var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetMimeTypeChoicesResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 pageMimeTypeChoices = result.getMimeTypeChoices();
                 
                 if(pageMimeTypeChoice == null) {

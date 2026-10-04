@@ -17,7 +17,6 @@
 package com.echothree.service.job;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.result.GetPrinterGroupsResult;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.document.common.DocumentOptions;
 import com.echothree.model.control.job.common.Jobs;
@@ -104,7 +103,7 @@ public class PrintPrinterGroupJobsJob
 
         if(!commandResult.getHasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPrinterGroupsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var printerGroups = result.getPrinterGroups();
 
             printerGroups.forEach((printerGroup) -> {

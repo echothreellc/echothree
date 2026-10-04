@@ -17,10 +17,6 @@
 package com.echothree.cucumber.filter;
 
 import com.echothree.control.user.filter.common.FilterUtil;
-import com.echothree.control.user.filter.common.result.CreateFilterStepElementResult;
-import com.echothree.control.user.filter.common.result.CreateFilterStepResult;
-import com.echothree.control.user.filter.common.result.EditFilterStepElementResult;
-import com.echothree.control.user.filter.common.result.EditFilterStepResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -52,7 +48,7 @@ public class FilterStepElementSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (CreateFilterStepElementResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     assertThat(persona).isNotNull();
                     assertThat(commandResult).isNotNull();
@@ -112,7 +108,7 @@ public class FilterStepElementSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditFilterStepElementResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     if(!executionResult.getHasErrors()) {
                         persona.filterStepElementEdit = result.getEdit();

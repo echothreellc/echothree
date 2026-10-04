@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.communicationsource;
 
 import com.echothree.control.user.communication.common.CommunicationUtil;
-import com.echothree.control.user.communication.common.result.GetCommunicationSourcesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -55,7 +54,7 @@ public class MainAction
 
             var commandResult = CommunicationUtil.getHome().getCommunicationSources(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCommunicationSourcesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.COMMUNICATION_SOURCES, result.getCommunicationSources());
             forwardKey = ForwardConstants.DISPLAY;

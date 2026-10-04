@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.entitytype;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetEntityTypeResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.data.core.common.EntityInstanceConstants;
@@ -84,7 +83,7 @@ public class ReviewAction
         EntityTypeTransfer entityType = null;
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEntityTypeResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             entityType = result.getEntityType();
         }

@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.customer.customeralias;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetPartyAliasResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -50,7 +48,7 @@ public class CustomerAliasUtil {
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCustomerResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var customer = result.getCustomer();
 
             if(customer != null) {
@@ -73,7 +71,7 @@ public class CustomerAliasUtil {
 
         var commandResult = PartyUtil.getHome().getPartyAlias(MainBaseAction.getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetPartyAliasResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.PARTY_ALIAS, result.getPartyAlias());
     }

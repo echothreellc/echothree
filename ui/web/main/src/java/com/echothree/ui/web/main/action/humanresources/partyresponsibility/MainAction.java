@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.partyresponsibility;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.result.GetPartyResponsibilitiesResult;
 import com.echothree.ui.web.main.action.humanresources.employee.EmployeeUtils;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -58,7 +57,7 @@ public class MainAction
 
         var commandResult = EmployeeUtil.getHome().getPartyResponsibilities(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetPartyResponsibilitiesResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var party = result.getParty();
         var responsibilityType = result.getResponsibilityType();
 

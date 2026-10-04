@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.entityintegerattribute;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.EditEntityIntegerAttributeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -88,7 +87,7 @@ public class EditAction
                         var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            var result = (EditEntityIntegerAttributeResult)executionResult.getResult();
+                            var result = executionResult.getResult();
                             
                             if(result != null) {
                                 request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
@@ -104,7 +103,7 @@ public class EditAction
 
                     var commandResult = CoreUtil.getHome().editEntityIntegerAttribute(getUserVisitPK(request), commandForm);
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditEntityIntegerAttributeResult)executionResult.getResult();
+                    var result = executionResult.getResult();
                     
                     if(result != null) {
                         var edit = result.getEdit();

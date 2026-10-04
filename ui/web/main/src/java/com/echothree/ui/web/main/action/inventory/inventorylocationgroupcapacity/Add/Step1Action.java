@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.inventory.inventorylocationgroupcapacity.Add;
 
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.result.GetUnitOfMeasureKindsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -52,7 +51,7 @@ public class Step1Action
 
         var commandResult = UomUtil.getHome().getUnitOfMeasureKinds(getUserVisitPK(request), null);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetUnitOfMeasureKindsResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.UNIT_OF_MEASURE_KINDS, result.getUnitOfMeasureKinds());
         

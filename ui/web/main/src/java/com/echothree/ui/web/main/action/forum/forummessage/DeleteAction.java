@@ -17,8 +17,6 @@
 package com.echothree.ui.web.main.action.forum.forummessage;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.result.GetForumMessageResult;
-import com.echothree.control.user.forum.common.result.GetForumResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.forum.common.ForumOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -69,7 +67,7 @@ public class DeleteAction
 
         var commandResult = ForumUtil.getHome().getForum(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetForumResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.FORUM, result.getForum());
     }
@@ -87,7 +85,7 @@ public class DeleteAction
 
         var commandResult = ForumUtil.getHome().getForumMessage(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetForumMessageResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.FORUM_MESSAGE, result.getForumMessage());
     }

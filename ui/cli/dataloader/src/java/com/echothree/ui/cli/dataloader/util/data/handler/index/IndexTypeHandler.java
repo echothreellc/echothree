@@ -21,8 +21,6 @@ import com.echothree.control.user.index.common.IndexUtil;
 import com.echothree.control.user.index.common.edit.IndexFieldEdit;
 import com.echothree.control.user.index.common.edit.IndexTypeDescriptionEdit;
 import com.echothree.control.user.index.common.form.IndexFormFactory;
-import com.echothree.control.user.index.common.result.EditIndexFieldResult;
-import com.echothree.control.user.index.common.result.EditIndexTypeDescriptionResult;
 import com.echothree.control.user.index.common.spec.IndexSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -84,7 +82,7 @@ public class IndexTypeHandler
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditIndexTypeDescriptionResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 if(result != null) {
                     var edit = (IndexTypeDescriptionEdit)result.getEdit();
@@ -146,7 +144,7 @@ public class IndexTypeHandler
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditIndexFieldResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 if(result != null) {
                     var edit = (IndexFieldEdit)result.getEdit();

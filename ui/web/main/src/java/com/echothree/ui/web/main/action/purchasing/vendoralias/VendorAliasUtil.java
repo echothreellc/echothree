@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.purchasing.vendoralias;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetPartyAliasResult;
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.result.GetVendorResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -50,7 +48,7 @@ public class VendorAliasUtil {
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetVendorResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var vendor = result.getVendor();
 
             if(vendor != null) {
@@ -73,7 +71,7 @@ public class VendorAliasUtil {
 
         var commandResult = PartyUtil.getHome().getPartyAlias(MainBaseAction.getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetPartyAliasResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.PARTY_ALIAS, result.getPartyAlias());
     }

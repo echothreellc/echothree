@@ -17,8 +17,6 @@
 package com.echothree.cucumber.workflow;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.result.CreateWorkflowDestinationResult;
-import com.echothree.control.user.workflow.common.result.EditWorkflowDestinationResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -51,7 +49,7 @@ public class WorkflowDestinationSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (CreateWorkflowDestinationResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     assertThat(persona).isNotNull();
                     assertThat(commandResult).isNotNull();
@@ -111,7 +109,7 @@ public class WorkflowDestinationSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditWorkflowDestinationResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     if(!executionResult.getHasErrors()) {
                         persona.workflowDestinationEdit = result.getEdit();

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.cancellationpolicy.cancellationpolicyreason;
 
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
-import com.echothree.control.user.cancellationpolicy.common.result.GetCancellationReasonChoicesResult;
 import com.echothree.model.control.cancellationpolicy.common.choice.CancellationReasonChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -50,7 +49,7 @@ public class AddActionForm
 
             var commandResult = CancellationPolicyUtil.getHome().getCancellationReasonChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getCancellationReasonChoicesResult = (GetCancellationReasonChoicesResult)executionResult.getResult();
+            var getCancellationReasonChoicesResult = executionResult.getResult();
             cancellationReasonChoices = getCancellationReasonChoicesResult.getCancellationReasonChoices();
 
             if(cancellationReasonChoice == null) {

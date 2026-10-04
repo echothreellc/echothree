@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.forum.forumforumthread;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.result.GetForumForumThreadsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -55,7 +54,7 @@ public class MainAction
 
         var commandResult = ForumUtil.getHome().getForumForumThreads(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetForumForumThreadsResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.FORUM_THREAD, result.getForumThread());
         request.setAttribute(AttributeConstants.FORUM_FORUM_THREADS, result.getForumForumThreads());

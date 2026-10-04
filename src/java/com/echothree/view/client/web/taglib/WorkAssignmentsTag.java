@@ -18,7 +18,6 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.workrequirement.common.WorkRequirementUtil;
-import com.echothree.control.user.workrequirement.common.result.GetWorkAssignmentsResult;
 import com.echothree.model.data.workrequirement.common.WorkAssignmentConstants;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.Limit;
@@ -147,7 +146,7 @@ public class WorkAssignmentsTag
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetWorkAssignmentsResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getWorkAssignments()), scope);
 

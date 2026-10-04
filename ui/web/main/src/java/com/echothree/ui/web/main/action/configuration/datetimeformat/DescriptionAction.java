@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.datetimeformat;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetDateTimeFormatDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class DescriptionAction
 
             var commandResult = PartyUtil.getHome().getDateTimeFormatDescriptions(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetDateTimeFormatDescriptionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var dateTimeFormatTransfer = result.getDateTimeFormat();
             
             request.setAttribute(AttributeConstants.DATE_TIME_FORMAT, dateTimeFormatTransfer);

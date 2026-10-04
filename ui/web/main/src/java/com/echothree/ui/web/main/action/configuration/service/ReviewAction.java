@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.service;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetServiceResult;
 import com.echothree.model.control.core.common.transfer.ServiceTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -59,7 +58,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetServiceResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             service = result.getService();
         }

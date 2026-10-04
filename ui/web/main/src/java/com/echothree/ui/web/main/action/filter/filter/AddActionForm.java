@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.filter.filter;
 
 import com.echothree.control.user.filter.common.FilterUtil;
-import com.echothree.control.user.filter.common.result.GetFilterAdjustmentChoicesResult;
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.common.result.GetSelectorChoicesResult;
 import com.echothree.model.control.filter.common.choice.FilterAdjustmentChoicesBean;
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.common.SelectorTypes;
@@ -59,7 +57,7 @@ public class AddActionForm
 
             var commandResult = FilterUtil.getHome().getFilterAdjustmentChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetFilterAdjustmentChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             initialFilterAdjustmentChoices = result.getFilterAdjustmentChoices();
 
             if(initialFilterAdjustmentChoice == null)
@@ -79,7 +77,7 @@ public class AddActionForm
 
             var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSelectorChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             filterItemSelectorChoices = result.getSelectorChoices();
 
             if(filterItemSelectorChoice == null)

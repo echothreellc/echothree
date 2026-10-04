@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.wishlist.wishlisttype;
 
 import com.echothree.control.user.wishlist.common.WishlistUtil;
-import com.echothree.control.user.wishlist.common.result.GetWishlistTypesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -53,7 +52,7 @@ public class MainAction
         try {
             var commandResult = WishlistUtil.getHome().getWishlistTypes(getUserVisitPK(request), null);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetWishlistTypesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.WISHLIST_TYPES, result.getWishlistTypes());
             forwardKey = ForwardConstants.DISPLAY;

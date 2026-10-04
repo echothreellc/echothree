@@ -17,7 +17,6 @@
 package com.echothree.cucumber.offer;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.result.EditOfferItemPriceResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -105,7 +104,7 @@ public class OfferItemPriceSteps implements En {
 
                     var executionResult = commandResult.getExecutionResult();
                     if(!executionResult.getHasErrors()) {
-                        var result = (EditOfferItemPriceResult)executionResult.getResult();
+                        var result = executionResult.getResult();
 
                         persona.offerItemPriceEdit = result.getEdit();
                     }

@@ -17,10 +17,7 @@
 package com.echothree.ui.web.main.action.warehouse.location;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.result.GetInventoryLocationGroupChoicesResult;
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.result.GetLocationTypeChoicesResult;
-import com.echothree.control.user.warehouse.common.result.GetLocationUseTypeChoicesResult;
 import com.echothree.model.control.inventory.common.choice.InventoryLocationGroupChoicesBean;
 import com.echothree.model.control.warehouse.common.choice.LocationTypeChoicesBean;
 import com.echothree.model.control.warehouse.common.choice.LocationUseTypeChoicesBean;
@@ -57,7 +54,7 @@ public class AddActionForm
 
             var commandResult = WarehouseUtil.getHome().getLocationTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetLocationTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             locationTypeChoices = result.getLocationTypeChoices();
 
             if(locationTypeChoice == null) {
@@ -76,7 +73,7 @@ public class AddActionForm
 
             var commandResult = WarehouseUtil.getHome().getLocationUseTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetLocationUseTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             locationUseTypeChoices = result.getLocationUseTypeChoices();
 
             if(locationUseTypeChoice == null) {
@@ -96,7 +93,7 @@ public class AddActionForm
 
             var commandResult = InventoryUtil.getHome().getInventoryLocationGroupChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetInventoryLocationGroupChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             inventoryLocationGroupChoices = result.getInventoryLocationGroupChoices();
 
             if(inventoryLocationGroupChoice == null) {

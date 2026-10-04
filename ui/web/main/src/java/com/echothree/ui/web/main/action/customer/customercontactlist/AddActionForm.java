@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.customer.customercontactlist;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.result.GetContactMechanismPurposeChoicesResult;
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.result.GetContactListChoicesResult;
 import com.echothree.model.control.contact.common.choice.ContactMechanismPurposeChoicesBean;
 import com.echothree.model.control.contactlist.common.choice.ContactListChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
@@ -49,7 +47,7 @@ public class AddActionForm
 
             var commandResult = ContactListUtil.getHome().getContactListChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getContactListChoicesResult = (GetContactListChoicesResult)executionResult.getResult();
+            var getContactListChoicesResult = executionResult.getResult();
             contactListChoices = getContactListChoicesResult.getContactListChoices();
 
             if(contactListChoice == null) {
@@ -68,7 +66,7 @@ public class AddActionForm
 
             var commandResult = ContactUtil.getHome().getContactMechanismPurposeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getContactMechanismPurposeChoicesResult = (GetContactMechanismPurposeChoicesResult)executionResult.getResult();
+            var getContactMechanismPurposeChoicesResult = executionResult.getResult();
             preferredContactMechanismPurposeChoices = getContactMechanismPurposeChoicesResult.getContactMechanismPurposeChoices();
 
             if(preferredContactMechanismPurposeChoice == null) {

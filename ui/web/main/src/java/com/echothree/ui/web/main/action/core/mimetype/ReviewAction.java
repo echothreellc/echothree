@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.mimetype;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetMimeTypeResult;
 import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -59,7 +58,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetMimeTypeResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             mimeType = result.getMimeType();
         }

@@ -17,9 +17,6 @@
 package com.echothree.ui.web.main.action.forum.forummessage;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.result.EditBlogCommentResult;
-import com.echothree.control.user.forum.common.result.EditBlogEntryResult;
-import com.echothree.control.user.forum.common.result.GetForumMessageResult;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.common.transfer.ForumMessageTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -93,7 +90,7 @@ public class EditAction
                 var executionResult = commandResult.getExecutionResult();
 
                 if(executionResult != null) {
-                    var result = (EditBlogEntryResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -109,7 +106,7 @@ public class EditAction
 
             var commandResult = ForumUtil.getHome().editBlogEntry(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (EditBlogEntryResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             if(result != null) {
                 var edit = result.getEdit();
@@ -175,7 +172,7 @@ public class EditAction
                 var executionResult = commandResult.getExecutionResult();
 
                 if(executionResult != null) {
-                    var result = (EditBlogCommentResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -191,7 +188,7 @@ public class EditAction
 
             var commandResult = ForumUtil.getHome().editBlogComment(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (EditBlogCommentResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             if(result != null) {
                 var edit = result.getEdit();
@@ -241,7 +238,7 @@ public class EditAction
 
             var commandResult = ForumUtil.getHome().getForumMessage(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetForumMessageResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             forumMessage = result.getForumMessage();
 

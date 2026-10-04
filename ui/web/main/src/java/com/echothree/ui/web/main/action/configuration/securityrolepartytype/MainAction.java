@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.securityrolepartytype;
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.result.GetSecurityRolePartyTypesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -57,7 +56,7 @@ public class MainAction
         var commandResult = SecurityUtil.getHome().getSecurityRolePartyTypes(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSecurityRolePartyTypesResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             request.setAttribute(AttributeConstants.SECURITY_ROLE, result.getSecurityRole());
             request.setAttribute(AttributeConstants.SECURITY_ROLE_PARTY_TYPES, result.getSecurityRolePartyTypes());

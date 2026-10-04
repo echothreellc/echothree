@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.ratingtype;
 
 import com.echothree.control.user.rating.common.RatingUtil;
-import com.echothree.control.user.rating.common.result.GetRatingTypesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -61,7 +60,7 @@ public class MainAction
 
             var commandResult = RatingUtil.getHome().getRatingTypes(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetRatingTypesResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             request.setAttribute(AttributeConstants.ENTITY_TYPE, result.getEntityType());
             request.setAttribute(AttributeConstants.RATING_TYPES, result.getRatingTypes());

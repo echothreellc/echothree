@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.workeffortscope;
 
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.result.GetUnitOfMeasureTypeChoicesResult;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.common.choice.UnitOfMeasureTypeChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
@@ -59,7 +58,7 @@ public class AddActionForm
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            var getUnitOfMeasureTypeChoicesResult = executionResult.getResult();
             scheduledTimeUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
 
             if(scheduledTimeUnitOfMeasureTypeChoice == null) {
@@ -79,7 +78,7 @@ public class AddActionForm
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            var getUnitOfMeasureTypeChoicesResult = executionResult.getResult();
             estimatedTimeAllowedUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
 
             if(estimatedTimeAllowedUnitOfMeasureTypeChoice == null) {
@@ -99,7 +98,7 @@ public class AddActionForm
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            var getUnitOfMeasureTypeChoicesResult = executionResult.getResult();
             maximumTimeAllowedUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
 
             if(maximumTimeAllowedUnitOfMeasureTypeChoice == null) {

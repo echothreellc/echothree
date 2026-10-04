@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.entityinstance;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetEntityInstancesResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -66,7 +65,7 @@ public class MainAction
 
         var commandResult = CoreUtil.getHome().getEntityInstances(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetEntityInstancesResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.ENTITY_TYPE, result.getEntityType());
         request.setAttribute(AttributeConstants.ENTITY_INSTANCES, result.getEntityInstances());

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.item;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.CreateItemResult;
 import com.echothree.model.control.item.common.ItemTypes;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -94,7 +93,7 @@ public class AddAction
                 setCommandResultAttribute(request, commandResult);
                 forwardKey = ForwardConstants.FORM;
             } else {
-                var createItemResult = (CreateItemResult)commandResult.getExecutionResult().getResult();
+                var createItemResult = commandResult.getExecutionResult().getResult();
                 
                 forwardKey = ForwardConstants.REVIEW;
                 itemName = createItemResult.getItemName();

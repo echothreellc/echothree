@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.item;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemDescriptionResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.MimeTypeFileExtensionTransfer;
 import com.echothree.model.control.item.common.ItemOptions;
@@ -81,7 +80,7 @@ public class ItemBlobDescriptionViewAction
         var commandResult = ItemUtil.getHome().getItemDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemDescriptionResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             var itemDescription = result.getItemDescription();
 

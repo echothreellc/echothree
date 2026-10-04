@@ -17,7 +17,6 @@
 package com.echothree.view.client.web.struts;
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.result.CheckSecurityRolesResult;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.WebConstants;
@@ -112,7 +111,7 @@ public abstract class BaseAction
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var checkSecurityRolesResult = (CheckSecurityRolesResult)executionResult.getResult();
+            var checkSecurityRolesResult = executionResult.getResult();
             newSecurityRoles = checkSecurityRolesResult.getSecurityRoles();
         }
 

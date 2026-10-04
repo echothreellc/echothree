@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.filter.filterstep;
 
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.common.result.GetSelectorChoicesResult;
 import com.echothree.model.control.filter.common.choice.FilterAdjustmentChoicesBean;
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.common.SelectorTypes;
@@ -53,7 +52,7 @@ public class AddActionForm
 
             var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSelectorChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             filterItemSelectorChoices = result.getSelectorChoices();
 
             if(filterItemSelectorChoice == null)

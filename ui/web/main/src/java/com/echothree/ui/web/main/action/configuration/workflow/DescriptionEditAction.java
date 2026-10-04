@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.workflow;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.result.EditWorkflowDescriptionResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -87,7 +86,7 @@ public class DescriptionEditAction
                         var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            var result = (EditWorkflowDescriptionResult)executionResult.getResult();
+                            var result = executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -103,7 +102,7 @@ public class DescriptionEditAction
 
                     var commandResult = WorkflowUtil.getHome().editWorkflowDescription(getUserVisitPK(request), commandForm);
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditWorkflowDescriptionResult)executionResult.getResult();
+                    var result = executionResult.getResult();
                     
                     if(result != null) {
                         var edit = result.getEdit();

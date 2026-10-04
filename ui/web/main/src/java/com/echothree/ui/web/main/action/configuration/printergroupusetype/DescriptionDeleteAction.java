@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.printergroupusetype;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.result.GetPrinterGroupUseTypeDescriptionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
@@ -68,7 +67,7 @@ public class DescriptionDeleteAction
         var commandResult = PrinterUtil.getHome().getPrinterGroupUseTypeDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPrinterGroupUseTypeDescriptionResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             request.setAttribute(AttributeConstants.PRINTER_GROUP_USE_TYPE_DESCRIPTION, result.getPrinterGroupUseTypeDescription());
         }

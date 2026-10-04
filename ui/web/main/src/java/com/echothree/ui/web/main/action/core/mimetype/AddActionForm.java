@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.mimetype;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetEntityAttributeTypeChoicesResult;
 import com.echothree.model.control.core.common.choice.EntityAttributeTypeChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -48,7 +47,7 @@ public class AddActionForm
 
             var commandResult = CoreUtil.getHome().getEntityAttributeTypeChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var getEntityAttributeTypeChoicesResult = (GetEntityAttributeTypeChoicesResult)executionResult.getResult();
+            var getEntityAttributeTypeChoicesResult = executionResult.getResult();
             entityAttributeTypeChoices = getEntityAttributeTypeChoicesResult.getEntityAttributeTypeChoices();
 
             if(entityAttributeTypeChoice == null)

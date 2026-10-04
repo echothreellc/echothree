@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.event;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GenerateUuidResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -63,7 +62,7 @@ public class GenerateUuidAction
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GenerateUuidResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             uuid = result.getUuid();
             

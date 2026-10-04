@@ -395,7 +395,6 @@ import com.echothree.control.user.returnpolicy.server.command.GetReturnKindsComm
 import com.echothree.control.user.returnpolicy.server.command.GetReturnPoliciesCommand;
 import com.echothree.control.user.returnpolicy.server.command.GetReturnPolicyCommand;
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.result.CheckItemSpellingResult;
 import com.echothree.control.user.search.server.command.GetComponentVendorResultsCommand;
 import com.echothree.control.user.search.server.command.GetContentCatalogItemResultsCommand;
 import com.echothree.control.user.search.server.command.GetContentCatalogResultsCommand;
@@ -440,7 +439,6 @@ import com.echothree.control.user.selector.server.command.GetSelectorTypeCommand
 import com.echothree.control.user.selector.server.command.GetSelectorTypesCommand;
 import com.echothree.control.user.selector.server.command.GetSelectorsCommand;
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.result.GetSequenceValueResult;
 import com.echothree.control.user.sequence.server.command.GetSequenceChecksumTypeCommand;
 import com.echothree.control.user.sequence.server.command.GetSequenceChecksumTypesCommand;
 import com.echothree.control.user.sequence.server.command.GetSequenceCommand;
@@ -2720,7 +2718,7 @@ public interface GraphQlQueries {
             var commandResult = SequenceUtil.getHome().getSequenceValue(BaseGraphQl.getUserVisitPK(env), commandForm);
 
             if(!commandResult.hasErrors()) {
-                result = new GetSequenceValueResultObject((GetSequenceValueResult)commandResult.getExecutionResult().getResult());
+                result = new GetSequenceValueResultObject(commandResult.getExecutionResult().getResult());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -7936,7 +7934,7 @@ public interface GraphQlQueries {
 
             var commandResult = SearchUtil.getHome().checkItemSpelling(getUserVisitPK(env), commandForm);
             checkItemSpellingObject.setCommandResult(commandResult);
-            checkItemSpellingObject.setResult(commandResult.hasErrors() ? null : (CheckItemSpellingResult)commandResult.getExecutionResult().getResult());
+            checkItemSpellingObject.setResult(commandResult.hasErrors() ? null : commandResult.getExecutionResult().getResult());
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }

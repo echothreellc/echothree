@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.employee;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetEmployeeAvailabilityChoicesResult;
 import com.echothree.model.control.employee.common.choice.EmployeeAvailabilityChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -46,7 +45,7 @@ public class AvailabilityActionForm
 
             var commandResult = PartyUtil.getHome().getEmployeeAvailabilityChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEmployeeAvailabilityChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             employeeAvailabilityChoices = result.getEmployeeAvailabilityChoices();
 
             if(employeeAvailabilityChoice == null)

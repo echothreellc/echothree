@@ -17,13 +17,9 @@
 package com.echothree.ui.web.main.action.item.partyinventorylevel;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.result.GetInventoryConditionChoicesResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetCompanyChoicesResult;
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.result.GetUnitOfMeasureTypeChoicesResult;
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.result.GetWarehouseChoicesResult;
 import com.echothree.model.control.inventory.common.InventoryConditionUseTypes;
 import com.echothree.model.control.inventory.common.choice.InventoryConditionChoicesBean;
 import com.echothree.model.control.party.common.choice.CompanyChoicesBean;
@@ -67,7 +63,7 @@ public class AddActionForm
 
             var commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCompanyChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             companyChoices = result.getCompanyChoices();
 
             if(companyChoice == null) {
@@ -86,7 +82,7 @@ public class AddActionForm
 
             var commandResult = WarehouseUtil.getHome().getWarehouseChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetWarehouseChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             warehouseChoices = result.getWarehouseChoices();
 
             if(warehouseChoice == null) {
@@ -106,7 +102,7 @@ public class AddActionForm
 
             var commandResult = InventoryUtil.getHome().getInventoryConditionChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetInventoryConditionChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             inventoryConditionChoices = result.getInventoryConditionChoices();
 
             if(inventoryConditionChoice == null) {
@@ -126,7 +122,7 @@ public class AddActionForm
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            var getUnitOfMeasureTypeChoicesResult = executionResult.getResult();
             minimumInventoryUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
 
             if(minimumInventoryUnitOfMeasureTypeChoice == null) {
@@ -146,7 +142,7 @@ public class AddActionForm
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            var getUnitOfMeasureTypeChoicesResult = executionResult.getResult();
             maximumInventoryUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
 
             if(maximumInventoryUnitOfMeasureTypeChoice == null) {
@@ -166,7 +162,7 @@ public class AddActionForm
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            var getUnitOfMeasureTypeChoicesResult = executionResult.getResult();
             reorderQuantityUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
 
             if(reorderQuantityUnitOfMeasureTypeChoice == null) {

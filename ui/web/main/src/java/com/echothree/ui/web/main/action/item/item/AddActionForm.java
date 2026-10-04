@@ -17,25 +17,12 @@
 package com.echothree.ui.web.main.action.item.item;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetItemAccountingCategoryChoicesResult;
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
-import com.echothree.control.user.cancellationpolicy.common.result.GetCancellationPolicyChoicesResult;
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemCategoryChoicesResult;
-import com.echothree.control.user.item.common.result.GetItemDeliveryTypeChoicesResult;
-import com.echothree.control.user.item.common.result.GetItemInventoryTypeChoicesResult;
-import com.echothree.control.user.item.common.result.GetItemPriceTypeChoicesResult;
-import com.echothree.control.user.item.common.result.GetItemStatusChoicesResult;
-import com.echothree.control.user.item.common.result.GetItemTypeChoicesResult;
-import com.echothree.control.user.item.common.result.GetItemUseTypeChoicesResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetCompanyChoicesResult;
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.result.GetReturnPolicyChoicesResult;
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.result.GetUnitOfMeasureKindChoicesResult;
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.result.GetItemPurchasingCategoryChoicesResult;
 import com.echothree.model.control.accounting.common.choice.ItemAccountingCategoryChoicesBean;
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.common.choice.CancellationPolicyChoicesBean;
@@ -114,7 +101,7 @@ public class AddActionForm
 
             var commandResult = ItemUtil.getHome().getItemTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             itemTypeChoices = result.getItemTypeChoices();
 
             if(itemTypeChoice == null) {
@@ -133,7 +120,7 @@ public class AddActionForm
 
             var commandResult = ItemUtil.getHome().getItemUseTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemUseTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             itemUseTypeChoices = result.getItemUseTypeChoices();
 
             if(itemUseTypeChoice == null) {
@@ -152,7 +139,7 @@ public class AddActionForm
 
             var commandResult = ItemUtil.getHome().getItemCategoryChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemCategoryChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             itemCategoryChoices = result.getItemCategoryChoices();
 
             if(itemCategoryChoice == null) {
@@ -171,7 +158,7 @@ public class AddActionForm
 
             var commandResult = AccountingUtil.getHome().getItemAccountingCategoryChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemAccountingCategoryChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             itemAccountingCategoryChoices = result.getItemAccountingCategoryChoices();
 
             if(itemAccountingCategoryChoice == null) {
@@ -190,7 +177,7 @@ public class AddActionForm
 
             var commandResult = VendorUtil.getHome().getItemPurchasingCategoryChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemPurchasingCategoryChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             itemPurchasingCategoryChoices = result.getItemPurchasingCategoryChoices();
 
             if(itemPurchasingCategoryChoice == null) {
@@ -209,7 +196,7 @@ public class AddActionForm
 
             var commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCompanyChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             companyChoices = result.getCompanyChoices();
 
             if(companyChoice == null)
@@ -227,7 +214,7 @@ public class AddActionForm
 
             var commandResult = ItemUtil.getHome().getItemDeliveryTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemDeliveryTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             itemDeliveryTypeChoices = result.getItemDeliveryTypeChoices();
 
             if(itemDeliveryTypeChoice == null) {
@@ -246,7 +233,7 @@ public class AddActionForm
 
             var commandResult = ItemUtil.getHome().getItemInventoryTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemInventoryTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             itemInventoryTypeChoices = result.getItemInventoryTypeChoices();
 
             if(itemInventoryTypeChoice == null) {
@@ -265,7 +252,7 @@ public class AddActionForm
 
             var commandResult = ItemUtil.getHome().getItemStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemStatusChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             itemStatusChoices = result.getItemStatusChoices();
 
             if(itemStatusChoice == null) {
@@ -285,7 +272,7 @@ public class AddActionForm
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureKindChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetUnitOfMeasureKindChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             unitOfMeasureKindChoices = result.getUnitOfMeasureKindChoices();
 
             if(unitOfMeasureKindChoice == null) {
@@ -304,7 +291,7 @@ public class AddActionForm
 
             var commandResult = ItemUtil.getHome().getItemPriceTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemPriceTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             itemPriceTypeChoices = result.getItemPriceTypeChoices();
 
             if(itemPriceTypeChoice == null) {
@@ -324,7 +311,7 @@ public class AddActionForm
 
             var commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCancellationPolicyChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             cancellationPolicyChoices = result.getCancellationPolicyChoices();
 
             if(cancellationPolicyChoice == null)
@@ -343,7 +330,7 @@ public class AddActionForm
 
             var commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetReturnPolicyChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             returnPolicyChoices = result.getReturnPolicyChoices();
 
             if(returnPolicyChoice == null)

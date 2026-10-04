@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.subscription.subscriptionkind;
 
 import com.echothree.control.user.subscription.common.SubscriptionUtil;
-import com.echothree.control.user.subscription.common.result.GetSubscriptionKindsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -53,7 +52,7 @@ public class MainAction
         try {
             var commandResult = SubscriptionUtil.getHome().getSubscriptionKinds(getUserVisitPK(request), null);
             var executionResult = commandResult.getExecutionResult();
-            var getSubscriptionKindsResult = (GetSubscriptionKindsResult)executionResult.getResult();
+            var getSubscriptionKindsResult = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SUBSCRIPTION_KINDS, getSubscriptionKindsResult.getSubscriptionKinds());
             forwardKey = ForwardConstants.DISPLAY;

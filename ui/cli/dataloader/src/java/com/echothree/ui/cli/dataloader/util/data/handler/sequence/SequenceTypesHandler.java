@@ -20,7 +20,6 @@ import com.echothree.control.user.sequence.common.SequenceService;
 import com.echothree.control.user.sequence.common.SequenceUtil;
 import com.echothree.control.user.sequence.common.edit.SequenceTypeEdit;
 import com.echothree.control.user.sequence.common.form.SequenceFormFactory;
-import com.echothree.control.user.sequence.common.result.EditSequenceTypeResult;
 import com.echothree.control.user.sequence.common.spec.SequenceSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -77,7 +76,7 @@ public class SequenceTypesHandler
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditSequenceTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 if(result != null) {
                     var edit = (SequenceTypeEdit)result.getEdit();

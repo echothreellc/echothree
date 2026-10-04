@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.itemweighttype;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemWeightTypesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -52,7 +51,7 @@ public class MainAction
         var commandResult = ItemUtil.getHome().getItemWeightTypes(getUserVisitPK(request), null);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemWeightTypesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ITEM_WEIGHT_TYPES, result.getItemWeightTypes());
             forwardKey = ForwardConstants.DISPLAY;

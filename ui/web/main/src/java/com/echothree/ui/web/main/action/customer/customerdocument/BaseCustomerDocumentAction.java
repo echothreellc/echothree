@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.customer.customerdocument;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.common.result.GetPartyDocumentResult;
 import com.echothree.model.control.customer.common.transfer.CustomerTransfer;
 import com.echothree.model.control.document.common.transfer.PartyDocumentTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -45,7 +43,7 @@ public abstract class BaseCustomerDocumentAction<A
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCustomerResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             customer = result.getCustomer();
 
@@ -77,7 +75,7 @@ public abstract class BaseCustomerDocumentAction<A
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPartyDocumentResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             partyDocument = result.getPartyDocument();
 

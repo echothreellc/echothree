@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.company;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetPartyRelationshipsResult;
 import com.echothree.model.control.party.common.PartyRelationshipTypes;
 import com.echothree.model.control.party.common.RoleTypes;
 import com.echothree.ui.web.main.action.humanresources.employee.EmployeeUtils;
@@ -60,7 +59,7 @@ public class MainAction
 
         var commandResult = PartyUtil.getHome().getPartyRelationships(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetPartyRelationshipsResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.EMPLOYEE, EmployeeUtils.getInstance().getEmployee(getUserVisitPK(request), toPartyName, null));
         request.setAttribute(AttributeConstants.TO_PARTY, result.getToParty());

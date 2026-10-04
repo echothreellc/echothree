@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.configuration.communicationsource;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetServerChoicesResult;
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.common.result.GetSelectorChoicesResult;
 import com.echothree.control.user.workeffort.common.WorkEffortUtil;
-import com.echothree.control.user.workeffort.common.result.GetWorkEffortScopeChoicesResult;
 import com.echothree.model.control.core.common.choice.ServerChoicesBean;
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.common.SelectorTypes;
@@ -64,7 +61,7 @@ public class AddActionForm
 
             var commandResult = CoreUtil.getHome().getServerChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetServerChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             serverChoices = result.getServerChoices();
 
             if(serverChoice == null) {
@@ -84,7 +81,7 @@ public class AddActionForm
 
             var commandResult = WorkEffortUtil.getHome().getWorkEffortScopeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetWorkEffortScopeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             receiveWorkEffortScopeChoices = result.getWorkEffortScopeChoices();
 
             if(receiveWorkEffortScopeChoice == null) {
@@ -104,7 +101,7 @@ public class AddActionForm
 
             var commandResult = WorkEffortUtil.getHome().getWorkEffortScopeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetWorkEffortScopeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             sendWorkEffortScopeChoices = result.getWorkEffortScopeChoices();
 
             if(sendWorkEffortScopeChoice == null) {
@@ -125,7 +122,7 @@ public class AddActionForm
 
             var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSelectorChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             reviewEmployeeSelectorChoices = result.getSelectorChoices();
 
             if(reviewEmployeeSelectorChoice == null) {

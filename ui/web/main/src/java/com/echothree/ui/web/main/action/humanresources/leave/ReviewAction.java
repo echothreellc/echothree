@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.leave;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.result.GetLeaveResult;
 import com.echothree.model.control.employee.common.transfer.LeaveTransfer;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.ui.web.main.action.humanresources.employee.EmployeeUtils;
@@ -69,7 +68,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetLeaveResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             leave = result.getLeave();
         }

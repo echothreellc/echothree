@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.country;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.result.GetPostalAddressFormatChoicesResult;
 import com.echothree.model.control.contact.common.choice.PostalAddressFormatChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -68,7 +67,7 @@ public class AddActionForm
 
             var commandResult = ContactUtil.getHome().getPostalAddressFormatChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPostalAddressFormatChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             postalAddressFormatChoices = result.getPostalAddressFormatChoices();
 
             if(postalAddressFormatChoice == null) {

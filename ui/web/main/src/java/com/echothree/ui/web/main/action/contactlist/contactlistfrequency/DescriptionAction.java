@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.contactlist.contactlistfrequency;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.result.GetContactListFrequencyDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -57,7 +56,7 @@ public class DescriptionAction
         var commandResult = ContactListUtil.getHome().getContactListFrequencyDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetContactListFrequencyDescriptionsResult) executionResult.getResult();
+            var result = executionResult.getResult();
             var contactListFrequencyTransfer = result.getContactListFrequency();
 
             request.setAttribute(AttributeConstants.CONTACT_LIST_FREQUENCY, contactListFrequencyTransfer);

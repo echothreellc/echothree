@@ -17,8 +17,6 @@
 package com.echothree.ui.web.main.action.item.item.DescriptionAdd;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemDescriptionTypesResult;
-import com.echothree.control.user.item.common.result.GetItemResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -64,7 +62,7 @@ public class Step1Action
 
         var commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetItemResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.ITEM, result.getItem());
     }
@@ -81,7 +79,7 @@ public class Step1Action
 
         var commandResult = ItemUtil.getHome().getItemDescriptionTypes(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetItemDescriptionTypesResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.ITEM_DESCRIPTION_TYPES, result.getItemDescriptionTypes());
     }

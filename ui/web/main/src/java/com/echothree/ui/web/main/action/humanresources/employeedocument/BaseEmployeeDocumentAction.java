@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.humanresources.employeedocument;
 
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.common.result.GetPartyDocumentResult;
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.result.GetEmployeeResult;
 import com.echothree.model.control.document.common.transfer.PartyDocumentTransfer;
 import com.echothree.model.control.employee.common.transfer.EmployeeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -45,7 +43,7 @@ public abstract class BaseEmployeeDocumentAction<A
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEmployeeResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             employee = result.getEmployee();
 
@@ -77,7 +75,7 @@ public abstract class BaseEmployeeDocumentAction<A
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPartyDocumentResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             partyDocument = result.getPartyDocument();
 

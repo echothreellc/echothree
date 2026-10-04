@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.entitytype;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetEntityTypeDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -57,7 +56,7 @@ public class DescriptionAction
         var commandResult = CoreUtil.getHome().getEntityTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEntityTypeDescriptionsResult) executionResult.getResult();
+            var result = executionResult.getResult();
             var entityTypeTransfer = result.getEntityType();
 
             request.setAttribute(AttributeConstants.ENTITY_TYPE, entityTypeTransfer);

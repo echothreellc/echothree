@@ -17,8 +17,6 @@
 package com.echothree.cucumber.item;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.CreateItemResult;
-import com.echothree.control.user.item.common.result.EditItemResult;
 import com.echothree.cucumber.util.persona.BasePersona;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
@@ -197,7 +195,7 @@ public class ItemSteps implements En {
                     var commandResult = itemService.createItem(persona.userVisitPK, createItemForm);
 
                     LastCommandResult.commandResult = commandResult;
-                    var result = (CreateItemResult)commandResult.getExecutionResult().getResult();
+                    var result = commandResult.getExecutionResult().getResult();
 
                     persona.lastItemName = commandResult.getHasErrors() ? null : result.getItemName();
                     persona.createItemForm = null;
@@ -228,7 +226,7 @@ public class ItemSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditItemResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     persona.createItemForm = ItemUtil.getHome().getCreateItemForm();
                     persona.createItemForm.set(result.getEdit().get());

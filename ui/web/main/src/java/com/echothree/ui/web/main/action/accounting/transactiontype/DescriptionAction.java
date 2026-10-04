@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.transactiontype;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetTransactionTypeDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -57,7 +56,7 @@ public class DescriptionAction
         var commandResult = AccountingUtil.getHome().getTransactionTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetTransactionTypeDescriptionsResult) executionResult.getResult();
+            var result = executionResult.getResult();
             var transactionTypeTransfer = result.getTransactionType();
 
             request.setAttribute(AttributeConstants.TRANSACTION_TYPE, transactionTypeTransfer);

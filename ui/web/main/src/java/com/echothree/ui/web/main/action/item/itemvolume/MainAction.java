@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.itemvolume;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemVolumesResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -64,7 +63,7 @@ public class MainAction
 
         var commandResult = ItemUtil.getHome().getItemVolumes(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetItemVolumesResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.ITEM, result.getItem());
         request.setAttribute(AttributeConstants.ITEM_VOLUMES, result.getItemVolumes());

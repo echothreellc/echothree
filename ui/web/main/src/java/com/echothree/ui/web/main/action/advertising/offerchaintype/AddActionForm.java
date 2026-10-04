@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.advertising.offerchaintype;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.common.result.GetChainChoicesResult;
 import com.echothree.model.control.chain.common.choice.ChainChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -48,7 +47,7 @@ public class AddActionForm
 
             var commandResult = ChainUtil.getHome().getChainChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetChainChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             chainChoices = result.getChainChoices();
 
             if(chainChoice == null) {

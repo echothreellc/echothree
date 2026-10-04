@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customerpaymentmethod;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.control.user.payment.common.PaymentUtil;
 import com.echothree.control.user.payment.common.edit.PartyPaymentMethodEdit;
 import com.echothree.control.user.payment.common.form.EditPartyPaymentMethodForm;
@@ -123,7 +122,7 @@ public class EditAction
 
         var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetCustomerResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.CUSTOMER, result.getCustomer());
     }
@@ -133,7 +132,7 @@ public class EditAction
             throws Exception {
         var commandResult = PaymentUtil.getHome().editPartyPaymentMethod(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (EditPartyPaymentMethodResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var partyPaymentMethod = result.getPartyPaymentMethod();
 
         if(partyPaymentMethod != null) {

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.club.club;
 
 import com.echothree.control.user.club.common.ClubUtil;
-import com.echothree.control.user.club.common.result.GetClubDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class DescriptionAction
 
             var commandResult = ClubUtil.getHome().getClubDescriptions(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetClubDescriptionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var clubTransfer = result.getClub();
             
             request.setAttribute(AttributeConstants.CLUB, clubTransfer);

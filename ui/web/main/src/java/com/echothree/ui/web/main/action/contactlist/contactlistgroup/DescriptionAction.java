@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.contactlist.contactlistgroup;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.result.GetContactListGroupDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -57,7 +56,7 @@ public class DescriptionAction
         var commandResult = ContactListUtil.getHome().getContactListGroupDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetContactListGroupDescriptionsResult) executionResult.getResult();
+            var result = executionResult.getResult();
             var contactListGroupTransfer = result.getContactListGroup();
 
             request.setAttribute(AttributeConstants.CONTACT_LIST_GROUP, contactListGroupTransfer);

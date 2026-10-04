@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.advertising.offerchaintype;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.result.GetOfferChainTypesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -55,7 +54,7 @@ public class MainAction
 
         var commandResult = OfferUtil.getHome().getOfferChainTypes(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetOfferChainTypesResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.OFFER, result.getOffer());
         request.setAttribute(AttributeConstants.OFFER_CHAIN_TYPES, result.getOfferChainTypes());

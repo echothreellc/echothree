@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.item;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemResult;
 import com.echothree.control.user.rating.common.RatingUtil;
 import com.echothree.control.user.rating.common.edit.RatingEdit;
 import com.echothree.control.user.rating.common.form.EditRatingForm;
@@ -93,7 +92,7 @@ public class RatingEditAction
             throws Exception {
         var commandResult = RatingUtil.getHome().editRating(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (EditRatingResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.RATING, result.getRating());
         
@@ -114,7 +113,7 @@ public class RatingEditAction
 
         var commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetItemResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.ITEM, result.getItem());
     }

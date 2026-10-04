@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.payment.paymentmethod.add;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.result.GetPaymentProcessorChoicesResult;
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.common.result.GetSelectorChoicesResult;
 import com.echothree.model.control.payment.common.choice.PaymentProcessorChoicesBean;
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.common.SelectorTypes;
@@ -80,7 +78,7 @@ public class Step2ActionForm
 
             var commandResult = PaymentUtil.getHome().getPaymentProcessorChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getPaymentProcessorChoicesResult = (GetPaymentProcessorChoicesResult)executionResult.getResult();
+            var getPaymentProcessorChoicesResult = executionResult.getResult();
             paymentProcessorChoices = getPaymentProcessorChoicesResult.getPaymentProcessorChoices();
 
             if(paymentProcessorChoice == null) {
@@ -101,7 +99,7 @@ public class Step2ActionForm
 
             var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSelectorChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             itemSelectorChoices = result.getSelectorChoices();
 
             if(itemSelectorChoice == null) {
@@ -122,7 +120,7 @@ public class Step2ActionForm
 
             var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSelectorChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             salesOrderItemSelectorChoices = result.getSelectorChoices();
 
             if(salesOrderItemSelectorChoice == null) {

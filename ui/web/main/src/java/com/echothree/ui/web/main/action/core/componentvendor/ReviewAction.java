@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.componentvendor;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetComponentVendorResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -64,7 +63,7 @@ public class ReviewAction
 
         var commandResult = CoreUtil.getHome().getComponentVendor(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetComponentVendorResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var componentVendor = result.getComponentVendor();
 
         if(componentVendor == null) {

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.appearance;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetAppearancesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -52,7 +51,7 @@ public class MainAction
         var commandResult = CoreUtil.getHome().getAppearances(getUserVisitPK(request), null);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetAppearancesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.APPEARANCES, result.getAppearances());
             forwardKey = ForwardConstants.DISPLAY;

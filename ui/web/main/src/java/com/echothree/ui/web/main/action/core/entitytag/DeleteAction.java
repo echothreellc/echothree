@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.entitytag;
 
 import com.echothree.control.user.tag.common.TagUtil;
-import com.echothree.control.user.tag.common.result.GetEntityTagResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -72,7 +71,7 @@ public class DeleteAction
 
         var commandResult = TagUtil.getHome().getEntityTag(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetEntityTagResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.ENTITY_TAG, result.getEntityTag());
     }

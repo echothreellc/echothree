@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.workrequirementtype;
 
 import com.echothree.control.user.workrequirement.common.WorkRequirementUtil;
-import com.echothree.control.user.workrequirement.common.result.GetWorkRequirementTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -61,7 +60,7 @@ public class ReviewAction
 
             var commandResult = WorkRequirementUtil.getHome().getWorkRequirementType(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetWorkRequirementTypeResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.WORK_REQUIREMENT_TYPE, result.getWorkRequirementType());
             forwardKey = ForwardConstants.DISPLAY;

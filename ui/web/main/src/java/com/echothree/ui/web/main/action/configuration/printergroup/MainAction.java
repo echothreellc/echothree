@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.printergroup;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.result.GetPrinterGroupsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -54,7 +53,7 @@ public class MainAction
             var commandForm = PrinterUtil.getHome().getGetPrinterGroupsForm();
             var commandResult = PrinterUtil.getHome().getPrinterGroups(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPrinterGroupsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.PRINTER_GROUPS, result.getPrinterGroups());
             forwardKey = ForwardConstants.DISPLAY;

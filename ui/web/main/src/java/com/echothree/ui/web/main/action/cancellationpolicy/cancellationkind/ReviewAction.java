@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.cancellationpolicy.cancellationkind;
 
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
-import com.echothree.control.user.cancellationpolicy.common.result.GetCancellationKindResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class ReviewAction
 
             var commandResult = CancellationPolicyUtil.getHome().getCancellationKind(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCancellationKindResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var cancellationKindTransfer = result.getCancellationKind();
             
             request.setAttribute(AttributeConstants.CANCELLATION_KIND, cancellationKindTransfer);

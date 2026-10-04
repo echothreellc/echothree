@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.forum.forumpartytyperole;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.result.GetForumPartyTypeRolesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class MainAction
 
             var commandResult = ForumUtil.getHome().getForumPartyTypeRoles(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetForumPartyTypeRolesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.FORUM, result.getForum());
             request.setAttribute(AttributeConstants.FORUM_PARTY_TYPE_ROLES, result.getForumPartyTypeRoles());

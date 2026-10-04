@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.workflowdestination;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.result.GetWorkflowDestinationDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -63,7 +62,7 @@ public class DescriptionAction
 
             var commandResult = WorkflowUtil.getHome().getWorkflowDestinationDescriptions(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetWorkflowDestinationDescriptionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.WORKFLOW_DESTINATION, result.getWorkflowDestination());
             request.setAttribute(AttributeConstants.WORKFLOW_DESTINATION_DESCRIPTIONS, result.getWorkflowDestinationDescriptions());

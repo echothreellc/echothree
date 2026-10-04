@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.salesorder.salesorderbatch;
 
 import com.echothree.control.user.sales.common.SalesUtil;
-import com.echothree.control.user.sales.common.result.GetSalesOrderBatchStatusChoicesResult;
 import com.echothree.model.control.sales.common.choice.SalesOrderBatchStatusChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -47,7 +46,7 @@ public class StatusActionForm
 
             var commandResult = SalesUtil.getHome().getSalesOrderBatchStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getSalesOrderBatchStatusChoicesResult = (GetSalesOrderBatchStatusChoicesResult)executionResult.getResult();
+            var getSalesOrderBatchStatusChoicesResult = executionResult.getResult();
             salesOrderBatchStatusChoices = getSalesOrderBatchStatusChoicesResult.getSalesOrderBatchStatusChoices();
 
             if(salesOrderBatchStatusChoice == null) {

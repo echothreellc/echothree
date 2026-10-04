@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.securityrolepartytype.add;
 
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.common.result.GetSelectorChoicesResult;
 import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.common.choice.SelectorChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
@@ -49,7 +48,7 @@ public class Step2ActionForm
 
             var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSelectorChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             partySelectorChoices = result.getSelectorChoices();
 
             if(partySelectorChoice == null) {

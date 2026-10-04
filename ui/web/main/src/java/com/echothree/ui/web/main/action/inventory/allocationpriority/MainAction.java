@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.inventory.allocationpriority;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.result.GetAllocationPrioritiesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -53,7 +52,7 @@ public class MainAction
         try {
             var commandResult = InventoryUtil.getHome().getAllocationPriorities(getUserVisitPK(request), null);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetAllocationPrioritiesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ALLOCATION_PRIORITIES, result.getAllocationPriorities());
             forwardKey = ForwardConstants.DISPLAY;

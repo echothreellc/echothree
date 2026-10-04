@@ -17,8 +17,6 @@
 package com.echothree.ui.web.main.action.advertising.source;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.result.GetOfferChoicesResult;
-import com.echothree.control.user.offer.common.result.GetUseChoicesResult;
 import com.echothree.model.control.offer.common.choice.OfferChoicesBean;
 import com.echothree.model.control.offer.common.choice.UseChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
@@ -52,7 +50,7 @@ public class AddActionForm
 
             var commandResult = OfferUtil.getHome().getOfferChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetOfferChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             offerChoices = result.getOfferChoices();
 
             if(offerChoice == null)
@@ -70,7 +68,7 @@ public class AddActionForm
 
             var commandResult = OfferUtil.getHome().getUseChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetUseChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             useChoices = result.getUseChoices();
 
             if(useChoice == null)

@@ -17,7 +17,6 @@
 package com.echothree.cucumber.sales;
 
 import com.echothree.control.user.sales.common.SalesUtil;
-import com.echothree.control.user.sales.common.result.CreateSalesOrderBatchResult;
 import com.echothree.cucumber.util.persona.BasePersona;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
@@ -55,7 +54,7 @@ public class SalesOrderBatchSteps implements En {
         var commandResult = salesService.createSalesOrderBatch(persona.userVisitPK, createSalesOrderBatchForm);
 
         LastCommandResult.commandResult = commandResult;
-        var result = (CreateSalesOrderBatchResult)commandResult.getExecutionResult().getResult();
+        var result = commandResult.getExecutionResult().getResult();
 
         persona.lastSalesOrderBatchName = commandResult.getHasErrors() ? null : result.getBatchName();
     }

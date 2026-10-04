@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.workflowdestinationpartytype;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.result.GetWorkflowDestinationPartyTypesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -57,7 +56,7 @@ public class MainAction
 
         var commandResult = WorkflowUtil.getHome().getWorkflowDestinationPartyTypes(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetWorkflowDestinationPartyTypesResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var workflowDestination = result.getWorkflowDestination();
         
         if(workflowDestination == null) {

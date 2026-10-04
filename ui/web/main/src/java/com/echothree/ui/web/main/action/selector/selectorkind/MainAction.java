@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.selector.selectorkind;
 
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.common.result.GetSelectorKindsResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
@@ -52,7 +51,7 @@ public class MainAction
         try {
             var commandResult = SelectorUtil.getHome().getSelectorKinds(getUserVisitPK(request), null);
             var executionResult = commandResult.getExecutionResult();
-            var getSelectorKindsResult = (GetSelectorKindsResult)executionResult.getResult();
+            var getSelectorKindsResult = executionResult.getResult();
             
             request.setAttribute("selectorKinds", getSelectorKindsResult.getSelectorKinds());
             forwardKey = ForwardConstants.DISPLAY;

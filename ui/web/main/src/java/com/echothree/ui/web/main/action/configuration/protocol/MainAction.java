@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.protocol;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetProtocolsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -52,7 +51,7 @@ public class MainAction
         var commandResult = CoreUtil.getHome().getProtocols(getUserVisitPK(request), null);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetProtocolsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.PROTOCOLS, result.getProtocols());
             forwardKey = ForwardConstants.DISPLAY;

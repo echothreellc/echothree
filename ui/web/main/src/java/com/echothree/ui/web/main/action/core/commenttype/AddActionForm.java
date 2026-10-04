@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.core.commenttype;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetMimeTypeUsageTypeChoicesResult;
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.result.GetSequenceChoicesResult;
 import com.echothree.model.control.core.common.choice.MimeTypeUsageTypeChoicesBean;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.choice.SequenceChoicesBean;
@@ -55,7 +53,7 @@ public class AddActionForm
 
             var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSequenceChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             commentSequenceChoices = result.getSequenceChoices();
 
             if(commentSequenceChoice == null)
@@ -73,7 +71,7 @@ public class AddActionForm
 
             var commandResult = CoreUtil.getHome().getMimeTypeUsageTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetMimeTypeUsageTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             mimeTypeUsageTypeChoices = result.getMimeTypeUsageTypeChoices();
 
             if(mimeTypeUsageTypeChoice == null)

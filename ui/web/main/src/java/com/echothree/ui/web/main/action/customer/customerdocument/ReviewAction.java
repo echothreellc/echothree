@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customerdocument;
 
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.common.result.GetPartyDocumentResult;
 import com.echothree.model.control.document.common.transfer.PartyDocumentTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -61,7 +60,7 @@ public class ReviewAction
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPartyDocumentResult)executionResult.getResult();
+            var result = executionResult.getResult();
             partyDocument = result.getPartyDocument();
         }
 

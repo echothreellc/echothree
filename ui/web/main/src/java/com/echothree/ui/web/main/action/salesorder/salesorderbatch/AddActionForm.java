@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.salesorder.salesorderbatch;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetCurrencyChoicesResult;
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.result.GetPaymentMethodChoicesResult;
 import com.echothree.model.control.accounting.common.choice.CurrencyChoicesBean;
 import com.echothree.model.control.payment.common.choice.PaymentMethodChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
@@ -52,7 +50,7 @@ public class AddActionForm
 
             var commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
+            var getCurrencyChoicesResult = executionResult.getResult();
             currencyChoices = getCurrencyChoicesResult.getCurrencyChoices();
 
             if(currencyChoice == null)
@@ -70,7 +68,7 @@ public class AddActionForm
 
             var commandResult = PaymentUtil.getHome().getPaymentMethodChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getPaymentMethodChoicesResult = (GetPaymentMethodChoicesResult)executionResult.getResult();
+            var getPaymentMethodChoicesResult = executionResult.getResult();
             paymentMethodChoices = getPaymentMethodChoicesResult.getPaymentMethodChoices();
 
             if(paymentMethodChoice == null)

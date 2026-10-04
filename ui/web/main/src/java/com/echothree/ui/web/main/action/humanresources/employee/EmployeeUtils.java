@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.employee;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.result.GetEmployeeResult;
 import com.echothree.model.control.employee.common.transfer.EmployeeTransfer;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import javax.naming.NamingException;
@@ -48,7 +47,7 @@ public class EmployeeUtils {
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEmployeeResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             employee = result.getEmployee();
         }

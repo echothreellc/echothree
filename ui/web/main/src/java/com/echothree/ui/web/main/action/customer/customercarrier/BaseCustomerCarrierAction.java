@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.customer.customercarrier;
 
 import com.echothree.control.user.carrier.common.CarrierUtil;
-import com.echothree.control.user.carrier.common.result.GetPartyCarrierResult;
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.model.control.carrier.common.transfer.PartyCarrierTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -40,7 +38,7 @@ public abstract class BaseCustomerCarrierAction<A
 
         var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetCustomerResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.CUSTOMER, result.getCustomer());
     }
@@ -59,7 +57,7 @@ public abstract class BaseCustomerCarrierAction<A
 
         var commandResult = CarrierUtil.getHome().getPartyCarrier(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetPartyCarrierResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         return result.getPartyCarrier();
     }

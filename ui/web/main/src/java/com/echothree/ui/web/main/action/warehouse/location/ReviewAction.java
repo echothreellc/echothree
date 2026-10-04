@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.warehouse.location;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.result.GetLocationResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.warehouse.common.WarehouseOptions;
 import com.echothree.model.control.warehouse.common.transfer.LocationCapacityTransfer;
@@ -81,7 +80,7 @@ public class ReviewAction
 
             var commandResult = WarehouseUtil.getHome().getLocation(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetLocationResult)executionResult.getResult();
+            var result = executionResult.getResult();
             Collection<LocationNameElementTransfer> locationNameElements = result.getLocationNameElements();
             Collection<LocationCapacityTransfer> locationCapacities = result.getLocationCapacities();
             

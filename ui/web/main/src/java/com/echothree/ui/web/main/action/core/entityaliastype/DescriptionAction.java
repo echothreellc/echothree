@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.entityaliastype;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetEntityAliasTypeDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -63,7 +62,7 @@ public class DescriptionAction
 
             var commandResult = CoreUtil.getHome().getEntityAliasTypeDescriptions(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEntityAliasTypeDescriptionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ENTITY_ALIAS_TYPE, result.getEntityAliasType());
             request.setAttribute(AttributeConstants.ENTITY_ALIAS_TYPE_DESCRIPTIONS, result.getEntityAliasTypeDescriptions());

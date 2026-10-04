@@ -18,7 +18,6 @@ package com.echothree.control.user.party.client.helper;
 
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
-import com.echothree.control.user.party.common.result.GetPersonalTitleChoicesResult;
 import com.echothree.model.control.party.common.choice.PersonalTitleChoicesBean;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import javax.naming.NamingException;
@@ -47,7 +46,7 @@ public class PersonalTitlesHelper {
         var commandResult = PartyUtil.getHome().getPersonalTitleChoices(userVisitPK, commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPersonalTitleChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             personalTitleChoices = result.getPersonalTitleChoices();
         }

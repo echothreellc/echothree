@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.tax;
 
 import com.echothree.control.user.tax.common.TaxUtil;
-import com.echothree.control.user.tax.common.result.GetTaxResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -56,7 +55,7 @@ public class ReviewAction
 
         var commandResult = TaxUtil.getHome().getTax(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetTaxResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var tax = result.getTax();
         
         if(tax == null) {

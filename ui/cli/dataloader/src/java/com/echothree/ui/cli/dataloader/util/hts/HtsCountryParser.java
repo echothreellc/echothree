@@ -27,9 +27,6 @@ import com.echothree.control.user.item.common.form.EditHarmonizedTariffScheduleC
 import com.echothree.control.user.item.common.form.GetHarmonizedTariffScheduleCodeTranslationForm;
 import com.echothree.control.user.item.common.form.GetHarmonizedTariffScheduleCodeUsesForm;
 import com.echothree.control.user.item.common.form.ItemFormFactory;
-import com.echothree.control.user.item.common.result.EditHarmonizedTariffScheduleCodeResult;
-import com.echothree.control.user.item.common.result.GetHarmonizedTariffScheduleCodeUsesResult;
-import com.echothree.control.user.item.common.result.GetHarmonizedTariffScheduleCodesResult;
 import com.echothree.control.user.item.common.spec.HarmonizedTariffScheduleCodeSpec;
 import com.echothree.control.user.item.common.spec.ItemSpecFactory;
 import com.echothree.model.control.geo.common.GeoCodeAliasTypes;
@@ -95,7 +92,7 @@ public abstract class HtsCountryParser<H> {
         var commandResult = itemService.getHarmonizedTariffScheduleCodes(userVisitPK, commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetHarmonizedTariffScheduleCodesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             harmonizedTariffScheduleCodes = result.getHarmonizedTariffScheduleCodes();
         } else {
@@ -302,7 +299,7 @@ public abstract class HtsCountryParser<H> {
             logger.error(commandResult.toString());
         } else {
             var executionResult = commandResult.getExecutionResult();
-            var editResult = (GetHarmonizedTariffScheduleCodeUsesResult)executionResult.getResult();
+            var editResult = executionResult.getResult();
             var harmonizedTariffScheduleCodeUses = editResult.getHarmonizedTariffScheduleCodeUses();
             var isCurrentlyUsedForImport = false;
             var isCurrentlyUsedForExport = false;
@@ -351,7 +348,7 @@ public abstract class HtsCountryParser<H> {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var editTranslationResult = (EditHarmonizedTariffScheduleCodeResult)executionResult.getResult();
+                var editTranslationResult = executionResult.getResult();
                 var edit = editTranslationResult.getEdit();
 
                 edit.setFirstHarmonizedTariffScheduleCodeUnitName(firstHarmonizedTariffScheduleCodeUnitName);

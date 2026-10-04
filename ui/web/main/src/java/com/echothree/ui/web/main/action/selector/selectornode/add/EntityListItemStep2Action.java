@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.selector.selectornode.add;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetComponentVendorsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class EntityListItemStep2Action
 
             var commandResult = CoreUtil.getHome().getComponentVendors(getUserVisitPK(request), null);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetComponentVendorsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SELECTOR_KIND_NAME, selectorKindName);
             request.setAttribute(AttributeConstants.SELECTOR_TYPE_NAME, selectorTypeName);

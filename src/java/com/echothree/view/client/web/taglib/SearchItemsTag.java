@@ -18,7 +18,6 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.result.SearchItemsResult;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
@@ -266,7 +265,7 @@ public class SearchItemsTag
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (SearchItemsResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 if(countVar != null) {
                     pageContext.setAttribute(countVar, result.getCount(), scope);

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.purchasing.vendor;
 
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.result.GetVendorResult;
 import com.echothree.model.control.comment.common.CommentOptions;
 import com.echothree.model.control.contact.common.ContactOptions;
 import com.echothree.model.control.core.common.CoreOptions;
@@ -104,7 +103,7 @@ public class ReviewAction
 
         var commandResult = VendorUtil.getHome().getVendor(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetVendorResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var vendor = result.getVendor();
         
         if(vendor == null) {

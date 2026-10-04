@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.cacheentry;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetCacheEntryDependenciesResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -64,7 +63,7 @@ public class DependencyAction
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCacheEntryDependenciesResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             request.setAttribute(AttributeConstants.CACHE_ENTRY, result.getCacheEntry());
             request.setAttribute(AttributeConstants.CACHE_ENTRY_DEPENDENCIES, result.getCacheEntryDependencies());

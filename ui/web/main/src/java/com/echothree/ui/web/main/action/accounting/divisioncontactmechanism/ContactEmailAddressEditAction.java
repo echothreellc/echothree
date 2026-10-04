@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.divisioncontactmechanism;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.result.EditContactEmailAddressResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -91,7 +90,7 @@ public class ContactEmailAddressEditAction
                 var executionResult = commandResult.getExecutionResult();
 
                 if(executionResult != null) {
-                    var result = (EditContactEmailAddressResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     request.setAttribute(AttributeConstants.CONTACT_MECHANISM, result.getContactMechanism());
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
@@ -108,7 +107,7 @@ public class ContactEmailAddressEditAction
 
             var commandResult = ContactUtil.getHome().editContactEmailAddress(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (EditContactEmailAddressResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             if(result != null) {
                 var edit = result.getEdit();

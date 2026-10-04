@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.itemaliastype;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemAliasChecksumTypeChoicesResult;
 import com.echothree.model.control.item.common.choice.ItemAliasChecksumTypeChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -51,7 +50,7 @@ public class AddActionForm
 
             var commandResult = ItemUtil.getHome().getItemAliasChecksumTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getItemAliasChecksumTypeChoicesResult = (GetItemAliasChecksumTypeChoicesResult)executionResult.getResult();
+            var getItemAliasChecksumTypeChoicesResult = executionResult.getResult();
             itemAliasChecksumTypeChoices = getItemAliasChecksumTypeChoicesResult.getItemAliasChecksumTypeChoices();
 
             if(itemAliasChecksumTypeChoice == null) {

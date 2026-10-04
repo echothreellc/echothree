@@ -17,8 +17,6 @@
 package com.echothree.ui.web.main.action.purchasing.vendor;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.result.GetVendorResultsResult;
-import com.echothree.control.user.search.common.result.SearchVendorsResult;
 import com.echothree.model.control.search.common.SearchTypes;
 import com.echothree.model.control.vendor.common.transfer.VendorResultTransfer;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -63,7 +61,7 @@ public class MainAction
 
         var commandResult = SearchUtil.getHome().getVendorResults(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetVendorResultsResult)executionResult.getResult();
+        var result = executionResult.getResult();
         Collection vendorResults = result.getVendorResults();
         var iter = vendorResults.iterator();
         if(iter.hasNext()) {
@@ -101,7 +99,7 @@ public class MainAction
                 forwardKey = ForwardConstants.FORM;
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (SearchVendorsResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 var count = result.getCount();
 
                 if(count == 0 || count > 1) {

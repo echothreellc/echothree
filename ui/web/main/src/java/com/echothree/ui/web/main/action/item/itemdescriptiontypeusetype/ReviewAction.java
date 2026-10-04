@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.itemdescriptiontypeusetype;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemDescriptionTypeUseTypeResult;
 import com.echothree.model.control.item.common.transfer.ItemDescriptionTypeUseTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -59,7 +58,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemDescriptionTypeUseTypeResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             itemDescriptionTypeUseType = result.getItemDescriptionTypeUseType();
         }

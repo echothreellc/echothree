@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.customer;
 import com.echothree.control.user.party.common.PartyService;
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
-import com.echothree.control.user.party.common.result.CreateCustomerResult;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -49,7 +48,7 @@ public class CustomersHandler
             
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (CreateCustomerResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 var partyName = result.getPartyName();
                 var customerName = result.getCustomerName();
                 var entityRef = result.getEntityRef();
@@ -65,7 +64,7 @@ public class CustomersHandler
             
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (CreateCustomerResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 var partyName = result.getPartyName();
                 var customerName = result.getCustomerName();
                 var entityRef = result.getEntityRef();

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customerdocument.add;
 
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.common.result.GetPartyTypeDocumentTypeUsageTypesResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.ui.web.main.action.customer.customerdocument.BaseCustomerDocumentAction;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -54,7 +53,7 @@ public class Step1Action
 
         var commandResult = DocumentUtil.getHome().getPartyTypeDocumentTypeUsageTypes(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetPartyTypeDocumentTypeUsageTypesResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.PARTY_TYPE_DOCUMENT_TYPE_USAGE_TYPES, result.getPartyTypeDocumentTypeUsageTypes());
 

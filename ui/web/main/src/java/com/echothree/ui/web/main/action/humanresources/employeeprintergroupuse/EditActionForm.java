@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.employeeprintergroupuse;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.result.GetPrinterGroupChoicesResult;
 import com.echothree.model.control.printer.common.choice.PrinterGroupChoicesBean;
 import com.echothree.view.client.web.struts.BaseLanguageActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -45,7 +44,7 @@ public class EditActionForm
 
                 var commandResult = PrinterUtil.getHome().getPrinterGroupChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetPrinterGroupChoicesResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 printerGroupChoices = result.getPrinterGroupChoices();
 
                 if(printerGroupChoice == null) {

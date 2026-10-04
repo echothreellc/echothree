@@ -18,7 +18,6 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.communication.common.CommunicationUtil;
-import com.echothree.control.user.communication.common.result.GetCommunicationEventResult;
 import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
@@ -106,7 +105,7 @@ public class CommunicationEventTag
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetCommunicationEventResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getCommunicationEvent(), scope);
             }

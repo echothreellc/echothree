@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.transactionentityroletype;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetTransactionEntityRoleTypeDescriptionResult;
 import com.echothree.control.user.accounting.common.spec.TransactionEntityRoleTypeDescriptionSpec;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -74,7 +73,7 @@ public class DescriptionDeleteAction
 
         var commandResult = AccountingUtil.getHome().getTransactionEntityRoleTypeDescription(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetTransactionEntityRoleTypeDescriptionResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.TRANSACTION_ENTITY_ROLE_TYPE_DESCRIPTION, result.getTransactionEntityRoleTypeDescription());
     }

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.itemunitlimit;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemUnitLimitsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -55,7 +54,7 @@ public class MainAction
 
         var commandResult = ItemUtil.getHome().getItemUnitLimits(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetItemUnitLimitsResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.ITEM, result.getItem());
         request.setAttribute(AttributeConstants.ITEM_UNIT_LIMITS, result.getItemUnitLimits());

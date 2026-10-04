@@ -17,8 +17,6 @@
 package com.echothree.ui.web.main.action.filter.filteradjustment;
 
 import com.echothree.control.user.filter.common.FilterUtil;
-import com.echothree.control.user.filter.common.result.GetFilterAdjustmentSourceChoicesResult;
-import com.echothree.control.user.filter.common.result.GetFilterAdjustmentTypeChoicesResult;
 import com.echothree.model.control.filter.common.choice.FilterAdjustmentSourceChoicesBean;
 import com.echothree.model.control.filter.common.choice.FilterAdjustmentTypeChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
@@ -53,7 +51,7 @@ public class AddActionForm
 
             var commandResult = FilterUtil.getHome().getFilterAdjustmentSourceChoices(userVisitPK, getFilterAdjustmentSourceChoicesForm);
             var executionResult = commandResult.getExecutionResult();
-            var getFilterAdjustmentSourceChoicesResult = (GetFilterAdjustmentSourceChoicesResult)executionResult.getResult();
+            var getFilterAdjustmentSourceChoicesResult = executionResult.getResult();
             filterAdjustmentSourceChoices = getFilterAdjustmentSourceChoicesResult.getFilterAdjustmentSourceChoices();
 
             if(filterAdjustmentSourceChoice == null)
@@ -70,7 +68,7 @@ public class AddActionForm
 
             var commandResult = FilterUtil.getHome().getFilterAdjustmentTypeChoices(userVisitPK, getFilterAdjustmentTypeChoicesForm);
             var executionResult = commandResult.getExecutionResult();
-            var getFilterAdjustmentTypeChoicesResult = (GetFilterAdjustmentTypeChoicesResult)executionResult.getResult();
+            var getFilterAdjustmentTypeChoicesResult = executionResult.getResult();
             filterAdjustmentTypeChoices = getFilterAdjustmentTypeChoicesResult.getFilterAdjustmentTypeChoices();
 
             if(filterAdjustmentTypeChoice == null)

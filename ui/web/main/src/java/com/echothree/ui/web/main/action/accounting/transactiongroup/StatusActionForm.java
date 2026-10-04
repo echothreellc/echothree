@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.transactiongroup;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetTransactionGroupStatusChoicesResult;
 import com.echothree.model.control.accounting.common.choice.TransactionGroupStatusChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -45,7 +44,7 @@ public class StatusActionForm
 
             var commandResult = AccountingUtil.getHome().getTransactionGroupStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetTransactionGroupStatusChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             transactionGroupStatusChoices = result.getTransactionGroupStatusChoices();
 
             if(transactionGroupStatusChoice == null) {

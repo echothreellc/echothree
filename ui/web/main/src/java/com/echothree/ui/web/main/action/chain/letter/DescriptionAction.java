@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.chain.letter;
 
 import com.echothree.control.user.letter.common.LetterUtil;
-import com.echothree.control.user.letter.common.result.GetLetterDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class DescriptionAction
 
         var commandResult = LetterUtil.getHome().getLetterDescriptions(getUserVisitPK(request), getLetterDescriptionsForm);
         var executionResult = commandResult.getExecutionResult();
-        var getLetterDescriptionsResult = (GetLetterDescriptionsResult)executionResult.getResult();
+        var getLetterDescriptionsResult = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.LETTER, getLetterDescriptionsResult.getLetter());
         request.setAttribute(AttributeConstants.LETTER_DESCRIPTIONS, getLetterDescriptionsResult.getLetterDescriptions());

@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.item.itemharmonizedtariffschedulecode;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.result.GetCountryChoicesResult;
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetHarmonizedTariffScheduleCodeUseTypeChoicesResult;
 import com.echothree.model.control.geo.common.choice.CountryChoicesBean;
 import com.echothree.model.control.item.common.choice.HarmonizedTariffScheduleCodeUseTypeChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
@@ -50,7 +48,7 @@ public class AddActionForm
 
                 var commandResult = GeoUtil.getHome().getCountryChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetCountryChoicesResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 countryChoices = result.getCountryChoices();
 
                 if(countryChoice == null) {
@@ -72,7 +70,7 @@ public class AddActionForm
 
                 var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUseTypeChoices(userVisitPK, form);
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetHarmonizedTariffScheduleCodeUseTypeChoicesResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 harmonizedTariffScheduleCodeUseTypeChoices = result.getHarmonizedTariffScheduleCodeUseTypeChoices();
                 
                 if(harmonizedTariffScheduleCodeUseTypeChoice == null) {

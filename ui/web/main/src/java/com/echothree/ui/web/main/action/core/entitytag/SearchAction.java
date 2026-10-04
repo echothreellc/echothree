@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.entitytag;
 
 import com.echothree.control.user.tag.common.TagUtil;
-import com.echothree.control.user.tag.common.result.GetEntityTagsResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.tag.common.transfer.EntityTagTransfer;
@@ -78,7 +77,7 @@ public class SearchAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEntityTagsResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             taggedEntityInstance = result.getTaggedEntityInstance();
             tag = result.getTag();

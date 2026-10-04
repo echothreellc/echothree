@@ -17,8 +17,6 @@
 package com.echothree.ui.web.main.action.warehouse.warehousecontactmechanism.contactmechanismadd;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetNameSuffixChoicesResult;
-import com.echothree.control.user.party.common.result.GetPersonalTitleChoicesResult;
 import com.echothree.model.control.party.common.choice.NameSuffixChoicesBean;
 import com.echothree.model.control.party.common.choice.PersonalTitleChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
@@ -65,7 +63,7 @@ public class ContactPostalAddressAddActionForm
 
             var commandResult = PartyUtil.getHome().getPersonalTitleChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPersonalTitleChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             personalTitleChoices = result.getPersonalTitleChoices();
 
             if(personalTitleChoice == null)
@@ -83,7 +81,7 @@ public class ContactPostalAddressAddActionForm
 
             var commandResult = PartyUtil.getHome().getNameSuffixChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetNameSuffixChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             nameSuffixChoices = result.getNameSuffixChoices();
 
             if(nameSuffixChoice == null)

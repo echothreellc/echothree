@@ -18,7 +18,6 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.training.common.TrainingUtil;
-import com.echothree.control.user.training.common.result.GetPartyTrainingClassResult;
 import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
@@ -106,7 +105,7 @@ public class PartyTrainingClassTag
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetPartyTrainingClassResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getPartyTrainingClass(), scope);
             }

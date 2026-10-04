@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.divisioncontactmechanism;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.result.GetContactMechanismChoicesResult;
 import com.echothree.model.control.contact.common.choice.ContactMechanismChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -46,7 +45,7 @@ public class PartyContactMechanismRelationshipAddActionForm
 
             var commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getToContactMechanismChoicesResult = (GetContactMechanismChoicesResult)executionResult.getResult();
+            var getToContactMechanismChoicesResult = executionResult.getResult();
             toContactMechanismChoices = getToContactMechanismChoicesResult.getContactMechanismChoices();
 
             if(toContactMechanismChoice == null) {

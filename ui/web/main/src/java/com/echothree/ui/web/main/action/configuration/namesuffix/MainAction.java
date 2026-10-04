@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.namesuffix;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetNameSuffixesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -53,7 +52,7 @@ public class MainAction
         try {
             var commandResult = PartyUtil.getHome().getNameSuffixes(getUserVisitPK(request), null);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetNameSuffixesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.NAME_SUFFIXES, result.getNameSuffixes());
             forwardKey = ForwardConstants.DISPLAY;

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.tagscopeentitytype.add;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetEntityTypesResult;
 import com.echothree.control.user.tag.common.TagUtil;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -58,7 +57,7 @@ public class Step2Action
 
         var commandResult = CoreUtil.getHome().getEntityTypes(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetEntityTypesResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.ENTITY_TYPES, result.getEntityTypes());
     }

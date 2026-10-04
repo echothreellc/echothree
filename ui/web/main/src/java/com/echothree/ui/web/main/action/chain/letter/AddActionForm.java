@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.chain.letter;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.result.GetContactListChoicesResult;
 import com.echothree.control.user.letter.common.LetterUtil;
-import com.echothree.control.user.letter.common.result.GetLetterSourceChoicesResult;
 import com.echothree.model.control.contactlist.common.choice.ContactListChoicesBean;
 import com.echothree.model.control.letter.common.choice.LetterSourceChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
@@ -56,7 +54,7 @@ public class AddActionForm
 
             var commandResult = LetterUtil.getHome().getLetterSourceChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetLetterSourceChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             letterSourceChoices = result.getLetterSourceChoices();
 
             if(letterSourceChoice == null) {
@@ -75,7 +73,7 @@ public class AddActionForm
 
             var commandResult = ContactListUtil.getHome().getContactListChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetContactListChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             contactListChoices = result.getContactListChoices();
 
             if(contactListChoice == null) {

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.geocodealiastype;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.result.GetGeoCodeAliasTypesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class MainAction
 
             var commandResult = GeoUtil.getHome().getGeoCodeAliasTypes(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetGeoCodeAliasTypesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var geoCodeTypeTransfer = result.getGeoCodeType();
             
             request.setAttribute(AttributeConstants.GEO_CODE_TYPE, geoCodeTypeTransfer);

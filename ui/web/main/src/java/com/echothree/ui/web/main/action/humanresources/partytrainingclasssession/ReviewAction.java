@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.partytrainingclasssession;
 
 import com.echothree.control.user.training.common.TrainingUtil;
-import com.echothree.control.user.training.common.result.GetPartyTrainingClassSessionResult;
 import com.echothree.model.control.training.common.TrainingOptions;
 import com.echothree.model.control.training.common.transfer.PartyTrainingClassSessionTransfer;
 import com.echothree.ui.web.main.action.humanresources.employee.EmployeeUtils;
@@ -70,7 +69,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPartyTrainingClassSessionResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             partyTrainingClassSession = result.getPartyTrainingClassSession();
         }

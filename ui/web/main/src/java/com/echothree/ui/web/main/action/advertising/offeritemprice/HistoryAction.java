@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.advertising.offeritemprice;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.result.GetOfferItemPriceResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -62,7 +61,7 @@ public class HistoryAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetOfferItemPriceResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             request.setAttribute(AttributeConstants.OFFER_ITEM_PRICE, result.getOfferItemPrice());
             request.setAttribute(AttributeConstants.OFFER_ITEM_PRICE_HISTORY, result.getHistory());

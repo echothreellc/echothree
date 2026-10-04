@@ -17,11 +17,7 @@
 package com.echothree.view.client.web.struts;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetCurrencyChoicesResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetDateTimeFormatChoicesResult;
-import com.echothree.control.user.party.common.result.GetLanguageChoicesResult;
-import com.echothree.control.user.party.common.result.GetTimeZoneChoicesResult;
 import com.echothree.model.control.accounting.common.choice.CurrencyChoicesBean;
 import com.echothree.model.control.party.common.choice.DateTimeFormatChoicesBean;
 import com.echothree.model.control.party.common.choice.LanguageChoicesBean;
@@ -58,7 +54,7 @@ public class BasePartyActionForm
 
                 var commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
+                var getCurrencyChoicesResult = executionResult.getResult();
                 currencyChoices = getCurrencyChoicesResult.getCurrencyChoices();
                 
                 if(currencyChoice == null) {
@@ -101,7 +97,7 @@ public class BasePartyActionForm
 
                 var commandResult = PartyUtil.getHome().getDateTimeFormatChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var getDateTimeFormatChoicesResult = (GetDateTimeFormatChoicesResult)executionResult.getResult();
+                var getDateTimeFormatChoicesResult = executionResult.getResult();
                 dateTimeFormatChoices = getDateTimeFormatChoicesResult.getDateTimeFormatChoices();
                 
                 if(dateTimeFormatChoice == null) {
@@ -144,7 +140,7 @@ public class BasePartyActionForm
 
                 var commandResult = PartyUtil.getHome().getLanguageChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var getLanguageChoicesResult = (GetLanguageChoicesResult)executionResult.getResult();
+                var getLanguageChoicesResult = executionResult.getResult();
                 languageChoices = getLanguageChoicesResult.getLanguageChoices();
                 
                 if(languageChoice == null) {
@@ -187,7 +183,7 @@ public class BasePartyActionForm
 
                 var commandResult = PartyUtil.getHome().getTimeZoneChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var getTimeZoneChoicesResult = (GetTimeZoneChoicesResult)executionResult.getResult();
+                var getTimeZoneChoicesResult = executionResult.getResult();
                 timeZoneChoices = getTimeZoneChoicesResult.getTimeZoneChoices();
                 
                 if(timeZoneChoice == null) {

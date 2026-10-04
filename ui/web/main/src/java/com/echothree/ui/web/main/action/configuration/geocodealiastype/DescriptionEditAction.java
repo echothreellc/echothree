@@ -89,7 +89,7 @@ public class DescriptionEditAction
             throws Exception {
         var commandResult = GeoUtil.getHome().editGeoCodeAliasTypeDescription(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (EditGeoCodeAliasTypeDescriptionResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.GEO_CODE_ALIAS_TYPE_DESCRIPTION, result.getGeoCodeAliasTypeDescription());
 

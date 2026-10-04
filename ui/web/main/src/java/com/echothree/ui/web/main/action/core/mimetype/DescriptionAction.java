@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.mimetype;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetMimeTypeDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -57,7 +56,7 @@ public class DescriptionAction
         var commandResult = CoreUtil.getHome().getMimeTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetMimeTypeDescriptionsResult) executionResult.getResult();
+            var result = executionResult.getResult();
             var mimeTypeTransfer = result.getMimeType();
 
             request.setAttribute(AttributeConstants.MIME_TYPE, mimeTypeTransfer);

@@ -97,7 +97,7 @@ public class EditAction
             throws Exception {
         var commandResult = GeoUtil.getHome().editGeoCodeAliasType(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (EditGeoCodeAliasTypeResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.GEO_CODE_ALIAS_TYPE, result.getGeoCodeAliasType());
         

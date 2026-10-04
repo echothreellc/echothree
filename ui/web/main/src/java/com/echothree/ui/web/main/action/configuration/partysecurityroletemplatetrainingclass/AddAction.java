@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.partysecurityroletemplatetrainingclass;
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.result.GetPartySecurityRoleTemplateResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -60,7 +59,7 @@ public class AddAction
         var commandResult = SecurityUtil.getHome().getPartySecurityRoleTemplate(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPartySecurityRoleTemplateResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             request.setAttribute(AttributeConstants.PARTY_SECURITY_ROLE_TEMPLATE, result.getPartySecurityRoleTemplate());
         }

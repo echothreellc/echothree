@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.tax;
 
 import com.echothree.control.user.tax.common.TaxUtil;
-import com.echothree.control.user.tax.common.result.GetTaxesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -49,7 +48,7 @@ public class MainAction
             throws Exception {
         var commandResult = TaxUtil.getHome().getTaxes(getUserVisitPK(request), null);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetTaxesResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.TAXES, result.getTaxes());
         

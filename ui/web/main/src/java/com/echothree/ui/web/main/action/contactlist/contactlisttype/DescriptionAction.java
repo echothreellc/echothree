@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.contactlist.contactlisttype;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.result.GetContactListTypeDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -57,7 +56,7 @@ public class DescriptionAction
         var commandResult = ContactListUtil.getHome().getContactListTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetContactListTypeDescriptionsResult) executionResult.getResult();
+            var result = executionResult.getResult();
             var contactListTypeTransfer = result.getContactListType();
 
             request.setAttribute(AttributeConstants.CONTACT_LIST_TYPE, contactListTypeTransfer);

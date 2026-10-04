@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.chain.chainkind;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.common.result.GetChainKindResult;
 import com.echothree.model.control.chain.common.transfer.ChainKindTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -59,7 +58,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetChainKindResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             chainKind = result.getChainKind();
         }

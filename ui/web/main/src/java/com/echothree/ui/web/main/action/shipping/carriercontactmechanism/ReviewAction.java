@@ -17,8 +17,6 @@
 package com.echothree.ui.web.main.action.shipping.carriercontactmechanism;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.result.GetContactMechanismResult;
-import com.echothree.control.user.contact.common.result.GetPartyContactMechanismResult;
 import com.echothree.model.control.comment.common.CommentOptions;
 import com.echothree.model.control.contact.common.ContactOptions;
 import com.echothree.model.control.contact.common.transfer.PartyContactMechanismTransfer;
@@ -80,7 +78,7 @@ public class ReviewAction
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPartyContactMechanismResult)executionResult.getResult();
+            var result = executionResult.getResult();
             partyContactMechanism = result.getPartyContactMechanism();
         }
 

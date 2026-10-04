@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.searchsortorder;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.result.GetSearchSortOrderResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
@@ -67,7 +66,7 @@ public class DeleteAction
 
         var commandResult = SearchUtil.getHome().getSearchSortOrder(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetSearchSortOrderResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.SEARCH_SORT_ORDER, result.getSearchSortOrder());
     }

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.employeetype;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.result.GetEmployeeTypeDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class DescriptionAction
 
             var commandResult = EmployeeUtil.getHome().getEmployeeTypeDescriptions(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEmployeeTypeDescriptionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var employeeTypeTransfer = result.getEmployeeType();
             
             request.setAttribute(AttributeConstants.EMPLOYEE_TYPE, employeeTypeTransfer);

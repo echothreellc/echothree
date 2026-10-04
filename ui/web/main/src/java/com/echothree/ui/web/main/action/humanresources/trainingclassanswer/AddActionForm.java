@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.trainingclassanswer;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetMimeTypeChoicesResult;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.core.common.choice.MimeTypeChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
@@ -57,7 +56,7 @@ public class AddActionForm
 
                 var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetMimeTypeChoicesResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 answerMimeTypeChoices = result.getMimeTypeChoices();
                 
                 if(answerMimeTypeChoice == null) {
@@ -80,7 +79,7 @@ public class AddActionForm
 
                 var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetMimeTypeChoicesResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 selectedMimeTypeChoices = result.getMimeTypeChoices();
                 
                 if(selectedMimeTypeChoice == null) {

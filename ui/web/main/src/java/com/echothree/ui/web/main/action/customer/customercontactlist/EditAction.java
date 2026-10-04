@@ -87,7 +87,7 @@ public class EditAction
             throws Exception {
         var commandResult = ContactListUtil.getHome().editPartyContactList(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (EditPartyContactListResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var partyAlias = result.getPartyContactList();
 
         if(partyAlias != null) {

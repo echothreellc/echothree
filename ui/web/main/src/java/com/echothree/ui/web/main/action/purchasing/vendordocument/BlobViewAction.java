@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.purchasing.vendordocument;
 
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.common.result.GetPartyDocumentResult;
 import com.echothree.model.control.document.common.DocumentOptions;
 import com.echothree.ui.web.main.framework.ByteArrayStreamInfo;
 import com.echothree.ui.web.main.framework.MainBaseDownloadAction;
@@ -59,7 +58,7 @@ public class BlobViewAction
 
         var commandResult = DocumentUtil.getHome().getPartyDocument(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetPartyDocumentResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         var partyDocument = result.getPartyDocument();
 

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.partyaliastype;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetPartyAliasTypeDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -57,7 +56,7 @@ public class DescriptionAction
         var commandResult = PartyUtil.getHome().getPartyAliasTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPartyAliasTypeDescriptionsResult) executionResult.getResult();
+            var result = executionResult.getResult();
             var partyAliasTypeTransfer = result.getPartyAliasType();
 
             request.setAttribute(AttributeConstants.PARTY_ALIAS_TYPE, partyAliasTypeTransfer);

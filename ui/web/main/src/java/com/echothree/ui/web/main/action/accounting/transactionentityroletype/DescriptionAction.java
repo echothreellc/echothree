@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.transactionentityroletype;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetTransactionEntityRoleTypeDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -57,7 +56,7 @@ public class DescriptionAction
         var commandResult = AccountingUtil.getHome().getTransactionEntityRoleTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetTransactionEntityRoleTypeDescriptionsResult) executionResult.getResult();
+            var result = executionResult.getResult();
             var transactionEntityRoleTypeTransfer = result.getTransactionEntityRoleType();
 
             request.setAttribute(AttributeConstants.TRANSACTION_ENTITY_ROLE_TYPE, transactionEntityRoleTypeTransfer);

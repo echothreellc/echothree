@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.employeetype;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.result.GetEmployeeTypesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -53,7 +52,7 @@ public class MainAction
         try {
             var commandResult = EmployeeUtil.getHome().getEmployeeTypes(getUserVisitPK(request), null);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEmployeeTypesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.EMPLOYEE_TYPES, result.getEmployeeTypes());
             forwardKey = ForwardConstants.DISPLAY;

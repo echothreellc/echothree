@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.warehouse.warehousetype;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.result.GetWarehouseTypeResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.warehouse.common.WarehouseOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -71,7 +70,7 @@ public class ReviewAction
 
         var commandResult = WarehouseUtil.getHome().getWarehouseType(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetWarehouseTypeResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var warehouseType = result.getWarehouseType();
 
         if(warehouseType != null) {

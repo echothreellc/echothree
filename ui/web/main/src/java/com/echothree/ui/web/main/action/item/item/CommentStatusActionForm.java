@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.item;
 
 import com.echothree.control.user.comment.common.CommentUtil;
-import com.echothree.control.user.comment.common.result.GetCommentStatusChoicesResult;
 import com.echothree.model.control.comment.common.choice.CommentStatusChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -46,7 +45,7 @@ public class CommentStatusActionForm
 
             var commandResult = CommentUtil.getHome().getCommentStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCommentStatusChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             commentStatusChoices = result.getCommentStatusChoices();
 
             if(commentStatusChoice == null)

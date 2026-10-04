@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.workflowdestinationpartytype;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetPartyTypeChoicesResult;
 import com.echothree.model.control.party.common.choice.PartyTypeChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -46,7 +45,7 @@ public class AddActionForm
 
                 var commandResult = PartyUtil.getHome().getPartyTypeChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetPartyTypeChoicesResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 partyTypeChoices = result.getPartyTypeChoices();
                 
                 if(partyTypeChoice == null) {

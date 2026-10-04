@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.tagscope;
 
 import com.echothree.control.user.tag.common.TagUtil;
-import com.echothree.control.user.tag.common.result.GetTagScopeDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -57,7 +56,7 @@ public class DescriptionAction
         var commandResult = TagUtil.getHome().getTagScopeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetTagScopeDescriptionsResult) executionResult.getResult();
+            var result = executionResult.getResult();
             var tagScopeTransfer = result.getTagScope();
 
             request.setAttribute(AttributeConstants.TAG_SCOPE, tagScopeTransfer);

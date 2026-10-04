@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.recoveryquestion;
 
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.result.GetRecoveryQuestionDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class DescriptionAction
 
             var commandResult = UserUtil.getHome().getRecoveryQuestionDescriptions(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetRecoveryQuestionDescriptionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var recoveryQuestionTransfer = result.getRecoveryQuestion();
             
             request.setAttribute(AttributeConstants.RECOVERY_QUESTION, recoveryQuestionTransfer);

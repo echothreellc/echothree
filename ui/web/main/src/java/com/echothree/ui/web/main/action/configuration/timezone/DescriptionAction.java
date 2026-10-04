@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.timezone;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetTimeZoneDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class DescriptionAction
 
             var commandResult = PartyUtil.getHome().getTimeZoneDescriptions(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetTimeZoneDescriptionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var timeZoneTransfer = result.getTimeZone();
             
             request.setAttribute(AttributeConstants.TIME_ZONE, timeZoneTransfer);

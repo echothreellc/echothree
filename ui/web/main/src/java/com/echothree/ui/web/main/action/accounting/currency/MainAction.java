@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.currency;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetCurrenciesResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
@@ -52,7 +51,7 @@ public class MainAction
         try {
             var commandResult = AccountingUtil.getHome().getCurrencies(getUserVisitPK(request), null);
             var executionResult = commandResult.getExecutionResult();
-            var getCurrenciesResult = (GetCurrenciesResult)executionResult.getResult();
+            var getCurrenciesResult = executionResult.getResult();
             
             request.setAttribute("currencies", getCurrenciesResult.getCurrencies());
             forwardKey = ForwardConstants.DISPLAY;

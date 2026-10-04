@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.commandmessage;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetCommandMessageTranslationResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
@@ -70,7 +69,7 @@ public class TranslationDeleteAction
         var commandResult = CoreUtil.getHome().getCommandMessageTranslation(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCommandMessageTranslationResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             request.setAttribute(AttributeConstants.COMMAND_MESSAGE_TRANSLATION, result.getCommandMessageTranslation());
         }

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.warehouse.location;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.result.GetLocationsResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.warehouse.common.WarehouseOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -67,7 +66,7 @@ public class MainAction
 
         var commandResult = WarehouseUtil.getHome().getLocations(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetLocationsResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.WAREHOUSE, result.getWarehouse());
         request.setAttribute(AttributeConstants.LOCATIONS, result.getLocations());

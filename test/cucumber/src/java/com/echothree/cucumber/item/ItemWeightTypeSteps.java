@@ -17,8 +17,6 @@
 package com.echothree.cucumber.item;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.CreateItemWeightTypeResult;
-import com.echothree.control.user.item.common.result.EditItemWeightTypeResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -50,7 +48,7 @@ public class ItemWeightTypeSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (CreateItemWeightTypeResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     assertThat(persona).isNotNull();
                     assertThat(commandResult).isNotNull();
@@ -110,7 +108,7 @@ public class ItemWeightTypeSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditItemWeightTypeResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     if(!executionResult.getHasErrors()) {
                         persona.itemWeightTypeEdit = result.getEdit();

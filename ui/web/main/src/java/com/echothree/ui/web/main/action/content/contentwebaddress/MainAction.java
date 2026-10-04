@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.content.contentwebaddress;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.result.GetContentWebAddressesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -53,7 +52,7 @@ public class MainAction
         try {
             var commandResult = ContentUtil.getHome().getContentWebAddresses(getUserVisitPK(request), null);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetContentWebAddressesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CONTENT_WEB_ADDRESSES, result.getContentWebAddresses());
             forwardKey = ForwardConstants.DISPLAY;

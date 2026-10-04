@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.cacheentry;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetCacheEntriesResult;
 import com.echothree.model.data.core.common.CacheEntryConstants;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -65,7 +64,7 @@ public class MainAction
 
         var commandResult = CoreUtil.getHome().getCacheEntries(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetCacheEntriesResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         var cacheEntryCount = result.getCacheEntryCount();
         if(cacheEntryCount != null) {

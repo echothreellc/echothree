@@ -18,7 +18,6 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.result.GetPartyContactListResult;
 import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
@@ -113,7 +112,7 @@ public class PartyContactListTag
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetPartyContactListResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getPartyContactList(), scope);
             }

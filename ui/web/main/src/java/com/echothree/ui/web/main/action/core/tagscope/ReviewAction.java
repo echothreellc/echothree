@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.tagscope;
 
 import com.echothree.control.user.tag.common.TagUtil;
-import com.echothree.control.user.tag.common.result.GetTagScopeResult;
 import com.echothree.model.control.tag.common.TagOptions;
 import com.echothree.model.control.tag.common.transfer.TagScopeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -67,7 +66,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetTagScopeResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             tagScope = result.getTagScope();
         }

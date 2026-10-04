@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.event;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetEventsResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.data.core.common.EventConstants;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -87,7 +86,7 @@ public class MainAction
             forwardKey = ForwardConstants.ERROR_404;
         } else {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEventsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var entityInstance = result.getEntityInstance();
             var createdByEntityInstance = result.getCreatedByEntityInstance();
 

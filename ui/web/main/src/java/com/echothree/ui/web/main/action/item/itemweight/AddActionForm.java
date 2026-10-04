@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.item.itemweight;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemWeightTypeChoicesResult;
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.result.GetUnitOfMeasureTypeChoicesResult;
 import com.echothree.model.control.item.common.choice.ItemWeightTypeChoicesBean;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.common.choice.UnitOfMeasureTypeChoicesBean;
@@ -54,7 +52,7 @@ public class AddActionForm
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             unitOfMeasureTypeChoices = result.getUnitOfMeasureTypeChoices();
 
             if(unitOfMeasureTypeChoice == null) {
@@ -73,7 +71,7 @@ public class AddActionForm
 
             var commandResult = ItemUtil.getHome().getItemWeightTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemWeightTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             itemWeightTypeChoices = result.getItemWeightTypeChoices();
 
             if(itemWeightTypeChoice == null) {
@@ -93,7 +91,7 @@ public class AddActionForm
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            var getUnitOfMeasureTypeChoicesResult = executionResult.getResult();
             weightUnitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
 
             if(weightUnitOfMeasureTypeChoice == null) {

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.partysecurityroletemplate;
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.result.EditPartySecurityRoleTemplateDescriptionResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -93,7 +92,7 @@ public class DescriptionEditAction
                         var executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            var result = (EditPartySecurityRoleTemplateDescriptionResult)executionResult.getResult();
+                            var result = executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -109,7 +108,7 @@ public class DescriptionEditAction
 
                     var commandResult = SecurityUtil.getHome().editPartySecurityRoleTemplateDescription(getUserVisitPK(request), commandForm);
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditPartySecurityRoleTemplateDescriptionResult)executionResult.getResult();
+                    var result = executionResult.getResult();
                     
                     if(result != null) {
                         var edit = result.getEdit();

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.purchasing.itempurchasingcategory;
 
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.result.GetItemPurchasingCategoryDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class DescriptionAction
 
             var commandResult = VendorUtil.getHome().getItemPurchasingCategoryDescriptions(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemPurchasingCategoryDescriptionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var itemPurchasingCategoryTransfer = result.getItemPurchasingCategory();
             
             request.setAttribute(AttributeConstants.ITEM_PURCHASING_CATEGORY, itemPurchasingCategoryTransfer);

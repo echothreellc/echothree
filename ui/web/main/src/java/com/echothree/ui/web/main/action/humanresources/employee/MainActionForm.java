@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.employee;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.result.GetWorkflowStepChoicesResult;
 import com.echothree.model.control.employee.common.workflow.EmployeeAvailabilityConstants;
 import com.echothree.model.control.employee.common.workflow.EmployeeStatusConstants;
 import com.echothree.model.control.workflow.common.choice.WorkflowStepChoicesBean;
@@ -60,7 +59,7 @@ public class MainActionForm
 
             var commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetWorkflowStepChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             employeeStatusChoices = result.getWorkflowStepChoices();
 
             if(employeeStatusChoice == null) {
@@ -80,7 +79,7 @@ public class MainActionForm
 
             var commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetWorkflowStepChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             employeeAvailabilityChoices = result.getWorkflowStepChoices();
         }
     }

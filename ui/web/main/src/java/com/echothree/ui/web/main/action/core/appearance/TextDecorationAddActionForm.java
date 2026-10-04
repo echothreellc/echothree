@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.appearance;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetTextDecorationChoicesResult;
 import com.echothree.model.control.core.common.choice.TextDecorationChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -44,7 +43,7 @@ public class TextDecorationAddActionForm
 
             var commandResult = CoreUtil.getHome().getTextDecorationChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var getTextDecorationChoicesResult = (GetTextDecorationChoicesResult)executionResult.getResult();
+            var getTextDecorationChoicesResult = executionResult.getResult();
             textDecorationChoices = getTextDecorationChoicesResult.getTextDecorationChoices();
 
             if(textDecorationChoice == null) {

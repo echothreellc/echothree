@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.communicationsource;
 
 import com.echothree.control.user.communication.common.CommunicationUtil;
-import com.echothree.control.user.communication.common.result.GetCommunicationSourceResult;
 import com.echothree.model.control.communication.common.CommunicationOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -66,7 +65,7 @@ public class ReviewAction
 
             var commandResult = CommunicationUtil.getHome().getCommunicationSource(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCommunicationSourceResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.COMMUNICATION_SOURCE, result.getCommunicationSource());
             forwardKey = ForwardConstants.DISPLAY;

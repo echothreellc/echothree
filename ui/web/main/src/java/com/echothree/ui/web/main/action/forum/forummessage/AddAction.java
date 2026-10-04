@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.forum.forummessage;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.result.GetForumMessageResult;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.common.ForumOptions;
 import com.echothree.model.control.forum.common.transfer.ForumMessageTransfer;
@@ -71,7 +70,7 @@ public class AddAction
 
         var commandResult = ForumUtil.getHome().getForumMessage(userVisitPK, commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetForumMessageResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         return result.getForumMessage();
     }

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.service;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetServiceDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -57,7 +56,7 @@ public class DescriptionAction
         var commandResult = CoreUtil.getHome().getServiceDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetServiceDescriptionsResult) executionResult.getResult();
+            var result = executionResult.getResult();
             var serviceTransfer = result.getService();
 
             request.setAttribute(AttributeConstants.SERVICE, serviceTransfer);

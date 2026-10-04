@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.advertising.offernameelement;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.result.GetOfferNameElementsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -53,7 +52,7 @@ public class MainAction
         try {
             var commandResult = OfferUtil.getHome().getOfferNameElements(getUserVisitPK(request), null);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetOfferNameElementsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.OFFER_NAME_ELEMENTS, result.getOfferNameElements());
             forwardKey = ForwardConstants.DISPLAY;

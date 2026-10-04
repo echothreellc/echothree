@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.commandmessage;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetCommandMessageResult;
 import com.echothree.model.control.core.common.transfer.CommandMessageTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -60,7 +59,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCommandMessageResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             commandMessage = result.getCommandMessage();
         }

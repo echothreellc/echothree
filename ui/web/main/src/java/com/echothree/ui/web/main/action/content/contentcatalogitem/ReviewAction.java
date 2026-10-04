@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.content.contentcatalogitem;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.result.GetContentCatalogItemResult;
 import com.echothree.model.control.comment.common.CommentOptions;
 import com.echothree.model.control.content.common.ContentOptions;
 import com.echothree.model.control.core.common.CoreOptions;
@@ -74,7 +73,7 @@ public class ReviewAction
 
         var commandResult = ContentUtil.getHome().getContentCatalogItem(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetContentCatalogItemResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var contentCatalogItem = result.getContentCatalogItem();
         
         if(contentCatalogItem == null) {

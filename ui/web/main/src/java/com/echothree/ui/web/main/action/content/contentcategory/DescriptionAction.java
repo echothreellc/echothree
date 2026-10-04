@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.content.contentcategory;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.result.GetContentCategoryDescriptionsResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -62,7 +61,7 @@ public class DescriptionAction
 
             var commandResult = ContentUtil.getHome().getContentCategoryDescriptions(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetContentCategoryDescriptionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var contentCollectionTransfer = result.getContentCollection();
             var contentCatalogTransfer = result.getContentCatalog();
             var contentCategoryTransfer = result.getContentCategory();

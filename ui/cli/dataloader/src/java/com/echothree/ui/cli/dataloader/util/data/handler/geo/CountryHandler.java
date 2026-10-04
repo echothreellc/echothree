@@ -19,8 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.geo;
 import com.echothree.control.user.geo.common.GeoUtil;
 import com.echothree.control.user.geo.common.GeoService;
 import com.echothree.control.user.geo.common.form.GeoFormFactory;
-import com.echothree.control.user.geo.common.result.CreateStateResult;
-import com.echothree.control.user.geo.common.result.CreateZipCodeResult;
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.ItemService;
 import com.echothree.control.user.item.common.form.ItemFormFactory;
@@ -184,7 +182,7 @@ public class CountryHandler
 
             var commandResult = geoService.createZipCode(initialDataParser.getUserVisit(), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var createZipCodeResult = (CreateZipCodeResult)executionResult.getResult();
+            var createZipCodeResult = executionResult.getResult();
             var zipCodeGeoCodeName = createZipCodeResult.getGeoCodeName();
             var zipCodeEntityRef = createZipCodeResult.getEntityRef();
             
@@ -240,7 +238,7 @@ public class CountryHandler
 
             var commandResult = geoService.createState(initialDataParser.getUserVisit(), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var createStateResult = (CreateStateResult)executionResult.getResult();
+            var createStateResult = executionResult.getResult();
             var stateGeoCodeName = createStateResult.getGeoCodeName();
             var stateEntityRef = createStateResult.getEntityRef();
             

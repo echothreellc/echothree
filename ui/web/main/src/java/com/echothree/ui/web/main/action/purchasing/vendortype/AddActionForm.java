@@ -17,15 +17,10 @@
 package com.echothree.ui.web.main.action.purchasing.vendortype;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetGlAccountChoicesResult;
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
-import com.echothree.control.user.cancellationpolicy.common.result.GetCancellationPolicyChoicesResult;
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.result.GetReturnPolicyChoicesResult;
 import com.echothree.control.user.shipment.common.ShipmentUtil;
-import com.echothree.control.user.shipment.common.result.GetFreeOnBoardChoicesResult;
 import com.echothree.control.user.term.common.TermUtil;
-import com.echothree.control.user.term.common.result.GetTermChoicesResult;
 import com.echothree.model.control.accounting.common.AccountingConstants;
 import com.echothree.model.control.accounting.common.choice.GlAccountChoicesBean;
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
@@ -79,7 +74,7 @@ public class AddActionForm
 
             var commandResult = TermUtil.getHome().getTermChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetTermChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             defaultTermChoices = result.getTermChoices();
 
             if(defaultTermChoice == null)
@@ -97,7 +92,7 @@ public class AddActionForm
 
             var commandResult = ShipmentUtil.getHome().getFreeOnBoardChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetFreeOnBoardChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             defaultFreeOnBoardChoices = result.getFreeOnBoardChoices();
 
             if(defaultFreeOnBoardChoice == null)
@@ -116,7 +111,7 @@ public class AddActionForm
 
             var commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCancellationPolicyChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             defaultCancellationPolicyChoices = result.getCancellationPolicyChoices();
 
             if(defaultCancellationPolicyChoice == null)
@@ -135,7 +130,7 @@ public class AddActionForm
 
             var commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetReturnPolicyChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             defaultReturnPolicyChoices = result.getReturnPolicyChoices();
 
             if(defaultReturnPolicyChoice == null)
@@ -154,7 +149,7 @@ public class AddActionForm
 
             var commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getGlAccountChoicesResult = (GetGlAccountChoicesResult)executionResult.getResult();
+            var getGlAccountChoicesResult = executionResult.getResult();
             defaultApGlAccountChoices = getGlAccountChoicesResult.getGlAccountChoices();
             
             if(defaultApGlAccountChoice == null) {

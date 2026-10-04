@@ -17,8 +17,6 @@
 package com.echothree.cucumber.offer;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.result.CreateSourceResult;
-import com.echothree.control.user.offer.common.result.EditSourceResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -53,7 +51,7 @@ public class SourceSteps implements En {
 
                     var commandResult = offerService.createSource(persona.userVisitPK, createSourceForm);
                     LastCommandResult.commandResult = commandResult;
-                    var result = (CreateSourceResult)commandResult.getExecutionResult().getResult();
+                    var result = commandResult.getExecutionResult().getResult();
 
                     if(result != null) {
                         persona.lastSourceName = commandResult.getHasErrors() ? null : result.getSourceName();
@@ -114,7 +112,7 @@ public class SourceSteps implements En {
 
                     if(!commandResult.getHasErrors()) {
                         var executionResult = commandResult.getExecutionResult();
-                        var result = (EditSourceResult)executionResult.getResult();
+                        var result = executionResult.getResult();
 
                         persona.sourceEdit = result.getEdit();
                     }

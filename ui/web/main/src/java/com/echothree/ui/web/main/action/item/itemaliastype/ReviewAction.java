@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.itemaliastype;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemAliasTypeResult;
 import com.echothree.model.control.item.common.transfer.ItemAliasTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -59,7 +58,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemAliasTypeResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             itemAliasType = result.getItemAliasType();
         }

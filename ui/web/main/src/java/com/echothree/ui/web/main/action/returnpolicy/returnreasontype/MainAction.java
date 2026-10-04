@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.returnpolicy.returnreasontype;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.result.GetReturnReasonTypesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -61,7 +60,7 @@ public class MainAction
 
             var commandResult = ReturnPolicyUtil.getHome().getReturnReasonTypes(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetReturnReasonTypesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.RETURN_REASON, result.getReturnReason());
             request.setAttribute(AttributeConstants.RETURN_REASON_TYPES, result.getReturnReasonTypes());

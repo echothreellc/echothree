@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customercontactmechanism;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.result.GetTelephoneStatusChoicesResult;
 import com.echothree.model.control.contact.common.choice.TelephoneStatusChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -46,7 +45,7 @@ public class ContactTelephoneStatusActionForm
 
             var commandResult = ContactUtil.getHome().getTelephoneStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetTelephoneStatusChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             telephoneStatusChoices = result.getTelephoneStatusChoices();
 
             if(telephoneStatusChoice == null) {

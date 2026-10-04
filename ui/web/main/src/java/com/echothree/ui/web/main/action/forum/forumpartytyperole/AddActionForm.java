@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.forum.forumpartytyperole;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.result.GetForumRoleTypeChoicesResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetPartyTypeChoicesResult;
 import com.echothree.model.control.forum.common.choice.ForumRoleTypeChoicesBean;
 import com.echothree.model.control.party.common.choice.PartyTypeChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
@@ -49,7 +47,7 @@ public class AddActionForm
 
             var commandResult = PartyUtil.getHome().getPartyTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getPartyTypeChoicesResult = (GetPartyTypeChoicesResult)executionResult.getResult();
+            var getPartyTypeChoicesResult = executionResult.getResult();
             partyTypeChoices = getPartyTypeChoicesResult.getPartyTypeChoices();
 
             if(partyTypeChoice == null) {
@@ -68,7 +66,7 @@ public class AddActionForm
 
             var commandResult = ForumUtil.getHome().getForumRoleTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getForumRoleTypeChoicesResult = (GetForumRoleTypeChoicesResult)executionResult.getResult();
+            var getForumRoleTypeChoicesResult = executionResult.getResult();
             forumRoleTypeChoices = getForumRoleTypeChoicesResult.getForumRoleTypeChoices();
 
             if(forumRoleTypeChoice == null) {

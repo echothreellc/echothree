@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.comment.common.CommentUtil;
-import com.echothree.control.user.comment.common.result.GetCommentTypeResult;
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -63,7 +61,7 @@ public class CommentAddAction
 
         var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetCustomerResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var customer = result.getCustomer();
         
         request.setAttribute(AttributeConstants.CUSTOMER, customer);
@@ -81,7 +79,7 @@ public class CommentAddAction
 
         var commandResult = CommentUtil.getHome().getCommentType(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetCommentTypeResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.COMMENT_TYPE, result.getCommentType());
     }

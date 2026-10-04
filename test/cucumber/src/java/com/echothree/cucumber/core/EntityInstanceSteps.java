@@ -17,7 +17,6 @@
 package com.echothree.cucumber.core;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.CreateEntityInstanceResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import io.cucumber.java8.En;
@@ -48,7 +47,7 @@ public class EntityInstanceSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (CreateEntityInstanceResult)executionResult.getResult();
+                    var result = executionResult.getResult();
                     persona.lastEntityRef = result.getEntityRef();
 
                     persona.createEntityInstanceForm = null;

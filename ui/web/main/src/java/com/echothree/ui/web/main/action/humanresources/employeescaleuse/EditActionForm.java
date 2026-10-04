@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.employeescaleuse;
 
 import com.echothree.control.user.scale.common.ScaleUtil;
-import com.echothree.control.user.scale.common.result.GetScaleChoicesResult;
 import com.echothree.model.control.scale.common.choice.ScaleChoicesBean;
 import com.echothree.view.client.web.struts.BaseLanguageActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -45,7 +44,7 @@ public class EditActionForm
 
                 var commandResult = ScaleUtil.getHome().getScaleChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetScaleChoicesResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 scaleChoices = result.getScaleChoices();
 
                 if(scaleChoice == null) {

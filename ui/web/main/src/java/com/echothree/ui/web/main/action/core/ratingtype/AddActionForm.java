@@ -18,7 +18,6 @@ package com.echothree.ui.web.main.action.core.ratingtype;
 
 
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.result.GetSequenceChoicesResult;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.choice.SequenceChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
@@ -51,7 +50,7 @@ public class AddActionForm
 
             var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSequenceChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             ratingSequenceChoices = result.getSequenceChoices();
 
             if(ratingSequenceChoice == null)

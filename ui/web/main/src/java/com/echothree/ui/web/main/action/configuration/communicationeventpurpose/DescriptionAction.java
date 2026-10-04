@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.communicationeventpurpose;
 
 import com.echothree.control.user.communication.common.CommunicationUtil;
-import com.echothree.control.user.communication.common.result.GetCommunicationEventPurposeDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class DescriptionAction
 
             var commandResult = CommunicationUtil.getHome().getCommunicationEventPurposeDescriptions(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCommunicationEventPurposeDescriptionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var communicationEventPurposeTransfer = result.getCommunicationEventPurpose();
             
             request.setAttribute(AttributeConstants.COMMUNICATION_EVENT_PURPOSE, communicationEventPurposeTransfer);

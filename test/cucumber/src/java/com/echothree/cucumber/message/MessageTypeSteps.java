@@ -17,8 +17,6 @@
 package com.echothree.cucumber.message;
 
 import com.echothree.control.user.message.common.MessageUtil;
-import com.echothree.control.user.message.common.result.CreateMessageTypeResult;
-import com.echothree.control.user.message.common.result.EditMessageTypeResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -50,7 +48,7 @@ public class MessageTypeSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (CreateMessageTypeResult)executionResult.getResult();
+                    var result = executionResult.getResult();
                     persona.lastMessageTypeName = result.getMessageTypeName();
 
                     persona.createMessageTypeForm = null;
@@ -106,7 +104,7 @@ public class MessageTypeSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditMessageTypeResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     if(!executionResult.getHasErrors()) {
                         persona.messageTypeEdit = result.getEdit();

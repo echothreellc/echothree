@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customeralias;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetPartyAliasTypeChoicesResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.common.choice.PartyAliasTypeChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
@@ -47,7 +46,7 @@ public class AddActionForm
 
             var commandResult = PartyUtil.getHome().getPartyAliasTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getPartyAliasTypeChoicesResult = (GetPartyAliasTypeChoicesResult)executionResult.getResult();
+            var getPartyAliasTypeChoicesResult = executionResult.getResult();
             partyAliasTypeChoices = getPartyAliasTypeChoicesResult.getPartyAliasTypeChoices();
 
             if(partyAliasTypeChoice == null) {

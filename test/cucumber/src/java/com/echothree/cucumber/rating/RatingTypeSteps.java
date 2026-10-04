@@ -17,8 +17,6 @@
 package com.echothree.cucumber.rating;
 
 import com.echothree.control.user.rating.common.RatingUtil;
-import com.echothree.control.user.rating.common.result.CreateRatingTypeResult;
-import com.echothree.control.user.rating.common.result.EditRatingTypeResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -50,7 +48,7 @@ public class RatingTypeSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (CreateRatingTypeResult)executionResult.getResult();
+                    var result = executionResult.getResult();
                     persona.lastRatingTypeName = result.getRatingTypeName();
 
                     persona.createRatingTypeForm = null;
@@ -106,7 +104,7 @@ public class RatingTypeSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditRatingTypeResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     if(!executionResult.getHasErrors()) {
                         persona.ratingTypeEdit = result.getEdit();

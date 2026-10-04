@@ -22,7 +22,6 @@ import com.echothree.control.user.letter.common.form.LetterFormFactory;
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.PartyService;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
-import com.echothree.control.user.party.common.result.CreateDivisionResult;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.comment.CommentsHandler;
@@ -73,7 +72,7 @@ public class CompanyHandler
             
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (CreateDivisionResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 var partyName = result.getPartyName();
                 var entityRef = result.getEntityRef();
                 

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.chain.lettersource;
 
 import com.echothree.control.user.letter.common.LetterUtil;
-import com.echothree.control.user.letter.common.result.GetLetterSourceResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -56,7 +55,7 @@ public class ReviewAction
 
         var commandResult = LetterUtil.getHome().getLetterSource(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetLetterSourceResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var letterSource = result.getLetterSource();
         
         if(letterSource == null) {

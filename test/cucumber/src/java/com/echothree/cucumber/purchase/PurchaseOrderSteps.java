@@ -17,7 +17,6 @@
 package com.echothree.cucumber.purchase;
 
 import com.echothree.control.user.purchase.common.PurchaseUtil;
-import com.echothree.control.user.purchase.common.result.CreatePurchaseOrderResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import io.cucumber.java8.En;
@@ -48,7 +47,7 @@ public class PurchaseOrderSteps implements En {
                     var commandResult = PurchaseUtil.getHome().createPurchaseOrder(persona.userVisitPK, createPurchaseOrderForm);
 
                     LastCommandResult.commandResult = commandResult;
-                    var result = (CreatePurchaseOrderResult)commandResult.getExecutionResult().getResult();
+                    var result = commandResult.getExecutionResult().getResult();
 
                     if(result != null) {
                         persona.lastPurchaseOrderName = commandResult.getHasErrors() ? null : result.getOrderName();

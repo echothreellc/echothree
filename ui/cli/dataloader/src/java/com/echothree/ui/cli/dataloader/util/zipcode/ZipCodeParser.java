@@ -21,7 +21,6 @@ import com.echothree.control.user.authentication.common.AuthenticationService;
 import com.echothree.control.user.geo.common.GeoUtil;
 import com.echothree.control.user.geo.common.GeoService;
 import com.echothree.control.user.geo.common.form.GeoFormFactory;
-import com.echothree.control.user.geo.common.result.GetCountryResult;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.collection.SmartQueue;
 import java.util.Collections;
@@ -70,7 +69,7 @@ public class ZipCodeParser {
 
         var commandResult = getGeoService().getCountry(getUserVisit(), getCountryForm);
         var executionResult = commandResult.getExecutionResult();
-        var getCountryResult = (GetCountryResult)executionResult.getResult();
+        var getCountryResult = executionResult.getResult();
         setCountryGeoCodeName(getCountryResult.getCountry().getGeoCodeName());
     }
     

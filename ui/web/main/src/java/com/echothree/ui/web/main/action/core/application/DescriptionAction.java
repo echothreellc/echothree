@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.application;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetApplicationDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -57,7 +56,7 @@ public class DescriptionAction
         var commandResult = CoreUtil.getHome().getApplicationDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetApplicationDescriptionsResult) executionResult.getResult();
+            var result = executionResult.getResult();
             var applicationTransfer = result.getApplication();
 
             request.setAttribute(AttributeConstants.THIS_APPLICATION, applicationTransfer);

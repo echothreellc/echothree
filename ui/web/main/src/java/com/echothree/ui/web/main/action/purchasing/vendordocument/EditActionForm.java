@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.purchasing.vendordocument;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetMimeTypeChoicesResult;
 import com.echothree.model.control.core.common.choice.MimeTypeChoicesBean;
 import com.echothree.view.client.web.struts.BaseLanguageActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -54,7 +53,7 @@ public class EditActionForm
 
                 var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetMimeTypeChoicesResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 mimeTypeChoices = result.getMimeTypeChoices();
 
                 if(mimeTypeChoice == null) {

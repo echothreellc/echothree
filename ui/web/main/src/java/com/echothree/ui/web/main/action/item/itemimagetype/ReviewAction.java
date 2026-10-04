@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.itemimagetype;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemImageTypeResult;
 import com.echothree.model.control.item.common.transfer.ItemImageTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -59,7 +58,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemImageTypeResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             itemImageType = result.getItemImageType();
         }

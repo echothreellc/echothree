@@ -17,7 +17,6 @@
 package com.echothree.cucumber.offer;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.result.EditOfferUseResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -106,7 +105,7 @@ public class OfferUseSteps implements En {
 
                     if(!commandResult.getHasErrors()) {
                         var executionResult = commandResult.getExecutionResult();
-                        var result = (EditOfferUseResult)executionResult.getResult();
+                        var result = executionResult.getResult();
 
                         persona.offerUseEdit = result.getEdit();
                     }

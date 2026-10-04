@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.securityrolegroup;
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.result.GetSecurityRoleGroupResult;
 import com.echothree.model.control.security.common.transfer.SecurityRoleGroupTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -59,7 +58,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSecurityRoleGroupResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             securityRoleGroup = result.getSecurityRoleGroup();
         }

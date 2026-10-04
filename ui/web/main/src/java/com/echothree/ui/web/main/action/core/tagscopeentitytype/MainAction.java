@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.tagscopeentitytype;
 
 import com.echothree.control.user.tag.common.TagUtil;
-import com.echothree.control.user.tag.common.result.GetTagScopeEntityTypesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -57,7 +56,7 @@ public class MainAction
 
         var commandResult = TagUtil.getHome().getTagScopeEntityTypes(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetTagScopeEntityTypesResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var tagScope = result.getTagScope();
 
         if(tagScope == null) {

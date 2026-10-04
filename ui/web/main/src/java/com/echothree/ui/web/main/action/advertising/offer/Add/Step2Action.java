@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.advertising.offer.Add;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetDepartmentsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -61,7 +60,7 @@ public class Step2Action
 
             var commandResult = PartyUtil.getHome().getDepartments(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetDepartmentsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.DIVISION, result.getDivision());
             request.setAttribute(AttributeConstants.DEPARTMENTS, result.getDepartments());

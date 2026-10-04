@@ -17,8 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.harmonizedtariffschedulecode;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.result.GetHarmonizedTariffScheduleCodeResultsResult;
-import com.echothree.control.user.search.common.result.SearchHarmonizedTariffScheduleCodesResult;
 import com.echothree.model.control.search.common.SearchTypes;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -62,7 +60,7 @@ public class SearchAction
 
         var commandResult = SearchUtil.getHome().getHarmonizedTariffScheduleCodeResults(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetHarmonizedTariffScheduleCodeResultsResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var harmonizedTariffScheduleCodeResults = result.getHarmonizedTariffScheduleCodeResults();
         var iter = harmonizedTariffScheduleCodeResults.iterator();
         if(iter.hasNext()) {
@@ -93,7 +91,7 @@ public class SearchAction
                 forwardKey = ForwardConstants.DISPLAY;
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (SearchHarmonizedTariffScheduleCodesResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 var count = result.getCount();
 
                 if(count == 0 || count > 1) {

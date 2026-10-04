@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.transactionglaccountcategory;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetTransactionGlAccountCategoryDescriptionResult;
 import com.echothree.control.user.accounting.common.spec.TransactionGlAccountCategoryDescriptionSpec;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -74,7 +73,7 @@ public class DescriptionDeleteAction
 
         var commandResult = AccountingUtil.getHome().getTransactionGlAccountCategoryDescription(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetTransactionGlAccountCategoryDescriptionResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.TRANSACTION_GL_ACCOUNT_CATEGORY_DESCRIPTION, result.getTransactionGlAccountCategoryDescription());
     }

@@ -18,7 +18,6 @@ package com.echothree.cucumber.party;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.CreateCustomerWithLoginResult;
 import com.echothree.cucumber.util.persona.BasePersona;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
@@ -130,7 +129,7 @@ public class CustomerSteps implements En {
                     var commandResult = partyService.createCustomerWithLogin(persona.userVisitPK, persona.createCustomerWithLoginForm);
 
                     LastCommandResult.commandResult = commandResult;
-                    var result = (CreateCustomerWithLoginResult)commandResult.getExecutionResult().getResult();
+                    var result = commandResult.getExecutionResult().getResult();
 
                     if(result != null) {
                         persona.lastCustomerName = commandResult.getHasErrors() ? null : result.getCustomerName();

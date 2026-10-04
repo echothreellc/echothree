@@ -20,7 +20,6 @@ import com.echothree.control.user.search.common.SearchService;
 import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.common.edit.SearchKindEdit;
 import com.echothree.control.user.search.common.form.SearchFormFactory;
-import com.echothree.control.user.search.common.result.EditSearchKindResult;
 import com.echothree.control.user.search.common.spec.SearchSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -77,7 +76,7 @@ public class SearchKindsHandler
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditSearchKindResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 if(result != null) {
                     var edit = (SearchKindEdit)result.getEdit();

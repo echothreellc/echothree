@@ -18,7 +18,6 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.result.GetUsesResult;
 import com.echothree.model.data.offer.common.UseConstants;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.Limit;
@@ -127,7 +126,7 @@ public class UsesTag
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetUsesResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getUses()), scope);
 

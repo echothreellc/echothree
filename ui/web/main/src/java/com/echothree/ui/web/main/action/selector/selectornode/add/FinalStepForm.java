@@ -17,19 +17,11 @@
 package com.echothree.ui.web.main.action.selector.selectornode.add;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetItemAccountingCategoryChoicesResult;
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.result.GetResponsibilityTypeChoicesResult;
-import com.echothree.control.user.employee.common.result.GetSkillTypeChoicesResult;
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemCategoryChoicesResult;
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.common.result.GetSelectorBooleanTypeChoicesResult;
-import com.echothree.control.user.selector.common.result.GetSelectorNodeChoicesResult;
 import com.echothree.control.user.training.common.TrainingUtil;
-import com.echothree.control.user.training.common.result.GetTrainingClassChoicesResult;
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.result.GetItemPurchasingCategoryChoicesResult;
 import com.echothree.model.control.accounting.common.choice.ItemAccountingCategoryChoicesBean;
 import com.echothree.model.control.employee.common.choice.ResponsibilityTypeChoicesBean;
 import com.echothree.model.control.employee.common.choice.SkillTypeChoicesBean;
@@ -97,7 +89,7 @@ public class FinalStepForm
 
             var commandResult = SelectorUtil.getHome().getSelectorBooleanTypeChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSelectorBooleanTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             selectorBooleanTypeChoices = result.getSelectorBooleanTypeChoices();
 
             if(selectorBooleanTypeChoice == null)
@@ -118,7 +110,7 @@ public class FinalStepForm
 
             var commandResult = SelectorUtil.getHome().getSelectorNodeChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSelectorNodeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             leftSelectorNodeChoices = result.getSelectorNodeChoices();
 
             if(leftSelectorNodeChoice == null)
@@ -139,7 +131,7 @@ public class FinalStepForm
 
             var commandResult = SelectorUtil.getHome().getSelectorNodeChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSelectorNodeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             rightSelectorNodeChoices = result.getSelectorNodeChoices();
 
             if(rightSelectorNodeChoice == null)
@@ -157,7 +149,7 @@ public class FinalStepForm
 
             var commandResult = ItemUtil.getHome().getItemCategoryChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemCategoryChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             itemCategoryChoices = result.getItemCategoryChoices();
 
             if(itemCategoryChoice == null)
@@ -175,7 +167,7 @@ public class FinalStepForm
 
             var commandResult = AccountingUtil.getHome().getItemAccountingCategoryChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemAccountingCategoryChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             itemAccountingCategoryChoices = result.getItemAccountingCategoryChoices();
 
             if(itemAccountingCategoryChoice == null)
@@ -193,7 +185,7 @@ public class FinalStepForm
 
             var commandResult = VendorUtil.getHome().getItemPurchasingCategoryChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemPurchasingCategoryChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             itemPurchasingCategoryChoices = result.getItemPurchasingCategoryChoices();
 
             if(itemPurchasingCategoryChoice == null)
@@ -211,7 +203,7 @@ public class FinalStepForm
 
             var commandResult = EmployeeUtil.getHome().getResponsibilityTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetResponsibilityTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             responsibilityTypeChoices = result.getResponsibilityTypeChoices();
 
             if(responsibilityTypeChoice == null)
@@ -229,7 +221,7 @@ public class FinalStepForm
 
             var commandResult = EmployeeUtil.getHome().getSkillTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSkillTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             skillTypeChoices = result.getSkillTypeChoices();
 
             if(skillTypeChoice == null)
@@ -247,7 +239,7 @@ public class FinalStepForm
 
             var commandResult = TrainingUtil.getHome().getTrainingClassChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetTrainingClassChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             trainingClassChoices = result.getTrainingClassChoices();
 
             if(trainingClassChoice == null)

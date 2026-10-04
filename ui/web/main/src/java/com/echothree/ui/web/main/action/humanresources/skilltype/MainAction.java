@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.skilltype;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.result.GetSkillTypesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -53,7 +52,7 @@ public class MainAction
         try {
             var commandResult = EmployeeUtil.getHome().getSkillTypes(getUserVisitPK(request), null);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSkillTypesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SKILL_TYPES, result.getSkillTypes());
             forwardKey = ForwardConstants.DISPLAY;

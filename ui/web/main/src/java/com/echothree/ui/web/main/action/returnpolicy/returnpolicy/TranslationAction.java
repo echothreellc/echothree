@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.returnpolicy.returnpolicy;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.result.GetReturnPolicyTranslationsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -61,7 +60,7 @@ public class TranslationAction
 
             var commandResult = ReturnPolicyUtil.getHome().getReturnPolicyTranslations(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetReturnPolicyTranslationsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.RETURN_POLICY, result.getReturnPolicy());
             request.setAttribute(AttributeConstants.RETURN_POLICY_TRANSLATIONS, result.getReturnPolicyTranslations());

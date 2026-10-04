@@ -17,10 +17,7 @@
 package com.echothree.ui.web.main.action.customer.customercontactlist;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.result.GetContactListResult;
-import com.echothree.control.user.contactlist.common.result.GetPartyContactListResult;
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -51,7 +48,7 @@ public class CustomerContactListUtil {
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCustomerResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var customer = result.getCustomer();
 
             if(customer != null) {
@@ -73,7 +70,7 @@ public class CustomerContactListUtil {
 
         var commandResult = ContactListUtil.getHome().getContactList(MainBaseAction.getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetContactListResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.CONTACT_LIST, result.getContactList());
     }
@@ -87,7 +84,7 @@ public class CustomerContactListUtil {
 
         var commandResult = ContactListUtil.getHome().getPartyContactList(MainBaseAction.getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetPartyContactListResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.PARTY_CONTACT_LIST, result.getPartyContactList());
     }

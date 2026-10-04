@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.geocodescope;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.result.GetGeoCodeScopeResult;
 import com.echothree.model.control.geo.common.transfer.GeoCodeScopeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -59,7 +58,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetGeoCodeScopeResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             geoCodeScope = result.getGeoCodeScope();
         }

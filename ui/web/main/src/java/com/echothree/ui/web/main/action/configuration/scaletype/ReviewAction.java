@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.scaletype;
 
 import com.echothree.control.user.scale.common.ScaleUtil;
-import com.echothree.control.user.scale.common.result.GetScaleTypeResult;
 import com.echothree.model.control.scale.common.transfer.ScaleTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -59,7 +58,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetScaleTypeResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             scaleType = result.getScaleType();
         }

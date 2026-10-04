@@ -23,7 +23,6 @@ import com.echothree.control.user.item.common.ItemService;
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.edit.ItemDescriptionEdit;
 import com.echothree.control.user.item.common.form.ItemFormFactory;
-import com.echothree.control.user.item.common.result.EditItemDescriptionResult;
 import com.echothree.control.user.item.common.spec.ItemSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -295,7 +294,7 @@ public class ItemHandler
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditItemDescriptionResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 if(result != null) {
                     var edit = (ItemDescriptionEdit)result.getEdit();

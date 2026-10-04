@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.customer.customertype;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.result.GetCustomerTypeResult;
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.result.GetOfferCustomerTypesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -57,7 +55,7 @@ public class ReviewAction
 
         var commandResult = CustomerUtil.getHome().getCustomerType(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetCustomerTypeResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.CUSTOMER_TYPE, result.getCustomerType());
     }
@@ -71,7 +69,7 @@ public class ReviewAction
 
         var commandResult = OfferUtil.getHome().getOfferCustomerTypes(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetOfferCustomerTypesResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var offerCustomerTypes = result.getOfferCustomerTypes();
 
         request.setAttribute(AttributeConstants.OFFER_CUSTOMER_TYPES, offerCustomerTypes.isEmpty()? null: offerCustomerTypes);

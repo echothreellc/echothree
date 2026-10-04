@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.advertising.offeruse;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.result.GetUseChoicesResult;
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.result.GetSequenceChoicesResult;
 import com.echothree.model.control.offer.common.choice.UseChoicesBean;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.choice.SequenceChoicesBean;
@@ -50,7 +48,7 @@ public class AddActionForm
 
             var commandResult = OfferUtil.getHome().getUseChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetUseChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             useChoices = result.getUseChoices();
 
             if(useChoice == null)
@@ -69,7 +67,7 @@ public class AddActionForm
 
             var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSequenceChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             salesOrderSequenceChoices = result.getSequenceChoices();
 
             if(salesOrderSequenceChoice == null)

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.geocodetimezone;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetTimeZoneChoicesResult;
 import com.echothree.model.control.party.common.choice.TimeZoneChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -48,7 +47,7 @@ public class AddActionForm
 
                 var commandResult = PartyUtil.getHome().getTimeZoneChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var getTimeZoneChoicesResult = (GetTimeZoneChoicesResult)executionResult.getResult();
+                var getTimeZoneChoicesResult = executionResult.getResult();
                 timeZoneChoices = getTimeZoneChoicesResult.getTimeZoneChoices();
                 
                 if(timeZoneChoice == null)

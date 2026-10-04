@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.purchasing.vendorcarrier;
 
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.result.GetVendorResult;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -66,7 +65,7 @@ public class MainAction
 
         var commandResult = VendorUtil.getHome().getVendor(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetVendorResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var vendor = result.getVendor();
         
         if(vendor == null) {

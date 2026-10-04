@@ -17,8 +17,6 @@
 package com.echothree.ui.web.main.action.uom.unitofmeasurekinduse;
 
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.result.GetUnitOfMeasureKindChoicesResult;
-import com.echothree.control.user.uom.common.result.GetUnitOfMeasureKindUseTypeChoicesResult;
 import com.echothree.model.control.uom.common.choice.UnitOfMeasureKindChoicesBean;
 import com.echothree.model.control.uom.common.choice.UnitOfMeasureKindUseTypeChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
@@ -54,7 +52,7 @@ public class AddActionForm
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureKindChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getUnitOfMeasureKindChoicesResult = (GetUnitOfMeasureKindChoicesResult)executionResult.getResult();
+            var getUnitOfMeasureKindChoicesResult = executionResult.getResult();
             unitOfMeasureKindChoices = getUnitOfMeasureKindChoicesResult.getUnitOfMeasureKindChoices();
 
             if(unitOfMeasureKindChoice == null) {
@@ -73,7 +71,7 @@ public class AddActionForm
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureKindUseTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getUnitOfMeasureKindUseTypeChoicesResult = (GetUnitOfMeasureKindUseTypeChoicesResult)executionResult.getResult();
+            var getUnitOfMeasureKindUseTypeChoicesResult = executionResult.getResult();
             unitOfMeasureKindUseTypeChoices = getUnitOfMeasureKindUseTypeChoicesResult.getUnitOfMeasureKindUseTypeChoices();
 
             if(unitOfMeasureKindUseTypeChoice == null) {

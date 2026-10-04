@@ -18,7 +18,6 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.result.GetItemResultsFacetResult;
 import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
@@ -112,7 +111,7 @@ public class GetItemResultsFacetTag
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetItemResultsFacetResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getUserVisitSearchFacet(), scope);
             }

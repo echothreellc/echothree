@@ -17,10 +17,7 @@
 package com.echothree.ui.web.main.action.humanresources.leave;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.result.GetLeaveReasonChoicesResult;
-import com.echothree.control.user.employee.common.result.GetLeaveTypeChoicesResult;
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.result.GetWorkflowStepChoicesResult;
 import com.echothree.model.control.employee.common.choice.LeaveReasonChoicesBean;
 import com.echothree.model.control.employee.common.choice.LeaveTypeChoicesBean;
 import com.echothree.model.control.employee.common.workflow.LeaveStatusConstants;
@@ -56,7 +53,7 @@ public class SearchActionForm
 
             var commandResult = EmployeeUtil.getHome().getLeaveTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetLeaveTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             leaveTypeChoices = result.getLeaveTypeChoices();
 
             if(leaveTypeChoice == null) {
@@ -75,7 +72,7 @@ public class SearchActionForm
 
             var commandResult = EmployeeUtil.getHome().getLeaveReasonChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetLeaveReasonChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             leaveReasonChoices = result.getLeaveReasonChoices();
 
             if(leaveReasonChoice == null) {
@@ -95,7 +92,7 @@ public class SearchActionForm
 
             var commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetWorkflowStepChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             leaveStatusChoices = result.getWorkflowStepChoices();
 
             if(leaveStatusChoice == null) {

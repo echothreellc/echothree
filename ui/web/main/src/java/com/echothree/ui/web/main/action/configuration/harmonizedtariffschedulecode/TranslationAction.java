@@ -62,7 +62,7 @@ public class TranslationAction
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
             
-            result = (GetHarmonizedTariffScheduleCodeTranslationsResult) executionResult.getResult();
+            result = executionResult.getResult();
             harmonizedTariffScheduleCode = result.getHarmonizedTariffScheduleCode();
         }
         

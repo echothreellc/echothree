@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.workflowdestinationsecurityrole;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.result.GetWorkflowDestinationSecurityRolesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -58,7 +57,7 @@ public class MainAction
 
         var commandResult = WorkflowUtil.getHome().getWorkflowDestinationSecurityRoles(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetWorkflowDestinationSecurityRolesResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var workflowDestinationPartyType = result.getWorkflowDestinationPartyType();
         
         if(workflowDestinationPartyType == null) {

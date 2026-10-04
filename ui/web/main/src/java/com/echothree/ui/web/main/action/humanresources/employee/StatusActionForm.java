@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.employee;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetEmployeeStatusChoicesResult;
 import com.echothree.model.control.employee.common.choice.EmployeeStatusChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -46,7 +45,7 @@ public class StatusActionForm
 
             var commandResult = PartyUtil.getHome().getEmployeeStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEmployeeStatusChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             employeeStatusChoices = result.getEmployeeStatusChoices();
 
             if(employeeStatusChoice == null)

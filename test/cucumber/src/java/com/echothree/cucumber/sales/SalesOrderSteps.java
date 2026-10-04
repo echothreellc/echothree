@@ -17,7 +17,6 @@
 package com.echothree.cucumber.sales;
 
 import com.echothree.control.user.sales.common.SalesUtil;
-import com.echothree.control.user.sales.common.result.CreateSalesOrderResult;
 import com.echothree.cucumber.util.persona.BasePersona;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
@@ -59,7 +58,7 @@ public class SalesOrderSteps implements En {
         var commandResult = salesService.createSalesOrder(persona.userVisitPK, createSalesOrderForm);
 
         LastCommandResult.commandResult = commandResult;
-        var result = (CreateSalesOrderResult)commandResult.getExecutionResult().getResult();
+        var result = commandResult.getExecutionResult().getResult();
 
         persona.lastSalesOrderName = commandResult.getHasErrors() ? null : result.getOrderName();
     }

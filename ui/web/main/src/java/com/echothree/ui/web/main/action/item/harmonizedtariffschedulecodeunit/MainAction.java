@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.harmonizedtariffschedulecodeunit;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetHarmonizedTariffScheduleCodeUnitsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -52,7 +51,7 @@ public class MainAction
         var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUnits(getUserVisitPK(request), null);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetHarmonizedTariffScheduleCodeUnitsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_UNITS, result.getHarmonizedTariffScheduleCodeUnits());
             forwardKey = ForwardConstants.DISPLAY;

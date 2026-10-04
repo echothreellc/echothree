@@ -17,8 +17,6 @@
 package com.echothree.cucumber.contact;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.result.CreateContactEmailAddressResult;
-import com.echothree.control.user.contact.common.result.EditContactEmailAddressResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -49,7 +47,7 @@ public class PartyEmailAddressSteps implements En {
                     var commandResult = ContactUtil.getHome().createContactEmailAddress(persona.userVisitPK, createContactEmailAddressForm);
 
                     LastCommandResult.commandResult = commandResult;
-                    var result = (CreateContactEmailAddressResult)commandResult.getExecutionResult().getResult();
+                    var result = commandResult.getExecutionResult().getResult();
 
                     persona.lastEmailAddressContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
                     persona.createContactEmailAddressForm = null;
@@ -97,7 +95,7 @@ public class PartyEmailAddressSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditContactEmailAddressResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     if(!executionResult.getHasErrors()) {
                         persona.contactEmailAddressEdit = result.getEdit();

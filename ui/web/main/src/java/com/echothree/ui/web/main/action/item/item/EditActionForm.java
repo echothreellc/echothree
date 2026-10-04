@@ -17,15 +17,10 @@
 package com.echothree.ui.web.main.action.item.item;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetItemAccountingCategoryChoicesResult;
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
-import com.echothree.control.user.cancellationpolicy.common.result.GetCancellationPolicyChoicesResult;
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemCategoryChoicesResult;
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.result.GetReturnPolicyChoicesResult;
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.result.GetItemPurchasingCategoryChoicesResult;
 import com.echothree.model.control.accounting.common.choice.ItemAccountingCategoryChoicesBean;
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.common.choice.CancellationPolicyChoicesBean;
@@ -79,7 +74,7 @@ public class EditActionForm
 
             var commandResult = ItemUtil.getHome().getItemCategoryChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemCategoryChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             itemCategoryChoices = result.getItemCategoryChoices();
 
             if(itemCategoryChoice == null) {
@@ -98,7 +93,7 @@ public class EditActionForm
 
             var commandResult = AccountingUtil.getHome().getItemAccountingCategoryChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemAccountingCategoryChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             itemAccountingCategoryChoices = result.getItemAccountingCategoryChoices();
 
             if(itemAccountingCategoryChoice == null) {
@@ -117,7 +112,7 @@ public class EditActionForm
 
             var commandResult = VendorUtil.getHome().getItemPurchasingCategoryChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemPurchasingCategoryChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             itemPurchasingCategoryChoices = result.getItemPurchasingCategoryChoices();
 
             if(itemPurchasingCategoryChoice == null) {
@@ -137,7 +132,7 @@ public class EditActionForm
 
             var commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCancellationPolicyChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             cancellationPolicyChoices = result.getCancellationPolicyChoices();
 
             if(cancellationPolicyChoice == null)
@@ -156,7 +151,7 @@ public class EditActionForm
 
             var commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetReturnPolicyChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             returnPolicyChoices = result.getReturnPolicyChoices();
 
             if(returnPolicyChoice == null)

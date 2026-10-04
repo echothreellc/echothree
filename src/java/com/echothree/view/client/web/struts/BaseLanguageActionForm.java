@@ -17,7 +17,6 @@
 package com.echothree.view.client.web.struts;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetLanguageChoicesResult;
 import com.echothree.model.control.party.common.choice.LanguageChoicesBean;
 import java.util.List;
 import javax.naming.NamingException;
@@ -40,7 +39,7 @@ public class BaseLanguageActionForm
 
                 var commandResult = PartyUtil.getHome().getLanguageChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var getLanguageChoicesResult = (GetLanguageChoicesResult)executionResult.getResult();
+                var getLanguageChoicesResult = executionResult.getResult();
                 languageChoices = getLanguageChoicesResult.getLanguageChoices();
                 
                 if(languageChoice == null) {

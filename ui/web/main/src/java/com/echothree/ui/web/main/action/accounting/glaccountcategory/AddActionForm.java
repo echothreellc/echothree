@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.glaccountcategory;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetGlAccountCategoryChoicesResult;
 import com.echothree.model.control.accounting.common.choice.GlAccountCategoryChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -49,7 +48,7 @@ public class AddActionForm
 
             var commandResult = AccountingUtil.getHome().getGlAccountCategoryChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getGlAccountCategoryChoicesResult = (GetGlAccountCategoryChoicesResult)executionResult.getResult();
+            var getGlAccountCategoryChoicesResult = executionResult.getResult();
             parentGlAccountCategoryChoices = getGlAccountCategoryChoicesResult.getGlAccountCategoryChoices();
 
             if(parentGlAccountCategoryChoice == null)

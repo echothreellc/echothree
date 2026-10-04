@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.forum.forumforumthread;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.result.EditForumForumThreadResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -85,7 +84,7 @@ public class EditAction
                 var executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {
-                    var result = (EditForumForumThreadResult)executionResult.getResult();
+                    var result = executionResult.getResult();
                     
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -101,7 +100,7 @@ public class EditAction
 
             var commandResult = ForumUtil.getHome().editForumForumThread(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (EditForumForumThreadResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             if(result != null) {
                 var edit = result.getEdit();

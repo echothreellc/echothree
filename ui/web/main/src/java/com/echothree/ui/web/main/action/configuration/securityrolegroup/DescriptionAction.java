@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.securityrolegroup;
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.result.GetSecurityRoleGroupDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -57,7 +56,7 @@ public class DescriptionAction
         var commandResult = SecurityUtil.getHome().getSecurityRoleGroupDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSecurityRoleGroupDescriptionsResult) executionResult.getResult();
+            var result = executionResult.getResult();
             var securityRoleGroupTransfer = result.getSecurityRoleGroup();
 
             request.setAttribute(AttributeConstants.SECURITY_ROLE_GROUP, securityRoleGroupTransfer);

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.appearance;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetTextTransformationChoicesResult;
 import com.echothree.model.control.core.common.choice.TextTransformationChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -44,7 +43,7 @@ public class TextTransformationAddActionForm
 
             var commandResult = CoreUtil.getHome().getTextTransformationChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var getTextTransformationChoicesResult = (GetTextTransformationChoicesResult)executionResult.getResult();
+            var getTextTransformationChoicesResult = executionResult.getResult();
             textTransformationChoices = getTextTransformationChoicesResult.getTextTransformationChoices();
 
             if(textTransformationChoice == null) {

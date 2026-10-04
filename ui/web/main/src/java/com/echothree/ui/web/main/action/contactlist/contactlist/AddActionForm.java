@@ -17,10 +17,6 @@
 package com.echothree.ui.web.main.action.contactlist.contactlist;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.result.GetContactListFrequencyChoicesResult;
-import com.echothree.control.user.contactlist.common.result.GetContactListGroupChoicesResult;
-import com.echothree.control.user.contactlist.common.result.GetContactListTypeChoicesResult;
-import com.echothree.control.user.contactlist.common.result.GetPartyContactListStatusChoicesResult;
 import com.echothree.model.control.contactlist.common.choice.ContactListFrequencyChoicesBean;
 import com.echothree.model.control.contactlist.common.choice.ContactListGroupChoicesBean;
 import com.echothree.model.control.contactlist.common.choice.ContactListTypeChoicesBean;
@@ -61,7 +57,7 @@ public class AddActionForm
 
                 var commandResult = ContactListUtil.getHome().getContactListGroupChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var getContactListGroupChoicesResult = (GetContactListGroupChoicesResult)executionResult.getResult();
+                var getContactListGroupChoicesResult = executionResult.getResult();
                 contactListGroupChoices = getContactListGroupChoicesResult.getContactListGroupChoices();
 
                 if(contactListGroupChoice == null) {
@@ -83,7 +79,7 @@ public class AddActionForm
 
                 var commandResult = ContactListUtil.getHome().getContactListTypeChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var getContactListTypeChoicesResult = (GetContactListTypeChoicesResult)executionResult.getResult();
+                var getContactListTypeChoicesResult = executionResult.getResult();
                 contactListTypeChoices = getContactListTypeChoicesResult.getContactListTypeChoices();
 
                 if(contactListTypeChoice == null) {
@@ -105,7 +101,7 @@ public class AddActionForm
 
                 var commandResult = ContactListUtil.getHome().getContactListFrequencyChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var getContactListFrequencyChoicesResult = (GetContactListFrequencyChoicesResult)executionResult.getResult();
+                var getContactListFrequencyChoicesResult = executionResult.getResult();
                 contactListFrequencyChoices = getContactListFrequencyChoicesResult.getContactListFrequencyChoices();
 
                 if(contactListFrequencyChoice == null) {
@@ -127,7 +123,7 @@ public class AddActionForm
 
                 var commandResult = ContactListUtil.getHome().getPartyContactListStatusChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var getPartyContactListStatusChoicesResult = (GetPartyContactListStatusChoicesResult)executionResult.getResult();
+                var getPartyContactListStatusChoicesResult = executionResult.getResult();
                 defaultPartyContactListStatusChoices = getPartyContactListStatusChoicesResult.getPartyContactListStatusChoices();
 
                 if(defaultPartyContactListStatusChoice == null) {

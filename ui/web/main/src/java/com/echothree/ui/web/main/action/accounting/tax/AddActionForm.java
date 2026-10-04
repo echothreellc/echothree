@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.accounting.tax;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetGlAccountChoicesResult;
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.result.GetContactMechanismPurposeChoicesResult;
 import com.echothree.model.control.accounting.common.choice.GlAccountChoicesBean;
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.common.choice.ContactMechanismPurposeChoicesBean;
@@ -60,7 +58,7 @@ public class AddActionForm
 
             var commandResult = ContactUtil.getHome().getContactMechanismPurposeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getContactMechanismPurposeChoicesResult = (GetContactMechanismPurposeChoicesResult)executionResult.getResult();
+            var getContactMechanismPurposeChoicesResult = executionResult.getResult();
             contactMechanismPurposeChoices = getContactMechanismPurposeChoicesResult.getContactMechanismPurposeChoices();
 
             if(contactMechanismPurposeChoice == null) {
@@ -79,7 +77,7 @@ public class AddActionForm
 
             var commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getGlAccountChoicesResult = (GetGlAccountChoicesResult)executionResult.getResult();
+            var getGlAccountChoicesResult = executionResult.getResult();
             glAccountChoices = getGlAccountChoicesResult.getGlAccountChoices();
 
             if(glAccountChoice == null) {

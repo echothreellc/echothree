@@ -18,7 +18,6 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.result.GetContentCategoryResultsFacetsResult;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.MapWrapper;
 import javax.naming.NamingException;
@@ -106,7 +105,7 @@ public class GetContentCategoryResultsFacetsTag
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetContentCategoryResultsFacetsResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 pageContext.setAttribute(var, new MapWrapper<>(result.getUserVisitSearchFacets()), scope);
             }

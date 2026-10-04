@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.filter.filteradjustmentamount;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetCurrencyChoicesResult;
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.result.GetUnitOfMeasureChoicesResult;
 import com.echothree.model.control.accounting.common.choice.CurrencyChoicesBean;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.common.choice.UnitOfMeasureChoicesBean;
@@ -54,7 +52,7 @@ public class AddActionForm
 
             var commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
+            var getCurrencyChoicesResult = executionResult.getResult();
             currencyChoices = getCurrencyChoicesResult.getCurrencyChoices();
 
             if(currencyChoice == null)
@@ -72,7 +70,7 @@ public class AddActionForm
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getUnitOfMeasureChoicesResult = (GetUnitOfMeasureChoicesResult)executionResult.getResult();
+            var getUnitOfMeasureChoicesResult = executionResult.getResult();
             unitOfMeasureChoices = getUnitOfMeasureChoicesResult.getUnitOfMeasureChoices();
 
             if(unitOfMeasureChoice == null)

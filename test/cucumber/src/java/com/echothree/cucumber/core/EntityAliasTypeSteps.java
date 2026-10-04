@@ -17,8 +17,6 @@
 package com.echothree.cucumber.core;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.CreateEntityAliasTypeResult;
-import com.echothree.control.user.core.common.result.EditEntityAliasTypeResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -50,7 +48,7 @@ public class EntityAliasTypeSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (CreateEntityAliasTypeResult)executionResult.getResult();
+                    var result = executionResult.getResult();
                     persona.lastEntityAliasTypeName = result.getEntityAliasTypeName();
 
                     persona.createEntityAliasTypeForm = null;
@@ -106,7 +104,7 @@ public class EntityAliasTypeSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditEntityAliasTypeResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     if(!executionResult.getHasErrors()) {
                         persona.entityAliasTypeEdit = result.getEdit();

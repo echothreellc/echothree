@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.transactionglaccountcategory;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetTransactionGlAccountCategoriesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -55,7 +54,7 @@ public class MainAction
 
         var commandResult = AccountingUtil.getHome().getTransactionGlAccountCategories(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetTransactionGlAccountCategoriesResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var transactionTypeTransfer = result.getTransactionType();
 
         request.setAttribute(AttributeConstants.TRANSACTION_TYPE, transactionTypeTransfer);

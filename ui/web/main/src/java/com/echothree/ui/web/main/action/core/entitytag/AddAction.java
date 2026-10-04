@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.entitytag;
 
 import com.echothree.control.user.tag.common.TagUtil;
-import com.echothree.control.user.tag.common.result.GetTagScopeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
@@ -64,7 +63,7 @@ public class AddAction
 
         var commandResult = TagUtil.getHome().getTagScope(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetTagScopeResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.TAG_SCOPE, result.getTagScope());
     }

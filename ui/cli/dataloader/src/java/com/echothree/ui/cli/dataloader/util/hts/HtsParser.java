@@ -21,7 +21,6 @@ import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.geo.common.GeoService;
 import com.echothree.control.user.geo.common.GeoUtil;
 import com.echothree.control.user.geo.common.form.GeoFormFactory;
-import com.echothree.control.user.geo.common.result.GetCountryResult;
 import com.echothree.control.user.item.common.ItemService;
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.model.control.geo.common.Countries;
@@ -100,7 +99,7 @@ public class HtsParser {
         var commandResult = getGeoService().getCountry(getUserVisit(), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var getCountryResult = (GetCountryResult)executionResult.getResult();
+            var getCountryResult = executionResult.getResult();
 
             country = getCountryResult.getCountry();
         } else {

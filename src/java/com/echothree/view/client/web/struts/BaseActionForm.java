@@ -219,7 +219,7 @@ public class BaseActionForm
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
 
-            setFormValidateResult((ValidateResult)executionResult.getResult(), returnTypes);
+            setFormValidateResult(executionResult.getResult(), returnTypes);
         }
 
         request.setAttribute(TagConstants.CommandResultName, commandResult);

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.workflowentrancestep;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.result.GetWorkflowEntranceStepsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -61,7 +60,7 @@ public class MainAction
 
             var commandResult = WorkflowUtil.getHome().getWorkflowEntranceSteps(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetWorkflowEntranceStepsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var workflowEntrance = result.getWorkflowEntrance();
 
             if(workflowEntrance == null) {

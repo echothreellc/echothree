@@ -17,8 +17,6 @@
 package com.echothree.ui.web.main.action.warehouse.warehouse;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.result.GetWarehouseResultsResult;
-import com.echothree.control.user.search.common.result.SearchWarehousesResult;
 import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.search.common.SearchTypes;
 import com.echothree.model.data.search.common.SearchResultConstants;
@@ -73,7 +71,7 @@ public class SearchAction
 
         var commandResult = SearchUtil.getHome().getWarehouseResults(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetWarehouseResultsResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var iter = result.getWarehouseResults().iterator();
         if(iter.hasNext()) {
             warehouseName = iter.next().getWarehouse().getWarehouseName();
@@ -102,7 +100,7 @@ public class SearchAction
                 forwardKey = ForwardConstants.DISPLAY;
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (SearchWarehousesResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 var count = result.getCount();
 
                 if(count == 0 || count > 1) {

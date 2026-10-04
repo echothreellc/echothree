@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.humanresources.employee;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.result.GetEmployeeResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetPartyTypeResult;
 import com.echothree.model.control.comment.common.CommentOptions;
 import com.echothree.model.control.contact.common.ContactOptions;
 import com.echothree.model.control.core.common.CoreOptions;
@@ -69,7 +67,7 @@ public class ReviewAction
 
         var commandResult = PartyUtil.getHome().getPartyType(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetPartyTypeResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.PARTY_TYPE, result.getPartyType());
     }
@@ -107,7 +105,7 @@ public class ReviewAction
 
         var commandResult = EmployeeUtil.getHome().getEmployee(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetEmployeeResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var employee = result.getEmployee();
 
         if(employee == null) {

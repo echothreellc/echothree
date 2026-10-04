@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.partyskill;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.result.GetSkillTypeChoicesResult;
 import com.echothree.model.control.employee.common.choice.SkillTypeChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -44,7 +43,7 @@ public class AddActionForm
 
             var commandResult = EmployeeUtil.getHome().getSkillTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSkillTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             skillTypeChoices = result.getSkillTypeChoices();
 
             if(skillTypeChoice == null)

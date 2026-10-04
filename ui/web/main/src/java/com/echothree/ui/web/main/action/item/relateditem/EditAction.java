@@ -89,7 +89,7 @@ public class EditAction
             throws Exception {
         var commandResult = ItemUtil.getHome().editRelatedItem(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (EditRelatedItemResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.RELATED_ITEM, result.getRelatedItem());
         

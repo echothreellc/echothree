@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.payment.paymentmethod;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.result.GetPaymentMethodDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -57,7 +56,7 @@ public class DescriptionAction
         var commandResult = PaymentUtil.getHome().getPaymentMethodDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPaymentMethodDescriptionsResult) executionResult.getResult();
+            var result = executionResult.getResult();
             var paymentMethodTransfer = result.getPaymentMethod();
 
             request.setAttribute(AttributeConstants.PAYMENT_METHOD, paymentMethodTransfer);

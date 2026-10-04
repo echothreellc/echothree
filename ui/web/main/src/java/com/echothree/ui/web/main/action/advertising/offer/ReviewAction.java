@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.advertising.offer;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.result.GetOfferResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.offer.common.OfferOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -70,7 +69,7 @@ public class ReviewAction
 
         var commandResult = OfferUtil.getHome().getOffer(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetOfferResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var offer = result.getOffer();
 
         if(offer == null) {

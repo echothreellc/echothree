@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.workflowstep;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.result.GetWorkflowStepResult;
 import com.echothree.model.control.workflow.common.transfer.WorkflowStepTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -60,7 +59,7 @@ public class ReviewAction
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetWorkflowStepResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             workflowStep = result.getWorkflowStep();
         }

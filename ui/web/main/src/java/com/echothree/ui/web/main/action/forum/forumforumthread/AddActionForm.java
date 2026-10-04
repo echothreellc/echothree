@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.forum.forumforumthread;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.result.GetForumChoicesResult;
 import com.echothree.model.control.forum.common.choice.ForumChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -48,7 +47,7 @@ public class AddActionForm
 
             var commandResult = ForumUtil.getHome().getForumChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getForumChoicesResult = (GetForumChoicesResult)executionResult.getResult();
+            var getForumChoicesResult = executionResult.getResult();
             forumChoices = getForumChoicesResult.getForumChoices();
 
             if(forumChoice == null) {

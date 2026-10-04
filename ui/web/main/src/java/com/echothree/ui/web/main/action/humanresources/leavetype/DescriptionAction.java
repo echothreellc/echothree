@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.leavetype;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.result.GetLeaveTypeDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -57,7 +56,7 @@ public class DescriptionAction
         var commandResult = EmployeeUtil.getHome().getLeaveTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetLeaveTypeDescriptionsResult) executionResult.getResult();
+            var result = executionResult.getResult();
             var leaveTypeTransfer = result.getLeaveType();
 
             request.setAttribute(AttributeConstants.LEAVE_TYPE, leaveTypeTransfer);

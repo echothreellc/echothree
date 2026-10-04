@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.advertising.offerchaintype;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.result.EditOfferChainTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -88,7 +87,7 @@ public class EditAction
                 var executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {
-                    var result = (EditOfferChainTypeResult)executionResult.getResult();
+                    var result = executionResult.getResult();
                     
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -104,7 +103,7 @@ public class EditAction
 
             var commandResult = OfferUtil.getHome().editOfferChainType(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (EditOfferChainTypeResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             if(result != null) {
                 var edit = result.getEdit();

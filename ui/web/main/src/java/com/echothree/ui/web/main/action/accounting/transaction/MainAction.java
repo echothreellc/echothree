@@ -71,7 +71,7 @@ public class MainAction
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
             
-            result = (GetTransactionsResult)executionResult.getResult();
+            result = executionResult.getResult();
             transactionGroup = result.getTransactionGroup();
         }
         

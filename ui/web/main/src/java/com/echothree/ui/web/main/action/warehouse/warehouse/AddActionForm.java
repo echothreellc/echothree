@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.warehouse.warehouse;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.result.GetPrinterGroupChoicesResult;
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.result.GetWarehouseTypeChoicesResult;
 import com.echothree.model.control.printer.common.choice.PrinterGroupChoicesBean;
 import com.echothree.model.control.warehouse.common.choice.WarehouseTypeChoicesBean;
 import com.echothree.view.client.web.struts.BasePartyActionForm;
@@ -60,7 +58,7 @@ public class AddActionForm
 
             var commandResult = WarehouseUtil.getHome().getWarehouseTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetWarehouseTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             warehouseTypeChoices = result.getWarehouseTypeChoices();
 
             if(warehouseTypeChoice == null) {
@@ -79,7 +77,7 @@ public class AddActionForm
 
                 var commandResult = PrinterUtil.getHome().getPrinterGroupChoices(userVisitPK, form);
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetPrinterGroupChoicesResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 inventoryMovePrinterGroupChoices = result.getPrinterGroupChoices();
                 
                 if(inventoryMovePrinterGroupChoice == null) {
@@ -101,7 +99,7 @@ public class AddActionForm
 
                 var commandResult = PrinterUtil.getHome().getPrinterGroupChoices(userVisitPK, form);
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetPrinterGroupChoicesResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 picklistPrinterGroupChoices = result.getPrinterGroupChoices();
                 
                 if(picklistPrinterGroupChoice == null) {
@@ -123,7 +121,7 @@ public class AddActionForm
 
                 var commandResult = PrinterUtil.getHome().getPrinterGroupChoices(userVisitPK, form);
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetPrinterGroupChoicesResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 packingListPrinterGroupChoices = result.getPrinterGroupChoices();
                 
                 if(packingListPrinterGroupChoice == null) {
@@ -145,7 +143,7 @@ public class AddActionForm
 
                 var commandResult = PrinterUtil.getHome().getPrinterGroupChoices(userVisitPK, form);
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetPrinterGroupChoicesResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 shippingManifestPrinterGroupChoices = result.getPrinterGroupChoices();
                 
                 if(shippingManifestPrinterGroupChoice == null) {

@@ -17,10 +17,7 @@
 package com.echothree.ui.web.main.action.customer.customerpaymentmethod.add;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.result.GetContactMechanismChoicesResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetNameSuffixChoicesResult;
-import com.echothree.control.user.party.common.result.GetPersonalTitleChoicesResult;
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.common.choice.ContactMechanismChoicesBean;
 import com.echothree.model.control.party.common.choice.NameSuffixChoicesBean;
@@ -73,7 +70,7 @@ public class Step2ActionForm
 
             var commandResult = PartyUtil.getHome().getPersonalTitleChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPersonalTitleChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             personalTitleChoices = result.getPersonalTitleChoices();
 
             if(personalTitleChoice == null)
@@ -91,7 +88,7 @@ public class Step2ActionForm
 
             var commandResult = PartyUtil.getHome().getNameSuffixChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetNameSuffixChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             nameSuffixChoices = result.getNameSuffixChoices();
 
             if(nameSuffixChoice == null)
@@ -111,7 +108,7 @@ public class Step2ActionForm
 
             var commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetContactMechanismChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             billingContactMechanismChoices = result.getContactMechanismChoices();
 
             if(billingContactMechanismChoice == null) {
@@ -132,7 +129,7 @@ public class Step2ActionForm
 
             var commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetContactMechanismChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             issuerContactMechanismChoices = result.getContactMechanismChoices();
 
             if(issuerContactMechanismChoice == null) {

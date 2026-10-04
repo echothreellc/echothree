@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.content.contentpage;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.result.GetContentPageLayoutChoicesResult;
 import com.echothree.model.control.content.common.choice.ContentPageLayoutChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -51,7 +50,7 @@ public class AddActionForm
 
             var commandResult = ContentUtil.getHome().getContentPageLayoutChoices(userVisitPK, getContentPageLayoutChoicesForm);
             var executionResult = commandResult.getExecutionResult();
-            var getContentPageLayoutChoicesResult = (GetContentPageLayoutChoicesResult)executionResult.getResult();
+            var getContentPageLayoutChoicesResult = executionResult.getResult();
             contentPageLayoutChoices = getContentPageLayoutChoicesResult.getContentPageLayoutChoices();
 
             if(contentPageLayoutChoice == null)

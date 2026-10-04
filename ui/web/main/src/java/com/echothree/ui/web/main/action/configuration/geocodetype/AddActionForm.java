@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.geocodetype;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.result.GetGeoCodeTypeChoicesResult;
 import com.echothree.model.control.geo.common.choice.GeoCodeTypeChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -49,7 +48,7 @@ public class AddActionForm
 
             var commandResult = GeoUtil.getHome().getGeoCodeTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getGeoCodeTypeChoicesResult = (GetGeoCodeTypeChoicesResult)executionResult.getResult();
+            var getGeoCodeTypeChoicesResult = executionResult.getResult();
             parentGeoCodeTypeChoices = getGeoCodeTypeChoicesResult.getGeoCodeTypeChoices();
 
             if(parentGeoCodeTypeChoice == null) {

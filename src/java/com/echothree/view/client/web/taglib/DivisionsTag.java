@@ -18,7 +18,6 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetDivisionsResult;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.ListWrapper;
 import javax.naming.NamingException;
@@ -107,7 +106,7 @@ public class DivisionsTag
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetDivisionsResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getDivisions()), scope);
             }

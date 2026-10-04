@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.itemaccountingcategory;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetItemAccountingCategoryChoicesResult;
 import com.echothree.model.control.accounting.common.choice.ItemAccountingCategoryChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -49,7 +48,7 @@ public class AddActionForm
 
             var commandResult = AccountingUtil.getHome().getItemAccountingCategoryChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getItemAccountingCategoryChoicesResult = (GetItemAccountingCategoryChoicesResult)executionResult.getResult();
+            var getItemAccountingCategoryChoicesResult = executionResult.getResult();
             parentItemAccountingCategoryChoices = getItemAccountingCategoryChoicesResult.getItemAccountingCategoryChoices();
 
             if(parentItemAccountingCategoryChoice == null)

@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.comment;
 import com.echothree.control.user.comment.common.CommentUtil;
 import com.echothree.control.user.comment.common.CommentService;
 import com.echothree.control.user.comment.common.form.CommentFormFactory;
-import com.echothree.control.user.comment.common.result.CreateCommentResult;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import java.util.HashSet;
@@ -115,7 +114,7 @@ public class CommentsHandler
             
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (CreateCommentResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 var commentName = result.getCommentName();
                 
                 for(var commentUsageTypeName : commentUsages) {

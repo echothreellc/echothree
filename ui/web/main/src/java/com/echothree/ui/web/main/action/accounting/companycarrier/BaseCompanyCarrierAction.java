@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.accounting.companycarrier;
 
 import com.echothree.control.user.carrier.common.CarrierUtil;
-import com.echothree.control.user.carrier.common.result.GetPartyCarrierResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetCompanyResult;
 import com.echothree.model.control.carrier.common.transfer.PartyCarrierTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -40,7 +38,7 @@ public abstract class BaseCompanyCarrierAction<A
 
         var commandResult = PartyUtil.getHome().getCompany(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetCompanyResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.COMPANY, result.getCompany());
     }
@@ -59,7 +57,7 @@ public abstract class BaseCompanyCarrierAction<A
 
         var commandResult = CarrierUtil.getHome().getPartyCarrier(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetPartyCarrierResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         return result.getPartyCarrier();
     }

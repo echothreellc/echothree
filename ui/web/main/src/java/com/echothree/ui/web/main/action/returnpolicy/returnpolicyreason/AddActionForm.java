@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.returnpolicy.returnpolicyreason;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.result.GetReturnReasonChoicesResult;
 import com.echothree.model.control.returnpolicy.common.choice.ReturnReasonChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -50,7 +49,7 @@ public class AddActionForm
 
             var commandResult = ReturnPolicyUtil.getHome().getReturnReasonChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getReturnReasonChoicesResult = (GetReturnReasonChoicesResult)executionResult.getResult();
+            var getReturnReasonChoicesResult = executionResult.getResult();
             returnReasonChoices = getReturnReasonChoicesResult.getReturnReasonChoices();
 
             if(returnReasonChoice == null) {

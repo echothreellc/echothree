@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.content.contentwebaddress;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.result.GetContentWebAddressDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class DescriptionAction
 
             var commandResult = ContentUtil.getHome().getContentWebAddressDescriptions(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetContentWebAddressDescriptionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var contentWebAddressTransfer = result.getContentWebAddress();
             
             request.setAttribute(AttributeConstants.CONTENT_WEB_ADDRESS, contentWebAddressTransfer);

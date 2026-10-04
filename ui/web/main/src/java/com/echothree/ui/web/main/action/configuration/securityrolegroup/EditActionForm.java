@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.securityrolegroup;
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.result.GetSecurityRoleGroupChoicesResult;
 import com.echothree.model.control.security.common.choice.SecurityRoleGroupChoicesBean;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -43,7 +42,7 @@ public class EditActionForm
 
             var commandResult = SecurityUtil.getHome().getSecurityRoleGroupChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getSecurityRoleGroupChoicesResult = (GetSecurityRoleGroupChoicesResult)executionResult.getResult();
+            var getSecurityRoleGroupChoicesResult = executionResult.getResult();
             parentSecurityRoleGroupChoices = getSecurityRoleGroupChoicesResult.getSecurityRoleGroupChoices();
 
             if(parentSecurityRoleGroupChoice == null) {

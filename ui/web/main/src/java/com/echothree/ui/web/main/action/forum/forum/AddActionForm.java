@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.forum.forum;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.result.GetForumTypeChoicesResult;
 import com.echothree.control.user.icon.common.IconUtil;
-import com.echothree.control.user.icon.common.result.GetIconChoicesResult;
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.result.GetSequenceChoicesResult;
 import com.echothree.model.control.forum.common.choice.ForumTypeChoicesBean;
 import com.echothree.model.control.icon.common.IconConstants;
 import com.echothree.model.control.icon.common.choice.IconChoicesBean;
@@ -62,7 +59,7 @@ public class AddActionForm
 
             var commandResult = ForumUtil.getHome().getForumTypeChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetForumTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             forumTypeChoices = result.getForumTypeChoices();
 
             if(forumTypeChoice == null)
@@ -81,7 +78,7 @@ public class AddActionForm
 
             var commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var getIconChoicesResult = (GetIconChoicesResult)executionResult.getResult();
+            var getIconChoicesResult = executionResult.getResult();
             iconChoices = getIconChoicesResult.getIconChoices();
 
             if(iconChoice == null)
@@ -100,7 +97,7 @@ public class AddActionForm
 
             var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSequenceChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             forumThreadSequenceChoices = result.getSequenceChoices();
 
             if(forumThreadSequenceChoice == null)
@@ -119,7 +116,7 @@ public class AddActionForm
 
             var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSequenceChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             forumMessageSequenceChoices = result.getSequenceChoices();
 
             if(forumMessageSequenceChoice == null)

@@ -68,7 +68,7 @@ public class MainAction
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
             
-            result = (GetWorkflowEntityStatusesResult)executionResult.getResult();
+            result = executionResult.getResult();
             workflow = result.getWorkflow();
         }
 

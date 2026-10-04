@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.entitymultiplelistitemattribute;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetEntityListItemChoicesResult;
 import com.echothree.model.control.core.common.choice.EntityListItemChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -48,7 +47,7 @@ public class AddActionForm
 
             var commandResult = CoreUtil.getHome().getEntityListItemChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var getEntityListItemChoicesResult = (GetEntityListItemChoicesResult)executionResult.getResult();
+            var getEntityListItemChoicesResult = executionResult.getResult();
             entityListItemChoices = getEntityListItemChoicesResult.getEntityListItemChoices();
 
             if(entityListItemChoice == null)

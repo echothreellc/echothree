@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.accounting.companydocument;
 
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.common.result.GetPartyDocumentResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetCompanyResult;
 import com.echothree.model.control.document.common.transfer.PartyDocumentTransfer;
 import com.echothree.model.control.party.common.transfer.CompanyTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -45,7 +43,7 @@ public abstract class BaseCompanyDocumentAction<A
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCompanyResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             company = result.getCompany();
 
@@ -77,7 +75,7 @@ public abstract class BaseCompanyDocumentAction<A
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPartyDocumentResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             partyDocument = result.getPartyDocument();
 
