@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.itemcategory;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemCategoryResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.item.common.transfer.ItemCategoryTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -67,7 +66,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemCategoryResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             itemCategory = result.getItemCategory();
         }

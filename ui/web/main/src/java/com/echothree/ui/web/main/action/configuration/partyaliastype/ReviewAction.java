@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.partyaliastype;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetPartyAliasTypeResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.model.control.party.common.transfer.PartyAliasTypeTransfer;
@@ -76,7 +75,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPartyAliasTypeResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             partyAliasType = result.getPartyAliasType();
         }

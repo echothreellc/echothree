@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.harmonizedtariffschedulecodeuse;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetHarmonizedTariffScheduleCodeUseTypeChoicesResult;
 import com.echothree.model.control.item.common.choice.HarmonizedTariffScheduleCodeUseTypeChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -45,7 +44,7 @@ public class AddActionForm
 
             var commandResult = ItemUtil.getHome().getHarmonizedTariffScheduleCodeUseTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getHarmonizedTariffScheduleCodeUseTypeChoicesResult = (GetHarmonizedTariffScheduleCodeUseTypeChoicesResult)executionResult.getResult();
+            var getHarmonizedTariffScheduleCodeUseTypeChoicesResult = executionResult.getResult();
             harmonizedTariffScheduleCodeUseTypeChoices = getHarmonizedTariffScheduleCodeUseTypeChoicesResult.getHarmonizedTariffScheduleCodeUseTypeChoices();
 
             if(harmonizedTariffScheduleCodeUseTypeChoice == null) {

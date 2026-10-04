@@ -17,8 +17,6 @@
 package com.echothree.ui.web.cms.action;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemDescriptionResult;
-import com.echothree.control.user.item.common.result.GetItemDescriptionTypeResult;
 import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
@@ -107,7 +105,7 @@ public class ItemDescriptionAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemDescriptionTypeResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             itemDescriptionType = result.getItemDescriptionType();
         }
@@ -143,7 +141,7 @@ public class ItemDescriptionAction
         var commandResult = ItemUtil.getHome().getItemDescription(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemDescriptionResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             itemDescription = result.getItemDescription();
         }

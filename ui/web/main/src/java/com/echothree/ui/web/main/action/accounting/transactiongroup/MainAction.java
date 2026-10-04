@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.transactiongroup;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetTransactionGroupsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -53,7 +52,7 @@ public class MainAction
         try {
             var commandResult = AccountingUtil.getHome().getTransactionGroups(getUserVisitPK(request), null);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetTransactionGroupsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.TRANSACTION_GROUPS, result.getTransactionGroups());
             forwardKey = ForwardConstants.DISPLAY;

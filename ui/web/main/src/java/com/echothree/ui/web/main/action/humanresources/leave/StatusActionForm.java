@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.leave;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.result.GetLeaveStatusChoicesResult;
 import com.echothree.model.control.employee.common.choice.LeaveStatusChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -47,7 +46,7 @@ public class StatusActionForm
 
             var commandResult = EmployeeUtil.getHome().getLeaveStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetLeaveStatusChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             leaveStatusChoices = result.getLeaveStatusChoices();
 
             if(leaveStatusChoice == null) {

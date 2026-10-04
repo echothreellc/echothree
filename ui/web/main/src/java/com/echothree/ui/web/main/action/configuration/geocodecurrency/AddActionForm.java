@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.geocodecurrency;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetCurrencyChoicesResult;
 import com.echothree.model.control.accounting.common.choice.CurrencyChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -48,7 +47,7 @@ public class AddActionForm
 
                 var commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
+                var getCurrencyChoicesResult = executionResult.getResult();
                 currencyChoices = getCurrencyChoicesResult.getCurrencyChoices();
                 
                 if(currencyChoice == null)

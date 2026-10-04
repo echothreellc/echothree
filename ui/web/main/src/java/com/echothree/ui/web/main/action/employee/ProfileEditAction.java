@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.employee;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.EditProfileResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -87,7 +86,7 @@ public class ProfileEditAction
                 var executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {
-                    var result = (EditProfileResult)executionResult.getResult();
+                    var result = executionResult.getResult();
                     
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -103,7 +102,7 @@ public class ProfileEditAction
 
             var commandResult = PartyUtil.getHome().editProfile(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (EditProfileResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             if(result != null) {
                 var edit = result.getEdit();

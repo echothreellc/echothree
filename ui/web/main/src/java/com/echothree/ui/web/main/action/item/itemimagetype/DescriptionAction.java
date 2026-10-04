@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.itemimagetype;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemImageTypeDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -57,7 +56,7 @@ public class DescriptionAction
         var commandResult = ItemUtil.getHome().getItemImageTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemImageTypeDescriptionsResult) executionResult.getResult();
+            var result = executionResult.getResult();
             var itemImageTypeTransfer = result.getItemImageType();
 
             request.setAttribute(AttributeConstants.ITEM_IMAGE_TYPE, itemImageTypeTransfer);

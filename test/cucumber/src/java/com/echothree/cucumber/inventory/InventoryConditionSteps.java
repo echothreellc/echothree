@@ -17,8 +17,6 @@
 package com.echothree.cucumber.inventory;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.result.CreateInventoryConditionResult;
-import com.echothree.control.user.inventory.common.result.EditInventoryConditionResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -49,7 +47,7 @@ public class InventoryConditionSteps implements En {
                     var commandResult = InventoryUtil.getHome().createInventoryCondition(persona.userVisitPK, createInventoryConditionForm);
 
                     LastCommandResult.commandResult = commandResult;
-                    var result = (CreateInventoryConditionResult)commandResult.getExecutionResult().getResult();
+                    var result = commandResult.getExecutionResult().getResult();
 
                     if(result != null) {
                         persona.lastInventoryConditionName = commandResult.getHasErrors() ? null : result.getInventoryConditionName();
@@ -109,7 +107,7 @@ public class InventoryConditionSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditInventoryConditionResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     if(!executionResult.getHasErrors()) {
                         persona.inventoryConditionEdit = result.getEdit();

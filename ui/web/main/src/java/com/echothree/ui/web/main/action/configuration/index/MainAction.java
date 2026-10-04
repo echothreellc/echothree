@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.index;
 
 import com.echothree.control.user.index.common.IndexUtil;
-import com.echothree.control.user.index.common.result.GetIndexesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -53,7 +52,7 @@ public class MainAction
         try {
             var commandResult = IndexUtil.getHome().getIndexes(getUserVisitPK(request), null);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetIndexesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.INDEXES, result.getIndexes());
             forwardKey = ForwardConstants.DISPLAY;

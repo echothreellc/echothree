@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.forum;
 import com.echothree.control.user.forum.common.ForumUtil;
 import com.echothree.control.user.forum.common.ForumService;
 import com.echothree.control.user.forum.common.form.ForumFormFactory;
-import com.echothree.control.user.forum.common.result.CreateBlogEntryResult;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -100,7 +99,7 @@ public class ForumHandler
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (CreateBlogEntryResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 initialDataParser.pushHandler(new BlogEntryHandler(initialDataParser, this, result.getForumMessageName(), result.getEntityRef()));
             }

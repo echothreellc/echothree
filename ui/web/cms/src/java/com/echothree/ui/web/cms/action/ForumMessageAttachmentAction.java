@@ -17,7 +17,6 @@
 package com.echothree.ui.web.cms.action;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.result.GetForumMessageAttachmentResult;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.MimeTypes;
 import com.echothree.model.control.forum.common.ForumOptions;
@@ -94,7 +93,7 @@ public class ForumMessageAttachmentAction
         var commandResult = ForumUtil.getHome().getForumMessageAttachment(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetForumMessageAttachmentResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             forumMessageAttachment = result.getForumMessageAttachment();
         }

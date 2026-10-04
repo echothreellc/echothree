@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.skilltype;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.result.GetSkillTypeDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class DescriptionAction
 
             var commandResult = EmployeeUtil.getHome().getSkillTypeDescriptions(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSkillTypeDescriptionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var skillTypeTransfer = result.getSkillType();
             
             request.setAttribute(AttributeConstants.SKILL_TYPE, skillTypeTransfer);

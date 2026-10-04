@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.itemvolume;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -94,7 +93,7 @@ public class AddAction
 
                 var commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetItemResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 
                 request.setAttribute(AttributeConstants.ITEM, result.getItem());
             }

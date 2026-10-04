@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.termtype;
 
 import com.echothree.control.user.term.common.TermUtil;
-import com.echothree.control.user.term.common.result.GetTermTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class ReviewAction
 
             var commandResult = TermUtil.getHome().getTermType(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetTermTypeResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var termType = result.getTermType();
             
             if(termType == null) {

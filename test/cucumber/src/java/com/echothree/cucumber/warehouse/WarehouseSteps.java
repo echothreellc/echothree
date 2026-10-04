@@ -17,8 +17,6 @@
 package com.echothree.cucumber.warehouse;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.result.CreateWarehouseResult;
-import com.echothree.control.user.warehouse.common.result.EditWarehouseResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -54,7 +52,7 @@ public class WarehouseSteps
                     var commandResult = partyUtil.createWarehouse(persona.userVisitPK, createWarehouseForm);
 
                     LastCommandResult.commandResult = commandResult;
-                    var result = (CreateWarehouseResult)commandResult.getExecutionResult().getResult();
+                    var result = commandResult.getExecutionResult().getResult();
 
                     if(result != null) {
                         persona.lastWarehouseName = commandResult.getHasErrors() ? null : result.getWarehouseName();
@@ -116,7 +114,7 @@ public class WarehouseSteps
 
                     if(!commandResult.getHasErrors()) {
                         var executionResult = commandResult.getExecutionResult();
-                        var result = (EditWarehouseResult)executionResult.getResult();
+                        var result = executionResult.getResult();
 
                         persona.warehouseEdit = result.getEdit();
                     }

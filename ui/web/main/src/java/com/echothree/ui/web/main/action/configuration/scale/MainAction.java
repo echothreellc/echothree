@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.scale;
 
 import com.echothree.control.user.scale.common.ScaleUtil;
-import com.echothree.control.user.scale.common.result.GetScalesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -54,7 +53,7 @@ public class MainAction
             var commandForm = ScaleUtil.getHome().getGetScalesForm();
             var commandResult = ScaleUtil.getHome().getScales(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetScalesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SCALES, result.getScales());
             forwardKey = ForwardConstants.DISPLAY;

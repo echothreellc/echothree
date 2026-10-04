@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.transaction;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetTransactionResult;
 import com.echothree.model.control.accounting.common.AccountingOptions;
 import com.echothree.model.control.accounting.common.transfer.TransactionTransfer;
 import com.echothree.model.control.core.common.CoreOptions;
@@ -73,7 +72,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetTransactionResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             transaction = result.getTransaction();
         }

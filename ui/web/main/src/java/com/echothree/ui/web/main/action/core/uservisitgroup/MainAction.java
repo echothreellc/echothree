@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.uservisitgroup;
 
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.result.GetUserVisitGroupsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -49,7 +48,7 @@ public class MainAction
             throws Exception {
         var commandResult = UserUtil.getHome().getUserVisitGroups(getUserVisitPK(request), null);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetUserVisitGroupsResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.USER_VISIT_GROUPS, result.getUserVisitGroups());
 

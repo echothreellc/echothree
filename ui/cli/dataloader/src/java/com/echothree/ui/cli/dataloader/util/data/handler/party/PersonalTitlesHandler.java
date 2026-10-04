@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.party;
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.PartyService;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
-import com.echothree.control.user.party.common.result.CreatePersonalTitleResult;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -68,7 +67,7 @@ public class PersonalTitlesHandler
 
                     var commandResult = partyService.createPersonalTitle(initialDataParser.getUserVisit(), form);
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (CreatePersonalTitleResult)executionResult.getResult();
+                    var result = executionResult.getResult();
                     
                     initialDataParser.addPersonalTitle(result.getPersonalTitleId(), description);
                 }

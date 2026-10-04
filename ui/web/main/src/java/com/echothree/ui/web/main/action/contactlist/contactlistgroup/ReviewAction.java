@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.contactlist.contactlistgroup;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.result.GetContactListGroupResult;
 import com.echothree.model.control.contactlist.common.transfer.ContactListGroupTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -59,7 +58,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetContactListGroupResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             contactListGroup = result.getContactListGroup();
         }

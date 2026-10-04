@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.chain.lettercontactmechanismpurpose;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.result.GetContactMechanismPurposeChoicesResult;
 import com.echothree.model.control.contact.common.choice.ContactMechanismPurposeChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -47,7 +46,7 @@ public class AddActionForm
 
             var commandResult = ContactUtil.getHome().getContactMechanismPurposeChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetContactMechanismPurposeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             contactMechanismPurposeChoices = result.getContactMechanismPurposeChoices();
 
             if(contactMechanismPurposeChoice == null) {

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.workefforttype;
 
 import com.echothree.control.user.workeffort.common.WorkEffortUtil;
-import com.echothree.control.user.workeffort.common.result.GetWorkEffortTypeDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class DescriptionAction
 
             var commandResult = WorkEffortUtil.getHome().getWorkEffortTypeDescriptions(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetWorkEffortTypeDescriptionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var workEffortTypeTransfer = result.getWorkEffortType();
             
             request.setAttribute(AttributeConstants.WORK_EFFORT_TYPE, workEffortTypeTransfer);

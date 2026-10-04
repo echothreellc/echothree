@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.entityattribute;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetEntityAttributeResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.EntityAttributeTransfer;
 import com.echothree.model.data.core.common.EntityAttributeEntityTypeConstants;
@@ -82,7 +81,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEntityAttributeResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             entityAttribute = result.getEntityAttribute();
         }

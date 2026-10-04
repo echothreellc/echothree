@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.relateditem;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetRelatedItemResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -57,7 +56,7 @@ public class ReviewAction
 
         var commandResult = ItemUtil.getHome().getRelatedItem(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetRelatedItemResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var relatedItem = result == null? null: result.getRelatedItem();
 
         if(relatedItem == null) {

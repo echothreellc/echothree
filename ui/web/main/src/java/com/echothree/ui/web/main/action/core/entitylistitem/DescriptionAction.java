@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.entitylistitem;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetEntityListItemDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -65,7 +64,7 @@ public class DescriptionAction
 
             var commandResult = CoreUtil.getHome().getEntityListItemDescriptions(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEntityListItemDescriptionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ENTITY_LIST_ITEM, result.getEntityListItem());
             request.setAttribute(AttributeConstants.ENTITY_LIST_ITEM_DESCRIPTIONS, result.getEntityListItemDescriptions());

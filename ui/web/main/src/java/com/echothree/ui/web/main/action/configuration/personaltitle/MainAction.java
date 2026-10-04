@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.personaltitle;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetPersonalTitlesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -53,7 +52,7 @@ public class MainAction
         try {
             var commandResult = PartyUtil.getHome().getPersonalTitles(getUserVisitPK(request), null);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPersonalTitlesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.PERSONAL_TITLES, result.getPersonalTitles());
             forwardKey = ForwardConstants.DISPLAY;

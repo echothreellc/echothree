@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.item.itemunitcustomertypelimit;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.result.GetCustomerTypeChoicesResult;
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.result.GetInventoryConditionChoicesResult;
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.result.GetUnitOfMeasureTypeChoicesResult;
 import com.echothree.model.control.customer.common.choice.CustomerTypeChoicesBean;
 import com.echothree.model.control.inventory.common.InventoryConditionUseTypes;
 import com.echothree.model.control.inventory.common.choice.InventoryConditionChoicesBean;
@@ -58,7 +55,7 @@ public class AddActionForm
 
             var commandResult = InventoryUtil.getHome().getInventoryConditionChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetInventoryConditionChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             inventoryConditionChoices = result.getInventoryConditionChoices();
 
             if(inventoryConditionChoice == null) {
@@ -78,7 +75,7 @@ public class AddActionForm
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             unitOfMeasureTypeChoices = result.getUnitOfMeasureTypeChoices();
 
             if(unitOfMeasureTypeChoice == null) {
@@ -97,7 +94,7 @@ public class AddActionForm
 
             var commandResult = CustomerUtil.getHome().getCustomerTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCustomerTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             customerTypeChoices = result.getCustomerTypeChoices();
 
             if(customerTypeChoice == null) {

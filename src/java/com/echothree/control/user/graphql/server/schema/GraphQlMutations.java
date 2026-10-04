@@ -16,270 +16,34 @@
 
 package com.echothree.control.user.graphql.server.schema;
 
-import com.echothree.control.user.inventory.common.result.CreateInventoryDispositionAdjustmentResult;
-import com.echothree.control.user.inventory.common.result.EditInventoryDispositionAdjustmentResult;
-import com.echothree.control.user.inventory.common.result.CreateInventoryTransactionReasonResult;
-import com.echothree.control.user.inventory.common.result.EditInventoryTransactionReasonResult;
-import com.echothree.control.user.inventory.common.result.CreateInventoryDispositionResult;
-import com.echothree.control.user.inventory.common.result.EditInventoryDispositionResult;
-import com.echothree.control.user.inventory.common.result.CreateInventoryTransactionRoleTypeResult;
-import com.echothree.control.user.inventory.common.result.EditInventoryTransactionRoleTypeResult;
-import com.echothree.control.user.inventory.common.result.CreateInventoryTransactionTimeTypeResult;
-import com.echothree.control.user.inventory.common.result.EditInventoryTransactionTimeTypeResult;
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.CreateGlAccountResult;
-import com.echothree.control.user.accounting.common.result.CreateItemAccountingCategoryResult;
-import com.echothree.control.user.accounting.common.result.CreateTransactionTimeTypeResult;
-import com.echothree.control.user.accounting.common.result.EditGlAccountResult;
-import com.echothree.control.user.accounting.common.result.EditItemAccountingCategoryResult;
-import com.echothree.control.user.accounting.common.result.EditTransactionTimeTypeResult;
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.campaign.common.CampaignUtil;
-import com.echothree.control.user.campaign.common.result.CreateCampaignContentResult;
-import com.echothree.control.user.campaign.common.result.CreateCampaignMediumResult;
-import com.echothree.control.user.campaign.common.result.CreateCampaignResult;
-import com.echothree.control.user.campaign.common.result.CreateCampaignSourceResult;
-import com.echothree.control.user.campaign.common.result.CreateCampaignTermResult;
-import com.echothree.control.user.campaign.common.result.EditCampaignContentResult;
-import com.echothree.control.user.campaign.common.result.EditCampaignMediumResult;
-import com.echothree.control.user.campaign.common.result.EditCampaignResult;
-import com.echothree.control.user.campaign.common.result.EditCampaignSourceResult;
-import com.echothree.control.user.campaign.common.result.EditCampaignTermResult;
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.result.CreateContentCatalogResult;
-import com.echothree.control.user.content.common.result.CreateContentCategoryResult;
-import com.echothree.control.user.content.common.result.CreateContentCollectionResult;
-import com.echothree.control.user.content.common.result.CreateContentPageLayoutResult;
-import com.echothree.control.user.content.common.result.CreateContentWebAddressResult;
-import com.echothree.control.user.content.common.result.EditContentCatalogResult;
-import com.echothree.control.user.content.common.result.EditContentCategoryItemResult;
-import com.echothree.control.user.content.common.result.EditContentCategoryResult;
-import com.echothree.control.user.content.common.result.EditContentCollectionResult;
-import com.echothree.control.user.content.common.result.EditContentPageLayoutResult;
-import com.echothree.control.user.content.common.result.EditContentWebAddressResult;
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.CreateComponentVendorResult;
-import com.echothree.control.user.core.common.result.CreateEntityAliasTypeResult;
-import com.echothree.control.user.core.common.result.CreateEntityAttributeGroupResult;
-import com.echothree.control.user.core.common.result.CreateEntityAttributeResult;
-import com.echothree.control.user.core.common.result.CreateEntityInstanceResult;
-import com.echothree.control.user.core.common.result.CreateEntityListItemResult;
-import com.echothree.control.user.core.common.result.CreateEntityTypeResult;
-import com.echothree.control.user.core.common.result.EditComponentVendorResult;
-import com.echothree.control.user.core.common.result.EditEntityAliasResult;
-import com.echothree.control.user.core.common.result.EditEntityAliasTypeResult;
-import com.echothree.control.user.core.common.result.EditEntityAttributeEntityAttributeGroupResult;
-import com.echothree.control.user.core.common.result.EditEntityAttributeGroupResult;
-import com.echothree.control.user.core.common.result.EditEntityAttributeResult;
-import com.echothree.control.user.core.common.result.EditEntityBooleanAttributeResult;
-import com.echothree.control.user.core.common.result.EditEntityBooleanDefaultResult;
-import com.echothree.control.user.core.common.result.EditEntityClobAttributeResult;
-import com.echothree.control.user.core.common.result.EditEntityDateAttributeResult;
-import com.echothree.control.user.core.common.result.EditEntityDateDefaultResult;
-import com.echothree.control.user.core.common.result.EditEntityEntityAttributeResult;
-import com.echothree.control.user.core.common.result.EditEntityGeoPointAttributeResult;
-import com.echothree.control.user.core.common.result.EditEntityGeoPointDefaultResult;
-import com.echothree.control.user.core.common.result.EditEntityIntegerAttributeResult;
-import com.echothree.control.user.core.common.result.EditEntityIntegerDefaultResult;
-import com.echothree.control.user.core.common.result.EditEntityListItemAttributeResult;
-import com.echothree.control.user.core.common.result.EditEntityListItemDefaultResult;
-import com.echothree.control.user.core.common.result.EditEntityListItemResult;
-import com.echothree.control.user.core.common.result.EditEntityLongAttributeResult;
-import com.echothree.control.user.core.common.result.EditEntityLongDefaultResult;
-import com.echothree.control.user.core.common.result.EditEntityNameAttributeResult;
-import com.echothree.control.user.core.common.result.EditEntityStringAttributeResult;
-import com.echothree.control.user.core.common.result.EditEntityStringDefaultResult;
-import com.echothree.control.user.core.common.result.EditEntityTimeAttributeResult;
-import com.echothree.control.user.core.common.result.EditEntityTimeDefaultResult;
-import com.echothree.control.user.core.common.result.EditEntityTypeResult;
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.result.CreateCustomerTypeResult;
-import com.echothree.control.user.customer.common.result.EditCustomerTypeResult;
 import com.echothree.control.user.filter.common.FilterUtil;
-import com.echothree.control.user.filter.common.result.CreateFilterAdjustmentResult;
-import com.echothree.control.user.filter.common.result.CreateFilterResult;
-import com.echothree.control.user.filter.common.result.CreateFilterStepElementResult;
-import com.echothree.control.user.filter.common.result.CreateFilterStepResult;
-import com.echothree.control.user.filter.common.result.EditFilterAdjustmentAmountResult;
-import com.echothree.control.user.filter.common.result.EditFilterAdjustmentFixedAmountResult;
-import com.echothree.control.user.filter.common.result.EditFilterAdjustmentPercentResult;
-import com.echothree.control.user.filter.common.result.EditFilterAdjustmentResult;
-import com.echothree.control.user.filter.common.result.EditFilterResult;
-import com.echothree.control.user.filter.common.result.EditFilterStepElementResult;
-import com.echothree.control.user.filter.common.result.EditFilterStepResult;
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.result.CreateGeoCodeAliasTypeResult;
-import com.echothree.control.user.geo.common.result.EditGeoCodeAliasResult;
-import com.echothree.control.user.geo.common.result.EditGeoCodeAliasTypeResult;
-import com.echothree.control.user.geo.common.result.EditGeoCodeCurrencyResult;
-import com.echothree.control.user.geo.common.result.EditGeoCodeDateTimeFormatResult;
-import com.echothree.control.user.geo.common.result.EditGeoCodeLanguageResult;
-import com.echothree.control.user.geo.common.result.EditGeoCodeTimeZoneResult;
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.result.CreateAllocationPriorityResult;
-import com.echothree.control.user.inventory.common.result.CreateInventoryAdjustmentTypeResult;
-import com.echothree.control.user.inventory.common.result.CreateInventoryBucketTypeResult;
-import com.echothree.control.user.inventory.common.result.CreateInventoryConditionResult;
-import com.echothree.control.user.inventory.common.result.CreateInventoryCostingMethodResult;
-import com.echothree.control.user.inventory.common.result.CreateInventoryLocationGroupResult;
-import com.echothree.control.user.inventory.common.result.CreateInventoryTransactionTypeResult;
-import com.echothree.control.user.inventory.common.result.EditAllocationPriorityResult;
-import com.echothree.control.user.inventory.common.result.EditInventoryAdjustmentTypeResult;
-import com.echothree.control.user.inventory.common.result.EditInventoryBucketTypeResult;
-import com.echothree.control.user.inventory.common.result.EditInventoryConditionResult;
-import com.echothree.control.user.inventory.common.result.EditInventoryCostingMethodResult;
-import com.echothree.control.user.inventory.common.result.EditInventoryLocationGroupResult;
-import com.echothree.control.user.inventory.common.result.EditInventoryTransactionTypeResult;
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.CreateItemAliasTypeResult;
-import com.echothree.control.user.item.common.result.CreateItemCategoryResult;
-import com.echothree.control.user.item.common.result.CreateItemDescriptionResult;
-import com.echothree.control.user.item.common.result.CreateItemDescriptionTypeResult;
-import com.echothree.control.user.item.common.result.CreateItemDescriptionTypeUseTypeResult;
-import com.echothree.control.user.item.common.result.CreateItemImageTypeResult;
-import com.echothree.control.user.item.common.result.CreateItemResult;
-import com.echothree.control.user.item.common.result.CreateItemVolumeTypeResult;
-import com.echothree.control.user.item.common.result.CreateItemWeightTypeResult;
-import com.echothree.control.user.item.common.result.CreateRelatedItemResult;
-import com.echothree.control.user.item.common.result.CreateRelatedItemTypeResult;
-import com.echothree.control.user.item.common.result.EditItemAliasResult;
-import com.echothree.control.user.item.common.result.EditItemAliasTypeResult;
-import com.echothree.control.user.item.common.result.EditItemCategoryResult;
-import com.echothree.control.user.item.common.result.EditItemDescriptionResult;
-import com.echothree.control.user.item.common.result.EditItemDescriptionTypeResult;
-import com.echothree.control.user.item.common.result.EditItemDescriptionTypeUseTypeResult;
-import com.echothree.control.user.item.common.result.EditItemImageTypeResult;
-import com.echothree.control.user.item.common.result.EditItemPriceResult;
-import com.echothree.control.user.item.common.result.EditItemResult;
-import com.echothree.control.user.item.common.result.EditItemUnitOfMeasureTypeResult;
-import com.echothree.control.user.item.common.result.EditItemVolumeTypeResult;
-import com.echothree.control.user.item.common.result.EditItemWeightTypeResult;
-import com.echothree.control.user.item.common.result.EditRelatedItemResult;
-import com.echothree.control.user.item.common.result.EditRelatedItemTypeResult;
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.result.CreateOfferItemResult;
-import com.echothree.control.user.offer.common.result.CreateOfferNameElementResult;
-import com.echothree.control.user.offer.common.result.CreateOfferResult;
-import com.echothree.control.user.offer.common.result.CreateOfferUseResult;
-import com.echothree.control.user.offer.common.result.CreateUseNameElementResult;
-import com.echothree.control.user.offer.common.result.CreateUseResult;
-import com.echothree.control.user.offer.common.result.CreateUseTypeResult;
-import com.echothree.control.user.offer.common.result.EditOfferCustomerTypeResult;
-import com.echothree.control.user.offer.common.result.EditOfferItemPriceResult;
-import com.echothree.control.user.offer.common.result.EditOfferNameElementResult;
-import com.echothree.control.user.offer.common.result.EditOfferResult;
-import com.echothree.control.user.offer.common.result.EditOfferUseResult;
-import com.echothree.control.user.offer.common.result.EditUseNameElementResult;
-import com.echothree.control.user.offer.common.result.EditUseResult;
-import com.echothree.control.user.offer.common.result.EditUseTypeResult;
 import com.echothree.control.user.order.common.OrderUtil;
-import com.echothree.control.user.order.common.result.CreateOrderPriorityResult;
-import com.echothree.control.user.order.common.result.CreateOrderTimeTypeResult;
-import com.echothree.control.user.order.common.result.CreateOrderTypeResult;
-import com.echothree.control.user.order.common.result.EditOrderPriorityResult;
-import com.echothree.control.user.order.common.result.EditOrderTimeTypeResult;
-import com.echothree.control.user.order.common.result.EditOrderTypeResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.CreateCustomerResult;
-import com.echothree.control.user.party.common.result.CreateCustomerWithLoginResult;
-import com.echothree.control.user.party.common.result.CreatePartyAliasTypeResult;
-import com.echothree.control.user.party.common.result.CreateVendorResult;
-import com.echothree.control.user.party.common.result.EditPartyAliasResult;
-import com.echothree.control.user.party.common.result.EditPartyAliasTypeResult;
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.result.CreatePaymentMethodTypeResult;
-import com.echothree.control.user.payment.common.result.CreatePaymentProcessorActionTypeResult;
-import com.echothree.control.user.payment.common.result.CreatePaymentProcessorResult;
-import com.echothree.control.user.payment.common.result.CreatePaymentProcessorResultCodeResult;
-import com.echothree.control.user.payment.common.result.CreatePaymentProcessorTypeResult;
-import com.echothree.control.user.payment.common.result.EditPaymentMethodTypeResult;
-import com.echothree.control.user.payment.common.result.EditPaymentProcessorActionTypeResult;
-import com.echothree.control.user.payment.common.result.EditPaymentProcessorResult;
-import com.echothree.control.user.payment.common.result.EditPaymentProcessorResultCodeResult;
-import com.echothree.control.user.payment.common.result.EditPaymentProcessorTypeResult;
 import com.echothree.control.user.period.common.PeriodUtil;
-import com.echothree.control.user.period.common.result.CreateFiscalYearResult;
 import com.echothree.control.user.sales.common.SalesUtil;
-import com.echothree.control.user.sales.common.result.CreateSalesOrderLineResult;
-import com.echothree.control.user.sales.common.result.CreateSalesOrderResult;
-import com.echothree.control.user.sales.common.result.EditSalesOrderShipmentGroupResult;
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.result.CreateSearchResultActionTypeResult;
-import com.echothree.control.user.search.common.result.EditSearchResultActionTypeResult;
-import com.echothree.control.user.search.common.result.SearchComponentVendorsResult;
-import com.echothree.control.user.search.common.result.SearchContentCatalogItemsResult;
-import com.echothree.control.user.search.common.result.SearchContentCatalogsResult;
-import com.echothree.control.user.search.common.result.SearchContentCategoriesResult;
-import com.echothree.control.user.search.common.result.SearchCustomersResult;
-import com.echothree.control.user.search.common.result.SearchEmployeesResult;
-import com.echothree.control.user.search.common.result.SearchEntityAliasTypesResult;
-import com.echothree.control.user.search.common.result.SearchEntityAttributeGroupsResult;
-import com.echothree.control.user.search.common.result.SearchEntityAttributesResult;
-import com.echothree.control.user.search.common.result.SearchEntityListItemsResult;
-import com.echothree.control.user.search.common.result.SearchEntityTypesResult;
-import com.echothree.control.user.search.common.result.SearchItemsResult;
-import com.echothree.control.user.search.common.result.SearchShippingMethodsResult;
-import com.echothree.control.user.search.common.result.SearchVendorsResult;
-import com.echothree.control.user.search.common.result.SearchWarehousesResult;
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.result.CreateSecurityRoleGroupResult;
-import com.echothree.control.user.security.common.result.CreateSecurityRoleResult;
-import com.echothree.control.user.security.common.result.EditSecurityRoleGroupResult;
-import com.echothree.control.user.security.common.result.EditSecurityRoleResult;
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.common.result.CreateSelectorResult;
-import com.echothree.control.user.selector.common.result.EditSelectorResult;
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.result.CreateSequenceResult;
-import com.echothree.control.user.sequence.common.result.CreateSequenceTypeResult;
-import com.echothree.control.user.sequence.common.result.EditSequenceResult;
-import com.echothree.control.user.sequence.common.result.EditSequenceTypeResult;
-import com.echothree.control.user.sequence.common.result.GetNextSequenceValueResult;
 import com.echothree.control.user.shipment.common.ShipmentUtil;
-import com.echothree.control.user.shipment.common.result.CreateFreeOnBoardResult;
-import com.echothree.control.user.shipment.common.result.EditFreeOnBoardResult;
 import com.echothree.control.user.tag.common.TagUtil;
-import com.echothree.control.user.tag.common.result.CreateTagResult;
-import com.echothree.control.user.tag.common.result.CreateTagScopeResult;
-import com.echothree.control.user.tag.common.result.EditTagResult;
-import com.echothree.control.user.tag.common.result.EditTagScopeResult;
 import com.echothree.control.user.track.common.TrackUtil;
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.result.EditUserLoginResult;
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.result.CreateItemPurchasingCategoryResult;
-import com.echothree.control.user.vendor.common.result.CreateVendorItemResult;
-import com.echothree.control.user.vendor.common.result.CreateVendorTypeResult;
-import com.echothree.control.user.vendor.common.result.EditItemPurchasingCategoryResult;
-import com.echothree.control.user.vendor.common.result.EditVendorItemCostResult;
-import com.echothree.control.user.vendor.common.result.EditVendorItemResult;
-import com.echothree.control.user.vendor.common.result.EditVendorResult;
-import com.echothree.control.user.vendor.common.result.EditVendorTypeResult;
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.result.CreateLocationNameElementResult;
-import com.echothree.control.user.warehouse.common.result.CreateLocationResult;
-import com.echothree.control.user.warehouse.common.result.CreateLocationTypeResult;
-import com.echothree.control.user.warehouse.common.result.CreateWarehouseResult;
-import com.echothree.control.user.warehouse.common.result.CreateWarehouseTypeResult;
-import com.echothree.control.user.warehouse.common.result.EditLocationNameElementResult;
-import com.echothree.control.user.warehouse.common.result.EditLocationResult;
-import com.echothree.control.user.warehouse.common.result.EditLocationTypeResult;
-import com.echothree.control.user.warehouse.common.result.EditWarehouseResult;
-import com.echothree.control.user.warehouse.common.result.EditWarehouseTypeResult;
 import com.echothree.control.user.wishlist.common.WishlistUtil;
-import com.echothree.control.user.wishlist.common.result.CreateWishlistPriorityResult;
-import com.echothree.control.user.wishlist.common.result.CreateWishlistTypeResult;
-import com.echothree.control.user.wishlist.common.result.EditWishlistPriorityResult;
-import com.echothree.control.user.wishlist.common.result.EditWishlistTypeResult;
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.result.CreateWorkflowDestinationResult;
-import com.echothree.control.user.workflow.common.result.CreateWorkflowEntranceResult;
-import com.echothree.control.user.workflow.common.result.CreateWorkflowResult;
-import com.echothree.control.user.workflow.common.result.CreateWorkflowStepResult;
-import com.echothree.control.user.workflow.common.result.EditWorkflowDestinationResult;
-import com.echothree.control.user.workflow.common.result.EditWorkflowEntranceResult;
-import com.echothree.control.user.workflow.common.result.EditWorkflowResult;
-import com.echothree.control.user.workflow.common.result.EditWorkflowStepResult;
 import com.echothree.model.control.campaign.server.graphql.CreateCampaignContentResultObject;
 import com.echothree.model.control.campaign.server.graphql.CreateCampaignMediumResultObject;
 import com.echothree.model.control.campaign.server.graphql.CreateCampaignResultObject;
@@ -342,7 +106,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateContentCollectionResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -398,7 +162,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditContentCollectionResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -448,7 +212,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateContentWebAddressResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -502,7 +266,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditContentWebAddressResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -558,7 +322,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateContentCatalogResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -620,7 +384,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditContentCatalogResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -690,7 +454,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateContentCategoryResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -758,7 +522,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditContentCategoryResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -899,7 +663,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditContentCategoryItemResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -995,7 +759,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateSelectorResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -1058,7 +822,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditSelectorResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -1116,7 +880,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateFilterResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -1181,7 +945,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditFilterResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -1291,7 +1055,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateFilterStepResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -1357,7 +1121,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditFilterStepResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -1413,7 +1177,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateFilterStepElementResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -1484,7 +1248,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditFilterStepElementResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -1596,7 +1360,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateFilterAdjustmentResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -1656,7 +1420,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditFilterAdjustmentResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -1780,7 +1544,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditFilterAdjustmentAmountResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -1894,7 +1658,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditFilterAdjustmentFixedAmountResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -2008,7 +1772,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditFilterAdjustmentPercentResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -2058,7 +1822,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateSequenceResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -2120,7 +1884,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditSequenceResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -2198,7 +1962,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                mutationResultObject.setGetNextSequenceValueResult((GetNextSequenceValueResult)commandResult.getExecutionResult().getResult());
+                mutationResultObject.setGetNextSequenceValueResult(commandResult.getExecutionResult().getResult());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -2238,7 +2002,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateSequenceTypeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -2300,7 +2064,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditSequenceTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -2358,7 +2122,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateOfferUseResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -2414,7 +2178,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditOfferUseResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -2470,7 +2234,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateOfferResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -2530,7 +2294,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditOfferResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -2582,7 +2346,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateOfferItemResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -2711,7 +2475,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditOfferItemPriceResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -2810,7 +2574,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditOfferCustomerTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -2856,7 +2620,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateUseResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -2914,7 +2678,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditUseResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -2968,7 +2732,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateOfferNameElementResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -3026,7 +2790,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditOfferNameElementResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -3080,7 +2844,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateUseNameElementResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -3138,7 +2902,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditUseNameElementResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -3190,7 +2954,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateUseTypeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -3247,7 +3011,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditUseTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -3297,7 +3061,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateFreeOnBoardResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -3354,7 +3118,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditFreeOnBoardResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -3404,7 +3168,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreatePaymentProcessorResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -3461,7 +3225,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditPaymentProcessorResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -3511,7 +3275,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreatePaymentProcessorTypeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -3568,7 +3332,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditPaymentProcessorTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -3618,7 +3382,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreatePaymentMethodTypeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -3675,7 +3439,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditPaymentMethodTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -3725,7 +3489,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreatePaymentProcessorResultCodeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -3782,7 +3546,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditPaymentProcessorResultCodeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -3832,7 +3596,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreatePaymentProcessorActionTypeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -3889,7 +3653,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditPaymentProcessorActionTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -3941,7 +3705,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateAllocationPriorityResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -3999,7 +3763,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditAllocationPriorityResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -4051,7 +3815,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateInventoryConditionResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -4108,7 +3872,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditInventoryConditionResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -4158,7 +3922,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateInventoryAdjustmentTypeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -4195,7 +3959,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditInventoryAdjustmentTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -4266,7 +4030,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateInventoryCostingMethodResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -4303,7 +4067,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditInventoryCostingMethodResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -4466,7 +4230,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateInventoryBucketTypeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -4503,7 +4267,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditInventoryBucketTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -4586,7 +4350,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateInventoryTransactionTypeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -4629,7 +4393,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditInventoryTransactionTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -4715,7 +4479,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateInventoryTransactionTimeTypeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -4754,7 +4518,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditInventoryTransactionTimeTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -4830,7 +4594,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateInventoryDispositionResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -4869,7 +4633,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditInventoryDispositionResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -4951,7 +4715,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateInventoryDispositionAdjustmentResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -4994,7 +4758,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditInventoryDispositionAdjustmentResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -5078,7 +4842,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateInventoryTransactionReasonResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -5118,7 +4882,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditInventoryTransactionReasonResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -5196,7 +4960,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateInventoryTransactionRoleTypeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -5235,7 +4999,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditInventoryTransactionRoleTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -5309,7 +5073,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateContentPageLayoutResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -5366,7 +5130,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditContentPageLayoutResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -5496,7 +5260,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateComponentVendorResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -5549,7 +5313,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditComponentVendorResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -5603,7 +5367,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateEntityTypeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -5665,7 +5429,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditEntityTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -5717,7 +5481,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateEntityInstanceResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -5811,7 +5575,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateTagScopeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -5866,7 +5630,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditTagScopeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -5960,7 +5724,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateTagResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -6016,7 +5780,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditTagResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -6116,7 +5880,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateEntityAliasTypeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -6158,7 +5922,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditEntityAliasTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -6259,7 +6023,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditEntityAliasResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -6326,7 +6090,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateEntityAttributeGroupResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -6397,7 +6161,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditEntityAttributeGroupResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -6483,7 +6247,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateEntityAttributeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -6524,7 +6288,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditEntityAttributeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -6632,7 +6396,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditEntityAttributeEntityAttributeGroupResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -6708,7 +6472,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateEntityListItemResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -6751,7 +6515,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditEntityListItemResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -6866,7 +6630,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditEntityListItemDefaultResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -6969,7 +6733,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditEntityListItemAttributeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -7190,7 +6954,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditEntityBooleanDefaultResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -7282,7 +7046,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditEntityBooleanAttributeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -7380,7 +7144,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditEntityIntegerDefaultResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -7472,7 +7236,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditEntityIntegerAttributeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -7570,7 +7334,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditEntityLongDefaultResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -7662,7 +7426,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditEntityLongAttributeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -7768,7 +7532,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditEntityStringDefaultResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -7868,7 +7632,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditEntityStringAttributeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -7965,7 +7729,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditEntityClobAttributeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -8057,7 +7821,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditEntityNameAttributeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -8155,7 +7919,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditEntityDateDefaultResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -8247,7 +8011,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditEntityDateAttributeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -8345,7 +8109,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditEntityTimeDefaultResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -8437,7 +8201,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditEntityTimeAttributeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -8550,7 +8314,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditEntityGeoPointDefaultResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -8667,7 +8431,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditEntityGeoPointAttributeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -8765,7 +8529,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditEntityEntityAttributeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -8947,7 +8711,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateSearchResultActionTypeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -8984,7 +8748,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditSearchResultActionTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -9067,7 +8831,7 @@ public interface GraphQlMutations {
 
             var commandResult = SearchUtil.getHome().searchComponentVendors(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
-            mutationResultObject.setResult(commandResult.hasErrors() ? null : (SearchComponentVendorsResult)commandResult.getExecutionResult().getResult());
+            mutationResultObject.setResult(commandResult.hasErrors() ? null : commandResult.getExecutionResult().getResult());
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -9128,7 +8892,7 @@ public interface GraphQlMutations {
 
             var commandResult = SearchUtil.getHome().searchEntityTypes(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
-            mutationResultObject.setResult(commandResult.hasErrors() ? null : (SearchEntityTypesResult)commandResult.getExecutionResult().getResult());
+            mutationResultObject.setResult(commandResult.hasErrors() ? null : commandResult.getExecutionResult().getResult());
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -9189,7 +8953,7 @@ public interface GraphQlMutations {
 
             var commandResult = SearchUtil.getHome().searchEntityAliasTypes(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
-            mutationResultObject.setResult(commandResult.hasErrors() ? null : (SearchEntityAliasTypesResult)commandResult.getExecutionResult().getResult());
+            mutationResultObject.setResult(commandResult.hasErrors() ? null : commandResult.getExecutionResult().getResult());
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -9250,7 +9014,7 @@ public interface GraphQlMutations {
 
             var commandResult = SearchUtil.getHome().searchEntityAttributeGroups(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
-            mutationResultObject.setResult(commandResult.hasErrors() ? null : (SearchEntityAttributeGroupsResult)commandResult.getExecutionResult().getResult());
+            mutationResultObject.setResult(commandResult.hasErrors() ? null : commandResult.getExecutionResult().getResult());
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -9311,7 +9075,7 @@ public interface GraphQlMutations {
 
             var commandResult = SearchUtil.getHome().searchEntityAttributes(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
-            mutationResultObject.setResult(commandResult.hasErrors() ? null : (SearchEntityAttributesResult)commandResult.getExecutionResult().getResult());
+            mutationResultObject.setResult(commandResult.hasErrors() ? null : commandResult.getExecutionResult().getResult());
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -9372,7 +9136,7 @@ public interface GraphQlMutations {
 
             var commandResult = SearchUtil.getHome().searchEntityListItems(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
-            mutationResultObject.setResult(commandResult.hasErrors() ? null : (SearchEntityListItemsResult)commandResult.getExecutionResult().getResult());
+            mutationResultObject.setResult(commandResult.hasErrors() ? null : commandResult.getExecutionResult().getResult());
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -9451,7 +9215,7 @@ public interface GraphQlMutations {
 
             var commandResult = SearchUtil.getHome().searchCustomers(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
-            mutationResultObject.setResult(commandResult.hasErrors() ? null : (SearchCustomersResult)commandResult.getExecutionResult().getResult());
+            mutationResultObject.setResult(commandResult.hasErrors() ? null : commandResult.getExecutionResult().getResult());
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -9523,7 +9287,7 @@ public interface GraphQlMutations {
 
             var commandResult = SearchUtil.getHome().searchEmployees(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
-            mutationResultObject.setResult(commandResult.hasErrors() ? null : (SearchEmployeesResult)commandResult.getExecutionResult().getResult());
+            mutationResultObject.setResult(commandResult.hasErrors() ? null : commandResult.getExecutionResult().getResult());
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -9594,7 +9358,7 @@ public interface GraphQlMutations {
 
             var commandResult = SearchUtil.getHome().searchItems(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
-            mutationResultObject.setResult(commandResult.hasErrors() ? null : (SearchItemsResult)commandResult.getExecutionResult().getResult());
+            mutationResultObject.setResult(commandResult.hasErrors() ? null : commandResult.getExecutionResult().getResult());
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -9687,7 +9451,7 @@ public interface GraphQlMutations {
 
             var commandResult = SearchUtil.getHome().searchVendors(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
-            mutationResultObject.setResult(commandResult.hasErrors() ? null : (SearchVendorsResult)commandResult.getExecutionResult().getResult());
+            mutationResultObject.setResult(commandResult.hasErrors() ? null : commandResult.getExecutionResult().getResult());
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -9748,7 +9512,7 @@ public interface GraphQlMutations {
 
             var commandResult = SearchUtil.getHome().searchShippingMethods(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
-            mutationResultObject.setResult(commandResult.hasErrors() ? null : (SearchShippingMethodsResult)commandResult.getExecutionResult().getResult());
+            mutationResultObject.setResult(commandResult.hasErrors() ? null : commandResult.getExecutionResult().getResult());
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -9805,7 +9569,7 @@ public interface GraphQlMutations {
 
             var commandResult = SearchUtil.getHome().searchWarehouses(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
-            mutationResultObject.setResult(commandResult.hasErrors() ? null : (SearchWarehousesResult)commandResult.getExecutionResult().getResult());
+            mutationResultObject.setResult(commandResult.hasErrors() ? null : commandResult.getExecutionResult().getResult());
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -9866,7 +9630,7 @@ public interface GraphQlMutations {
 
             var commandResult = SearchUtil.getHome().searchContentCatalogs(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
-            mutationResultObject.setResult(commandResult.hasErrors() ? null : (SearchContentCatalogsResult)commandResult.getExecutionResult().getResult());
+            mutationResultObject.setResult(commandResult.hasErrors() ? null : commandResult.getExecutionResult().getResult());
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -9927,7 +9691,7 @@ public interface GraphQlMutations {
 
             var commandResult = SearchUtil.getHome().searchContentCatalogItems(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
-            mutationResultObject.setResult(commandResult.hasErrors() ? null : (SearchContentCatalogItemsResult)commandResult.getExecutionResult().getResult());
+            mutationResultObject.setResult(commandResult.hasErrors() ? null : commandResult.getExecutionResult().getResult());
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -9988,7 +9752,7 @@ public interface GraphQlMutations {
 
             var commandResult = SearchUtil.getHome().searchContentCategories(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
-            mutationResultObject.setResult(commandResult.hasErrors() ? null : (SearchContentCategoriesResult)commandResult.getExecutionResult().getResult());
+            mutationResultObject.setResult(commandResult.hasErrors() ? null : commandResult.getExecutionResult().getResult());
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -10071,7 +9835,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditUserLoginResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -10157,7 +9921,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateItemCategoryResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -10195,7 +9959,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditItemCategoryResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -10278,7 +10042,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateGlAccountResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -10320,7 +10084,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditGlAccountResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -10399,7 +10163,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateItemAccountingCategoryResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -10437,7 +10201,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditItemAccountingCategoryResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -10512,7 +10276,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateItemPurchasingCategoryResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -10550,7 +10314,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditItemPurchasingCategoryResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -10628,7 +10392,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreatePartyAliasTypeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -10668,7 +10432,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditPartyAliasTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -10768,7 +10532,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditPartyAliasResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -10855,7 +10619,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateVendorTypeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -10904,7 +10668,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditVendorTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -11037,7 +10801,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateVendorResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -11101,7 +10865,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditVendorResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -11231,7 +10995,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateVendorItemResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -11273,7 +11037,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditVendorItemResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -11412,7 +11176,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditVendorItemCostResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -11481,7 +11245,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateWarehouseTypeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -11539,7 +11303,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditWarehouseTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -11609,7 +11373,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateWarehouseResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -11657,7 +11421,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditWarehouseResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -11806,7 +11570,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateInventoryLocationGroupResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -11865,7 +11629,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditInventoryLocationGroupResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -11941,7 +11705,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateLocationTypeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -12000,7 +11764,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditLocationTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -12056,7 +11820,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateLocationResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -12117,7 +11881,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditLocationResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -12201,7 +11965,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateLocationNameElementResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -12265,7 +12029,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditLocationNameElementResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -12321,7 +12085,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateItemImageTypeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -12360,7 +12124,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditItemImageTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -12435,7 +12199,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateItemDescriptionTypeUseTypeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -12472,7 +12236,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditItemDescriptionTypeUseTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -12616,7 +12380,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateItemDescriptionTypeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -12667,7 +12431,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditItemDescriptionTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -12770,7 +12534,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateItemAliasTypeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -12810,7 +12574,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditItemAliasTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -12915,7 +12679,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditItemAliasResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -12980,7 +12744,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateItemWeightTypeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -13017,7 +12781,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditItemWeightTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -13088,7 +12852,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateItemVolumeTypeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -13125,7 +12889,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditItemVolumeTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -13196,7 +12960,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateRelatedItemTypeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -13233,7 +12997,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditRelatedItemTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -13304,7 +13068,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateRelatedItemResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -13340,7 +13104,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditRelatedItemResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -13449,7 +13213,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateItemResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -13498,7 +13262,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditItemResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -13623,7 +13387,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditItemUnitOfMeasureTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -13694,7 +13458,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateItemDescriptionResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -13733,7 +13497,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditItemDescriptionResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -13875,7 +13639,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditItemPriceResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -13929,7 +13693,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateOrderTypeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -13969,7 +13733,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditOrderTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -14048,7 +13812,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateOrderTimeTypeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -14087,7 +13851,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditOrderTimeTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -14164,7 +13928,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateOrderPriorityResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -14204,7 +13968,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditOrderPriorityResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -14279,7 +14043,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateWishlistTypeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -14316,7 +14080,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditWishlistTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -14389,7 +14153,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateWishlistPriorityResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -14428,7 +14192,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditWishlistPriorityResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -14601,7 +14365,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateCustomerTypeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -14658,7 +14422,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditCustomerTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -14981,7 +14745,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateCustomerResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -15035,7 +14799,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateCustomerWithLoginResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -15198,7 +14962,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateSecurityRoleGroupResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -15236,7 +15000,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditSecurityRoleGroupResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -15311,7 +15075,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateSecurityRoleResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -15350,7 +15114,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditSecurityRoleResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -15427,7 +15191,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateWorkflowResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -15466,7 +15230,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditWorkflowResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -15635,7 +15399,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateWorkflowStepResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -15675,7 +15439,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditWorkflowStepResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -15752,7 +15516,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateWorkflowEntranceResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -15791,7 +15555,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditWorkflowEntranceResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -16064,7 +15828,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateWorkflowDestinationResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -16105,7 +15869,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditWorkflowDestinationResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -16412,7 +16176,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                mutationResultObject.setCreateSalesOrderResult((CreateSalesOrderResult)commandResult.getExecutionResult().getResult());
+                mutationResultObject.setCreateSalesOrderResult(commandResult.getExecutionResult().getResult());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -16448,7 +16212,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditSalesOrderShipmentGroupResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -16516,7 +16280,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                mutationResultObject.setCreateSalesOrderLineResult((CreateSalesOrderLineResult)commandResult.getExecutionResult().getResult());
+                mutationResultObject.setCreateSalesOrderLineResult(commandResult.getExecutionResult().getResult());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -16540,7 +16304,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateFiscalYearResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -16594,7 +16358,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateTransactionTimeTypeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -16651,7 +16415,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditTransactionTimeTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -16752,7 +16516,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditGeoCodeLanguageResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -16847,7 +16611,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditGeoCodeCurrencyResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -16942,7 +16706,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditGeoCodeTimeZoneResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -17037,7 +16801,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditGeoCodeDateTimeFormatResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -17087,7 +16851,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                var result = (CreateGeoCodeAliasTypeResult)commandResult.getExecutionResult().getResult();
+                var result = commandResult.getExecutionResult().getResult();
 
                 mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
@@ -17126,7 +16890,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditGeoCodeAliasTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -17227,7 +16991,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditGeoCodeAliasResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -17290,7 +17054,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                mutationResultObject.setCreateCampaignResult((CreateCampaignResult)commandResult.getExecutionResult().getResult());
+                mutationResultObject.setCreateCampaignResult(commandResult.getExecutionResult().getResult());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -17347,7 +17111,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditCampaignResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -17421,7 +17185,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                mutationResultObject.setCreateCampaignSourceResult((CreateCampaignSourceResult)commandResult.getExecutionResult().getResult());
+                mutationResultObject.setCreateCampaignSourceResult(commandResult.getExecutionResult().getResult());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -17478,7 +17242,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditCampaignSourceResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -17552,7 +17316,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                mutationResultObject.setCreateCampaignMediumResult((CreateCampaignMediumResult)commandResult.getExecutionResult().getResult());
+                mutationResultObject.setCreateCampaignMediumResult(commandResult.getExecutionResult().getResult());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -17609,7 +17373,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditCampaignMediumResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -17683,7 +17447,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                mutationResultObject.setCreateCampaignTermResult((CreateCampaignTermResult)commandResult.getExecutionResult().getResult());
+                mutationResultObject.setCreateCampaignTermResult(commandResult.getExecutionResult().getResult());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -17740,7 +17504,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditCampaignTermResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
@@ -17814,7 +17578,7 @@ public interface GraphQlMutations {
             mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
-                mutationResultObject.setCreateCampaignContentResult((CreateCampaignContentResult)commandResult.getExecutionResult().getResult());
+                mutationResultObject.setCreateCampaignContentResult(commandResult.getExecutionResult().getResult());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -17871,7 +17635,7 @@ public interface GraphQlMutations {
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditCampaignContentResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 

@@ -17,8 +17,6 @@
 package com.echothree.cucumber.warehouse;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.result.CreateLocationResult;
-import com.echothree.control.user.warehouse.common.result.EditLocationResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -50,7 +48,7 @@ public class LocationSteps implements En {
                     var commandResult = WarehouseUtil.getHome().createLocation(persona.userVisitPK, createLocationForm);
 
                     LastCommandResult.commandResult = commandResult;
-                    var result = (CreateLocationResult)commandResult.getExecutionResult().getResult();
+                    var result = commandResult.getExecutionResult().getResult();
 
                     if(result != null) {
                         persona.lastLocationName = commandResult.getHasErrors() ? null : result.getLocationName();
@@ -136,7 +134,7 @@ public class LocationSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditLocationResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     if(!executionResult.getHasErrors()) {
                         persona.locationEdit = result.getEdit();

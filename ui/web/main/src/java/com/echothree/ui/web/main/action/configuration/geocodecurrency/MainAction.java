@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.geocodecurrency;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.result.GetGeoCodeCurrenciesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class MainAction
 
             var commandResult = GeoUtil.getHome().getGeoCodeCurrencies(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetGeoCodeCurrenciesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var geoCode = result.getGeoCode();
             
             if(geoCode == null) {

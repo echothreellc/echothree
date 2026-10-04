@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.partyskill;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.result.GetPartySkillsResult;
 import com.echothree.ui.web.main.action.humanresources.employee.EmployeeUtils;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -59,7 +58,7 @@ public class MainAction
 
         var commandResult = EmployeeUtil.getHome().getPartySkills(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetPartySkillsResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var party = result.getParty();
         var skillType = result.getSkillType();
 

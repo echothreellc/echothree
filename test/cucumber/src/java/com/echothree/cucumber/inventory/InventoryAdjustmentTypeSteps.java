@@ -17,8 +17,6 @@
 package com.echothree.cucumber.inventory;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.result.CreateInventoryAdjustmentTypeResult;
-import com.echothree.control.user.inventory.common.result.EditInventoryAdjustmentTypeResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -49,7 +47,7 @@ public class InventoryAdjustmentTypeSteps implements En {
                     var commandResult = InventoryUtil.getHome().createInventoryAdjustmentType(persona.userVisitPK, createInventoryAdjustmentTypeForm);
 
                     LastCommandResult.commandResult = commandResult;
-                    var result = (CreateInventoryAdjustmentTypeResult)commandResult.getExecutionResult().getResult();
+                    var result = commandResult.getExecutionResult().getResult();
 
                     if(result != null) {
                         persona.lastInventoryAdjustmentTypeName = commandResult.getHasErrors() ? null : result.getInventoryAdjustmentTypeName();
@@ -109,7 +107,7 @@ public class InventoryAdjustmentTypeSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditInventoryAdjustmentTypeResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     if(!executionResult.getHasErrors()) {
                         persona.inventoryAdjustmentTypeEdit = result.getEdit();

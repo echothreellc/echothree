@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.accounting.companyprintergroupuse;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetCompanyResult;
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.result.GetPartyPrinterGroupUseResult;
 import com.echothree.model.control.printer.common.transfer.PartyPrinterGroupUseTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -40,7 +38,7 @@ public abstract class BaseCompanyPrinterGroupUseAction<A
 
         var commandResult = PartyUtil.getHome().getCompany(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetCompanyResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.COMPANY, result.getCompany());
     }
@@ -59,7 +57,7 @@ public abstract class BaseCompanyPrinterGroupUseAction<A
 
         var commandResult = PrinterUtil.getHome().getPartyPrinterGroupUse(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetPartyPrinterGroupUseResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         return result.getPartyPrinterGroupUse();
     }

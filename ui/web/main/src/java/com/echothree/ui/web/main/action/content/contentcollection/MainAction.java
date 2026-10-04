@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.content.contentcollection;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.result.GetContentCollectionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -53,7 +52,7 @@ public class MainAction
         try {
             var commandResult = ContentUtil.getHome().getContentCollections(getUserVisitPK(request), null);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetContentCollectionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CONTENT_COLLECTIONS, result.getContentCollections());
             forwardKey = ForwardConstants.DISPLAY;

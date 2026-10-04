@@ -17,8 +17,6 @@
 package com.echothree.ui.web.main.framework;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.EditPartyEntityTypeResult;
-import com.echothree.control.user.party.common.result.GetPartyEntityTypeResult;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.party.common.transfer.PartyEntityTypeTransfer;
 import com.echothree.util.common.command.CommandResult;
@@ -59,7 +57,7 @@ public abstract class MainBaseDeleteAction<A extends MainBaseDeleteActionForm>
 
         var commandResult = PartyUtil.getHome().getPartyEntityType(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetPartyEntityTypeResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var partyEntityType = result.getPartyEntityType();
         
         request.setAttribute(AttributeConstants.PARTY_ENTITY_TYPE, partyEntityType);
@@ -84,7 +82,7 @@ public abstract class MainBaseDeleteAction<A extends MainBaseDeleteActionForm>
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (EditPartyEntityTypeResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             if(result != null) {
                 var edit = result.getEdit();

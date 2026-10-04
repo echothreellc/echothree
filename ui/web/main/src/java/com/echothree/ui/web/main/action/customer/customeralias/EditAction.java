@@ -87,7 +87,7 @@ public class EditAction
             throws Exception {
         var commandResult = PartyUtil.getHome().editPartyAlias(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (EditPartyAliasResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var partyAlias = result.getPartyAlias();
 
         if(partyAlias != null) {

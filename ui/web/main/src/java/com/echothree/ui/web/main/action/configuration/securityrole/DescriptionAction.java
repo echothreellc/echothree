@@ -62,7 +62,7 @@ public class DescriptionAction
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
             
-            result = (GetSecurityRoleDescriptionsResult) executionResult.getResult();
+            result = executionResult.getResult();
             securityRole = result.getSecurityRole();
             
             forwardKey = ForwardConstants.DISPLAY;

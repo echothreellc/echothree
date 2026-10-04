@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.CreateCustomerResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -86,7 +85,7 @@ public class AddAction
                 forwardKey = ForwardConstants.FORM;
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (CreateCustomerResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 
                 forwardKey = ForwardConstants.REVIEW;
                 customerName = result.getCustomerName();

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.associate.associate;
 
 import com.echothree.control.user.associate.common.AssociateUtil;
-import com.echothree.control.user.associate.common.result.GetAssociateResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -61,7 +60,7 @@ public class ReviewAction
 
             var commandResult = AssociateUtil.getHome().getAssociate(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetAssociateResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var associateTransfer = result.getAssociate();
             
             request.setAttribute(AttributeConstants.ASSOCIATE, associateTransfer);

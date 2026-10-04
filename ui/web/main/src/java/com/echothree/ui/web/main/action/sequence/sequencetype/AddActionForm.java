@@ -17,8 +17,6 @@
 package com.echothree.ui.web.main.action.sequence.sequencetype;
 
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.result.GetSequenceChecksumTypeChoicesResult;
-import com.echothree.control.user.sequence.common.result.GetSequenceEncoderTypeChoicesResult;
 import com.echothree.model.control.sequence.common.choice.SequenceChecksumTypeChoicesBean;
 import com.echothree.model.control.sequence.common.choice.SequenceEncoderTypeChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
@@ -56,7 +54,7 @@ public class AddActionForm
 
             var commandResult = SequenceUtil.getHome().getSequenceEncoderTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getSequenceEncoderTypeChoicesResult = (GetSequenceEncoderTypeChoicesResult)executionResult.getResult();
+            var getSequenceEncoderTypeChoicesResult = executionResult.getResult();
             sequenceEncoderTypeChoices = getSequenceEncoderTypeChoicesResult.getSequenceEncoderTypeChoices();
 
             if(sequenceEncoderTypeChoice == null)
@@ -74,7 +72,7 @@ public class AddActionForm
 
             var commandResult = SequenceUtil.getHome().getSequenceChecksumTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getSequenceChecksumTypeChoicesResult = (GetSequenceChecksumTypeChoicesResult)executionResult.getResult();
+            var getSequenceChecksumTypeChoicesResult = executionResult.getResult();
             sequenceChecksumTypeChoices = getSequenceChecksumTypeChoicesResult.getSequenceChecksumTypeChoices();
 
             if(sequenceChecksumTypeChoice == null)

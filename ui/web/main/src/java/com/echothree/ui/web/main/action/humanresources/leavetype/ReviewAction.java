@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.leavetype;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.result.GetLeaveTypeResult;
 import com.echothree.model.control.employee.common.transfer.LeaveTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -59,7 +58,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetLeaveTypeResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             leaveType = result.getLeaveType();
         }

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.purchasing.vendoritemcost;
 
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.result.GetVendorItemCostsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -61,7 +60,7 @@ public class MainAction
 
             var commandResult = VendorUtil.getHome().getVendorItemCosts(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetVendorItemCostsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.VENDOR_ITEM, result.getVendorItem());
             request.setAttribute(AttributeConstants.VENDOR_ITEM_COSTS, result.getVendorItemCosts());

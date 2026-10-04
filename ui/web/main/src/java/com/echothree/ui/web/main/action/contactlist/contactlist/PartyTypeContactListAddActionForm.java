@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.contactlist.contactlist;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetPartyTypeChoicesResult;
 import com.echothree.model.control.party.common.choice.PartyTypeChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -47,7 +46,7 @@ public class PartyTypeContactListAddActionForm
 
             var commandResult = PartyUtil.getHome().getPartyTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getPartyTypeChoicesResult = (GetPartyTypeChoicesResult)executionResult.getResult();
+            var getPartyTypeChoicesResult = executionResult.getResult();
             partyTypeChoices = getPartyTypeChoicesResult.getPartyTypeChoices();
 
             if(partyTypeChoice == null) {

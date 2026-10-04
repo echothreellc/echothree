@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.geocodelanguage;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetLanguageChoicesResult;
 import com.echothree.model.control.party.common.choice.LanguageChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -48,7 +47,7 @@ public class AddActionForm
 
                 var commandResult = PartyUtil.getHome().getLanguageChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var getLanguageChoicesResult = (GetLanguageChoicesResult)executionResult.getResult();
+                var getLanguageChoicesResult = executionResult.getResult();
                 languageChoices = getLanguageChoicesResult.getLanguageChoices();
                 
                 if(languageChoice == null)

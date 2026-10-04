@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.printergroupjob;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.result.GetPrinterGroupJobStatusChoicesResult;
 import com.echothree.model.control.printer.common.choice.PrinterGroupJobStatusChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -47,7 +46,7 @@ public class StatusActionForm
 
             var commandResult = PrinterUtil.getHome().getPrinterGroupJobStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getPrinterGroupJobStatusChoicesResult = (GetPrinterGroupJobStatusChoicesResult)executionResult.getResult();
+            var getPrinterGroupJobStatusChoicesResult = executionResult.getResult();
             printerGroupJobStatusChoices = getPrinterGroupJobStatusChoicesResult.getPrinterGroupJobStatusChoices();
 
             if(printerGroupJobStatusChoice == null)

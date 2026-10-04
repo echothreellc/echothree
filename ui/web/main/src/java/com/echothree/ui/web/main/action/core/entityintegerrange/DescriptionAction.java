@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.entityintegerrange;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetEntityIntegerRangeDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class DescriptionAction
         var commandResult = CoreUtil.getHome().getEntityIntegerRangeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEntityIntegerRangeDescriptionsResult) executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ENTITY_INTEGER_RANGE, result.getEntityIntegerRange());
             request.setAttribute(AttributeConstants.ENTITY_INTEGER_RANGE_DESCRIPTIONS, result.getEntityIntegerRangeDescriptions());

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.workflowentrancesecurityrole;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.result.GetWorkflowEntranceSecurityRolesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -57,7 +56,7 @@ public class MainAction
 
         var commandResult = WorkflowUtil.getHome().getWorkflowEntranceSecurityRoles(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetWorkflowEntranceSecurityRolesResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var workflowEntrancePartyType = result.getWorkflowEntrancePartyType();
         
         if(workflowEntrancePartyType == null) {

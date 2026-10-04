@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.humanresources.employeedocument.add;
 
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.common.result.GetDocumentTypeResult;
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.result.GetEmployeeResult;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.document.common.transfer.DocumentTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -74,7 +72,7 @@ public class Step3Action
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEmployeeResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var employee = result.getEmployee();
 
             if(employee != null) {
@@ -91,7 +89,7 @@ public class Step3Action
 
         var commandResult = DocumentUtil.getHome().getDocumentType(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetDocumentTypeResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         return result.getDocumentType();
     }

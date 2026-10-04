@@ -17,8 +17,6 @@
 package com.echothree.cucumber.core;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.CreateEntityAttributeResult;
-import com.echothree.control.user.core.common.result.EditEntityAttributeResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -50,7 +48,7 @@ public class EntityAttributeSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (CreateEntityAttributeResult)executionResult.getResult();
+                    var result = executionResult.getResult();
                     persona.lastEntityAttributeName = result.getEntityAttributeName();
 
                     persona.createEntityAttributeForm = null;
@@ -106,7 +104,7 @@ public class EntityAttributeSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditEntityAttributeResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     if(!executionResult.getHasErrors()) {
                         persona.entityAttributeEdit = result.getEdit();

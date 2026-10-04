@@ -18,7 +18,6 @@ package com.echothree.ui.web.main.action.customer.customertypeshippingmethod;
 
 
 import com.echothree.control.user.shipping.common.ShippingUtil;
-import com.echothree.control.user.shipping.common.result.GetShippingMethodChoicesResult;
 import com.echothree.model.control.shipping.common.choice.ShippingMethodChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -50,7 +49,7 @@ public class AddActionForm
 
             var commandResult = ShippingUtil.getHome().getShippingMethodChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getShippingMethodChoicesResult = (GetShippingMethodChoicesResult)executionResult.getResult();
+            var getShippingMethodChoicesResult = executionResult.getResult();
             shippingMethodChoices = getShippingMethodChoicesResult.getShippingMethodChoices();
 
             if(shippingMethodChoice == null)

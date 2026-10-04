@@ -17,13 +17,9 @@
 package com.echothree.ui.web.main.action.salesorder.salesorderbatch;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetCurrencyChoicesResult;
 import com.echothree.control.user.batch.common.BatchUtil;
-import com.echothree.control.user.batch.common.result.GetBatchAliasTypeChoicesResult;
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.result.GetPaymentMethodChoicesResult;
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.result.GetWorkflowStepChoicesResult;
 import com.echothree.model.control.accounting.common.choice.CurrencyChoicesBean;
 import com.echothree.model.control.batch.common.BatchTypes;
 import com.echothree.model.control.batch.common.choice.BatchAliasTypeChoicesBean;
@@ -64,7 +60,7 @@ public class MainActionForm
 
             var commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCurrencyChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             currencyChoices = result.getCurrencyChoices();
 
             if(currencyChoice == null) {
@@ -83,7 +79,7 @@ public class MainActionForm
 
             var commandResult = PaymentUtil.getHome().getPaymentMethodChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getPaymentMethodChoicesResult = (GetPaymentMethodChoicesResult)executionResult.getResult();
+            var getPaymentMethodChoicesResult = executionResult.getResult();
             paymentMethodChoices = getPaymentMethodChoicesResult.getPaymentMethodChoices();
 
             if(paymentMethodChoice == null)
@@ -102,7 +98,7 @@ public class MainActionForm
 
             var commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetWorkflowStepChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             salesOrderBatchStatusChoices = result.getWorkflowStepChoices();
 
             if(salesOrderBatchStatusChoice == null) {
@@ -122,7 +118,7 @@ public class MainActionForm
 
             var commandResult = BatchUtil.getHome().getBatchAliasTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getBatchAliasTypeChoicesResult = (GetBatchAliasTypeChoicesResult)executionResult.getResult();
+            var getBatchAliasTypeChoicesResult = executionResult.getResult();
             batchAliasTypeChoices = getBatchAliasTypeChoicesResult.getBatchAliasTypeChoices();
 
             if(batchAliasTypeChoice == null) {

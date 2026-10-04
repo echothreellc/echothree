@@ -98,7 +98,7 @@ public class CommentEditAction
             throws Exception {
         var commandResult = CommentUtil.getHome().editComment(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (EditCommentResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var comment = result.getComment();
 
         if(comment != null) {

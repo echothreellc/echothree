@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.forum.forumgroup;
 
 import com.echothree.control.user.icon.common.IconUtil;
-import com.echothree.control.user.icon.common.result.GetIconChoicesResult;
 import com.echothree.model.control.icon.common.IconConstants;
 import com.echothree.model.control.icon.common.choice.IconChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
@@ -51,7 +50,7 @@ public class AddActionForm
 
             var commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var getIconChoicesResult = (GetIconChoicesResult)executionResult.getResult();
+            var getIconChoicesResult = executionResult.getResult();
             iconChoices = getIconChoicesResult.getIconChoices();
 
             if(iconChoice == null)

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.purchasing.vendorcontactmechanism;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.result.GetContactMechanismPurposeChoicesResult;
 import com.echothree.model.control.contact.common.choice.ContactMechanismPurposeChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -46,7 +45,7 @@ public class PartyContactMechanismPurposeAddActionForm
 
             var commandResult = ContactUtil.getHome().getContactMechanismPurposeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getContactMechanismPurposeChoicesResult = (GetContactMechanismPurposeChoicesResult)executionResult.getResult();
+            var getContactMechanismPurposeChoicesResult = executionResult.getResult();
             contactMechanismPurposeChoices = getContactMechanismPurposeChoicesResult.getContactMechanismPurposeChoices();
 
             if(contactMechanismPurposeChoice == null) {

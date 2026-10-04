@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.workflowentrancestep;
 
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.result.GetWorkflowStepChoicesResult;
 import com.echothree.model.control.workflow.common.choice.WorkflowStepChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -47,7 +46,7 @@ public class AddActionForm
 
             var commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetWorkflowStepChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             entranceWorkflowStepChoices = result.getWorkflowStepChoices();
 
             if(entranceWorkflowStepChoice == null) {

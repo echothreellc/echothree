@@ -20,7 +20,6 @@ import com.echothree.control.user.payment.common.PaymentUtil;
 import com.echothree.control.user.payment.common.edit.PaymentMethodDescriptionEdit;
 import com.echothree.control.user.payment.common.form.EditPaymentMethodDescriptionForm;
 import com.echothree.control.user.payment.common.result.EditPaymentMethodDescriptionResult;
-import com.echothree.control.user.payment.common.result.GetPaymentMethodResult;
 import com.echothree.control.user.payment.common.spec.PaymentMethodDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
@@ -88,7 +87,7 @@ public class DescriptionEditAction
             throws Exception {
         var commandResult = PaymentUtil.getHome().editPaymentMethodDescription(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (EditPaymentMethodDescriptionResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         var paymentMethodDescription = result.getPaymentMethodDescription();
         if(paymentMethodDescription != null) {
@@ -113,7 +112,7 @@ public class DescriptionEditAction
         var commandResult = PaymentUtil.getHome().getPaymentMethod(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPaymentMethodResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.PAYMENT_METHOD, result.getPaymentMethod());
         }

@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.warehouse;
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
 import com.echothree.control.user.warehouse.common.WarehouseService;
 import com.echothree.control.user.warehouse.common.form.WarehouseFormFactory;
-import com.echothree.control.user.warehouse.common.result.CreateWarehouseResult;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -55,7 +54,7 @@ public class WarehousesHandler
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (CreateWarehouseResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 initialDataParser.pushHandler(new WarehouseHandler(initialDataParser, this, result.getPartyName(), result.getWarehouseName(), result.getEntityRef()));
             }

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.event;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetEventTypeChoicesResult;
 import com.echothree.model.control.core.common.choice.EventTypeChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -46,7 +45,7 @@ public class SendActionForm
 
             var commandResult = CoreUtil.getHome().getEventTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEventTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             eventTypeChoices = result.getEventTypeChoices();
 
             if(eventTypeChoice == null) {

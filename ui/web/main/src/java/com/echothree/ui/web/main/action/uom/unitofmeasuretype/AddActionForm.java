@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.uom.unitofmeasuretype;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetSymbolPositionChoicesResult;
 import com.echothree.model.control.accounting.common.choice.SymbolPositionChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -53,7 +52,7 @@ public class AddActionForm
 
                 var commandResult = AccountingUtil.getHome().getSymbolPositionChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var getSymbolPositionChoicesResult = (GetSymbolPositionChoicesResult)executionResult.getResult();
+                var getSymbolPositionChoicesResult = executionResult.getResult();
                 symbolPositionChoices = getSymbolPositionChoicesResult.getSymbolPositionChoices();
                 
                 if(symbolPositionChoice == null) {

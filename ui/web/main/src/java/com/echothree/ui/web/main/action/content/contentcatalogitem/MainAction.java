@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.content.contentcatalogitem;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.result.GetContentCatalogItemsResult;
 import com.echothree.model.control.content.common.ContentOptions;
 import com.echothree.model.data.content.common.ContentCatalogItemConstants;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -82,7 +81,7 @@ public class MainAction
         var commandResult = ContentUtil.getHome().getContentCatalogItems(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetContentCatalogItemsResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             var contentCatalogItemCount = result.getContentCatalogItemCount();
             if(contentCatalogItemCount != null) {

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.job;
 
 import com.echothree.control.user.job.common.JobUtil;
-import com.echothree.control.user.job.common.result.GetJobStatusChoicesResult;
 import com.echothree.model.control.job.common.choice.JobStatusChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -47,7 +46,7 @@ public class StatusActionForm
 
             var commandResult = JobUtil.getHome().getJobStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getJobStatusChoicesResult = (GetJobStatusChoicesResult)executionResult.getResult();
+            var getJobStatusChoicesResult = executionResult.getResult();
             jobStatusChoices = getJobStatusChoicesResult.getJobStatusChoices();
 
             if(jobStatusChoice == null)

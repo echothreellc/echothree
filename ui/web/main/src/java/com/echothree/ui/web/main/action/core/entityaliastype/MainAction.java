@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.entityaliastype;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetEntityAliasTypesResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -64,7 +63,7 @@ public class MainAction
 
         var commandResult = CoreUtil.getHome().getEntityAliasTypes(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetEntityAliasTypesResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute("componentVendorName", componentVendorName); // TODO: pull from result
         request.setAttribute("entityTypeName", entityTypeName); // TODO: pull from result

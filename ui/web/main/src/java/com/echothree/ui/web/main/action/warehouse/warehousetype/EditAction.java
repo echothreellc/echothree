@@ -98,7 +98,7 @@ public class EditAction
             throws Exception {
         var commandResult = WarehouseUtil.getHome().editWarehouseType(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (EditWarehouseTypeResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.WAREHOUSE_TYPE, result.getWarehouseType());
         

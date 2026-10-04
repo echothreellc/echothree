@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.content.contentcatalog;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.result.EditContentCatalogDescriptionResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -98,7 +97,7 @@ public class DescriptionEditAction
 
                     var commandResult = ContentUtil.getHome().editContentCatalogDescription(getUserVisitPK(request), commandForm);
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditContentCatalogDescriptionResult)executionResult.getResult();
+                    var result = executionResult.getResult();
                     var edit = result.getEdit();
                     
                     descriptionEditActionForm.setContentCollectionName(contentCollectionName);

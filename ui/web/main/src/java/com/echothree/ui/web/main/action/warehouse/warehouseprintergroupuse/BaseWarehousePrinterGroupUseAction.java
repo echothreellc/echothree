@@ -16,9 +16,7 @@
 
 package com.echothree.ui.web.main.action.warehouse.warehouseprintergroupuse;
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.result.GetPartyPrinterGroupUseResult;
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.result.GetWarehouseResult;
 import com.echothree.model.control.printer.common.transfer.PartyPrinterGroupUseTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -39,7 +37,7 @@ public abstract class BaseWarehousePrinterGroupUseAction<A
 
         var commandResult = WarehouseUtil.getHome().getWarehouse(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetWarehouseResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.WAREHOUSE, result.getWarehouse());
     }
@@ -58,7 +56,7 @@ public abstract class BaseWarehousePrinterGroupUseAction<A
 
         var commandResult = PrinterUtil.getHome().getPartyPrinterGroupUse(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetPartyPrinterGroupUseResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         return result.getPartyPrinterGroupUse();
     }

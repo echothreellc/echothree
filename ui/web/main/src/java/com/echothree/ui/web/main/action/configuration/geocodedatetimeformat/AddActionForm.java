@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.geocodedatetimeformat;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetDateTimeFormatChoicesResult;
 import com.echothree.model.control.party.common.choice.DateTimeFormatChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -48,7 +47,7 @@ public class AddActionForm
 
                 var commandResult = PartyUtil.getHome().getDateTimeFormatChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var getDateTimeFormatChoicesResult = (GetDateTimeFormatChoicesResult)executionResult.getResult();
+                var getDateTimeFormatChoicesResult = executionResult.getResult();
                 dateTimeFormatChoices = getDateTimeFormatChoicesResult.getDateTimeFormatChoices();
                 
                 if(dateTimeFormatChoice == null)

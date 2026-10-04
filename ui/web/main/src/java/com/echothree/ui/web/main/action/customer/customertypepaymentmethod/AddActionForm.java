@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customertypepaymentmethod;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.result.GetPaymentMethodChoicesResult;
 import com.echothree.model.control.payment.common.choice.PaymentMethodChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -49,7 +48,7 @@ public class AddActionForm
 
             var commandResult = PaymentUtil.getHome().getPaymentMethodChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getPaymentMethodChoicesResult = (GetPaymentMethodChoicesResult)executionResult.getResult();
+            var getPaymentMethodChoicesResult = executionResult.getResult();
                 paymentMethodChoices = getPaymentMethodChoicesResult.getPaymentMethodChoices();
                 
                 if(paymentMethodChoice == null)

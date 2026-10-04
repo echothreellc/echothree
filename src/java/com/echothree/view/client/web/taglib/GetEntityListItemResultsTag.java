@@ -18,7 +18,6 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.result.GetEntityListItemResultsResult;
 import com.echothree.model.data.search.common.SearchResultConstants;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.Limit;
@@ -134,7 +133,7 @@ public class GetEntityListItemResultsTag
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetEntityListItemResultsResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getEntityListItemResults()), scope);
 

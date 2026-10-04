@@ -18,9 +18,7 @@ package com.echothree.ui.web.main.action.inventory.inventorylocationgroupcapacit
 
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.result.GetInventoryLocationGroupResult;
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.result.GetUnitOfMeasureTypeResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import javax.naming.NamingException;
@@ -39,7 +37,7 @@ public abstract class BaseAddAction<A
 
         var commandResult = InventoryUtil.getHome().getInventoryLocationGroup(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetInventoryLocationGroupResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.INVENTORY_LOCATION_GROUP, result.getInventoryLocationGroup());
     }
@@ -53,7 +51,7 @@ public abstract class BaseAddAction<A
 
         var commandResult = UomUtil.getHome().getUnitOfMeasureType(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetUnitOfMeasureTypeResult)executionResult.getResult();
+        var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.UNIT_OF_MEASURE_TYPE, result.getUnitOfMeasureType());
     }

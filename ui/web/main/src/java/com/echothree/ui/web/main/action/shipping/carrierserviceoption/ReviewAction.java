@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.shipping.carrierserviceoption;
 
 import com.echothree.control.user.carrier.common.CarrierUtil;
-import com.echothree.control.user.carrier.common.result.GetCarrierServiceOptionResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -63,7 +62,7 @@ public class ReviewAction
 
             var commandResult = CarrierUtil.getHome().getCarrierServiceOption(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCarrierServiceOptionResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var carrierServiceOption = result.getCarrierServiceOption();
             
             if(carrierServiceOption != null) {

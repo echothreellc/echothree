@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.forum.forumthread;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.result.GetForumThreadResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.forum.common.ForumOptions;
 import com.echothree.model.control.forum.common.transfer.ForumThreadTransfer;
@@ -74,7 +73,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetForumThreadResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             forumThread = result.getForumThread();
         }

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.postaladdresslineelement;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.result.GetPostalAddressElementTypeChoicesResult;
 import com.echothree.model.control.contact.common.choice.PostalAddressElementTypeChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -52,7 +51,7 @@ public class AddActionForm
 
             var commandResult = ContactUtil.getHome().getPostalAddressElementTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPostalAddressElementTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             postalAddressElementTypeChoices = result.getPostalAddressElementTypeChoices();
 
             if(postalAddressElementTypeChoice == null) {

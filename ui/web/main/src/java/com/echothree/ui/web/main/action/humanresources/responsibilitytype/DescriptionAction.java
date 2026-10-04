@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.responsibilitytype;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.result.GetResponsibilityTypeDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class DescriptionAction
 
             var commandResult = EmployeeUtil.getHome().getResponsibilityTypeDescriptions(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetResponsibilityTypeDescriptionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var responsibilityTypeTransfer = result.getResponsibilityType();
             
             request.setAttribute(AttributeConstants.RESPONSIBILITY_TYPE, responsibilityTypeTransfer);

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.selector.selectornode;
 
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.common.result.GetSelectorNodesResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -62,7 +61,7 @@ public class MainAction
 
             var commandResult = SelectorUtil.getHome().getSelectorNodes(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSelectorNodesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute("selector", result.getSelector());
             request.setAttribute("selectorNodes", result.getSelectorNodes());

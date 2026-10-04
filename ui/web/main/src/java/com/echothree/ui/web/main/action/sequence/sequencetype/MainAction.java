@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.sequence.sequencetype;
 
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.result.GetSequenceTypesResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
@@ -52,7 +51,7 @@ public class MainAction
         try {
             var commandResult = SequenceUtil.getHome().getSequenceTypes(getUserVisitPK(request), null);
             var executionResult = commandResult.getExecutionResult();
-            var getSequenceTypesResult = (GetSequenceTypesResult)executionResult.getResult();
+            var getSequenceTypesResult = executionResult.getResult();
             
             request.setAttribute("sequenceTypes", getSequenceTypesResult.getSequenceTypes());
             forwardKey = ForwardConstants.DISPLAY;

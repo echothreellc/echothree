@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.content.contentsection;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.result.GetContentSectionChoicesResult;
 import com.echothree.model.control.content.common.choice.ContentSectionChoicesBean;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import java.util.List;
@@ -44,7 +43,7 @@ public class EditActionForm
 
             var commandResult = ContentUtil.getHome().getContentSectionChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getContentSectionChoicesResult = (GetContentSectionChoicesResult)executionResult.getResult();
+            var getContentSectionChoicesResult = executionResult.getResult();
             parentContentSectionChoices = getContentSectionChoicesResult.getContentSectionChoices();
 
             if(parentContentSectionChoice == null)

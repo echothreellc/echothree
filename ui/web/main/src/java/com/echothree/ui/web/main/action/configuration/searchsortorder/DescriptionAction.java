@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.searchsortorder;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.result.GetSearchSortOrderDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -57,7 +56,7 @@ public class DescriptionAction
         var commandResult = SearchUtil.getHome().getSearchSortOrderDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSearchSortOrderDescriptionsResult) executionResult.getResult();
+            var result = executionResult.getResult();
             var searchSortOrderTransfer = result.getSearchSortOrder();
 
             request.setAttribute(AttributeConstants.SEARCH_SORT_ORDER, searchSortOrderTransfer);

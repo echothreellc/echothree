@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.purchasing.vendordocument.add;
 
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.common.result.GetDocumentTypeUsagesResult;
 import com.echothree.ui.web.main.action.purchasing.vendordocument.BaseVendorDocumentAction;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -55,7 +54,7 @@ public class Step2Action
 
         var commandResult = DocumentUtil.getHome().getDocumentTypeUsages(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetDocumentTypeUsagesResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.DOCUMENT_TYPE_USAGES, result.getDocumentTypeUsages());
 

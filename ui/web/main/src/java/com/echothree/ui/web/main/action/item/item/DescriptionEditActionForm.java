@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.item.item;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetMimeTypeChoicesResult;
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemImageTypeChoicesResult;
 import com.echothree.model.control.core.common.choice.MimeTypeChoicesBean;
 import com.echothree.model.control.item.common.choice.ItemImageTypeChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
@@ -56,7 +54,7 @@ public class DescriptionEditActionForm
 
                 var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetMimeTypeChoicesResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 mimeTypeChoices = result.getMimeTypeChoices();
                 
                 if(mimeTypeChoice == null) {
@@ -78,7 +76,7 @@ public class DescriptionEditActionForm
 
                 var commandResult = ItemUtil.getHome().getItemImageTypeChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetItemImageTypeChoicesResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 itemImageTypeChoices = result.getItemImageTypeChoices();
 
                 if(itemImageTypeChoice == null) {

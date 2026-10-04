@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.wishlist.wishlisttype;
 
 import com.echothree.control.user.wishlist.common.WishlistUtil;
-import com.echothree.control.user.wishlist.common.result.GetWishlistTypeDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class DescriptionAction
 
             var commandResult = WishlistUtil.getHome().getWishlistTypeDescriptions(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetWishlistTypeDescriptionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var wishlistTypeTransfer = result.getWishlistType();
             
             request.setAttribute(AttributeConstants.WISHLIST_TYPE, wishlistTypeTransfer);

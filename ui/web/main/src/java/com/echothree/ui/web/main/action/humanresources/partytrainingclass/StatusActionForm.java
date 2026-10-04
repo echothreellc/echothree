@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.partytrainingclass;
 
 import com.echothree.control.user.training.common.TrainingUtil;
-import com.echothree.control.user.training.common.result.GetPartyTrainingClassStatusChoicesResult;
 import com.echothree.model.control.training.common.choice.PartyTrainingClassStatusChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -46,7 +45,7 @@ public class StatusActionForm
 
             var commandResult = TrainingUtil.getHome().getPartyTrainingClassStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPartyTrainingClassStatusChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             partyTrainingClassStatusChoices = result.getPartyTrainingClassStatusChoices();
 
             if(partyTrainingClassStatusChoice == null) {

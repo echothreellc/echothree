@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.entitylistitem;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetEntityListItemsResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -70,7 +69,7 @@ public class MainAction
 
             var commandResult = CoreUtil.getHome().getEntityListItems(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEntityListItemsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute("componentVendorName", componentVendorName); // TODO: pull from result
             request.setAttribute("entityTypeName", entityTypeName); // TODO: pull from result

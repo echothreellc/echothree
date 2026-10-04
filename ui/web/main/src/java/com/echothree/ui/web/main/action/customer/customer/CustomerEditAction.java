@@ -130,7 +130,7 @@ public class CustomerEditAction
             throws Exception {
         var commandResult = CustomerUtil.getHome().editCustomer(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (EditCustomerResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.CUSTOMER, result.getCustomer());
         

@@ -17,12 +17,8 @@
 package com.echothree.ui.web.main.action.customer.customercontactmechanism;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.result.GetContactMechanismResult;
-import com.echothree.control.user.contact.common.result.GetPartyContactMechanismResult;
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.result.GetCountryResult;
 import com.echothree.model.control.geo.common.GeoOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -47,7 +43,7 @@ public abstract class BaseCustomerContactMechanismAction<A
 
         var commandResult = GeoUtil.getHome().getCountry(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetCountryResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.DEFAULT_COUNTRY, result.getCountry());
     }
@@ -60,7 +56,7 @@ public abstract class BaseCustomerContactMechanismAction<A
 
         var commandResult = GeoUtil.getHome().getCountry(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetCountryResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.COUNTRY, result.getCountry());
     }
@@ -75,7 +71,7 @@ public abstract class BaseCustomerContactMechanismAction<A
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCustomerResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var customer = result.getCustomer();
 
             if(customer != null) {
@@ -97,7 +93,7 @@ public abstract class BaseCustomerContactMechanismAction<A
 
         var commandResult = ContactUtil.getHome().getContactMechanism(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetContactMechanismResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.CONTACT_MECHANISM, result.getContactMechanism());
     }
@@ -111,7 +107,7 @@ public abstract class BaseCustomerContactMechanismAction<A
 
         var commandResult = ContactUtil.getHome().getPartyContactMechanism(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetPartyContactMechanismResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.PARTY_CONTACT_MECHANISM, result.getPartyContactMechanism());
     }

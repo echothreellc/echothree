@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.uom.unitofmeasurekind;
 
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.result.EditUnitOfMeasureKindResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -81,7 +80,7 @@ public class EditAction
                 var executionResult = commandResult.getExecutionResult();
                 
                 if(executionResult != null) {
-                    var result = (EditUnitOfMeasureKindResult)executionResult.getResult();
+                    var result = executionResult.getResult();
                     
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                 }
@@ -97,7 +96,7 @@ public class EditAction
 
             var commandResult = UomUtil.getHome().editUnitOfMeasureKind(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (EditUnitOfMeasureKindResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             if(result != null) {
                 var edit = result.getEdit();

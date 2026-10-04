@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.tax;
 
 import com.echothree.control.user.tax.common.TaxUtil;
-import com.echothree.control.user.tax.common.result.GetTaxDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -55,7 +54,7 @@ public class DescriptionAction
 
         var commandResult = TaxUtil.getHome().getTaxDescriptions(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetTaxDescriptionsResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var taxTransfer = result.getTax();
         
         request.setAttribute(AttributeConstants.TAX, taxTransfer);

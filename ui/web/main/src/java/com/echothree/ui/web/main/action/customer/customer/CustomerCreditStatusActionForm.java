@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.result.GetCustomerCreditStatusChoicesResult;
 import com.echothree.model.control.customer.common.choice.CustomerCreditStatusChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -45,7 +44,7 @@ public class CustomerCreditStatusActionForm
 
             var commandResult = CustomerUtil.getHome().getCustomerCreditStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCustomerCreditStatusChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             customerCreditStatusChoices = result.getCustomerCreditStatusChoices();
 
             if(customerCreditStatusChoice == null)

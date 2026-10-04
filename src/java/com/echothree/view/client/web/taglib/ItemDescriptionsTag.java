@@ -18,7 +18,6 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemDescriptionsResult;
 import com.echothree.model.data.item.common.ItemDescriptionConstants;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.Limit;
@@ -155,7 +154,7 @@ public class ItemDescriptionsTag
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetItemDescriptionsResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getItemDescriptions()), scope);
 

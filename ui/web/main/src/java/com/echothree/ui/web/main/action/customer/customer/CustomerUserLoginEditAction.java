@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.spec.PartyUniversalSpec;
 import com.echothree.control.user.user.common.UserUtil;
@@ -88,7 +87,7 @@ public class CustomerUserLoginEditAction
             throws Exception {
         var commandResult = UserUtil.getHome().editUserLogin(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (EditUserLoginResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.USER_LOGIN, result.getUserLogin());
         
@@ -109,7 +108,7 @@ public class CustomerUserLoginEditAction
 
         var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetCustomerResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.CUSTOMER, result.getCustomer());
     }

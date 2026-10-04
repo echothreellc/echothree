@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.advertising.offerchaintype.Add;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.common.result.GetChainKindsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
@@ -48,7 +47,7 @@ public class Step1Action
             throws Exception {
         var commandResult = ChainUtil.getHome().getChainKinds(getUserVisitPK(request), null);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetChainKindsResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.CHAIN_KINDS, result.getChainKinds());
         

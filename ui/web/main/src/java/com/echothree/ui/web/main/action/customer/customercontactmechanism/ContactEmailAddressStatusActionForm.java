@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customercontactmechanism;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.result.GetEmailAddressStatusChoicesResult;
 import com.echothree.model.control.contact.common.choice.EmailAddressStatusChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -46,7 +45,7 @@ public class ContactEmailAddressStatusActionForm
 
             var commandResult = ContactUtil.getHome().getEmailAddressStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEmailAddressStatusChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             emailAddressStatusChoices = result.getEmailAddressStatusChoices();
 
             if(emailAddressStatusChoice == null) {

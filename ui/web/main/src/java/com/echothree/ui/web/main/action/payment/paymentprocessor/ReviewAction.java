@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.payment.paymentprocessor;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.result.GetPaymentProcessorResult;
 import com.echothree.model.control.comment.common.CommentOptions;
 import com.echothree.model.control.payment.common.PaymentOptions;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTransfer;
@@ -68,7 +67,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPaymentProcessorResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             paymentProcessor = result.getPaymentProcessor();
         }

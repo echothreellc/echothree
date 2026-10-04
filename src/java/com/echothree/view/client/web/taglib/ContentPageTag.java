@@ -18,7 +18,6 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.result.GetContentPageResult;
 import com.echothree.model.control.content.common.ContentOptions;
 import com.echothree.util.common.form.TransferProperties;
 import java.util.Arrays;
@@ -164,7 +163,7 @@ public class ContentPageTag
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetContentPageResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getContentPage(), scope);
             }

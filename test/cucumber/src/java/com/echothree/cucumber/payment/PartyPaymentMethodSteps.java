@@ -17,8 +17,6 @@
 package com.echothree.cucumber.payment;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.result.CreatePartyPaymentMethodResult;
-import com.echothree.control.user.payment.common.result.EditPartyPaymentMethodResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -167,7 +165,7 @@ public class PartyPaymentMethodSteps implements En {
                     var commandResult = paymentUtil.createPartyPaymentMethod(persona.userVisitPK, createPartyPaymentMethodForm);
 
                     LastCommandResult.commandResult = commandResult;
-                    var result = (CreatePartyPaymentMethodResult)commandResult.getExecutionResult().getResult();
+                    var result = commandResult.getExecutionResult().getResult();
 
                     persona.lastPartyPaymentMethodName = commandResult.getHasErrors() ? null : result.getPartyPaymentMethodName();
                     persona.createPartyPaymentMethodForm = null;
@@ -192,7 +190,7 @@ public class PartyPaymentMethodSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditPartyPaymentMethodResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     if(!executionResult.getHasErrors()) {
                         persona.createPartyPaymentMethodForm = paymentUtil.getCreatePartyPaymentMethodForm();

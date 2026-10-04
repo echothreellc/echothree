@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.purchasing.itempurchasingcategory;
 
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.result.GetItemPurchasingCategoriesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -53,7 +52,7 @@ public class MainAction
         try {
             var commandResult = VendorUtil.getHome().getItemPurchasingCategories(getUserVisitPK(request), null);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemPurchasingCategoriesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ITEM_PURCHASING_CATEGORIES, result.getItemPurchasingCategories());
             forwardKey = ForwardConstants.DISPLAY;

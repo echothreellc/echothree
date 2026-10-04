@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.uservisitgroup;
 
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.result.GetUserVisitGroupStatusChoicesResult;
 import com.echothree.model.control.user.common.choice.UserVisitGroupStatusChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -45,7 +44,7 @@ public class StatusActionForm
 
             var commandResult = UserUtil.getHome().getUserVisitGroupStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetUserVisitGroupStatusChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             userVisitGroupStatusChoices = result.getUserVisitGroupStatusChoices();
 
             if(userVisitGroupStatusChoice == null) {

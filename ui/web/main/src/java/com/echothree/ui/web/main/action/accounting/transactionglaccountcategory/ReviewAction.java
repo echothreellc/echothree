@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.transactionglaccountcategory;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetTransactionGlAccountCategoryResult;
 import com.echothree.model.control.accounting.common.transfer.TransactionGlAccountCategoryTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -60,7 +59,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetTransactionGlAccountCategoryResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             transactionGlAccountCategory = result.getTransactionGlAccountCategory();
         }

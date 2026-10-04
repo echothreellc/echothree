@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.framework;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetCompanyResult;
 import com.echothree.control.user.user.common.UserUtil;
 import com.echothree.control.user.user.common.result.GetUserSessionResult;
 import com.echothree.model.control.party.common.PartyOptions;
@@ -114,7 +113,7 @@ public abstract class MainBaseAction<A extends ActionForm>
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
             
-            result = (GetUserSessionResult)executionResult.getResult();
+            result = executionResult.getResult();
         }
         
         return result;
@@ -196,7 +195,7 @@ public abstract class MainBaseAction<A extends ActionForm>
 
         var commandResult = PartyUtil.getHome().getCompany(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetCompanyResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         return result.getCompany();
     }

@@ -21,8 +21,6 @@ import com.echothree.control.user.security.common.SecurityUtil;
 import com.echothree.control.user.security.common.edit.SecurityRoleEdit;
 import com.echothree.control.user.security.common.edit.SecurityRoleGroupDescriptionEdit;
 import com.echothree.control.user.security.common.form.SecurityFormFactory;
-import com.echothree.control.user.security.common.result.EditSecurityRoleGroupDescriptionResult;
-import com.echothree.control.user.security.common.result.EditSecurityRoleResult;
 import com.echothree.control.user.security.common.spec.SecuritySpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -84,7 +82,7 @@ public class SecurityRoleGroupHandler
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditSecurityRoleGroupDescriptionResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 if(result != null) {
                     var edit = (SecurityRoleGroupDescriptionEdit)result.getEdit();
@@ -146,7 +144,7 @@ public class SecurityRoleGroupHandler
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditSecurityRoleResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 if(result != null) {
                     var edit = (SecurityRoleEdit)result.getEdit();

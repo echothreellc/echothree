@@ -19,10 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.contact;
 import com.echothree.control.user.contact.common.ContactUtil;
 import com.echothree.control.user.contact.common.ContactService;
 import com.echothree.control.user.contact.common.form.ContactFormFactory;
-import com.echothree.control.user.contact.common.result.CreateContactEmailAddressResult;
-import com.echothree.control.user.contact.common.result.CreateContactPostalAddressResult;
-import com.echothree.control.user.contact.common.result.CreateContactTelephoneResult;
-import com.echothree.control.user.contact.common.result.CreateContactWebAddressResult;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -78,7 +74,7 @@ public class ContactMechanismsHandler
                 System.err.println(commandResult);
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (CreateContactEmailAddressResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 var contactMechanismName = result.getContactMechanismName();
                 var entityRef = result.getEntityRef();
                 
@@ -174,7 +170,7 @@ public class ContactMechanismsHandler
                 System.err.println(commandResult);
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (CreateContactPostalAddressResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 var contactMechanismName = result.getContactMechanismName();
                 var entityRef = result.getEntityRef();
                 
@@ -220,7 +216,7 @@ public class ContactMechanismsHandler
                 System.err.println(commandResult);
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (CreateContactTelephoneResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 var contactMechanismName = result.getContactMechanismName();
                 var entityRef = result.getEntityRef();
                 
@@ -250,7 +246,7 @@ public class ContactMechanismsHandler
                 System.err.println(commandResult);
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (CreateContactWebAddressResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 var contactMechanismName = result.getContactMechanismName();
                 var entityRef = result.getEntityRef();
                 

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.zipcode;
 
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.result.GetZipCodesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class MainAction
 
             var commandResult = GeoUtil.getHome().getZipCodes(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetZipCodesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.COUNTRY, result.getCountry());
             request.setAttribute(AttributeConstants.ZIP_CODES, result.getPostalCodes());

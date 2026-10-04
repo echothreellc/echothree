@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.purchase;
 import com.echothree.control.user.purchase.common.PurchaseUtil;
 import com.echothree.control.user.purchase.common.PurchaseService;
 import com.echothree.control.user.purchase.common.form.PurchaseFormFactory;
-import com.echothree.control.user.purchase.common.result.CreatePurchaseInvoiceResult;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -63,7 +62,7 @@ public class PurchaseInvoicesHandler
                 System.err.println(commandResult);
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (CreatePurchaseInvoiceResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 var invoiceName = result.getInvoiceName();
                 var entityRef = result.getEntityRef();
                 

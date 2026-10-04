@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.forum.forumgroup;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.result.GetForumGroupResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.forum.common.ForumOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -69,7 +68,7 @@ public class ReviewAction
 
         var commandResult = ForumUtil.getHome().getForumGroup(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetForumGroupResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var forumGroup = result.getForumGroup();
         
         if(forumGroup == null) {

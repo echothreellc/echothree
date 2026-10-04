@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.baseencryptionkey;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetBaseEncryptionKeyResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -56,7 +55,7 @@ public class ReviewAction
 
         var commandResult = CoreUtil.getHome().getBaseEncryptionKey(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetBaseEncryptionKeyResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var baseEncryptionKey = result.getBaseEncryptionKey();
         
         if(baseEncryptionKey == null) {

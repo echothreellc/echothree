@@ -17,8 +17,6 @@
 package com.echothree.cucumber.tag;
 
 import com.echothree.control.user.tag.common.TagUtil;
-import com.echothree.control.user.tag.common.result.CreateTagResult;
-import com.echothree.control.user.tag.common.result.EditTagResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -53,7 +51,7 @@ public class TagSteps implements En {
 
                     var commandResult = tagService.createTag(persona.userVisitPK, createTagForm);
                     LastCommandResult.commandResult = commandResult;
-                    var result = (CreateTagResult)commandResult.getExecutionResult().getResult();
+                    var result = commandResult.getExecutionResult().getResult();
 
                     if(result != null) {
                         persona.lastTagName = commandResult.getHasErrors() ? null : result.getTagName();
@@ -113,7 +111,7 @@ public class TagSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditTagResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     if(!executionResult.getHasErrors()) {
                         persona.tagEdit = result.getEdit();

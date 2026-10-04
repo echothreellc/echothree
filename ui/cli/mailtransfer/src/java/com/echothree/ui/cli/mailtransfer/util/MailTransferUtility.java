@@ -21,7 +21,6 @@ import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.communication.common.CommunicationService;
 import com.echothree.control.user.communication.common.CommunicationUtil;
 import com.echothree.control.user.communication.common.form.CommunicationFormFactory;
-import com.echothree.control.user.communication.common.result.GetCommunicationSourcesResult;
 import com.echothree.model.control.communication.common.CommunicationConstants;
 import com.echothree.model.control.communication.common.CommunicationOptions;
 import com.echothree.model.control.communication.common.transfer.CommunicationSourceTransfer;
@@ -102,7 +101,7 @@ public class MailTransferUtility {
 
             var commandResult = getCommunicationService().getCommunicationSources(getUserVisit(), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCommunicationSourcesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var communicationSources = result.getCommunicationSources();
             
             for(var communicationSource: communicationSources) {

@@ -18,11 +18,8 @@ package com.echothree.ui.web.main.action.selector.selectornode.add;
 
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetEntityListItemResult;
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.common.result.GetSelectorNodeTypeResult;
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.result.GetWorkflowStepResult;
 import com.echothree.model.control.core.common.transfer.EntityListItemTransfer;
 import com.echothree.model.control.selector.common.transfer.SelectorNodeTypeTransfer;
 import com.echothree.model.control.workflow.common.transfer.WorkflowStepTransfer;
@@ -68,7 +65,7 @@ public class FinalStepAction
 
         var commandResult = SelectorUtil.getHome().getSelectorNodeType(userVisitPK, commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetSelectorNodeTypeResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         return result.getSelectorNodeType();
     }
@@ -82,7 +79,7 @@ public class FinalStepAction
 
         var commandResult = WorkflowUtil.getHome().getWorkflowStep(userVisitPK, commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetWorkflowStepResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         return result.getWorkflowStep();
     }
@@ -99,7 +96,7 @@ public class FinalStepAction
 
         var commandResult = CoreUtil.getHome().getEntityListItem(userVisitPK, commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetEntityListItemResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         return result.getEntityListItem();
     }

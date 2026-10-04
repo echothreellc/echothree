@@ -114,7 +114,7 @@ public class WarehouseEditAction
             throws Exception {
         var commandResult = WarehouseUtil.getHome().editWarehouse(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (EditWarehouseResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.WAREHOUSE, result.getWarehouse());
         

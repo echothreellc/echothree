@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.content.contentwebaddress;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.result.GetContentCollectionChoicesResult;
 import com.echothree.model.control.content.common.choice.ContentCollectionChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -46,7 +45,7 @@ public class AddActionForm
 
             var commandResult = ContentUtil.getHome().getContentCollectionChoices(userVisitPK, getContentCollectionChoicesForm);
             var executionResult = commandResult.getExecutionResult();
-            var getContentCollectionChoicesResult = (GetContentCollectionChoicesResult)executionResult.getResult();
+            var getContentCollectionChoicesResult = executionResult.getResult();
             contentCollectionChoices = getContentCollectionChoicesResult.getContentCollectionChoices();
 
             if(contentCollectionChoice == null)

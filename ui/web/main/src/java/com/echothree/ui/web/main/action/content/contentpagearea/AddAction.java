@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.content.contentpagearea;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.result.GetContentPageLayoutAreaResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -111,7 +110,7 @@ public class AddAction
 
             var commandResult = ContentUtil.getHome().getContentPageLayoutArea(getUserVisitPK(request), getContentPageLayoutAreaForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetContentPageLayoutAreaResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             request.setAttribute(AttributeConstants.CONTENT_COLLECTION_NAME, contentCollectionName);
             request.setAttribute(AttributeConstants.CONTENT_SECTION_NAME, contentSectionName);

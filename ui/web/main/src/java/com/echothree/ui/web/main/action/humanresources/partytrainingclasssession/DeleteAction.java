@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.partytrainingclasssession;
 
 import com.echothree.control.user.training.common.TrainingUtil;
-import com.echothree.control.user.training.common.result.GetPartyTrainingClassSessionResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.action.humanresources.employee.EmployeeUtils;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -68,7 +67,7 @@ public class DeleteAction
 
         var commandResult = TrainingUtil.getHome().getPartyTrainingClassSession(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetPartyTrainingClassSessionResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var partyTrainingClassSession = result.getPartyTrainingClassSession();
         
         request.setAttribute(AttributeConstants.PARTY_TRAINING_CLASS_SESSION, result.getPartyTrainingClassSession());

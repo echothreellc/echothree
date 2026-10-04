@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.purchasing.vendor;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.CreateVendorResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -87,7 +86,7 @@ public class AddAction
                 forwardKey = ForwardConstants.FORM;
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (CreateVendorResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 forwardKey = ForwardConstants.REVIEW;
                 vendorName = result.getVendorName();

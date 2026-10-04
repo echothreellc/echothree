@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.purchase;
 import com.echothree.control.user.purchase.common.PurchaseUtil;
 import com.echothree.control.user.purchase.common.PurchaseService;
 import com.echothree.control.user.purchase.common.form.PurchaseFormFactory;
-import com.echothree.control.user.purchase.common.result.CreatePurchaseInvoiceLineResult;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.comment.CommentsHandler;
@@ -65,7 +64,7 @@ public class PurchaseInvoiceHandler
                 System.err.println(commandResult);
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (CreatePurchaseInvoiceLineResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 var entityRef = result.getEntityRef();
                 
                 initialDataParser.pushHandler(new PurchaseInvoiceLineHandler(initialDataParser, this, entityRef));

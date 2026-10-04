@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.humanresources.employee;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.result.GetEmployeeTypeChoicesResult;
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.result.GetPartySecurityRoleTemplateChoicesResult;
 import com.echothree.model.control.employee.common.choice.EmployeeTypeChoicesBean;
 import com.echothree.model.control.security.common.choice.PartySecurityRoleTemplateChoicesBean;
 import com.echothree.view.client.web.struts.BasePersonWithLoginActionForm;
@@ -48,7 +46,7 @@ public class AddActionForm
 
                 var commandResult = EmployeeUtil.getHome().getEmployeeTypeChoices(userVisitPK, form);
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetEmployeeTypeChoicesResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 employeeTypeChoices = result.getEmployeeTypeChoices();
                 
                 if(employeeTypeChoice == null) {
@@ -70,7 +68,7 @@ public class AddActionForm
 
                 var commandResult = SecurityUtil.getHome().getPartySecurityRoleTemplateChoices(userVisitPK, form);
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetPartySecurityRoleTemplateChoicesResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 partySecurityRoleTemplateChoices = result.getPartySecurityRoleTemplateChoices();
                 
                 if(partySecurityRoleTemplateChoice == null)

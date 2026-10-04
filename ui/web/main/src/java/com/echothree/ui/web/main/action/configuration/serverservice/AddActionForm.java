@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.serverservice;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetServiceChoicesResult;
 import com.echothree.model.control.core.common.choice.ServiceChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -44,7 +43,7 @@ public class AddActionForm
 
                 var commandResult = CoreUtil.getHome().getServiceChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var getServiceChoicesResult = (GetServiceChoicesResult)executionResult.getResult();
+                var getServiceChoicesResult = executionResult.getResult();
                 serviceChoices = getServiceChoicesResult.getServiceChoices();
 
                 if(serviceChoice == null) {

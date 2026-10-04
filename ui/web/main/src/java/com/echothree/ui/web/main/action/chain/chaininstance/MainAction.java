@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.chain.chaininstance;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.common.result.GetChainInstancesResult;
 import com.echothree.model.control.chain.common.ChainOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -63,7 +62,7 @@ public class MainAction
 
         var commandResult = ChainUtil.getHome().getChainInstances(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetChainInstancesResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.CHAIN, result.getChain());
         request.setAttribute(AttributeConstants.CHAIN_INSTANCES, result.getChainInstances());

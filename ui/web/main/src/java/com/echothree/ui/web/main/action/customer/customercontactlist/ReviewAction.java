@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customercontactlist;
 
 import com.echothree.control.user.contactlist.common.ContactListUtil;
-import com.echothree.control.user.contactlist.common.result.GetPartyContactListResult;
 import com.echothree.model.control.comment.common.CommentOptions;
 import com.echothree.model.control.contactlist.common.ContactListOptions;
 import com.echothree.model.control.contactlist.common.transfer.PartyContactListTransfer;
@@ -73,7 +72,7 @@ public class ReviewAction
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPartyContactListResult)executionResult.getResult();
+            var result = executionResult.getResult();
             partyContactList = result.getPartyContactList();
         }
 

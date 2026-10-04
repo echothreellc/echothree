@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.item;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemResult;
 import com.echothree.model.control.comment.common.CommentOptions;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.geo.common.GeoOptions;
@@ -102,7 +101,7 @@ public class ReviewAction
         var commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var item = result.getItem();
 
             if(item != null) {

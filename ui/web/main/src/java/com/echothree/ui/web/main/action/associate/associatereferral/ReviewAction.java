@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.associate.associatereferral;
 
 import com.echothree.control.user.associate.common.AssociateUtil;
-import com.echothree.control.user.associate.common.result.GetAssociateReferralResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class ReviewAction
 
             var commandResult = AssociateUtil.getHome().getAssociateReferral(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetAssociateReferralResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var associateReferralTransfer = result.getAssociateReferral();
             
             request.setAttribute(AttributeConstants.ASSOCIATE_REFERRAL, associateReferralTransfer);

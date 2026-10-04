@@ -22,9 +22,7 @@ import com.echothree.control.user.comment.common.form.EditCommentForm;
 import com.echothree.control.user.comment.common.result.EditCommentResult;
 import com.echothree.control.user.comment.common.spec.CommentSpec;
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.result.GetPartyPaymentMethodResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -102,7 +100,7 @@ public class CommentEditAction
             throws Exception {
         var commandResult = CommentUtil.getHome().editComment(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (EditCommentResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var comment = result.getComment();
 
         if(comment != null) {
@@ -126,7 +124,7 @@ public class CommentEditAction
 
         var commandResult = PaymentUtil.getHome().getPartyPaymentMethod(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetPartyPaymentMethodResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.PARTY_PAYMENT_METHOD, result.getPartyPaymentMethod());
     }
@@ -139,7 +137,7 @@ public class CommentEditAction
 
         var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetCustomerResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.CUSTOMER, result.getCustomer());
     }

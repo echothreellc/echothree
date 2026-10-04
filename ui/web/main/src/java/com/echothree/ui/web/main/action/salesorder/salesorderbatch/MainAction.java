@@ -17,8 +17,6 @@
 package com.echothree.ui.web.main.action.salesorder.salesorderbatch;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.result.GetSalesOrderBatchResultsResult;
-import com.echothree.control.user.search.common.result.SearchSalesOrderBatchesResult;
 import com.echothree.model.control.search.common.SearchTypes;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -62,7 +60,7 @@ public class MainAction
 
         var commandResult = SearchUtil.getHome().getSalesOrderBatchResults(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetSalesOrderBatchResultsResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var salesOrderBatchResults = result.getSalesOrderBatchResults();
         var iter = salesOrderBatchResults.iterator();
         if(iter.hasNext()) {
@@ -101,7 +99,7 @@ public class MainAction
                     forwardKey = ForwardConstants.FORM;
                 } else {
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (SearchSalesOrderBatchesResult)executionResult.getResult();
+                    var result = executionResult.getResult();
                     var count = result.getCount();
 
                     if(count == 0 || count > 1) {

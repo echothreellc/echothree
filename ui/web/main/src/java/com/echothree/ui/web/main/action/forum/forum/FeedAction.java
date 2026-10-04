@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.forum.forum;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.result.GetForumThreadsResult;
 import com.echothree.model.control.core.common.MimeTypes;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.common.ForumOptions;
@@ -94,7 +93,7 @@ public class FeedAction
 
         var commandResult = ForumUtil.getHome().getForumThreads(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetForumThreadsResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var forum = result.getForum();
         
         if(forum != null) {

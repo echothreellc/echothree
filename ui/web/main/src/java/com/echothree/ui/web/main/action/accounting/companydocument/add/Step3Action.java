@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.accounting.companydocument.add;
 
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.common.result.GetDocumentTypeResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetCompanyResult;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.document.common.transfer.DocumentTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -74,7 +72,7 @@ public class Step3Action
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCompanyResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var company = result.getCompany();
 
             if(company != null) {
@@ -91,7 +89,7 @@ public class Step3Action
 
         var commandResult = DocumentUtil.getHome().getDocumentType(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetDocumentTypeResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         return result.getDocumentType();
     }

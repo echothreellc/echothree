@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.geocodetax;
 
 import com.echothree.control.user.tax.common.TaxUtil;
-import com.echothree.control.user.tax.common.result.GetGeoCodeTaxesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class MainAction
 
             var commandResult = TaxUtil.getHome().getGeoCodeTaxes(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetGeoCodeTaxesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var taxTransfer = result.getTax();
             
             request.setAttribute(AttributeConstants.TAX, taxTransfer);

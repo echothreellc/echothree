@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.itemalias;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemAliasesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -56,7 +55,7 @@ public class MainAction
 
         var commandResult = ItemUtil.getHome().getItemAliases(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetItemAliasesResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var item = result.getItem();
 
         if(item != null) {

@@ -17,14 +17,8 @@
 package com.echothree.ui.web.main.action.item.item;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemTypeChoicesResult;
-import com.echothree.control.user.item.common.result.GetItemUseTypeChoicesResult;
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.result.GetSearchDefaultOperatorChoicesResult;
-import com.echothree.control.user.search.common.result.GetSearchSortDirectionChoicesResult;
-import com.echothree.control.user.search.common.result.GetSearchSortOrderChoicesResult;
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.result.GetWorkflowStepChoicesResult;
 import com.echothree.model.control.item.common.choice.ItemTypeChoicesBean;
 import com.echothree.model.control.item.common.choice.ItemUseTypeChoicesBean;
 import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
@@ -75,7 +69,7 @@ public class MainActionForm
 
             var commandResult = ItemUtil.getHome().getItemTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             itemTypeChoices = result.getItemTypeChoices();
 
             if(itemTypeChoice == null) {
@@ -94,7 +88,7 @@ public class MainActionForm
 
             var commandResult = ItemUtil.getHome().getItemUseTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemUseTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             itemUseTypeChoices = result.getItemUseTypeChoices();
 
             if(itemUseTypeChoice == null) {
@@ -114,7 +108,7 @@ public class MainActionForm
 
             var commandResult = WorkflowUtil.getHome().getWorkflowStepChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetWorkflowStepChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             itemStatusChoices = result.getWorkflowStepChoices();
 
             if(itemStatusChoice == null) {
@@ -135,7 +129,7 @@ public class MainActionForm
 
             var commandResult = SearchUtil.getHome().getSearchDefaultOperatorChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSearchDefaultOperatorChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             searchDefaultOperatorChoices = result.getSearchDefaultOperatorChoices();
 
             if(searchDefaultOperatorChoice == null) {
@@ -156,7 +150,7 @@ public class MainActionForm
 
             var commandResult = SearchUtil.getHome().getSearchSortOrderChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSearchSortOrderChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             searchSortOrderChoices = result.getSearchSortOrderChoices();
 
             if(searchSortOrderChoice == null) {
@@ -177,7 +171,7 @@ public class MainActionForm
 
             var commandResult = SearchUtil.getHome().getSearchSortDirectionChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSearchSortDirectionChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             searchSortDirectionChoices = result.getSearchSortDirectionChoices();
 
             if(searchSortDirectionChoice == null) {

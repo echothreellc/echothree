@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.club.clubitem;
 
 import com.echothree.control.user.club.common.ClubUtil;
-import com.echothree.control.user.club.common.result.GetClubItemsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class MainAction
 
             var commandResult = ClubUtil.getHome().getClubItems(getUserVisitPK(request), getClubItemsForm);
             var executionResult = commandResult.getExecutionResult();
-            var getClubItemsResult = (GetClubItemsResult)executionResult.getResult();
+            var getClubItemsResult = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CLUB, getClubItemsResult.getClub());
             request.setAttribute(AttributeConstants.CLUB_ITEMS, getClubItemsResult.getClubItems());

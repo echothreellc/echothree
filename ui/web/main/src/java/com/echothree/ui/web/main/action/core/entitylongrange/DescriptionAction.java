@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.entitylongrange;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetEntityLongRangeDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class DescriptionAction
         var commandResult = CoreUtil.getHome().getEntityLongRangeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEntityLongRangeDescriptionsResult) executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ENTITY_LONG_RANGE, result.getEntityLongRange());
             request.setAttribute(AttributeConstants.ENTITY_LONG_RANGE_DESCRIPTIONS, result.getEntityLongRangeDescriptions());

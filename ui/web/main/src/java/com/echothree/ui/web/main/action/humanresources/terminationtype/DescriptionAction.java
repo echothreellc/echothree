@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.terminationtype;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.result.GetTerminationTypeDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class DescriptionAction
 
             var commandResult = EmployeeUtil.getHome().getTerminationTypeDescriptions(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetTerminationTypeDescriptionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var terminationTypeTransfer = result.getTerminationType();
             
             request.setAttribute(AttributeConstants.TERMINATION_TYPE, terminationTypeTransfer);

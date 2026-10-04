@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.filter.filtertype;
 
 import com.echothree.control.user.filter.common.FilterUtil;
-import com.echothree.control.user.filter.common.result.GetFilterTypesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class MainAction
 
             var commandResult = FilterUtil.getHome().getFilterTypes(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var getFilterTypesResult = (GetFilterTypesResult)executionResult.getResult();
+            var getFilterTypesResult = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.FILTER_KIND, getFilterTypesResult.getFilterKind());
             request.setAttribute(AttributeConstants.FILTER_TYPES, getFilterTypesResult.getFilterTypes());

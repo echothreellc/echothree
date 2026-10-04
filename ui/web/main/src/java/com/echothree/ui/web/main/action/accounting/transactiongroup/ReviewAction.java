@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.transactiongroup;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetTransactionGroupResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class ReviewAction
 
             var commandResult = AccountingUtil.getHome().getTransactionGroup(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetTransactionGroupResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var transactionGroup = result.getTransactionGroup();
             
             if(transactionGroup == null) {

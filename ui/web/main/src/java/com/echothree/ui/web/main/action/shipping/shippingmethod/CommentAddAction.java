@@ -18,7 +18,6 @@ package com.echothree.ui.web.main.action.shipping.shippingmethod;
 
 import com.echothree.control.user.comment.common.CommentUtil;
 import com.echothree.control.user.shipping.common.ShippingUtil;
-import com.echothree.control.user.shipping.common.result.GetShippingMethodResult;
 import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
@@ -60,7 +59,7 @@ public class CommentAddAction
 
         var commandResult = ShippingUtil.getHome().getShippingMethod(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetShippingMethodResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var shippingMethod = result.getShippingMethod();
         
         request.setAttribute(AttributeConstants.SHIPPING_METHOD, shippingMethod);

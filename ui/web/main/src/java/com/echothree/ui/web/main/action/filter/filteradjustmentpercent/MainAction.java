@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.filter.filteradjustmentpercent;
 
 import com.echothree.control.user.filter.common.FilterUtil;
-import com.echothree.control.user.filter.common.result.GetFilterAdjustmentPercentsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -61,7 +60,7 @@ public class MainAction
 
             var commandResult = FilterUtil.getHome().getFilterAdjustmentPercents(getUserVisitPK(request), getFilterAdjustmentPercentsForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetFilterAdjustmentPercentsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.FILTER_ADJUSTMENT, result.getFilterAdjustment());
             request.setAttribute(AttributeConstants.FILTER_ADJUSTMENT_PERCENTS, result.getFilterAdjustmentPercents());

@@ -17,19 +17,11 @@
 package com.echothree.ui.cli.amazon.batch.order.tasks;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetCurrencyResult;
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.result.CreateContactPostalAddressResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.CreateCustomerResult;
 import com.echothree.control.user.sales.common.SalesUtil;
-import com.echothree.control.user.sales.common.result.CreateSalesOrderBatchResult;
-import com.echothree.control.user.sales.common.result.CreateSalesOrderLineResult;
-import com.echothree.control.user.sales.common.result.CreateSalesOrderPaymentPreferenceResult;
-import com.echothree.control.user.sales.common.result.CreateSalesOrderResult;
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.result.GetCustomerResultsResult;
 import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.common.transfer.PartyContactMechanismTransfer;
@@ -123,7 +115,7 @@ public class EnterOrders {
         CurrencyTransfer currency = null;
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCurrencyResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             currency = result.getCurrency();
         }
@@ -217,7 +209,7 @@ public class EnterOrders {
         var commandResult = SalesUtil.getHome().createSalesOrderBatch(getUserVisit(), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (CreateSalesOrderBatchResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             batchName = result.getBatchName();
         }
@@ -257,7 +249,7 @@ public class EnterOrders {
             LOG.error(indent + commandResult);
         } else {
             var executionResult = commandResult.getExecutionResult();
-            var createSalesOrderLineResult = (CreateSalesOrderLineResult)executionResult.getResult();
+            var createSalesOrderLineResult = executionResult.getResult();
             
             orderLine.setOrderLineSequence(createSalesOrderLineResult.getOrderLineSequence());
         }
@@ -308,7 +300,7 @@ public class EnterOrders {
 
             var getCustomerResultsResult = SearchUtil.getHome().getCustomerResults(getUserVisit(), getCustomerResultsForm);
             var executionResult = getCustomerResultsResult.getExecutionResult();
-            var result = (GetCustomerResultsResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             customerResults = result.getCustomerResults();
         }
@@ -429,7 +421,7 @@ public class EnterOrders {
                 LOG.error(indent + "createCustomer: " + commandResult);
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (CreateCustomerResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 
                 customerName = result.getCustomerName();
                 partyName = result.getPartyName();
@@ -469,7 +461,7 @@ public class EnterOrders {
                         LOG.error(indent + "createContactPostalAddress: " + commandResult);
                     } else {
                         var executionResult = commandResult.getExecutionResult();
-                        var result = (CreateContactPostalAddressResult)executionResult.getResult();
+                        var result = executionResult.getResult();
                         var contactMechanismName = result.getContactMechanismName();
 
                         amazonOrderShipmentGroup.setContactMechanismName(contactMechanismName);
@@ -503,7 +495,7 @@ public class EnterOrders {
                 LOG.error(indent + "createSalesOrder: " + commandResult);
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (CreateSalesOrderResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 var orderName = result.getOrderName();
 
                 order.setOrderName(orderName);
@@ -531,7 +523,7 @@ public class EnterOrders {
             LOG.error(indent + "createSalesOrderPaymentPreference: " + commandResult);
         } else {
             var executionResult = commandResult.getExecutionResult();
-            var result = (CreateSalesOrderPaymentPreferenceResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             LOG.info(indent + "Created sales order payment preference #" + result.getOrderPaymentPreferenceSequence() + ".");
         }

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.advertising.offerchaintype.Add;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.common.result.GetChainTypesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -54,7 +53,7 @@ public class Step2Action
 
         var commandResult = ChainUtil.getHome().getChainTypes(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetChainTypesResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.CHAIN_KIND, result.getChainKind());
         request.setAttribute(AttributeConstants.CHAIN_TYPES, result.getChainTypes());

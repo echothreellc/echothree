@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.payment.paymentmethodtype;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.result.GetPaymentMethodTypeResult;
 import com.echothree.model.control.payment.common.PaymentOptions;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -67,7 +66,7 @@ public class ReviewAction
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPaymentMethodTypeResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             paymentMethodType = result.getPaymentMethodType();
         }

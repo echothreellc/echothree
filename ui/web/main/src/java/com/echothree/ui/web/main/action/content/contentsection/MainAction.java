@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.content.contentsection;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.result.GetContentSectionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -61,7 +60,7 @@ public class MainAction
 
             var commandResult = ContentUtil.getHome().getContentSections(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetContentSectionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var contentCollectionTransfer = result.getContentCollection();
             var parentContentSectionTransfer = result.getParentContentSection();
             

@@ -18,7 +18,6 @@ package com.echothree.ui.web.main.action.accounting.departmentcontactmechanism;
 
 import com.echothree.control.user.comment.common.CommentUtil;
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.result.GetContactMechanismResult;
 import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
@@ -61,7 +60,7 @@ public class CommentAddAction
 
         var commandResult = ContactUtil.getHome().getContactMechanism(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetContactMechanismResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var contactMechanism = result.getContactMechanism();
         
         request.setAttribute(AttributeConstants.CONTACT_MECHANISM, contactMechanism);

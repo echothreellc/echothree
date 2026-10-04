@@ -18,7 +18,6 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.letter.common.LetterUtil;
-import com.echothree.control.user.letter.common.result.GetQueuedLetterResult;
 import com.echothree.util.common.form.TransferProperties;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
@@ -113,7 +112,7 @@ public class QueuedLetterTag
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetQueuedLetterResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 pageContext.setAttribute(var, result.getQueuedLetter(), scope);
             }

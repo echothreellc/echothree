@@ -20,7 +20,6 @@ import com.echothree.control.user.accounting.common.AccountingUtil;
 import com.echothree.control.user.accounting.common.edit.TransactionTypeDescriptionEdit;
 import com.echothree.control.user.accounting.common.form.EditTransactionTypeDescriptionForm;
 import com.echothree.control.user.accounting.common.result.EditTransactionTypeDescriptionResult;
-import com.echothree.control.user.accounting.common.result.GetTransactionTypeResult;
 import com.echothree.control.user.accounting.common.spec.TransactionTypeDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
@@ -88,7 +87,7 @@ public class DescriptionEditAction
             throws Exception {
         var commandResult = AccountingUtil.getHome().editTransactionTypeDescription(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (EditTransactionTypeDescriptionResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         var transactionTypeDescription = result.getTransactionTypeDescription();
         if(transactionTypeDescription != null) {
@@ -113,7 +112,7 @@ public class DescriptionEditAction
         var commandResult = AccountingUtil.getHome().getTransactionType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetTransactionTypeResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.TRANSACTION_TYPE, result.getTransactionType());
         }

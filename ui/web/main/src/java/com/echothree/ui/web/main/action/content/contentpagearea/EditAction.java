@@ -118,7 +118,7 @@ public class EditAction
                         var executionResult = commandResult.getExecutionResult();
 
                         if(executionResult != null) {
-                            result = (EditContentPageAreaResult)executionResult.getResult();
+                            result = executionResult.getResult();
 
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -134,7 +134,7 @@ public class EditAction
 
                     var commandResult = ContentUtil.getHome().editContentPageArea(getUserVisitPK(request), commandForm);
                     var executionResult = commandResult.getExecutionResult();
-                    result = (EditContentPageAreaResult)executionResult.getResult();
+                    result = executionResult.getResult();
 
                     if(result != null) {
                         var edit = result.getEdit();

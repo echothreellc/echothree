@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.department;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetDepartmentResult;
 import com.echothree.model.control.contact.common.ContactOptions;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.party.common.PartyOptions;
@@ -76,7 +75,7 @@ public class ReviewAction
 
         var commandResult = PartyUtil.getHome().getDepartment(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetDepartmentResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var department = result.getDepartment();
 
         if(department == null) {

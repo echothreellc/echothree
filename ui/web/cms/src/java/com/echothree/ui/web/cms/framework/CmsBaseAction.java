@@ -17,11 +17,8 @@
 package com.echothree.ui.web.cms.framework;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetApplicationResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetCompanyResult;
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.result.GetUserSessionResult;
 import com.echothree.model.control.core.common.transfer.ApplicationTransfer;
 import com.echothree.model.control.party.common.transfer.CompanyTransfer;
 import com.echothree.model.control.user.common.transfer.UserSessionTransfer;
@@ -101,7 +98,7 @@ public abstract class CmsBaseAction<A extends ActionForm>
         if(applicationRequired ? doesApplicationExist(request) : true) {
             var commandResult = UserUtil.getHome().getUserSession(getUserVisitPK(request), null);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetUserSessionResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var userSession = result.getUserSession();
             var party = userSession == null? null: userSession.getParty();
 
@@ -144,7 +141,7 @@ public abstract class CmsBaseAction<A extends ActionForm>
 
         var commandResult = PartyUtil.getHome().getCompany(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetCompanyResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         return result.getCompany();
     }
@@ -166,7 +163,7 @@ public abstract class CmsBaseAction<A extends ActionForm>
         var commandResult = CoreUtil.getHome().getApplication(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetApplicationResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             application = result.getApplication();
         }

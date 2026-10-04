@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.advertising.offer;
 
 import com.echothree.control.user.filter.common.FilterUtil;
-import com.echothree.control.user.filter.common.result.GetFilterChoicesResult;
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.common.result.GetSelectorChoicesResult;
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.result.GetSequenceChoicesResult;
 import com.echothree.model.control.filter.common.FilterKinds;
 import com.echothree.model.control.filter.common.FilterTypes;
 import com.echothree.model.control.filter.common.choice.FilterChoicesBean;
@@ -68,7 +65,7 @@ public class AddActionForm
 
             var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSequenceChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             salesOrderSequenceChoices = result.getSequenceChoices();
 
             if(salesOrderSequenceChoice == null) {
@@ -89,7 +86,7 @@ public class AddActionForm
 
             var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSelectorChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             offerItemSelectorChoices = result.getSelectorChoices();
 
             if(offerItemSelectorChoice == null) {
@@ -110,7 +107,7 @@ public class AddActionForm
 
             var commandResult = FilterUtil.getHome().getFilterChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetFilterChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             offerItemPriceFilterChoices = result.getFilterChoices();
 
             if(offerItemPriceFilterChoice == null) {

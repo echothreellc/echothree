@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.entityblobattribute;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetEntityBlobAttributeResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.ui.web.main.framework.ByteArrayStreamInfo;
 import com.echothree.ui.web.main.framework.MainBaseDownloadAction;
@@ -62,7 +61,7 @@ public class EntityBlobAttributeViewAction
         var commandResult = CoreUtil.getHome().getEntityBlobAttribute(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEntityBlobAttributeResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             var itemAttribute = result.getEntityBlobAttribute();
 

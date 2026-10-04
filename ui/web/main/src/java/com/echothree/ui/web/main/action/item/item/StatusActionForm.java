@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.item;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemStatusChoicesResult;
 import com.echothree.model.control.item.common.choice.ItemStatusChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -46,7 +45,7 @@ public class StatusActionForm
 
             var commandResult = ItemUtil.getHome().getItemStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemStatusChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             itemStatusChoices = result.getItemStatusChoices();
 
             if(itemStatusChoice == null)

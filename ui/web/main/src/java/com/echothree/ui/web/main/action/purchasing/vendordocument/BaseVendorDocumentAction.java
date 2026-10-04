@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.purchasing.vendordocument;
 
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.common.result.GetPartyDocumentResult;
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.result.GetVendorResult;
 import com.echothree.model.control.document.common.transfer.PartyDocumentTransfer;
 import com.echothree.model.control.vendor.common.transfer.VendorTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -44,7 +42,7 @@ public abstract class BaseVendorDocumentAction<A extends ActionForm>
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetVendorResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             vendor = result.getVendor();
 
@@ -76,7 +74,7 @@ public abstract class BaseVendorDocumentAction<A extends ActionForm>
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPartyDocumentResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             partyDocument = result.getPartyDocument();
 

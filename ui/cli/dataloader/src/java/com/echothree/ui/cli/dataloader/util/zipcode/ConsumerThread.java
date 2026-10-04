@@ -17,9 +17,6 @@
 package com.echothree.ui.cli.dataloader.util.zipcode;
 
 import com.echothree.control.user.geo.common.form.GeoFormFactory;
-import com.echothree.control.user.geo.common.result.CreateCityResult;
-import com.echothree.control.user.geo.common.result.CreateCountyResult;
-import com.echothree.control.user.geo.common.result.CreateZipCodeResult;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.collection.SmartQueue;
 import com.echothree.util.common.message.Message;
@@ -87,7 +84,7 @@ public class ConsumerThread
 
                 var createZipCodeCommandResult = zipCodeParser.getGeoService().createZipCode(getUserVisit(), createZipCodeForm);
                 var createZipCodeExecutionResult = createZipCodeCommandResult.getExecutionResult();
-                var createZipCodeResult = (CreateZipCodeResult)createZipCodeExecutionResult.getResult();
+                var createZipCodeResult = createZipCodeExecutionResult.getResult();
                 zipCodeGeoCodeName = createZipCodeResult.getGeoCodeName();
             }
             
@@ -142,7 +139,7 @@ public class ConsumerThread
                     
                     var createCountyCommandResult = zipCodeParser.getGeoService().createCounty(getUserVisit(), createCountyForm);
                     var createCountyExecutionResult = createCountyCommandResult.getExecutionResult();
-                    var createCountyResult = (CreateCountyResult)createCountyExecutionResult.getResult();
+                    var createCountyResult = createCountyExecutionResult.getResult();
                     countyGeoCodeName = createCountyResult.getGeoCodeName();
                 }
                 
@@ -193,7 +190,7 @@ public class ConsumerThread
                 
                 var createCityCommandResult = zipCodeParser.getGeoService().createCity(getUserVisit(), createCityForm);
                 var createCityExecutionResult = createCityCommandResult.getExecutionResult();
-                var createCityResult = (CreateCityResult)createCityExecutionResult.getResult();
+                var createCityResult = createCityExecutionResult.getResult();
                 cityGeoCodeName = createCityResult.getGeoCodeName();
             }
             

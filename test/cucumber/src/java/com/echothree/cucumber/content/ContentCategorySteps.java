@@ -17,7 +17,6 @@
 package com.echothree.cucumber.content;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.result.EditContentCategoryResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -108,7 +107,7 @@ public class ContentCategorySteps implements En {
 
                     if(!commandResult.getHasErrors()) {
                         var executionResult = commandResult.getExecutionResult();
-                        var result = (EditContentCategoryResult)executionResult.getResult();
+                        var result = executionResult.getResult();
 
                         persona.contentCategoryEdit = result.getEdit();
                     }

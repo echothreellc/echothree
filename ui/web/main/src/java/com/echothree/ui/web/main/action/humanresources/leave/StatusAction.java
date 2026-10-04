@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.leave;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.result.GetLeaveResult;
 import com.echothree.control.user.employee.common.result.SetLeaveStatusResult;
 import com.echothree.ui.web.main.action.humanresources.employee.EmployeeUtils;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -66,7 +65,7 @@ public class StatusAction
 
        var commandResult = EmployeeUtil.getHome().getLeave(getUserVisitPK(request), commandForm);
        var executionResult = commandResult.getExecutionResult();
-       var result = (GetLeaveResult)executionResult.getResult();
+       var result = executionResult.getResult();
        var leave = result.getLeave();
 
         request.setAttribute(AttributeConstants.LEAVE, leave);

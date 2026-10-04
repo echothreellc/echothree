@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.returnpolicy.returnkind;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.result.GetReturnKindsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -53,7 +52,7 @@ public class MainAction
         try {
             var commandResult = ReturnPolicyUtil.getHome().getReturnKinds(getUserVisitPK(request), null);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetReturnKindsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.RETURN_KINDS, result.getReturnKinds());
             forwardKey = ForwardConstants.DISPLAY;

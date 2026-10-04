@@ -17,8 +17,6 @@
 package com.echothree.cucumber.comment;
 
 import com.echothree.control.user.comment.common.CommentUtil;
-import com.echothree.control.user.comment.common.result.CreateCommentTypeResult;
-import com.echothree.control.user.comment.common.result.EditCommentTypeResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -50,7 +48,7 @@ public class CommentTypeSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (CreateCommentTypeResult)executionResult.getResult();
+                    var result = executionResult.getResult();
                     persona.lastCommentTypeName = result.getCommentTypeName();
 
                     persona.createCommentTypeForm = null;
@@ -106,7 +104,7 @@ public class CommentTypeSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditCommentTypeResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     if(!executionResult.getHasErrors()) {
                         persona.commentTypeEdit = result.getEdit();

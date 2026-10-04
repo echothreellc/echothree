@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.item;
 import com.echothree.control.user.item.common.ItemService;
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.form.ItemFormFactory;
-import com.echothree.control.user.item.common.result.EditItemAliasTypeResult;
 import com.echothree.control.user.item.common.spec.ItemSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -77,7 +76,7 @@ public class ItemAliasTypesHandler
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditItemAliasTypeResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 if(result != null) {
                     var edit = result.getEdit();

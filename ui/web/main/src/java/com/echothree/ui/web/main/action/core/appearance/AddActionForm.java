@@ -17,9 +17,6 @@
 package com.echothree.ui.web.main.action.core.appearance;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetColorChoicesResult;
-import com.echothree.control.user.core.common.result.GetFontStyleChoicesResult;
-import com.echothree.control.user.core.common.result.GetFontWeightChoicesResult;
 import com.echothree.model.control.core.common.choice.ColorChoicesBean;
 import com.echothree.model.control.core.common.choice.FontStyleChoicesBean;
 import com.echothree.model.control.core.common.choice.FontWeightChoicesBean;
@@ -59,7 +56,7 @@ public class AddActionForm
 
             var commandResult = CoreUtil.getHome().getColorChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var getColorChoicesResult = (GetColorChoicesResult)executionResult.getResult();
+            var getColorChoicesResult = executionResult.getResult();
             textColorChoices = getColorChoicesResult.getColorChoices();
 
             if(textColorChoice == null) {
@@ -78,7 +75,7 @@ public class AddActionForm
 
             var commandResult = CoreUtil.getHome().getColorChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var getColorChoicesResult = (GetColorChoicesResult)executionResult.getResult();
+            var getColorChoicesResult = executionResult.getResult();
             backgroundColorChoices = getColorChoicesResult.getColorChoices();
 
             if(backgroundColorChoice == null) {
@@ -97,7 +94,7 @@ public class AddActionForm
 
             var commandResult = CoreUtil.getHome().getFontStyleChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var getFontStyleChoicesResult = (GetFontStyleChoicesResult)executionResult.getResult();
+            var getFontStyleChoicesResult = executionResult.getResult();
             fontStyleChoices = getFontStyleChoicesResult.getFontStyleChoices();
 
             if(fontStyleChoice == null) {
@@ -116,7 +113,7 @@ public class AddActionForm
 
             var commandResult = CoreUtil.getHome().getFontWeightChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var getFontWeightChoicesResult = (GetFontWeightChoicesResult)executionResult.getResult();
+            var getFontWeightChoicesResult = executionResult.getResult();
             fontWeightChoices = getFontWeightChoicesResult.getFontWeightChoices();
 
             if(fontWeightChoice == null) {

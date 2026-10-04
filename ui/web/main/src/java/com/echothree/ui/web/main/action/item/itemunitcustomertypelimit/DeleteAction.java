@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.itemunitcustomertypelimit;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemUnitCustomerTypeLimitResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
@@ -71,7 +70,7 @@ public class DeleteAction
 
         var commandResult = ItemUtil.getHome().getItemUnitCustomerTypeLimit(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetItemUnitCustomerTypeLimitResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.ITEM_UNIT_CUSTOMER_TYPE_LIMIT, result.getItemUnitCustomerTypeLimit());
     }

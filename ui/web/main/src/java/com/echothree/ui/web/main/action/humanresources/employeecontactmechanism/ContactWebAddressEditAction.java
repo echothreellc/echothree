@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.employeecontactmechanism;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.result.EditContactWebAddressResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -90,7 +89,7 @@ public class ContactWebAddressEditAction
                 var executionResult = commandResult.getExecutionResult();
 
                 if(executionResult != null) {
-                    var result = (EditContactWebAddressResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     request.setAttribute(AttributeConstants.CONTACT_MECHANISM, result.getContactMechanism());
                     request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
@@ -107,7 +106,7 @@ public class ContactWebAddressEditAction
 
             var commandResult = ContactUtil.getHome().editContactWebAddress(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (EditContactWebAddressResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             if(result != null) {
                 var edit = result.getEdit();

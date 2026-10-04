@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.sequence.sequencetype;
 
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.result.GetSequenceTypeDescriptionsResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -58,7 +57,7 @@ public class DescriptionAction
 
             var commandResult = SequenceUtil.getHome().getSequenceTypeDescriptions(getUserVisitPK(request), getSequenceTypeDescriptionsForm);
             var executionResult = commandResult.getExecutionResult();
-            var getSequenceTypeDescriptionsResult = (GetSequenceTypeDescriptionsResult)executionResult.getResult();
+            var getSequenceTypeDescriptionsResult = executionResult.getResult();
             
             request.setAttribute("sequenceType", getSequenceTypeDescriptionsResult.getSequenceType());
             request.setAttribute("sequenceTypeDescriptions", getSequenceTypeDescriptionsResult.getSequenceTypeDescriptions());

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.queuetype;
 
 import com.echothree.control.user.queue.common.QueueUtil;
-import com.echothree.control.user.queue.common.result.GetQueueTypeDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -57,7 +56,7 @@ public class DescriptionAction
         var commandResult = QueueUtil.getHome().getQueueTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetQueueTypeDescriptionsResult) executionResult.getResult();
+            var result = executionResult.getResult();
             var queueTypeTransfer = result.getQueueType();
 
             request.setAttribute(AttributeConstants.QUEUE_TYPE, queueTypeTransfer);

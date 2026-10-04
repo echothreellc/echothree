@@ -18,7 +18,6 @@ package com.echothree.ui.web.main.action.payment.paymentmethod;
 
 import com.echothree.control.user.comment.common.CommentUtil;
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.result.GetPaymentMethodResult;
 import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
@@ -60,7 +59,7 @@ public class CommentAddAction
 
         var commandResult = PaymentUtil.getHome().getPaymentMethod(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetPaymentMethodResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var paymentMethod = result.getPaymentMethod();
         
         request.setAttribute(AttributeConstants.PAYMENT_METHOD, paymentMethod);

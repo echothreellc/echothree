@@ -17,8 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.employee;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.result.GetEmployeeResultsResult;
-import com.echothree.control.user.search.common.result.SearchEmployeesResult;
 import com.echothree.model.control.employee.common.transfer.EmployeeResultTransfer;
 import com.echothree.model.control.search.common.SearchTypes;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -63,7 +61,7 @@ public class MainAction
 
         var commandResult = SearchUtil.getHome().getEmployeeResults(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetEmployeeResultsResult)executionResult.getResult();
+        var result = executionResult.getResult();
         Collection employeeResults = result.getEmployeeResults();
         var iter = employeeResults.iterator();
         if(iter.hasNext()) {
@@ -106,7 +104,7 @@ public class MainAction
                 forwardKey = ForwardConstants.FORM;
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (SearchEmployeesResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 var count = result.getCount();
 
                 if(count == 0 || count > 1) {

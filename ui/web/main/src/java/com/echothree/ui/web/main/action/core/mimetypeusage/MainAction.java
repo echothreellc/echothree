@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.mimetypeusage;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetMimeTypeUsagesResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -58,7 +57,7 @@ public class MainAction
 
             var commandResult = CoreUtil.getHome().getMimeTypeUsages(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetMimeTypeUsagesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute("mimeType", result.getMimeType());
             request.setAttribute("mimeTypeUsages", result.getMimeTypeUsages());

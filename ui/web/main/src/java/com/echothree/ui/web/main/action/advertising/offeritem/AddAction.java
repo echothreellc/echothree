@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.advertising.offeritem;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.result.GetOfferResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -59,7 +58,7 @@ public class AddAction
 
         var commandResult = OfferUtil.getHome().getOffer(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetOfferResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.OFFER, result.getOffer());
     }

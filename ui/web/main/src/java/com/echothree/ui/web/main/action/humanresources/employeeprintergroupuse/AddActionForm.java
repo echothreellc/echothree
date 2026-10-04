@@ -17,8 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.employeeprintergroupuse;
 
 import com.echothree.control.user.printer.common.PrinterUtil;
-import com.echothree.control.user.printer.common.result.GetPrinterGroupChoicesResult;
-import com.echothree.control.user.printer.common.result.GetPrinterGroupUseTypeChoicesResult;
 import com.echothree.model.control.printer.common.choice.PrinterGroupChoicesBean;
 import com.echothree.model.control.printer.common.choice.PrinterGroupUseTypeChoicesBean;
 import com.echothree.view.client.web.struts.BaseLanguageActionForm;
@@ -48,7 +46,7 @@ public class AddActionForm
 
                 var commandResult = PrinterUtil.getHome().getPrinterGroupUseTypeChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetPrinterGroupUseTypeChoicesResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 printerGroupUseTypeChoices = result.getPrinterGroupUseTypeChoices();
 
                 if(printerGroupUseTypeChoice == null) {
@@ -70,7 +68,7 @@ public class AddActionForm
 
                 var commandResult = PrinterUtil.getHome().getPrinterGroupChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetPrinterGroupChoicesResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 printerGroupChoices = result.getPrinterGroupChoices();
 
                 if(printerGroupChoice == null) {

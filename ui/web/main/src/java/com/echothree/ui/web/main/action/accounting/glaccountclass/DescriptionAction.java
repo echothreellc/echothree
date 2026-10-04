@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.glaccountclass;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetGlAccountClassDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class DescriptionAction
 
             var commandResult = AccountingUtil.getHome().getGlAccountClassDescriptions(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetGlAccountClassDescriptionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var glAccountClassTransfer = result.getGlAccountClass();
             
             request.setAttribute(AttributeConstants.GL_ACCOUNT_CLASS, glAccountClassTransfer);

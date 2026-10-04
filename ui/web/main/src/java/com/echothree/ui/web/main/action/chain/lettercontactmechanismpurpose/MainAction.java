@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.chain.lettercontactmechanismpurpose;
 
 import com.echothree.control.user.letter.common.LetterUtil;
-import com.echothree.control.user.letter.common.result.GetLetterContactMechanismPurposesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -60,7 +59,7 @@ public class MainAction
 
         var commandResult = LetterUtil.getHome().getLetterContactMechanismPurposes(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetLetterContactMechanismPurposesResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var letter = result.getLetter();
         
         if(letter == null) {

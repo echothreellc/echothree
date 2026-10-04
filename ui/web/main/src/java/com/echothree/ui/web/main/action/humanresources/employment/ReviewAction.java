@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.employment;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.result.GetEmploymentResult;
 import com.echothree.model.control.employee.common.transfer.EmploymentTransfer;
 import com.echothree.ui.web.main.action.humanresources.employee.EmployeeUtils;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -60,7 +59,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEmploymentResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             employment = result.getEmployment();
         }

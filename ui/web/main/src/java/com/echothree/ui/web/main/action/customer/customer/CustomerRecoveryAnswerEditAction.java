@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.spec.PartySpec;
 import com.echothree.control.user.user.common.UserUtil;
@@ -90,7 +89,7 @@ public class CustomerRecoveryAnswerEditAction
             throws Exception {
         var commandResult = UserUtil.getHome().editRecoveryAnswer(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (EditRecoveryAnswerResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.RECOVERY_ANSWER, result.getRecoveryAnswer());
         
@@ -111,7 +110,7 @@ public class CustomerRecoveryAnswerEditAction
 
         var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetCustomerResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.CUSTOMER, result.getCustomer());
     }

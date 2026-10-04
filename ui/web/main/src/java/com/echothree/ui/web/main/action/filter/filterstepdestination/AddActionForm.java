@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.filter.filterstepdestination;
 
 import com.echothree.control.user.filter.common.FilterUtil;
-import com.echothree.control.user.filter.common.result.GetFilterStepChoicesResult;
 import com.echothree.model.control.filter.common.choice.FilterStepChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -50,7 +49,7 @@ public class AddActionForm
 
             var commandResult = FilterUtil.getHome().getFilterStepChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetFilterStepChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             toFilterStepChoices = result.getFilterStepChoices();
 
             if(toFilterStepChoice == null)

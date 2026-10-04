@@ -20,7 +20,6 @@ import com.echothree.control.user.security.common.SecurityService;
 import com.echothree.control.user.security.common.SecurityUtil;
 import com.echothree.control.user.security.common.edit.SecurityRoleDescriptionEdit;
 import com.echothree.control.user.security.common.form.SecurityFormFactory;
-import com.echothree.control.user.security.common.result.EditSecurityRoleDescriptionResult;
 import com.echothree.control.user.security.common.spec.SecuritySpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -85,7 +84,7 @@ public class SecurityRoleHandler
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditSecurityRoleDescriptionResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 if(result != null) {
                     var edit = (SecurityRoleDescriptionEdit)result.getEdit();

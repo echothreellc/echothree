@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.advertising.use;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.result.GetUseTypeChoicesResult;
 import com.echothree.model.control.offer.common.choice.UseTypeChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -49,7 +48,7 @@ public class AddActionForm
 
             var commandResult = OfferUtil.getHome().getUseTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetUseTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             useTypeChoices = result.getUseTypeChoices();
 
             if(useTypeChoice == null)

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.returnpolicy.returnkind;
 
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.result.GetReturnKindResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class ReviewAction
 
             var commandResult = ReturnPolicyUtil.getHome().getReturnKind(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetReturnKindResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var returnKindTransfer = result.getReturnKind();
             
             request.setAttribute(AttributeConstants.RETURN_KIND, returnKindTransfer);

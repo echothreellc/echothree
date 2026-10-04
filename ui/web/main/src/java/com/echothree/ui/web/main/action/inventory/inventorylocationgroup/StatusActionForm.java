@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.inventory.inventorylocationgroup;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.result.GetInventoryLocationGroupStatusChoicesResult;
 import com.echothree.model.control.inventory.common.choice.InventoryLocationGroupStatusChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -48,7 +47,7 @@ public class StatusActionForm
 
             var commandResult = InventoryUtil.getHome().getInventoryLocationGroupStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getInventoryLocationGroupStatusChoicesResult = (GetInventoryLocationGroupStatusChoicesResult)executionResult.getResult();
+            var getInventoryLocationGroupStatusChoicesResult = executionResult.getResult();
             inventoryLocationGroupStatusChoices = getInventoryLocationGroupStatusChoicesResult.getInventoryLocationGroupStatusChoices();
 
             if(inventoryLocationGroupStatusChoice == null)

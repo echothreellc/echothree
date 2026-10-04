@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.itemharmonizedtariffschedulecode;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemHarmonizedTariffScheduleCodeResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.item.common.ItemOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -71,7 +70,7 @@ public class ReviewAction
         var commandResult = ItemUtil.getHome().getItemHarmonizedTariffScheduleCode(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemHarmonizedTariffScheduleCodeResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var itemHarmonizedTariffScheduleCode = result.getItemHarmonizedTariffScheduleCode();
 
             if(itemHarmonizedTariffScheduleCode != null) {

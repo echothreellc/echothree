@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.glaccountcategory;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetGlAccountCategoriesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -53,7 +52,7 @@ public class MainAction
         try {
             var commandResult = AccountingUtil.getHome().getGlAccountCategories(getUserVisitPK(request), null);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetGlAccountCategoriesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.GL_ACCOUNT_CATEGORIES, result.getGlAccountCategories());
             forwardKey = ForwardConstants.DISPLAY;

@@ -22,7 +22,6 @@ import com.echothree.control.user.comment.common.form.EditCommentForm;
 import com.echothree.control.user.comment.common.result.EditCommentResult;
 import com.echothree.control.user.comment.common.spec.CommentSpec;
 import com.echothree.control.user.shipping.common.ShippingUtil;
-import com.echothree.control.user.shipping.common.result.GetShippingMethodResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -99,7 +98,7 @@ public class CommentEditAction
             throws Exception {
         var commandResult = CommentUtil.getHome().editComment(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (EditCommentResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.COMMENT, result.getComment());
         
@@ -120,7 +119,7 @@ public class CommentEditAction
 
         var commandResult = ShippingUtil.getHome().getShippingMethod(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetShippingMethodResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.SHIPPING_METHOD, result.getShippingMethod());
     }

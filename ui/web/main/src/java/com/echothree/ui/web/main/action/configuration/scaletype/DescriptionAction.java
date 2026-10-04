@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.scaletype;
 
 import com.echothree.control.user.scale.common.ScaleUtil;
-import com.echothree.control.user.scale.common.result.GetScaleTypeDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -57,7 +56,7 @@ public class DescriptionAction
         var commandResult = ScaleUtil.getHome().getScaleTypeDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetScaleTypeDescriptionsResult) executionResult.getResult();
+            var result = executionResult.getResult();
             var scaleTypeTransfer = result.getScaleType();
 
             request.setAttribute(AttributeConstants.SCALE_TYPE, scaleTypeTransfer);

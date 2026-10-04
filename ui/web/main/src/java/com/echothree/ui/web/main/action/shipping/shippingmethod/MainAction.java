@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.shipping.shippingmethod;
 
 import com.echothree.control.user.shipping.common.ShippingUtil;
-import com.echothree.control.user.shipping.common.result.GetShippingMethodsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -53,7 +52,7 @@ public class MainAction
         try {
             var commandResult = ShippingUtil.getHome().getShippingMethods(getUserVisitPK(request), null);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetShippingMethodsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SHIPPING_METHODS, result.getShippingMethods());
             forwardKey = ForwardConstants.DISPLAY;

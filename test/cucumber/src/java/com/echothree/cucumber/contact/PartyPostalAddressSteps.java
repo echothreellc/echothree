@@ -17,8 +17,6 @@
 package com.echothree.cucumber.contact;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.result.CreateContactPostalAddressResult;
-import com.echothree.control.user.contact.common.result.EditContactPostalAddressResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -49,7 +47,7 @@ public class PartyPostalAddressSteps implements En {
                     var commandResult = ContactUtil.getHome().createContactPostalAddress(persona.userVisitPK, createContactPostalAddressForm);
 
                     LastCommandResult.commandResult = commandResult;
-                    var result = (CreateContactPostalAddressResult)commandResult.getExecutionResult().getResult();
+                    var result = commandResult.getExecutionResult().getResult();
 
                     persona.lastPostalAddressContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
                     persona.createContactPostalAddressForm = null;
@@ -97,7 +95,7 @@ public class PartyPostalAddressSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditContactPostalAddressResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     if(!executionResult.getHasErrors()) {
                         persona.contactPostalAddressEdit = result.getEdit();

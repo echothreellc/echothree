@@ -17,8 +17,6 @@
 package com.echothree.cucumber.contact;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.result.CreateContactWebAddressResult;
-import com.echothree.control.user.contact.common.result.EditContactWebAddressResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -49,7 +47,7 @@ public class PartyWebAddressSteps implements En {
                     var commandResult = ContactUtil.getHome().createContactWebAddress(persona.userVisitPK, createContactWebAddressForm);
 
                     LastCommandResult.commandResult = commandResult;
-                    var result = (CreateContactWebAddressResult)commandResult.getExecutionResult().getResult();
+                    var result = commandResult.getExecutionResult().getResult();
 
                     persona.lastWebAddressContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
                     persona.createContactWebAddressForm = null;
@@ -97,7 +95,7 @@ public class PartyWebAddressSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditContactWebAddressResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     if(!executionResult.getHasErrors()) {
                         persona.contactWebAddressEdit = result.getEdit();

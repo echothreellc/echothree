@@ -18,7 +18,6 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.result.CountWarehouseResultsResult;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
@@ -89,7 +88,7 @@ public class CountWarehouseResultsTag
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (CountWarehouseResultsResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 pageContext.setAttribute(countVar, result.getCount(), scope);
             }

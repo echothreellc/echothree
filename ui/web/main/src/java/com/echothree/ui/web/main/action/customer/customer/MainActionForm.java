@@ -17,11 +17,8 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.result.GetCustomerTypeChoicesResult;
 import com.echothree.control.user.geo.common.GeoUtil;
-import com.echothree.control.user.geo.common.result.GetCountryChoicesResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetPartyAliasTypeChoicesResult;
 import com.echothree.model.control.customer.common.choice.CustomerTypeChoicesBean;
 import com.echothree.model.control.geo.common.choice.CountryChoicesBean;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -71,7 +68,7 @@ public class MainActionForm
 
             var commandResult = CustomerUtil.getHome().getCustomerTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getCustomerTypeChoicesResult = (GetCustomerTypeChoicesResult)executionResult.getResult();
+            var getCustomerTypeChoicesResult = executionResult.getResult();
             customerTypeChoices = getCustomerTypeChoicesResult.getCustomerTypeChoices();
 
             if(customerTypeChoice == null) {
@@ -90,7 +87,7 @@ public class MainActionForm
 
             var commandResult = GeoUtil.getHome().getCountryChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCountryChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             countryChoices = result.getCountryChoices();
 
             if(countryChoice == null) {
@@ -110,7 +107,7 @@ public class MainActionForm
 
             var commandResult = PartyUtil.getHome().getPartyAliasTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getPartyAliasTypeChoicesResult = (GetPartyAliasTypeChoicesResult)executionResult.getResult();
+            var getPartyAliasTypeChoicesResult = executionResult.getResult();
             partyAliasTypeChoices = getPartyAliasTypeChoicesResult.getPartyAliasTypeChoices();
 
             if(partyAliasTypeChoice == null) {

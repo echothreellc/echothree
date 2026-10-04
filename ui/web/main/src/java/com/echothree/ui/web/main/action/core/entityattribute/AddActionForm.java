@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.core.entityattribute;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetEntityAttributeTypeChoicesResult;
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.result.GetSequenceChoicesResult;
 import com.echothree.model.control.core.common.choice.EntityAttributeTypeChoicesBean;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.choice.SequenceChoicesBean;
@@ -59,7 +57,7 @@ public class AddActionForm
 
             var commandResult = CoreUtil.getHome().getEntityAttributeTypeChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var getEntityAttributeTypeChoicesResult = (GetEntityAttributeTypeChoicesResult)executionResult.getResult();
+            var getEntityAttributeTypeChoicesResult = executionResult.getResult();
             entityAttributeTypeChoices = getEntityAttributeTypeChoicesResult.getEntityAttributeTypeChoices();
 
             if(entityAttributeTypeChoice == null)
@@ -78,7 +76,7 @@ public class AddActionForm
 
             var commandResult = SequenceUtil.getHome().getSequenceChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var getSequenceChoicesResult = (GetSequenceChoicesResult)executionResult.getResult();
+            var getSequenceChoicesResult = executionResult.getResult();
             entityListItemSequenceChoices = getSequenceChoicesResult.getSequenceChoices();
 
             if(entityListItemSequenceChoice == null)

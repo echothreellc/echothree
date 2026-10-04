@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.content.contentcategory;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.result.GetSourceChoicesResult;
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.common.result.GetSelectorChoicesResult;
 import com.echothree.model.control.offer.common.choice.SourceChoicesBean;
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.common.SelectorTypes;
@@ -59,7 +57,7 @@ public class AddActionForm
 
             var commandResult = OfferUtil.getHome().getSourceChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSourceChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             defaultSourceChoices = result.getSourceChoices();
 
             if(getDefaultSourceChoice() == null)
@@ -90,7 +88,7 @@ public class AddActionForm
 
             var commandResult = SelectorUtil.getHome().getSelectorChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSelectorChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             contentCategoryContentCategoryItemSelectorChoices = result.getSelectorChoices();
 
             if(getContentCategoryItemSelectorChoice() == null)

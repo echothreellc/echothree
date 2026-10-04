@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.searchsortorder;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.result.GetSearchSortOrderResult;
 import com.echothree.model.control.search.common.transfer.SearchSortOrderTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -60,7 +59,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSearchSortOrderResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             searchSortOrder = result.getSearchSortOrder();
         }

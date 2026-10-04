@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.inventory.inventoryconditionuse;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.result.GetInventoryConditionChoicesResult;
 import com.echothree.model.control.inventory.common.choice.InventoryConditionChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -47,7 +46,7 @@ public class AddActionForm
 
             var commandResult = InventoryUtil.getHome().getInventoryConditionChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getInventoryConditionChoicesResult = (GetInventoryConditionChoicesResult)executionResult.getResult();
+            var getInventoryConditionChoicesResult = executionResult.getResult();
             inventoryConditionChoices = getInventoryConditionChoicesResult.getInventoryConditionChoices();
 
             if(inventoryConditionChoice == null)

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.associate.associateprogram;
 
 import com.echothree.control.user.associate.common.AssociateUtil;
-import com.echothree.control.user.associate.common.result.GetAssociateProgramsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -53,7 +52,7 @@ public class MainAction
         try {
             var commandResult = AssociateUtil.getHome().getAssociatePrograms(getUserVisitPK(request), null);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetAssociateProgramsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.ASSOCIATE_PROGRAMS, result.getAssociatePrograms());
             forwardKey = ForwardConstants.DISPLAY;

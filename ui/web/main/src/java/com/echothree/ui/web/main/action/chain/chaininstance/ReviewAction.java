@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.chain.chaininstance;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.common.result.GetChainInstanceResult;
 import com.echothree.model.control.chain.common.ChainOptions;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -65,7 +64,7 @@ public class ReviewAction
 
         var commandResult = ChainUtil.getHome().getChainInstance(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetChainInstanceResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var chainInstance = result.getChainInstance();
         
         if(chainInstance == null) {

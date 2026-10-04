@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.advertising.usenameelement;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.result.GetUseNameElementDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class DescriptionAction
 
             var commandResult = OfferUtil.getHome().getUseNameElementDescriptions(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetUseNameElementDescriptionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var useNameElementTransfer = result.getUseNameElement();
             
             request.setAttribute(AttributeConstants.USE_NAME_ELEMENT, useNameElementTransfer);

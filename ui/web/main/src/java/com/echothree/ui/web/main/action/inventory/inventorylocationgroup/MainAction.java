@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.inventory.inventorylocationgroup;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.result.GetInventoryLocationGroupsResult;
 import com.echothree.model.control.inventory.common.InventoryOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -62,7 +61,7 @@ public class MainAction
 
         var commandResult = InventoryUtil.getHome().getInventoryLocationGroups(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetInventoryLocationGroupsResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.WAREHOUSE, result.getWarehouse());
         request.setAttribute(AttributeConstants.INVENTORY_LOCATION_GROUPS, result.getInventoryLocationGroups());

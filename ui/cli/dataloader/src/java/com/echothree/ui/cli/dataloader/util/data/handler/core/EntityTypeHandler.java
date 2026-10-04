@@ -22,7 +22,6 @@ import com.echothree.control.user.comment.common.form.CommentFormFactory;
 import com.echothree.control.user.core.common.CoreService;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
-import com.echothree.control.user.core.common.result.EditEntityTypeDescriptionResult;
 import com.echothree.control.user.core.common.spec.CoreSpecFactory;
 import com.echothree.control.user.message.common.MessageService;
 import com.echothree.control.user.message.common.MessageUtil;
@@ -108,7 +107,7 @@ public class EntityTypeHandler
                         }
                     } else {
                         var executionResult = commandResult.getExecutionResult();
-                        var result = (EditEntityTypeDescriptionResult)executionResult.getResult();
+                        var result = executionResult.getResult();
 
                         getLogger().debug("Checking for modifications: {}", spec.getEntityTypeName());
                         if(result != null) {

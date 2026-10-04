@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.content.contentwebaddress;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.result.GetContentWebAddressResult;
 import com.echothree.model.control.content.common.ContentOptions;
 import com.echothree.model.control.content.common.transfer.ContentWebAddressTransfer;
 import com.echothree.model.control.core.common.CoreOptions;
@@ -72,7 +71,7 @@ public class ReviewAction
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetContentWebAddressResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             contentWebAddress = result.getContentWebAddress();
         }

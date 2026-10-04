@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.itemcategory;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemCategoryChoicesResult;
 import com.echothree.model.control.item.common.choice.ItemCategoryChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -49,7 +48,7 @@ public class AddActionForm
 
             var commandResult = ItemUtil.getHome().getItemCategoryChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getItemCategoryChoicesResult = (GetItemCategoryChoicesResult)executionResult.getResult();
+            var getItemCategoryChoicesResult = executionResult.getResult();
             parentItemCategoryChoices = getItemCategoryChoicesResult.getItemCategoryChoices();
 
             if(parentItemCategoryChoice == null) {

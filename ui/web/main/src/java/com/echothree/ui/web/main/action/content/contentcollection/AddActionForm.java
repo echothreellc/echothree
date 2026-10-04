@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.content.contentcollection;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.result.GetSourceChoicesResult;
 import com.echothree.model.control.offer.common.choice.SourceChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -45,7 +44,7 @@ public class AddActionForm
 
             var commandResult = OfferUtil.getHome().getSourceChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSourceChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             defaultSourceChoices = result.getSourceChoices();
 
             if(defaultSourceChoice == null) {

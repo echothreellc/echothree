@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.partytypelockoutpolicy;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetPartyTypeResult;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -63,7 +62,7 @@ public class ReviewAction
 
         var commandResult = PartyUtil.getHome().getPartyType(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetPartyTypeResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var partyType = result.getPartyType();
         var partyTypeLockoutPolicy = partyType == null? null: partyType.getPartyTypeLockoutPolicy();
         

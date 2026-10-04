@@ -62,7 +62,7 @@ public class DescriptionAction
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
             
-            result = (GetWorkEffortScopeDescriptionsResult) executionResult.getResult();
+            result = executionResult.getResult();
             workEffortScope = result.getWorkEffortScope();
             
             forwardKey = ForwardConstants.DISPLAY;

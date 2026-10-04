@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.partysecurityroletemplate;
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.result.GetPartySecurityRoleTemplateDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class DescriptionAction
 
             var commandResult = SecurityUtil.getHome().getPartySecurityRoleTemplateDescriptions(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPartySecurityRoleTemplateDescriptionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var partySecurityRoleTemplateTransfer = result.getPartySecurityRoleTemplate();
             
             request.setAttribute(AttributeConstants.PARTY_SECURITY_ROLE_TEMPLATE, partySecurityRoleTemplateTransfer);

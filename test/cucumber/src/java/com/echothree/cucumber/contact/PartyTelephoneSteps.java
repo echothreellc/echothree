@@ -17,8 +17,6 @@
 package com.echothree.cucumber.contact;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.result.CreateContactTelephoneResult;
-import com.echothree.control.user.contact.common.result.EditContactTelephoneResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -49,7 +47,7 @@ public class PartyTelephoneSteps implements En {
                     var commandResult = ContactUtil.getHome().createContactTelephone(persona.userVisitPK, createContactTelephoneForm);
 
                     LastCommandResult.commandResult = commandResult;
-                    var result = (CreateContactTelephoneResult)commandResult.getExecutionResult().getResult();
+                    var result = commandResult.getExecutionResult().getResult();
 
                     persona.lastTelephoneContactMechanismName = commandResult.getHasErrors() ? null : result.getContactMechanismName();
                     persona.createContactTelephoneForm = null;
@@ -97,7 +95,7 @@ public class PartyTelephoneSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditContactTelephoneResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     if(!executionResult.getHasErrors()) {
                         persona.contactTelephoneEdit = result.getEdit();

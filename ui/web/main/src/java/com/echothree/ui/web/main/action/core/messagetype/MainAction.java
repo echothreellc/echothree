@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.messagetype;
 
 import com.echothree.control.user.message.common.MessageUtil;
-import com.echothree.control.user.message.common.result.GetMessageTypesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -61,7 +60,7 @@ public class MainAction
 
             var commandResult = MessageUtil.getHome().getMessageTypes(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetMessageTypesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var entityTypeTransfer = result.getEntityType();
             
             request.setAttribute(AttributeConstants.ENTITY_TYPE, entityTypeTransfer);

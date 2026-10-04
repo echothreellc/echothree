@@ -18,7 +18,6 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.offer.common.OfferUtil;
-import com.echothree.control.user.offer.common.result.GetUseTypesResult;
 import com.echothree.model.data.offer.common.UseTypeConstants;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.Limit;
@@ -133,7 +132,7 @@ public class UseTypesTag
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetUseTypesResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getUseTypes()), scope);
 

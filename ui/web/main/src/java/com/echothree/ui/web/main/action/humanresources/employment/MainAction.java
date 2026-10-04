@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.employment;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.result.GetEmploymentsResult;
 import com.echothree.model.control.employee.common.transfer.EmploymentTransfer;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.model.control.party.common.transfer.PartyTransfer;
@@ -73,7 +72,7 @@ public class MainAction
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEmploymentsResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             party = result.getParty();
             employments = result.getEmployments();

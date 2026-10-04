@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.uom.unitofmeasuretype;
 
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.result.GetUnitOfMeasureTypeDescriptionsResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -60,7 +59,7 @@ public class DescriptionAction
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeDescriptions(getUserVisitPK(request), getUnitOfMeasureTypeDescriptionsForm);
             var executionResult = commandResult.getExecutionResult();
-            var getUnitOfMeasureTypeDescriptionsResult = (GetUnitOfMeasureTypeDescriptionsResult)executionResult.getResult();
+            var getUnitOfMeasureTypeDescriptionsResult = executionResult.getResult();
             
             request.setAttribute("unitOfMeasureKind", getUnitOfMeasureTypeDescriptionsResult.getUnitOfMeasureKind());
             request.setAttribute("unitOfMeasureType", getUnitOfMeasureTypeDescriptionsResult.getUnitOfMeasureType());

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.applicationeditoruse;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetApplicationEditorChoicesResult;
 import com.echothree.model.control.core.common.choice.ApplicationEditorChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -53,7 +52,7 @@ public class AddActionForm
 
             var commandResult = CoreUtil.getHome().getApplicationEditorChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var getApplicationEditorChoicesResult = (GetApplicationEditorChoicesResult)executionResult.getResult();
+            var getApplicationEditorChoicesResult = executionResult.getResult();
             defaultApplicationEditorChoices = getApplicationEditorChoicesResult.getApplicationEditorChoices();
 
             if(defaultEditorChoice == null) {

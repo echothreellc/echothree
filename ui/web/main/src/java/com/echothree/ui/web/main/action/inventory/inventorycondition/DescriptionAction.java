@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.inventory.inventorycondition;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.result.GetInventoryConditionDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class DescriptionAction
 
             var commandResult = InventoryUtil.getHome().getInventoryConditionDescriptions(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetInventoryConditionDescriptionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var inventoryConditionTransfer = result.getInventoryCondition();
             
             request.setAttribute(AttributeConstants.INVENTORY_CONDITION, inventoryConditionTransfer);

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.entityaliastype;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetEntityAliasTypeResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.EntityAliasTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -70,7 +69,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEntityAliasTypeResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             entityAliasType = result.getEntityAliasType();
         }

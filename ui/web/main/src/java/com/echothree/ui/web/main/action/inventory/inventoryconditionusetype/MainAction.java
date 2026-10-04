@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.inventory.inventoryconditionusetype;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.result.GetInventoryConditionUseTypesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -53,7 +52,7 @@ public class MainAction
         try {
             var commandResult = InventoryUtil.getHome().getInventoryConditionUseTypes(getUserVisitPK(request), null);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetInventoryConditionUseTypesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.INVENTORY_CONDITION_USE_TYPES, result.getInventoryConditionUseTypes());
             forwardKey = ForwardConstants.DISPLAY;

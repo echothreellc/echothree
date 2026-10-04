@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.warehouse.warehousetype;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.result.GetWarehouseTypesResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.data.warehouse.common.WarehouseTypeConstants;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -80,7 +79,7 @@ public class MainAction
         var commandResult = WarehouseUtil.getHome().getWarehouseTypes(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetWarehouseTypesResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             var warehouseCount = result.getWarehouseTypeCount();
             if(warehouseCount != null) {

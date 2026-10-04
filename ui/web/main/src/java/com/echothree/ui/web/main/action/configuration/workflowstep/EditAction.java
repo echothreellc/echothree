@@ -95,7 +95,7 @@ public class EditAction
             throws Exception {
         var commandResult = WorkflowUtil.getHome().editWorkflowStep(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (EditWorkflowStepResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.WORKFLOW_STEP, result.getWorkflowStep());
         

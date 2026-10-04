@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.language;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetLanguagesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -53,7 +52,7 @@ public class MainAction
         try {
             var commandResult = PartyUtil.getHome().getLanguages(getUserVisitPK(request), null);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetLanguagesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.LANGUAGES, result.getLanguages());
             forwardKey = ForwardConstants.DISPLAY;

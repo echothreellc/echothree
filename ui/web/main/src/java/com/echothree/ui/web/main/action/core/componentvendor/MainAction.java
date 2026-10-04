@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.componentvendor;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetComponentVendorsResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -58,7 +57,7 @@ public class MainAction
 
         var commandResult = CoreUtil.getHome().getComponentVendors(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var getComponentVendorsResult = (GetComponentVendorsResult)executionResult.getResult();
+        var getComponentVendorsResult = executionResult.getResult();
 
         request.setAttribute("componentVendors", getComponentVendorsResult.getComponentVendors());
 

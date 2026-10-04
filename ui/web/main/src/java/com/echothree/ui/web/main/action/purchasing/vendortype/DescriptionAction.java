@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.purchasing.vendortype;
 
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.result.GetVendorTypeDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class DescriptionAction
 
             var commandResult = VendorUtil.getHome().getVendorTypeDescriptions(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetVendorTypeDescriptionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var vendorTypeTransfer = result.getVendorType();
             
             request.setAttribute(AttributeConstants.VENDOR_TYPE, vendorTypeTransfer);

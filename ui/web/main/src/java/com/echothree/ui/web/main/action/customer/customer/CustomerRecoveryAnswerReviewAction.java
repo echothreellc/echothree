@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.result.GetRecoveryAnswerResult;
 import com.echothree.model.control.user.common.transfer.RecoveryAnswerTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -59,7 +57,7 @@ public class CustomerRecoveryAnswerReviewAction
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCustomerResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var customer = result.getCustomer();
 
             if(customer != null) {
@@ -82,7 +80,7 @@ public class CustomerRecoveryAnswerReviewAction
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetRecoveryAnswerResult)executionResult.getResult();
+            var result = executionResult.getResult();
             recoveryAnswer = result.getRecoveryAnswer();
         }
 

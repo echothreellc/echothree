@@ -20,7 +20,6 @@ import com.echothree.control.user.tag.common.TagUtil;
 import com.echothree.control.user.tag.common.edit.TagScopeDescriptionEdit;
 import com.echothree.control.user.tag.common.form.EditTagScopeDescriptionForm;
 import com.echothree.control.user.tag.common.result.EditTagScopeDescriptionResult;
-import com.echothree.control.user.tag.common.result.GetTagScopeResult;
 import com.echothree.control.user.tag.common.spec.TagScopeDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
@@ -88,7 +87,7 @@ public class DescriptionEditAction
             throws Exception {
         var commandResult = TagUtil.getHome().editTagScopeDescription(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (EditTagScopeDescriptionResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         var tagScopeDescription = result.getTagScopeDescription();
         if(tagScopeDescription != null) {
@@ -113,7 +112,7 @@ public class DescriptionEditAction
         var commandResult = TagUtil.getHome().getTagScope(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetTagScopeResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.TAG_SCOPE, result.getTagScope());
         }

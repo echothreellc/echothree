@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customertypecreditlimit;
 
 import com.echothree.control.user.term.common.TermUtil;
-import com.echothree.control.user.term.common.result.GetCustomerTypeCreditLimitsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class MainAction
 
             var commandResult = TermUtil.getHome().getCustomerTypeCreditLimits(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCustomerTypeCreditLimitsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var customerTypeTransfer = result.getCustomerType();
             
             request.setAttribute(AttributeConstants.CUSTOMER_TYPE, customerTypeTransfer);

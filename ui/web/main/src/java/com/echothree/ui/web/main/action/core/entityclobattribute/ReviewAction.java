@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.entityclobattribute;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetEntityClobAttributeResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -65,7 +64,7 @@ public class ReviewAction
         var commandResult = CoreUtil.getHome().getEntityClobAttribute(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEntityClobAttributeResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var entityClobAttribute = result.getEntityClobAttribute();
 
             if(entityClobAttribute != null) {

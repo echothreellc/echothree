@@ -20,7 +20,6 @@ import com.echothree.control.user.index.common.IndexService;
 import com.echothree.control.user.index.common.IndexUtil;
 import com.echothree.control.user.index.common.edit.IndexFieldDescriptionEdit;
 import com.echothree.control.user.index.common.form.IndexFormFactory;
-import com.echothree.control.user.index.common.result.EditIndexFieldDescriptionResult;
 import com.echothree.control.user.index.common.spec.IndexSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -86,7 +85,7 @@ public class IndexFieldHandler
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditIndexFieldDescriptionResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 if(result != null) {
                     var edit = (IndexFieldDescriptionEdit)result.getEdit();

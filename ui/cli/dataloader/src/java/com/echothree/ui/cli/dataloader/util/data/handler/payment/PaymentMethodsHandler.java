@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.payment;
 import com.echothree.control.user.payment.common.PaymentUtil;
 import com.echothree.control.user.payment.common.PaymentService;
 import com.echothree.control.user.payment.common.form.PaymentFormFactory;
-import com.echothree.control.user.payment.common.result.CreatePaymentMethodResult;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -53,7 +52,7 @@ public class PaymentMethodsHandler
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (CreatePaymentMethodResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 var entityRef = result.getEntityRef();
 
                 initialDataParser.pushHandler(new PaymentMethodHandler(initialDataParser, this, commandForm.getPaymentMethodName(), entityRef));

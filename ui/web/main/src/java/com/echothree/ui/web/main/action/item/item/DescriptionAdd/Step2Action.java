@@ -17,8 +17,6 @@
 package com.echothree.ui.web.main.action.item.item.DescriptionAdd;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemDescriptionTypeResult;
-import com.echothree.control.user.item.common.result.GetItemResult;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.item.common.transfer.ItemDescriptionTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -65,7 +63,7 @@ public class Step2Action
 
         var commandResult = ItemUtil.getHome().getItem(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetItemResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.ITEM, result.getItem());
     }
@@ -78,7 +76,7 @@ public class Step2Action
 
         var commandResult = ItemUtil.getHome().getItemDescriptionType(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetItemDescriptionTypeResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         return result.getItemDescriptionType();
     }

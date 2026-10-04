@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.shipping.carrier;
 
 import com.echothree.control.user.carrier.common.CarrierUtil;
-import com.echothree.control.user.carrier.common.result.GetCarriersResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -53,7 +52,7 @@ public class MainAction
         try {
             var commandResult = CarrierUtil.getHome().getCarriers(getUserVisitPK(request), null);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCarriersResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.CARRIERS, result.getCarriers());
             forwardKey = ForwardConstants.DISPLAY;

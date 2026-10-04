@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.itemdescriptiontype.add;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetMimeTypeUsageTypesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -49,7 +48,7 @@ public class Step1Action
             throws Exception {
         var commandResult = CoreUtil.getHome().getMimeTypeUsageTypes(getUserVisitPK(request), null);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetMimeTypeUsageTypesResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.MIME_TYPE_USAGE_TYPES, result.getMimeTypeUsageTypes());
         

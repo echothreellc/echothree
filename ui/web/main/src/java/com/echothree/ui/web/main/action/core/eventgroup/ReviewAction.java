@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.eventgroup;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetEventGroupResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class ReviewAction
 
             var commandResult = CoreUtil.getHome().getEventGroup(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEventGroupResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var eventGroup = result.getEventGroup();
             
             if(eventGroup == null) {

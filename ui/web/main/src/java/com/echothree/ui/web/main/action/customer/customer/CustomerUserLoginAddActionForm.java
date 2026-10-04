@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.result.GetRecoveryQuestionChoicesResult;
 import com.echothree.model.control.user.common.choice.RecoveryQuestionChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -48,7 +47,7 @@ public class CustomerUserLoginAddActionForm
 
                 var commandResult = UserUtil.getHome().getRecoveryQuestionChoices(userVisitPK, form);
                 var executionResult = commandResult.getExecutionResult();
-                var getRecoveryQuestionChoicesResult = (GetRecoveryQuestionChoicesResult)executionResult.getResult();
+                var getRecoveryQuestionChoicesResult = executionResult.getResult();
                 recoveryQuestionChoices = getRecoveryQuestionChoicesResult.getRecoveryQuestionChoices();
                 
                 if(recoveryQuestionChoice == null) {

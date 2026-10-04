@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.term.common.TermUtil;
-import com.echothree.control.user.term.common.result.GetTermChoicesResult;
 import com.echothree.model.control.term.common.choice.TermChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -48,7 +47,7 @@ public class PartyTermEditActionForm
 
             var commandResult = TermUtil.getHome().getTermChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getTermChoicesResult = (GetTermChoicesResult)executionResult.getResult();
+            var getTermChoicesResult = executionResult.getResult();
             termChoices = getTermChoicesResult.getTermChoices();
 
             if(termChoice == null)

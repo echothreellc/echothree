@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.contactlist.contactlisttype;
 
 import com.echothree.control.user.chain.common.ChainUtil;
-import com.echothree.control.user.chain.common.result.GetChainChoicesResult;
 import com.echothree.model.control.chain.common.ChainKinds;
 import com.echothree.model.control.chain.common.ChainTypes;
 import com.echothree.model.control.chain.common.choice.ChainChoicesBean;
@@ -58,7 +57,7 @@ public class AddActionForm
 
                 var commandResult = ChainUtil.getHome().getChainChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var getPartyContactListStatusChoicesResult = (GetChainChoicesResult)executionResult.getResult();
+                var getPartyContactListStatusChoicesResult = executionResult.getResult();
                 confirmationRequestChainChoices = getPartyContactListStatusChoicesResult.getChainChoices();
 
                 if(confirmationRequestChainChoice == null) {
@@ -82,7 +81,7 @@ public class AddActionForm
 
                 var commandResult = ChainUtil.getHome().getChainChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var getPartyContactListStatusChoicesResult = (GetChainChoicesResult)executionResult.getResult();
+                var getPartyContactListStatusChoicesResult = executionResult.getResult();
                 subscribeChainChoices = getPartyContactListStatusChoicesResult.getChainChoices();
 
                 if(subscribeChainChoice == null) {
@@ -106,7 +105,7 @@ public class AddActionForm
 
                 var commandResult = ChainUtil.getHome().getChainChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var getPartyContactListStatusChoicesResult = (GetChainChoicesResult)executionResult.getResult();
+                var getPartyContactListStatusChoicesResult = executionResult.getResult();
                 unsubscribeChainChoices = getPartyContactListStatusChoicesResult.getChainChoices();
 
                 if(unsubscribeChainChoice == null) {

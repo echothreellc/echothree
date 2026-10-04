@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.customer.customerpaymentmethod;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetMimeTypeChoicesResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetLanguageChoicesResult;
 import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
@@ -56,7 +54,7 @@ public class CommentAddActionForm
 
                 var commandResult = PartyUtil.getHome().getLanguageChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var getLanguageChoicesResult = (GetLanguageChoicesResult)executionResult.getResult();
+                var getLanguageChoicesResult = executionResult.getResult();
                 languageChoices = getLanguageChoicesResult.getLanguageChoices();
 
                 if(languageChoice == null) {
@@ -85,7 +83,7 @@ public class CommentAddActionForm
 
                 var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetMimeTypeChoicesResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 mimeTypeChoices = result.getMimeTypeChoices();
 
                 if(mimeTypeChoice == null) {

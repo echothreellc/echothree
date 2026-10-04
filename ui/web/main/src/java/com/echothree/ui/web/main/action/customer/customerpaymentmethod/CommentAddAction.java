@@ -18,9 +18,7 @@ package com.echothree.ui.web.main.action.customer.customerpaymentmethod;
 
 import com.echothree.control.user.comment.common.CommentUtil;
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.result.GetPartyPaymentMethodResult;
 import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAddAction;
@@ -63,7 +61,7 @@ public class CommentAddAction
 
         var commandResult = PaymentUtil.getHome().getPartyPaymentMethod(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetPartyPaymentMethodResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var partyPaymentMethod = result.getPartyPaymentMethod();
         
         request.setAttribute(AttributeConstants.PARTY_PAYMENT_METHOD, partyPaymentMethod);
@@ -79,7 +77,7 @@ public class CommentAddAction
 
         var commandResult = CustomerUtil.getHome().getCustomer(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetCustomerResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.CUSTOMER, result.getCustomer());
     }

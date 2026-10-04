@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.workflowentrancesecurityrole;
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.result.GetSecurityRoleChoicesResult;
 import com.echothree.model.control.security.common.choice.SecurityRoleChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -47,7 +46,7 @@ public class AddActionForm
 
                 var commandResult = SecurityUtil.getHome().getSecurityRoleChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetSecurityRoleChoicesResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 securityRoleChoices = result.getSecurityRoleChoices();
                 
                 if(securityRoleChoice == null) {

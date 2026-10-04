@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.term;
 
 import com.echothree.control.user.term.common.TermUtil;
-import com.echothree.control.user.term.common.result.GetTermDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class DescriptionAction
 
             var commandResult = TermUtil.getHome().getTermDescriptions(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetTermDescriptionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var termTransfer = result.getTerm();
             
             request.setAttribute(AttributeConstants.TERM, termTransfer);

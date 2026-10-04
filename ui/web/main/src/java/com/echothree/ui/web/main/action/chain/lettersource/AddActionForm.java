@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.chain.lettersource;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.result.GetContactMechanismChoicesResult;
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.common.choice.ContactMechanismChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
@@ -57,7 +56,7 @@ public class AddActionForm
 
             var commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetContactMechanismChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             emailAddressContactMechanismChoices = result.getContactMechanismChoices();
 
             if(emailAddressContactMechanismChoice == null) {
@@ -78,7 +77,7 @@ public class AddActionForm
 
             var commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetContactMechanismChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             postalAddressContactMechanismChoices = result.getContactMechanismChoices();
 
             if(postalAddressContactMechanismChoice == null) {
@@ -99,7 +98,7 @@ public class AddActionForm
 
             var commandResult = ContactUtil.getHome().getContactMechanismChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetContactMechanismChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             letterSourceContactMechanismChoices = result.getContactMechanismChoices();
 
             if(letterSourceContactMechanismChoice == null) {

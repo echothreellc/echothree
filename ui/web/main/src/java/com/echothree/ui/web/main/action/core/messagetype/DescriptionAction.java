@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.messagetype;
 
 import com.echothree.control.user.message.common.MessageUtil;
-import com.echothree.control.user.message.common.result.GetMessageTypeDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -63,7 +62,7 @@ public class DescriptionAction
 
             var commandResult = MessageUtil.getHome().getMessageTypeDescriptions(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetMessageTypeDescriptionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.MESSAGE_TYPE, result.getMessageType());
             request.setAttribute(AttributeConstants.MESSAGE_TYPE_DESCRIPTIONS, result.getMessageTypeDescriptions());

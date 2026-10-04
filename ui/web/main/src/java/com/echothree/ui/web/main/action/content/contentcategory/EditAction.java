@@ -115,7 +115,7 @@ public class EditAction
             throws Exception {
         var commandResult = ContentUtil.getHome().editContentCategory(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (EditContentCategoryResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.CONTENT_CATEGORY, result.getContentCategory());
         

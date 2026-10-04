@@ -17,7 +17,6 @@
 package com.echothree.ui.web.cms.action;
 
 import com.echothree.control.user.document.common.DocumentUtil;
-import com.echothree.control.user.document.common.result.GetPartyDocumentResult;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.MimeTypes;
 import com.echothree.model.control.document.common.DocumentOptions;
@@ -90,7 +89,7 @@ public class PartyDocumentAction
         var commandResult = DocumentUtil.getHome().getPartyDocument(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPartyDocumentResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             partyDocument = result.getPartyDocument();
         }

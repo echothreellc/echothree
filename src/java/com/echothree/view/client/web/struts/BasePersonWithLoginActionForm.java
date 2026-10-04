@@ -17,7 +17,6 @@
 package com.echothree.view.client.web.struts;
 
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.result.GetRecoveryQuestionChoicesResult;
 import com.echothree.model.control.user.common.choice.RecoveryQuestionChoicesBean;
 import java.util.List;
 import javax.naming.NamingException;
@@ -48,7 +47,7 @@ public class BasePersonWithLoginActionForm
 
                 var commandResult = UserUtil.getHome().getRecoveryQuestionChoices(userVisitPK, form);
                 var executionResult = commandResult.getExecutionResult();
-                var getRecoveryQuestionChoicesResult = (GetRecoveryQuestionChoicesResult)executionResult.getResult();
+                var getRecoveryQuestionChoicesResult = executionResult.getResult();
                 recoveryQuestionChoices = getRecoveryQuestionChoicesResult.getRecoveryQuestionChoices();
                 
                 if(recoveryQuestionChoice == null) {

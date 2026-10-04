@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.payment.paymentmethod.add;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.result.GetPaymentMethodTypeResult;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTypeTransfer;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -59,7 +58,7 @@ public class Step2Action
 
         var commandResult = PaymentUtil.getHome().getPaymentMethodType(userVisitPK, commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetPaymentMethodTypeResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         return result.getPaymentMethodType();
     }

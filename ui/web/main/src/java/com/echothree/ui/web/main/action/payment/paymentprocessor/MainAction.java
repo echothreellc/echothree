@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.payment.paymentprocessor;
 
 import com.echothree.control.user.payment.common.PaymentUtil;
-import com.echothree.control.user.payment.common.result.GetPaymentProcessorsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -49,7 +48,7 @@ public class MainAction
             throws Exception {
         var commandResult = PaymentUtil.getHome().getPaymentProcessors(getUserVisitPK(request), null);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetPaymentProcessorsResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.PAYMENT_PROCESSORS, result.getPaymentProcessors());
         

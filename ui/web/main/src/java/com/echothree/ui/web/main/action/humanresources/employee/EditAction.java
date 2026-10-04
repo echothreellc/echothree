@@ -110,7 +110,7 @@ public class EditAction
             throws Exception {
         var commandResult = PartyUtil.getHome().editEmployee(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (EditEmployeeResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.EMPLOYEE, result.getEmployee());
         

@@ -17,8 +17,6 @@
 package com.echothree.cucumber.inventory;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.result.CreateAllocationPriorityResult;
-import com.echothree.control.user.inventory.common.result.EditAllocationPriorityResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -49,7 +47,7 @@ public class AllocationPrioritySteps implements En {
                     var commandResult = InventoryUtil.getHome().createAllocationPriority(persona.userVisitPK, createAllocationPriorityForm);
 
                     LastCommandResult.commandResult = commandResult;
-                    var result = (CreateAllocationPriorityResult)commandResult.getExecutionResult().getResult();
+                    var result = commandResult.getExecutionResult().getResult();
 
                     if(result != null) {
                         persona.lastAllocationPriorityName = commandResult.getHasErrors() ? null : result.getAllocationPriorityName();
@@ -109,7 +107,7 @@ public class AllocationPrioritySteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditAllocationPriorityResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     if(!executionResult.getHasErrors()) {
                         persona.allocationPriorityEdit = result.getEdit();

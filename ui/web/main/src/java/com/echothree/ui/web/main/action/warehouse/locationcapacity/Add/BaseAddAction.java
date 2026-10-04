@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.warehouse.locationcapacity.Add;
 
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.result.GetUnitOfMeasureTypeResult;
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.result.GetLocationResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import javax.naming.NamingException;
@@ -38,7 +36,7 @@ public abstract class BaseAddAction<A
 
         var commandResult = WarehouseUtil.getHome().getLocation(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetLocationResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.LOCATION, result.getLocation());
     }
@@ -52,7 +50,7 @@ public abstract class BaseAddAction<A
 
         var commandResult = UomUtil.getHome().getUnitOfMeasureType(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetUnitOfMeasureTypeResult)executionResult.getResult();
+        var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.UNIT_OF_MEASURE_TYPE, result.getUnitOfMeasureType());
     }

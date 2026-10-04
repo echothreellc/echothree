@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.item.itemalias;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemAliasResult;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
@@ -66,7 +65,7 @@ public class DeleteAction
 
         var commandResult = ItemUtil.getHome().getItemAlias(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetItemAliasResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.ITEM_ALIAS, result.getItemAlias());
     }

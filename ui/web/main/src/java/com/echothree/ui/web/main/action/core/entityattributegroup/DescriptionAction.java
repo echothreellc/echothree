@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.entityattributegroup;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetEntityAttributeGroupDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class DescriptionAction
         var commandResult = CoreUtil.getHome().getEntityAttributeGroupDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEntityAttributeGroupDescriptionsResult) executionResult.getResult();
+            var result = executionResult.getResult();
             var entityAttributeGroupTransfer = result.getEntityAttributeGroup();
 
             request.setAttribute(AttributeConstants.ENTITY_ATTRIBUTE_GROUP, entityAttributeGroupTransfer);

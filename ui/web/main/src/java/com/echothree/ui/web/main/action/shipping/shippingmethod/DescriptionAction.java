@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.shipping.shippingmethod;
 
 import com.echothree.control.user.shipping.common.ShippingUtil;
-import com.echothree.control.user.shipping.common.result.GetShippingMethodDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class DescriptionAction
 
             var commandResult = ShippingUtil.getHome().getShippingMethodDescriptions(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetShippingMethodDescriptionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var shippingMethodTransfer = result.getShippingMethod();
             
             request.setAttribute(AttributeConstants.SHIPPING_METHOD, shippingMethodTransfer);

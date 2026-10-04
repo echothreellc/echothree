@@ -18,7 +18,6 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.forum.common.ForumUtil;
-import com.echothree.control.user.forum.common.result.GetForumsResult;
 import com.echothree.model.data.forum.common.ForumConstants;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.Limit;
@@ -135,7 +134,7 @@ public class ForumsTag
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetForumsResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getForums()), scope);
 

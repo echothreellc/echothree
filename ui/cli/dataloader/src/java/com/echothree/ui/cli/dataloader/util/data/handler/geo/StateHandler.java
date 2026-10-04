@@ -19,8 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.geo;
 import com.echothree.control.user.geo.common.GeoUtil;
 import com.echothree.control.user.geo.common.GeoService;
 import com.echothree.control.user.geo.common.form.GeoFormFactory;
-import com.echothree.control.user.geo.common.result.CreateCityResult;
-import com.echothree.control.user.geo.common.result.CreateCountyResult;
 import com.echothree.control.user.tax.common.TaxUtil;
 import com.echothree.control.user.tax.common.TaxService;
 import com.echothree.control.user.tax.common.form.TaxFormFactory;
@@ -101,7 +99,7 @@ public class StateHandler
 
             var commandResult = geoService.createCounty(initialDataParser.getUserVisit(), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var createCountyResult = (CreateCountyResult)executionResult.getResult();
+            var createCountyResult = executionResult.getResult();
             var countyGeoCodeName = createCountyResult.getGeoCodeName();
             var countyEntityRef = createCountyResult.getEntityRef();
             
@@ -129,7 +127,7 @@ public class StateHandler
 
             var commandResult = geoService.createCity(initialDataParser.getUserVisit(), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var createCityResult = (CreateCityResult)executionResult.getResult();
+            var createCityResult = executionResult.getResult();
             var cityGeoCodeName = createCityResult.getGeoCodeName();
             var cityEntityRef = createCityResult.getEntityRef();
             

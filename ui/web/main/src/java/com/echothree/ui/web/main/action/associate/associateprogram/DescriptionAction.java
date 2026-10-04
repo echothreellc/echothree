@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.associate.associateprogram;
 
 import com.echothree.control.user.associate.common.AssociateUtil;
-import com.echothree.control.user.associate.common.result.GetAssociateProgramDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class DescriptionAction
 
             var commandResult = AssociateUtil.getHome().getAssociateProgramDescriptions(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetAssociateProgramDescriptionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var associateProgramTransfer = result.getAssociateProgram();
             
             request.setAttribute(AttributeConstants.ASSOCIATE_PROGRAM, associateProgramTransfer);

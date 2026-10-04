@@ -87,7 +87,7 @@ public class EditAction
             throws Exception {
         var commandResult = TagUtil.getHome().editTag(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (EditTagResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         var tag = result.getTag();
         if(tag != null) {

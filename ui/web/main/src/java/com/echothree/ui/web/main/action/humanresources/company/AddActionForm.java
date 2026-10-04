@@ -17,9 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.company;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetCompanyChoicesResult;
-import com.echothree.control.user.party.common.result.GetDepartmentChoicesResult;
-import com.echothree.control.user.party.common.result.GetDivisionChoicesResult;
 import com.echothree.model.control.party.common.choice.CompanyChoicesBean;
 import com.echothree.model.control.party.common.choice.DepartmentChoicesBean;
 import com.echothree.model.control.party.common.choice.DivisionChoicesBean;
@@ -54,7 +51,7 @@ public class AddActionForm
 
             var commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCompanyChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             companyChoices = result.getCompanyChoices();
 
             if(companyChoice == null) {
@@ -74,7 +71,7 @@ public class AddActionForm
 
             var commandResult = PartyUtil.getHome().getDivisionChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetDivisionChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             divisionChoices = result.getDivisionChoices();
 
             if(divisionChoice == null) {
@@ -95,7 +92,7 @@ public class AddActionForm
 
             var commandResult = PartyUtil.getHome().getDepartmentChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetDepartmentChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             departmentChoices = result.getDepartmentChoices();
 
             if(departmentChoice == null) {

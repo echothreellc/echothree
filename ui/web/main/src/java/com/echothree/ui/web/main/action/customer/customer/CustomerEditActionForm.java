@@ -17,13 +17,9 @@
 package com.echothree.ui.web.main.action.customer.customer;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetGlAccountChoicesResult;
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
-import com.echothree.control.user.cancellationpolicy.common.result.GetCancellationPolicyChoicesResult;
 import com.echothree.control.user.customer.common.CustomerUtil;
-import com.echothree.control.user.customer.common.result.GetCustomerTypeChoicesResult;
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
-import com.echothree.control.user.returnpolicy.common.result.GetReturnPolicyChoicesResult;
 import com.echothree.model.control.accounting.common.AccountingConstants;
 import com.echothree.model.control.accounting.common.choice.GlAccountChoicesBean;
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
@@ -72,7 +68,7 @@ public class CustomerEditActionForm
 
             var commandResult = CustomerUtil.getHome().getCustomerTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getCustomerTypeChoicesResult = (GetCustomerTypeChoicesResult)executionResult.getResult();
+            var getCustomerTypeChoicesResult = executionResult.getResult();
             customerTypeChoices = getCustomerTypeChoicesResult.getCustomerTypeChoices();
 
             if(customerTypeChoice == null) {
@@ -92,7 +88,7 @@ public class CustomerEditActionForm
 
             var commandResult = CancellationPolicyUtil.getHome().getCancellationPolicyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCancellationPolicyChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             cancellationPolicyChoices = result.getCancellationPolicyChoices();
 
             if(cancellationPolicyChoice == null)
@@ -111,7 +107,7 @@ public class CustomerEditActionForm
 
             var commandResult = ReturnPolicyUtil.getHome().getReturnPolicyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetReturnPolicyChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             returnPolicyChoices = result.getReturnPolicyChoices();
 
             if(returnPolicyChoice == null)
@@ -130,7 +126,7 @@ public class CustomerEditActionForm
 
             var commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getGlAccountChoicesResult = (GetGlAccountChoicesResult)executionResult.getResult();
+            var getGlAccountChoicesResult = executionResult.getResult();
             arGlAccountChoices = getGlAccountChoicesResult.getGlAccountChoices();
 
             if(arGlAccountChoice == null) {

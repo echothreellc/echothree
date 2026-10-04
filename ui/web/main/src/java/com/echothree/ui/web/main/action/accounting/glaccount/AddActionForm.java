@@ -17,12 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.glaccount;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetCurrencyChoicesResult;
-import com.echothree.control.user.accounting.common.result.GetGlAccountCategoryChoicesResult;
-import com.echothree.control.user.accounting.common.result.GetGlAccountChoicesResult;
-import com.echothree.control.user.accounting.common.result.GetGlAccountClassChoicesResult;
-import com.echothree.control.user.accounting.common.result.GetGlAccountTypeChoicesResult;
-import com.echothree.control.user.accounting.common.result.GetGlResourceTypeChoicesResult;
 import com.echothree.model.control.accounting.common.choice.CurrencyChoicesBean;
 import com.echothree.model.control.accounting.common.choice.GlAccountCategoryChoicesBean;
 import com.echothree.model.control.accounting.common.choice.GlAccountChoicesBean;
@@ -68,7 +62,7 @@ public class AddActionForm
 
             var commandResult = AccountingUtil.getHome().getGlAccountChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getGlAccountChoicesResult = (GetGlAccountChoicesResult)executionResult.getResult();
+            var getGlAccountChoicesResult = executionResult.getResult();
             parentGlAccountChoices = getGlAccountChoicesResult.getGlAccountChoices();
 
             if(parentGlAccountChoice == null)
@@ -86,7 +80,7 @@ public class AddActionForm
 
             var commandResult = AccountingUtil.getHome().getGlAccountTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getGlAccountTypeChoicesResult = (GetGlAccountTypeChoicesResult)executionResult.getResult();
+            var getGlAccountTypeChoicesResult = executionResult.getResult();
             glAccountTypeChoices = getGlAccountTypeChoicesResult.getGlAccountTypeChoices();
 
             if(glAccountTypeChoice == null)
@@ -104,7 +98,7 @@ public class AddActionForm
 
             var commandResult = AccountingUtil.getHome().getGlAccountClassChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getGlAccountClassChoicesResult = (GetGlAccountClassChoicesResult)executionResult.getResult();
+            var getGlAccountClassChoicesResult = executionResult.getResult();
             glAccountClassChoices = getGlAccountClassChoicesResult.getGlAccountClassChoices();
 
             if(glAccountClassChoice == null)
@@ -122,7 +116,7 @@ public class AddActionForm
 
             var commandResult = AccountingUtil.getHome().getGlAccountCategoryChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getGlAccountCategoryChoicesResult = (GetGlAccountCategoryChoicesResult)executionResult.getResult();
+            var getGlAccountCategoryChoicesResult = executionResult.getResult();
             glAccountCategoryChoices = getGlAccountCategoryChoicesResult.getGlAccountCategoryChoices();
 
             if(glAccountCategoryChoice == null)
@@ -140,7 +134,7 @@ public class AddActionForm
 
             var commandResult = AccountingUtil.getHome().getGlResourceTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getGlResourceTypeChoicesResult = (GetGlResourceTypeChoicesResult)executionResult.getResult();
+            var getGlResourceTypeChoicesResult = executionResult.getResult();
             glResourceTypeChoices = getGlResourceTypeChoicesResult.getGlResourceTypeChoices();
 
             if(glResourceTypeChoice == null)
@@ -158,7 +152,7 @@ public class AddActionForm
 
             var commandResult = AccountingUtil.getHome().getCurrencyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getCurrencyChoicesResult = (GetCurrencyChoicesResult)executionResult.getResult();
+            var getCurrencyChoicesResult = executionResult.getResult();
             currencyChoices = getCurrencyChoicesResult.getCurrencyChoices();
 
             if(currencyChoice == null)

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.event;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.EditEntityAppearanceResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -78,7 +77,7 @@ public class EntityAppearanceEditAction
                 var executionResult = commandResult.getExecutionResult();
 
                 if(executionResult != null) {
-                    var result = (EditEntityAppearanceResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     if(result != null) {
                         request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
@@ -96,7 +95,7 @@ public class EntityAppearanceEditAction
 
             var commandResult = CoreUtil.getHome().editEntityAppearance(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (EditEntityAppearanceResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             if(result != null) {
                 var edit = result.getEdit();

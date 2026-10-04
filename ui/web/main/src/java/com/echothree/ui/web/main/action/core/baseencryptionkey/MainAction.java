@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.baseencryptionkey;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetBaseEncryptionKeysResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -49,7 +48,7 @@ public class MainAction
             throws Exception {
         var commandResult = CoreUtil.getHome().getBaseEncryptionKeys(getUserVisitPK(request), null);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetBaseEncryptionKeysResult)executionResult.getResult();
+        var result = executionResult.getResult();
         
         request.setAttribute(AttributeConstants.BASE_ENCRYPTION_KEYS, result.getBaseEncryptionKeys());
         

@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.warehouse.warehousecontactmechanism.contactmechanismadd;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.result.GetContactMechanismTypesResult;
 import com.echothree.ui.web.main.action.warehouse.warehousecontactmechanism.BaseWarehouseContactMechanismAction;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -49,7 +48,7 @@ public class Step1Action
             throws Exception {
         var commandResult = ContactUtil.getHome().getContactMechanismTypes(getUserVisitPK(request), null);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetContactMechanismTypesResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.CONTACT_MECHANISM_TYPES, result.getContactMechanismTypes());
 

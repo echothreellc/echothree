@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.geo;
 import com.echothree.control.user.geo.common.GeoUtil;
 import com.echothree.control.user.geo.common.GeoService;
 import com.echothree.control.user.geo.common.form.GeoFormFactory;
-import com.echothree.control.user.geo.common.result.CreateCountryResult;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -148,7 +147,7 @@ public class CountriesHandler
 
                 var commandResult = geoService.createCountry(initialDataParser.getUserVisit(), form);
                 var executionResult = commandResult.getExecutionResult();
-                var createCountryResult = (CreateCountryResult)executionResult.getResult();
+                var createCountryResult = executionResult.getResult();
                 var countryGeoCodeName = createCountryResult.getGeoCodeName();
                 var countryEntityRef = createCountryResult.getEntityRef();
                 

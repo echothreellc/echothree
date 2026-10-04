@@ -17,8 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.leave;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.result.GetLeaveResultsResult;
-import com.echothree.control.user.search.common.result.SearchLeavesResult;
 import com.echothree.model.control.search.common.SearchTypes;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -61,7 +59,7 @@ public class SearchAction
 
         var commandResult = SearchUtil.getHome().getLeaveResults(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetLeaveResultsResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var leaveResults = result.getLeaveResults();
         var iter = leaveResults.iterator();
         if(iter.hasNext()) {
@@ -95,7 +93,7 @@ public class SearchAction
                 forwardKey = ForwardConstants.FORM;
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (SearchLeavesResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 var count = result.getCount();
 
                 if(count == 0 || count > 1) {

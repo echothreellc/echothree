@@ -17,9 +17,6 @@
 package com.echothree.cucumber.inventory;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.result.CreateInventoryTransactionTypeResult;
-import com.echothree.control.user.inventory.common.result.EditInventoryTransactionTypeResult;
-import com.echothree.control.user.inventory.common.result.GetInventoryTransactionTypeResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -387,7 +384,7 @@ public class InventoryTransactionTypeSteps implements En {
 
                     var commandResult = InventoryUtil.getHome().getInventoryTransactionType(persona.userVisitPK, form);
                     assertThat(commandResult.getHasErrors()).isFalse();
-                    var result = (GetInventoryTransactionTypeResult)commandResult.getExecutionResult().getResult();
+                    var result = commandResult.getExecutionResult().getResult();
                     var sequenceType = result.getInventoryTransactionType().getInventoryTransferTransactionSequenceType();
 
                     if(sequenceTypeName.isEmpty()) {

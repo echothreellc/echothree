@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.selector.selector;
 
 import com.echothree.control.user.selector.common.SelectorUtil;
-import com.echothree.control.user.selector.common.result.GetSelectorDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -63,7 +62,7 @@ public class DescriptionAction
 
             var commandResult = SelectorUtil.getHome().getSelectorDescriptions(getUserVisitPK(request), getSelectorDescriptionsForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetSelectorDescriptionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.SELECTOR_KIND, result.getSelectorKind());
             request.setAttribute(AttributeConstants.SELECTOR_TYPE, result.getSelectorType());

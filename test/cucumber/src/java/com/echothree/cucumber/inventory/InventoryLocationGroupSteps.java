@@ -17,8 +17,6 @@
 package com.echothree.cucumber.inventory;
 
 import com.echothree.control.user.inventory.common.InventoryUtil;
-import com.echothree.control.user.inventory.common.result.CreateInventoryLocationGroupResult;
-import com.echothree.control.user.inventory.common.result.EditInventoryLocationGroupResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
@@ -50,7 +48,7 @@ public class InventoryLocationGroupSteps implements En {
                     var commandResult = InventoryUtil.getHome().createInventoryLocationGroup(persona.userVisitPK, createInventoryLocationGroupForm);
 
                     LastCommandResult.commandResult = commandResult;
-                    var result = (CreateInventoryLocationGroupResult)commandResult.getExecutionResult().getResult();
+                    var result = commandResult.getExecutionResult().getResult();
 
                     if(result != null) {
                         persona.lastInventoryLocationGroupName = commandResult.getHasErrors() ? null : result.getInventoryLocationGroupName();
@@ -136,7 +134,7 @@ public class InventoryLocationGroupSteps implements En {
                     LastCommandResult.commandResult = commandResult;
 
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditInventoryLocationGroupResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     if(!executionResult.getHasErrors()) {
                         persona.inventoryLocationGroupEdit = result.getEdit();

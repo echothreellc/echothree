@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.leavereason;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.result.GetLeaveReasonResult;
 import com.echothree.model.control.employee.common.transfer.LeaveReasonTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -59,7 +58,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetLeaveReasonResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             leaveReason = result.getLeaveReason();
         }

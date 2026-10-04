@@ -18,7 +18,6 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.result.GetContentCatalogItemsResult;
 import com.echothree.model.data.content.common.ContentCatalogItemConstants;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.Limit;
@@ -180,7 +179,7 @@ public class ContentCatalogItemsTag
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (GetContentCatalogItemsResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 pageContext.setAttribute(var, new ListWrapper<>(result.getContentCatalogItems()), scope);
 

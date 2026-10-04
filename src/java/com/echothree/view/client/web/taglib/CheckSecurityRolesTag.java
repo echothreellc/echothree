@@ -18,7 +18,6 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.result.CheckSecurityRolesResult;
 import com.echothree.view.client.web.WebConstants;
 import com.google.common.base.Splitter;
 import java.util.HashSet;
@@ -70,7 +69,7 @@ public class CheckSecurityRolesTag
 
             var commandResult = SecurityUtil.getHome().checkSecurityRoles(getUserVisitPK(), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var checkSecurityRolesResult = (CheckSecurityRolesResult)executionResult.getResult();
+            var checkSecurityRolesResult = executionResult.getResult();
             
             if(commandResult.hasErrors()) {
                 if(logErrors) {

@@ -17,10 +17,7 @@
 package com.echothree.ui.web.main.action.humanresources.employment;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.result.GetTerminationReasonChoicesResult;
-import com.echothree.control.user.employee.common.result.GetTerminationTypeChoicesResult;
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetCompanyChoicesResult;
 import com.echothree.model.control.employee.common.choice.TerminationReasonChoicesBean;
 import com.echothree.model.control.employee.common.choice.TerminationTypeChoicesBean;
 import com.echothree.model.control.party.common.choice.CompanyChoicesBean;
@@ -56,7 +53,7 @@ public class AddActionForm
 
             var commandResult = PartyUtil.getHome().getCompanyChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCompanyChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             companyChoices = result.getCompanyChoices();
 
             if(companyChoice == null) {
@@ -75,7 +72,7 @@ public class AddActionForm
 
             var commandResult = EmployeeUtil.getHome().getTerminationTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetTerminationTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             terminationTypeChoices = result.getTerminationTypeChoices();
 
             if(terminationTypeChoice == null) {
@@ -94,7 +91,7 @@ public class AddActionForm
 
             var commandResult = EmployeeUtil.getHome().getTerminationReasonChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetTerminationReasonChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             terminationReasonChoices = result.getTerminationReasonChoices();
 
             if(terminationReasonChoice == null) {

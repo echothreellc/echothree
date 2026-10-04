@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.item.itemalias;
 
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemAliasTypeChoicesResult;
 import com.echothree.control.user.uom.common.UomUtil;
-import com.echothree.control.user.uom.common.result.GetUnitOfMeasureTypeChoicesResult;
 import com.echothree.model.control.item.common.choice.ItemAliasTypeChoicesBean;
 import com.echothree.model.control.uom.common.choice.UnitOfMeasureTypeChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
@@ -51,7 +49,7 @@ public class AddActionForm
 
             var commandResult = UomUtil.getHome().getUnitOfMeasureTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getUnitOfMeasureTypeChoicesResult = (GetUnitOfMeasureTypeChoicesResult)executionResult.getResult();
+            var getUnitOfMeasureTypeChoicesResult = executionResult.getResult();
             unitOfMeasureTypeChoices = getUnitOfMeasureTypeChoicesResult.getUnitOfMeasureTypeChoices();
 
             if(unitOfMeasureTypeChoice == null) {
@@ -70,7 +68,7 @@ public class AddActionForm
 
             var commandResult = ItemUtil.getHome().getItemAliasTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getItemAliasTypeChoicesResult = (GetItemAliasTypeChoicesResult)executionResult.getResult();
+            var getItemAliasTypeChoicesResult = executionResult.getResult();
             itemAliasTypeChoices = getItemAliasTypeChoicesResult.getItemAliasTypeChoices();
 
             if(itemAliasTypeChoice == null) {

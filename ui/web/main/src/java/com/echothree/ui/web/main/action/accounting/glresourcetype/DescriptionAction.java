@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.glresourcetype;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
-import com.echothree.control.user.accounting.common.result.GetGlResourceTypeDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class DescriptionAction
 
             var commandResult = AccountingUtil.getHome().getGlResourceTypeDescriptions(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetGlResourceTypeDescriptionsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var glResourceTypeTransfer = result.getGlResourceType();
             
             request.setAttribute(AttributeConstants.GL_RESOURCE_TYPE, glResourceTypeTransfer);

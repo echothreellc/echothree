@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.forum.forummessage;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetMimeTypeChoicesResult;
 import com.echothree.control.user.icon.common.IconUtil;
-import com.echothree.control.user.icon.common.result.GetIconChoicesResult;
 import com.echothree.model.control.core.common.choice.MimeTypeChoicesBean;
 import com.echothree.model.control.icon.common.IconConstants;
 import com.echothree.model.control.icon.common.choice.IconChoicesBean;
@@ -55,7 +53,7 @@ public class AddActionForm
 
             var commandResult = IconUtil.getHome().getIconChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetIconChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             forumMessageIconChoices = result.getIconChoices();
 
             if(forumMessageIconChoice == null) {
@@ -75,7 +73,7 @@ public class AddActionForm
 
             var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetMimeTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             contentMimeTypeChoices = result.getMimeTypeChoices();
 
             if(contentMimeTypeChoice == null) {

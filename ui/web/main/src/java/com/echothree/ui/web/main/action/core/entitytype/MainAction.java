@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.entitytype;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetEntityTypesResult;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.data.core.common.EntityTypeConstants;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -81,7 +80,7 @@ public class MainAction
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEntityTypesResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             request.setAttribute(AttributeConstants.COMPONENT_VENDOR, result.getComponentVendor());
             request.setAttribute(AttributeConstants.ENTITY_TYPE_COUNT, toIntExact(result.getEntityTypeCount()));

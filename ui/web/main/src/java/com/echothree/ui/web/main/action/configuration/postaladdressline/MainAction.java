@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.postaladdressline;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.result.GetPostalAddressLinesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -59,7 +58,7 @@ public class MainAction
 
             var commandResult = ContactUtil.getHome().getPostalAddressLines(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPostalAddressLinesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var postalAddressFormatTransfer = result.getPostalAddressFormat();
             
             request.setAttribute(AttributeConstants.POSTAL_ADDRESS_FORMAT, postalAddressFormatTransfer);

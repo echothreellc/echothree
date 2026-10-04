@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.departmentcontactmechanism;
 
 import com.echothree.control.user.contact.common.ContactUtil;
-import com.echothree.control.user.contact.common.result.GetPostalAddressStatusChoicesResult;
 import com.echothree.model.control.contact.common.choice.PostalAddressStatusChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -46,7 +45,7 @@ public class ContactPostalAddressStatusActionForm
 
             var commandResult = ContactUtil.getHome().getPostalAddressStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetPostalAddressStatusChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             postalAddressStatusChoices = result.getPostalAddressStatusChoices();
 
             if(postalAddressStatusChoice == null) {

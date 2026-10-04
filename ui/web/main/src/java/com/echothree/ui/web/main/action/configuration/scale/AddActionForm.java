@@ -17,10 +17,7 @@
 package com.echothree.ui.web.main.action.configuration.scale;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetServerChoicesResult;
-import com.echothree.control.user.core.common.result.GetServiceChoicesResult;
 import com.echothree.control.user.scale.common.ScaleUtil;
-import com.echothree.control.user.scale.common.result.GetScaleTypeChoicesResult;
 import com.echothree.model.control.core.common.choice.ServerChoicesBean;
 import com.echothree.model.control.core.common.choice.ServiceChoicesBean;
 import com.echothree.model.control.scale.common.choice.ScaleTypeChoicesBean;
@@ -58,7 +55,7 @@ public class AddActionForm
 
                 var commandResult = ScaleUtil.getHome().getScaleTypeChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var getScaleTypeChoicesResult = (GetScaleTypeChoicesResult)executionResult.getResult();
+                var getScaleTypeChoicesResult = executionResult.getResult();
                 scaleTypeChoices = getScaleTypeChoicesResult.getScaleTypeChoices();
 
                 if(scaleTypeChoice == null) {
@@ -80,7 +77,7 @@ public class AddActionForm
 
                 var commandResult = CoreUtil.getHome().getServerChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var getServerChoicesResult = (GetServerChoicesResult)executionResult.getResult();
+                var getServerChoicesResult = executionResult.getResult();
                 serverChoices = getServerChoicesResult.getServerChoices();
 
                 if(serverChoice == null) {
@@ -102,7 +99,7 @@ public class AddActionForm
 
                 var commandResult = CoreUtil.getHome().getServiceChoices(userVisitPK, commandForm);
                 var executionResult = commandResult.getExecutionResult();
-                var getServiceChoicesResult = (GetServiceChoicesResult)executionResult.getResult();
+                var getServiceChoicesResult = executionResult.getResult();
                 serviceChoices = getServiceChoicesResult.getServiceChoices();
 
                 if(serviceChoice == null) {

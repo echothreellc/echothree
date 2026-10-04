@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.employeealias;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.result.GetEmployeeResult;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -66,7 +65,7 @@ public class MainAction
 
         var commandResult = EmployeeUtil.getHome().getEmployee(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetEmployeeResult)executionResult.getResult();
+        var result = executionResult.getResult();
         var employee = result.getEmployee();
         
         if(employee == null) {

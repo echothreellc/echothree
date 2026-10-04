@@ -20,7 +20,6 @@ import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.edit.ItemDescriptionEdit;
 import com.echothree.control.user.item.common.form.EditItemDescriptionForm;
 import com.echothree.control.user.item.common.result.EditItemDescriptionResult;
-import com.echothree.control.user.item.common.result.GetItemDescriptionTypeResult;
 import com.echothree.control.user.item.common.spec.ItemDescriptionSpec;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.item.common.transfer.ItemDescriptionTypeTransfer;
@@ -76,7 +75,7 @@ public class DescriptionEditAction
         var commandResult = ItemUtil.getHome().getItemDescriptionType(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetItemDescriptionTypeResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             itemDescriptionType = result.getItemDescriptionType();
         }

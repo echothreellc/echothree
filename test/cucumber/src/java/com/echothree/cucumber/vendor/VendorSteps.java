@@ -17,9 +17,7 @@
 package com.echothree.cucumber.vendor;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.CreateVendorResult;
 import com.echothree.control.user.vendor.common.VendorUtil;
-import com.echothree.control.user.vendor.common.result.EditVendorResult;
 import com.echothree.cucumber.util.persona.BasePersona;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
@@ -56,7 +54,7 @@ public class VendorSteps
                     var commandResult = partyUtil.createVendor(persona.userVisitPK, createVendorForm);
 
                     LastCommandResult.commandResult = commandResult;
-                    var result = (CreateVendorResult)commandResult.getExecutionResult().getResult();
+                    var result = commandResult.getExecutionResult().getResult();
 
                     if(result != null) {
                         persona.lastVendorName = commandResult.getHasErrors() ? null : result.getVendorName();
@@ -101,7 +99,7 @@ public class VendorSteps
 
                     if(!commandResult.getHasErrors()) {
                         var executionResult = commandResult.getExecutionResult();
-                        var result = (EditVendorResult)executionResult.getResult();
+                        var result = executionResult.getResult();
 
                         persona.vendorEdit = result.getEdit();
                     }

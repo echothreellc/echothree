@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.leavereason;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
-import com.echothree.control.user.employee.common.result.GetLeaveReasonDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -57,7 +56,7 @@ public class DescriptionAction
         var commandResult = EmployeeUtil.getHome().getLeaveReasonDescriptions(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetLeaveReasonDescriptionsResult) executionResult.getResult();
+            var result = executionResult.getResult();
             var leaveReasonTransfer = result.getLeaveReason();
 
             request.setAttribute(AttributeConstants.LEAVE_REASON, leaveReasonTransfer);

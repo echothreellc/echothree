@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.configuration.protocol;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetProtocolResult;
 import com.echothree.model.control.core.common.transfer.ProtocolTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -59,7 +58,7 @@ public class ReviewAction
         
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetProtocolResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             protocol = result.getProtocol();
         }

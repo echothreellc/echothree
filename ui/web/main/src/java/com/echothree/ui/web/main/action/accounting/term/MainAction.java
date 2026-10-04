@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.term;
 
 import com.echothree.control.user.term.common.TermUtil;
-import com.echothree.control.user.term.common.result.GetTermsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -53,7 +52,7 @@ public class MainAction
         try {
             var commandResult = TermUtil.getHome().getTerms(getUserVisitPK(request), null);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetTermsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.TERMS, result.getTerms());
             forwardKey = ForwardConstants.DISPLAY;

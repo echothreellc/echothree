@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.event;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetAppearanceChoicesResult;
 import com.echothree.model.control.core.common.choice.AppearanceChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -44,7 +43,7 @@ public class EntityAppearanceAddActionForm
 
             var commandResult = CoreUtil.getHome().getAppearanceChoices(userVisitPK, commandForm);
             var executionResult = commandResult.getExecutionResult();
-            var getAppearanceChoicesResult = (GetAppearanceChoicesResult)executionResult.getResult();
+            var getAppearanceChoicesResult = executionResult.getResult();
                 appearanceChoices = getAppearanceChoicesResult.getAppearanceChoices();
                 
                 if(appearanceChoice == null)

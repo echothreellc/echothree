@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.core;
 import com.echothree.control.user.core.common.CoreService;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
-import com.echothree.control.user.core.common.result.EditComponentVendorResult;
 import com.echothree.control.user.core.common.spec.CoreSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -82,7 +81,7 @@ public class ComponentVendorsHandler
                     }
                 } else {
                     var executionResult = commandResult.getExecutionResult();
-                    var result = (EditComponentVendorResult)executionResult.getResult();
+                    var result = executionResult.getResult();
 
                     getLogger().debug("Checking for modifications: {}", spec.getComponentVendorName());
                     if(result != null) {

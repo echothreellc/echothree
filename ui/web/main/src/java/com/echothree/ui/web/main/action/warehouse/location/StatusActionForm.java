@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.warehouse.location;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.result.GetLocationStatusChoicesResult;
 import com.echothree.model.control.warehouse.common.choice.LocationStatusChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
@@ -48,7 +47,7 @@ public class StatusActionForm
 
             var commandResult = WarehouseUtil.getHome().getLocationStatusChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getLocationStatusChoicesResult = (GetLocationStatusChoicesResult)executionResult.getResult();
+            var getLocationStatusChoicesResult = executionResult.getResult();
             locationStatusChoices = getLocationStatusChoicesResult.getLocationStatusChoices();
 
             if(locationStatusChoice == null)

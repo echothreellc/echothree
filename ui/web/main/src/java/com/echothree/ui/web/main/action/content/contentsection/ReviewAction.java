@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.content.contentsection;
 
 import com.echothree.control.user.content.common.ContentUtil;
-import com.echothree.control.user.content.common.result.GetContentSectionResult;
 import com.echothree.model.control.content.common.ContentOptions;
 import com.echothree.model.control.content.common.transfer.ContentSectionTransfer;
 import com.echothree.model.control.core.common.CoreOptions;
@@ -73,7 +72,7 @@ public class ReviewAction
 
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetContentSectionResult)executionResult.getResult();
+            var result = executionResult.getResult();
 
             contentSection = result.getContentSection();
         }

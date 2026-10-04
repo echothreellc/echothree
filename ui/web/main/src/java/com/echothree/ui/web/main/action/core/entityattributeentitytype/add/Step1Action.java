@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.core.entityattributeentitytype.add;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetComponentVendorsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -49,7 +48,7 @@ public class Step1Action
             throws Exception {
         var commandResult = CoreUtil.getHome().getComponentVendors(getUserVisitPK(request), null);
         var executionResult = commandResult.getExecutionResult();
-        var result = (GetComponentVendorsResult)executionResult.getResult();
+        var result = executionResult.getResult();
 
         request.setAttribute(AttributeConstants.COMPONENT_VENDORS, result.getComponentVendors());
         

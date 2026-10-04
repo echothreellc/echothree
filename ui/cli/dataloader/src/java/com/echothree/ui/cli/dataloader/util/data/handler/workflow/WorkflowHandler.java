@@ -19,10 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.workflow;
 import com.echothree.control.user.workflow.common.WorkflowService;
 import com.echothree.control.user.workflow.common.WorkflowUtil;
 import com.echothree.control.user.workflow.common.form.WorkflowFormFactory;
-import com.echothree.control.user.workflow.common.result.EditWorkflowDescriptionResult;
-import com.echothree.control.user.workflow.common.result.EditWorkflowDestinationResult;
-import com.echothree.control.user.workflow.common.result.EditWorkflowEntranceResult;
-import com.echothree.control.user.workflow.common.result.EditWorkflowStepResult;
 import com.echothree.control.user.workflow.common.spec.WorkflowSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -92,7 +88,7 @@ public class WorkflowHandler
                         }
                     } else {
                         var executionResult = commandResult.getExecutionResult();
-                        var result = (EditWorkflowDescriptionResult)executionResult.getResult();
+                        var result = executionResult.getResult();
 
                         getLogger().debug("Checking for modifications: {}", spec.getWorkflowName());
                         if(result != null) {
@@ -141,7 +137,7 @@ public class WorkflowHandler
                         }
                     } else {
                         var executionResult = commandResult.getExecutionResult();
-                        var result = (EditWorkflowStepResult)executionResult.getResult();
+                        var result = executionResult.getResult();
 
                         getLogger().debug("Checking for modifications: {}", spec.getWorkflowStepName());
                         if(result != null) {
@@ -193,7 +189,7 @@ public class WorkflowHandler
                         }
                     } else {
                         var executionResult = commandResult.getExecutionResult();
-                        var result = (EditWorkflowDestinationResult)executionResult.getResult();
+                        var result = executionResult.getResult();
 
                         getLogger().debug("Checking for modifications: {}", spec.getWorkflowDestinationName());
                         if(result != null) {
@@ -245,7 +241,7 @@ public class WorkflowHandler
                         }
                     } else {
                         var executionResult = commandResult.getExecutionResult();
-                        var result = (EditWorkflowEntranceResult)executionResult.getResult();
+                        var result = executionResult.getResult();
 
                         getLogger().debug("Checking for modifications: {}", spec.getWorkflowEntranceName());
                         if(result != null) {

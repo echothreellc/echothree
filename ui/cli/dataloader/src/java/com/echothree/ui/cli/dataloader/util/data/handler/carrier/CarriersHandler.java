@@ -19,7 +19,6 @@ package com.echothree.ui.cli.dataloader.util.data.handler.carrier;
 import com.echothree.control.user.carrier.common.CarrierUtil;
 import com.echothree.control.user.carrier.common.CarrierService;
 import com.echothree.control.user.carrier.common.form.CarrierFormFactory;
-import com.echothree.control.user.carrier.common.result.CreateCarrierResult;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -54,7 +53,7 @@ public class CarriersHandler
             
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (CreateCarrierResult)executionResult.getResult();
+                var result = executionResult.getResult();
                 
                 initialDataParser.pushHandler(new CarrierHandler(initialDataParser, this, result.getPartyName(), result.getCarrierName(), result.getEntityRef()));
             }

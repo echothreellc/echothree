@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.employee;
 
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
-import com.echothree.control.user.authentication.common.result.GetEmployeeLoginDefaultsResult;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -98,7 +97,7 @@ public class LoginAction
         } else {
             var commandResult = AuthenticationUtil.getHome().getEmployeeLoginDefaults(getUserVisitPK(request), null);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetEmployeeLoginDefaultsResult)executionResult.getResult();
+            var result = executionResult.getResult();
             var commandForm = result.getEmployeeLoginForm();
             
             actionForm.setUsername(commandForm.getUsername());

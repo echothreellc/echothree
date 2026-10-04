@@ -62,7 +62,7 @@ public class TranslationAction
         if(!commandResult.hasErrors()) {
             var executionResult = commandResult.getExecutionResult();
             
-            result = (GetCommandMessageTranslationsResult) executionResult.getResult();
+            result = executionResult.getResult();
             trainingClassSection = result.getCommandMessage();
             
             forwardKey = ForwardConstants.DISPLAY;

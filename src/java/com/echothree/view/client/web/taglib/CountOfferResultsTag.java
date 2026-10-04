@@ -18,7 +18,6 @@
 package com.echothree.view.client.web.taglib;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.result.CountOfferResultsResult;
 import javax.naming.NamingException;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
@@ -89,7 +88,7 @@ public class CountOfferResultsTag
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (CountOfferResultsResult)executionResult.getResult();
+                var result = executionResult.getResult();
 
                 pageContext.setAttribute(countVar, result.getCount(), scope);
             }

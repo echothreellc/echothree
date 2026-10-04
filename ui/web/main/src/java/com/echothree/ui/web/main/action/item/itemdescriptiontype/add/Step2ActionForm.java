@@ -17,9 +17,7 @@
 package com.echothree.ui.web.main.action.item.itemdescriptiontype.add;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetMimeTypeChoicesResult;
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.result.GetItemDescriptionTypeChoicesResult;
 import com.echothree.model.control.core.common.choice.MimeTypeChoicesBean;
 import com.echothree.model.control.item.common.choice.ItemDescriptionTypeChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
@@ -67,7 +65,7 @@ public class Step2ActionForm
 
             var commandResult = ItemUtil.getHome().getItemDescriptionTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var getItemDescriptionTypeChoicesResult = (GetItemDescriptionTypeChoicesResult)executionResult.getResult();
+            var getItemDescriptionTypeChoicesResult = executionResult.getResult();
             parentItemDescriptionTypeChoices = getItemDescriptionTypeChoicesResult.getItemDescriptionTypeChoices();
 
             if(parentItemDescriptionTypeChoice == null) {
@@ -87,7 +85,7 @@ public class Step2ActionForm
 
             var commandResult = CoreUtil.getHome().getMimeTypeChoices(userVisitPK, form);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetMimeTypeChoicesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             preferredMimeTypeChoices = result.getMimeTypeChoices();
 
             if(preferredMimeTypeChoice == null) {

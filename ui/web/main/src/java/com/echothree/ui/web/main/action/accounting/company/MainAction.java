@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.accounting.company;
 
 import com.echothree.control.user.party.common.PartyUtil;
-import com.echothree.control.user.party.common.result.GetCompaniesResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -53,7 +52,7 @@ public class MainAction
         try {
             var commandResult = PartyUtil.getHome().getCompanies(getUserVisitPK(request), null);
             var executionResult = commandResult.getExecutionResult();
-            var result = (GetCompaniesResult)executionResult.getResult();
+            var result = executionResult.getResult();
             
             request.setAttribute(AttributeConstants.COMPANIES, result.getCompanies());
             forwardKey = ForwardConstants.DISPLAY;
