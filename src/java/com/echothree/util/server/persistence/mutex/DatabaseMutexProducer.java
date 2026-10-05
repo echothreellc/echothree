@@ -25,9 +25,9 @@ public class DatabaseMutexProducer {
     // CDI producer parameters are injection points and require the flavor qualifier.
     @SuppressWarnings("UnnecessaryQualifier")
     @Produces
-    public DatabaseMutex produceMutex(final DatabaseFlavor.Flavor flavor,
-            @DatabaseFlavor(DatabaseFlavor.Flavor.MYSQL) final DatabaseMutex mySqlMutex,
-            @DatabaseFlavor(DatabaseFlavor.Flavor.POSTGRES) final DatabaseMutex postgresMutex) {
+    public DatabaseMutex produceMutex(final DatabaseMutexFlavor.Flavor flavor,
+            @DatabaseMutexFlavor(DatabaseMutexFlavor.Flavor.MYSQL) final DatabaseMutex mySqlMutex,
+            @DatabaseMutexFlavor(DatabaseMutexFlavor.Flavor.POSTGRES) final DatabaseMutex postgresMutex) {
         return switch(flavor) {
             case MYSQL -> mySqlMutex;
             case POSTGRES -> postgresMutex;

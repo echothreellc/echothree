@@ -16,27 +16,25 @@
 
 package com.echothree.util.server.persistence.mutex;
 
-import com.echothree.util.server.persistence.Session;
-import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE;
+import java.lang.annotation.Retention;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+import java.lang.annotation.Target;
+import javax.inject.Qualifier;
 
-@Dependent
-public class DatabaseFlavorProducer {
+@Qualifier
+@Retention(RUNTIME)
+@Target({FIELD, TYPE, METHOD, PARAMETER})
+public @interface DatabaseMutexFlavor {
 
-    @Inject
-    Session session;
+    Flavor value();
 
-    @Produces
-    @Dependent
-    public DatabaseFlavor.Flavor deriveFlavor() {
-        var family = session.getDslContext().configuration().dialect().family();
-
-        return switch(family) {
-            case MYSQL, MARIADB -> DatabaseFlavor.Flavor.MYSQL;
-            case POSTGRES -> DatabaseFlavor.Flavor.POSTGRES;
-            default -> throw new IllegalStateException("Unsupported database family: " + family);
-        };
+    enum Flavor {
+        MYSQL,
+        POSTGRES,
     }
 
 }

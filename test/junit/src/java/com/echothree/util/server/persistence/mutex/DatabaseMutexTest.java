@@ -73,10 +73,10 @@ public class DatabaseMutexTest {
     @Test
     @SuppressWarnings("UnnecessaryAssignment") // Supply the CDI injection explicitly in this unit test.
     public void derivesSupportedFlavorsAndRejectsUnsupportedDialects() {
-        var producer = new DatabaseFlavorProducer();
+        var producer = new DatabaseMutexFlavorProducer();
         for(var dialect : new SQLDialect[] {SQLDialect.MYSQL, SQLDialect.MARIADB, SQLDialect.POSTGRES}) {
             producer.session = DatabaseMutexTestSupport.sessionFor(DSL.using(dialect));
-            assertEquals(dialect == SQLDialect.POSTGRES ? DatabaseFlavor.Flavor.POSTGRES : DatabaseFlavor.Flavor.MYSQL,
+            assertEquals(dialect == SQLDialect.POSTGRES ? DatabaseMutexFlavor.Flavor.POSTGRES : DatabaseMutexFlavor.Flavor.MYSQL,
                     producer.deriveFlavor());
         }
 
@@ -139,8 +139,8 @@ public class DatabaseMutexTest {
 
         var postgresMutex = new DatabasePostgresMutex();
 
-        assertSame(mutex, producer.produceMutex(DatabaseFlavor.Flavor.MYSQL, mutex, postgresMutex));
-        assertSame(postgresMutex, producer.produceMutex(DatabaseFlavor.Flavor.POSTGRES, mutex, postgresMutex));
+        assertSame(mutex, producer.produceMutex(DatabaseMutexFlavor.Flavor.MYSQL, mutex, postgresMutex));
+        assertSame(postgresMutex, producer.produceMutex(DatabaseMutexFlavor.Flavor.POSTGRES, mutex, postgresMutex));
     }
 
 }
