@@ -63,6 +63,8 @@
         <columnType type="Md5Hash" realType="String" maxLength="24" />
         <columnType type="Sha1Salt" realType="String" maxLength="12" />
         <columnType type="Sha1Hash" realType="String" maxLength="28" />
+        <columnType type="Sha256Salt" realType="String" maxLength="44" />
+        <columnType type="Sha256Hash" realType="String" maxLength="44" />
         <columnType type="TextPassword" realType="String" maxLength="40" />
         <columnType type="EncodedSecretKey" realType="String" maxLength="200" />
         <columnType type="EncodedInitializationVector" realType="String" maxLength="200" />
@@ -100,6 +102,7 @@
         <file name="/FinancialComponent.xml" />
         <file name="/ForumComponent.xml" />
         <file name="/GeoComponent.xml" />
+        <file name="/GraphQlComponent.xml" />
         <file name="/IconComponent.xml" />
         <file name="/IndexComponent.xml" />
         <file name="/InventoryComponent.xml" />
