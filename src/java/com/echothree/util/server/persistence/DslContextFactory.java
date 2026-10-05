@@ -35,6 +35,9 @@ public class DslContextFactory {
     
     private static final String DS = "java:/EchoThreeDS";
     private static final String NTDS = "java:/EchoThreeNTDS";
+
+    // Shared by all contexts; must not be modified after initialization.
+    private static final Settings SETTINGS = createSettings();
     
     private final DataSource ds;
     private final DataSource ntds;
@@ -86,14 +89,18 @@ public class DslContextFactory {
         }
     }
 
-    private Settings getSettings() {
+    private static Settings createSettings() {
         // The datasource selects the tenant database. Generated schema names
         // describe the model and must not qualify runtime SQL.
-        return new Settings().withRenderSchema(false);
+        //
+        // PostgreSQL connections must use a search_path that resolves the intended schema.
+        // Disabling schema rendering also disables catalog qualification.
+        return new Settings()
+                .withRenderSchema(false);
     }
-    
+
     public DSLContext getDslContext() {
-        var dslContent = DSL.using(ds, dsDialect, getSettings());
+        var dslContent = DSL.using(ds, dsDialect, SETTINGS);
         
         if(PersistenceDebugFlags.LogConnections)
             log.info("getDslContext() returning " + dslContent);
@@ -102,7 +109,7 @@ public class DslContextFactory {
     }
     
     public DSLContext getNTDslContext() {
-        var dslContent = DSL.using(ntds, ntdsDialect, getSettings());
+        var dslContent = DSL.using(ntds, ntdsDialect, SETTINGS);
         
         if(PersistenceDebugFlags.LogConnections)
             log.info("getNTDslContext() returning " + dslContent);
