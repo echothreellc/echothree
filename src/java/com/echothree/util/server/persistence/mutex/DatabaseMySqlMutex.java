@@ -22,7 +22,7 @@ import javax.inject.Inject;
 import org.jooq.impl.DSL;
 
 @ApplicationScoped
-@DatabaseFlavor(DatabaseFlavor.Flavor.MYSQL)
+@DatabaseMutexFlavor(DatabaseMutexFlavor.Flavor.MYSQL)
 public class DatabaseMySqlMutex
         implements DatabaseMutex {
 

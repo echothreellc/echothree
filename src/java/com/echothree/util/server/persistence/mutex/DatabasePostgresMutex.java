@@ -31,7 +31,7 @@ import org.jooq.impl.DSL;
  * Hash collisions cause otherwise distinct names to share a lock.
  */
 @ApplicationScoped
-@DatabaseFlavor(DatabaseFlavor.Flavor.POSTGRES)
+@DatabaseMutexFlavor(DatabaseMutexFlavor.Flavor.POSTGRES)
 public class DatabasePostgresMutex
         implements DatabaseMutex {
 

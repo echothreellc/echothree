@@ -22,8 +22,6 @@ public interface PersistenceDebugFlags {
     boolean LogSessions = false;
     boolean LogSessionEntityCacheActions = false;
     boolean LogSessionEntityCacheStatistics = false;
-    boolean LogLimits = false;
-    boolean LogThreads = false;
     boolean LogValueCaches = false;
     boolean LogValueCacheActions = false;
     
