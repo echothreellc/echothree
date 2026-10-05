@@ -27,8 +27,10 @@ import org.jooq.tools.jdbc.MockConnection;
 import org.jooq.tools.jdbc.MockDataProvider;
 import org.jooq.tools.jdbc.MockResult;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Isolated;
 import static org.junit.jupiter.api.Assertions.*;
 
+@Isolated("The session fixture temporarily replaces the global value-cache provider")
 public class DatabasePostgresMutexTest {
 
     @SuppressWarnings("UnnecessaryAssignment") // Supply the CDI injection explicitly in this unit test.
@@ -128,6 +130,36 @@ public class DatabasePostgresMutexTest {
         } finally {
             Thread.interrupted();
         }
+    }
+
+    @Test
+    public void alreadyInterruptedCallerDoesNotQuery() {
+        var calls = new AtomicInteger();
+        var mutex = mutexFor(context -> {
+            calls.incrementAndGet();
+            return result(true);
+        });
+
+        Thread.currentThread().interrupt();
+        try {
+            assertFalse(mutex.acquireLock("mutex"));
+            assertTrue(Thread.currentThread().isInterrupted());
+            assertEquals(0, calls.get());
+        } finally {
+            Thread.interrupted();
+        }
+    }
+
+    @Test
+    public void nullResultStopsInfiniteWait() {
+        var calls = new AtomicInteger();
+        var mutex = mutexFor(context -> {
+            calls.incrementAndGet();
+            return result(null);
+        });
+
+        assertFalse(mutex.acquireLock("mutex", -1));
+        assertEquals(1, calls.get());
     }
 
     @Test

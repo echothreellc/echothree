@@ -24,8 +24,10 @@ import org.jooq.impl.DSL;
 import org.jooq.tools.jdbc.MockConnection;
 import org.jooq.tools.jdbc.MockResult;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Isolated;
 import static org.junit.jupiter.api.Assertions.*;
 
+@Isolated("The session fixture temporarily replaces the global value-cache provider")
 public class DatabaseMutexTest {
 
     @SuppressWarnings("UnnecessaryAssignment") // Supply the CDI injection explicitly in this unit test.
@@ -52,6 +54,34 @@ public class DatabaseMutexTest {
             assertEquals(Integer.valueOf(1).equals(value),
                     mutexFor(connection).acquireLock(lockName, 7));
         }
+    }
+
+    @Test
+    public void defaultTimeoutIsFifteenSeconds() {
+        var connection = new MockConnection(context -> {
+            assertArrayEquals(new Object[] {"mutex", 15}, context.bindings());
+            var ctx = DSL.using(SQLDialect.MYSQL);
+            var field = DSL.field("result", Integer.class);
+            var result = ctx.newResult(field);
+            result.add(ctx.newRecord(field).value1(1));
+            return new MockResult[] {new MockResult(1, result)};
+        });
+
+        assertTrue(mutexFor(connection).acquireLock("mutex"));
+    }
+
+    @Test
+    @SuppressWarnings("UnnecessaryAssignment") // Supply the CDI injection explicitly in this unit test.
+    public void derivesSupportedFlavorsAndRejectsUnsupportedDialects() {
+        var producer = new DatabaseFlavorProducer();
+        for(var dialect : new SQLDialect[] {SQLDialect.MYSQL, SQLDialect.MARIADB, SQLDialect.POSTGRES}) {
+            producer.session = DatabaseMutexTestSupport.sessionFor(DSL.using(dialect));
+            assertEquals(dialect == SQLDialect.POSTGRES ? DatabaseFlavor.Flavor.POSTGRES : DatabaseFlavor.Flavor.MYSQL,
+                    producer.deriveFlavor());
+        }
+
+        producer.session = DatabaseMutexTestSupport.sessionFor(DSL.using(SQLDialect.H2));
+        assertThrows(IllegalStateException.class, producer::deriveFlavor);
     }
 
     @Test
