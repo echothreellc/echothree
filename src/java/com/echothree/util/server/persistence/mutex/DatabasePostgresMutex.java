@@ -24,7 +24,6 @@ import java.util.concurrent.TimeUnit;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 
 /**

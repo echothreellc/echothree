@@ -21,7 +21,9 @@ package com.echothree.util.server.persistence.mutex;
  *
  * <p>Locks use the injected Session's connection. Always release in a finally
  * block after successful acquisition, within the same session; committing or
- * rolling back does not release the lock.
+ * rolling back does not release the lock. Repeated acquisition by the same
+ * database session succeeds and must be matched by an equal number of releases;
+ * these locks do not exclude other callers sharing that database session.
  *
  * <p>Inject the generic interface to select the implementation for the session's
  * database flavor, then run protected work only after successful acquisition:
@@ -63,6 +65,7 @@ public interface DatabaseMutex {
     /**
      * Attempts to acquire the named lock within the specified timeout.
      *
+     * @param lockName the name of the lock
      * @param timeoutSeconds zero to try once, positive to wait up to that many
      * seconds, or negative to wait indefinitely
      * @return true only when the lock was acquired; false on timeout or a null

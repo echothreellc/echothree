@@ -19,7 +19,6 @@ package com.echothree.util.server.persistence.mutex;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 
 @ApplicationScoped
