@@ -31,8 +31,6 @@ import org.jooq.tools.jdbc.JDBCUtils;
 
 public class DslContextFactory {
     
-    private static final Log log = LogFactory.getLog(DslContextFactory.class);
-    
     private static final String DS = "java:/EchoThreeDS";
     private static final String NTDS = "java:/EchoThreeNTDS";
 
