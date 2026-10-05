@@ -36,13 +36,17 @@ public class DslContextFactory {
     private static final String DS = "java:/EchoThreeDS";
     private static final String NTDS = "java:/EchoThreeNTDS";
 
-    // Shared by all contexts; must not be modified after initialization.
+    // Template for both contexts; must not be modified after initialization.
     private static final Settings SETTINGS = createSettings();
     
     private final DataSource ds;
     private final DataSource ntds;
     private final SQLDialect dsDialect;
     private final SQLDialect ntdsDialect;
+
+    // Shared across requests; configurations and settings must not be modified after initialization.
+    private final DSLContext dslContext;
+    private final DSLContext ntDslContext;
 
     @SuppressWarnings("BanJNDI")
     protected DslContextFactory() {
@@ -58,6 +62,9 @@ public class DslContextFactory {
                         Likely JDBC misconfiguration: %s uses %s but %s uses %s; both DataSources must use the same database dialect
                         """.formatted(DS, dsDialect, NTDS, ntdsDialect));
             }
+
+            dslContext = DSL.using(ds, dsDialect, SETTINGS);
+            ntDslContext = DSL.using(ntds, ntdsDialect, SETTINGS);
         } catch (NamingException ne) {
             throw new PersistenceDatabaseException(ne);
         }
@@ -100,21 +107,11 @@ public class DslContextFactory {
     }
 
     public DSLContext getDslContext() {
-        var dslContent = DSL.using(ds, dsDialect, SETTINGS);
-        
-        if(PersistenceDebugFlags.LogConnections)
-            log.info("getDslContext() returning " + dslContent);
-
-        return dslContent;
+        return dslContext;
     }
     
     public DSLContext getNTDslContext() {
-        var dslContent = DSL.using(ntds, ntdsDialect, SETTINGS);
-        
-        if(PersistenceDebugFlags.LogConnections)
-            log.info("getNTDslContext() returning " + dslContent);
-
-        return dslContent;
+        return ntDslContext;
     }
     
 }
