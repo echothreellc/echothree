@@ -128,20 +128,20 @@ public class ExecuteGraphQlCommand
         var queryHash = sha256.hash(input.getQuery());
         var variablesHash = hashVariables(input.getVariables());
         var operationNameHash = input.getOperationName() == null ? null : sha256.hash(input.getOperationName());
-        var existing = idempotencyKeyControl.getIdempotencyKeyForUpdate(userVisit, keyHash);
+        var existingIdempotencyKey = idempotencyKeyControl.getIdempotencyKeyForUpdate(userVisit, keyHash);
 
-        if(existing != null) {
-            if(!Objects.equals(existing.getQueryHash(), queryHash)
-                    || !Objects.equals(existing.getVariablesHash(), variablesHash)
-                    || !Objects.equals(existing.getOperationNameHash(), operationNameHash)) {
+        if(existingIdempotencyKey != null) {
+            if(!Objects.equals(existingIdempotencyKey.getQueryHash(), queryHash)
+                    || !Objects.equals(existingIdempotencyKey.getVariablesHash(), variablesHash)
+                    || !Objects.equals(existingIdempotencyKey.getOperationNameHash(), operationNameHash)) {
                 throw new AbortExecutionException("Idempotency-Key was already used with a different request.");
             }
 
-            if(existing.getCompletedTime() == null || existing.getResponse() == null) {
+            if(existingIdempotencyKey.getCompletedTime() == null || existingIdempotencyKey.getResponse() == null) {
                 throw new AbortExecutionException("Idempotency-Key request has not completed. Retry later.");
             }
 
-            idempotencyState.replayResponse = existing.getResponse();
+            idempotencyState.replayResponse = idempotencyKeyControl.decodeIdempotencyKeyResponse(existingIdempotencyKey);
 
             // GraphQL catches this before invoking any resolver. finishExecution replaces
             // its synthetic error result with the original response verbatim.
@@ -165,7 +165,7 @@ public class ExecuteGraphQlCommand
             if(idempotencyState.idempotencyKey != null) {
                 var completedTime = System.currentTimeMillis();
 
-                idempotencyState.idempotencyKey.setResponse(replayResponse);
+                idempotencyState.idempotencyKey.setResponse(idempotencyKeyControl.encodeIdempotencyKeyResponse(replayResponse));
                 idempotencyState.idempotencyKey.setCompletedTime(completedTime);
                 idempotencyState.idempotencyKey.setRetainUntilTime(completedTime + IDEMPOTENCY_RETENTION_MILLIS);
                 idempotencyState.idempotencyKey.store();

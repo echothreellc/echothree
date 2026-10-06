@@ -22,6 +22,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import static com.echothree.model.jooq.server.tables.graphql.IdempotencyKeys.IdempotencyKeys;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
+import com.echothree.util.server.persistence.EncryptionUtils;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.inject.Inject;
 
@@ -68,6 +69,16 @@ public class IdempotencyKeyControl
 
     public IdempotencyKey getIdempotencyKeyForUpdate(UserVisit userVisit, String idempotencyKeyHash) {
         return getIdempotencyKey(userVisit, idempotencyKeyHash, EntityPermission.READ_WRITE);
+    }
+
+    public String encodeIdempotencyKeyResponse(String response) {
+        return EncryptionUtils.getInstance().encrypt(idempotencyKeyFactory.getEntityTypeName(),
+                IdempotencyKeyFactory.IDMPKEY_RESPONSE, response);
+    }
+
+    public String decodeIdempotencyKeyResponse(IdempotencyKey idempotencyKey) {
+        return EncryptionUtils.getInstance().decrypt(idempotencyKeyFactory.getEntityTypeName(),
+                IdempotencyKeyFactory.IDMPKEY_RESPONSE, idempotencyKey.getResponse());
     }
 
     public void removeIdempotencyKey(IdempotencyKey idempotencyKey) {
