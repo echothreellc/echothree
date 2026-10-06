@@ -85,7 +85,7 @@ public class CommandResultObject {
     public List<MessageObject> executionWarnings() {
         List<MessageObject> executionWarnings = null;
         
-        if(commandResult.hasExecutionErrors()) {
+        if(commandResult.hasExecutionWarnings()) {
             executionWarnings = getListOfExecutionWarningsOrErrors(Messages.EXECUTION_WARNING);
         }
         
@@ -160,7 +160,9 @@ public class CommandResultObject {
         var executionResult = commandResult.getExecutionResult();
 
         if(executionResult != null) {
-            listOfMessages = getListOfMessages(executionResult.getExecutionErrors(), property);
+            listOfMessages = getListOfMessages(Messages.EXECUTION_WARNING.equals(property) ?
+                    executionResult.getExecutionWarnings() :
+                    executionResult.getExecutionErrors(), property);
         }
         
         return listOfMessages;
