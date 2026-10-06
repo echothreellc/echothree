@@ -110,6 +110,7 @@
                     <include name="echothree-server.jar"/>
                 </fileset>
                 <pathelement path="${test.junit.classes.dir}" />
+                <pathelement location="../../build/service/graphql/classes" />
                 <pathelement path="${test.junit.pathelement.1}" />
                 <pathelement path="${test.junit.pathelement.2}" />
                 <pathelement path="${test.junit.pathelement.3}" />
