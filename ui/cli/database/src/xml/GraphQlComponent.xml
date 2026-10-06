@@ -24,7 +24,9 @@
                         <column name="IdempotencyKeyId" type="EID" nullAllowed="false" />
                         <column name="UserVisitId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UserVisits" destinationColumn="UserVisitId" />
                         <column name="IdempotencyKeyHash" type="Sha256Hash" nullAllowed="false" />
-                        <column name="RequestHash" type="Sha256Hash" nullAllowed="false" />
+                        <column name="QueryHash" type="Sha256Hash" nullAllowed="false" />
+                        <column name="VariablesHash" type="Sha256Hash" nullAllowed="true" />
+                        <column name="OperationNameHash" type="Sha256Hash" nullAllowed="true" />
                         <column name="StartTime" type="Time" nullAllowed="false" />
                         <column name="CompletedTime" type="Time" nullAllowed="true" />
                         <column name="Response" type="CLOB" nullAllowed="true" />
