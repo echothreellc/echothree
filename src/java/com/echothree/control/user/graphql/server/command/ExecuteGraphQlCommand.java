@@ -48,6 +48,7 @@ public class ExecuteGraphQlCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ReadOnly", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("IdempotencyKey", FieldType.STRING, false, null, null),
                 new FieldDefinition("Query", FieldType.STRING, false, 1L, null),
                 new FieldDefinition("Variables", FieldType.STRING, false, 1L, null),
                 new FieldDefinition("OperationName", FieldType.STRING, false, 1L, null),

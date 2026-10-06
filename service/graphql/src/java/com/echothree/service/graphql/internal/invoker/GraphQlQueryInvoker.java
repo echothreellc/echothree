@@ -21,18 +21,20 @@ import com.echothree.control.user.graphql.common.GraphQlUtil;
 import com.echothree.control.user.graphql.common.form.ExecuteGraphQlForm;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.service.graphql.internal.invocation.GraphQlInvocationInput;
-import javax.naming.NamingException;
 import java.util.concurrent.ExecutionException;
+import javax.naming.NamingException;
 
 public class GraphQlQueryInvoker {
 
     protected GraphQlQueryInvoker() {
     }
 
-    private String execute(UserVisitPK userVisitPK, ExecuteGraphQlForm executeGraphQlForm, String remoteInet4Address)
+    private String execute(UserVisitPK userVisitPK, ExecuteGraphQlForm executeGraphQlForm, String idempotencyKey,
+            String remoteInet4Address)
             throws NamingException, ExecutionException, InterruptedException {
         String graphQlExecutionResult = null;
 
+        executeGraphQlForm.setIdempotencyKey(idempotencyKey);
         executeGraphQlForm.setRemoteInet4Address(remoteInet4Address);
 
         var futureCommandResult = GraphQlUtil.getHome().executeGraphQl(userVisitPK, executeGraphQlForm);
@@ -47,11 +49,12 @@ public class GraphQlQueryInvoker {
         return graphQlExecutionResult;
     }
 
-    public String query(UserVisitPK userVisitPK, GraphQlInvocationInput singleInvocationInput, String remoteInet4Address)
+    public String query(UserVisitPK userVisitPK, GraphQlInvocationInput singleInvocationInput, String idempotencyKey,
+            String remoteInet4Address)
             throws NamingException, ExecutionException, InterruptedException {
         var executeGraphQlForm = singleInvocationInput.getExecuteGraphQlForm();
 
-        return execute(userVisitPK, executeGraphQlForm, remoteInet4Address);
+        return execute(userVisitPK, executeGraphQlForm, idempotencyKey, remoteInet4Address);
     }
 
     public static Builder newBuilder() {
