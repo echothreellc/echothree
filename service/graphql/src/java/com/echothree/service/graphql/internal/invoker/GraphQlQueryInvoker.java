@@ -32,22 +32,25 @@ public class GraphQlQueryInvoker {
     private String execute(UserVisitPK userVisitPK, ExecuteGraphQlForm executeGraphQlForm, String idempotencyKey,
             String remoteInet4Address)
             throws NamingException, ExecutionException, InterruptedException {
-        String graphQlExecutionResult = null;
-
         executeGraphQlForm.setIdempotencyKey(idempotencyKey);
         executeGraphQlForm.setRemoteInet4Address(remoteInet4Address);
 
         var futureCommandResult = GraphQlUtil.getHome().executeGraphQl(userVisitPK, executeGraphQlForm);
-
         var commandResult = futureCommandResult.get();
-        if(!commandResult.hasErrors()) {
-            var result = commandResult.getResult();
 
-            graphQlExecutionResult = result.getExecutionResult();
+        var result = commandResult.getResult();
+        if(result == null) {
+            throw new IllegalStateException("GraphQL command completed without a result");
         }
 
-        return graphQlExecutionResult;
+        var executionResult = result.getExecutionResult();
+        if(executionResult == null) {
+            throw new IllegalStateException("GraphQL command completed without an execution result");
+        }
+
+        return executionResult;
     }
+
 
     public String query(UserVisitPK userVisitPK, GraphQlInvocationInput singleInvocationInput, String idempotencyKey,
             String remoteInet4Address)
