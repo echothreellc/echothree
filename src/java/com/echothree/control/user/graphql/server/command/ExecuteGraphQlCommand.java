@@ -34,7 +34,11 @@ import graphql.ExecutionResult;
 import graphql.GraphQL;
 import graphql.GraphQLException;
 import graphql.annotations.strategies.EnhancedExecutionStrategy;
-import java.util.LinkedHashMap;
+import graphql.execution.AbortExecutionException;
+import graphql.execution.instrumentation.InstrumentationContext;
+import graphql.execution.instrumentation.InstrumentationState;
+import graphql.execution.instrumentation.SimplePerformantInstrumentation;
+import graphql.execution.instrumentation.parameters.InstrumentationExecuteOperationParameters;
 import java.util.List;
 import java.util.Map;
 import javax.enterprise.context.Dependent;
@@ -70,24 +74,47 @@ public class ExecuteGraphQlCommand
     private static final String GRAPHQL_VARIABLES = "variables";
     
     public String toJson(ExecutionResult executionResult)  {
-        // Contents of the GraphQL Response are specified here:
-        // http://graphql.org/learn/serving-over-http/
-        var executionResultMap = new LinkedHashMap<String, Object>();
-        
-        if(!executionResult.getErrors().isEmpty()) {
-            executionResultMap.put("errors", executionResult.getErrors());
-        }
-        executionResultMap.put("data", executionResult.getData());
-        
-        return GraphQlUtils.getInstance().toJson(executionResultMap);
+        return GraphQlUtils.getInstance().toJson(executionResult.toSpecification());
     }
     
+    protected SimplePerformantInstrumentation getInstrumentation(String idempotencyKey) {
+        return new SimplePerformantInstrumentation() {
+            @Override
+            public InstrumentationContext<ExecutionResult> beginExecuteOperation(
+                    InstrumentationExecuteOperationParameters parameters,
+                    InstrumentationState state) {
+                var operation = parameters.getExecutionContext()
+                        .getOperationDefinition()
+                        .getOperation();
+
+                switch(operation) {
+                    case QUERY, SUBSCRIPTION -> {
+                        // Selected operation is a query or subscription.
+                        log.info(operation.toString());
+                        if(idempotencyKey != null) {
+                            throw new AbortExecutionException("Idempotency-Key is supported only for mutation operations.");
+                        }
+                    }
+                    case MUTATION -> {
+                        // Selected operation is a mutation.
+                        // Idempotency claim must succeed before execution continues.
+                        log.info("MUTATION");
+                        // TODO: Idempotency handling starts here.
+                    }
+                }
+
+                return super.beginExecuteOperation(parameters, state);
+            }
+        };
+    }
+
     @Override
     protected BaseResult execute() {
         var result = GraphQlResultFactory.getExecuteGraphQlResult();
 
         try {
             var readOnly = Boolean.parseBoolean(form.getReadOnly());
+            var idempotencyKey = form.getIdempotencyKey();
             var query = form.getQuery();
             var variables = form.getVariables();
             var operationName = form.getOperationName();
@@ -97,6 +124,7 @@ public class ExecuteGraphQlCommand
                     .newGraphQL(readOnly? GraphQlSchemaUtils.getInstance().getReadOnlySchema() : GraphQlSchemaUtils.getInstance().getSchema())
                     .queryExecutionStrategy(new EnhancedExecutionStrategy())
                     .preparsedDocumentProvider(GraphQlDocumentCache.getInstance())
+                    .instrumentation(getInstrumentation(idempotencyKey))
                     .build();
 
             Map<String, Object> parsedVariables = null;
@@ -160,7 +188,11 @@ public class ExecuteGraphQlCommand
                 }
 
                 var executionResult = graphQL.execute(builder.build());
+
                 result.setExecutionResult(toJson(executionResult));
+
+                // Any subsequent work that requires successful command execution.
+                // TODO: Idempotency completion handling goes here.
             } else {
                 addExecutionError(ExecutionErrors.InvalidParameterCount.name());
             }
