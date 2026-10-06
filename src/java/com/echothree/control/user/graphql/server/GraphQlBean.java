@@ -16,12 +16,14 @@
 
 package com.echothree.control.user.graphql.server;
 
+import com.echothree.control.user.authentication.server.command.RemoveInvalidatedUserVisitsCommand;
 import com.echothree.control.user.graphql.common.GraphQlRemote;
 import com.echothree.control.user.graphql.common.form.*;
 import com.echothree.control.user.graphql.common.result.ExecuteGraphQlResult;
 import com.echothree.control.user.graphql.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
+import com.echothree.util.common.command.VoidResult;
 import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
 import java.util.concurrent.Future;
@@ -49,6 +51,11 @@ public class GraphQlBean
     @Asynchronous
     public Future<CommandResult<ExecuteGraphQlResult>> executeGraphQl(UserVisitPK userVisitPK, ExecuteGraphQlForm form) {
         return CDI.current().select(ExecuteGraphQlCommand.class).get().runAsync(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> removeIdempotencyKeys(UserVisitPK userVisitPK) {
+        return CDI.current().select(RemoveIdempotencyKeysCommand.class).get().run(userVisitPK);
     }
 
 }
