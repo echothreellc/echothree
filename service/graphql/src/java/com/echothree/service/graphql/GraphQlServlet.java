@@ -96,8 +96,7 @@ public class GraphQlServlet
             }
 
             if(path.contentEquals("/schema.json")) {
-                query(queryInvoker, invocationInputFactory.create(
-                        INTROSPECTION_REQUEST), request, response);
+                query(queryInvoker, invocationInputFactory.create(INTROSPECTION_REQUEST), request, response);
             } else {
                 var query = request.getParameter("query");
 
@@ -133,8 +132,8 @@ public class GraphQlServlet
                             new GraphQlRequest(json)), request, response);
                 }
             } catch (Exception e) {
-                log.info("Bad POST request: parsing failed", e);
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                log.error("Error handling GraphQL POST request", e);
             }
         };
     }
