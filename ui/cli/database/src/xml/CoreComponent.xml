@@ -2737,7 +2737,7 @@
                         <column name="EntityEncryptionKeyName" type="Md5Hash" nullAllowed="false" />
                         <column name="IsExternal" type="Boolean" nullAllowed="false" />
                         <column name="SecretKey" type="EncodedSecretKey" nullAllowed="false" />
-                        <column name="InitializationVector" type="EncodedInitializationVector" nullAllowed="true" />
+                        <column name="InitializationVector" type="EncodedInitializationVector" nullAllowed="false" />
                     </columns>
                     <indexes>
                         <index type="PrimaryKey">
