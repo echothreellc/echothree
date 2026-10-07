@@ -22,7 +22,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class Sha1Utils {
+public class Sha1Utils
+        implements ShaUtils {
     
     private Sha1Utils() {
         super();
@@ -36,6 +37,7 @@ public class Sha1Utils {
         return Sha1UtilsHolder.instance;
     }
     
+    @Override
     public String generateSalt() {
         var salt = new byte[8];
         
@@ -44,6 +46,7 @@ public class Sha1Utils {
         return BaseEncoding.base64().encode(salt);
     }
     
+    @Override
     public String encode(String salt, String password) {
         byte[] input;
         
@@ -62,9 +65,10 @@ public class Sha1Utils {
             input = null;
         }
         
-        return BaseEncoding.base64().encode(input);
+        return input == null ? null : BaseEncoding.base64().encode(input);
     }
     
+    @Override
     public String encode(BaseKey baseKey1, BaseKey baseKey2) {
         byte[] input;
         
@@ -81,13 +85,10 @@ public class Sha1Utils {
             input = null;
         }
         
-        return BaseEncoding.base64().encode(input);
+        return input == null ? null : BaseEncoding.base64().encode(input);
     }
     
-    public String hash(String string) {
-        return hash(string.getBytes(StandardCharsets.UTF_8));
-    }
-    
+    @Override
     public String hash(byte[] bytes) {
         byte[] input;
 
@@ -101,7 +102,7 @@ public class Sha1Utils {
             input = null;
         }
         
-        return BaseEncoding.base64().encode(input);
+        return input == null ? null : BaseEncoding.base64().encode(input);
     }
     
 }

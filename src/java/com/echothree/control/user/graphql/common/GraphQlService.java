@@ -21,6 +21,7 @@ import com.echothree.control.user.graphql.common.result.ExecuteGraphQlResult;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 
+import com.echothree.util.common.command.VoidResult;
 import java.util.concurrent.Future;
 
 public interface GraphQlService
@@ -37,5 +38,7 @@ public interface GraphQlService
     // --------------------------------------------------------------------------------
 
     Future<CommandResult<ExecuteGraphQlResult>> executeGraphQl(UserVisitPK userVisitPK, ExecuteGraphQlForm form);
+
+    CommandResult<VoidResult> removeIdempotentResponses(UserVisitPK userVisitPK);
 
 }

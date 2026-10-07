@@ -19,6 +19,9 @@
         <job jobName="REMOVE_INACTIVE_USER_KEYS" sortOrder="1">
             <jobDescription languageIsoName="en" description="Remove Inactive User Keys" />
         </job>
+        <job jobName="REMOVE_IDEMPOTENT_RESPONSES" sortOrder="1">
+            <jobDescription languageIsoName="en" description="Remove Idempotent Responses" />
+        </job>
         <job jobName="REMOVE_INVALIDATED_USER_VISITS" sortOrder="1">
             <jobDescription languageIsoName="en" description="Remove Invalidated User Visits" />
         </job>

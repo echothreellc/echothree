@@ -69,6 +69,8 @@ public class GraphQlServlet
 
     protected static final GraphQlRequest INTROSPECTION_REQUEST = new GraphQlRequest(IntrospectionQuery.INTROSPECTION_QUERY, null, null);
 
+    protected static final String IDEMPOTENCY_KEY = "Idempotency-Key";
+
     private static final Pattern HEADER_SANITIZATION_PATTERN = Pattern.compile("[\\r\\n]");
 
     protected GraphQlConfiguration configuration;
@@ -94,8 +96,7 @@ public class GraphQlServlet
             }
 
             if(path.contentEquals("/schema.json")) {
-                query(queryInvoker, invocationInputFactory.create(
-                        INTROSPECTION_REQUEST), request, response);
+                query(queryInvoker, invocationInputFactory.create(INTROSPECTION_REQUEST), request, response);
             } else {
                 var query = request.getParameter("query");
 
@@ -131,8 +132,8 @@ public class GraphQlServlet
                             new GraphQlRequest(json)), request, response);
                 }
             } catch (Exception e) {
-                log.info("Bad POST request: parsing failed", e);
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                log.error("Error handling GraphQL POST request", e);
             }
         };
     }
@@ -200,8 +201,9 @@ public class GraphQlServlet
             HttpServletRequest request, HttpServletResponse response)
             throws IOException, NamingException, ExecutionException, InterruptedException {
         var origin = sanitizeHeaderValue(request.getHeader(ORIGIN));
+        var idempotencyKey = sanitizeHeaderValue(request.getHeader(IDEMPOTENCY_KEY));
         var remoteAddr = request.getRemoteAddr();
-        var result = queryInvoker.query(getUserVisitPK(request), invocationInput, remoteAddr);
+        var result = queryInvoker.query(getUserVisitPK(request), invocationInput, idempotencyKey, remoteAddr);
 
         response.addHeader(ACCESS_CONTROL_ALLOW_ORIGIN, origin == null ? "*" : origin);
         response.addHeader(ACCESS_CONTROL_ALLOW_CREDENTIALS, String.valueOf(true));

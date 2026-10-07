@@ -1,0 +1,57 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2026 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.control.user.graphql.server.command;
+
+import com.echothree.model.control.graphql.server.control.IdempotentResponseControl;
+import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.user.server.logic.UserVisitLogic;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import java.util.List;
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+
+@Dependent
+public class RemoveIdempotentResponsesCommand
+        extends BaseSimpleCommand {
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
+
+    static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null)
+        ));
+    }
+
+    @Inject
+    IdempotentResponseControl idempotentResponseControl;
+
+    /** Creates a new instance of RemoveIdempotentResponsesCommand */
+    public RemoveIdempotentResponsesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, false);
+    }
+    
+    @Override
+    protected BaseResult execute() {
+        idempotentResponseControl.removeIdempotentResponsesByRetainUntilTime(session.getStartTime());
+        
+        return null;
+    }
+    
+}

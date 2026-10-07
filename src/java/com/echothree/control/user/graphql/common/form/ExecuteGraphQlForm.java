@@ -23,6 +23,9 @@ public interface ExecuteGraphQlForm
     
     String getReadOnly();
     void setReadOnly(String readOnly);
+
+    String getIdempotencyKey();
+    void setIdempotencyKey(String idempotencyKey);
     
     String getQuery();
     void setQuery(String query);
