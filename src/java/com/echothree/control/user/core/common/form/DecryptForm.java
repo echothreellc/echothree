@@ -21,6 +21,9 @@ import com.echothree.control.user.core.common.spec.ExternalEntityTypeSpec;
 public interface DecryptForm
         extends ExternalEntityTypeSpec {
     
+    String getInitializationVector();
+    void setInitializationVector(String initializationVector);
+
     String getValue();
     void setValue(String value);
 

@@ -330,8 +330,8 @@ public class EncryptionKeyControl
     @Inject
     protected EntityEncryptionKeyFactory entityEncryptionKeyFactory;
 
-    public EntityEncryptionKey createEntityEncryptionKey(String entityEncryptionKeyName, Boolean isExternal, String secretKey, String initializationVector) {
-        return entityEncryptionKeyFactory.create(entityEncryptionKeyName, isExternal, secretKey, initializationVector);
+    public EntityEncryptionKey createEntityEncryptionKey(String entityEncryptionKeyName, Boolean isExternal, String secretKey) {
+        return entityEncryptionKeyFactory.create(entityEncryptionKeyName, isExternal, secretKey);
     }
 
     private EntityEncryptionKey getEntityEncryptionKeyByName(String entityEncryptionKeyName, EntityPermission entityPermission) {
