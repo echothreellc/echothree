@@ -237,14 +237,11 @@ public class EncryptionUtils {
         for(var entityEncryptionKey : entityEncryptionKeys) {
             var baseEncoding = BaseEncoding.base64();
             var encryptedKey = baseEncoding.decode(entityEncryptionKey.getSecretKey());
-            var encryptedIv = baseEncoding.decode(entityEncryptionKey.getInitializationVector());
 
             try {
                 var decryptedKey = oldCipher1.doFinal(oldCipher2.doFinal(encryptedKey));
-                var decryptedIv = oldCipher1.doFinal(oldCipher2.doFinal(encryptedIv));
 
                 encryptedKey = newCipher2.doFinal(newCipher1.doFinal(decryptedKey));
-                encryptedIv = newCipher2.doFinal(newCipher1.doFinal(decryptedIv));
             } catch (IllegalStateException ise) {
                 throw new PersistenceEncryptionException(ise);
             } catch (IllegalBlockSizeException ibse) {
@@ -254,7 +251,6 @@ public class EncryptionUtils {
             }
 
             entityEncryptionKey.setSecretKey(baseEncoding.encode(encryptedKey));
-            entityEncryptionKey.setInitializationVector(baseEncoding.encode(encryptedIv));
         }
 
         log.info("Base Encryption Keys Changed");
@@ -403,14 +399,12 @@ public class EncryptionUtils {
             }
 
             var key = secretKey.getEncoded();
-            var iv = generateInitializationVector();
-
             var encryptedKey = encryptDataUsingBaseKeys(baseKeys, key);
-            var encryptedIv = isExternal ? encryptDataUsingBaseKeys(baseKeys, iv) : null;
+            var initializationVector = isExternal ? generateRowInitializationVector() : null;
             var baseEncoding = BaseEncoding.base64();
 
             entityEncryptionKey = encryptionKeyControl.createEntityEncryptionKey(entityEncryptionKeyName, isExternal,
-                    baseEncoding.encode(encryptedKey), encryptedIv == null ? null : baseEncoding.encode(encryptedIv));
+                    baseEncoding.encode(encryptedKey), initializationVector);
         }
 
         return entityEncryptionKey;
@@ -421,16 +415,10 @@ public class EncryptionUtils {
         var entityEncryptionKey = getEntityEncryptionKey(entityTypeName, isExternal, baseKeys);
         var baseEncoding = BaseEncoding.base64();
         var encryptedKey = baseEncoding.decode(entityEncryptionKey.getSecretKey());
-        var initializationVector = entityEncryptionKey.getInitializationVector();
-        var encryptedIv = initializationVector == null ? null : baseEncoding.decode(entityEncryptionKey.getInitializationVector());
-
         var key = decryptDataUsingBaseKeys(baseKeys, encryptedKey);
-        var iv = encryptedIv == null ? null : decryptDataUsingBaseKeys(baseKeys, encryptedIv);
 
         // External uses shared IV, otherwise we use per-row IV.
-        if(!isExternal) {
-            iv = baseEncoding.decode(rowInitializationVector);
-        }
+        var iv = baseEncoding.decode(isExternal ? entityEncryptionKey.getInitializationVector() : rowInitializationVector);
 
         SecretKey secretKey = new SecretKeySpec(key, EncryptionConstants.algorithm);
 
