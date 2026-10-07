@@ -139,6 +139,7 @@
                         <column name="ReceiveWorkEffortScopeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkEffortScopes" destinationColumn="WorkEffortScopeId" />
                         <column name="SendWorkEffortScopeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="WorkEffortScopes" destinationColumn="WorkEffortScopeId" />
                         <column name="ReviewEmployeeSelectorId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Selectors" destinationColumn="SelectorId" />
+                        <column name="InitializationVector" type="EncodedInitializationVector" nullAllowed="false" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
                         <column name="ThruTime" type="Time" nullAllowed="false" />
                     </columns>

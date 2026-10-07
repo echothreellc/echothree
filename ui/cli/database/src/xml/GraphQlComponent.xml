@@ -31,6 +31,7 @@
                         <column name="CompletedTime" type="Time" nullAllowed="true" />
                         <column name="Response" type="CLOB" nullAllowed="true" />
                         <column name="RetainUntilTime" type="Time" nullAllowed="true" />
+                        <column name="InitializationVector" type="EncodedInitializationVector" nullAllowed="false" />
                     </columns>
                     <indexes>
                         <index type="PrimaryKey">
