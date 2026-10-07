@@ -19,9 +19,9 @@
     <components>
         <component name="GraphQl">
             <tables>
-                <table namePlural="IdempotencyKeys" nameSingular="IdempotencyKey" columnPrefix="idmpkey">
+                <table namePlural="IdempotentResponses" nameSingular="IdempotentResponse" columnPrefix="idmprsp">
                     <columns>
-                        <column name="IdempotencyKeyId" type="EID" nullAllowed="false" />
+                        <column name="IdempotentResponseId" type="EID" nullAllowed="false" />
                         <column name="UserVisitId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UserVisits" destinationColumn="UserVisitId" />
                         <column name="IdempotencyKeyHash" type="Sha256Hash" nullAllowed="false" />
                         <column name="QueryHash" type="Sha256Hash" nullAllowed="false" />
@@ -34,7 +34,7 @@
                     </columns>
                     <indexes>
                         <index type="PrimaryKey">
-                            <indexColumn name="IdempotencyKeyId" />
+                            <indexColumn name="IdempotentResponseId" />
                         </index>
                         <index type="Unique" name="Index1">
                             <indexColumn name="UserVisitId" />

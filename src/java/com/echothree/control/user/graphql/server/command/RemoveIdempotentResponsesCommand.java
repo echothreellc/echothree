@@ -16,7 +16,7 @@
 
 package com.echothree.control.user.graphql.server.command;
 
-import com.echothree.model.control.graphql.server.control.IdempotencyKeyControl;
+import com.echothree.model.control.graphql.server.control.IdempotentResponseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.user.server.logic.UserVisitLogic;
 import com.echothree.util.common.command.BaseResult;
@@ -28,7 +28,7 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
-public class RemoveIdempotencyKeysCommand
+public class RemoveIdempotentResponsesCommand
         extends BaseSimpleCommand {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
@@ -40,16 +40,16 @@ public class RemoveIdempotencyKeysCommand
     }
 
     @Inject
-    IdempotencyKeyControl idempotencyKeyControl;
+    IdempotentResponseControl idempotentResponseControl;
 
-    /** Creates a new instance of RemoveIdempotencyKeysCommand */
-    public RemoveIdempotencyKeysCommand() {
+    /** Creates a new instance of RemoveIdempotentResponsesCommand */
+    public RemoveIdempotentResponsesCommand() {
         super(COMMAND_SECURITY_DEFINITION, false);
     }
     
     @Override
     protected BaseResult execute() {
-        idempotencyKeyControl.removeIdempotencyKeysByRetainUntilTime(session.getStartTime());
+        idempotentResponseControl.removeIdempotentResponsesByRetainUntilTime(session.getStartTime());
         
         return null;
     }

@@ -21,10 +21,10 @@ import com.echothree.control.user.graphql.common.result.GraphQlResultFactory;
 import com.echothree.control.user.graphql.server.cache.GraphQlDocumentCache;
 import com.echothree.control.user.graphql.server.schema.util.GraphQlSchemaUtils;
 import com.echothree.control.user.graphql.server.strategy.GraphQlExecutionStrategy;
-import com.echothree.model.control.graphql.server.control.IdempotencyKeyControl;
+import com.echothree.model.control.graphql.server.control.IdempotentResponseControl;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.GraphQlExecutionContext;
-import com.echothree.model.data.graphql.server.entity.IdempotencyKey;
+import com.echothree.model.data.graphql.server.entity.IdempotentResponse;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.string.GraphQlUtils;
@@ -71,7 +71,7 @@ public class ExecuteGraphQlCommand
     }
     
     @Inject
-    protected IdempotencyKeyControl idempotencyKeyControl;
+    protected IdempotentResponseControl idempotentResponseControl;
 
     /** Creates a new instance of ExecuteGraphQlCommand */
     public ExecuteGraphQlCommand() {
@@ -85,7 +85,7 @@ public class ExecuteGraphQlCommand
     private static final long IDEMPOTENCY_RETENTION_MILLIS = 24 * 60 * 60 * 1000; // 24 Hours
 
     protected static class IdempotencyState {
-        IdempotencyKey idempotencyKey;
+        IdempotentResponse idempotentResponse;
         String replayResponse;
     }
 
@@ -128,31 +128,31 @@ public class ExecuteGraphQlCommand
         var queryHash = sha256.hash(input.getQuery());
         var variablesHash = hashVariables(input.getVariables());
         var operationNameHash = input.getOperationName() == null ? null : sha256.hash(input.getOperationName());
-        var existingIdempotencyKey = idempotencyKeyControl.getIdempotencyKeyForUpdate(userVisit, keyHash);
+        var existingIdempotentResponse = idempotentResponseControl.getIdempotentResponseForUpdate(userVisit, keyHash);
 
-        if(existingIdempotencyKey != null) {
-            if(!Objects.equals(existingIdempotencyKey.getQueryHash(), queryHash)
-                    || !Objects.equals(existingIdempotencyKey.getVariablesHash(), variablesHash)
-                    || !Objects.equals(existingIdempotencyKey.getOperationNameHash(), operationNameHash)) {
+        if(existingIdempotentResponse != null) {
+            if(!Objects.equals(existingIdempotentResponse.getQueryHash(), queryHash)
+                    || !Objects.equals(existingIdempotentResponse.getVariablesHash(), variablesHash)
+                    || !Objects.equals(existingIdempotentResponse.getOperationNameHash(), operationNameHash)) {
                 throw new AbortExecutionException("Idempotency-Key was already used with a different request.");
             }
 
-            if(existingIdempotencyKey.getCompletedTime() == null || existingIdempotencyKey.getResponse() == null) {
+            if(existingIdempotentResponse.getCompletedTime() == null || existingIdempotentResponse.getResponse() == null) {
                 throw new AbortExecutionException("Idempotency-Key request has not completed. Retry later.");
             }
 
-            idempotencyState.replayResponse = idempotencyKeyControl.decodeIdempotencyKeyResponse(existingIdempotencyKey);
+            idempotencyState.replayResponse = idempotentResponseControl.decodeIdempotentResponse(existingIdempotentResponse);
 
             // GraphQL catches this before invoking any resolver. finishExecution replaces
             // its synthetic error result with the original response verbatim.
             throw new AbortExecutionException("Replaying completed idempotent request.");
         }
 
-        idempotencyState.idempotencyKey = idempotencyKeyControl.createIdempotencyKey(userVisit, keyHash, queryHash, variablesHash,
+        idempotencyState.idempotentResponse = idempotentResponseControl.createIdempotentResponse(userVisit, keyHash, queryHash, variablesHash,
                 operationNameHash, session.getStartTime(), null, null, null);
 
         // create() returns a read-only entity; retain a writable one for completion.
-        idempotencyState.idempotencyKey = Objects.requireNonNull(idempotencyKeyControl.getIdempotencyKeyForUpdate(userVisit, keyHash),
+        idempotencyState.idempotentResponse = Objects.requireNonNull(idempotentResponseControl.getIdempotentResponseForUpdate(userVisit, keyHash),
                 "Newly created idempotency claim was not found");
     }
 
@@ -162,13 +162,13 @@ public class ExecuteGraphQlCommand
         if(replayResponse == null) {
             replayResponse = toJson(executionResult);
 
-            if(idempotencyState.idempotencyKey != null) {
+            if(idempotencyState.idempotentResponse != null) {
                 var completedTime = System.currentTimeMillis();
 
-                idempotencyState.idempotencyKey.setResponse(idempotencyKeyControl.encodeIdempotencyKeyResponse(replayResponse));
-                idempotencyState.idempotencyKey.setCompletedTime(completedTime);
-                idempotencyState.idempotencyKey.setRetainUntilTime(completedTime + IDEMPOTENCY_RETENTION_MILLIS);
-                idempotencyState.idempotencyKey.store();
+                idempotencyState.idempotentResponse.setResponse(idempotentResponseControl.encodeIdempotentResponse(replayResponse));
+                idempotencyState.idempotentResponse.setCompletedTime(completedTime);
+                idempotencyState.idempotentResponse.setRetainUntilTime(completedTime + IDEMPOTENCY_RETENTION_MILLIS);
+                idempotencyState.idempotentResponse.store();
             }
         }
 
@@ -295,7 +295,7 @@ public class ExecuteGraphQlCommand
                 addExecutionError(ExecutionErrors.InvalidParameterCount.name());
             }
         } catch (JsonParseException jpe) {
-            if(idempotencyState.idempotencyKey != null) {
+            if(idempotencyState.idempotentResponse != null) {
                 // Let the EJB container roll back the claim and any participating mutation
                 // changes together. Removing only the claim could commit changes that a retry repeats.
                 throw jpe;
@@ -303,7 +303,7 @@ public class ExecuteGraphQlCommand
 
             addExecutionError(ExecutionErrors.JsonParseError.name(), jpe.getMessage());
         } catch (GraphQLException gqle) {
-            if(idempotencyState.idempotencyKey != null) {
+            if(idempotencyState.idempotentResponse != null) {
                 // Let the EJB container roll back the claim and any participating mutation
                 // changes together. Returning an error normally could commit an incomplete claim.
                 throw gqle;

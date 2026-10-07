@@ -39,6 +39,6 @@ public interface GraphQlService
 
     Future<CommandResult<ExecuteGraphQlResult>> executeGraphQl(UserVisitPK userVisitPK, ExecuteGraphQlForm form);
 
-    CommandResult<VoidResult> removeIdempotencyKeys(UserVisitPK userVisitPK);
+    CommandResult<VoidResult> removeIdempotentResponses(UserVisitPK userVisitPK);
 
 }

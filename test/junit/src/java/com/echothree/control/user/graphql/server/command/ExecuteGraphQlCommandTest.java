@@ -21,10 +21,10 @@ import com.echothree.control.user.graphql.common.form.ExecuteGraphQlForm;
 import com.echothree.control.user.graphql.common.form.GraphQlFormFactory;
 import com.echothree.control.user.graphql.common.result.ExecuteGraphQlResult;
 import com.echothree.model.control.graphql.server.graphql.MutationResultObject;
-import com.echothree.model.control.graphql.server.control.IdempotencyKeyControl;
-import com.echothree.model.data.graphql.common.pk.IdempotencyKeyPK;
-import com.echothree.model.data.graphql.server.entity.IdempotencyKey;
-import com.echothree.model.data.graphql.server.value.IdempotencyKeyValue;
+import com.echothree.model.control.graphql.server.control.IdempotentResponseControl;
+import com.echothree.model.data.graphql.common.pk.IdempotentResponsePK;
+import com.echothree.model.data.graphql.server.entity.IdempotentResponse;
+import com.echothree.model.data.graphql.server.value.IdempotentResponseValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.user.server.value.UserVisitValue;
@@ -57,11 +57,11 @@ public class ExecuteGraphQlCommandTest {
 
     private static final String MUTATION = "mutation { rejected { commandResult { hasErrors } } }";
 
-    private static class StoredKey extends IdempotencyKey {
+    private static class StoredKey extends IdempotentResponse {
         int stores;
         RuntimeException storeFailure;
 
-        StoredKey(IdempotencyKeyValue value) {
+        StoredKey(IdempotentResponseValue value) {
             super(value, EntityPermission.READ_WRITE);
         }
 
@@ -74,7 +74,7 @@ public class ExecuteGraphQlCommandTest {
         }
     }
 
-    private static class MemoryControl extends IdempotencyKeyControl {
+    private static class MemoryControl extends IdempotentResponseControl {
         private record Lookup(UserVisitPK visit, String hash) { }
         final Map<Lookup, StoredKey> entries = new HashMap<>();
         StoredKey entry;
@@ -83,30 +83,41 @@ public class ExecuteGraphQlCommandTest {
         RuntimeException createFailure;
 
         @Override
-        public IdempotencyKey getIdempotencyKeyForUpdate(UserVisit visit, String hash) {
+        public IdempotentResponse getIdempotentResponseForUpdate(UserVisit visit, String hash) {
             return entries.get(new Lookup(visit.getPrimaryKey(), hash));
         }
 
         @Override
-        public IdempotencyKey createIdempotencyKey(UserVisit visit, String keyHash, String queryHash, String variablesHash,
+        public IdempotentResponse createIdempotentResponse(UserVisit visit, String keyHash, String queryHash, String variablesHash,
                 String operationNameHash, Long startTime, Long completedTime, String response, Long retainUntilTime) {
             if(createFailure != null) {
                 throw createFailure;
             }
             creates++;
-            entry = new StoredKey(new IdempotencyKeyValue(new IdempotencyKeyPK((long)creates), visit.getPrimaryKey(),
+            entry = new StoredKey(new IdempotentResponseValue(new IdempotentResponsePK((long)creates), visit.getPrimaryKey(),
                     keyHash, queryHash, variablesHash, operationNameHash, startTime, completedTime, response, retainUntilTime));
             entries.put(new Lookup(visit.getPrimaryKey(), keyHash), entry);
             // Generated factories return read-only entities from create(). A caller
             // must fetch for update before setting completion fields.
-            return new IdempotencyKey(entry.getIdempotencyKeyValue(), EntityPermission.READ_ONLY);
+            return new IdempotentResponse(entry.getIdempotentResponseValue(), EntityPermission.READ_ONLY);
         }
 
         @Override
-        public void removeIdempotencyKey(IdempotencyKey entry) {
+        public void removeIdempotentResponse(IdempotentResponse entry) {
             removes++;
             entries.values().remove(entry);
             this.entry = null;
+        }
+
+        // These command tests use in-memory persistence without the encryption key service.
+        @Override
+        public String encodeIdempotentResponse(String response) {
+            return response;
+        }
+
+        @Override
+        public String decodeIdempotentResponse(IdempotentResponse entry) {
+            return entry.getResponse();
         }
     }
 
@@ -123,7 +134,7 @@ public class ExecuteGraphQlCommandTest {
             this.control = control;
             visit = new UserVisit(new UserVisitValue(new UserVisitPK(visitId), null, null, null, null,
                     null, null, 0L, null, null, null, 0L, Long.MAX_VALUE), EntityPermission.READ_WRITE);
-            idempotencyKeyControl = control;
+            idempotentResponseControl = control;
             session = testSession();
         }
 
@@ -347,7 +358,7 @@ public class ExecuteGraphQlCommandTest {
         assertEquals(1, command.control.creates);
         assertEquals(0, command.control.removes);
 
-        command.control.removeIdempotencyKey(command.control.entry);
+        command.control.removeIdempotentResponse(command.control.entry);
         executeMutation(command, MUTATION + " ", null, Map.of(), calls);
 
         assertEquals(2, calls.get());
@@ -399,7 +410,7 @@ public class ExecuteGraphQlCommandTest {
             assertEquals(0, calls.get());
             assertEquals(0, command.locks);
             assertEquals(0, command.control.creates);
-            assertNull(state.idempotencyKey);
+            assertNull(state.idempotentResponse);
         }
     }
 

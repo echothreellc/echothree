@@ -54,8 +54,8 @@ public class GraphQlBean
     }
 
     @Override
-    public CommandResult<VoidResult> removeIdempotencyKeys(UserVisitPK userVisitPK) {
-        return CDI.current().select(RemoveIdempotencyKeysCommand.class).get().run(userVisitPK);
+    public CommandResult<VoidResult> removeIdempotentResponses(UserVisitPK userVisitPK) {
+        return CDI.current().select(RemoveIdempotentResponsesCommand.class).get().run(userVisitPK);
     }
 
 }

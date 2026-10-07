@@ -24,12 +24,12 @@ import javax.ejb.Singleton;
 import javax.naming.NamingException;
 
 @Singleton
-public class RemoveIdempotencyKeysJob
+public class RemoveIdempotentResponsesJob
         extends BaseScheduledJob {
 
-    /** Creates a new instance of PrintPrinterGroupJobsJob */
-    public RemoveIdempotencyKeysJob() {
-        super(Jobs.REMOVE_IDEMPOTENCY_KEYS.name());
+    /** Creates a new instance of RemoveIdempotentResponsesJob */
+    public RemoveIdempotentResponsesJob() {
+        super(Jobs.REMOVE_IDEMPOTENT_RESPONSES.name());
     }
 
     @Override
@@ -43,7 +43,7 @@ public class RemoveIdempotencyKeysJob
     @Override
     public void execute()
             throws NamingException {
-        GraphQlUtil.getHome().removeIdempotencyKeys(userVisitPK);
+        GraphQlUtil.getHome().removeIdempotentResponses(userVisitPK);
     }
     
 }
