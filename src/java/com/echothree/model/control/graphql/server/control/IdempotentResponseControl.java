@@ -45,7 +45,7 @@ public class IdempotentResponseControl
     public IdempotentResponse createIdempotentResponse(UserVisit userVisit, String idempotencyKeyHash, String queryHash, String variablesHash,
             String operationNameHash, Long startTime, Long completedTime, String response, Long retainUntilTime) {
         return idempotentResponseFactory.create(userVisit, idempotencyKeyHash, queryHash, variablesHash, operationNameHash,
-                startTime, completedTime, response, retainUntilTime);
+                startTime, completedTime, response, retainUntilTime, EncryptionUtils.getInstance().generateRowInitializationVector());
     }
 
     public IdempotentResponse getIdempotentResponse(UserVisit userVisit, String idempotencyKeyHash, EntityPermission entityPermission) {
@@ -71,14 +71,14 @@ public class IdempotentResponseControl
         return getIdempotentResponse(userVisit, idempotencyKeyHash, EntityPermission.READ_WRITE);
     }
 
-    public String encodeIdempotentResponse(String response) {
+    public String encodeIdempotentResponse(final IdempotentResponse idempotentResponse, final String response) {
         return EncryptionUtils.getInstance().encrypt(idempotentResponseFactory.getEntityTypeName(),
-                IdempotentResponseFactory.IDMPRSP_RESPONSE, response);
+                idempotentResponse.getInitializationVector(), response);
     }
 
-    public String decodeIdempotentResponse(IdempotentResponse idempotentResponse) {
+    public String decodeIdempotentResponse(final IdempotentResponse idempotentResponse) {
         return EncryptionUtils.getInstance().decrypt(idempotentResponseFactory.getEntityTypeName(),
-                IdempotentResponseFactory.IDMPRSP_RESPONSE, idempotentResponse.getResponse());
+                idempotentResponse.getInitializationVector(), idempotentResponse.getResponse());
     }
 
     public void removeIdempotentResponse(IdempotentResponse idempotentResponse) {

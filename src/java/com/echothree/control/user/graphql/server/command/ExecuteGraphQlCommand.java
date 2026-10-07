@@ -160,15 +160,16 @@ public class ExecuteGraphQlCommand
         var replayResponse = idempotencyState.replayResponse;
 
         if(replayResponse == null) {
+            var idempotentResponse = idempotencyState.idempotentResponse;
             replayResponse = toJson(executionResult);
 
-            if(idempotencyState.idempotentResponse != null) {
+            if(idempotentResponse != null) {
                 var completedTime = System.currentTimeMillis();
 
-                idempotencyState.idempotentResponse.setResponse(idempotentResponseControl.encodeIdempotentResponse(replayResponse));
-                idempotencyState.idempotentResponse.setCompletedTime(completedTime);
-                idempotencyState.idempotentResponse.setRetainUntilTime(completedTime + IDEMPOTENCY_RETENTION_MILLIS);
-                idempotencyState.idempotentResponse.store();
+                idempotentResponse.setResponse(idempotentResponseControl.encodeIdempotentResponse(idempotentResponse, replayResponse));
+                idempotentResponse.setCompletedTime(completedTime);
+                idempotentResponse.setRetainUntilTime(completedTime + IDEMPOTENCY_RETENTION_MILLIS);
+                idempotentResponse.store();
             }
         }
 

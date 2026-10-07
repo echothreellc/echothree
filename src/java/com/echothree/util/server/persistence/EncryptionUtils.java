@@ -89,6 +89,13 @@ public class EncryptionUtils {
         return bytes;
     }
 
+    public String generateRowInitializationVector() {
+        var iv = generateInitializationVector();
+        var baseEncoding = BaseEncoding.base64();
+
+        return baseEncoding.encode(iv);
+    }
+
     private BaseKey generateBaseKey(final String cacheBaseKeyName) {
         SecretKey secretKey;
 
@@ -271,16 +278,16 @@ public class EncryptionUtils {
         return baseKeys;
     }
 
-    public String encrypt(final String entityTypeName, final String entityColumnName, final String value) {
-        return encrypt(entityTypeName, entityColumnName, false, value);
+    public String encrypt(final String entityTypeName, final String rowInitializationVector, final String value) {
+        return encrypt(entityTypeName, rowInitializationVector, false, value);
     }
 
-    public String encrypt(final String entityTypeName, final String entityColumnName, final Boolean isExternal, final String value) {
+    public String encrypt(final String entityTypeName, final String rowInitializationVector, final Boolean isExternal, final String value) {
         String encryptedValue = null;
 
         if(value != null) {
             try {
-                encryptedValue = BaseEncoding.base64().encode(getCipher(entityTypeName, entityColumnName, isExternal, Cipher.ENCRYPT_MODE).doFinal(value.getBytes(StandardCharsets.UTF_8)));
+                encryptedValue = BaseEncoding.base64().encode(getCipher(entityTypeName, rowInitializationVector, isExternal, Cipher.ENCRYPT_MODE).doFinal(value.getBytes(StandardCharsets.UTF_8)));
             } catch (IllegalStateException ise) {
                 throw new PersistenceEncryptionException(ise);
             } catch (IllegalBlockSizeException ibse) {
@@ -293,16 +300,16 @@ public class EncryptionUtils {
         return encryptedValue;
     }
 
-    public String decrypt(final String entityTypeName, final String entityColumnName, final String value) {
-        return decrypt(entityTypeName, entityColumnName, false, value);
+    public String decrypt(final String entityTypeName, final String rowInitializationVector, final String value) {
+        return decrypt(entityTypeName, rowInitializationVector, false, value);
     }
 
-    public String decrypt(final String entityTypeName, final String entityColumnName, Boolean isExternal, final String value) {
+    public String decrypt(final String entityTypeName, final String rowInitializationVector, Boolean isExternal, final String value) {
         String decryptedValue = null;
 
         if(value != null) {
             try {
-                decryptedValue = new String(getCipher(entityTypeName, entityColumnName, isExternal, Cipher.DECRYPT_MODE).doFinal(BaseEncoding.base64().decode(value)), StandardCharsets.UTF_8);
+                decryptedValue = new String(getCipher(entityTypeName, rowInitializationVector, isExternal, Cipher.DECRYPT_MODE).doFinal(BaseEncoding.base64().decode(value)), StandardCharsets.UTF_8);
             } catch (IllegalStateException ise) {
                 throw new PersistenceEncryptionException(ise);
             } catch (IllegalBlockSizeException ibse) {
@@ -376,30 +383,7 @@ public class EncryptionUtils {
         return decryptedData;
     }
 
-//    public String getEncryptedInitializationVector(final String entityTypeName, final Boolean isExternal) {
-//        var encryptionKeyControl = Session.getModelController(EncryptionKeyControl.class);
-//        var entityEncryptionKeyName = MD5Utils.getInstance().encode(entityTypeName + '.' + (isExternal ? externalPrefix : entityColumnName));
-//        byte[] iv;
-//
-//        var baseEncoding = BaseEncoding.base64();
-//        var entityEncryptionKey = encryptionKeyControl.getEntityEncryptionKeyByName(entityEncryptionKeyName);
-//        var baseKeys = getBaseKeys();
-//
-//        if(entityEncryptionKey == null) {
-//
-//        }
-//
-//        if(isExternal) {
-//            iv = generateInitializationVector();
-//
-//        } else {
-//
-//
-//        }
-//    }
-
-    private EntityEncryptionKey getEntityEncryptionKey(final String entityTypeName, final String entityColumnName,
-            final Boolean isExternal, final BaseKeys baseKeys) {
+    private EntityEncryptionKey getEntityEncryptionKey(final String entityTypeName, final Boolean isExternal, final BaseKeys baseKeys) {
         var encryptionKeyControl = Session.getModelController(EncryptionKeyControl.class);
         var entityEncryptionKeyName = MD5Utils.getInstance().encode(entityTypeName + (isExternal ? '.' + externalSuffix : ""));
         var entityEncryptionKey = encryptionKeyControl.getEntityEncryptionKeyByName(entityEncryptionKeyName);
@@ -422,25 +406,32 @@ public class EncryptionUtils {
             var iv = generateInitializationVector();
 
             var encryptedKey = encryptDataUsingBaseKeys(baseKeys, key);
-            var encryptedIv = encryptDataUsingBaseKeys(baseKeys, iv);
+            var encryptedIv = isExternal ? encryptDataUsingBaseKeys(baseKeys, iv) : null;
             var baseEncoding = BaseEncoding.base64();
 
             entityEncryptionKey = encryptionKeyControl.createEntityEncryptionKey(entityEncryptionKeyName, isExternal,
-                    baseEncoding.encode(encryptedKey), baseEncoding.encode(encryptedIv));
+                    baseEncoding.encode(encryptedKey), encryptedIv == null ? null : baseEncoding.encode(encryptedIv));
         }
 
         return entityEncryptionKey;
     }
 
-    private Cipher getCipher(final String entityTypeName, final String entityColumnName, final Boolean isExternal, final int cipherMode) {
+    private Cipher getCipher(final String entityTypeName, final String rowInitializationVector, final Boolean isExternal, final int cipherMode) {
         var baseKeys = getBaseKeys();
-        var entityEncryptionKey = getEntityEncryptionKey(entityTypeName, entityColumnName, isExternal, baseKeys);
+        var entityEncryptionKey = getEntityEncryptionKey(entityTypeName, isExternal, baseKeys);
         var baseEncoding = BaseEncoding.base64();
         var encryptedKey = baseEncoding.decode(entityEncryptionKey.getSecretKey());
-        var encryptedIv = baseEncoding.decode(entityEncryptionKey.getInitializationVector());
+        var initializationVector = entityEncryptionKey.getInitializationVector();
+        var encryptedIv = initializationVector == null ? null : baseEncoding.decode(entityEncryptionKey.getInitializationVector());
 
         var key = decryptDataUsingBaseKeys(baseKeys, encryptedKey);
-        var iv = decryptDataUsingBaseKeys(baseKeys, encryptedIv);
+        var iv = encryptedIv == null ? null : decryptDataUsingBaseKeys(baseKeys, encryptedIv);
+
+        // External uses shared IV, otherwise we use per-row IV.
+        if(!isExternal) {
+            iv = baseEncoding.decode(rowInitializationVector);
+        }
+
         SecretKey secretKey = new SecretKeySpec(key, EncryptionConstants.algorithm);
 
         return getInitializedCipher(secretKey, iv, cipherMode);
