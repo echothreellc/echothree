@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DecryptForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
@@ -36,6 +35,7 @@ public class DecryptCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ExternalEntityTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("InitializationVector", FieldType.INITIALIZATION_VECTOR, true, null, null),
                 new FieldDefinition("Value", FieldType.STRING, true, null, null)
         );
     }
@@ -49,9 +49,10 @@ public class DecryptCommand
     protected BaseResult execute() {
         var result = CoreResultFactory.getDecryptResult();
         var externalEntityTypeName = form.getExternalEntityTypeName();
+        var initializationVector = form.getInitializationVector();
         var value = form.getValue();
 
-        result.setValue(EncryptionUtils.getInstance().decrypt(externalEntityTypeName, null, true, value));
+        result.setValue(EncryptionUtils.getInstance().decrypt(externalEntityTypeName, initializationVector, true, value));
 
         return result;
     }

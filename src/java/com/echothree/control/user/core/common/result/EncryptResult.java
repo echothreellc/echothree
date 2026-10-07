@@ -21,6 +21,9 @@ import com.echothree.util.common.command.BaseResult;
 public interface EncryptResult
         extends BaseResult {
     
+    String getInitializationVector();
+    void setInitializationVector(String initializationVector);
+
     String getValue();
     void setValue(String value);
     

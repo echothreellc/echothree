@@ -90,6 +90,7 @@ public class Validator {
         map.put(FieldType.HOST_NAME, HostNameFieldType.class);
         map.put(FieldType.ID, IdFieldType.class);
         map.put(FieldType.INET_4_ADDRESS, Inet4AddressFieldType.class);
+        map.put(FieldType.INITIALIZATION_VECTOR, InitializationVectorFieldType.class);
         map.put(FieldType.KEY, KeyFieldType.class);
         map.put(FieldType.LATITUDE, LatitudeFieldType.class);
         map.put(FieldType.LONGITUDE, LongitudeFieldType.class);
