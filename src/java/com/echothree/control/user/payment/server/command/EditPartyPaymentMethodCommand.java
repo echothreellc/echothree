@@ -279,7 +279,8 @@ public class EditPartyPaymentMethodCommand
                 lastNameSdx = null;
             }
 
-            partyPaymentMethodCreditCardValue.setNumber(partyPaymentMethodControl.encodePartyPaymentMethodCreditCardNumber(number));
+            partyPaymentMethodCreditCardValue.setNumber(partyPaymentMethodControl.encodePartyPaymentMethodCreditCardNumber(
+                    partyPaymentMethodCreditCardValue.getInitializationVector(),number));
             partyPaymentMethodCreditCardValue.setExpirationMonth(expirationMonth);
             partyPaymentMethodCreditCardValue.setExpirationYear(expirationYear);
             partyPaymentMethodCreditCardValue.setPersonalTitlePK(personalTitle == null? null: personalTitle.getPrimaryKey());
@@ -306,7 +307,8 @@ public class EditPartyPaymentMethodCommand
                     if(partyPaymentMethodCreditCardSecurityCode != null && securityCode != null) {
                         var partyPaymentMethodCreditCardSecurityCodeValue = partyPaymentMethodControl.getPartyPaymentMethodCreditCardSecurityCodeValueForUpdate(partyPaymentMethod);
 
-                        partyPaymentMethodCreditCardSecurityCodeValue.setSecurityCode(partyPaymentMethodControl.encodePartyPaymentMethodCreditCardSecurityCodeSecurityCode(securityCode));
+                        partyPaymentMethodCreditCardSecurityCodeValue.setSecurityCode(partyPaymentMethodControl.encodePartyPaymentMethodCreditCardSecurityCodeSecurityCode(
+                                partyPaymentMethodCreditCardSecurityCodeValue.getInitializationVector(), securityCode));
                         partyPaymentMethodControl.updatePartyPaymentMethodCreditCardSecurityCodeFromValue(partyPaymentMethodCreditCardSecurityCodeValue, executingPartyPK);
                     }
                 }

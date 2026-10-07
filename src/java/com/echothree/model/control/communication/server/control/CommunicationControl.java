@@ -1516,9 +1516,10 @@ public class CommunicationControl
     public CommunicationEmailSource createCommunicationEmailSource(CommunicationSource communicationSource, Server server,
             String username, String password, WorkEffortScope receiveWorkEffortScope, WorkEffortScope sendWorkEffortScope,
             Selector reviewEmployeeSelector, BasePK createdBy) {
+        var initializationVector = EncryptionUtils.getInstance().generateRowInitializationVector();
         var communicationEmailSource = communicationEmailSourceFactory.create(
-                communicationSource, server, username, encodeCommunicationEmailSourcePassword(password), receiveWorkEffortScope,
-                sendWorkEffortScope, reviewEmployeeSelector, session.getStartTime(), Session.MAX_TIME);
+                communicationSource, server, username, encodeCommunicationEmailSourcePassword(initializationVector, password), receiveWorkEffortScope,
+                sendWorkEffortScope, reviewEmployeeSelector, initializationVector, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(communicationSource.getPrimaryKey(), EventTypes.MODIFY, communicationEmailSource.getPrimaryKey(), null, createdBy);
         
@@ -1559,15 +1560,20 @@ public class CommunicationControl
     public CommunicationEmailSourceTransfer getCommunicationEmailSourceTransfer(UserVisit userVisit, CommunicationEmailSource communicationEmailSource) {
         return communicationEmailSourceTransferCache.getCommunicationEmailSourceTransfer(userVisit, communicationEmailSource);
     }
-    
-    public String encodeCommunicationEmailSourcePassword(String password) {
+
+    public String encodeCommunicationEmailSourcePassword(CommunicationEmailSource communicationEmailSource, String password) {
         return EncryptionUtils.getInstance().encrypt(communicationEmailSourceFactory.getEntityTypeName(),
-                CommunicationEmailSourceFactory.CMMNESRC_PASSWORD, password);
+                communicationEmailSource.getInitializationVector(), password);
     }
-    
+
+    public String encodeCommunicationEmailSourcePassword(String initializationVector, String password) {
+        return EncryptionUtils.getInstance().encrypt(communicationEmailSourceFactory.getEntityTypeName(),
+                initializationVector, password);
+    }
+
     public String decodeCommunicationEmailSourcePassword(CommunicationEmailSource communicationEmailSource) {
         return EncryptionUtils.getInstance().decrypt(communicationEmailSourceFactory.getEntityTypeName(),
-                CommunicationEmailSourceFactory.CMMNESRC_PASSWORD, communicationEmailSource.getPassword());
+                communicationEmailSource.getInitializationVector(), communicationEmailSource.getPassword());
     }
     
     public void updateCommunicationEmailSourceFromValue(CommunicationEmailSourceValue communicationEmailSourceValue, BasePK updatedBy) {
@@ -1585,10 +1591,11 @@ public class CommunicationControl
             var receiveWorkEffortScopePK = communicationEmailSourceValue.getReceiveWorkEffortScopePK();
             var sendWorkEffortScopePK = communicationEmailSourceValue.getSendWorkEffortScopePK();
             var reviewEmployeeSelectorPK = communicationEmailSourceValue.getReviewEmployeeSelectorPK();
+            var initializationVector = communicationEmailSource.getInitializationVector(); // Not updated
             
             communicationEmailSource = communicationEmailSourceFactory.create(
                     communicationSource.getPrimaryKey(), serverPK, username, password, receiveWorkEffortScopePK,
-                    sendWorkEffortScopePK, reviewEmployeeSelectorPK, session.getStartTime(), Session.MAX_TIME);
+                    sendWorkEffortScopePK, reviewEmployeeSelectorPK, initializationVector, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(communicationSource.getPrimaryKey(), EventTypes.MODIFY,
                     communicationEmailSource.getPrimaryKey(), null, updatedBy);
