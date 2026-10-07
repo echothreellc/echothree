@@ -580,6 +580,76 @@ public class ExecuteGraphQlCommandTest {
     }
 
     @Test
+    public void incorrectlyTypedBodyFieldsReportCommandErrorBeforeExecution() {
+        for(var field : List.of("query", "operationName", "variables")) {
+            var invalidValues = field.equals("variables") ? List.of("\"invalid\"", "[]", "42", "true")
+                    : List.of("{}", "[]", "42", "true");
+
+            for(var invalidValue : invalidValues) {
+                for(var overrideWithForm : List.of(false, true)) {
+                    var command = new TestCommand();
+                    var form = GraphQlFormFactory.getExecuteGraphQlForm();
+                    form.setReadOnly("false");
+                    form.setIdempotencyKey("retry-key");
+                    var body = new HashMap<String, Object>();
+                    body.put("query", MUTATION);
+                    var json = JsonParser.parseString(com.echothree.util.common.string.GraphQlUtils.getInstance().toJson(body))
+                            .getAsJsonObject();
+                    json.add(field, JsonParser.parseString(invalidValue));
+                    form.setJson(json.toString());
+                    if(overrideWithForm) {
+                        form.setQuery(MUTATION);
+                        form.setOperationName("SelectedMutation");
+                        form.setVariables("{}");
+                    }
+
+                    assertNull(command.executeForm(form).getExecutionResult(), field + ": " + invalidValue);
+                    assertTrue(command.hasExecutionErrors());
+                    assertEquals(0, command.locks);
+                    assertEquals(0, command.control.creates);
+                }
+            }
+        }
+    }
+
+    @Test
+    public void toMapPreservesObjectsAndNullWhileRejectingOtherJsonTypes() {
+        var utils = com.echothree.util.common.string.GraphQlUtils.getInstance();
+        var map = utils.toMap("""
+                {"input":{"enabled":true},"values":[1,"two",null],"optional":null}
+                """);
+
+        assertEquals(Map.of("enabled", true), map.get("input"));
+        assertEquals(java.util.Arrays.asList(1.0, "two", null), map.get("values"));
+        assertTrue(map.containsKey("optional"));
+        assertNull(map.get("optional"));
+        assertTrue(utils.toMap("{}").isEmpty());
+        assertTrue(utils.toMap("null").isEmpty());
+
+        for(var json : List.of("[]", "[[\"name\",\"value\"]]", "\"text\"", "42", "true")) {
+            assertThrows(graphql.GraphQLException.class, () -> utils.toMap(json), json);
+        }
+        assertThrows(com.google.gson.JsonParseException.class, () -> utils.toMap("{\"name\":}"));
+    }
+
+    @Test
+    public void incorrectlyTypedFormVariablesReportCommandErrorBeforeExecution() {
+        for(var variables : List.of("\"invalid\"", "[]", "[[\"name\",\"value\"]]", "42", "true")) {
+            var command = new TestCommand();
+            var form = GraphQlFormFactory.getExecuteGraphQlForm();
+            form.setReadOnly("false");
+            form.setIdempotencyKey("retry-key");
+            form.setQuery(MUTATION);
+            form.setVariables(variables);
+
+            assertNull(command.executeForm(form).getExecutionResult());
+            assertTrue(command.hasExecutionErrors());
+            assertEquals(0, command.locks);
+            assertEquals(0, command.control.creates);
+        }
+    }
+
+    @Test
     public void missingDocumentReportsCommandErrorWithoutClaimingKey() {
         var command = new TestCommand();
         var form = GraphQlFormFactory.getExecuteGraphQlForm();

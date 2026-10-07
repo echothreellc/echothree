@@ -18,7 +18,7 @@ package com.echothree.util.common.string;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
+import graphql.GraphQLException;
 import java.util.Collections;
 import java.util.Map;
 
@@ -45,12 +45,16 @@ public class GraphQlUtils {
     }
     
     public Map<String, Object> toMap(String json) {
-        var typeToken = new TypeToken<Map<String, Object>>() {
-        };
-        
-        Map<String, Object> map = GSON.fromJson(json, typeToken.getType());
-        
-        return map == null ? Collections.emptyMap() : map;
+        Object parsed = GSON.fromJson(json, Object.class);
+        Map<String, Object> result = Collections.emptyMap();
+
+        if(parsed instanceof Map) {
+            result = (Map<String, Object>)parsed;
+        } else if(parsed != null) {
+            throw new GraphQLException("Expected a JSON object or null.");
+        }
+
+        return result;
     }
     
 }

@@ -225,13 +225,7 @@ public class ExecuteGraphQlCommand
 
             Map<String, Object> parsedVariables = null;
             if(variables != null) {
-                Object possibleVariables = GraphQlUtils.getInstance().toMap(variables);
-
-                if(possibleVariables instanceof Map) {
-                    parsedVariables = (Map<String, Object>)possibleVariables;
-                } else {
-                    log.error("Discarding parsedVariables, not an instance of Map");
-                }
+                parsedVariables = GraphQlUtils.getInstance().toMap(variables);
             }
 
             if(json != null) {
@@ -240,31 +234,32 @@ public class ExecuteGraphQlCommand
                 var possibleOperationName = body.get(GRAPHQL_OPERATION_NAME);
                 var possibleVariables = body.get(GRAPHQL_VARIABLES);
 
+                // Validate supplied fields even when a form field takes precedence.
+                if(possibleQuery != null && !(possibleQuery instanceof String)) {
+                    throw new GraphQLException("The query field must be a string.");
+                }
+
+                if(possibleOperationName != null && !(possibleOperationName instanceof String)) {
+                    throw new GraphQLException("The operationName field must be a string or null.");
+                }
+
+                if(possibleVariables != null && !(possibleVariables instanceof Map)) {
+                    throw new GraphQLException("The variables field must be a JSON object or null.");
+                }
+
                 // Query form field takes priority of Json's query.
                 if(possibleQuery != null && query == null) {
-                    if(possibleQuery instanceof String string) {
-                        query = string;
-                    } else {
-                        log.error("Discarding query, not an instance of String");
-                    }
+                    query = (String)possibleQuery;
                 }
 
                 // OperationName form field takes priority of Json's operationName.
                 if(possibleOperationName != null && operationName == null) {
-                    if(possibleOperationName instanceof String string) {
-                        operationName = string;
-                    } else {
-                        log.error("Discarding operationName, not an instance of String");
-                    }
+                    operationName = (String)possibleOperationName;
                 }
 
                 // Variables form field takes priority of Json's variables.
                 if(possibleVariables != null && variables == null) {
-                    if(possibleVariables instanceof Map) {
-                        parsedVariables = (Map<String, Object>)possibleVariables;
-                    } else {
-                        log.error("Discarding parsedVariables, not an instance of Map");
-                    }
+                    parsedVariables = (Map<String, Object>)possibleVariables;
                 }
             }
             
