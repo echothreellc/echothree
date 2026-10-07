@@ -465,10 +465,11 @@ public class PartyPaymentMethodControl
             String middleName, String middleNameSdx, String lastName, String lastNameSdx, NameSuffix nameSuffix, String name,
             PartyContactMechanism billingPartyContactMechanism, String issuerName, PartyContactMechanism issuerPartyContactMechanism,
             BasePK createdBy) {
+        var initializationVector = EncryptionUtils.getInstance().generateRowInitializationVector();
         var partyPaymentMethodCreditCard = partyPaymentMethodCreditCardFactory.create(
-                partyPaymentMethod, encodePartyPaymentMethodCreditCardNumber(number), expirationMonth, expirationYear, personalTitle,
+                partyPaymentMethod, encodePartyPaymentMethodCreditCardNumber(initializationVector, number), expirationMonth, expirationYear, personalTitle,
                 firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx, nameSuffix, name, billingPartyContactMechanism,
-                issuerName, issuerPartyContactMechanism, session.getStartTime(), Session.MAX_TIME);
+                issuerName, issuerPartyContactMechanism, initializationVector, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(partyPaymentMethod.getPrimaryKey(), EventTypes.MODIFY,
                 partyPaymentMethodCreditCard.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -614,23 +615,23 @@ public class PartyPaymentMethodControl
         return partyPaymentMethodCreditCard == null? null: partyPaymentMethodCreditCard.getPartyPaymentMethodCreditCardValue().clone();
     }
     
-    public String getPartyPaymentMethodCreditCardNumber(PartyPaymentMethodCreditCard partyPaymentMethodCreditCard) {
-        return EncryptionUtils.getInstance().decrypt(partyPaymentMethodCreditCardFactory.getEntityTypeName(),
-                PartyPaymentMethodCreditCardFactory.PARPMCC_NUMBER, partyPaymentMethodCreditCard.getNumber());
-    }
-    
-    public String encodePartyPaymentMethodCreditCardNumber(String number) {
+    public String encodePartyPaymentMethodCreditCardNumber(PartyPaymentMethodCreditCard partyPaymentMethodCreditCard, String number) {
         return EncryptionUtils.getInstance().encrypt(partyPaymentMethodCreditCardFactory.getEntityTypeName(),
-                PartyPaymentMethodCreditCardFactory.PARPMCC_NUMBER, number);
+                partyPaymentMethodCreditCard.getInitializationVector(), number);
     }
-    
+
+    public String encodePartyPaymentMethodCreditCardNumber(String initializationVector, String number) {
+        return EncryptionUtils.getInstance().encrypt(partyPaymentMethodCreditCardFactory.getEntityTypeName(),
+                initializationVector, number);
+    }
+
     public String decodePartyPaymentMethodCreditCardNumber(PartyPaymentMethodCreditCard partyPaymentMethodCreditCard) {
         return EncryptionUtils.getInstance().decrypt(partyPaymentMethodCreditCardFactory.getEntityTypeName(),
-                PartyPaymentMethodCreditCardFactory.PARPMCC_NUMBER, partyPaymentMethodCreditCard.getNumber());
+                partyPaymentMethodCreditCard.getInitializationVector(), partyPaymentMethodCreditCard.getNumber());
     }
     
-    public void setPartyPaymentMethodCreditCardNumber(PartyPaymentMethodCreditCard person, String number) {
-        person.setNumber(encodePartyPaymentMethodCreditCardNumber(number));
+    public void setPartyPaymentMethodCreditCardNumber(PartyPaymentMethodCreditCard partyPaymentMethodCreditCard, String number) {
+        partyPaymentMethodCreditCard.setNumber(encodePartyPaymentMethodCreditCardNumber(partyPaymentMethodCreditCard, number));
     }
     
     public void updatePartyPaymentMethodCreditCardFromValue(PartyPaymentMethodCreditCardValue partyPaymentMethodCreditCardValue,
@@ -658,10 +659,11 @@ public class PartyPaymentMethodControl
             var billingPartyContactMechanismPK = partyPaymentMethodCreditCardValue.getBillingPartyContactMechanismPK();
             var issuerName = partyPaymentMethodCreditCardValue.getIssuerName();
             var issuerPartyContactMechanismPK = partyPaymentMethodCreditCardValue.getIssuerPartyContactMechanismPK();
-            
+            var initializationVector = partyPaymentMethodCreditCard.getInitializationVector(); // Not updated
+
             partyPaymentMethodCreditCard = partyPaymentMethodCreditCardFactory.create(partyPaymentMethodPK, number, expirationMonth,
                     expirationYear, personalTitlePK, firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx, nameSuffixPK, name,
-                    billingPartyContactMechanismPK, issuerName, issuerPartyContactMechanismPK, session.getStartTime(), Session.MAX_TIME);
+                    billingPartyContactMechanismPK, issuerName, issuerPartyContactMechanismPK, initializationVector, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(partyPaymentMethodPK, EventTypes.MODIFY, partyPaymentMethodCreditCard.getPrimaryKey(),
                     EventTypes.MODIFY, updatedBy);
@@ -702,8 +704,9 @@ public class PartyPaymentMethodControl
 
     public PartyPaymentMethodCreditCardSecurityCode createPartyPaymentMethodCreditCardSecurityCode(PartyPaymentMethod partyPaymentMethod,
             String securityCode, BasePK createdBy) {
+        var initializationVector = EncryptionUtils.getInstance().generateRowInitializationVector();
         var partyPaymentMethodCreditCardSecurityCode = partyPaymentMethodCreditCardSecurityCodeFactory.create(
-                partyPaymentMethod, encodePartyPaymentMethodCreditCardSecurityCodeSecurityCode(securityCode), session.getStartTime(),
+                partyPaymentMethod, encodePartyPaymentMethodCreditCardSecurityCodeSecurityCode(initializationVector, securityCode), initializationVector, session.getStartTime(),
                 Session.MAX_TIME);
         
         sendEvent(partyPaymentMethod.getPrimaryKey(), EventTypes.MODIFY,
@@ -742,26 +745,25 @@ public class PartyPaymentMethodControl
         return partyPaymentMethodCreditCardSecurityCode == null? null: partyPaymentMethodCreditCardSecurityCode.getPartyPaymentMethodCreditCardSecurityCodeValue().clone();
     }
     
-    public String getPartyPaymentMethodCreditCardSecurityCodeSecurityCode(PartyPaymentMethodCreditCardSecurityCode partyPaymentMethodCreditCardSecurityCode) {
-        return EncryptionUtils.getInstance().decrypt(partyPaymentMethodCreditCardSecurityCodeFactory.getEntityTypeName(),
-                PartyPaymentMethodCreditCardSecurityCodeFactory.PARPMCCSC_SECURITYCODE,
-                partyPaymentMethodCreditCardSecurityCode.getSecurityCode());
-    }
-    
-    public String encodePartyPaymentMethodCreditCardSecurityCodeSecurityCode(String securityCode) {
+    public String encodePartyPaymentMethodCreditCardSecurityCodeSecurityCode(PartyPaymentMethodCreditCardSecurityCode partyPaymentMethodCreditCardSecurityCode, String securityCode) {
         return EncryptionUtils.getInstance().encrypt(partyPaymentMethodCreditCardSecurityCodeFactory.getEntityTypeName(),
-                PartyPaymentMethodCreditCardSecurityCodeFactory.PARPMCCSC_SECURITYCODE, securityCode);
+                partyPaymentMethodCreditCardSecurityCode.getInitializationVector(), securityCode);
     }
-    
+
+    public String encodePartyPaymentMethodCreditCardSecurityCodeSecurityCode(String initializationVector, String securityCode) {
+        return EncryptionUtils.getInstance().encrypt(partyPaymentMethodCreditCardSecurityCodeFactory.getEntityTypeName(),
+                initializationVector, securityCode);
+    }
+
     public String decodePartyPaymentMethodCreditCardSecurityCodeSecurityCode(PartyPaymentMethodCreditCardSecurityCode partyPaymentMethodCreditCardSecurityCode) {
         return EncryptionUtils.getInstance().decrypt(partyPaymentMethodCreditCardSecurityCodeFactory.getEntityTypeName(),
-                PartyPaymentMethodCreditCardSecurityCodeFactory.PARPMCCSC_SECURITYCODE,
+                partyPaymentMethodCreditCardSecurityCode.getInitializationVector(),
                 partyPaymentMethodCreditCardSecurityCode.getSecurityCode());
     }
     
-    public void setPartyPaymentMethodCreditCardSecurityCodeSecurityCode(PartyPaymentMethodCreditCardSecurityCode person,
+    public void setPartyPaymentMethodCreditCardSecurityCodeSecurityCode(PartyPaymentMethodCreditCardSecurityCode partyPaymentMethodCreditCardSecurityCode,
             String securityCode) {
-        person.setSecurityCode(encodePartyPaymentMethodCreditCardSecurityCodeSecurityCode(securityCode));
+        partyPaymentMethodCreditCardSecurityCode.setSecurityCode(encodePartyPaymentMethodCreditCardSecurityCodeSecurityCode(partyPaymentMethodCreditCardSecurityCode, securityCode));
     }
     
     public void updatePartyPaymentMethodCreditCardSecurityCodeFromValue(PartyPaymentMethodCreditCardSecurityCodeValue partyPaymentMethodCreditCardSecurityCodeValue,
@@ -775,9 +777,10 @@ public class PartyPaymentMethodControl
 
             var partyPaymentMethodPK = partyPaymentMethodCreditCardSecurityCode.getPartyPaymentMethodPK(); // Not updated
             var securityCode = partyPaymentMethodCreditCardSecurityCodeValue.getSecurityCode();
+            var initializationVector = partyPaymentMethodCreditCardSecurityCode.getInitializationVector(); // Not updated
             
             partyPaymentMethodCreditCardSecurityCode = partyPaymentMethodCreditCardSecurityCodeFactory.create(
-                    partyPaymentMethodPK, securityCode, session.getStartTime(), Session.MAX_TIME);
+                    partyPaymentMethodPK, securityCode, initializationVector, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(partyPaymentMethodPK, EventTypes.MODIFY, partyPaymentMethodCreditCardSecurityCode.getPrimaryKey(),
                     EventTypes.MODIFY, updatedBy);

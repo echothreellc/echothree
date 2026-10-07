@@ -1008,6 +1008,7 @@
                         <column name="BillingPartyContactMechanismId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PartyContactMechanisms" destinationColumn="PartyContactMechanismId" />
                         <column name="IssuerName" type="CompanyName" nullAllowed="true" />
                         <column name="IssuerPartyContactMechanismId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PartyContactMechanisms" destinationColumn="PartyContactMechanismId" />
+                        <column name="InitializationVector" type="EncodedInitializationVector" nullAllowed="false" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
                         <column name="ThruTime" type="Time" nullAllowed="false" />
                     </columns>
@@ -1070,6 +1071,7 @@
                         <column name="PartyPaymentMethodCreditCardSecurityCodeId" type="EID" nullAllowed="false" />
                         <column name="PartyPaymentMethodId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyPaymentMethods" destinationColumn="PartyPaymentMethodId" />
                         <column name="SecurityCode" type="EncodedValue" nullAllowed="true" />
+                        <column name="InitializationVector" type="EncodedInitializationVector" nullAllowed="false" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
                         <column name="ThruTime" type="Time" nullAllowed="false" />
                     </columns>

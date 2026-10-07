@@ -28,6 +28,7 @@ import com.echothree.model.data.graphql.server.value.IdempotentResponseValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.user.server.value.UserVisitValue;
+import com.echothree.util.server.persistence.EncryptionUtils;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.valuecache.NullValueCacheImpl;
@@ -95,7 +96,8 @@ public class ExecuteGraphQlCommandTest {
             }
             creates++;
             entry = new StoredKey(new IdempotentResponseValue(new IdempotentResponsePK((long)creates), visit.getPrimaryKey(),
-                    keyHash, queryHash, variablesHash, operationNameHash, startTime, completedTime, response, retainUntilTime));
+                    keyHash, queryHash, variablesHash, operationNameHash, startTime, completedTime, response, retainUntilTime,
+                    EncryptionUtils.getInstance().generateRowInitializationVector()));
             entries.put(new Lookup(visit.getPrimaryKey(), keyHash), entry);
             // Generated factories return read-only entities from create(). A caller
             // must fetch for update before setting completion fields.
@@ -111,7 +113,7 @@ public class ExecuteGraphQlCommandTest {
 
         // These command tests use in-memory persistence without the encryption key service.
         @Override
-        public String encodeIdempotentResponse(String response) {
+        public String encodeIdempotentResponse(IdempotentResponse entry, String response) {
             return response;
         }
 
