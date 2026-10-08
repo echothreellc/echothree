@@ -22,7 +22,9 @@ import com.echothree.model.control.core.server.control.EncryptionKeyControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.util.common.exception.DecryptionBadPaddingException;
 import com.echothree.util.common.exception.PersistenceEncryptionException;
+import com.echothree.util.common.exception.UnknownEntityEncryptionKeyException;
 import com.echothree.util.common.persistence.BaseKey;
 import com.echothree.util.common.persistence.BaseKeys;
 import com.echothree.util.common.persistence.EncryptionConstants;
@@ -42,8 +44,8 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @ApplicationScoped
 public class EncryptionUtils {
@@ -57,8 +59,8 @@ public class EncryptionUtils {
     private static final String FQN_BASE_KEYS = "/com/echothree/security/base";
     private static final String CACHE_BASE_KEY_1 = "BaseKey1";
     private static final String CACHE_BASE_KEY_2 = "BaseKey2";
-    
-    protected Log log = LogFactory.getLog(EncryptionUtils.class);
+
+    protected final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Inject
     RandomUtils randomUtils;
@@ -274,7 +276,8 @@ public class EncryptionUtils {
         if(value != null) {
             try {
                 encryptedValue = BaseEncoding.base64().encode(getCipher(entityEncryptionKeyName, rowInitializationVector,
-                        isExternal ? EntityEncryptionKeyTypes.EXTERNAL : EntityEncryptionKeyTypes.INTERNAL, Cipher.ENCRYPT_MODE).doFinal(value.getBytes(StandardCharsets.UTF_8)));
+                        isExternal ? EntityEncryptionKeyTypes.EXTERNAL : EntityEncryptionKeyTypes.INTERNAL,
+                        Cipher.ENCRYPT_MODE).doFinal(value.getBytes(StandardCharsets.UTF_8)));
             } catch (IllegalStateException | IllegalBlockSizeException | BadPaddingException e) {
                 throw new PersistenceEncryptionException(e);
             }
@@ -293,8 +296,11 @@ public class EncryptionUtils {
         if(value != null) {
             try {
                 decryptedValue = new String(getCipher(entityEncryptionKeyName, rowInitializationVector,
-                        isExternal ? EntityEncryptionKeyTypes.EXTERNAL : EntityEncryptionKeyTypes.INTERNAL, Cipher.DECRYPT_MODE).doFinal(BaseEncoding.base64().decode(value)), StandardCharsets.UTF_8);
-            } catch (IllegalStateException | IllegalBlockSizeException | BadPaddingException e) {
+                        isExternal ? EntityEncryptionKeyTypes.EXTERNAL : EntityEncryptionKeyTypes.INTERNAL,
+                        Cipher.DECRYPT_MODE).doFinal(BaseEncoding.base64().decode(value)), StandardCharsets.UTF_8);
+            } catch (BadPaddingException e) {
+                throw new DecryptionBadPaddingException(e);
+            } catch (IllegalStateException | IllegalBlockSizeException e) {
                 throw new PersistenceEncryptionException(e);
             }
         }
@@ -355,11 +361,11 @@ public class EncryptionUtils {
 
     public SecretKey getEntityEncryptionKey(final String algorithm, final int keysize, final BaseFactory<?, ?> baseFactory,
             final EntityEncryptionKeyTypes entityEncryptionKeyType) {
-        return getEntityEncryptionKey(algorithm, keysize, getEntityEncryptionKeyName(baseFactory), entityEncryptionKeyType);
+        return getEntityEncryptionKey(algorithm, keysize, getEntityEncryptionKeyName(baseFactory), entityEncryptionKeyType, true);
     }
 
     private SecretKey getEntityEncryptionKey(final String algorithm, final int keysize, final String entityEncryptionKeyName,
-            final EntityEncryptionKeyTypes entityEncryptionKeyType) {
+            final EntityEncryptionKeyTypes entityEncryptionKeyType, final boolean createIfMissing) {
         var encryptionKeyControl = Session.getModelController(EncryptionKeyControl.class);
         var suffix = switch(entityEncryptionKeyType) {
             case INTERNAL -> "";
@@ -372,6 +378,10 @@ public class EncryptionUtils {
         SecretKey secretKey;
 
         if(entityEncryptionKey == null) {
+            if(!createIfMissing) {
+                throw new UnknownEntityEncryptionKeyException("Entity Encryption Key Not Found: " + entityEncryptionKeyName);
+            }
+
             // Key has not yet been generated for this EntityType
             try {
                 var keyGenerator = KeyGenerator.getInstance(algorithm);
@@ -400,7 +410,7 @@ public class EncryptionUtils {
     private Cipher getCipher(final String entityEncryptionKeyName, final String rowInitializationVector,
             final EntityEncryptionKeyTypes entityEncryptionKeyType, final int cipherMode) {
         var secretKey = getEntityEncryptionKey(EncryptionConstants.AES_ALGORITHM, EncryptionConstants.AES_KEYSIZE,
-                entityEncryptionKeyName, entityEncryptionKeyType);
+                entityEncryptionKeyName, entityEncryptionKeyType, cipherMode == Cipher.ENCRYPT_MODE);
         var baseEncoding = BaseEncoding.base64();
         var iv = baseEncoding.decode(rowInitializationVector);
 
