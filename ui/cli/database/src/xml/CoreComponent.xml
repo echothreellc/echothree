@@ -2734,8 +2734,7 @@
                 <table namePlural="EntityEncryptionKeys" nameSingular="EntityEncryptionKey" columnPrefix="eek">
                     <columns>
                         <column name="EntityEncryptionKeyId" type="EID" nullAllowed="false" />
-                        <column name="EntityEncryptionKeyName" type="Md5Hash" nullAllowed="false" />
-                        <column name="IsExternal" type="Boolean" nullAllowed="false" />
+                        <column name="EntityEncryptionKeyNameHash" type="Sha256Hash" nullAllowed="false" />
                         <column name="SecretKey" type="EncodedSecretKey" nullAllowed="false" />
                     </columns>
                     <indexes>
@@ -2743,7 +2742,7 @@
                             <indexColumn name="EntityEncryptionKeyId" />
                         </index>
                         <index type="Unique">
-                            <indexColumn name="EntityEncryptionKeyName" />
+                            <indexColumn name="EntityEncryptionKeyNameHash" />
                         </index>
                     </indexes>
                 </table>

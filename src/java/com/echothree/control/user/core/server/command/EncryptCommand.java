@@ -34,7 +34,7 @@ public class EncryptCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("ExternalEntityTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("EntityEncryptionKeyName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Value", FieldType.STRING, true, null, null)
         );
     }
@@ -47,12 +47,12 @@ public class EncryptCommand
     @Override
     protected BaseResult execute() {
         var result = CoreResultFactory.getEncryptResult();
-        var externalEntityTypeName = form.getExternalEntityTypeName();
+        var entityEncryptionKeyName = form.getEntityEncryptionKeyName();
         var initializationVector = EncryptionUtils.getInstance().generateRowInitializationVector();
         var value = form.getValue();
 
         result.setInitializationVector(initializationVector);
-        result.setValue(EncryptionUtils.getInstance().encrypt(externalEntityTypeName, initializationVector, true, value));
+        result.setValue(EncryptionUtils.getInstance().encrypt(entityEncryptionKeyName, initializationVector, true, value));
 
         return result;
     }

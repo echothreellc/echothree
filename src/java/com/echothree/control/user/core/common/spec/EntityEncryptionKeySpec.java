@@ -16,10 +16,12 @@
 
 package com.echothree.control.user.core.common.spec;
 
-public interface ExternalEntityTypeSpec
-        extends ComponentVendorSpec {
+import com.echothree.util.common.form.BaseSpec;
+
+public interface EntityEncryptionKeySpec
+        extends BaseSpec {
     
-    String getExternalEntityTypeName();
-    void setExternalEntityTypeName(String externalEntityTypeName);
+    String getEntityEncryptionKeyName();
+    void setEntityEncryptionKeyName(String entityEncryptionKeyName);
     
 }

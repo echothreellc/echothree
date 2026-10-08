@@ -1,6 +1,7 @@
 @encryption
 Feature: External encryption with an IV for each value
-  A client stores the IV returned by Encrypt with its ciphertext and supplies both to Decrypt
+  A client supplies EntityEncryptionKeyName to Encrypt and Decrypt
+  and stores the IV returned by Encrypt with its ciphertext
 
   Background:
     Given the employee Test begins using the application
@@ -12,6 +13,7 @@ Feature: External encryption with an IV for each value
     And the employee logs in
     Then no error should occur
     And the user loads the existing base encryption keys
+    And the user uses entity encryption key name "CucumberEncryption"
 
   Scenario: Repeated encryption returns independent IVs and both values remain decryptable
     When the user encrypts "Confidential café 日本語 123" and remembers it as "first"

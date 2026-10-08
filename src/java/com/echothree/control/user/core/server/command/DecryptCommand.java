@@ -34,7 +34,7 @@ public class DecryptCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("ExternalEntityTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("EntityEncryptionKeyName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("InitializationVector", FieldType.INITIALIZATION_VECTOR, true, null, null),
                 new FieldDefinition("Value", FieldType.STRING, true, null, null)
         );
@@ -48,11 +48,11 @@ public class DecryptCommand
     @Override
     protected BaseResult execute() {
         var result = CoreResultFactory.getDecryptResult();
-        var externalEntityTypeName = form.getExternalEntityTypeName();
+        var entityEncryptionKeyName = form.getEntityEncryptionKeyName();
         var initializationVector = form.getInitializationVector();
         var value = form.getValue();
 
-        result.setValue(EncryptionUtils.getInstance().decrypt(externalEntityTypeName, initializationVector, true, value));
+        result.setValue(EncryptionUtils.getInstance().decrypt(entityEncryptionKeyName, initializationVector, true, value));
 
         return result;
     }

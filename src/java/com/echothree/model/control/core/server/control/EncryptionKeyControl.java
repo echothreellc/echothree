@@ -330,15 +330,15 @@ public class EncryptionKeyControl
     @Inject
     protected EntityEncryptionKeyFactory entityEncryptionKeyFactory;
 
-    public EntityEncryptionKey createEntityEncryptionKey(String entityEncryptionKeyName, Boolean isExternal, String secretKey) {
-        return entityEncryptionKeyFactory.create(entityEncryptionKeyName, isExternal, secretKey);
+    public EntityEncryptionKey createEntityEncryptionKey(String entityEncryptionKeyNameHash, String secretKey) {
+        return entityEncryptionKeyFactory.create(entityEncryptionKeyNameHash, secretKey);
     }
 
-    private EntityEncryptionKey getEntityEncryptionKeyByName(String entityEncryptionKeyName, EntityPermission entityPermission) {
+    private EntityEncryptionKey getEntityEncryptionKeyByNameHash(String entityEncryptionKeyNameHash, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(EntityEncryptionKeys.fields())
                 .from(EntityEncryptionKeys)
-                .where(EntityEncryptionKeys.ENTITY_ENCRYPTION_KEY_NAME.eq(entityEncryptionKeyName));
+                .where(EntityEncryptionKeys.ENTITY_ENCRYPTION_KEY_NAME_HASH.eq(entityEncryptionKeyNameHash));
 
         var query = switch(entityPermission) {
             case READ_ONLY -> baseQuery;
@@ -348,12 +348,12 @@ public class EncryptionKeyControl
         return entityEncryptionKeyFactory.getEntityFromQuery(entityPermission, query);
     }
 
-    public EntityEncryptionKey getEntityEncryptionKeyByName(String entityEncryptionKeyName) {
-        return getEntityEncryptionKeyByName(entityEncryptionKeyName, EntityPermission.READ_ONLY);
+    public EntityEncryptionKey getEntityEncryptionKeyByNameHash(String entityEncryptionKeyNameHash) {
+        return getEntityEncryptionKeyByNameHash(entityEncryptionKeyNameHash, EntityPermission.READ_ONLY);
     }
 
-    public EntityEncryptionKey getEntityEncryptionKeyByNameForUpdate(String entityEncryptionKeyName) {
-        return getEntityEncryptionKeyByName(entityEncryptionKeyName, EntityPermission.READ_WRITE);
+    public EntityEncryptionKey getEntityEncryptionKeyByNameHashForUpdate(String entityEncryptionKeyNameHash) {
+        return getEntityEncryptionKeyByNameHash(entityEncryptionKeyNameHash, EntityPermission.READ_WRITE);
     }
 
     public List<EntityEncryptionKey> getEntityEncryptionKeysForUpdate() {

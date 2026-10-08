@@ -72,12 +72,12 @@ public class IdempotentResponseControl
     }
 
     public String encodeIdempotentResponse(final IdempotentResponse idempotentResponse, final String response) {
-        return EncryptionUtils.getInstance().encrypt(idempotentResponseFactory.getEntityTypeName(),
+        return EncryptionUtils.getInstance().encrypt(idempotentResponseFactory,
                 idempotentResponse.getInitializationVector(), response);
     }
 
     public String decodeIdempotentResponse(final IdempotentResponse idempotentResponse) {
-        return EncryptionUtils.getInstance().decrypt(idempotentResponseFactory.getEntityTypeName(),
+        return EncryptionUtils.getInstance().decrypt(idempotentResponseFactory,
                 idempotentResponse.getInitializationVector(), idempotentResponse.getResponse());
     }
 
