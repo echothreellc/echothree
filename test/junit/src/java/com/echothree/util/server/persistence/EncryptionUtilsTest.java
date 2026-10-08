@@ -16,7 +16,9 @@
 
 package com.echothree.util.server.persistence;
 
+import com.echothree.util.common.exception.DecryptionBadPaddingException;
 import com.echothree.util.common.exception.PersistenceEncryptionException;
+import com.echothree.util.common.exception.UnknownEntityEncryptionKeyException;
 import com.echothree.util.common.persistence.BaseKeys;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -24,6 +26,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.HexFormat;
 import java.util.List;
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import org.junit.jupiter.api.Test;
 import static com.echothree.util.server.persistence.EncryptionUtils.EntityEncryptionKeyTypes.*;
@@ -80,6 +83,51 @@ public class EncryptionUtilsTest extends EncryptionTestSupport {
                 assertNotEquals(value, encrypted);
                 assertEquals(value, encryption.decrypt("TEST.Card", IV, external, encrypted));
             }
+        }
+        assertEquals(2, control.creates);
+    }
+
+    @Test
+    public void internalAndExternalDecryptionRejectMissingKeysWithoutCreatingThem() {
+        var ciphertext = Base64.getEncoder().encodeToString(new byte[16]);
+
+        for(var external : List.of(false, true)) {
+            var error = assertThrows(UnknownEntityEncryptionKeyException.class,
+                    () -> encryption.decrypt("TEST.Missing", IV, external, ciphertext));
+
+            assertEquals("Entity Encryption Key Not Found: TEST.Missing", error.getMessage());
+            assertEquals(0, control.creates);
+            assertTrue(control.entries.isEmpty());
+        }
+    }
+
+    @Test
+    public void factoryDecryptionRejectsMissingKeyWithoutCreatingIt() {
+        var ciphertext = Base64.getEncoder().encodeToString(new byte[16]);
+        var factory = factory("TEST", "Missing");
+        var error = assertThrows(UnknownEntityEncryptionKeyException.class,
+                () -> encryption.decrypt(factory, IV, ciphertext));
+
+        assertEquals("Entity Encryption Key Not Found: TEST.Missing", error.getMessage());
+        assertEquals(0, control.creates);
+        assertTrue(control.entries.isEmpty());
+    }
+
+    @Test
+    public void invalidDecryptionPaddingThrowsDedicatedException() {
+        var invalidIv = Base64.getDecoder().decode(IV);
+        // Empty plaintext produces one block of 0x10 padding. Altering the IV's
+        // last byte makes the final padding byte 0x11, guaranteeing rejection.
+        invalidIv[15] ^= 1;
+        var encodedInvalidIv = Base64.getEncoder().encodeToString(invalidIv);
+
+        for(var external : List.of(false, true)) {
+            var ciphertext = encryption.encrypt("TEST.Card", IV, external, "");
+            var error = assertThrows(DecryptionBadPaddingException.class,
+                    () -> encryption.decrypt("TEST.Card", encodedInvalidIv, external, ciphertext));
+
+            assertInstanceOf(BadPaddingException.class, error.getCause());
+            assertEquals("", encryption.decrypt("TEST.Card", IV, external, ciphertext));
         }
         assertEquals(2, control.creates);
     }
