@@ -467,7 +467,7 @@ public class PartyPaymentMethodControl
             BasePK createdBy) {
         var initializationVector = EncryptionUtils.getInstance().generateRowInitializationVector();
         var partyPaymentMethodCreditCard = partyPaymentMethodCreditCardFactory.create(
-                partyPaymentMethod, encodePartyPaymentMethodCreditCardNumber(initializationVector, number), expirationMonth, expirationYear, personalTitle,
+                partyPaymentMethod, encodePartyPaymentMethodCreditCardNumber(initializationVector, number), null, expirationMonth, expirationYear, personalTitle,
                 firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx, nameSuffix, name, billingPartyContactMechanism,
                 issuerName, issuerPartyContactMechanism, initializationVector, session.getStartTime(), Session.MAX_TIME);
         
@@ -670,7 +670,7 @@ public class PartyPaymentMethodControl
             var issuerName = partyPaymentMethodCreditCardValue.getIssuerName();
             var issuerPartyContactMechanismPK = partyPaymentMethodCreditCardValue.getIssuerPartyContactMechanismPK();
 
-            partyPaymentMethodCreditCard = partyPaymentMethodCreditCardFactory.create(partyPaymentMethodPK, number, expirationMonth,
+            partyPaymentMethodCreditCard = partyPaymentMethodCreditCardFactory.create(partyPaymentMethodPK, number, null, expirationMonth,
                     expirationYear, personalTitlePK, firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx, nameSuffixPK, name,
                     billingPartyContactMechanismPK, issuerName, issuerPartyContactMechanismPK, initializationVector, session.getStartTime(), Session.MAX_TIME);
             
