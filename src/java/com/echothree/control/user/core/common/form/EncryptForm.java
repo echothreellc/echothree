@@ -16,10 +16,10 @@
 
 package com.echothree.control.user.core.common.form;
 
-import com.echothree.control.user.core.common.spec.ExternalEntityTypeSpec;
+import com.echothree.control.user.core.common.spec.EntityEncryptionKeySpec;
 
 public interface EncryptForm
-        extends ExternalEntityTypeSpec {
+        extends EntityEncryptionKeySpec {
     
     String getValue();
     void setValue(String value);

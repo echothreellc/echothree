@@ -28,15 +28,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class EncryptionSteps implements En {
 
-    private static final String EXTERNAL_ENTITY_TYPE_NAME = "CucumberEncryption";
+    private String entityEncryptionKeyName;
     private final Map<String, EncryptResult> encryptedValues = new HashMap<>();
     private String decryptedValue;
 
     public EncryptionSteps() {
+        Given("the user uses entity encryption key name {string}", (String name) -> entityEncryptionKeyName = name);
+
         When("the user encrypts {string} and remembers it as {string}", (String value, String name) -> {
             var form = CoreUtil.getHome().getEncryptForm();
 
-            form.setExternalEntityTypeName(EXTERNAL_ENTITY_TYPE_NAME);
+            form.setEntityEncryptionKeyName(entityEncryptionKeyName);
             form.setValue(value);
 
             var commandResult = CoreUtil.getHome().encrypt(CurrentPersona.persona.userVisitPK, form);
@@ -100,7 +102,7 @@ public class EncryptionSteps implements En {
     private void decrypt(String name, String iv) throws Exception {
         var form = CoreUtil.getHome().getDecryptForm();
 
-        form.setExternalEntityTypeName(EXTERNAL_ENTITY_TYPE_NAME);
+        form.setEntityEncryptionKeyName(entityEncryptionKeyName);
         form.setValue(encryptedValue(name).getValue());
         form.setInitializationVector(iv);
 
