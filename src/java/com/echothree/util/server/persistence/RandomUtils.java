@@ -21,13 +21,13 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Random;
 import javax.enterprise.context.ApplicationScoped;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @ApplicationScoped
 public class RandomUtils {
 
-    protected Log log = LogFactory.getLog(RandomUtils.class);
+    protected final Logger log = LoggerFactory.getLogger(this.getClass());
 
     protected RandomUtils() {
         super();
