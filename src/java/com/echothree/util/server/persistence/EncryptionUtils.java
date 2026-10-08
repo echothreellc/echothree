@@ -391,7 +391,13 @@ public class EncryptionUtils {
         return decryptedData;
     }
 
-    public EntityEncryptionKey getEntityEncryptionKey(final String entityEncryptionKeyName, final EntityEncryptionKeyTypes entityEncryptionKeyType) {
+    public EntityEncryptionKey getEntityEncryptionKey(final String algorithm, final int keysize, final BaseFactory<?, ?> baseFactory,
+            final EntityEncryptionKeyTypes entityEncryptionKeyType) {
+        return getEntityEncryptionKey(algorithm, keysize, getEntityEncryptionKeyName(baseFactory), entityEncryptionKeyType);
+    }
+
+    public EntityEncryptionKey getEntityEncryptionKey(final String algorithm, final int keysize, final String entityEncryptionKeyName,
+            final EntityEncryptionKeyTypes entityEncryptionKeyType) {
         var encryptionKeyControl = Session.getModelController(EncryptionKeyControl.class);
         var suffix = switch(entityEncryptionKeyType) {
             case INTERNAL -> "";
@@ -407,9 +413,9 @@ public class EncryptionUtils {
             SecretKey secretKey;
 
             try {
-                var keyGenerator = KeyGenerator.getInstance(EncryptionConstants.algorithm);
+                var keyGenerator = KeyGenerator.getInstance(algorithm);
 
-                keyGenerator.init(EncryptionConstants.keysize);
+                keyGenerator.init(keysize);
 
                 secretKey = keyGenerator.generateKey();
             } catch (NoSuchAlgorithmException nsae) {
@@ -429,7 +435,8 @@ public class EncryptionUtils {
 
     private Cipher getCipher(final String entityEncryptionKeyName, final String rowInitializationVector,
             final EntityEncryptionKeyTypes entityEncryptionKeyType, final int cipherMode) {
-        var entityEncryptionKey = getEntityEncryptionKey(entityEncryptionKeyName, entityEncryptionKeyType);
+        var entityEncryptionKey = getEntityEncryptionKey(EncryptionConstants.algorithm, EncryptionConstants.keysize,
+                entityEncryptionKeyName, entityEncryptionKeyType);
         var baseEncoding = BaseEncoding.base64();
         var encryptedKey = baseEncoding.decode(entityEncryptionKey.getSecretKey());
         var key = decryptDataUsingBaseKeys(encryptedKey);
