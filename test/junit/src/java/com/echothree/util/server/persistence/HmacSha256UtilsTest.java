@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class HmacSha256UtilsTest extends EncryptionTestSupport {
 
-    private final HmacSha256Utils hmac = HmacSha256Utils.getInstance();
+    private final MacUtils hmac = HmacSha256Utils.getInstance();
 
     private void assertDigest(String expectedHex, String actual) {
         assertEquals(expectedHex, HexFormat.of().formatHex(Base64.getDecoder().decode(actual)));

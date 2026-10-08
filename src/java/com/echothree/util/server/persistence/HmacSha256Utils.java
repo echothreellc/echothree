@@ -23,7 +23,8 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import javax.crypto.Mac;
 
-public class HmacSha256Utils {
+public class HmacSha256Utils
+        implements MacUtils {
 
     private static final String HMAC_256_ALGORITHM = "HmacSHA256";
     private static final int HMAC_256_KEYSIZE = 256;
@@ -36,10 +37,11 @@ public class HmacSha256Utils {
         static HmacSha256Utils instance = new HmacSha256Utils();
     }
 
-    public static HmacSha256Utils getInstance() {
+    public static MacUtils getInstance() {
         return HmacSha256UtilsHolder.instance;
     }
 
+    @Override
     public String hash(BaseFactory<?, ?> baseFactory, final String value) {
         try {
             var secretKey = EncryptionUtils.getInstance().getEntityEncryptionKey(HMAC_256_ALGORITHM, HMAC_256_KEYSIZE, baseFactory,
