@@ -1,5 +1,6 @@
 BEGIN;
 
+DELETE FROM entityencryptionkeys;
 DELETE FROM partypaymentmethods;
 DELETE FROM partypaymentmethodcreditcards;
 DELETE FROM partypaymentmethodcreditcardsecuritycodes;

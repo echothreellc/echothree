@@ -27,7 +27,6 @@ import com.echothree.util.common.exception.PersistenceEncryptionException;
 import com.echothree.util.common.persistence.BaseKey;
 import com.echothree.util.common.persistence.BaseKeys;
 import com.echothree.util.common.persistence.EncryptionConstants;
-import com.echothree.util.common.string.MD5Utils;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.google.common.io.BaseEncoding;
 import java.nio.charset.StandardCharsets;
@@ -381,8 +380,9 @@ public class EncryptionUtils {
 
     private EntityEncryptionKey getEntityEncryptionKey(final String entityTypeName, final Boolean isExternal, final BaseKeys baseKeys) {
         var encryptionKeyControl = Session.getModelController(EncryptionKeyControl.class);
-        var entityEncryptionKeyName = MD5Utils.getInstance().encode(entityTypeName + (isExternal ? '.' + externalSuffix : ""));
-        var entityEncryptionKey = encryptionKeyControl.getEntityEncryptionKeyByName(entityEncryptionKeyName);
+        var entityEncryptionKeyNameHash = Sha256Utils.getInstance().hash((entityTypeName + (isExternal ? '.' + externalSuffix : ""))
+                .getBytes(StandardCharsets.UTF_8));
+        var entityEncryptionKey = encryptionKeyControl.getEntityEncryptionKeyByNameHash(entityEncryptionKeyNameHash);
 
         if(entityEncryptionKey == null) {
             // Key has not yet been generated for this EntityType
@@ -402,7 +402,7 @@ public class EncryptionUtils {
             var encryptedKey = encryptDataUsingBaseKeys(baseKeys, key);
             var baseEncoding = BaseEncoding.base64();
 
-            entityEncryptionKey = encryptionKeyControl.createEntityEncryptionKey(entityEncryptionKeyName, isExternal,
+            entityEncryptionKey = encryptionKeyControl.createEntityEncryptionKey(entityEncryptionKeyNameHash, isExternal,
                     baseEncoding.encode(encryptedKey));
         }
 
