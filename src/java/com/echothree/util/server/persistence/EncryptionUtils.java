@@ -401,7 +401,7 @@ public class EncryptionUtils {
             }
 
             var key = secretKey.getEncoded();
-            var encryptedKey = encryptDataUsingBaseKeys(getBaseKeys(), key);
+            var encryptedKey = encryptDataUsingBaseKeys(key);
             var baseEncoding = BaseEncoding.base64();
 
             entityEncryptionKey = encryptionKeyControl.createEntityEncryptionKey(entityEncryptionKeyNameHash,
