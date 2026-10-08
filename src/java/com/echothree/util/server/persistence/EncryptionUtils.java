@@ -21,7 +21,6 @@ import static com.echothree.model.control.core.common.workflow.BaseEncryptionKey
 import com.echothree.model.control.core.server.control.EncryptionKeyControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.core.server.entity.EntityEncryptionKey;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.util.common.exception.PersistenceEncryptionException;
 import com.echothree.util.common.persistence.BaseKey;
@@ -372,7 +371,7 @@ public class EncryptionUtils {
         return encryptedData;
     }
 
-    private byte[] decryptDataUsingBaseKeys(final byte[] encryptedData) {
+    public byte[] decryptDataUsingBaseKeys(final byte[] encryptedData) {
         var baseKeys = getBaseKeys();
         var cipher1 = getInitializedCipher(baseKeys.getKey1(), baseKeys.getIv1(), Cipher.DECRYPT_MODE);
         var cipher2 = getInitializedCipher(baseKeys.getKey2(), baseKeys.getIv2(), Cipher.DECRYPT_MODE);
@@ -391,12 +390,12 @@ public class EncryptionUtils {
         return decryptedData;
     }
 
-    public EntityEncryptionKey getEntityEncryptionKey(final String algorithm, final int keysize, final BaseFactory<?, ?> baseFactory,
+    public SecretKey getEntityEncryptionKey(final String algorithm, final int keysize, final BaseFactory<?, ?> baseFactory,
             final EntityEncryptionKeyTypes entityEncryptionKeyType) {
         return getEntityEncryptionKey(algorithm, keysize, getEntityEncryptionKeyName(baseFactory), entityEncryptionKeyType);
     }
 
-    public EntityEncryptionKey getEntityEncryptionKey(final String algorithm, final int keysize, final String entityEncryptionKeyName,
+    private SecretKey getEntityEncryptionKey(final String algorithm, final int keysize, final String entityEncryptionKeyName,
             final EntityEncryptionKeyTypes entityEncryptionKeyType) {
         var encryptionKeyControl = Session.getModelController(EncryptionKeyControl.class);
         var suffix = switch(entityEncryptionKeyType) {
@@ -406,11 +405,11 @@ public class EncryptionUtils {
         var entityEncryptionKeyNameHash = Sha256Utils.getInstance().hash((entityEncryptionKeyName + suffix)
                 .getBytes(StandardCharsets.UTF_8));
         var entityEncryptionKey = encryptionKeyControl.getEntityEncryptionKeyByNameHash(entityEncryptionKeyNameHash);
+        var baseEncoding = BaseEncoding.base64();
+        SecretKey secretKey;
 
         if(entityEncryptionKey == null) {
             // Key has not yet been generated for this EntityType
-            SecretKey secretKey;
-
             try {
                 var keyGenerator = KeyGenerator.getInstance(algorithm);
 
@@ -423,25 +422,26 @@ public class EncryptionUtils {
 
             var key = secretKey.getEncoded();
             var encryptedKey = encryptDataUsingBaseKeys(key);
-            var baseEncoding = BaseEncoding.base64();
 
-            entityEncryptionKey = encryptionKeyControl.createEntityEncryptionKey(entityEncryptionKeyNameHash,
+            encryptionKeyControl.createEntityEncryptionKey(entityEncryptionKeyNameHash,
                     baseEncoding.encode(encryptedKey));
+
+        } else {
+            var encryptedKey = baseEncoding.decode(entityEncryptionKey.getSecretKey());
+            var key = decryptDataUsingBaseKeys(encryptedKey);
+
+            secretKey = new SecretKeySpec(key, EncryptionConstants.algorithm);
         }
 
-        return entityEncryptionKey;
+        return secretKey;
     }
 
     private Cipher getCipher(final String entityEncryptionKeyName, final String rowInitializationVector,
             final EntityEncryptionKeyTypes entityEncryptionKeyType, final int cipherMode) {
-        var entityEncryptionKey = getEntityEncryptionKey(EncryptionConstants.algorithm, EncryptionConstants.keysize,
+        var secretKey = getEntityEncryptionKey(EncryptionConstants.algorithm, EncryptionConstants.keysize,
                 entityEncryptionKeyName, entityEncryptionKeyType);
         var baseEncoding = BaseEncoding.base64();
-        var encryptedKey = baseEncoding.decode(entityEncryptionKey.getSecretKey());
-        var key = decryptDataUsingBaseKeys(encryptedKey);
         var iv = baseEncoding.decode(rowInitializationVector);
-
-        SecretKey secretKey = new SecretKeySpec(key, EncryptionConstants.algorithm);
 
         return getInitializedCipher(secretKey, iv, cipherMode);
     }
