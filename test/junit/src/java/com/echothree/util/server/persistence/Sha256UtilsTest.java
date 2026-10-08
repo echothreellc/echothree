@@ -95,4 +95,44 @@ public class Sha256UtilsTest {
         assertDigest("hOS9bKKvlkEv3GL+RNTpcJzcMZMwgaYkhqSKFUtYLVM=", sha.encode(second, first));
     }
 
+    @Test
+    public void paddingAndBlockBoundariesMatchIndependentVectors() {
+        assertDigest("n0OQ+NMMLdkuyfCVtl4rmumwqSWlJY4kHJ8ekQ9zQxg=", sha.hash("a".repeat(55)));
+        assertDigest("s1Q5pKxvCUi21vnjxq8PX1kM4g8b3nCQ73lwaG7Gc4o=", sha.hash("a".repeat(56)));
+        assertDigest("fT50oF19sVvOStnsBljqmOPwbu7PFrTG//LaRX3cLzQ=", sha.hash("a".repeat(63)));
+        assertDigest("/+BU/nrgy23GXDr5th1SCfQ5hR20PQulmXM33xVGaOs=", sha.hash("a".repeat(64)));
+        assertDigest("Y1NhxIu56rFBmOduqKt/GkFoXWrWKqkUbTAdTxfrCuA=", sha.hash("a".repeat(65)));
+        assertDigest("xX6SeK94+jyrOGZ770zinXg3h6L3MdThIgAnDwwyMgo=", sha.hash("a".repeat(127)));
+        assertDigest("aDbPE7rEAOkQUHHNavRwhN+srU5eMCyUv+0k4BOvtz4=", sha.hash("a".repeat(128)));
+    }
+
+    @Test
+    public void largeInputMatchesIndependentVector() {
+        assertDigest("zcduXJkU+5KBocfihNc+Z/GAmkiklyAOBG05zMcRLNA=", sha.hash("a".repeat(1_000_000)));
+    }
+
+    @Test
+    public void emptyPasswordAndSaltMatchIndependentVectors() {
+        assertDigest("qI00x0bVPTNV079YOWQJMyYPRVII7k1G4h8K4az+Vls=", sha.encode(SALT, ""));
+        assertDigest("Dcmw4JAPDOcfNsNZy8+WjWNm8nYvVpmi9epf3Mtw8Mg=", sha.encode("", ""));
+    }
+
+    @Test
+    public void everyBaseKeyAndIvContributesToTheDigestWithoutBeingModified() {
+        var first = baseKey("000102030405060708090a0b0c0d0e0f", "101112131415161718191a1b1c1d1e1f");
+        var second = baseKey("202122232425262728292a2b2c2d2e2f", "303132333435363738393a3b3c3d3e3f");
+        var originalFirstIv = first.getIv().clone();
+        var originalSecondIv = second.getIv().clone();
+
+        assertDigest("RwgHRGEkj3TxQkzo3TDoW1s0V4M2XWEJPmOaTN7BuJQ=", sha.encode(baseKey("ff0102030405060708090a0b0c0d0e0f", "101112131415161718191a1b1c1d1e1f"), second));
+        assertDigest("gtX8McZLbUalTNiDyZB4HWgskJUaX+/y0PnT0tZGLsI=", sha.encode(baseKey("000102030405060708090a0b0c0d0e0f", "ef1112131415161718191a1b1c1d1e1f"), second));
+        assertDigest("tF/XBQL0C/m596b4J6mEPyTQzz8VueuvJ/RQaU1l11w=", sha.encode(first, baseKey("df2122232425262728292a2b2c2d2e2f", "303132333435363738393a3b3c3d3e3f")));
+        assertDigest("GkdsBU7LyrpeXobFIXTOeQvmLCdCrTsHbkCQmg53Xuo=", sha.encode(first, baseKey("202122232425262728292a2b2c2d2e2f", "cf3132333435363738393a3b3c3d3e3f")));
+        sha.encode(first, second);
+        assertArrayEquals(originalFirstIv, first.getIv());
+        assertArrayEquals(originalSecondIv, second.getIv());
+        assertArrayEquals(HexFormat.of().parseHex("000102030405060708090a0b0c0d0e0f"), first.getKey().getEncoded());
+        assertArrayEquals(HexFormat.of().parseHex("202122232425262728292a2b2c2d2e2f"), second.getKey().getEncoded());
+    }
+
 }
