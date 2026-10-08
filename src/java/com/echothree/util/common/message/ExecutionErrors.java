@@ -1391,6 +1391,8 @@ public enum ExecutionErrors {
     UnknownInvoiceLineTypeDescription,
     UnknownParentInvoiceLineTypeName,
     InvalidParentInvoiceLineType,
+    UnableToDecryptValue,
+    UnknownEntityEncryptionKeyName,
     UnknownBaseEncryptionKeyName,
     UnknownBaseEncryptionKeyStatusChoice,
     DuplicateCommandDescription,

@@ -16,20 +16,21 @@
 
 package com.echothree.util.server.persistence;
 
-import static com.echothree.util.server.persistence.PersistenceDebugFlags.LogSessionEntityCacheActions;
-import static com.echothree.util.server.persistence.PersistenceDebugFlags.LogSessionEntityCacheStatistics;
 import com.echothree.util.common.exception.PersistenceSessionEntityCacheException;
 import com.echothree.util.common.persistence.BasePK;
+import static com.echothree.util.server.persistence.PersistenceDebugFlags.LogSessionEntityCacheActions;
+import static com.echothree.util.server.persistence.PersistenceDebugFlags.LogSessionEntityCacheStatistics;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SessionEntityCache {
-    
-    private Log log;
+
+    protected final Logger log = LoggerFactory.getLogger(this.getClass());
+
     private Session session;
 
     private SessionEntityCache parentSessionEntityCache;
@@ -42,7 +43,7 @@ public class SessionEntityCache {
     
     private void init(Session session, SessionEntityCache parentSessionEntityCache) {
         if(LogSessionEntityCacheStatistics) {
-            getLog().info("SessionEntityCache(session = " + session + ", parentSessionEntityCache = " + parentSessionEntityCache + ")");
+            log.info("SessionEntityCache(session = " + session + ", parentSessionEntityCache = " + parentSessionEntityCache + ")");
         }
 
         this.session = session;
@@ -75,14 +76,6 @@ public class SessionEntityCache {
         init(session, null);
     }
 
-    protected Log getLog() {
-        if(log == null) {
-            log = LogFactory.getLog(this.getClass());
-        }
-        
-        return log;
-    }
-
     // Removed the RO entity, and drops it into the RW cache
     private void replaceReadOnlyEntity(BaseEntity baseEntity) {
         var basePK = baseEntity.getPrimaryKey();
@@ -105,7 +98,7 @@ public class SessionEntityCache {
         }
         
         if(LogSessionEntityCacheActions) {
-            getLog().info("putReadOnlyEntity(" + baseEntity.getPrimaryKey() + ")");
+            log.info("putReadOnlyEntity(" + baseEntity.getPrimaryKey() + ")");
         }
 
         entitiesReadOnly.put(basePk, baseEntity);
@@ -116,7 +109,7 @@ public class SessionEntityCache {
         var addedToCache = false;
 
         if(LogSessionEntityCacheActions) {
-            getLog().info("putReadWriteEntity(" + baseEntity.getPrimaryKey() + ")");
+            log.info("putReadWriteEntity(" + baseEntity.getPrimaryKey() + ")");
         }
 
         // Check this cache, and all parent caches, and see if one of them contains a RO copy of this
@@ -175,7 +168,7 @@ public class SessionEntityCache {
         }
 
         if(LogSessionEntityCacheActions) {
-            getLog().info("getEntity(" + basePK + ") = " + (entity == null ? null : entity.getPrimaryKey()));
+            log.info("getEntity(" + basePK + ") = " + (entity == null ? null : entity.getPrimaryKey()));
         }
 
         return entity;
@@ -183,7 +176,7 @@ public class SessionEntityCache {
     
     public void removed(BasePK basePK, boolean missingPermitted) {
         if(LogSessionEntityCacheActions) {
-            getLog().info("removed(" + basePK + ")");
+            log.info("removed(" + basePK + ")");
         }
 
         if(entitiesReadWrite.remove(basePK) == null) {
@@ -233,27 +226,23 @@ public class SessionEntityCache {
     }
 
     private void dumpStats() {
-        var myLog = getLog();
-
-        myLog.info("--------------------------------------------------------------------------------");
-        myLog.info("this = " + this);
-        myLog.info("parentSessionEntityCache = " + parentSessionEntityCache);
+        log.info("--------------------------------------------------------------------------------");
+        log.info("this = " + this);
+        log.info("parentSessionEntityCache = " + parentSessionEntityCache);
         sessionEntityCacheStatistics.dumpStats();
-        myLog.info("--------------------------------------------------------------------------------");
+        log.info("--------------------------------------------------------------------------------");
     }
 
     private void dumpCumulativeStats() {
-        var myLog = getLog();
-
-        myLog.info("--------------------------------------------------------------------------------");
-        myLog.info("this = " + this);
+        log.info("--------------------------------------------------------------------------------");
+        log.info("this = " + this);
         cumulativeSessionEntityCacheStatistics.dumpStats();
-        myLog.info("--------------------------------------------------------------------------------");
+        log.info("--------------------------------------------------------------------------------");
     }
 
     private SessionEntityCache pop(boolean lastInStack) {
         if(LogSessionEntityCacheStatistics) {
-            getLog().info("pop(lastInStack = " + lastInStack + ")");
+            log.info("pop(lastInStack = " + lastInStack + ")");
         }
 
         if(parentSessionEntityCache == null && !lastInStack) {

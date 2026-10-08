@@ -19,13 +19,14 @@ package com.echothree.util.server.persistence.valuecache;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.BaseValue;
 import com.echothree.util.server.persistence.PersistenceDebugFlags;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LoggingValueCacheImpl
         implements ValueCache {
 
-    private Log log = LogFactory.getLog(this.getClass());
+    protected final Logger log = LoggerFactory.getLogger(this.getClass());
+
     private String threadName = Thread.currentThread().getName();
     private ValueCache wrappedValueCache;
 

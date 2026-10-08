@@ -18,10 +18,12 @@ package com.echothree.util.server.persistence;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SessionEntityCacheStatistics {
-    
-    private Log log;
+
+    protected final Logger log = LoggerFactory.getLogger(this.getClass());
     
     public long readOnlyUpgradedToReadWrite;
     public long putReadOnlyEntity;
@@ -42,14 +44,6 @@ public class SessionEntityCacheStatistics {
         return getCacheHits() + entityNotGotten;
     }
     
-    protected Log getLog() {
-        if(log == null) {
-            log = LogFactory.getLog(this.getClass());
-        }
-        
-        return log;
-    }
-    
     public void Add(SessionEntityCacheStatistics sessionEntityCacheStatistics) {
         this.readOnlyUpgradedToReadWrite += sessionEntityCacheStatistics.readOnlyUpgradedToReadWrite;
         this.putReadOnlyEntity += sessionEntityCacheStatistics.putReadOnlyEntity;
@@ -64,20 +58,18 @@ public class SessionEntityCacheStatistics {
     }
 
     public void dumpStats() {
-        var myLog = getLog();
-
-        myLog.info("ReadOnlyUpgradedToReadWrite = " + readOnlyUpgradedToReadWrite);
-        myLog.info("PutReadOnlyEntity = " + putReadOnlyEntity);
-        myLog.info("PutReadWriteEntityToParent = " + putReadWriteEntityToParent);
-        myLog.info("PutReadWriteEntity = " + putReadWriteEntity);
-        myLog.info("GotEntityFromReadWrite = " + gotEntityFromReadWrite);
-        myLog.info("GotEntityFromReadOnly = " + gotEntityFromReadOnly);
-        myLog.info("GotEntityFromParent = " + gotEntityFromParent);
-        myLog.info("EntityNotGotten = " + entityNotGotten);
-        myLog.info("CacheHits = " + getCacheHits());
-        myLog.info("CacheAttempts = " + getCacheAttempts());
-        myLog.info("FinalReadWriteCount = " + finalReadWriteCount);
-        myLog.info("FinalReadOnlyCount = " + finalReadOnlyCount);
+        log.info("ReadOnlyUpgradedToReadWrite = " + readOnlyUpgradedToReadWrite);
+        log.info("PutReadOnlyEntity = " + putReadOnlyEntity);
+        log.info("PutReadWriteEntityToParent = " + putReadWriteEntityToParent);
+        log.info("PutReadWriteEntity = " + putReadWriteEntity);
+        log.info("GotEntityFromReadWrite = " + gotEntityFromReadWrite);
+        log.info("GotEntityFromReadOnly = " + gotEntityFromReadOnly);
+        log.info("GotEntityFromParent = " + gotEntityFromParent);
+        log.info("EntityNotGotten = " + entityNotGotten);
+        log.info("CacheHits = " + getCacheHits());
+        log.info("CacheAttempts = " + getCacheAttempts());
+        log.info("FinalReadWriteCount = " + finalReadWriteCount);
+        log.info("FinalReadOnlyCount = " + finalReadOnlyCount);
     }
     
 }

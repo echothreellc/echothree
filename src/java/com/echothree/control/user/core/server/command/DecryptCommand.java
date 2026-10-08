@@ -19,6 +19,9 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.DecryptForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.exception.DecryptionBadPaddingException;
+import com.echothree.util.common.exception.UnknownEntityEncryptionKeyException;
+import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
@@ -56,7 +59,13 @@ public class DecryptCommand
         var initializationVector = form.getInitializationVector();
         var value = form.getValue();
 
-        result.setValue(encryptionUtils.decrypt(entityEncryptionKeyName, initializationVector, true, value));
+        try {
+            result.setValue(encryptionUtils.decrypt(entityEncryptionKeyName, initializationVector, true, value));
+        } catch(UnknownEntityEncryptionKeyException e) {
+            addExecutionError(ExecutionErrors.UnknownEntityEncryptionKeyName.name(), entityEncryptionKeyName);
+        } catch(DecryptionBadPaddingException e) {
+            addExecutionError(ExecutionErrors.UnableToDecryptValue.name(), entityEncryptionKeyName);
+        }
 
         return result;
     }

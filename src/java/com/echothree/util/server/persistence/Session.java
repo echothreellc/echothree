@@ -38,11 +38,11 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.spi.CDI;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.jooq.DSLContext;
 import org.jooq.Select;
 import org.jooq.impl.DSL;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RequestScoped
 public class Session {
@@ -51,8 +51,8 @@ public class Session {
     private static final String GET_ENTITY_TYPE_NAME = "getEntityTypeName";
     
     private static final Map<Class<? extends BaseFactory<? extends BasePK, ? extends BaseEntity>>, String> entityNameCache = new ConcurrentHashMap<>();
-    
-    private Log log;
+
+    protected final Logger log = LoggerFactory.getLogger(this.getClass());
     
     private DSLContext dslContext;
     private Connection connection;
@@ -86,14 +86,14 @@ public class Session {
     @PostConstruct
     public void init() {
         if(PersistenceDebugFlags.LogSessions) {
-            getLog().info("Session()");
+            log.info("Session()");
         }
 
         dslContext = DslContextFactory.getInstance().getDslContext();
         connection = dslContext.parsingConnection();
 
         if(PersistenceDebugFlags.LogConnections) {
-            getLog().info("new connection is " + connection);
+            log.info("new connection is " + connection);
         }
     }
 
@@ -121,14 +121,6 @@ public class Session {
 
     public void popSessionEntityCache() {
         sessionEntityCache = sessionEntityCache.popSessionEntityCache();
-    }
-
-    protected Log getLog() {
-        if(log == null) {
-            log = LogFactory.getLog(this.getClass());
-        }
-        
-        return log;
     }
 
     public DSLContext getDslContext() {
@@ -304,23 +296,23 @@ public class Session {
     @PreDestroy
     public void close() {
         if(PersistenceDebugFlags.LogSessions) {
-            getLog().info("close()");
+            log.info("close()");
         }
 
         if(connection != null) {
             if(PersistenceDebugFlags.LogConnections) {
-                getLog().info("closing connection " + connection);
+                log.info("closing connection " + connection);
             }
             
             try {
                 if(PersistenceDebugFlags.LogConnections) {
-                    getLog().info("flushing entities for " + connection);
+                    log.info("flushing entities for " + connection);
                 }
 
                 sessionEntityCache = sessionEntityCache.popLastSessionEntityCache();
 
                 if(PersistenceDebugFlags.LogValueCaches) {
-                    getLog().info("discarding valueCache " + valueCache);
+                    log.info("discarding valueCache " + valueCache);
                 }
 
                 if(valueCache != null) {
@@ -328,7 +320,7 @@ public class Session {
                 }
                 
                 if(PersistenceDebugFlags.LogConnections) {
-                    getLog().info("freeing prepared statement cache " + connection);
+                    log.info("freeing prepared statement cache " + connection);
                 }
 
                 if(preparedStatementCache != null) {
@@ -337,7 +329,7 @@ public class Session {
             } finally {
                 try {
                     if(PersistenceDebugFlags.LogConnections) {
-                        getLog().info("closing connection " + connection);
+                        log.info("closing connection " + connection);
                     }
 
                     connection.close();
