@@ -33,7 +33,7 @@ public class Sha1Utils
         static Sha1Utils instance = new Sha1Utils();
     }
     
-    public static Sha1Utils getInstance() {
+    public static ShaUtils getInstance() {
         return Sha1UtilsHolder.instance;
     }
     

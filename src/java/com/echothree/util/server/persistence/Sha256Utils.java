@@ -33,7 +33,7 @@ public class Sha256Utils
         static Sha256Utils instance = new Sha256Utils();
     }
     
-    public static Sha256Utils getInstance() {
+    public static ShaUtils getInstance() {
         return Sha256UtilsHolder.instance;
     }
     
