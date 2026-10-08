@@ -1575,7 +1575,12 @@ public class CommunicationControl
         return EncryptionUtils.getInstance().decrypt(communicationEmailSourceFactory.getEntityTypeName(),
                 communicationEmailSource.getInitializationVector(), communicationEmailSource.getPassword());
     }
-    
+
+    public String decodeCommunicationEmailSourcePassword(String initializationVector, String password) {
+        return EncryptionUtils.getInstance().decrypt(communicationEmailSourceFactory.getEntityTypeName(),
+                initializationVector, password);
+    }
+
     public void updateCommunicationEmailSourceFromValue(CommunicationEmailSourceValue communicationEmailSourceValue, BasePK updatedBy) {
         if(communicationEmailSourceValue.hasBeenModified()) {
             var communicationEmailSource = communicationEmailSourceFactory.getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1584,15 +1589,19 @@ public class CommunicationControl
             communicationEmailSource.setThruTime(session.getStartTime());
             communicationEmailSource.store();
 
+            // Always generate a new initialization vector on updates.
+            var decodedPassword = decodeCommunicationEmailSourcePassword(communicationEmailSourceValue.getInitializationVector(),
+                    communicationEmailSourceValue.getPassword());
+            var initializationVector = EncryptionUtils.getInstance().generateRowInitializationVector();
+
             var communicationSource = communicationEmailSource.getCommunicationSource();
             var serverPK = communicationEmailSourceValue.getServerPK();
             var username = communicationEmailSourceValue.getUsername();
-            var password = communicationEmailSourceValue.getPassword();
+            var password = encodeCommunicationEmailSourcePassword(initializationVector, decodedPassword);
             var receiveWorkEffortScopePK = communicationEmailSourceValue.getReceiveWorkEffortScopePK();
             var sendWorkEffortScopePK = communicationEmailSourceValue.getSendWorkEffortScopePK();
             var reviewEmployeeSelectorPK = communicationEmailSourceValue.getReviewEmployeeSelectorPK();
-            var initializationVector = communicationEmailSource.getInitializationVector(); // Not updated
-            
+
             communicationEmailSource = communicationEmailSourceFactory.create(
                     communicationSource.getPrimaryKey(), serverPK, username, password, receiveWorkEffortScopePK,
                     sendWorkEffortScopePK, reviewEmployeeSelectorPK, initializationVector, session.getStartTime(), Session.MAX_TIME);
