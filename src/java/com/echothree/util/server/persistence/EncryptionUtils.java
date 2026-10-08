@@ -278,8 +278,12 @@ public class EncryptionUtils {
         return baseKeys;
     }
 
+    private String getEntityEncryptionKeyName(final BaseFactory<?, ?> baseFactory) {
+        return baseFactory.getComponentVendorName() + '.' + baseFactory.getEntityTypeName();
+    }
+
     public String encrypt(final BaseFactory<?, ?> baseFactory, final String rowInitializationVector, final String value) {
-        return encrypt(baseFactory.getComponentVendorName() + '.' + baseFactory.getEntityTypeName(), rowInitializationVector, false, value);
+        return encrypt(getEntityEncryptionKeyName(baseFactory), rowInitializationVector, false, value);
     }
 
     public String encrypt(final String entityEncryptionKeyName, final String rowInitializationVector, final Boolean isExternal, final String value) {
@@ -302,7 +306,7 @@ public class EncryptionUtils {
     }
 
     public String decrypt(final BaseFactory<?, ?> baseFactory, final String rowInitializationVector, final String value) {
-        return decrypt(baseFactory.getComponentVendorName() + '.' + baseFactory.getEntityTypeName(), rowInitializationVector, false, value);
+        return decrypt(getEntityEncryptionKeyName(baseFactory), rowInitializationVector, false, value);
     }
 
     public String decrypt(final String entityEncryptionKeyName, final String rowInitializationVector, Boolean isExternal, final String value) {
