@@ -28,6 +28,8 @@ import javax.inject.Inject;
 public class Sha1Utils
         implements ShaUtils {
 
+    private static final String SHA_1_ALGORITHM = "SHA-1";
+
     @Inject
     RandomUtils randomUtils;
 
@@ -49,7 +51,7 @@ public class Sha1Utils
         byte[] input;
         
         try {
-            var sha1Encoder = MessageDigest.getInstance("SHA-1");
+            var sha1Encoder = MessageDigest.getInstance(SHA_1_ALGORITHM);
             
             sha1Encoder.reset();
             sha1Encoder.update(BaseEncoding.base64().decode(salt));

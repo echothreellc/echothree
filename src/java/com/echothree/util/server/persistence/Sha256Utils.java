@@ -28,15 +28,13 @@ import javax.inject.Inject;
 public class Sha256Utils
         implements ShaUtils {
 
+    private static final String SHA_256_ALGORITHM = "SHA-256";
+
     @Inject
     RandomUtils randomUtils;
 
     protected Sha256Utils() {
         super();
-    }
-
-    protected static class Sha256UtilsHolder {
-        static Sha256Utils instance = new Sha256Utils();
     }
 
     @Override
@@ -53,7 +51,7 @@ public class Sha256Utils
         byte[] input;
         
         try {
-            var sha256Encoder = MessageDigest.getInstance("SHA-256");
+            var sha256Encoder = MessageDigest.getInstance(SHA_256_ALGORITHM);
             
             sha256Encoder.reset();
             sha256Encoder.update(BaseEncoding.base64().decode(salt));
