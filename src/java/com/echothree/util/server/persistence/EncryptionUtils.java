@@ -32,8 +32,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.util.Random;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -42,9 +40,12 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+@ApplicationScoped
 public class EncryptionUtils {
 
     public enum EntityEncryptionKeyTypes {
@@ -59,35 +60,23 @@ public class EncryptionUtils {
     
     protected Log log = LogFactory.getLog(EncryptionUtils.class);
 
-    private EncryptionUtils() {
+    @Inject
+    RandomUtils randomUtils;
+
+    @Inject
+    Sha1Utils sha1Utils;
+
+    @Inject
+    Sha256Utils sha256Utils;
+
+    protected EncryptionUtils() {
         super();
-    }
-
-    private static class EncryptionUtilsHolder {
-        static EncryptionUtils instance = new EncryptionUtils();
-    }
-
-    public static EncryptionUtils getInstance() {
-        return EncryptionUtilsHolder.instance;
-    }
-
-    public Random getRandom() {
-        Random random;
-
-        try {
-            random = SecureRandom.getInstance(EncryptionConstants.SHA1PRNG_ALGORITHM);
-        } catch (NoSuchAlgorithmException nsae) {
-            log.warn("SecureRandom was unable to find an instance of " + EncryptionConstants.SHA1PRNG_ALGORITHM + ", falling back to Random");
-            random = new Random();
-        }
-
-        return random;
     }
 
     private byte[] generateInitializationVector() {
         var bytes = new byte[16];
 
-        getRandom().nextBytes(bytes);
+        randomUtils.getRandom().nextBytes(bytes);
 
         return bytes;
     }
@@ -195,7 +184,7 @@ public class EncryptionUtils {
             }
 
             var encryptionKeyControl = Session.getModelController(EncryptionKeyControl.class);
-            var sha1Hash = Sha1Utils.getInstance().encode(baseKey1, baseKey2);
+            var sha1Hash = sha1Utils.encode(baseKey1, baseKey2);
             var baseEncryptionKey = encryptionKeyControl.getBaseEncryptionKeyBySha1Hash(sha1Hash);
 
             if(baseEncryptionKey != null) {
@@ -376,7 +365,7 @@ public class EncryptionUtils {
             case INTERNAL -> "";
             case EXTERNAL, HMAC_SHA256 -> ".#" + entityEncryptionKeyType.name() + "#";
         };
-        var entityEncryptionKeyNameHash = Sha256Utils.getInstance().hash((entityEncryptionKeyName + suffix)
+        var entityEncryptionKeyNameHash = sha256Utils.hash((entityEncryptionKeyName + suffix)
                 .getBytes(StandardCharsets.UTF_8));
         var entityEncryptionKey = encryptionKeyControl.getEntityEncryptionKeyByNameHash(entityEncryptionKeyNameHash);
         var baseEncoding = BaseEncoding.base64();

@@ -73,6 +73,9 @@ public class ExecuteGraphQlCommand
     @Inject
     protected IdempotentResponseControl idempotentResponseControl;
 
+    @Inject
+    Sha256Utils sha256Utils;
+
     /** Creates a new instance of ExecuteGraphQlCommand */
     public ExecuteGraphQlCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
@@ -112,7 +115,7 @@ public class ExecuteGraphQlCommand
             @SuppressWarnings("unchecked")
             var canonicalVariables = (Map<String, Object>)canonicalize(variables);
 
-            result = Sha256Utils.getInstance().hash(GraphQlUtils.getInstance().toJson(canonicalVariables));
+            result = sha256Utils.hash(GraphQlUtils.getInstance().toJson(canonicalVariables));
         }
 
         return result;
@@ -123,11 +126,10 @@ public class ExecuteGraphQlCommand
         // The database holds it through transaction completion, including response storage.
         var userVisit = getUserVisitForUpdate();
 
-        var sha256 = Sha256Utils.getInstance();
-        var keyHash = sha256.hash(idempotencyKey);
-        var queryHash = sha256.hash(input.getQuery());
+        var keyHash = sha256Utils.hash(idempotencyKey);
+        var queryHash = sha256Utils.hash(input.getQuery());
         var variablesHash = hashVariables(input.getVariables());
-        var operationNameHash = input.getOperationName() == null ? null : sha256.hash(input.getOperationName());
+        var operationNameHash = input.getOperationName() == null ? null : sha256Utils.hash(input.getOperationName());
         var existingIdempotentResponse = idempotentResponseControl.getIdempotentResponseForUpdate(userVisit, keyHash);
 
         if(existingIdempotentResponse != null) {

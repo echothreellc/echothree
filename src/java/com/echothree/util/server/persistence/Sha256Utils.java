@@ -21,27 +21,29 @@ import com.google.common.io.BaseEncoding;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
+@ApplicationScoped
 public class Sha256Utils
         implements ShaUtils {
-    
-    private Sha256Utils() {
+
+    @Inject
+    RandomUtils randomUtils;
+
+    protected Sha256Utils() {
         super();
     }
-    
-    private static class Sha256UtilsHolder {
+
+    protected static class Sha256UtilsHolder {
         static Sha256Utils instance = new Sha256Utils();
     }
-    
-    public static ShaUtils getInstance() {
-        return Sha256UtilsHolder.instance;
-    }
-    
+
     @Override
     public String generateSalt() {
         var salt = new byte[32];
-        
-        EncryptionUtils.getInstance().getRandom().nextBytes(salt);
+
+        randomUtils.getRandom().nextBytes(salt);
         
         return BaseEncoding.base64().encode(salt);
     }

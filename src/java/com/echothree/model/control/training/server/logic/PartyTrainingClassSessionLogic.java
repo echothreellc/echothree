@@ -35,8 +35,8 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.EncryptionUtils;
 import com.echothree.util.server.persistence.EntityPermission;
+import com.echothree.util.server.persistence.RandomUtils;
 import com.echothree.util.server.persistence.Session;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -55,6 +55,9 @@ public class PartyTrainingClassSessionLogic
 
     @Inject
     PartyTrainingClassLogic partyTrainingClassLogic;
+
+    @Inject
+    RandomUtils randomUtils;
 
     protected PartyTrainingClassSessionLogic() {
         super();
@@ -253,7 +256,7 @@ public class PartyTrainingClassSessionLogic
         var overallQuestionCount = trainingClass.getLastDetail().getOverallQuestionCount();
         List<TrainingClassQuestion> randomOverallQuestions = new ArrayList<>();
         List<TrainingClassQuestion> finalTrainingClassQuestions = new ArrayList<>();
-        var random = EncryptionUtils.getInstance().getRandom();
+        var random = randomUtils.getRandom();
 
         var overallQuestionTotal = 0;
         for(var trainingClassSection : trainingClassSections) {

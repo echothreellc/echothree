@@ -18,13 +18,14 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DecryptForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.EncryptionUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class DecryptCommand
@@ -39,7 +40,10 @@ public class DecryptCommand
                 new FieldDefinition("Value", FieldType.STRING, true, null, null)
         );
     }
-    
+
+    @Inject
+    EncryptionUtils encryptionUtils;
+
     /** Creates a new instance of DecryptCommand */
     public DecryptCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
@@ -52,7 +56,7 @@ public class DecryptCommand
         var initializationVector = form.getInitializationVector();
         var value = form.getValue();
 
-        result.setValue(EncryptionUtils.getInstance().decrypt(entityEncryptionKeyName, initializationVector, true, value));
+        result.setValue(encryptionUtils.decrypt(entityEncryptionKeyName, initializationVector, true, value));
 
         return result;
     }

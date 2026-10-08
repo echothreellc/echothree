@@ -56,6 +56,9 @@ public class RecoverPasswordCommand
     @Inject
     UserLoginLogic userLoginLogic;
 
+    @Inject
+    PasswordGeneratorUtils passwordGeneratorUtils;
+
     /** Creates a new instance of RecoverPasswordCommand */
     public RecoverPasswordCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
@@ -101,7 +104,7 @@ public class RecoverPasswordCommand
                 
                 if(!hasExecutionErrors()) {
                     var userLoginPasswordType = userControl.getUserLoginPasswordTypeByName(UserConstants.UserLoginPasswordType_RECOVERED_STRING);
-                    var password = PasswordGeneratorUtils.getInstance().getPassword(party.getLastDetail().getPartyType());
+                    var password = passwordGeneratorUtils.getPassword(party.getLastDetail().getPartyType());
                     var createdBy = getPartyPK();
 
                     // If it already exists, delete the previous attempt at recovery.

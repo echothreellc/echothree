@@ -16,9 +16,6 @@
 
 package com.echothree.model.control.search.server.search;
 
-import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TIMES_ENTITY_INSTANCE_FK;
-import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
-import static com.echothree.model.jooq.server.tables.core.EntityTimes.EntityTimes;
 import com.echothree.model.data.core.common.pk.EntityInstancePK;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
@@ -34,6 +31,9 @@ import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.search.server.value.CachedExecutedSearchResultValue;
 import com.echothree.model.data.search.server.value.SearchResultValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.ENTITY_TIMES_ENTITY_INSTANCE_FK;
+import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
+import static com.echothree.model.jooq.server.tables.core.EntityTimes.EntityTimes;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.string.StringUtils;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -45,6 +45,7 @@ import static java.lang.Math.toIntExact;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.enterprise.inject.spi.CDI;
 import org.apache.commons.codec.language.Soundex;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
@@ -234,7 +235,7 @@ public abstract class BaseSearchEvaluator
         if(parsedQuery == null) {
             size = createUserVisitSearchResults(null);
         } else {
-            final var sha1Utils = Sha1Utils.getInstance();
+            final var sha1Utils = CDI.current().select(Sha1Utils.class).get();
             final var querySha1Hash = sha1Utils.hash(q);
             final var parsedQuerySha1Hash = sha1Utils.hash(parsedQuery);
 

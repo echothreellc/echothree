@@ -22,29 +22,27 @@ import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import javax.crypto.Mac;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
+@ApplicationScoped
 public class HmacSha256Utils
         implements MacUtils {
 
     private static final String HMAC_256_ALGORITHM = "HmacSHA256";
     private static final int HMAC_256_KEYSIZE = 256;
 
-    private HmacSha256Utils() {
+    @Inject
+    EncryptionUtils encryptionUtils;
+
+    protected HmacSha256Utils() {
         super();
-    }
-
-    private static class HmacSha256UtilsHolder {
-        static HmacSha256Utils instance = new HmacSha256Utils();
-    }
-
-    public static MacUtils getInstance() {
-        return HmacSha256UtilsHolder.instance;
     }
 
     @Override
     public String hash(BaseFactory<?, ?> baseFactory, final String value) {
         try {
-            var secretKey = EncryptionUtils.getInstance().getEntityEncryptionKey(HMAC_256_ALGORITHM, HMAC_256_KEYSIZE, baseFactory,
+            var secretKey = encryptionUtils.getEntityEncryptionKey(HMAC_256_ALGORITHM, HMAC_256_KEYSIZE, baseFactory,
                     EncryptionUtils.EntityEncryptionKeyTypes.HMAC_SHA256);
             var hmac = Mac.getInstance(HMAC_256_ALGORITHM);
 

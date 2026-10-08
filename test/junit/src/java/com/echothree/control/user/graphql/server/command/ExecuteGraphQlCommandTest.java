@@ -28,7 +28,7 @@ import com.echothree.model.data.graphql.server.value.IdempotentResponseValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.user.server.value.UserVisitValue;
-import com.echothree.util.server.persistence.EncryptionUtils;
+import com.echothree.util.server.persistence.CryptoTestUtils;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.valuecache.NullValueCacheImpl;
@@ -54,6 +54,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+@SuppressWarnings("UnnecessaryAssignment") // Supply CDI dependencies explicitly without a container.
 public class ExecuteGraphQlCommandTest {
 
     private static final String MUTATION = "mutation { rejected { commandResult { hasErrors } } }";
@@ -97,7 +98,7 @@ public class ExecuteGraphQlCommandTest {
             creates++;
             entry = new StoredKey(new IdempotentResponseValue(new IdempotentResponsePK((long)creates), visit.getPrimaryKey(),
                     keyHash, queryHash, variablesHash, operationNameHash, startTime, completedTime, response, retainUntilTime,
-                    EncryptionUtils.getInstance().generateRowInitializationVector()));
+                    CryptoTestUtils.encryptionUtils().generateRowInitializationVector()));
             entries.put(new Lookup(visit.getPrimaryKey(), keyHash), entry);
             // Generated factories return read-only entities from create(). A caller
             // must fetch for update before setting completion fields.
@@ -136,6 +137,7 @@ public class ExecuteGraphQlCommandTest {
             this.control = control;
             visit = new UserVisit(new UserVisitValue(new UserVisitPK(visitId), null, null, null, null,
                     null, null, 0L, null, null, null, 0L, Long.MAX_VALUE), EntityPermission.READ_WRITE);
+            sha256Utils = CryptoTestUtils.sha256Utils();
             idempotentResponseControl = control;
             session = testSession();
         }
@@ -235,6 +237,7 @@ public class ExecuteGraphQlCommandTest {
 
     private void assertRejected(String document) {
         var command = new ExecuteGraphQlCommand();
+        command.sha256Utils = CryptoTestUtils.sha256Utils();
         var calls = new AtomicInteger();
         var result = graphQl(command, "retry-key").execute(ExecutionInput.newExecutionInput()
                 .query(document).graphQLContext(Map.of("calls", calls)).build());
@@ -262,6 +265,7 @@ public class ExecuteGraphQlCommandTest {
     @Test
     public void queryWithoutKeyExecutesNormally() {
         var command = new ExecuteGraphQlCommand();
+        command.sha256Utils = CryptoTestUtils.sha256Utils();
         var calls = new AtomicInteger();
         var result = graphQl(command, null).execute(ExecutionInput.newExecutionInput()
                 .query("{ value }").graphQLContext(Map.of("calls", calls)).build());
@@ -386,6 +390,7 @@ public class ExecuteGraphQlCommandTest {
     @Test
     public void canonicalVariablesIgnoreObjectOrderButPreserveArrayOrderAndNulls() {
         var command = new ExecuteGraphQlCommand();
+        command.sha256Utils = CryptoTestUtils.sha256Utils();
         var utils = com.echothree.util.common.string.GraphQlUtils.getInstance();
         var first = utils.toMap("{\"a\":{\"x\":1,\"y\":null},\"b\":[1,2]}");
         var reordered = utils.toMap("{\"b\":[1,2],\"a\":{\"y\":null,\"x\":1}}");
@@ -549,6 +554,7 @@ public class ExecuteGraphQlCommandTest {
 
     private com.google.gson.JsonObject relayResponse(String document, Map<String, Object> variables) {
         var command = new ExecuteGraphQlCommand();
+        command.sha256Utils = CryptoTestUtils.sha256Utils();
         var result = graphQl(command, null).execute(ExecutionInput.newExecutionInput()
                 .query(document).variables(variables).root(new Object())
                 .graphQLContext(Map.of("calls", new AtomicInteger())).build());

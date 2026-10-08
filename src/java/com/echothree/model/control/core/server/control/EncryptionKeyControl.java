@@ -16,8 +16,6 @@
 
 package com.echothree.model.control.core.server.control;
 
-import com.echothree.model.control.core.common.ComponentVendors;
-import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.common.choice.BaseEncryptionKeyStatusChoicesBean;
 import com.echothree.model.control.core.common.transfer.BaseEncryptionKeyTransfer;
@@ -76,6 +74,9 @@ public class EncryptionKeyControl
     @Inject
     protected SequenceGeneratorLogic sequenceGeneratorLogic;
 
+    @Inject
+    Sha1Utils sha1Utils;
+
     /** Creates a new instance of EncryptionKeyControl */
     protected EncryptionKeyControl() {
         super();
@@ -102,7 +103,7 @@ public class EncryptionKeyControl
         if(!eea.hasExecutionErrors()) {
             var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.BASE_ENCRYPTION_KEY.name());
             var baseEncryptionKeyName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
-            var sha1Hash = Sha1Utils.getInstance().encode(baseKey1, baseKey2);
+            var sha1Hash = sha1Utils.encode(baseKey1, baseKey2);
             baseEncryptionKey = createBaseEncryptionKey(baseEncryptionKeyName, sha1Hash, createdBy);
 
             var entityInstance = getEntityInstanceByBaseEntity(baseEncryptionKey);

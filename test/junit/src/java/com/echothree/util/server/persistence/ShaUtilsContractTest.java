@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ShaUtilsContractTest {
 
-    private final List<ShaUtils> implementations = List.of(Sha1Utils.getInstance(), Sha256Utils.getInstance());
+    private final List<ShaUtils> implementations = List.of(CryptoTestUtils.sha1Utils(), CryptoTestUtils.sha256Utils());
 
     @Test
     public void generatedSaltsAreFreshAndUsable() {

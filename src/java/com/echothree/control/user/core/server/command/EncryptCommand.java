@@ -18,13 +18,14 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.EncryptForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.EncryptionUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EncryptCommand
@@ -38,7 +39,10 @@ public class EncryptCommand
                 new FieldDefinition("Value", FieldType.STRING, true, null, null)
         );
     }
-    
+
+    @Inject
+    EncryptionUtils encryptionUtils;
+
     /** Creates a new instance of EncryptCommand */
     public EncryptCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
@@ -48,11 +52,11 @@ public class EncryptCommand
     protected BaseResult execute() {
         var result = CoreResultFactory.getEncryptResult();
         var entityEncryptionKeyName = form.getEntityEncryptionKeyName();
-        var initializationVector = EncryptionUtils.getInstance().generateRowInitializationVector();
+        var initializationVector = encryptionUtils.generateRowInitializationVector();
         var value = form.getValue();
 
         result.setInitializationVector(initializationVector);
-        result.setValue(EncryptionUtils.getInstance().encrypt(entityEncryptionKeyName, initializationVector, true, value));
+        result.setValue(encryptionUtils.encrypt(entityEncryptionKeyName, initializationVector, true, value));
 
         return result;
     }

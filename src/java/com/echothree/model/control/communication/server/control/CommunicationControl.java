@@ -143,6 +143,9 @@ public class CommunicationControl
     @Inject
     protected SequenceGeneratorLogic sequenceGeneratorLogic;
 
+    @Inject
+    EncryptionUtils encryptionUtils;
+
     /** Creates a new instance of CommunicationControl */
     protected CommunicationControl() {
         super();
@@ -1516,7 +1519,7 @@ public class CommunicationControl
     public CommunicationEmailSource createCommunicationEmailSource(CommunicationSource communicationSource, Server server,
             String username, String password, WorkEffortScope receiveWorkEffortScope, WorkEffortScope sendWorkEffortScope,
             Selector reviewEmployeeSelector, BasePK createdBy) {
-        var initializationVector = EncryptionUtils.getInstance().generateRowInitializationVector();
+        var initializationVector = encryptionUtils.generateRowInitializationVector();
         var communicationEmailSource = communicationEmailSourceFactory.create(
                 communicationSource, server, username, encodeCommunicationEmailSourcePassword(initializationVector, password), receiveWorkEffortScope,
                 sendWorkEffortScope, reviewEmployeeSelector, initializationVector, session.getStartTime(), Session.MAX_TIME);
@@ -1562,22 +1565,22 @@ public class CommunicationControl
     }
 
     public String encodeCommunicationEmailSourcePassword(CommunicationEmailSource communicationEmailSource, String password) {
-        return EncryptionUtils.getInstance().encrypt(communicationEmailSourceFactory,
+        return encryptionUtils.encrypt(communicationEmailSourceFactory,
                 communicationEmailSource.getInitializationVector(), password);
     }
 
     public String encodeCommunicationEmailSourcePassword(String initializationVector, String password) {
-        return EncryptionUtils.getInstance().encrypt(communicationEmailSourceFactory,
+        return encryptionUtils.encrypt(communicationEmailSourceFactory,
                 initializationVector, password);
     }
 
     public String decodeCommunicationEmailSourcePassword(CommunicationEmailSource communicationEmailSource) {
-        return EncryptionUtils.getInstance().decrypt(communicationEmailSourceFactory,
+        return encryptionUtils.decrypt(communicationEmailSourceFactory,
                 communicationEmailSource.getInitializationVector(), communicationEmailSource.getPassword());
     }
 
     public String decodeCommunicationEmailSourcePassword(String initializationVector, String password) {
-        return EncryptionUtils.getInstance().decrypt(communicationEmailSourceFactory,
+        return encryptionUtils.decrypt(communicationEmailSourceFactory,
                 initializationVector, password);
     }
 
@@ -1592,7 +1595,7 @@ public class CommunicationControl
             // Always generate a new initialization vector on updates.
             var decodedPassword = decodeCommunicationEmailSourcePassword(communicationEmailSourceValue.getInitializationVector(),
                     communicationEmailSourceValue.getPassword());
-            var initializationVector = EncryptionUtils.getInstance().generateRowInitializationVector();
+            var initializationVector = encryptionUtils.generateRowInitializationVector();
 
             var communicationSource = communicationEmailSource.getCommunicationSource();
             var serverPK = communicationEmailSourceValue.getServerPK();
