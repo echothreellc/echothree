@@ -1562,22 +1562,22 @@ public class CommunicationControl
     }
 
     public String encodeCommunicationEmailSourcePassword(CommunicationEmailSource communicationEmailSource, String password) {
-        return EncryptionUtils.getInstance().encrypt(communicationEmailSourceFactory.getEntityTypeName(),
+        return EncryptionUtils.getInstance().encrypt(communicationEmailSourceFactory,
                 communicationEmailSource.getInitializationVector(), password);
     }
 
     public String encodeCommunicationEmailSourcePassword(String initializationVector, String password) {
-        return EncryptionUtils.getInstance().encrypt(communicationEmailSourceFactory.getEntityTypeName(),
+        return EncryptionUtils.getInstance().encrypt(communicationEmailSourceFactory,
                 initializationVector, password);
     }
 
     public String decodeCommunicationEmailSourcePassword(CommunicationEmailSource communicationEmailSource) {
-        return EncryptionUtils.getInstance().decrypt(communicationEmailSourceFactory.getEntityTypeName(),
+        return EncryptionUtils.getInstance().decrypt(communicationEmailSourceFactory,
                 communicationEmailSource.getInitializationVector(), communicationEmailSource.getPassword());
     }
 
     public String decodeCommunicationEmailSourcePassword(String initializationVector, String password) {
-        return EncryptionUtils.getInstance().decrypt(communicationEmailSourceFactory.getEntityTypeName(),
+        return EncryptionUtils.getInstance().decrypt(communicationEmailSourceFactory,
                 initializationVector, password);
     }
 
