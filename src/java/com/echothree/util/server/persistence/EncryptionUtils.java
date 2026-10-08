@@ -75,9 +75,9 @@ public class EncryptionUtils {
         Random random;
 
         try {
-            random = SecureRandom.getInstance(EncryptionConstants.randomAlgorithm);
+            random = SecureRandom.getInstance(EncryptionConstants.SHA1PRNG_ALGORITHM);
         } catch (NoSuchAlgorithmException nsae) {
-            log.warn("SecureRandom was unable to find an instance of " + EncryptionConstants.randomAlgorithm + ", falling back to Random");
+            log.warn("SecureRandom was unable to find an instance of " + EncryptionConstants.SHA1PRNG_ALGORITHM + ", falling back to Random");
             random = new Random();
         }
 
@@ -103,9 +103,9 @@ public class EncryptionUtils {
         SecretKey secretKey;
 
         try {
-            var keyGenerator = KeyGenerator.getInstance(EncryptionConstants.algorithm);
+            var keyGenerator = KeyGenerator.getInstance(EncryptionConstants.AES_ALGORITHM);
 
-            keyGenerator.init(EncryptionConstants.keysize);
+            keyGenerator.init(EncryptionConstants.AES_KEYSIZE);
 
             secretKey = keyGenerator.generateKey();
         } catch (NoSuchAlgorithmException nsae) {
@@ -245,12 +245,8 @@ public class EncryptionUtils {
                 var decryptedKey = oldCipher1.doFinal(oldCipher2.doFinal(encryptedKey));
 
                 encryptedKey = newCipher2.doFinal(newCipher1.doFinal(decryptedKey));
-            } catch (IllegalStateException ise) {
-                throw new PersistenceEncryptionException(ise);
-            } catch (IllegalBlockSizeException ibse) {
-                throw new PersistenceEncryptionException(ibse);
-            } catch (BadPaddingException bpe) {
-                throw new PersistenceEncryptionException(bpe);
+            } catch (IllegalStateException | IllegalBlockSizeException | BadPaddingException e) {
+                throw new PersistenceEncryptionException(e);
             }
 
             entityEncryptionKey.setSecretKey(baseEncoding.encode(encryptedKey));
@@ -272,9 +268,7 @@ public class EncryptionUtils {
             throw new PersistenceEncryptionException(cacheCount == 0 ? "Base Encryption Keys Missing" : "Base Encryption Keys Incomplete");
         }
 
-        var baseKeys = new BaseKeys(baseKey1, baseKey2);
-
-        return baseKeys;
+        return new BaseKeys(baseKey1, baseKey2);
     }
 
     private String getEntityEncryptionKeyName(final BaseFactory<?, ?> baseFactory) {
@@ -292,12 +286,8 @@ public class EncryptionUtils {
             try {
                 encryptedValue = BaseEncoding.base64().encode(getCipher(entityEncryptionKeyName, rowInitializationVector,
                         isExternal ? EntityEncryptionKeyTypes.EXTERNAL : EntityEncryptionKeyTypes.INTERNAL, Cipher.ENCRYPT_MODE).doFinal(value.getBytes(StandardCharsets.UTF_8)));
-            } catch (IllegalStateException ise) {
-                throw new PersistenceEncryptionException(ise);
-            } catch (IllegalBlockSizeException ibse) {
-                throw new PersistenceEncryptionException(ibse);
-            } catch (BadPaddingException bpe) {
-                throw new PersistenceEncryptionException(bpe);
+            } catch (IllegalStateException | IllegalBlockSizeException | BadPaddingException e) {
+                throw new PersistenceEncryptionException(e);
             }
         }
 
@@ -315,12 +305,8 @@ public class EncryptionUtils {
             try {
                 decryptedValue = new String(getCipher(entityEncryptionKeyName, rowInitializationVector,
                         isExternal ? EntityEncryptionKeyTypes.EXTERNAL : EntityEncryptionKeyTypes.INTERNAL, Cipher.DECRYPT_MODE).doFinal(BaseEncoding.base64().decode(value)), StandardCharsets.UTF_8);
-            } catch (IllegalStateException ise) {
-                throw new PersistenceEncryptionException(ise);
-            } catch (IllegalBlockSizeException ibse) {
-                throw new PersistenceEncryptionException(ibse);
-            } catch (BadPaddingException bpe) {
-                throw new PersistenceEncryptionException(bpe);
+            } catch (IllegalStateException | IllegalBlockSizeException | BadPaddingException e) {
+                throw new PersistenceEncryptionException(e);
             }
         }
 
@@ -331,11 +317,9 @@ public class EncryptionUtils {
         Cipher cipher;
 
         try {
-            cipher = Cipher.getInstance(EncryptionConstants.transformation);
-        } catch (NoSuchAlgorithmException nsae) {
-            throw new PersistenceEncryptionException(nsae);
-        } catch (NoSuchPaddingException nspe) {
-            throw new PersistenceEncryptionException(nspe);
+            cipher = Cipher.getInstance(EncryptionConstants.AES_TRANSFORMATION);
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+            throw new PersistenceEncryptionException(e);
         }
 
         // Setup cipher
@@ -343,10 +327,8 @@ public class EncryptionUtils {
             var ivParameterSpec = new IvParameterSpec(iv);
 
             cipher.init(cipherMode, secretKey, ivParameterSpec);
-        } catch (InvalidKeyException ike) {
-            throw new PersistenceEncryptionException(ike);
-        } catch (InvalidAlgorithmParameterException iape) {
-            throw new PersistenceEncryptionException(iape);
+        } catch (InvalidKeyException | InvalidAlgorithmParameterException e) {
+            throw new PersistenceEncryptionException(e);
         }
 
         return cipher;
@@ -360,12 +342,8 @@ public class EncryptionUtils {
 
         try {
             encryptedData = cipher2.doFinal(cipher1.doFinal(decryptedData));
-        } catch (IllegalStateException ise) {
-            throw new PersistenceEncryptionException(ise);
-        } catch (IllegalBlockSizeException ibse) {
-            throw new PersistenceEncryptionException(ibse);
-        } catch (BadPaddingException bpe) {
-            throw new PersistenceEncryptionException(bpe);
+        } catch (IllegalStateException | IllegalBlockSizeException | BadPaddingException e) {
+            throw new PersistenceEncryptionException(e);
         }
 
         return encryptedData;
@@ -379,12 +357,8 @@ public class EncryptionUtils {
 
         try {
             decryptedData = cipher1.doFinal(cipher2.doFinal(encryptedData));
-        } catch (IllegalStateException ise) {
-            throw new PersistenceEncryptionException(ise);
-        } catch (IllegalBlockSizeException ibse) {
-            throw new PersistenceEncryptionException(ibse);
-        } catch (BadPaddingException bpe) {
-            throw new PersistenceEncryptionException(bpe);
+        } catch (IllegalStateException | IllegalBlockSizeException | BadPaddingException e) {
+            throw new PersistenceEncryptionException(e);
         }
 
         return decryptedData;
@@ -423,14 +397,12 @@ public class EncryptionUtils {
             var key = secretKey.getEncoded();
             var encryptedKey = encryptDataUsingBaseKeys(key);
 
-            encryptionKeyControl.createEntityEncryptionKey(entityEncryptionKeyNameHash,
-                    baseEncoding.encode(encryptedKey));
-
+            encryptionKeyControl.createEntityEncryptionKey(entityEncryptionKeyNameHash, baseEncoding.encode(encryptedKey));
         } else {
             var encryptedKey = baseEncoding.decode(entityEncryptionKey.getSecretKey());
             var key = decryptDataUsingBaseKeys(encryptedKey);
 
-            secretKey = new SecretKeySpec(key, EncryptionConstants.algorithm);
+            secretKey = new SecretKeySpec(key, algorithm);
         }
 
         return secretKey;
@@ -438,7 +410,7 @@ public class EncryptionUtils {
 
     private Cipher getCipher(final String entityEncryptionKeyName, final String rowInitializationVector,
             final EntityEncryptionKeyTypes entityEncryptionKeyType, final int cipherMode) {
-        var secretKey = getEntityEncryptionKey(EncryptionConstants.algorithm, EncryptionConstants.keysize,
+        var secretKey = getEntityEncryptionKey(EncryptionConstants.AES_ALGORITHM, EncryptionConstants.AES_KEYSIZE,
                 entityEncryptionKeyName, entityEncryptionKeyType);
         var baseEncoding = BaseEncoding.base64();
         var iv = baseEncoding.decode(rowInitializationVector);

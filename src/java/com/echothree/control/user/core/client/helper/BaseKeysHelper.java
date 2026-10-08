@@ -127,7 +127,7 @@ public class BaseKeysHelper {
 
         keyProperties.loadFromXML(new FileInputStream(fileName));
 
-        var secretKey1 = new SecretKeySpec(baseEncoding.decode(keyProperties.getProperty("key")), EncryptionConstants.algorithm);
+        var secretKey1 = new SecretKeySpec(baseEncoding.decode(keyProperties.getProperty("key")), EncryptionConstants.AES_ALGORITHM);
         var iv1 = baseEncoding.decode(keyProperties.getProperty("iv"));
 
         var baseKey = new BaseKey(secretKey1, iv1);

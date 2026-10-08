@@ -17,10 +17,13 @@
 package com.echothree.util.common.persistence;
 
 public interface EncryptionConstants {
-    
-    String randomAlgorithm = "SHA1PRNG";
-    String algorithm = "AES";
-    int keysize = 256;
-    String transformation = "AES/CBC/PKCS5Padding";
+
+    // Random Number Generator
+    String SHA1PRNG_ALGORITHM = "SHA1PRNG";
+
+    // AES
+    String AES_ALGORITHM = "AES";
+    int AES_KEYSIZE = 256;
+    String AES_TRANSFORMATION = "AES/CBC/PKCS5Padding";
     
 }
