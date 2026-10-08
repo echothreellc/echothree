@@ -75,6 +75,7 @@ import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EncryptionUtils;
 import com.echothree.util.server.persistence.EntityPermission;
+import com.echothree.util.server.persistence.HmacSha256Utils;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -466,8 +467,9 @@ public class PartyPaymentMethodControl
             PartyContactMechanism billingPartyContactMechanism, String issuerName, PartyContactMechanism issuerPartyContactMechanism,
             BasePK createdBy) {
         var initializationVector = EncryptionUtils.getInstance().generateRowInitializationVector();
+        var numberHash = HmacSha256Utils.getInstance().hash(partyPaymentMethodCreditCardFactory, number);
         var partyPaymentMethodCreditCard = partyPaymentMethodCreditCardFactory.create(
-                partyPaymentMethod, encodePartyPaymentMethodCreditCardNumber(initializationVector, number), null, expirationMonth, expirationYear, personalTitle,
+                partyPaymentMethod, encodePartyPaymentMethodCreditCardNumber(initializationVector, number), numberHash, expirationMonth, expirationYear, personalTitle,
                 firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx, nameSuffix, name, billingPartyContactMechanism,
                 issuerName, issuerPartyContactMechanism, initializationVector, session.getStartTime(), Session.MAX_TIME);
         
@@ -651,6 +653,7 @@ public class PartyPaymentMethodControl
             // Always generate a new initialization vector on updates.
             var decodedNumber = decodePartyPaymentMethodCreditCardNumber(partyPaymentMethodCreditCardValue.getInitializationVector(),
                     partyPaymentMethodCreditCardValue.getNumber());
+            var numberHash = HmacSha256Utils.getInstance().hash(partyPaymentMethodCreditCardFactory, decodedNumber);
             var initializationVector = EncryptionUtils.getInstance().generateRowInitializationVector();
 
             var partyPaymentMethodPK = partyPaymentMethodCreditCard.getPartyPaymentMethodPK(); // Not updated
@@ -670,7 +673,7 @@ public class PartyPaymentMethodControl
             var issuerName = partyPaymentMethodCreditCardValue.getIssuerName();
             var issuerPartyContactMechanismPK = partyPaymentMethodCreditCardValue.getIssuerPartyContactMechanismPK();
 
-            partyPaymentMethodCreditCard = partyPaymentMethodCreditCardFactory.create(partyPaymentMethodPK, number, null, expirationMonth,
+            partyPaymentMethodCreditCard = partyPaymentMethodCreditCardFactory.create(partyPaymentMethodPK, number, numberHash, expirationMonth,
                     expirationYear, personalTitlePK, firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx, nameSuffixPK, name,
                     billingPartyContactMechanismPK, issuerName, issuerPartyContactMechanismPK, initializationVector, session.getStartTime(), Session.MAX_TIME);
             
