@@ -53,9 +53,9 @@ public class EncryptionUtils {
         HMAC_SHA256
     }
 
-    private static final String fqnBaseKeys = "/com/echothree/security/base";
-    private static final String cacheBaseKey1 = "BaseKey1";
-    private static final String cacheBaseKey2 = "BaseKey2";
+    private static final String FQN_BASE_KEYS = "/com/echothree/security/base";
+    private static final String CACHE_BASE_KEY_1 = "BaseKey1";
+    private static final String CACHE_BASE_KEY_2 = "BaseKey2";
     
     protected Log log = LogFactory.getLog(EncryptionUtils.class);
 
@@ -116,7 +116,7 @@ public class EncryptionUtils {
         var iv = generateInitializationVector();
 
         var baseKey = new BaseKey(secretKey, iv);
-        cache.put(fqnBaseKeys + "/" + cacheBaseKeyName, baseKey);
+        cache.put(FQN_BASE_KEYS + "/" + cacheBaseKeyName, baseKey);
 
         return baseKey;
     }
@@ -144,8 +144,8 @@ public class EncryptionUtils {
 
     private BaseKeys createBaseKeys(final ExecutionErrorAccumulator eea, final PartyPK createdBy) {
         var encryptionKeyControl = Session.getModelController(EncryptionKeyControl.class);
-        var baseKey1 = generateBaseKey(cacheBaseKey1);
-        var baseKey2 = generateBaseKey(cacheBaseKey2);
+        var baseKey1 = generateBaseKey(CACHE_BASE_KEY_1);
+        var baseKey2 = generateBaseKey(CACHE_BASE_KEY_2);
         var baseKey3 = xorBaseKeys(baseKey1, baseKey2);
         var baseEncryptionKey = encryptionKeyControl.createBaseEncryptionKey(eea, baseKey1, baseKey2, createdBy);
 
@@ -218,8 +218,8 @@ public class EncryptionUtils {
 
         validateBaseKeys(baseKeys, 2);
 
-        cache.put(fqnBaseKeys + "/" + cacheBaseKey1, baseKeys.getBaseKey1());
-        cache.put(fqnBaseKeys + "/" + cacheBaseKey2, baseKeys.getBaseKey2());
+        cache.put(FQN_BASE_KEYS + "/" + CACHE_BASE_KEY_1, baseKeys.getBaseKey1());
+        cache.put(FQN_BASE_KEYS + "/" + CACHE_BASE_KEY_2, baseKeys.getBaseKey2());
         log.info("Base Encryption Keys Loaded");
     }
 
@@ -259,8 +259,8 @@ public class EncryptionUtils {
 
     private BaseKeys getBaseKeys() {
         var cache = ThreadCaches.currentCaches().getSecurityCache();
-        var baseKey1 = (BaseKey)cache.get(fqnBaseKeys + "/" + cacheBaseKey1);
-        var baseKey2 = (BaseKey)cache.get(fqnBaseKeys + "/" + cacheBaseKey2);
+        var baseKey1 = (BaseKey)cache.get(FQN_BASE_KEYS + "/" + CACHE_BASE_KEY_1);
+        var baseKey2 = (BaseKey)cache.get(FQN_BASE_KEYS + "/" + CACHE_BASE_KEY_2);
 
         var cacheCount = (baseKey1 == null ? 0 : 1) + (baseKey2 == null ? 0 : 1);
 
