@@ -402,7 +402,7 @@ public class EncryptionUtils {
             var encryptedKey = encryptDataUsingBaseKeys(baseKeys, key);
             var baseEncoding = BaseEncoding.base64();
 
-            entityEncryptionKey = encryptionKeyControl.createEntityEncryptionKey(entityEncryptionKeyNameHash, isExternal,
+            entityEncryptionKey = encryptionKeyControl.createEntityEncryptionKey(entityEncryptionKeyNameHash,
                     baseEncoding.encode(encryptedKey));
         }
 

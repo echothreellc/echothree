@@ -2735,7 +2735,6 @@
                     <columns>
                         <column name="EntityEncryptionKeyId" type="EID" nullAllowed="false" />
                         <column name="EntityEncryptionKeyNameHash" type="Sha256Hash" nullAllowed="false" />
-                        <column name="IsExternal" type="Boolean" nullAllowed="false" />
                         <column name="SecretKey" type="EncodedSecretKey" nullAllowed="false" />
                     </columns>
                     <indexes>
