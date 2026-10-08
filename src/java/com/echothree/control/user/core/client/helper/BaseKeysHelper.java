@@ -34,8 +34,8 @@ import java.util.Map;
 import java.util.Properties;
 import javax.crypto.spec.SecretKeySpec;
 import javax.naming.NamingException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BaseKeysHelper {
     
@@ -51,7 +51,7 @@ public class BaseKeysHelper {
         return BaseKeysHelperHolder.instance;
     }
 
-    private Log log = LogFactory.getLog(this.getClass());
+    protected final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private void storeBaseKeyToProperties(String baseEncryptionKeyName, BaseKey baseKey, String which)
             throws IOException {
