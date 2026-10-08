@@ -629,7 +629,12 @@ public class PartyPaymentMethodControl
         return EncryptionUtils.getInstance().decrypt(partyPaymentMethodCreditCardFactory.getEntityTypeName(),
                 partyPaymentMethodCreditCard.getInitializationVector(), partyPaymentMethodCreditCard.getNumber());
     }
-    
+
+    public String decodePartyPaymentMethodCreditCardNumber(String initializationVector, String number) {
+        return EncryptionUtils.getInstance().decrypt(partyPaymentMethodCreditCardFactory.getEntityTypeName(),
+                initializationVector, number);
+    }
+
     public void setPartyPaymentMethodCreditCardNumber(PartyPaymentMethodCreditCard partyPaymentMethodCreditCard, String number) {
         partyPaymentMethodCreditCard.setNumber(encodePartyPaymentMethodCreditCardNumber(partyPaymentMethodCreditCard, number));
     }
@@ -643,8 +648,13 @@ public class PartyPaymentMethodControl
             partyPaymentMethodCreditCard.setThruTime(session.getStartTime());
             partyPaymentMethodCreditCard.store();
 
+            // Always generate a new initialization vector on updates.
+            var decodedNumber = decodePartyPaymentMethodCreditCardNumber(partyPaymentMethodCreditCardValue.getInitializationVector(),
+                    partyPaymentMethodCreditCardValue.getNumber());
+            var initializationVector = EncryptionUtils.getInstance().generateRowInitializationVector();
+
             var partyPaymentMethodPK = partyPaymentMethodCreditCard.getPartyPaymentMethodPK(); // Not updated
-            var number = partyPaymentMethodCreditCardValue.getNumber();
+            var number = encodePartyPaymentMethodCreditCardNumber(initializationVector, decodedNumber);
             var expirationMonth = partyPaymentMethodCreditCardValue.getExpirationMonth();
             var expirationYear = partyPaymentMethodCreditCardValue.getExpirationYear();
             var personalTitlePK = partyPaymentMethodCreditCardValue.getPersonalTitlePK();
@@ -659,7 +669,6 @@ public class PartyPaymentMethodControl
             var billingPartyContactMechanismPK = partyPaymentMethodCreditCardValue.getBillingPartyContactMechanismPK();
             var issuerName = partyPaymentMethodCreditCardValue.getIssuerName();
             var issuerPartyContactMechanismPK = partyPaymentMethodCreditCardValue.getIssuerPartyContactMechanismPK();
-            var initializationVector = partyPaymentMethodCreditCard.getInitializationVector(); // Not updated
 
             partyPaymentMethodCreditCard = partyPaymentMethodCreditCardFactory.create(partyPaymentMethodPK, number, expirationMonth,
                     expirationYear, personalTitlePK, firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx, nameSuffixPK, name,
@@ -760,7 +769,12 @@ public class PartyPaymentMethodControl
                 partyPaymentMethodCreditCardSecurityCode.getInitializationVector(),
                 partyPaymentMethodCreditCardSecurityCode.getSecurityCode());
     }
-    
+
+    public String decodePartyPaymentMethodCreditCardSecurityCodeSecurityCode(String initializationVector, String securityCode) {
+        return EncryptionUtils.getInstance().decrypt(partyPaymentMethodCreditCardSecurityCodeFactory.getEntityTypeName(),
+                initializationVector, securityCode);
+    }
+
     public void setPartyPaymentMethodCreditCardSecurityCodeSecurityCode(PartyPaymentMethodCreditCardSecurityCode partyPaymentMethodCreditCardSecurityCode,
             String securityCode) {
         partyPaymentMethodCreditCardSecurityCode.setSecurityCode(encodePartyPaymentMethodCreditCardSecurityCodeSecurityCode(partyPaymentMethodCreditCardSecurityCode, securityCode));
@@ -775,10 +789,14 @@ public class PartyPaymentMethodControl
             partyPaymentMethodCreditCardSecurityCode.setThruTime(session.getStartTime());
             partyPaymentMethodCreditCardSecurityCode.store();
 
+            // Always generate a new initialization vector on updates.
+            var decodedSecurityCode = decodePartyPaymentMethodCreditCardSecurityCodeSecurityCode(partyPaymentMethodCreditCardSecurityCodeValue.getInitializationVector(),
+                    partyPaymentMethodCreditCardSecurityCodeValue.getSecurityCode());
+            var initializationVector = EncryptionUtils.getInstance().generateRowInitializationVector();
+
             var partyPaymentMethodPK = partyPaymentMethodCreditCardSecurityCode.getPartyPaymentMethodPK(); // Not updated
-            var securityCode = partyPaymentMethodCreditCardSecurityCodeValue.getSecurityCode();
-            var initializationVector = partyPaymentMethodCreditCardSecurityCode.getInitializationVector(); // Not updated
-            
+            var securityCode = encodePartyPaymentMethodCreditCardSecurityCodeSecurityCode(initializationVector, decodedSecurityCode);
+
             partyPaymentMethodCreditCardSecurityCode = partyPaymentMethodCreditCardSecurityCodeFactory.create(
                     partyPaymentMethodPK, securityCode, initializationVector, session.getStartTime(), Session.MAX_TIME);
             

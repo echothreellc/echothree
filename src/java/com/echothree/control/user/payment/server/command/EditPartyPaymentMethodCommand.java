@@ -18,7 +18,6 @@ package com.echothree.control.user.payment.server.command;
 
 import com.echothree.control.user.payment.common.edit.PartyPaymentMethodEdit;
 import com.echothree.control.user.payment.common.edit.PaymentEditFactory;
-import com.echothree.control.user.payment.common.form.EditPartyPaymentMethodForm;
 import com.echothree.control.user.payment.common.result.EditPartyPaymentMethodResult;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.control.user.payment.common.spec.PartyPaymentMethodSpec;
@@ -32,7 +31,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.payment.server.entity.PartyPaymentMethod;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -43,9 +41,9 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.EntityPermission;
 import java.util.List;
-import org.apache.commons.codec.language.Soundex;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
+import org.apache.commons.codec.language.Soundex;
 
 @Dependent
 public class EditPartyPaymentMethodCommand
@@ -280,7 +278,7 @@ public class EditPartyPaymentMethodCommand
             }
 
             partyPaymentMethodCreditCardValue.setNumber(partyPaymentMethodControl.encodePartyPaymentMethodCreditCardNumber(
-                    partyPaymentMethodCreditCardValue.getInitializationVector(),number));
+                    partyPaymentMethodCreditCardValue.getInitializationVector(), number));
             partyPaymentMethodCreditCardValue.setExpirationMonth(expirationMonth);
             partyPaymentMethodCreditCardValue.setExpirationYear(expirationYear);
             partyPaymentMethodCreditCardValue.setPersonalTitlePK(personalTitle == null? null: personalTitle.getPrimaryKey());
