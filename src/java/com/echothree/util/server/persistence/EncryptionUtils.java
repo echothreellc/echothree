@@ -21,7 +21,6 @@ import static com.echothree.model.control.core.common.workflow.BaseEncryptionKey
 import com.echothree.model.control.core.server.control.EncryptionKeyControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.core.server.entity.EntityEncryptionKey;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.util.common.exception.PersistenceEncryptionException;
 import com.echothree.util.common.persistence.BaseKey;
@@ -51,12 +50,12 @@ public class EncryptionUtils {
     public enum EntityEncryptionKeyTypes {
         INTERNAL,
         EXTERNAL,
-        HMAC_SHA_256
+        HMAC_SHA256
     }
 
-    private static final String fqnBaseKeys = "/com/echothree/security/base";
-    private static final String cacheBaseKey1 = "BaseKey1";
-    private static final String cacheBaseKey2 = "BaseKey2";
+    private static final String FQN_BASE_KEYS = "/com/echothree/security/base";
+    private static final String CACHE_BASE_KEY_1 = "BaseKey1";
+    private static final String CACHE_BASE_KEY_2 = "BaseKey2";
     
     protected Log log = LogFactory.getLog(EncryptionUtils.class);
 
@@ -76,9 +75,9 @@ public class EncryptionUtils {
         Random random;
 
         try {
-            random = SecureRandom.getInstance(EncryptionConstants.randomAlgorithm);
+            random = SecureRandom.getInstance(EncryptionConstants.SHA1PRNG_ALGORITHM);
         } catch (NoSuchAlgorithmException nsae) {
-            log.warn("SecureRandom was unable to find an instance of " + EncryptionConstants.randomAlgorithm + ", falling back to Random");
+            log.warn("SecureRandom was unable to find an instance of " + EncryptionConstants.SHA1PRNG_ALGORITHM + ", falling back to Random");
             random = new Random();
         }
 
@@ -104,9 +103,9 @@ public class EncryptionUtils {
         SecretKey secretKey;
 
         try {
-            var keyGenerator = KeyGenerator.getInstance(EncryptionConstants.algorithm);
+            var keyGenerator = KeyGenerator.getInstance(EncryptionConstants.AES_ALGORITHM);
 
-            keyGenerator.init(EncryptionConstants.keysize);
+            keyGenerator.init(EncryptionConstants.AES_KEYSIZE);
 
             secretKey = keyGenerator.generateKey();
         } catch (NoSuchAlgorithmException nsae) {
@@ -117,7 +116,7 @@ public class EncryptionUtils {
         var iv = generateInitializationVector();
 
         var baseKey = new BaseKey(secretKey, iv);
-        cache.put(fqnBaseKeys + "/" + cacheBaseKeyName, baseKey);
+        cache.put(FQN_BASE_KEYS + "/" + cacheBaseKeyName, baseKey);
 
         return baseKey;
     }
@@ -145,8 +144,8 @@ public class EncryptionUtils {
 
     private BaseKeys createBaseKeys(final ExecutionErrorAccumulator eea, final PartyPK createdBy) {
         var encryptionKeyControl = Session.getModelController(EncryptionKeyControl.class);
-        var baseKey1 = generateBaseKey(cacheBaseKey1);
-        var baseKey2 = generateBaseKey(cacheBaseKey2);
+        var baseKey1 = generateBaseKey(CACHE_BASE_KEY_1);
+        var baseKey2 = generateBaseKey(CACHE_BASE_KEY_2);
         var baseKey3 = xorBaseKeys(baseKey1, baseKey2);
         var baseEncryptionKey = encryptionKeyControl.createBaseEncryptionKey(eea, baseKey1, baseKey2, createdBy);
 
@@ -219,8 +218,8 @@ public class EncryptionUtils {
 
         validateBaseKeys(baseKeys, 2);
 
-        cache.put(fqnBaseKeys + "/" + cacheBaseKey1, baseKeys.getBaseKey1());
-        cache.put(fqnBaseKeys + "/" + cacheBaseKey2, baseKeys.getBaseKey2());
+        cache.put(FQN_BASE_KEYS + "/" + CACHE_BASE_KEY_1, baseKeys.getBaseKey1());
+        cache.put(FQN_BASE_KEYS + "/" + CACHE_BASE_KEY_2, baseKeys.getBaseKey2());
         log.info("Base Encryption Keys Loaded");
     }
 
@@ -246,12 +245,8 @@ public class EncryptionUtils {
                 var decryptedKey = oldCipher1.doFinal(oldCipher2.doFinal(encryptedKey));
 
                 encryptedKey = newCipher2.doFinal(newCipher1.doFinal(decryptedKey));
-            } catch (IllegalStateException ise) {
-                throw new PersistenceEncryptionException(ise);
-            } catch (IllegalBlockSizeException ibse) {
-                throw new PersistenceEncryptionException(ibse);
-            } catch (BadPaddingException bpe) {
-                throw new PersistenceEncryptionException(bpe);
+            } catch (IllegalStateException | IllegalBlockSizeException | BadPaddingException e) {
+                throw new PersistenceEncryptionException(e);
             }
 
             entityEncryptionKey.setSecretKey(baseEncoding.encode(encryptedKey));
@@ -264,8 +259,8 @@ public class EncryptionUtils {
 
     private BaseKeys getBaseKeys() {
         var cache = ThreadCaches.currentCaches().getSecurityCache();
-        var baseKey1 = (BaseKey)cache.get(fqnBaseKeys + "/" + cacheBaseKey1);
-        var baseKey2 = (BaseKey)cache.get(fqnBaseKeys + "/" + cacheBaseKey2);
+        var baseKey1 = (BaseKey)cache.get(FQN_BASE_KEYS + "/" + CACHE_BASE_KEY_1);
+        var baseKey2 = (BaseKey)cache.get(FQN_BASE_KEYS + "/" + CACHE_BASE_KEY_2);
 
         var cacheCount = (baseKey1 == null ? 0 : 1) + (baseKey2 == null ? 0 : 1);
 
@@ -273,9 +268,7 @@ public class EncryptionUtils {
             throw new PersistenceEncryptionException(cacheCount == 0 ? "Base Encryption Keys Missing" : "Base Encryption Keys Incomplete");
         }
 
-        var baseKeys = new BaseKeys(baseKey1, baseKey2);
-
-        return baseKeys;
+        return new BaseKeys(baseKey1, baseKey2);
     }
 
     private String getEntityEncryptionKeyName(final BaseFactory<?, ?> baseFactory) {
@@ -293,12 +286,8 @@ public class EncryptionUtils {
             try {
                 encryptedValue = BaseEncoding.base64().encode(getCipher(entityEncryptionKeyName, rowInitializationVector,
                         isExternal ? EntityEncryptionKeyTypes.EXTERNAL : EntityEncryptionKeyTypes.INTERNAL, Cipher.ENCRYPT_MODE).doFinal(value.getBytes(StandardCharsets.UTF_8)));
-            } catch (IllegalStateException ise) {
-                throw new PersistenceEncryptionException(ise);
-            } catch (IllegalBlockSizeException ibse) {
-                throw new PersistenceEncryptionException(ibse);
-            } catch (BadPaddingException bpe) {
-                throw new PersistenceEncryptionException(bpe);
+            } catch (IllegalStateException | IllegalBlockSizeException | BadPaddingException e) {
+                throw new PersistenceEncryptionException(e);
             }
         }
 
@@ -316,12 +305,8 @@ public class EncryptionUtils {
             try {
                 decryptedValue = new String(getCipher(entityEncryptionKeyName, rowInitializationVector,
                         isExternal ? EntityEncryptionKeyTypes.EXTERNAL : EntityEncryptionKeyTypes.INTERNAL, Cipher.DECRYPT_MODE).doFinal(BaseEncoding.base64().decode(value)), StandardCharsets.UTF_8);
-            } catch (IllegalStateException ise) {
-                throw new PersistenceEncryptionException(ise);
-            } catch (IllegalBlockSizeException ibse) {
-                throw new PersistenceEncryptionException(ibse);
-            } catch (BadPaddingException bpe) {
-                throw new PersistenceEncryptionException(bpe);
+            } catch (IllegalStateException | IllegalBlockSizeException | BadPaddingException e) {
+                throw new PersistenceEncryptionException(e);
             }
         }
 
@@ -332,11 +317,9 @@ public class EncryptionUtils {
         Cipher cipher;
 
         try {
-            cipher = Cipher.getInstance(EncryptionConstants.transformation);
-        } catch (NoSuchAlgorithmException nsae) {
-            throw new PersistenceEncryptionException(nsae);
-        } catch (NoSuchPaddingException nspe) {
-            throw new PersistenceEncryptionException(nspe);
+            cipher = Cipher.getInstance(EncryptionConstants.AES_TRANSFORMATION);
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+            throw new PersistenceEncryptionException(e);
         }
 
         // Setup cipher
@@ -344,10 +327,8 @@ public class EncryptionUtils {
             var ivParameterSpec = new IvParameterSpec(iv);
 
             cipher.init(cipherMode, secretKey, ivParameterSpec);
-        } catch (InvalidKeyException ike) {
-            throw new PersistenceEncryptionException(ike);
-        } catch (InvalidAlgorithmParameterException iape) {
-            throw new PersistenceEncryptionException(iape);
+        } catch (InvalidKeyException | InvalidAlgorithmParameterException e) {
+            throw new PersistenceEncryptionException(e);
         }
 
         return cipher;
@@ -361,18 +342,14 @@ public class EncryptionUtils {
 
         try {
             encryptedData = cipher2.doFinal(cipher1.doFinal(decryptedData));
-        } catch (IllegalStateException ise) {
-            throw new PersistenceEncryptionException(ise);
-        } catch (IllegalBlockSizeException ibse) {
-            throw new PersistenceEncryptionException(ibse);
-        } catch (BadPaddingException bpe) {
-            throw new PersistenceEncryptionException(bpe);
+        } catch (IllegalStateException | IllegalBlockSizeException | BadPaddingException e) {
+            throw new PersistenceEncryptionException(e);
         }
 
         return encryptedData;
     }
 
-    private byte[] decryptDataUsingBaseKeys(final byte[] encryptedData) {
+    public byte[] decryptDataUsingBaseKeys(final byte[] encryptedData) {
         var baseKeys = getBaseKeys();
         var cipher1 = getInitializedCipher(baseKeys.getKey1(), baseKeys.getIv1(), Cipher.DECRYPT_MODE);
         var cipher2 = getInitializedCipher(baseKeys.getKey2(), baseKeys.getIv2(), Cipher.DECRYPT_MODE);
@@ -380,38 +357,33 @@ public class EncryptionUtils {
 
         try {
             decryptedData = cipher1.doFinal(cipher2.doFinal(encryptedData));
-        } catch (IllegalStateException ise) {
-            throw new PersistenceEncryptionException(ise);
-        } catch (IllegalBlockSizeException ibse) {
-            throw new PersistenceEncryptionException(ibse);
-        } catch (BadPaddingException bpe) {
-            throw new PersistenceEncryptionException(bpe);
+        } catch (IllegalStateException | IllegalBlockSizeException | BadPaddingException e) {
+            throw new PersistenceEncryptionException(e);
         }
 
         return decryptedData;
     }
 
-    public EntityEncryptionKey getEntityEncryptionKey(final String algorithm, final int keysize, final BaseFactory<?, ?> baseFactory,
+    public SecretKey getEntityEncryptionKey(final String algorithm, final int keysize, final BaseFactory<?, ?> baseFactory,
             final EntityEncryptionKeyTypes entityEncryptionKeyType) {
         return getEntityEncryptionKey(algorithm, keysize, getEntityEncryptionKeyName(baseFactory), entityEncryptionKeyType);
     }
 
-    public EntityEncryptionKey getEntityEncryptionKey(final String algorithm, final int keysize, final String entityEncryptionKeyName,
+    private SecretKey getEntityEncryptionKey(final String algorithm, final int keysize, final String entityEncryptionKeyName,
             final EntityEncryptionKeyTypes entityEncryptionKeyType) {
         var encryptionKeyControl = Session.getModelController(EncryptionKeyControl.class);
         var suffix = switch(entityEncryptionKeyType) {
             case INTERNAL -> "";
-            case EXTERNAL -> ".#EXTERNAL#";
-            case HMAC_SHA_256 -> ".#HMAC_SHA_256#";
+            case EXTERNAL, HMAC_SHA256 -> ".#" + entityEncryptionKeyType.name() + "#";
         };
         var entityEncryptionKeyNameHash = Sha256Utils.getInstance().hash((entityEncryptionKeyName + suffix)
                 .getBytes(StandardCharsets.UTF_8));
         var entityEncryptionKey = encryptionKeyControl.getEntityEncryptionKeyByNameHash(entityEncryptionKeyNameHash);
+        var baseEncoding = BaseEncoding.base64();
+        SecretKey secretKey;
 
         if(entityEncryptionKey == null) {
             // Key has not yet been generated for this EntityType
-            SecretKey secretKey;
-
             try {
                 var keyGenerator = KeyGenerator.getInstance(algorithm);
 
@@ -424,25 +396,24 @@ public class EncryptionUtils {
 
             var key = secretKey.getEncoded();
             var encryptedKey = encryptDataUsingBaseKeys(key);
-            var baseEncoding = BaseEncoding.base64();
 
-            entityEncryptionKey = encryptionKeyControl.createEntityEncryptionKey(entityEncryptionKeyNameHash,
-                    baseEncoding.encode(encryptedKey));
+            encryptionKeyControl.createEntityEncryptionKey(entityEncryptionKeyNameHash, baseEncoding.encode(encryptedKey));
+        } else {
+            var encryptedKey = baseEncoding.decode(entityEncryptionKey.getSecretKey());
+            var key = decryptDataUsingBaseKeys(encryptedKey);
+
+            secretKey = new SecretKeySpec(key, algorithm);
         }
 
-        return entityEncryptionKey;
+        return secretKey;
     }
 
     private Cipher getCipher(final String entityEncryptionKeyName, final String rowInitializationVector,
             final EntityEncryptionKeyTypes entityEncryptionKeyType, final int cipherMode) {
-        var entityEncryptionKey = getEntityEncryptionKey(EncryptionConstants.algorithm, EncryptionConstants.keysize,
+        var secretKey = getEntityEncryptionKey(EncryptionConstants.AES_ALGORITHM, EncryptionConstants.AES_KEYSIZE,
                 entityEncryptionKeyName, entityEncryptionKeyType);
         var baseEncoding = BaseEncoding.base64();
-        var encryptedKey = baseEncoding.decode(entityEncryptionKey.getSecretKey());
-        var key = decryptDataUsingBaseKeys(encryptedKey);
         var iv = baseEncoding.decode(rowInitializationVector);
-
-        SecretKey secretKey = new SecretKeySpec(key, EncryptionConstants.algorithm);
 
         return getInitializedCipher(secretKey, iv, cipherMode);
     }
