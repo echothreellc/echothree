@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class Sha256UtilsTest {
 
-    private final ShaUtils sha = Sha256Utils.getInstance();
+    private final ShaUtils sha = CryptoTestUtils.sha256Utils();
 
     // Fixed vectors calculated independently with Python hashlib; all outputs use padded Base64.
     private static final String SALT = "AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8=";

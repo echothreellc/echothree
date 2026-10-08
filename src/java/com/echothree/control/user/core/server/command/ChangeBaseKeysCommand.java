@@ -21,7 +21,6 @@ import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
@@ -30,6 +29,7 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.EncryptionUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class ChangeBaseKeysCommand
@@ -45,6 +45,9 @@ public class ChangeBaseKeysCommand
                 ))
         ));
     }
+
+    @Inject
+    EncryptionUtils encryptionUtils;
     
     /** Creates a new instance of ChangeBaseKeysCommand */
     public ChangeBaseKeysCommand() {
@@ -55,7 +58,7 @@ public class ChangeBaseKeysCommand
     protected BaseResult execute() {
         var result = CoreResultFactory.getChangeBaseKeysResult();
         
-        result.setBaseKeys(EncryptionUtils.getInstance().changeBaseKeys(this, form.getBaseKeys(), getPartyPK()));
+        result.setBaseKeys(encryptionUtils.changeBaseKeys(this, form.getBaseKeys(), getPartyPK()));
         
         return result;
     }

@@ -18,7 +18,7 @@ package com.echothree.util.server.string;
 
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.PartyType;
-import com.echothree.util.server.persistence.EncryptionUtils;
+import com.echothree.util.server.persistence.RandomUtils;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.Graph.GraphType;
 import java.util.ArrayList;
@@ -28,19 +28,17 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
+@ApplicationScoped
 public class PasswordGeneratorUtils {
-    
-    private PasswordGeneratorUtils() {
+
+    @Inject
+    RandomUtils randomUtils;
+
+    protected PasswordGeneratorUtils() {
         super();
-    }
-    
-    private static class PasswordGeneratorUtilsHolder {
-        static PasswordGeneratorUtils instance = new PasswordGeneratorUtils();
-    }
-    
-    public static PasswordGeneratorUtils getInstance() {
-        return PasswordGeneratorUtilsHolder.instance;
     }
 
     private final static List<Graph> graphs;
@@ -113,7 +111,7 @@ public class PasswordGeneratorUtils {
     }
     
     public String getPassword(int minimumLength) {
-        var random = EncryptionUtils.getInstance().getRandom();
+        var random = randomUtils.getRandom();
         Graph previous = null;
         var current = selectGraph(random, graphs);
         var password = new StringBuilder();

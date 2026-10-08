@@ -17,8 +17,6 @@
 package com.echothree.model.control.user.server.control;
 
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.core.common.ComponentVendors;
-import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
@@ -166,8 +164,8 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.EncryptionUtils;
 import com.echothree.util.server.persistence.EntityPermission;
+import com.echothree.util.server.persistence.RandomUtils;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.Sha1Utils;
 import java.util.ArrayList;
@@ -188,6 +186,12 @@ public class UserControl
 
     @Inject
     SequenceGeneratorLogic sequenceGeneratorLogic;
+
+    @Inject
+    RandomUtils randomUtils;
+
+    @Inject
+    Sha1Utils sha1Utils;
 
     /** Creates a new instance of UserControl */
     protected UserControl() {
@@ -217,7 +221,7 @@ public class UserControl
         
         do {
             var userKeyNameBuilder = new StringBuilder(40);
-            var random = EncryptionUtils.getInstance().getRandom();
+            var random = randomUtils.getRandom();
             
             for(var i = 0; i < 40; i++) {
                 userKeyNameBuilder.append(characterArray[random.nextInt(characterCount)]);
@@ -2102,10 +2106,8 @@ public class UserControl
             var userLoginPasswordEncoderTypeName = userLoginPasswordEncoderType.getUserLoginPasswordEncoderTypeName();
             
             if(userLoginPasswordEncoderTypeName.equals(UserConstants.UserLoginPasswordEncoderType_SHA1)) {
-                var passwordUtils = Sha1Utils.getInstance();
-                
-                salt = passwordUtils.generateSalt();
-                password = passwordUtils.encode(salt, password);
+                salt = sha1Utils.generateSalt();
+                password = sha1Utils.encode(salt, password);
             }
             
             // UserLoginPasswordEncoderType_TEXT requires no further action.
@@ -2197,10 +2199,8 @@ public class UserControl
                     var userLoginPasswordEncoderTypeName = userLoginPasswordEncoderType.getUserLoginPasswordEncoderTypeName();
                     
                     if(userLoginPasswordEncoderTypeName.equals(UserConstants.UserLoginPasswordEncoderType_SHA1)) {
-                        var passwordUtils = Sha1Utils.getInstance();
-                        
-                        salt = passwordUtils.generateSalt();
-                        password = passwordUtils.encode(salt, password);
+                        salt = sha1Utils.generateSalt();
+                        password = sha1Utils.encode(salt, password);
                     } else if(userLoginPasswordEncoderTypeName.equals(UserConstants.UserLoginPasswordEncoderType_TEXT)) {
                         salt = null;
                     }

@@ -81,6 +81,9 @@ public class TrackControl
 
     @Inject
     protected SequenceGeneratorLogic sequenceGeneratorLogic;
+    
+    @Inject
+    Sha1Utils sha1Utils;
 
     /** Creates a new instance of TrackControl */
     protected TrackControl() {
@@ -108,7 +111,7 @@ public class TrackControl
     }
     
     public Track createTrack(String trackName, String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
+        var valueSha1Hash = sha1Utils.hash(value.toLowerCase(Locale.getDefault()));
         var defaultTrack = getDefaultTrack();
         var defaultFound = defaultTrack != null;
 
@@ -193,7 +196,7 @@ public class TrackControl
                 .select(Tracks.fields())
                 .from(Tracks)
                 .join(TrackDetails).onKey(TRACKS_ACTIVE_DETAIL_FK)
-                .where(TrackDetails.VALUE_SHA1_HASH.eq(Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()))));
+                .where(TrackDetails.VALUE_SHA1_HASH.eq(sha1Utils.hash(value.toLowerCase(Locale.getDefault()))));
 
         var query = switch(entityPermission) {
             case READ_ONLY -> baseQuery;
@@ -374,7 +377,7 @@ public class TrackControl
             var trackPK = trackDetail.getTrackPK(); // Not updated
             var trackName = trackDetailValue.getTrackName();
             var value = trackDetailValue.getValue();
-            var valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
+            var valueSha1Hash = sha1Utils.hash(value.toLowerCase(Locale.getDefault()));
             var isDefault = trackDetailValue.getIsDefault();
             var sortOrder = trackDetailValue.getSortOrder();
 

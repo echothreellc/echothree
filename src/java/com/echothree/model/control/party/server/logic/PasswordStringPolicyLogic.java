@@ -50,6 +50,9 @@ public class PasswordStringPolicyLogic {
     @Inject
     UserControl userControl;
 
+    @Inject
+    Sha1Utils sha1Utils;
+
     protected PasswordStringPolicyLogic() {
         super();
     }
@@ -68,7 +71,7 @@ public class PasswordStringPolicyLogic {
             for(var userLoginPasswordString: userControl.getUserLoginPasswordStringHistory(ulp, passwordHistory)) {
                 var salt = userLoginPasswordString.getSalt();
                 
-                if(Sha1Utils.getInstance().encode(salt, password).equals(userLoginPasswordString.getPassword())) {
+                if(sha1Utils.encode(salt, password).equals(userLoginPasswordString.getPassword())) {
                     ema.addExecutionError(ExecutionErrors.PasswordInRecentHistory.name(), passwordHistory);
                     break;
                 }

@@ -61,6 +61,8 @@ public abstract class BaseLoginCommand<F extends BaseForm>
     @Inject
     SequenceGeneratorLogic sequenceGeneratorLogic;
 
+    @Inject
+    Sha1Utils sha1Utils;
 
     /** Creates a new instance of BaseLoginCommand */
     protected BaseLoginCommand(final CommandSecurityDefinition commandSecurityDefinition,
@@ -81,7 +83,7 @@ public abstract class BaseLoginCommand<F extends BaseForm>
             var userLoginPasswordString = userControl.getUserLoginPasswordString(userLoginPassword);
             
             if(userLoginPasswordEncoderTypeName.equals(UserConstants.UserLoginPasswordEncoderType_SHA1)) {
-                result = Sha1Utils.getInstance().encode(userLoginPasswordString.getSalt(), password).equals(userLoginPasswordString.getPassword()) ? userLoginPasswordString: null;
+                result = sha1Utils.encode(userLoginPasswordString.getSalt(), password).equals(userLoginPasswordString.getPassword()) ? userLoginPasswordString: null;
             } else if(userLoginPasswordEncoderTypeName.equals(UserConstants.UserLoginPasswordEncoderType_TEXT)) {
                 result = password.equals(userLoginPasswordString.getPassword())? userLoginPasswordString: null;
             }

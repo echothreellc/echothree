@@ -31,7 +31,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class EncryptionUtilsTest extends EncryptionTestSupport {
 
-    private final EncryptionUtils encryption = EncryptionUtils.getInstance();
     private static final String FIRST_CACHE_KEY = "/com/echothree/security/base/BaseKey1";
     private static final String SECOND_CACHE_KEY = "/com/echothree/security/base/BaseKey2";
     private static final String IV = Base64.getEncoder().encodeToString(HexFormat.of().parseHex("03".repeat(16)));
@@ -250,7 +249,7 @@ public class EncryptionUtilsTest extends EncryptionTestSupport {
         var oldKeys = registeredBaseKeys();
         var factory = factory("TEST", "Card");
         var ciphertext = encryption.encrypt(factory, IV, "retain me");
-        var fingerprint = HmacSha256Utils.getInstance().hash(factory, "4111111111111111");
+        var fingerprint = hmac.hash(factory, "4111111111111111");
         var oldWrapped = control.entries.values().stream().map(e -> e.getSecretKey()).toList();
         var newKeys = encryption.changeBaseKeys(null, oldKeys, null);
         assertNotNull(newKeys);
@@ -260,7 +259,7 @@ public class EncryptionUtilsTest extends EncryptionTestSupport {
             assertFalse(oldWrapped.contains(entry.getSecretKey()));
         }
         assertEquals("retain me", encryption.decrypt(factory, IV, ciphertext));
-        assertEquals(fingerprint, HmacSha256Utils.getInstance().hash(factory, "4111111111111111"));
+        assertEquals(fingerprint, hmac.hash(factory, "4111111111111111"));
         securityCache.clear();
         encryption.loadBaseKeys(newKeys);
         assertEquals("retain me", encryption.decrypt(factory, IV, ciphertext));

@@ -73,6 +73,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @ResourceLock("CDIProvider")
 abstract class EncryptionTestSupport {
 
+    protected final EncryptionUtils encryption = CryptoTestUtils.encryptionUtils();
+    protected final HmacSha256Utils hmac = CryptoTestUtils.hmacSha256Utils(encryption);
     protected final Map<String, Object> securityCache = new HashMap<>();
     protected final MemoryKeyControl control = new MemoryKeyControl();
     private TestCdi cdi;
@@ -176,7 +178,7 @@ abstract class EncryptionTestSupport {
 
         @Override
         public BaseEncryptionKey createBaseEncryptionKey(ExecutionErrorAccumulator eea, BaseKey first, BaseKey second, PartyPK createdBy) {
-            var hash = Sha1Utils.getInstance().encode(first, second);
+            var hash = CryptoTestUtils.sha1Utils().encode(first, second);
             var entity = new BaseEncryptionKey(new BaseEncryptionKeyValue(new BaseEncryptionKeyPK((long)++baseCreates),
                     "TestBaseKey" + baseCreates, hash), EntityPermission.READ_ONLY);
             baseEntries.put(hash, entity);

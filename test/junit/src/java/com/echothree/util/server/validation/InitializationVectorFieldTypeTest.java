@@ -19,7 +19,7 @@ package com.echothree.util.server.validation;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.persistence.EncryptionUtils;
+import com.echothree.util.server.persistence.CryptoTestUtils;
 import com.google.common.io.BaseEncoding;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,7 @@ public class InitializationVectorFieldTypeTest {
     @Test
     public void generatedInitializationVectorIsAccepted() {
         var form = CoreFormFactory.getDecryptForm();
-        var iv = EncryptionUtils.getInstance().generateRowInitializationVector();
+        var iv = CryptoTestUtils.encryptionUtils().generateRowInitializationVector();
         form.setInitializationVector(iv);
 
         assertNull(new Validator(null).validateField(form, REQUIRED_IV));

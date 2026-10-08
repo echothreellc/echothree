@@ -159,6 +159,9 @@ public class CampaignControl
 
     @Inject
     protected SequenceGeneratorLogic sequenceGeneratorLogic;
+    
+    @Inject
+    Sha1Utils sha1Utils;
 
     /** Creates a new instance of CampaignControl */
     protected CampaignControl() {
@@ -186,7 +189,7 @@ public class CampaignControl
     }
     
     public Campaign createCampaign(String campaignName, String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
+        var valueSha1Hash = sha1Utils.hash(value.toLowerCase(Locale.getDefault()));
         var defaultCampaign = getDefaultCampaign();
         var defaultFound = defaultCampaign != null;
 
@@ -271,7 +274,7 @@ public class CampaignControl
                 .select(Campaigns.fields())
                 .from(Campaigns)
                 .join(CampaignDetails).onKey(CAMPAIGNS_ACTIVE_DETAIL_FK)
-                .where(CampaignDetails.VALUE_SHA1_HASH.eq(Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()))));
+                .where(CampaignDetails.VALUE_SHA1_HASH.eq(sha1Utils.hash(value.toLowerCase(Locale.getDefault()))));
 
         var query = switch(entityPermission) {
             case READ_ONLY -> baseQuery;
@@ -445,7 +448,7 @@ public class CampaignControl
             var campaignPK = campaignDetail.getCampaignPK(); // Not updated
             var campaignName = campaignDetailValue.getCampaignName();
             var value = campaignDetailValue.getValue();
-            var valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
+            var valueSha1Hash = sha1Utils.hash(value.toLowerCase(Locale.getDefault()));
             var isDefault = campaignDetailValue.getIsDefault();
             var sortOrder = campaignDetailValue.getSortOrder();
 
@@ -691,7 +694,7 @@ public class CampaignControl
     }
     
     public CampaignSource createCampaignSource(String campaignSourceName, String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
+        var valueSha1Hash = sha1Utils.hash(value.toLowerCase(Locale.getDefault()));
         var defaultCampaignSource = getDefaultCampaignSource();
         var defaultFound = defaultCampaignSource != null;
 
@@ -776,7 +779,7 @@ public class CampaignControl
                 .select(CampaignSources.fields())
                 .from(CampaignSources)
                 .join(CampaignSourceDetails).onKey(CAMPAIGN_SOURCES_ACTIVE_DETAIL_FK)
-                .where(CampaignSourceDetails.VALUE_SHA1_HASH.eq(Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()))));
+                .where(CampaignSourceDetails.VALUE_SHA1_HASH.eq(sha1Utils.hash(value.toLowerCase(Locale.getDefault()))));
 
         var query = switch(entityPermission) {
             case READ_ONLY -> baseQuery;
@@ -957,7 +960,7 @@ public class CampaignControl
             var campaignSourcePK = campaignSourceDetail.getCampaignSourcePK(); // Not updated
             var campaignSourceName = campaignSourceDetailValue.getCampaignSourceName();
             var value = campaignSourceDetailValue.getValue();
-            var valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
+            var valueSha1Hash = sha1Utils.hash(value.toLowerCase(Locale.getDefault()));
             var isDefault = campaignSourceDetailValue.getIsDefault();
             var sortOrder = campaignSourceDetailValue.getSortOrder();
 
@@ -1203,7 +1206,7 @@ public class CampaignControl
     }
     
     public CampaignMedium createCampaignMedium(String campaignMediumName, String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
+        var valueSha1Hash = sha1Utils.hash(value.toLowerCase(Locale.getDefault()));
         var defaultCampaignMedium = getDefaultCampaignMedium();
         var defaultFound = defaultCampaignMedium != null;
 
@@ -1288,7 +1291,7 @@ public class CampaignControl
                 .select(CampaignMediums.fields())
                 .from(CampaignMediums)
                 .join(CampaignMediumDetails).onKey(CAMPAIGN_MEDIUMS_ACTIVE_DETAIL_FK)
-                .where(CampaignMediumDetails.VALUE_SHA1_HASH.eq(Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()))));
+                .where(CampaignMediumDetails.VALUE_SHA1_HASH.eq(sha1Utils.hash(value.toLowerCase(Locale.getDefault()))));
 
         var query = switch(entityPermission) {
             case READ_ONLY -> baseQuery;
@@ -1462,7 +1465,7 @@ public class CampaignControl
             var campaignMediumPK = campaignMediumDetail.getCampaignMediumPK(); // Not updated
             var campaignMediumName = campaignMediumDetailValue.getCampaignMediumName();
             var value = campaignMediumDetailValue.getValue();
-            var valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
+            var valueSha1Hash = sha1Utils.hash(value.toLowerCase(Locale.getDefault()));
             var isDefault = campaignMediumDetailValue.getIsDefault();
             var sortOrder = campaignMediumDetailValue.getSortOrder();
 
@@ -1708,7 +1711,7 @@ public class CampaignControl
     }
     
     public CampaignTerm createCampaignTerm(String campaignTermName, String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
+        var valueSha1Hash = sha1Utils.hash(value.toLowerCase(Locale.getDefault()));
         var defaultCampaignTerm = getDefaultCampaignTerm();
         var defaultFound = defaultCampaignTerm != null;
 
@@ -1793,7 +1796,7 @@ public class CampaignControl
                 .select(CampaignTerms.fields())
                 .from(CampaignTerms)
                 .join(CampaignTermDetails).onKey(CAMPAIGN_TERMS_ACTIVE_DETAIL_FK)
-                .where(CampaignTermDetails.VALUE_SHA1_HASH.eq(Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()))));
+                .where(CampaignTermDetails.VALUE_SHA1_HASH.eq(sha1Utils.hash(value.toLowerCase(Locale.getDefault()))));
 
         var query = switch(entityPermission) {
             case READ_ONLY -> baseQuery;
@@ -1967,7 +1970,7 @@ public class CampaignControl
             var campaignTermPK = campaignTermDetail.getCampaignTermPK(); // Not updated
             var campaignTermName = campaignTermDetailValue.getCampaignTermName();
             var value = campaignTermDetailValue.getValue();
-            var valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
+            var valueSha1Hash = sha1Utils.hash(value.toLowerCase(Locale.getDefault()));
             var isDefault = campaignTermDetailValue.getIsDefault();
             var sortOrder = campaignTermDetailValue.getSortOrder();
 
@@ -2213,7 +2216,7 @@ public class CampaignControl
     }
     
     public CampaignContent createCampaignContent(String campaignContentName, String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
+        var valueSha1Hash = sha1Utils.hash(value.toLowerCase(Locale.getDefault()));
         var defaultCampaignContent = getDefaultCampaignContent();
         var defaultFound = defaultCampaignContent != null;
 
@@ -2298,7 +2301,7 @@ public class CampaignControl
                 .select(CampaignContents.fields())
                 .from(CampaignContents)
                 .join(CampaignContentDetails).onKey(CAMPAIGN_CONTENTS_ACTIVE_DETAIL_FK)
-                .where(CampaignContentDetails.VALUE_SHA1_HASH.eq(Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()))));
+                .where(CampaignContentDetails.VALUE_SHA1_HASH.eq(sha1Utils.hash(value.toLowerCase(Locale.getDefault()))));
 
         var query = switch(entityPermission) {
             case READ_ONLY -> baseQuery;
@@ -2472,7 +2475,7 @@ public class CampaignControl
             var campaignContentPK = campaignContentDetail.getCampaignContentPK(); // Not updated
             var campaignContentName = campaignContentDetailValue.getCampaignContentName();
             var value = campaignContentDetailValue.getValue();
-            var valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
+            var valueSha1Hash = sha1Utils.hash(value.toLowerCase(Locale.getDefault()));
             var isDefault = campaignContentDetailValue.getIsDefault();
             var sortOrder = campaignContentDetailValue.getSortOrder();
 

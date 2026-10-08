@@ -30,6 +30,9 @@ import javax.inject.Inject;
 public class IdempotentResponseControl
         extends BaseModelControl {
 
+    @Inject
+    EncryptionUtils encryptionUtils;
+    
     /** Creates a new instance of IdempotentResponseControl */
     protected IdempotentResponseControl() {
         super();
@@ -45,7 +48,7 @@ public class IdempotentResponseControl
     public IdempotentResponse createIdempotentResponse(UserVisit userVisit, String idempotencyKeyHash, String queryHash, String variablesHash,
             String operationNameHash, Long startTime, Long completedTime, String response, Long retainUntilTime) {
         return idempotentResponseFactory.create(userVisit, idempotencyKeyHash, queryHash, variablesHash, operationNameHash,
-                startTime, completedTime, response, retainUntilTime, EncryptionUtils.getInstance().generateRowInitializationVector());
+                startTime, completedTime, response, retainUntilTime, encryptionUtils.generateRowInitializationVector());
     }
 
     public IdempotentResponse getIdempotentResponse(UserVisit userVisit, String idempotencyKeyHash, EntityPermission entityPermission) {
@@ -72,12 +75,12 @@ public class IdempotentResponseControl
     }
 
     public String encodeIdempotentResponse(final IdempotentResponse idempotentResponse, final String response) {
-        return EncryptionUtils.getInstance().encrypt(idempotentResponseFactory,
+        return encryptionUtils.encrypt(idempotentResponseFactory,
                 idempotentResponse.getInitializationVector(), response);
     }
 
     public String decodeIdempotentResponse(final IdempotentResponse idempotentResponse) {
-        return EncryptionUtils.getInstance().decrypt(idempotentResponseFactory,
+        return encryptionUtils.decrypt(idempotentResponseFactory,
                 idempotentResponse.getInitializationVector(), idempotentResponse.getResponse());
     }
 

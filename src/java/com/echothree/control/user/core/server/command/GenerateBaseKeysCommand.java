@@ -25,6 +25,7 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.persistence.EncryptionUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GenerateBaseKeysCommand
@@ -37,7 +38,10 @@ public class GenerateBaseKeysCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null)
         ));
     }
-    
+
+    @Inject
+    EncryptionUtils encryptionUtils;
+
     /** Creates a new instance of GenerateBaseKeysCommand */
     public GenerateBaseKeysCommand() {
         super(COMMAND_SECURITY_DEFINITION, false);
@@ -47,7 +51,7 @@ public class GenerateBaseKeysCommand
     protected BaseResult execute() {
         var result = CoreResultFactory.getGenerateBaseKeysResult();
         
-        result.setBaseKeys(EncryptionUtils.getInstance().generateBaseKeys(this, getPartyPK()));
+        result.setBaseKeys(encryptionUtils.generateBaseKeys(this, getPartyPK()));
         
         return result;
     }
