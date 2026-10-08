@@ -51,7 +51,7 @@ public class EncryptionUtils {
     public enum EntityEncryptionKeyTypes {
         INTERNAL,
         EXTERNAL,
-        HMAC_SHA_256
+        HMAC_SHA256
     }
 
     private static final String fqnBaseKeys = "/com/echothree/security/base";
@@ -401,8 +401,7 @@ public class EncryptionUtils {
         var encryptionKeyControl = Session.getModelController(EncryptionKeyControl.class);
         var suffix = switch(entityEncryptionKeyType) {
             case INTERNAL -> "";
-            case EXTERNAL -> ".#EXTERNAL#";
-            case HMAC_SHA_256 -> ".#HMAC_SHA_256#";
+            case EXTERNAL, HMAC_SHA256 -> ".#" + entityEncryptionKeyType.name() + "#";
         };
         var entityEncryptionKeyNameHash = Sha256Utils.getInstance().hash((entityEncryptionKeyName + suffix)
                 .getBytes(StandardCharsets.UTF_8));
