@@ -994,6 +994,7 @@
                         <column name="PartyPaymentMethodCreditCardId" type="EID" nullAllowed="false" />
                         <column name="PartyPaymentMethodId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="PartyPaymentMethods" destinationColumn="PartyPaymentMethodId" />
                         <column name="Number" type="EncodedValue" nullAllowed="true" />
+                        <column name="NumberHash" type="Sha256Hash" nullAllowed="true" />
                         <column name="ExpirationMonth" type="Month" nullAllowed="true" />
                         <column name="ExpirationYear" type="Year" nullAllowed="true" />
                         <column name="PersonalTitleId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="PersonalTitles" destinationColumn="PersonalTitleId" />
@@ -1021,7 +1022,7 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index2">
-                            <indexColumn name="Number" />
+                            <indexColumn name="NumberHash" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index3">
