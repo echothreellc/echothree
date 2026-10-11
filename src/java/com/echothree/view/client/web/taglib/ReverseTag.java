@@ -21,14 +21,10 @@ import com.google.common.collect.Lists;
 import java.util.List;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public class ReverseTag
         extends BaseTag {
     
-    Log log = LogFactory.getLog(this.getClass());
-
     protected List list;
     protected String var;
     protected int scope;

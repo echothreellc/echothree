@@ -20,14 +20,10 @@ package com.echothree.view.client.web.taglib;
 import java.util.Date;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public class DateTag
         extends BaseTag {
     
-    Log log = LogFactory.getLog(this.getClass());
-
     protected Long value;
     protected String var;
     protected int scope;

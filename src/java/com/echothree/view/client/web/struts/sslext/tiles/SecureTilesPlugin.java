@@ -83,14 +83,14 @@ import java.util.MissingResourceException;
 import javax.servlet.ServletException;
 import javax.servlet.UnavailableException;
 import org.apache.commons.digester.Digester;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.struts.action.ActionServlet;
 import org.apache.struts.action.RequestProcessor;
 import org.apache.struts.config.ModuleConfig;
 import org.apache.struts.tiles.TilesPlugin;
 import org.apache.struts.util.MessageResources;
 import org.apache.struts.util.RequestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Implements sslext plugin functionality for use with Tiles.
@@ -112,7 +112,7 @@ public class SecureTilesPlugin
         "/org/apache/struts/resources/web-app_2_3.dtd"
     };
     
-    protected Log log = LogFactory.getLog(SecureTilesPlugin.class);
+    protected Logger log = LoggerFactory.getLogger(SecureTilesPlugin.class);
     protected ModuleConfig config = null;
     protected ActionServlet servlet = null;
     protected String servletName = null;
@@ -196,7 +196,7 @@ public class SecureTilesPlugin
         try {
             configProcessorClass = RequestUtils.applicationClass(configProcessorClassname);
         } catch (java.lang.ClassNotFoundException ex) {
-            log.fatal("Can't set TilesRequestProcessor: bad class name '"
+            log.error("Can't set TilesRequestProcessor: bad class name '"
             + configProcessorClassname
             + "'.");
             throw new ServletException(ex);
@@ -209,8 +209,8 @@ public class SecureTilesPlugin
         Class tilesProcessorClass = SecureTilesRequestProcessor.class;
         if (!tilesProcessorClass.isAssignableFrom(configProcessorClass)) { // Not compatible
             var msg = "TilesPlugin : Specified RequestProcessor not compatible with TilesRequestProcessor";
-            if (log.isFatalEnabled()) {
-                log.fatal(msg);
+            if (log.isErrorEnabled()) {
+                log.error(msg);
             }
             throw new ServletException(msg);
         } // end if

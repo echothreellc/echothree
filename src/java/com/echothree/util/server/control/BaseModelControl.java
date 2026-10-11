@@ -29,8 +29,8 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.Connection;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class BaseModelControl {
 
@@ -49,7 +49,7 @@ public abstract class BaseModelControl {
     @Inject
     protected WorkflowControl workflowControl;
 
-    private Log log;
+    protected final Logger log = LoggerFactory.getLogger(this.getClass());
 
     /** Creates a new instance of BaseModelControl */
     protected BaseModelControl() {
@@ -59,14 +59,6 @@ public abstract class BaseModelControl {
     public void init() {
     }
 
-    protected Log getLog() {
-        if(log == null) {
-            log = LogFactory.getLog(this.getClass());
-        }
-        
-        return log;
-    }
-    
     // --------------------------------------------------------------------------------
     //   Utilities
     // --------------------------------------------------------------------------------

@@ -50,7 +50,6 @@
                 </et:validationErrors>
                 <html:submit onclick="onSubmitDisable(this);" value="Search" /><html:hidden property="submitButton" />
             </html:form>
-            <et:clearWarehouseResults searchTypeName="EMPLOYEE" />
             <c:choose>
                 <c:when test="${warehouseCount == null || warehouseCount < 21}">
                     <display:table name="warehouses.list" id="warehouse" class="displaytag" export="true" sort="list" requestURI="/action/Warehouse/Warehouse/Main">

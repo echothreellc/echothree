@@ -92,6 +92,7 @@
             </classes>
             <webinf dir="${ui.web.letter.metadatasrc}">
                 <include name="jboss-all.xml"/>
+                <include name="jboss-deployment-structure.xml"/>
                 <include name="struts-config.xml"/>
             </webinf>
             <!-- EchoThree and SSLExt -->
@@ -140,7 +141,7 @@
                 <include name="commons-digester.jar"/>
                 <include name="commons-fileupload.jar"/>
                 <include name="commons-io.jar"/>
-                <include name="commons-logging.jar"/>
+                <include name="jcl-over-slf4j.jar"/>
             </lib>
             <lib dir="${lib.dir}/struts">
                 <include name="bsf.jar"/>

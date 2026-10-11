@@ -27,12 +27,12 @@ import org.apache.commons.cli.ParseException;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.DefaultConfigurationBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Database {
     
-    private static Log log = LogFactory.getLog(Database.class);
+    private static Logger log = LoggerFactory.getLogger(Database.class);
     private static Configuration configuration = loadConfiguration();
 
     private static CommandLine getCommandLine(String args[])
@@ -54,7 +54,7 @@ public class Database {
         try {
             result = new DefaultConfigurationBuilder(Database.class.getResource("/config.xml")).getConfiguration();
         } catch(ConfigurationException ex) {
-            log.error(ex);
+            log.error(ex.toString(), ex);
         }
 
         return result;

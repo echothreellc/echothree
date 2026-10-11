@@ -81,14 +81,6 @@
     </module>
     
     <module>
-        <ejb>slf4j-api.jar</ejb>
-    </module>
-    
-    <module>
-        <ejb>slf4j-reload4j.jar</ejb>
-    </module>
-    
-    <module>
         <ejb>gson.jar</ejb>
     </module>
     

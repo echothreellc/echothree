@@ -56,7 +56,7 @@ public class PostalCodeTransferCache
             var countryGeoCodeType = geoControl.getGeoCodeTypeByName(GeoCodeTypes.COUNTRY.name());
             var geoCodeRelationships = geoControl.getGeoCodeRelationshipsByFromGeoCodeAndGeoCodeType(geoCode, countryGeoCodeType);
             if(geoCodeRelationships.size() != 1) {
-                getLog().error("non-1 geoCodeRelationships.size()");
+                log.error("non-1 geoCodeRelationships.size()");
             }
             var country = geoControl.getCountryTransfer(userVisit, geoCodeRelationships.getFirst().getToGeoCode());
             

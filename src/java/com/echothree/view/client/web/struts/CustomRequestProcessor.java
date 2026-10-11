@@ -20,7 +20,6 @@ import com.echothree.view.client.web.struts.sprout.SproutRequestProcessor;
 import com.echothree.view.client.web.util.HttpSessionUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * A customized RequestProcessor that checks the user's preferred Locale
@@ -31,11 +30,6 @@ import org.apache.commons.logging.LogFactory;
 public class CustomRequestProcessor
         extends SproutRequestProcessor {
 
-    /** Creates a new instance of CustomRequestProcessor */
-    public CustomRequestProcessor() {
-        log = LogFactory.getLog(CustomRequestProcessor.class);
-    }
-    
     @Override
     protected boolean processPreprocess(HttpServletRequest request, HttpServletResponse response) {
         if(!super.processPreprocess(request, response)) {

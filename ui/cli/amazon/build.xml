@@ -51,6 +51,7 @@
                 <pathelement location="./"/>
                 <fileset dir="../../../lib">
                     <include name="**/*.jar"/>
+                    <exclude name="pmd/lib/*.jar"/>
                 </fileset>
                 <fileset dir="../../../build/lib">
                     <include name="**/*.jar"/>
@@ -90,16 +91,19 @@
 
     <target name="Amazon_sample_orders" depends="compile">
         <java classname="com.echothree.ui.cli.amazon.AmazonUtility" fork="true">
+            <sysproperty key="org.jboss.logging.provider" value="slf4j"/>
             <arg value="--directory"/>
             <arg value="/Users/rich/amazon"/>
             <classpath>
                 <pathelement path="${metadata.dir}" />
                 <pathelement location="./build/classes"/>
-                <fileset dir="../../../${wildfly.home.modules}">
-                    <include name="**/*.jar"/>
-                </fileset>
+                <pathelement location="../../../build/lib/slf4j-api.jar"/>
+                <pathelement location="../../../build/lib/logback-classic.jar"/>
+                <pathelement location="../../../build/lib/logback-core.jar"/>
+                <pathelement location="../../../build/lib/jcl-over-slf4j.jar"/>
                 <fileset dir="../../../lib">
                     <include name="**/*.jar"/>
+                    <exclude name="pmd/lib/*.jar"/>
                 </fileset>
                 <fileset dir="../../../build/lib">
                     <include name="**/*.jar"/>

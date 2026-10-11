@@ -31,8 +31,8 @@ import com.echothree.model.data.selector.server.entity.SelectorNodeDetail;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.Session;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BaseSelectorEvaluator {
     
@@ -45,7 +45,7 @@ public class BaseSelectorEvaluator {
     protected EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
     protected SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
     protected WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
-    protected Log log;
+    protected Logger log;
     
     protected CachedSelector cachedSelector = null;
     protected EntityInstance entityInstance = null;
@@ -55,7 +55,7 @@ public class BaseSelectorEvaluator {
         this.evaluatedBy = evaluatedBy;
         
         if(logClass != null) {
-            log = LogFactory.getLog(logClass);
+            log = LoggerFactory.getLogger(logClass);
         }  else {
             log = null;
         }

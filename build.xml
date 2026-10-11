@@ -95,14 +95,31 @@
     <target name="uptodate-ivy-lib">
         <uptodate
             property="com.echothree.uptodate.ivy-lib"
-            srcfile="ivy.xml"
-            targetfile="build/lib/.flagfile" />
+            targetfile="build/lib/.flagfile">
+            <srcfiles dir="." includes="ivy.xml,build.xml" />
+        </uptodate>
     </target>
 
     <target name="retrieve-ivy-lib" unless="com.echothree.uptodate.ivy-lib" depends="prepare">
-        <ivy:retrieve conf="sources" pattern="build/lib-sources/[artifact](-[classifier]).[ext]" />
-        <ivy:retrieve conf="javadoc" pattern="build/lib-javadoc/[artifact](-[classifier]).[ext]" />
-        <ivy:retrieve conf="binaries" pattern="build/lib/[artifact](-[classifier]).[ext]" />
+        <ivy:retrieve sync="true" conf="sources" pattern="build/lib-sources/[artifact](-[classifier]).[ext]" />
+        <ivy:retrieve sync="true" conf="javadoc" pattern="build/lib-javadoc/[artifact](-[classifier]).[ext]" />
+        <ivy:retrieve sync="true" conf="binaries" pattern="build/lib/[artifact](-[classifier]).[ext]" />
+        <!-- WildFly's combined client embeds logging APIs and Commons Logging.
+             Use our explicit SLF4J API/bridge instead of those shaded copies. -->
+        <mkdir dir="build/vendor" />
+        <move file="build/lib/wildfly-client-all.jar" tofile="build/vendor/wildfly-client-all.jar" />
+        <jar destfile="build/lib/wildfly-client-all.jar" filesetmanifest="merge">
+            <zipfileset src="build/vendor/wildfly-client-all.jar">
+                <exclude name="org/apache/commons/logging/**" />
+                <exclude name="org/slf4j/**" />
+                <exclude name="META-INF/versions/**/org/apache/commons/logging/**" />
+                <exclude name="META-INF/versions/**/org/slf4j/**" />
+                <exclude name="META-INF/maven/commons-logging/**" />
+                <exclude name="META-INF/maven/org.slf4j/**" />
+                <exclude name="META-INF/services/org.apache.commons.logging.LogFactory" />
+                <exclude name="META-INF/services/org.slf4j.spi.SLF4JServiceProvider" />
+            </zipfileset>
+        </jar>
         <touch file="build/lib/.flagfile" />
     </target>
 

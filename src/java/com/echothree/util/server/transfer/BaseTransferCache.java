@@ -56,12 +56,12 @@ import com.echothree.util.server.string.UnitOfMeasureUtils;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTransfer> {
     
-    private Log log = null;
+    protected final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Inject
     protected CommentControl commentControl;
@@ -119,14 +119,6 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
             includeEntityAttributeGroups = options.contains(BaseOptions.BaseIncludeEntityAttributeGroups);
             includeTagScopes = options.contains(BaseOptions.BaseIncludeTagScopes);
         }
-    }
-    
-    protected Log getLog() {
-        if(log == null) {
-            log = LogFactory.getLog(this.getClass());
-        }
-        
-        return log;
     }
     
     protected void put(final UserVisit userVisit, final K key, final V value, final EntityInstance entityInstance) {

@@ -24,8 +24,8 @@ import javax.naming.NamingException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HttpSessionUtils {
 
@@ -39,7 +39,7 @@ public class HttpSessionUtils {
         return instance;
     }
 
-    protected static Log log = LogFactory.getLog(HttpSessionUtils.class);
+    protected static Logger log = LoggerFactory.getLogger(HttpSessionUtils.class);
 
     public static final int DEFAULT_MAX_INACTIVE_INTERVAL = 15 * 60; // 15 minutes
 

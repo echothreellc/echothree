@@ -38,7 +38,7 @@ public class LicenseUpdateJob {
 //        CommandResult commandResult = LicenseUtil.getHome().updateLicense(userVisitPK);
 //
 //        if(commandResult.hasErrors()) {
-//            getLog().error(commandResult.toString());
+//            log.error(commandResult.toString());
 //        }
 //    }
 

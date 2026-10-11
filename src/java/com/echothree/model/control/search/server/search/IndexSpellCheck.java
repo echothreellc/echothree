@@ -70,7 +70,7 @@ public class IndexSpellCheck
             suggestions = super.execute();
         } else {
             if(EvaluatorDebugFlags.LogCheckSpelling) {
-                getLog().info("  Skipping all.");
+                log.info("  Skipping all.");
             }
             
             suggestions = Collections.nCopies(words.size(), null);
@@ -94,30 +94,30 @@ public class IndexSpellCheck
 
             if(analyzedWord == null) {
                 if(EvaluatorDebugFlags.LogCheckSpelling) {
-                    getLog().info("  Skipping: " + word);
+                    log.info("  Skipping: " + word);
                 }
             } else {
                 var term = new Term(dictionaryField, word);
                 var suggestWords = directSpellChecker.suggestSimilar(term, 5, ir);
 
                 if(EvaluatorDebugFlags.LogCheckSpelling) {
-                    getLog().info("  Checking: " + word);
+                    log.info("  Checking: " + word);
                 }
 
                 if(suggestWords.length == 0) {
                     if(EvaluatorDebugFlags.LogCheckSpelling) {
-                        getLog().info("    No Suggestions.");
+                        log.info("    No Suggestions.");
                     }
                 } else {
                     checkSpellingSuggestions = new ArrayList<>(suggestWords.length);
 
                     if(EvaluatorDebugFlags.LogCheckSpelling) {
-                        getLog().info("    Suggestions:");
+                        log.info("    Suggestions:");
                     }
 
                     for(var suggestWord : suggestWords) {
                         if(EvaluatorDebugFlags.LogCheckSpelling) {
-                            getLog().info("      " + suggestWord.string + ", " + suggestWord.freq + ", " + suggestWord.score);
+                            log.info("      " + suggestWord.string + ", " + suggestWord.freq + ", " + suggestWord.score);
                         }
 
                         checkSpellingSuggestions.add(new CheckSpellingSuggestionTransfer(suggestWord.string));

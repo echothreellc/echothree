@@ -35,7 +35,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Sprout utility methods.
@@ -44,7 +45,7 @@ import org.apache.log4j.Logger;
  */
 public class SproutUtils {
 
-    private static final Logger log = Logger.getLogger( SproutUtils.class );
+    private static final Logger log = LoggerFactory.getLogger( SproutUtils.class );
     
     /**
      * Gets a collection of methods declared in a specified range of a given

@@ -23,14 +23,14 @@ import com.echothree.model.control.selector.server.evaluator.SelectorCache;
 import com.echothree.model.control.selector.server.evaluator.SelectorCacheFactory;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BaseFilterEvaluator {
     
     protected Session session;
     protected BasePK evaluatedBy;
-    protected Log log;
+    protected Logger log;
     
     protected FilterAdjustmentControl filterAdjustmentControl;
     protected FilterControl filterControl;
@@ -41,7 +41,7 @@ public class BaseFilterEvaluator {
     public BaseFilterEvaluator(Session session, BasePK evaluatedBy, Class logClass, String filterKindName, String filterTypeName,
             String selectorTypeName) {
         if(logClass != null)
-            log = LogFactory.getLog(logClass);
+            log = LoggerFactory.getLogger(logClass);
         else
             log = null;
         

@@ -35,8 +35,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.AnalyzerWrapper;
 import org.apache.lucene.analysis.cjk.CJKAnalyzer;
@@ -46,11 +44,13 @@ import org.apache.lucene.analysis.es.SpanishAnalyzer;
 import org.apache.lucene.analysis.fr.FrenchAnalyzer;
 import org.apache.lucene.analysis.ja.JapaneseAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BasicAnalyzer
         extends AnalyzerWrapper {
     
-    protected Log log = LogFactory.getLog(this.getClass());
+    protected Logger log = LoggerFactory.getLogger(this.getClass());
 
     private ExecutionErrorAccumulator eea;
     private EntityType entityType;

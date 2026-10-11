@@ -73,7 +73,7 @@ public class CheckSecurityRolesTag
             
             if(commandResult.hasErrors()) {
                 if(logErrors) {
-                    getLog().error(commandResult);
+                    log.error("{}", commandResult);
                 }
             }
             

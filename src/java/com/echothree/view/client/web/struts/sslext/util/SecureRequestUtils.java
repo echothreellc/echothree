@@ -83,13 +83,13 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.struts.Globals;
 import org.apache.struts.config.ModuleConfig;
 import org.apache.struts.taglib.TagUtils;
 import org.apache.struts.util.MessageResources;
 import org.apache.struts.util.ModuleUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Define some additional utility methods utilized by sslext.
@@ -101,7 +101,7 @@ public class SecureRequestUtils {
      */
     protected static MessageResources messages = MessageResources.getMessageResources("org.apache.struts.taglib.html.LocalStrings");
     
-    private static Log sLog = LogFactory.getLog(SecureRequestUtils.class);
+    private static Logger sLog = LoggerFactory.getLogger(SecureRequestUtils.class);
     
     private static final String HTTP = "http";
     private static final String HTTPS = "https";

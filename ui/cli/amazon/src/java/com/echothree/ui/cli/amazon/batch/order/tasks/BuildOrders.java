@@ -33,12 +33,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BuildOrders {
 
-    private final Log LOG = LogFactory.getLog(this.getClass());
+    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
     private static final Splitter TAB_SPLITTER = Splitter.on('\t')
            .trimResults();

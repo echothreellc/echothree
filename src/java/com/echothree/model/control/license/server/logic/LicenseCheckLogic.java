@@ -33,12 +33,12 @@ import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import javax.enterprise.context.ApplicationScoped;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @ApplicationScoped
 public class LicenseCheckLogic
@@ -48,7 +48,7 @@ public class LicenseCheckLogic
     private static final long LICENSE_RENEWAL_PERIOD = 72 * 60 * 60 * 1000; // 72 hours
     private static final long RETRY_DELAY = 15 * 60 * 1000; // 15 minutes
     
-    final private Log log = LogFactory.getLog(this.getClass());
+    final private Logger log = LoggerFactory.getLogger(this.getClass());
     final private AtomicBoolean executionPermitted = new AtomicBoolean(true);
     final private AtomicLong licenseValidUntilTime;
     private Long lastLicenseAttempt;

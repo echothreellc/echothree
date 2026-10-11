@@ -350,7 +350,7 @@ public class EntityInstanceControl
         EntityInstance entityInstance = null;
 
         if(CoreDebugFlags.LogEntityInstanceResolution) {
-            getLog().info(">>> getEntityInstanceByBasePK(pk=" + pk + ")");
+            log.info(">>> getEntityInstanceByBasePK(pk=" + pk + ")");
         }
 
         if(pk != null) {
@@ -358,7 +358,7 @@ public class EntityInstanceControl
             var componentVendor = componentControl.getComponentVendorByNameFromCache(componentVendorName);
 
             if(CoreDebugFlags.LogEntityInstanceResolution) {
-                getLog().info("--- componentVendor = " + componentVendor);
+                log.info("--- componentVendor = " + componentVendor);
             }
 
             if(componentVendor != null) {
@@ -366,14 +366,14 @@ public class EntityInstanceControl
                 var entityType = entityTypeControl.getEntityTypeByNameFromCache(componentVendor, entityTypeName);
 
                 if(CoreDebugFlags.LogEntityInstanceResolution) {
-                    getLog().info("--- entityType = " + entityType);
+                    log.info("--- entityType = " + entityType);
                 }
 
                 if(entityType != null) {
                     var entityUniqueId = pk.getEntityId();
 
                     if(CoreDebugFlags.LogEntityInstanceResolution) {
-                        getLog().info("--- entityUniqueId = " + entityUniqueId);
+                        log.info("--- entityUniqueId = " + entityUniqueId);
                     }
 
                     entityInstance = getEntityInstance(entityType, entityUniqueId, entityPermission);
@@ -388,20 +388,20 @@ public class EntityInstanceControl
                     }
 
                     if(CoreDebugFlags.LogEntityInstanceResolution) {
-                        getLog().info("--- entityInstance = " + entityInstance);
+                        log.info("--- entityInstance = " + entityInstance);
                     }
                 } else if(CoreDebugFlags.LogUnresolvedEntityInstances) {
-                    getLog().error("getEntityInstanceByBasePK: unknown entityTypeName \"" + componentVendorName + "." + entityTypeName + "\"");
+                    log.error("getEntityInstanceByBasePK: unknown entityTypeName \"" + componentVendorName + "." + entityTypeName + "\"");
                 }
             } else if(CoreDebugFlags.LogUnresolvedEntityInstances) {
-                getLog().error("getEntityInstanceByBasePK: unknown componentVendorName \"" + componentVendorName + "\"");
+                log.error("getEntityInstanceByBasePK: unknown componentVendorName \"" + componentVendorName + "\"");
             }
         } else if(CoreDebugFlags.LogUnresolvedEntityInstances) {
-            getLog().error("getEntityInstanceByBasePK: PK was null");
+            log.error("getEntityInstanceByBasePK: PK was null");
         }
 
         if(CoreDebugFlags.LogEntityInstanceResolution) {
-            getLog().info("<<< entityInstance=" + entityInstance);
+            log.info("<<< entityInstance=" + entityInstance);
         }
 
         return entityInstance;
@@ -439,19 +439,19 @@ public class EntityInstanceControl
                         entityInstance = getEntityInstance(entityType, entityUniqueId, entityPermission);
 
                         if(CoreDebugFlags.LogUnresolvedEntityInstances && entityInstance == null) {
-                            getLog().error("getEntityInstanceByEntityRef: unknown entityUniqueId \"" + componentVendorName + "." + entityTypeName + "." + entityUniqueId + "\"");
+                            log.error("getEntityInstanceByEntityRef: unknown entityUniqueId \"" + componentVendorName + "." + entityTypeName + "." + entityUniqueId + "\"");
                         }
                     } else if(CoreDebugFlags.LogUnresolvedEntityInstances) {
-                        getLog().error("getEntityInstanceByEntityRef: unknown entityTypeName \"" + componentVendorName + "." + entityTypeName + "\"");
+                        log.error("getEntityInstanceByEntityRef: unknown entityTypeName \"" + componentVendorName + "." + entityTypeName + "\"");
                     }
                 } else if(CoreDebugFlags.LogUnresolvedEntityInstances) {
-                    getLog().error("getEntityInstanceByEntityRef: unknown componentVendorName \"" + componentVendorName + "\"");
+                    log.error("getEntityInstanceByEntityRef: unknown componentVendorName \"" + componentVendorName + "\"");
                 }
             } else if(CoreDebugFlags.LogUnresolvedEntityInstances) {
-                getLog().error("getEntityInstanceByEntityRef: entityRef not valid");
+                log.error("getEntityInstanceByEntityRef: entityRef not valid");
             }
         } else if(CoreDebugFlags.LogUnresolvedEntityInstances) {
-            getLog().error("getEntityInstanceByEntityRef: entityRef was null");
+            log.error("getEntityInstanceByEntityRef: entityRef was null");
         }
 
         return entityInstance;

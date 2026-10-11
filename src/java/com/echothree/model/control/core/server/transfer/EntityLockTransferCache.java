@@ -65,11 +65,11 @@ public class EntityLockTransferCache
             var dslContext = DslContextFactory.getInstance().getNTDslContext();
 
             if(CoreDebugFlags.LogEntityLocks) {
-                getLog().info(">>> getEntityLockTransfer(lockTargetEntityInstance=" + lockTargetEntityInstance.getPrimaryKey() + ")");
+                log.info(">>> getEntityLockTransfer(lockTargetEntityInstance=" + lockTargetEntityInstance.getPrimaryKey() + ")");
             }
 
             if(CoreDebugFlags.LogEntityLocks) {
-                getLog().info("--- lockTargetEntityInstance=" + lockTargetEntityInstance);
+                log.info("--- lockTargetEntityInstance=" + lockTargetEntityInstance);
             }
 
             var lock = dslContext
@@ -87,10 +87,10 @@ public class EntityLockTransferCache
                 var lockedByEntityInstanceTransfer = entityInstanceControl.getEntityInstanceTransfer(userVisit, lockedByEntityInstance, false, false, false, false);
 
                 if(CoreDebugFlags.LogEntityLocks) {
-                    getLog().info("--- lockedByEntityInstancePK = " + lockedByEntityInstancePK);
-                    getLog().info("--- lockedByEntityInstance = " + lockedByEntityInstance);
-                    getLog().info("--- lockTargetEntityInstanceTransfer = " + lockTargetEntityInstanceTransfer.getEntityRef());
-                    getLog().info("--- lockTargetEntityInstanceTransfer = " + lockTargetEntityInstanceTransfer.getEntityRef());
+                    log.info("--- lockedByEntityInstancePK = " + lockedByEntityInstancePK);
+                    log.info("--- lockedByEntityInstance = " + lockedByEntityInstance);
+                    log.info("--- lockTargetEntityInstanceTransfer = " + lockTargetEntityInstanceTransfer.getEntityRef());
+                    log.info("--- lockTargetEntityInstanceTransfer = " + lockTargetEntityInstanceTransfer.getEntityRef());
                 }
 
                 var lockedTimeString = formatTypicalDateTime(userVisit, lockedTime);
@@ -108,7 +108,7 @@ public class EntityLockTransferCache
         }
 
         if(CoreDebugFlags.LogEntityLocks) {
-            getLog().info("<<< entityLockTransfer=" + entityLockTransfer);
+            log.info("<<< entityLockTransfer=" + entityLockTransfer);
         }
 
         return entityLockTransfer;

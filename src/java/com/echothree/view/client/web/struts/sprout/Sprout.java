@@ -39,7 +39,6 @@ import java.lang.annotation.Target;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.log4j.Logger;
 import org.apache.struts.Globals;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -47,6 +46,8 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 import org.apache.struts.actions.MappingDispatchAction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <p>One goal is to make web application development in Java more
@@ -120,7 +121,7 @@ import org.apache.struts.actions.MappingDispatchAction;
 public abstract class Sprout
         extends MappingDispatchAction {
 
-    private final static Logger log = Logger.getLogger( Sprout.class );
+    private final static Logger log = LoggerFactory.getLogger( Sprout.class );
 
     static final String DEFAULT_SCOPE = "request";
     static final String DEFAULT_FORM_SUFFIX = "Form";

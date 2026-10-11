@@ -24,13 +24,13 @@ import graphql.execution.preparsed.PreparsedDocumentProvider;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GraphQlDocumentCache
         implements PreparsedDocumentProvider {
 
-    private final Log log = LogFactory.getLog(this.getClass());
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
     private final Cache<String, PreparsedDocumentEntry> cache = Caffeine.newBuilder()
             .maximumSize(1_000)
             .expireAfterAccess(5, TimeUnit.MINUTES)

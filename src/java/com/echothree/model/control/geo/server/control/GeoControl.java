@@ -4016,7 +4016,7 @@ public class GeoControl
         var countryGeoCodeType = getGeoCodeTypeByName(com.echothree.model.control.geo.common.GeoCodeTypes.COUNTRY.name());
         var stateRelationships = getGeoCodeRelationshipsByFromGeoCodeAndGeoCodeType(stateGeoCode, countryGeoCodeType);
         if(stateRelationships.size() != 1) {
-            getLog().error("non-1 stateRelationships.size()");
+            log.error("non-1 stateRelationships.size()");
         }
         var countryGeoCode = stateRelationships.iterator().next().getToGeoCode();
 

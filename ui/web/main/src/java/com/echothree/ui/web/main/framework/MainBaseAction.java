@@ -31,16 +31,16 @@ import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class MainBaseAction<A extends ActionForm>
         extends BaseAction {
     
-    protected Log log = LogFactory.getLog(this.getClass());
+    protected Logger log = LoggerFactory.getLogger(this.getClass());
     private boolean partyRequired;
     private boolean forceChangeCheck;
     

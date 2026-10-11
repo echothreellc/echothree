@@ -49,8 +49,6 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
 import javax.inject.Inject;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -62,6 +60,8 @@ import org.apache.lucene.index.SerialMergeScheduler;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class BaseIndexer<BE extends BaseEntity>
         extends BaseLogic
@@ -91,7 +91,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
     @Inject
     protected WorkflowControl workflowControl;
 
-    protected Log log = LogFactory.getLog(this.getClass());
+    protected Logger log = LoggerFactory.getLogger(this.getClass());
 
     protected ExecutionErrorAccumulator eea;
     protected Index index;

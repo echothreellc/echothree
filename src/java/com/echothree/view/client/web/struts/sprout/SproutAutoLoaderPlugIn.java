@@ -38,11 +38,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import javax.servlet.ServletException;
 import org.apache.commons.beanutils.BeanMap;
-import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionFormBean;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.config.ActionConfig;
 import org.apache.struts.config.ForwardConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <p>Finds Sprouts present in the classpath and registers them with
@@ -58,7 +59,7 @@ import org.apache.struts.config.ForwardConfig;
 public class SproutAutoLoaderPlugIn
         extends SproutContextLoaderPlugIn {
 
-    private final static Logger log = Logger.getLogger(SproutAutoLoaderPlugIn.class);
+    private final static Logger log = LoggerFactory.getLogger(SproutAutoLoaderPlugIn.class);
 
     private void loadForm(final Class bean) {
         final var annotations = bean.getAnnotations();
