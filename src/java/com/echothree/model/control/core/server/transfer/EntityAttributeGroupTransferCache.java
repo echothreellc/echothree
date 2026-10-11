@@ -78,7 +78,7 @@ public class EntityAttributeGroupTransferCache
 
                     entityAttributeGroupTransfer.setEntityAttributes(mapWrapper);
                 } else {
-                    getLog().error("entityInstance is null");
+                    log.error("entityInstance is null");
                 }
             }
         }

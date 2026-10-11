@@ -22,13 +22,13 @@ import java.io.Serializable;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CustomBindingListener
         implements HttpSessionBindingListener, Serializable {
 
-    protected static Log log = LogFactory.getLog(CustomBindingListener.class);
+    protected static Logger log = LoggerFactory.getLogger(CustomBindingListener.class);
 
     UserVisitPK userVisitPK;
     

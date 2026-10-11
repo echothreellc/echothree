@@ -65,14 +65,14 @@ public abstract class BaseSpellCheckEvaluator
             isBoosted = boostQuery.getBoost() != 1.0f;
 
             if(EvaluatorDebugFlags.LogCheckSpelling) {
-                getLog().info("    containedTermQuery.getBoost() " + boostQuery.getBoost());
+                log.info("    containedTermQuery.getBoost() " + boostQuery.getBoost());
             }
             
             query = boostQuery.getQuery();
         }
         
         if(EvaluatorDebugFlags.LogCheckSpelling) {
-            getLog().info("    is boosted: " + isBoosted);
+            log.info("    is boosted: " + isBoosted);
         }
 
         if(query instanceof TermQuery termQuery) {
@@ -80,8 +80,8 @@ public abstract class BaseSpellCheckEvaluator
             var text = term.text();
             
             if(EvaluatorDebugFlags.LogCheckSpelling) {
-                getLog().info("    containedTerm.field() " + term.field());
-                getLog().info("    containedTerm.text() " + text);
+                log.info("    containedTerm.field() " + term.field());
+                log.info("    containedTerm.text() " + text);
             }
                         
             // For the query to be simple, it must not have a boost applied, and the
@@ -94,14 +94,14 @@ public abstract class BaseSpellCheckEvaluator
             }
         } else {
             if(EvaluatorDebugFlags.LogCheckSpelling) {
-                getLog().info("    !!! not a TermQuery");
+                log.info("    !!! not a TermQuery");
             }
             
             result = false;
         }
         
         if(EvaluatorDebugFlags.LogCheckSpelling) {
-            getLog().info("    isSimpleQuery: " + result);
+            log.info("    isSimpleQuery: " + result);
         }
         
         return result;
@@ -121,10 +121,10 @@ public abstract class BaseSpellCheckEvaluator
             var occur = booleanClause.occur();
 
             if(EvaluatorDebugFlags.LogCheckSpelling) {
-                getLog().info("booleanClause " + booleanClause);
-                getLog().info("  booleanClause.getOccur() " + occur.name());
-                getLog().info("  booleanClause.isRequired() " + booleanClause.isRequired());
-                getLog().info("  booleanClause.isProhibited() " + booleanClause.isProhibited());
+                log.info("booleanClause " + booleanClause);
+                log.info("  booleanClause.getOccur() " + occur.name());
+                log.info("  booleanClause.isRequired() " + booleanClause.isRequired());
+                log.info("  booleanClause.isProhibited() " + booleanClause.isProhibited());
             }
 
             // MUST and SHOULD are the only two Occurs that'll make it this far, MUST_NOT will never occur.
@@ -146,8 +146,8 @@ public abstract class BaseSpellCheckEvaluator
                 var containedQuery = booleanClause.query();
 
                 if(EvaluatorDebugFlags.LogCheckSpelling) {
-                    getLog().info("  booleanClause.getQuery() " + containedQuery);
-                    getLog().info("  booleanClause.getQuery().getClass() " + containedQuery.getClass());
+                    log.info("  booleanClause.getQuery() " + containedQuery);
+                    log.info("  booleanClause.getQuery().getClass() " + containedQuery.getClass());
                 }
 
                 result = isSimpleQuery(containedQuery, dictionaryField, words);
@@ -175,13 +175,13 @@ public abstract class BaseSpellCheckEvaluator
                 result = isSimpleQuery(query, dictionaryField, words);
 
                 if(EvaluatorDebugFlags.LogCheckSpelling) {
-                    getLog().info("!!! not a BooleanQuery, " + query.getClass());
+                    log.info("!!! not a BooleanQuery, " + query.getClass());
                 }
             }
         }
 
         if(EvaluatorDebugFlags.LogCheckSpelling) {
-            getLog().info("isSimpleQuery: " + result);
+            log.info("isSimpleQuery: " + result);
         }
 
         return result;
@@ -230,7 +230,7 @@ public abstract class BaseSpellCheckEvaluator
                 final var simpleQuery = isSimpleQuery(eea, dictionaryField, words);
 
                 if(EvaluatorDebugFlags.LogCheckSpelling) {
-                    getLog().info("words = " + words);
+                    log.info("words = " + words);
                 }
 
                 if(simpleQuery) {
@@ -259,7 +259,7 @@ public abstract class BaseSpellCheckEvaluator
                     }
 
                     if(EvaluatorDebugFlags.LogCheckSpelling) {
-                        getLog().info("analyzedWords = " + analyzedWords);
+                        log.info("analyzedWords = " + analyzedWords);
                     }
 
                     final var suggestions = executeSpellCheck(eea, dictionaryField, words, analyzedWords);

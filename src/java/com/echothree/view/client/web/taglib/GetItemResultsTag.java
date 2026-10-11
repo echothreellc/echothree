@@ -129,7 +129,7 @@ public class GetItemResultsTag
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
                 if(logError) {
-                    getLog().error(commandResult);
+                    log.error("{}", commandResult);
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();

@@ -22,12 +22,12 @@ import com.echothree.util.common.transfer.BaseWrapper;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Set;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BaseTransferUtils {
 
-    private static Log log = LogFactory.getLog(BaseTransferUtils.class);
+    private static Logger log = LoggerFactory.getLogger(BaseTransferUtils.class);
     
     private BaseTransferUtils() {
         super();

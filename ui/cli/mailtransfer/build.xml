@@ -52,9 +52,10 @@
             <file file="${build.lib.dir}/commons-configuration.jar"/>
             <file file="${build.lib.dir}/commons-beanutils.jar"/>
             <file file="${build.lib.dir}/commons-collections.jar"/>
-            <file file="${build.lib.dir}/reload4j.jar"/>
+            <file file="${build.lib.dir}/jcl-over-slf4j.jar"/>
             <file file="${build.lib.dir}/slf4j-api.jar"/>
-            <file file="${build.lib.dir}/slf4j-reload4j.jar"/>
+            <file file="${build.lib.dir}/logback-classic.jar"/>
+            <file file="${build.lib.dir}/logback-core.jar"/>
             <file file="${build.lib.dir}/wildfly-client-all.jar"/>
             <file file="${e3.client.jarfile}"/>
             <file file="${ui.cli.mailtransfer.jarfile}"/>
@@ -138,6 +139,7 @@
         <java classname="com.echothree.ui.cli.mailtransfer.MailTransfer"
               classpathref="runtime.classpath"
               fork="true">
+            <sysproperty key="org.jboss.logging.provider" value="slf4j"/>
             <arg value="--blogentries"/>
             <arg value="--verbose"/>
         </java>
@@ -147,6 +149,7 @@
         <java classname="com.echothree.ui.cli.mailtransfer.MailTransfer"
               classpathref="runtime.classpath"
               fork="true">
+            <sysproperty key="org.jboss.logging.provider" value="slf4j"/>
             <arg value="--communicationevents"/>
             <arg value="--verbose"/>
         </java>

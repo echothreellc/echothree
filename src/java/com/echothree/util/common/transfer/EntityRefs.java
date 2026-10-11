@@ -22,13 +22,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EntityRefs
         implements Serializable {
 
-    private Log log = LogFactory.getLog(EntityRefs.class);
+    private Logger log = LoggerFactory.getLogger(EntityRefs.class);
 
     private Set<String> componentVendorNames = new HashSet<>();
     private Map<String, Set<String>> entityTypeNames = new HashMap<>();

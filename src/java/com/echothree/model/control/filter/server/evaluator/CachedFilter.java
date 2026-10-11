@@ -31,8 +31,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CachedFilter {
     
@@ -40,7 +40,7 @@ public class CachedFilter {
     FilterStepControl filterStepControl;
     FilterStepElementControl filterStepElementControl;
     Filter filter;
-    Log log;
+    Logger log;
     
     SelectorCache selectorCache;
     List<FilterStep> filterSteps;
@@ -56,7 +56,7 @@ public class CachedFilter {
         this.filterStepControl = filterStepControl;
         this.filterStepElementControl = Session.getModelController(FilterStepElementControl.class);
         this.filter = filter;
-        this.log = LogFactory.getLog(CachedFilter.class);
+        this.log = LoggerFactory.getLogger(CachedFilter.class);
         
         selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorKinds.ITEM.name(),
                 SelectorTypes.FILTER.name());

@@ -26,8 +26,8 @@ import java.util.Set;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTagSupport;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BaseTag
         extends BodyTagSupport {
@@ -36,7 +36,7 @@ public class BaseTag
     private static final String SESSION = "session";
     private static final String APPLICATION = "application";
     
-    private Log log = null;
+    protected final Logger log = LoggerFactory.getLogger(this.getClass());
     
     protected UserVisitPK getUserVisitPK() throws JspException {
         var httpSession = pageContext.getSession();
@@ -53,14 +53,6 @@ public class BaseTag
         }
         
         return userVisitPK;
-    }
-    
-    protected Log getLog() {
-        if(log == null) {
-            log = LogFactory.getLog(this.getClass());
-        }
-        
-        return log;
     }
     
    /*

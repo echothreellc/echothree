@@ -21,16 +21,16 @@ import com.echothree.view.client.web.struts.CustomActionForward;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class LetterBaseAction<A extends ActionForm>
         extends BaseAction {
     
-    protected Log log = LogFactory.getLog(this.getClass());
+    protected Logger log = LoggerFactory.getLogger(this.getClass());
     
     protected LetterBaseAction() {
         super();
@@ -50,7 +50,7 @@ public abstract class LetterBaseAction<A extends ActionForm>
                 saveToken(request);
             }
         } catch (NamingException ne) {
-            log.error(ne);
+            log.error(ne.toString(), ne);
             forwardKey = ForwardConstants.ERROR_500;
         }
 

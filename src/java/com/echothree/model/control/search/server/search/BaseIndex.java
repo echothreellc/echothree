@@ -25,12 +25,12 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import java.io.IOException;
 import java.nio.file.Paths;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class BaseIndex<R>
         extends BaseLogic {
@@ -49,16 +49,8 @@ public abstract class BaseIndex<R>
         init(eea, indexControl, index);
     }
     
-    private Log log;
+    protected final Logger log = LoggerFactory.getLogger(this.getClass());
     
-    protected Log getLog() {
-        if(log == null) {
-            log = LogFactory.getLog(this.getClass());
-        }
-
-        return log;
-    }
-
     public R execute() {
         return openIndex();
     }

@@ -18,8 +18,8 @@ package com.echothree.ui.cli.database.util;
 
 import com.echothree.ui.cli.database.util.definition.Database;
 import org.apache.commons.configuration.Configuration;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class DatabaseUtilitiesFactory {
 
@@ -29,7 +29,7 @@ public final class DatabaseUtilitiesFactory {
     private static final String DB_ECHO_THREE = "echothree";
     private static final String DB_REPORTING = "reporting";
     
-    private static final Log log = LogFactory.getLog(DatabaseUtilitiesFactory.class);
+    private static final Logger log = LoggerFactory.getLogger(DatabaseUtilitiesFactory.class);
     
     private DatabaseUtilitiesFactory() {
         super();
@@ -69,7 +69,7 @@ public final class DatabaseUtilitiesFactory {
         var value = specificValue == null ? defaultValue : specificValue;
         
         if(value == null && required) {
-            log.fatal(defaultProperty + " is a required property");
+            log.error(defaultProperty + " is a required property");
         }
         
         return value;

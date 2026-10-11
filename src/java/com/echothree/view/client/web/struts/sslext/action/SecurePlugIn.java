@@ -81,11 +81,11 @@ import java.util.MissingResourceException;
 import javax.servlet.ServletException;
 import javax.servlet.UnavailableException;
 import org.apache.commons.digester.Digester;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.struts.action.ActionServlet;
 import org.apache.struts.config.ModuleConfig;
 import org.apache.struts.util.MessageResources;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Implements sslext plugin functionality
@@ -97,7 +97,7 @@ public class SecurePlugIn implements SecurePlugInInterface {
     protected String httpsPort = DEFAULT_HTTPS_PORT;
     protected String enable = DEFAULT_ENABLE;
     
-    private Log sLog = LogFactory.getLog(SecurePlugIn.class);
+    private Logger sLog = LoggerFactory.getLogger(SecurePlugIn.class);
     
     /**
      * The {@link ActionServlet} owning this application.

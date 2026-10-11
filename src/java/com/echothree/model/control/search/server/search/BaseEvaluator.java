@@ -36,16 +36,16 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class BaseEvaluator
         extends BaseLogic {
     
-    private Log log;
+    protected final Logger log = LoggerFactory.getLogger(this.getClass());
     
     protected UserVisit userVisit;
     protected SearchDefaultOperator searchDefaultOperator;
@@ -82,14 +82,6 @@ public abstract class BaseEvaluator
                 indexTypeName, language, indexName);
     }
     
-    protected Log getLog() {
-        if(log == null) {
-            log = LogFactory.getLog(this.getClass());
-        }
-
-        return log;
-    }
-
     protected CoreControl getCoreControl() {
         if(coreControl == null) {
             coreControl = Session.getModelController(CoreControl.class);

@@ -57,7 +57,7 @@ public class FlushTag
 
             var commandResult = CoreUtil.getHome().removeCacheEntry(getUserVisitPK(), commandForm);
             if(commandResult.hasErrors() && !commandResult.containsExecutionError(ExecutionErrors.UnknownCacheEntryKey.name())) {
-                getLog().error(commandResult);
+                log.error("{}", commandResult);
             }
         } catch (NamingException ne) {
             throw new JspException(ne);

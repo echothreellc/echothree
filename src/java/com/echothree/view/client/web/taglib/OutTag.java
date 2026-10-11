@@ -24,8 +24,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.struts.taglib.TagUtils;
 import org.apache.xerces.xni.QName;
 import org.apache.xerces.xni.parser.XMLDocumentFilter;
@@ -36,8 +34,6 @@ import org.cyberneko.html.HTMLConfiguration;
 public class OutTag
         extends BaseTag {
     
-    Log log = LogFactory.getLog(this.getClass());
-
     protected String value;
     protected String mimeTypeName;
     protected String absoluteUrls;

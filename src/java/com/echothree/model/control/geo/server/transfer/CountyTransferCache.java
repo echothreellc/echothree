@@ -56,7 +56,7 @@ public class CountyTransferCache
             var stateGeoCodeType = geoControl.getGeoCodeTypeByName(GeoCodeTypes.STATE.name());
             var geoCodeRelationships = geoControl.getGeoCodeRelationshipsByFromGeoCodeAndGeoCodeType(geoCode, stateGeoCodeType);
             if(geoCodeRelationships.size() != 1) {
-                getLog().error("non-1 geoCodeRelationships.size()");
+                log.error("non-1 geoCodeRelationships.size()");
             }
             var state = geoControl.getStateTransfer(userVisit, geoCodeRelationships.getFirst().getToGeoCode());
             

@@ -21,8 +21,6 @@ import java.sql.SQLException;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.conf.Settings;

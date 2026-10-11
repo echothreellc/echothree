@@ -33,7 +33,7 @@ compile:
       - build/lib/jooq.jar
       - build/lib/jooq-codegen.jar
       - build/lib/jooq-meta.jar
-      - build/lib/jaxb-api.jar
+      - build/lib/jakarta.xml.bind-api.jar
       - build/lib/r2dbc-spi.jar
       - build/lib/reactive-streams.jar
       - build/lib/mysql-connector-j.jar
@@ -43,15 +43,16 @@ compile:
       - build/lib/javax.activation-api.jar
       - build/lib/xercesImpl.jar
       - build/lib/guava.jar
+      - build/lib/icu4j.jar
       - build/lib/commons-cli.jar
       - build/lib/commons-lang.jar
       - build/lib/commons-configuration.jar
       - build/lib/commons-beanutils.jar
-      - build/lib/commons-logging.jar
+      - build/lib/jcl-over-slf4j.jar
       - build/lib/commons-collections.jar
-      - build/lib/reload4j.jar
       - build/lib/slf4j-api.jar
-      - build/lib/slf4j-reload4j.jar
+      - build/lib/logback-classic.jar
+      - build/lib/logback-core.jar
       - build/lib/wildfly-client-all.jar
     expire_in: 1 week
 

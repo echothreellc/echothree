@@ -93,7 +93,7 @@ public class PreferredTimeZoneTag
             pageContext.setAttribute(commandResultVar == null ? TagConstants.CommandResultName : commandResultVar, commandResult, scope);
             if(commandResult.hasErrors()) {
                 if(logErrors) {
-                    getLog().error(commandResult);
+                    log.error("{}", commandResult);
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();

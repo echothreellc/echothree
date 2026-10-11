@@ -207,7 +207,7 @@ public class CacheTag
             var commandResult = CoreUtil.getHome().getCacheEntry(getUserVisitPK(), commandForm);
             if(commandResult.hasErrors()) {
                 if(!commandResult.containsExecutionError(ExecutionErrors.UnknownCacheEntryKey.name())) {
-                    getLog().error(commandResult);
+                    log.error("{}", commandResult);
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
@@ -316,7 +316,7 @@ public class CacheTag
 
                     var commandResult = CoreUtil.getHome().createCacheEntry(getUserVisitPK(), commandForm);
                     if(commandResult.hasErrors() && !commandResult.containsExecutionError(ExecutionErrors.DuplicateCacheEntryKey.name())) {
-                        getLog().error(commandResult);
+                        log.error("{}", commandResult);
                     }
                 } catch(NamingException ne) {
                     throw new JspException(ne);

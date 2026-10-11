@@ -25,12 +25,12 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.DefaultConfigurationBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AmazonUtility {
 
-    private static Log log = LogFactory.getLog(AmazonUtility.class);
+    private static Logger log = LoggerFactory.getLogger(AmazonUtility.class);
     private static Configuration configuration = loadConfiguration();
 
     private static CommandLine getCommandLine(String args[])
@@ -46,7 +46,7 @@ public class AmazonUtility {
         try {
             result = new DefaultConfigurationBuilder("config.xml").getConfiguration();
         } catch(ConfigurationException ex) {
-            log.error(ex);
+            log.error(ex.toString(), ex);
         }
 
         return result;

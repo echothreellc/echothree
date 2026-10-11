@@ -28,12 +28,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.naming.NamingException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ZipCodeParser {
     
-    private Log log = LogFactory.getLog(this.getClass());
+    private Logger log = LoggerFactory.getLogger(this.getClass());
     
     private AuthenticationService authenticationService = null;
     private GeoService geoService = null;
@@ -177,11 +177,11 @@ public class ZipCodeParser {
         this.zipCodeGeoCodeNames = zipCodeGeoCodeNames;
     }
     
-    public Log getLog() {
+    public Logger getLog() {
         return log;
     }
     
-    public void setLog(Log log) {
+    public void setLog(Logger log) {
         this.log = log;
     }
     

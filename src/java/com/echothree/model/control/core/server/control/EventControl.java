@@ -1214,7 +1214,7 @@ public class EventControl
             } catch(UnknownQueueTypeNameException uqtne) {
                 // This will be thrown early in the setup process because the QueueType has not yet been created.
                 // Log as an informational message, but otherwise ignore it.
-                getLog().info(uqtne.getMessage());
+                log.info(uqtne.getMessage());
             }
         }
     }
@@ -1256,7 +1256,7 @@ public class EventControl
         Event event = null;
 
         if(CoreDebugFlags.LogSentEvents) {
-            getLog().info("entityInstance = " + EntityInstanceUtils.getEntityRefByEntityInstance(entityInstance)
+            log.info("entityInstance = " + EntityInstanceUtils.getEntityRefByEntityInstance(entityInstance)
                     + ", eventType = " + eventType.getEventTypeName()
                     + ", relatedEntityInstance = " + EntityInstanceUtils.getEntityRefByEntityInstance(relatedEntityInstance)
                     + ", relatedEventType = " + (relatedEventType == null ? "(null)" : relatedEventType.getEventTypeName())
@@ -1372,7 +1372,7 @@ public class EventControl
         Event event = null;
 
         if(entityInstance == null) {
-            getLog().error("sendEventUsingNames: getEntityInstanceByBasePK failed on " + basePK.toString());
+            log.error("sendEventUsingNames: getEntityInstanceByBasePK failed on " + basePK.toString());
         } else {
             var relatedEntityInstance = relatedBasePK == null ? null : getEntityInstanceByBasePK(relatedBasePK);
 

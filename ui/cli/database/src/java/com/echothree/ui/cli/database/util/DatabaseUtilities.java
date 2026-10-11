@@ -37,15 +37,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class DatabaseUtilities {
 
     private static final int MAXIMUM_TABLE_NAME_LENGTH = 64;
     private static final int MAXIMUM_COLUMN_NAME_LENGTH = 64;
     
-    private final Log log = LogFactory.getLog(this.getClass());
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
     
     boolean verbose;
     Database myDatabase;

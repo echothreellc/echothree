@@ -55,7 +55,10 @@
             <file file="${build.lib.dir}/commons-lang.jar"/>
             <file file="${build.lib.dir}/commons-configuration.jar"/>
             <file file="${build.lib.dir}/commons-beanutils.jar"/>
-            <file file="${build.lib.dir}/commons-logging.jar"/>
+            <file file="${build.lib.dir}/jcl-over-slf4j.jar"/>
+            <file file="${build.lib.dir}/slf4j-api.jar"/>
+            <file file="${build.lib.dir}/logback-classic.jar"/>
+            <file file="${build.lib.dir}/logback-core.jar"/>
             <file file="${build.lib.dir}/commons-collections.jar"/>
             <file file="${ui.cli.database.jarfile}"/>
         </path>
@@ -64,7 +67,7 @@
             <pathelement location="${ui.cli.database.classbindir}"/>
             <pathelement location="${ui.cli.database.testclassbindir}"/>
             <pathelement location="${ui.cli.database.testresourcesdir}"/>
-            <fileset dir="${lib.dir}" includes="**/*.jar"/>
+            <fileset dir="${lib.dir}" includes="**/*.jar" excludes="pmd/lib/*.jar"/>
             <fileset dir="${build.lib.dir}" includes="**/*.jar"/>
         </path>
     </target>
@@ -173,6 +176,7 @@
         <java classpathref="runtime.classpath"
               classname="com.echothree.ui.cli.database.Database"
               fork="true">
+            <sysproperty key="org.jboss.logging.provider" value="slf4j"/>
             <arg value="--java"/>
             <arg value="--generated"/>
             <arg value="${ui.cli.database.generateddir}"/>
@@ -183,6 +187,7 @@
         <java classpathref="runtime.classpath"
               classname="com.echothree.ui.cli.database.Database"
               fork="true">
+            <sysproperty key="org.jboss.logging.provider" value="slf4j"/>
             <arg value="--jooq"/>
             <arg value="--generated"/>
             <arg value="${ui.cli.database.generateddir}"/>
@@ -191,6 +196,7 @@
         <java classpathref="runtime.classpath"
               classname="org.jooq.codegen.GenerationTool"
               fork="true">
+            <sysproperty key="org.jboss.logging.provider" value="slf4j"/>
             <sysproperty key="org.jooq.no-logo" value="true" />
             <sysproperty key="org.jooq.no-tips" value="true" />
             <arg value="${metadata.dir}/jooq-config.xml"/>
@@ -202,6 +208,7 @@
         <java classpathref="runtime.classpath"
               classname="com.echothree.ui.cli.database.Database"
               fork="true">
+            <sysproperty key="org.jboss.logging.provider" value="slf4j"/>
             <arg value="--structure"/>
             <arg value="--verbose"/>
         </java>
@@ -211,6 +218,7 @@
         <java classpathref="runtime.classpath"
               classname="com.echothree.ui.cli.database.Database"
               fork="true">
+            <sysproperty key="org.jboss.logging.provider" value="slf4j"/>
             <arg value="--empty"/>
             <arg value="--structure"/>
         </java>
@@ -220,6 +228,7 @@
         <java classpathref="runtime.classpath"
               classname="com.echothree.ui.cli.database.Database"
               fork="true">
+            <sysproperty key="org.jboss.logging.provider" value="slf4j"/>
             <arg value="--charset"/>
         </java>
     </target>
@@ -228,6 +237,7 @@
         <java classpathref="runtime.classpath"
               classname="com.echothree.ui.cli.database.Database"
               fork="true">
+            <sysproperty key="org.jboss.logging.provider" value="slf4j"/>
             <arg value="--reporting"/>
         </java>
     </target>

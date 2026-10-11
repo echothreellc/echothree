@@ -25,12 +25,12 @@ import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.util.HashSet;
 import java.util.Set;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DatabaseViewUtilities {
     
-    static Log log = LogFactory.getLog(DatabaseViewUtilities.class);
+    static Logger log = LoggerFactory.getLogger(DatabaseViewUtilities.class);
     
     boolean verbose;
     Database database;

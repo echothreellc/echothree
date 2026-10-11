@@ -21,13 +21,13 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.util.common.string.StringUtils;
-import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.common.message.Message;
 import com.echothree.util.common.message.Messages;
+import com.echothree.util.common.string.StringUtils;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseCommand;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.fieldtype.*;
@@ -38,8 +38,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Validator {
     
@@ -48,7 +48,7 @@ public class Validator {
     private PartyControl partyControl = null;
     private UserControl userControl = null;
     private VendorControl vendorControl = null;
-    private Log log = null;
+    protected final Logger log = LoggerFactory.getLogger(this.getClass());
     
     private Currency currency = null;
     
@@ -154,14 +154,6 @@ public class Validator {
         return vendorControl;
     }
     
-    protected Log getLog() {
-        if(log == null) {
-            log = LogFactory.getLog(this.getClass());
-        }
-        
-        return log;
-    }
-    
     public Currency getCurrency() {
         return currency;
     }
@@ -216,7 +208,7 @@ public class Validator {
         }
         
         if(!validationMessages.isEmpty()) {
-            getLog().info("formName = " + form.getFormName() + ", fieldName = " + fieldName + ", originalFieldValue = \""
+            log.info("formName = " + form.getFormName() + ", fieldName = " + fieldName + ", originalFieldValue = \""
                     + originalFieldValue + "\", fieldValue = \"" + fieldValue + "\", errorList = " + validationMessages);
         }
         

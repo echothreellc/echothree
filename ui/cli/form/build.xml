@@ -38,6 +38,10 @@
         <property name="ui.cli.form.jarfile" value="${ui.cli.form.jardir}/form.jar" />
 
         <path id="runtime.classpath">
+            <file file="${build.lib.dir}/slf4j-api.jar"/>
+            <file file="${build.lib.dir}/jcl-over-slf4j.jar"/>
+            <file file="${build.lib.dir}/logback-classic.jar"/>
+            <file file="${build.lib.dir}/logback-core.jar"/>
             <file file="${build.lib.dir}/guava.jar"/>
             <file file="${build.lib.dir}/commons-cli.jar"/>
             <file file="${ui.cli.form.jarfile}"/>
@@ -120,6 +124,7 @@
         <java classpathref="runtime.classpath"
               classname="com.echothree.ui.cli.form.Form"
               fork="true">
+            <sysproperty key="org.jboss.logging.provider" value="slf4j"/>
             <arg value="--source"/>
             <arg value="${ui.cli.form.srcdir}"/>
             <arg value="--generated"/>

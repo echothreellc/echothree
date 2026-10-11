@@ -123,8 +123,8 @@ public class EntityLockControl
         var lockedByEntityInstanceId = entityInstanceControl.getEntityInstanceByBasePK(lockedBy).getPrimaryKey().getEntityId();
         
         if(CoreDebugFlags.LogEntityLocks) {
-            getLog().info(">>> lockEntity(lockTarget=" + lockTarget + ", lockedBy=" + lockedBy + ")");
-            getLog().info("--- lockTargetEntityInstanceId=" + lockTargetEntityInstanceId + ", lockedByEntityInstanceId=" + lockedByEntityInstanceId);
+            log.info(">>> lockEntity(lockTarget=" + lockTarget + ", lockedBy=" + lockedBy + ")");
+            log.info("--- lockTargetEntityInstanceId=" + lockTargetEntityInstanceId + ", lockedByEntityInstanceId=" + lockedByEntityInstanceId);
         }
         
         if(lockTargetEntityInstanceId != 0 && lockedByEntityInstanceId != 0) {
@@ -196,7 +196,7 @@ public class EntityLockControl
         }
         
         if(CoreDebugFlags.LogEntityLocks) {
-            getLog().info("<<< lockExpirationTime=" + lockExpirationTime);
+            log.info("<<< lockExpirationTime=" + lockExpirationTime);
         }
         
         return lockExpirationTime;
@@ -231,8 +231,8 @@ public class EntityLockControl
         var lockedByEntityInstanceId = entityInstanceControl.getEntityInstanceByBasePK(lockedBy).getPrimaryKey().getEntityId();
         
         if(CoreDebugFlags.LogEntityLocks) {
-            getLog().info(">>> lockEntity(lockTarget=" + lockTarget + ", lockedBy=" + lockedBy + ")");
-            getLog().info("--- lockTargetEntityInstanceId=" + lockTargetEntityInstanceId + ", lockedByEntityInstanceId=" + lockedByEntityInstanceId);
+            log.info(">>> lockEntity(lockTarget=" + lockTarget + ", lockedBy=" + lockedBy + ")");
+            log.info("--- lockTargetEntityInstanceId=" + lockTargetEntityInstanceId + ", lockedByEntityInstanceId=" + lockedByEntityInstanceId);
         }
         
         if(lockTargetEntityInstanceId != 0 && lockedByEntityInstanceId != 0) {
@@ -283,7 +283,7 @@ public class EntityLockControl
         }
         
         if(CoreDebugFlags.LogEntityLocks) {
-            getLog().info("<<< isLocked=" + isLocked);
+            log.info("<<< isLocked=" + isLocked);
         }
         
         return isLocked;
@@ -320,8 +320,8 @@ public class EntityLockControl
         var lockTargetEntityInstanceId = entityInstanceControl.getEntityInstanceByBasePK(lockTarget).getPrimaryKey().getEntityId();
         
         if(CoreDebugFlags.LogEntityLocks) {
-            getLog().info(">>> lockEntity(lockTarget=" + lockTarget + ", lockedBy=" + lockedBy + ")");
-            getLog().info("--- lockTargetEntityInstanceId=" + lockTargetEntityInstanceId);
+            log.info(">>> lockEntity(lockTarget=" + lockTarget + ", lockedBy=" + lockedBy + ")");
+            log.info("--- lockTargetEntityInstanceId=" + lockTargetEntityInstanceId);
         }
         
         if(lockTargetEntityInstanceId != 0) {
@@ -336,7 +336,7 @@ public class EntityLockControl
                     var lockedByEntityInstanceId = entityInstanceControl.getEntityInstanceByBasePK(lockedBy).getPrimaryKey().getEntityId();
                     
                     if(CoreDebugFlags.LogEntityLocks) {
-                        getLog().info("--- lockedByEntityInstanceId=" + lockedByEntityInstanceId);
+                        log.info("--- lockedByEntityInstanceId=" + lockedByEntityInstanceId);
                     }
                     
                     if(lockedByEntityInstanceId != 0) {
@@ -357,7 +357,7 @@ public class EntityLockControl
         }
         
         if(CoreDebugFlags.LogEntityLocks) {
-            getLog().info("<<< wasUnlocked=" + wasUnlocked);
+            log.info("<<< wasUnlocked=" + wasUnlocked);
         }
         
         return wasUnlocked;
@@ -397,8 +397,8 @@ public class EntityLockControl
         var lockTargetEntityInstanceId = entityInstanceControl.getEntityInstanceByBasePK(lockTarget).getPrimaryKey().getEntityId();
         
         if(CoreDebugFlags.LogEntityLocks) {
-            getLog().info(">>> isEntityLocked(lockTarget=" + lockTarget + ", lockedBy=" + lockedBy + ")");
-            getLog().info("--- lockTargetEntityInstanceId=" + lockTargetEntityInstanceId);
+            log.info(">>> isEntityLocked(lockTarget=" + lockTarget + ", lockedBy=" + lockedBy + ")");
+            log.info("--- lockTargetEntityInstanceId=" + lockTargetEntityInstanceId);
         }
         
         if(lockTargetEntityInstanceId != 0) {
@@ -415,7 +415,7 @@ public class EntityLockControl
                 } else {
                     var lockedByEntityInstanceId = entityInstanceControl.getEntityInstanceByBasePK(lockedBy).getPrimaryKey().getEntityId();
                     if(CoreDebugFlags.LogEntityLocks) {
-                        getLog().info("--- lockedByEntityInstanceId=" + lockedByEntityInstanceId);
+                        log.info("--- lockedByEntityInstanceId=" + lockedByEntityInstanceId);
                     }
                     
                     if(lockedByEntityInstanceId != 0) {
@@ -440,7 +440,7 @@ public class EntityLockControl
         }
         
         if(CoreDebugFlags.LogEntityLocks) {
-            getLog().info("<<< isLocked=" + isLocked);
+            log.info("<<< isLocked=" + isLocked);
         }
         
         return isLocked;

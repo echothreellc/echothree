@@ -60,8 +60,6 @@ import javax.mail.internet.MimeMultipart;
 import javax.naming.NamingException;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.net.pop3.POP3;
 import org.apache.commons.net.pop3.POP3SClient;
 import org.apache.xerces.xni.parser.XMLDocumentFilter;
@@ -82,7 +80,7 @@ public class BlogEntryTransfer {
         this.configuration = configuration;
     }
 
-    private final Log log = LogFactory.getLog(this.getClass());
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
     private UserVisitPK userVisitPK = null;
     
     private AuthenticationService getAuthenticationService()
@@ -306,7 +304,7 @@ public class BlogEntryTransfer {
                 var createForumMessageAttachmentCommandResult = ForumUtil.getHome().createForumMessageAttachment(getUserVisit(), createForumMessageAttachmentForm);
 
                 if(createForumMessageAttachmentCommandResult.hasErrors()) {
-                    log.error(createForumMessageAttachmentCommandResult);
+                    log.error("{}", createForumMessageAttachmentCommandResult);
                 } else if(description != null) {
                     var createForumMessageAttachmentDescriptionForm = ForumUtil.getHome().getCreateForumMessageAttachmentDescriptionForm();
 
@@ -318,7 +316,7 @@ public class BlogEntryTransfer {
                     var createForumMessageAttachmentDescriptionCommandResult = ForumUtil.getHome().createForumMessageAttachmentDescription(getUserVisit(), createForumMessageAttachmentDescriptionForm);
 
                     if(createForumMessageAttachmentDescriptionCommandResult.hasErrors()) {
-                        log.error(createForumMessageAttachmentDescriptionCommandResult);
+                        log.error("{}", createForumMessageAttachmentDescriptionCommandResult);
 
                         finalContent = commandResultToHtmlDocument(createForumMessageAttachmentDescriptionCommandResult);
                     }
@@ -349,7 +347,7 @@ public class BlogEntryTransfer {
                     editBlogEntryCommandResult = ForumUtil.getHome().editBlogEntry(getUserVisit(), commandForm);
 
                     if(editBlogEntryCommandResult.hasErrors()) {
-                        log.error(editBlogEntryCommandResult);
+                        log.error("{}", editBlogEntryCommandResult);
 
                         finalContent = commandResultToHtmlDocument(editBlogEntryCommandResult);
                     }
@@ -368,14 +366,14 @@ public class BlogEntryTransfer {
                     var createForumForumThreadCommandResult = ForumUtil.getHome().createForumForumThread(getUserVisit(), commandForm);
 
                     if(createForumForumThreadCommandResult.hasErrors()) {
-                        log.error(createForumForumThreadCommandResult);
+                        log.error("{}", createForumForumThreadCommandResult);
 
                         finalContent = commandResultToHtmlDocument(createForumForumThreadCommandResult);
                     }
                 }
             }
         } else {
-            log.error(createBlogEntryCommandResult);
+            log.error("{}", createBlogEntryCommandResult);
 
             finalContent = commandResultToHtmlDocument(createBlogEntryCommandResult);
         }
@@ -544,7 +542,7 @@ public class BlogEntryTransfer {
             // Send message
             Transport.send(message);
         } catch(IOException | MessagingException e) {
-            log.error(e);
+            log.error(e.toString(), e);
         }
     }
 

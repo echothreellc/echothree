@@ -17,12 +17,12 @@
 package com.echothree.ui.cli.amazon.batch.order.tasks;
 
 import com.echothree.ui.cli.amazon.batch.order.content.AmazonOrders;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DumpOrders {
 
-    private final Log LOG = LogFactory.getLog(this.getClass());
+    private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
     private AmazonOrders amazonOrders;
 
