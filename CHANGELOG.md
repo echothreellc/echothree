@@ -1,5 +1,36 @@
 # Changelog
 
+## 2026-10-11-01
+
+* Improve Idempotency of GraphQL [632](https://gitlab.echothree.com/echothree/echothree/-/work_items/632)
+* Convert GetOrderAliasType UC to Use BaseSingleEntityCommand [2216](https://gitlab.echothree.com/echothree/echothree/-/work_items/2216)
+* Convert GetSalesOrderLineTime UC to Use BaseSingleEntityCommand [2245](https://gitlab.echothree.com/echothree/echothree/-/work_items/2245)
+* Convert GetPartyPaymentMethod UC to Use BaseSingleEntityCommand [2256](https://gitlab.echothree.com/echothree/echothree/-/work_items/2256)
+* Convert GetTax UC to Use BaseSingleEntityCommand [2270](https://gitlab.echothree.com/echothree/echothree/-/work_items/2270)
+* Convert GetUserSession UC to Use BaseSingleEntityCommand [2275](https://gitlab.echothree.com/echothree/echothree/-/work_items/2275)
+* Convert GetJob UC to Use BaseSingleEntityCommand [2307](https://gitlab.echothree.com/echothree/echothree/-/work_items/2307)
+* Convert GetNextSequenceValue UC to Use BaseSingleEntityCommand [2315](https://gitlab.echothree.com/echothree/echothree/-/work_items/2315)
+* Convert GetSequenceValue UC to Use BaseSingleEntityCommand [2316](https://gitlab.echothree.com/echothree/echothree/-/work_items/2316)
+* Correct Naming of EntityMultipleListItemAttributes Object [2434](https://gitlab.echothree.com/echothree/echothree/-/work_items/2434)
+* Incorrect Entity Type Passed to getEntityInstance(...) [2435](https://gitlab.echothree.com/echothree/echothree/-/work_items/2435)
+* Add Location Party to Inventory Transactions [2436](https://gitlab.echothree.com/echothree/echothree/-/work_items/2436)
+* Add Inventory Transfer Transactions [2437](https://gitlab.echothree.com/echothree/echothree/-/work_items/2437)
+* Add Workflows to Inventory Transaction Types for Transfer Transactions [2438](https://gitlab.echothree.com/echothree/echothree/-/work_items/2438)
+* Remove Redundant Result Class Casts [2439](https://gitlab.echothree.com/echothree/echothree/-/work_items/2439)
+* Generate Database Throwing NPE [2440](https://gitlab.echothree.com/echothree/echothree/-/work_items/2440)
+* Add Database Mutexes [2441](https://gitlab.echothree.com/echothree/echothree/-/work_items/2441)
+* Automatically Detect Database Dialect [2442](https://gitlab.echothree.com/echothree/echothree/-/work_items/2442)
+* Apache Lucene 10.5.2 Upgrade [2443](https://gitlab.echothree.com/echothree/echothree/-/work_items/2443)
+* Initialization Vectors By Row [2444](https://gitlab.echothree.com/echothree/echothree/-/work_items/2444)
+* Unique Initialization Vector on Each Call to Encrypt UC [2445](https://gitlab.echothree.com/echothree/echothree/-/work_items/2445)
+* New Initialization Vector on Every Update of Rows [2446](https://gitlab.echothree.com/echothree/echothree/-/work_items/2446)
+* Use SHA-256 and Component Vendor In Entity Encryption Keys [2447](https://gitlab.echothree.com/echothree/echothree/-/work_items/2447)
+* Implement HMAC-SHA256 For Hashed Search [2448](https://gitlab.echothree.com/echothree/echothree/-/work_items/2448)
+* Inject EncryptionUtils and Related Classes [2449](https://gitlab.echothree.com/echothree/echothree/-/work_items/2449)
+* Use / for Search [2450](https://gitlab.echothree.com/echothree/echothree/-/work_items/2450)
+* Harden Decrypt UC [2451](https://gitlab.echothree.com/echothree/echothree/-/work_items/2451)
+* Remove Log4J and Commons Logging [2452](https://gitlab.echothree.com/echothree/echothree/-/work_items/2452)
+
 ## 2026-09-27-01
 
 * Convert Entity Attribute Group to Belong to Entity Types [2363](https://gitlab.echothree.com/echothree/echothree/-/work_items/2363)
