@@ -17,11 +17,13 @@
 package com.echothree.control.user.period.server.command;
 
 import com.echothree.control.user.period.common.form.CreatePeriodKindForm;
+import com.echothree.control.user.period.common.result.PeriodResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.period.server.control.PeriodControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
+import com.echothree.model.data.period.server.entity.PeriodKind;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -66,7 +68,6 @@ public class CreatePeriodKindCommand
     @Inject
     WorkflowControl workflowControl;
 
-    
     /** Creates a new instance of CreatePeriodKindCommand */
     public CreatePeriodKindCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -74,13 +75,15 @@ public class CreatePeriodKindCommand
     
     @Override
     protected BaseResult execute() {
+        var result = PeriodResultFactory.getCreatePeriodKindResult();
+        PeriodKind periodKind = null;
         var workflowName = form.getWorkflowName();
         var workflowEntranceName = form.getWorkflowEntranceName();
         var parameterCount = (workflowName == null ? 0 : 1) + (workflowEntranceName == null ? 0 : 1);
 
         if(parameterCount == 0 || parameterCount == 2) {
             var periodKindName = form.getPeriodKindName();
-            var periodKind = periodControl.getPeriodKindByName(periodKindName);
+            periodKind = periodControl.getPeriodKindByName(periodKindName);
 
             if(periodKind == null) {
                 var workflow = workflowName == null? null: workflowControl.getWorkflowByName(workflowName);
@@ -112,7 +115,12 @@ public class CreatePeriodKindCommand
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
 
-        return null;
+        if(periodKind != null) {
+            result.setEntityRef(periodKind.getPrimaryKey().getEntityRef());
+            result.setPeriodKindName(periodKind.getLastDetail().getPeriodKindName());
+        }
+
+        return result;
     }
     
 }
