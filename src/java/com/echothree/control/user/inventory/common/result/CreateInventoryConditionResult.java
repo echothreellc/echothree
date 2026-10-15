@@ -16,8 +16,8 @@
 
 package com.echothree.control.user.inventory.common.result;
 
-import com.echothree.control.user.inventory.common.spec.InventoryConditionSpec;
 import com.echothree.control.user.core.common.spec.EntityRefSpec;
+import com.echothree.control.user.inventory.common.spec.InventoryConditionSpec;
 import com.echothree.util.common.command.BaseResult;
 
 public interface CreateInventoryConditionResult

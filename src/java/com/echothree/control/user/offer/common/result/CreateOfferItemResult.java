@@ -16,13 +16,13 @@
 
 package com.echothree.control.user.offer.common.result;
 
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
 import com.echothree.control.user.offer.common.spec.OfferItemSpec;
 import com.echothree.util.common.command.BaseResult;
 
 public interface CreateOfferItemResult
-        extends OfferItemSpec, BaseResult {
-    
-    String getEntityRef();
-    void setEntityRef(String entityRef);
-    
+        extends OfferItemSpec, EntityRefSpec, BaseResult {
+
+    // Nothing additional beyond OfferItemSpec, EntityRefSpec, BaseResult
+
 }

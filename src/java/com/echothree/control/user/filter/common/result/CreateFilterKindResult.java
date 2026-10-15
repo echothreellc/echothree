@@ -16,13 +16,13 @@
 
 package com.echothree.control.user.filter.common.result;
 
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
 import com.echothree.control.user.filter.common.spec.FilterKindSpec;
 import com.echothree.util.common.command.BaseResult;
 
 public interface CreateFilterKindResult
-        extends FilterKindSpec, BaseResult {
+        extends FilterKindSpec, EntityRefSpec, BaseResult {
 
-    String getEntityRef();
-    void setEntityRef(String entityRef);
+    // Nothing additional beyond FilterKindSpec, EntityRefSpec, BaseResult
 
 }

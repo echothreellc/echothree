@@ -16,13 +16,13 @@
 
 package com.echothree.control.user.warehouse.common.result;
 
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
 import com.echothree.control.user.warehouse.common.spec.WarehouseTypeSpec;
 import com.echothree.util.common.command.BaseResult;
 
 public interface CreateWarehouseTypeResult
-        extends WarehouseTypeSpec, BaseResult {
+        extends WarehouseTypeSpec, EntityRefSpec, BaseResult {
 
-    String getEntityRef();
-    void setEntityRef(String entityRef);
+    // Nothing additional beyond WarehouseTypeSpec, EntityRefSpec, BaseResult
 
 }

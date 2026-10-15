@@ -16,13 +16,13 @@
 
 package com.echothree.control.user.document.common.result;
 
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
 import com.echothree.control.user.document.common.spec.DocumentSpec;
 import com.echothree.util.common.command.BaseResult;
 
 public interface CreatePartyDocumentResult
-        extends BaseResult, DocumentSpec {
-    
-    String getEntityRef();
-    void setEntityRef(String entityRef);
-    
+        extends EntityRefSpec, BaseResult, DocumentSpec {
+
+    // Nothing additional beyond EntityRefSpec, BaseResult, DocumentSpec
+
 }

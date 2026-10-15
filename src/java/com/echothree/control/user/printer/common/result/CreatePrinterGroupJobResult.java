@@ -16,13 +16,13 @@
 
 package com.echothree.control.user.printer.common.result;
 
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
 import com.echothree.control.user.printer.common.spec.PrinterGroupJobSpec;
 import com.echothree.util.common.command.BaseResult;
 
 public interface CreatePrinterGroupJobResult
-        extends BaseResult, PrinterGroupJobSpec {
-    
-    String getEntityRef();
-    void setEntityRef(String entityRef);
-    
+        extends EntityRefSpec, BaseResult, PrinterGroupJobSpec {
+
+    // Nothing additional beyond EntityRefSpec, BaseResult, PrinterGroupJobSpec
+
 }

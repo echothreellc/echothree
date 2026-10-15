@@ -16,8 +16,8 @@
 
 package com.echothree.control.user.accounting.common.result;
 
-import com.echothree.control.user.core.common.spec.EntityRefSpec;
 import com.echothree.control.user.accounting.common.spec.TransactionTimeTypeSpec;
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
 import com.echothree.util.common.command.BaseResult;
 
 public interface CreateTransactionTimeTypeResult
