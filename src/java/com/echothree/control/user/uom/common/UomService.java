@@ -35,7 +35,7 @@ public interface UomService
     //   Unit Of Measure Kinds
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createUnitOfMeasureKind(UserVisitPK userVisitPK, CreateUnitOfMeasureKindForm form);
+    CommandResult<CreateUnitOfMeasureKindResult> createUnitOfMeasureKind(UserVisitPK userVisitPK, CreateUnitOfMeasureKindForm form);
     
     CommandResult<GetUnitOfMeasureKindsResult> getUnitOfMeasureKinds(UserVisitPK userVisitPK, GetUnitOfMeasureKindsForm form);
     
@@ -65,7 +65,7 @@ public interface UomService
     //   Unit Of Measure Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createUnitOfMeasureType(UserVisitPK userVisitPK, CreateUnitOfMeasureTypeForm form);
+    CommandResult<CreateUnitOfMeasureTypeResult> createUnitOfMeasureType(UserVisitPK userVisitPK, CreateUnitOfMeasureTypeForm form);
     
     CommandResult<GetUnitOfMeasureTypesResult> getUnitOfMeasureTypes(UserVisitPK userVisitPK, GetUnitOfMeasureTypesForm form);
     

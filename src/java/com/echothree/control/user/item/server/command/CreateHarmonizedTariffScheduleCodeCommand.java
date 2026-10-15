@@ -17,6 +17,7 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.CreateHarmonizedTariffScheduleCodeForm;
+import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
 import com.echothree.model.control.geo.server.control.GeoControl;
@@ -24,11 +25,12 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCode;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -82,12 +84,15 @@ public class CreateHarmonizedTariffScheduleCodeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ItemResultFactory.getCreateHarmonizedTariffScheduleCodeResult();
+        HarmonizedTariffScheduleCode harmonizedTariffScheduleCode = null;
         var countryName = form.getCountryName();
         var geoCode = geoControl.getCountryByAlias(countryName);
         
         if(geoCode != null) {
             var harmonizedTariffScheduleCodeName = form.getHarmonizedTariffScheduleCodeName();
-            var harmonizedTariffScheduleCode = itemControl.getHarmonizedTariffScheduleCodeByName(geoCode, harmonizedTariffScheduleCodeName);
+
+            harmonizedTariffScheduleCode = itemControl.getHarmonizedTariffScheduleCodeByName(geoCode, harmonizedTariffScheduleCodeName);
             
             if(harmonizedTariffScheduleCode == null) {
                 var firstHarmonizedTariffScheduleCodeUnitName = form.getFirstHarmonizedTariffScheduleCodeUnitName();
@@ -130,7 +135,13 @@ public class CreateHarmonizedTariffScheduleCodeCommand
             addExecutionError(ExecutionErrors.UnknownGeoCodeName.name(), countryName);
         }
         
-        return null;
+        if(harmonizedTariffScheduleCode != null) {
+            result.setEntityRef(harmonizedTariffScheduleCode.getPrimaryKey().getEntityRef());
+            result.setCountryName(form.getCountryName());
+            result.setHarmonizedTariffScheduleCodeName(harmonizedTariffScheduleCode.getLastDetail().getHarmonizedTariffScheduleCodeName());
+        }
+
+        return result;
     }
     
 }

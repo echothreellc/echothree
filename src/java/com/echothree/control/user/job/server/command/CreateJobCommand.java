@@ -17,6 +17,7 @@
 package com.echothree.control.user.job.server.command;
 
 import com.echothree.control.user.job.common.form.CreateJobForm;
+import com.echothree.control.user.job.common.result.JobResultFactory;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.job.common.workflow.JobStatusConstants;
 import com.echothree.model.control.job.server.control.JobControl;
@@ -25,6 +26,7 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
+import com.echothree.model.data.job.server.entity.Job;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -80,6 +82,7 @@ public class CreateJobCommand
     
     @Override
     protected BaseResult execute() {
+        var result = JobResultFactory.getCreateJobResult();
         var jobName = form.getJobName();
         var job = jobControl.getJobByName(jobName);
         
@@ -108,7 +111,12 @@ public class CreateJobCommand
             addExecutionError(ExecutionErrors.DuplicateJobName.name(), jobName);
         }
         
-        return null;
+        if(job != null) {
+            result.setEntityRef(job.getPrimaryKey().getEntityRef());
+            result.setJobName(job.getLastDetail().getJobName());
+        }
+
+        return result;
     }
     
 }

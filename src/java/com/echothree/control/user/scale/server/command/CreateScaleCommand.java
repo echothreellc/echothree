@@ -17,6 +17,7 @@
 package com.echothree.control.user.scale.server.command;
 
 import com.echothree.control.user.scale.common.form.CreateScaleForm;
+import com.echothree.control.user.scale.common.result.ScaleResultFactory;
 import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -60,8 +61,9 @@ public class CreateScaleCommand
     
    @Override
     protected BaseResult execute() {
-       var scaleName = form.getScaleName();
-       var scale = scaleControl.getScaleByName(scaleName);
+        var result = ScaleResultFactory.getCreateScaleResult();
+        var scaleName = form.getScaleName();
+        var scale = scaleControl.getScaleByName(scaleName);
 
         if(scale == null) {
             var scaleTypeName = form.getScaleTypeName();
@@ -107,7 +109,12 @@ public class CreateScaleCommand
             addExecutionError(ExecutionErrors.DuplicateScaleName.name(), scaleName);
         }
         
-        return null;
+        if(scale != null) {
+            result.setEntityRef(scale.getPrimaryKey().getEntityRef());
+            result.setScaleName(scale.getLastDetail().getScaleName());
+        }
+
+        return result;
     }
     
 }

@@ -17688,4 +17688,119 @@ public interface GraphQlMutations {
         return mutationResultObject;
     }
 
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createPeriodKind(final DataFetchingEnvironment env,
+            @GraphQLName("periodKindName") @GraphQLNonNull final String periodKindName,
+            @GraphQLName("workflowName") final String workflowName,
+            @GraphQLName("workflowEntranceName") final String workflowEntranceName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = PeriodUtil.getHome().getCreatePeriodKindForm();
+
+            commandForm.setPeriodKindName(periodKindName);
+            commandForm.setWorkflowName(workflowName);
+            commandForm.setWorkflowEntranceName(workflowEntranceName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = PeriodUtil.getHome().createPeriodKind(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deletePeriodKind(final DataFetchingEnvironment env,
+            @GraphQLName("periodKindName") @GraphQLNonNull final String periodKindName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = PeriodUtil.getHome().getDeletePeriodKindForm();
+
+            commandForm.setPeriodKindName(periodKindName);
+
+            var commandResult = PeriodUtil.getHome().deletePeriodKind(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject editPeriodKind(final DataFetchingEnvironment env,
+            @GraphQLName("originalPeriodKindName") @GraphQLNonNull final String originalPeriodKindName,
+            @GraphQLName("periodKindName") final String periodKindName,
+            @GraphQLName("workflowName") final String workflowName,
+            @GraphQLName("workflowEntranceName") final String workflowEntranceName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = PeriodUtil.getHome().getPeriodKindSpec();
+
+            spec.setPeriodKindName(originalPeriodKindName);
+
+            var commandForm = PeriodUtil.getHome().getEditPeriodKindForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = PeriodUtil.getHome().editPeriodKind(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getPeriodKind().getEntityInstance());
+
+                if(arguments.containsKey("periodKindName"))
+                    edit.setPeriodKindName(periodKindName);
+                if(arguments.containsKey("workflowName"))
+                    edit.setWorkflowName(workflowName);
+                if(arguments.containsKey("workflowEntranceName"))
+                    edit.setWorkflowEntranceName(workflowEntranceName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = PeriodUtil.getHome().editPeriodKind(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
 }

@@ -16,8 +16,8 @@
 
 package com.echothree.control.user.message.common.result;
 
-import com.echothree.control.user.message.common.spec.MessageTypeSpec;
 import com.echothree.control.user.core.common.spec.EntityRefSpec;
+import com.echothree.control.user.message.common.spec.MessageTypeSpec;
 import com.echothree.util.common.command.BaseResult;
 
 public interface CreateMessageTypeResult

@@ -16,17 +16,15 @@
 
 package com.echothree.control.user.party.common.result;
 
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
 import com.echothree.util.common.command.BaseResult;
 
+/** entityRef may be null if the requested username already exists, and the party
+ * that it belongs to is not an employee.
+ */
 public interface CreateEmployeeResult
-        extends BaseResult {
-    
-    /** entityRef may be null if the requested username already exists, and the party
-     * that it belongs to is not an employee.
-     */
-    String getEntityRef();
-    void setEntityRef(String entityRef);
-    
+        extends EntityRefSpec, BaseResult {
+
     /** employeeName may be null if the requested username already exists, and the party
      * that it belongs to is not an employee.
      */

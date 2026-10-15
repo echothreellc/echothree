@@ -17,6 +17,7 @@
 package com.echothree.control.user.subscription.server.command;
 
 import com.echothree.control.user.subscription.common.form.CreateSubscriptionTypeForm;
+import com.echothree.control.user.subscription.common.result.SubscriptionResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -24,6 +25,7 @@ import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
 import com.echothree.model.data.sequence.server.entity.Sequence;
+import com.echothree.model.data.subscription.server.entity.SubscriptionType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -75,12 +77,15 @@ public class CreateSubscriptionTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = SubscriptionResultFactory.getCreateSubscriptionTypeResult();
+        SubscriptionType subscriptionType = null;
         var subscriptionKindName = form.getSubscriptionKindName();
         var subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
         
         if(subscriptionKind != null) {
             var subscriptionTypeName = form.getSubscriptionTypeName();
-            var subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
+
+            subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
             
             if(subscriptionType == null) {
                 var subscriptionSequenceName = form.getSubscriptionSequenceName();
@@ -114,7 +119,13 @@ public class CreateSubscriptionTypeCommand
             addExecutionError(ExecutionErrors.DuplicateSubscriptionKindName.name(), subscriptionKindName);
         }
         
-        return null;
+        if(subscriptionType != null) {
+            result.setEntityRef(subscriptionType.getPrimaryKey().getEntityRef());
+            result.setSubscriptionKindName(subscriptionType.getLastDetail().getSubscriptionKind().getLastDetail().getSubscriptionKindName());
+            result.setSubscriptionTypeName(subscriptionType.getLastDetail().getSubscriptionTypeName());
+        }
+
+        return result;
     }
     
 }

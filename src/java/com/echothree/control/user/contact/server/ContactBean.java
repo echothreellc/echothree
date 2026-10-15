@@ -73,7 +73,7 @@ public class ContactBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createContactMechanismAliasType(UserVisitPK userVisitPK, CreateContactMechanismAliasTypeForm form) {
+    public CommandResult<CreateContactMechanismAliasTypeResult> createContactMechanismAliasType(UserVisitPK userVisitPK, CreateContactMechanismAliasTypeForm form) {
         return CDI.current().select(CreateContactMechanismAliasTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -363,7 +363,7 @@ public class ContactBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createPostalAddressFormat(UserVisitPK userVisitPK, CreatePostalAddressFormatForm form) {
+    public CommandResult<CreatePostalAddressFormatResult> createPostalAddressFormat(UserVisitPK userVisitPK, CreatePostalAddressFormatForm form) {
         return CDI.current().select(CreatePostalAddressFormatCommand.class).get().run(userVisitPK, form);
     }
     

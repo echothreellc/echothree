@@ -17,6 +17,8 @@
 package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.form.CreateLeaveForm;
+import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
+import com.echothree.model.control.employee.common.workflow.LeaveStatusConstants;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.employee.server.logic.LeaveLogic;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -25,15 +27,15 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
-import com.echothree.model.control.employee.common.workflow.LeaveStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowSecurityLogic;
+import com.echothree.model.data.employee.server.entity.Leave;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -96,6 +98,8 @@ public class CreateLeaveCommand
     
     @Override
     protected BaseResult execute() {
+        var result = EmployeeResultFactory.getCreateLeaveResult();
+        Leave leave = null;
         var partyName = form.getPartyName();
         var party = partyControl.getPartyByName(partyName);
 
@@ -137,7 +141,7 @@ public class CreateLeaveCommand
                                 var endTime = strEndTime == null ? null : Long.valueOf(strEndTime);
 
                                 if(endTime == null || endTime > startTime) {
-                                    leaveLogic.createLeave(session, party, partyCompany.getParty(), leaveType, leaveReason, startTime, endTime,
+                                    leave = leaveLogic.createLeave(session, party, partyCompany.getParty(), leaveType, leaveReason, startTime, endTime,
                                             totalTime, leaveStatus, createdBy);
                                 } else {
                                     addExecutionError(endTime.equals(startTime) ? ExecutionErrors.EndTimeEqualToStartTime.name() : ExecutionErrors.EndTimeBeforeStartTime.name());
@@ -157,7 +161,12 @@ public class CreateLeaveCommand
             addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
         }
         
-        return null;
+        if(leave != null) {
+            result.setEntityRef(leave.getPrimaryKey().getEntityRef());
+            result.setLeaveName(leave.getLastDetail().getLeaveName());
+        }
+
+        return result;
     }
     
 }

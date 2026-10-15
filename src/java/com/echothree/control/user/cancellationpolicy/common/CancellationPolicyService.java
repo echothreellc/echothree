@@ -79,7 +79,7 @@ public interface CancellationPolicyService
     //   Cancellation Policies
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createCancellationPolicy(UserVisitPK userVisitPK, CreateCancellationPolicyForm form);
+    CommandResult<CreateCancellationPolicyResult> createCancellationPolicy(UserVisitPK userVisitPK, CreateCancellationPolicyForm form);
     
     CommandResult<GetCancellationPoliciesResult> getCancellationPolicies(UserVisitPK userVisitPK, GetCancellationPoliciesForm form);
     
@@ -125,7 +125,7 @@ public interface CancellationPolicyService
     //   Cancellation Reasons
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createCancellationReason(UserVisitPK userVisitPK, CreateCancellationReasonForm form);
+    CommandResult<CreateCancellationReasonResult> createCancellationReason(UserVisitPK userVisitPK, CreateCancellationReasonForm form);
     
     CommandResult<GetCancellationReasonsResult> getCancellationReasons(UserVisitPK userVisitPK, GetCancellationReasonsForm form);
     
@@ -169,7 +169,7 @@ public interface CancellationPolicyService
     //   Cancellation Types
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createCancellationType(UserVisitPK userVisitPK, CreateCancellationTypeForm form);
+    CommandResult<CreateCancellationTypeResult> createCancellationType(UserVisitPK userVisitPK, CreateCancellationTypeForm form);
     
     CommandResult<GetCancellationTypesResult> getCancellationTypes(UserVisitPK userVisitPK, GetCancellationTypesForm form);
     

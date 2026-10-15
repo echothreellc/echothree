@@ -17,18 +17,20 @@
 package com.echothree.control.user.letter.server.command;
 
 import com.echothree.control.user.letter.common.form.CreateLetterSourceForm;
+import com.echothree.control.user.letter.common.result.LetterResultFactory;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.letter.server.entity.LetterSource;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -88,6 +90,7 @@ public class CreateLetterSourceCommand
     
     @Override
     protected BaseResult execute() {
+        var result = LetterResultFactory.getCreateLetterSourceResult();
         var letterSourceName = form.getLetterSourceName();
         var letterSource = letterControl.getLetterSourceByName(letterSourceName);
         
@@ -158,7 +161,12 @@ public class CreateLetterSourceCommand
             addExecutionError(ExecutionErrors.DuplicateLetterSourceName.name(), letterSourceName);
         }
         
-        return null;
+        if(letterSource != null) {
+            result.setEntityRef(letterSource.getPrimaryKey().getEntityRef());
+            result.setLetterSourceName(letterSource.getLastDetail().getLetterSourceName());
+        }
+
+        return result;
     }
     
 }

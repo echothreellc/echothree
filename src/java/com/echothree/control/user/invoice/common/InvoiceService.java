@@ -59,7 +59,7 @@ public interface InvoiceService
     //   Invoice Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createInvoiceType(UserVisitPK userVisitPK, CreateInvoiceTypeForm form);
+    CommandResult<CreateInvoiceTypeResult> createInvoiceType(UserVisitPK userVisitPK, CreateInvoiceTypeForm form);
     
     CommandResult<GetInvoiceTypeChoicesResult> getInvoiceTypeChoices(UserVisitPK userVisitPK, GetInvoiceTypeChoicesForm form);
     
@@ -89,7 +89,7 @@ public interface InvoiceService
     //   Invoice Time Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createInvoiceTimeType(UserVisitPK userVisitPK, CreateInvoiceTimeTypeForm form);
+    CommandResult<CreateInvoiceTimeTypeResult> createInvoiceTimeType(UserVisitPK userVisitPK, CreateInvoiceTimeTypeForm form);
 
     CommandResult<GetInvoiceTimeTypeChoicesResult> getInvoiceTimeTypeChoices(UserVisitPK userVisitPK, GetInvoiceTimeTypeChoicesForm form);
 
@@ -121,7 +121,7 @@ public interface InvoiceService
     //   Invoice Line Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createInvoiceLineType(UserVisitPK userVisitPK, CreateInvoiceLineTypeForm form);
+    CommandResult<CreateInvoiceLineTypeResult> createInvoiceLineType(UserVisitPK userVisitPK, CreateInvoiceLineTypeForm form);
     
     CommandResult<GetInvoiceLineTypeChoicesResult> getInvoiceLineTypeChoices(UserVisitPK userVisitPK, GetInvoiceLineTypeChoicesForm form);
     

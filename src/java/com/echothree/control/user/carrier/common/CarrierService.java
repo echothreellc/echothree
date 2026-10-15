@@ -35,7 +35,7 @@ public interface CarrierService
     //   Carrier Types
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createCarrierType(UserVisitPK userVisitPK, CreateCarrierTypeForm form);
+    CommandResult<CreateCarrierTypeResult> createCarrierType(UserVisitPK userVisitPK, CreateCarrierTypeForm form);
     
     CommandResult<GetCarrierTypesResult> getCarrierTypes(UserVisitPK userVisitPK, GetCarrierTypesForm form);
     
@@ -67,7 +67,7 @@ public interface CarrierService
     //   Carrier Services
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createCarrierService(UserVisitPK userVisitPK, CreateCarrierServiceForm form);
+    CommandResult<CreateCarrierServiceResult> createCarrierService(UserVisitPK userVisitPK, CreateCarrierServiceForm form);
     
     CommandResult<GetCarrierServiceResult> getCarrierService(UserVisitPK userVisitPK, GetCarrierServiceForm form);
     
@@ -99,7 +99,7 @@ public interface CarrierService
     //   Carrier Options
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createCarrierOption(UserVisitPK userVisitPK, CreateCarrierOptionForm form);
+    CommandResult<CreateCarrierOptionResult> createCarrierOption(UserVisitPK userVisitPK, CreateCarrierOptionForm form);
     
     CommandResult<GetCarrierOptionResult> getCarrierOption(UserVisitPK userVisitPK, GetCarrierOptionForm form);
     

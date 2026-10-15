@@ -16,8 +16,8 @@
 
 package com.echothree.control.user.payment.common.result;
 
-import com.echothree.control.user.payment.common.spec.PaymentProcessorTypeSpec;
 import com.echothree.control.user.core.common.spec.EntityRefSpec;
+import com.echothree.control.user.payment.common.spec.PaymentProcessorTypeSpec;
 import com.echothree.util.common.command.BaseResult;
 
 public interface CreatePaymentProcessorTypeResult

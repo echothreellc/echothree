@@ -17,6 +17,7 @@
 package com.echothree.control.user.club.server.command;
 
 import com.echothree.control.user.club.common.form.CreateClubForm;
+import com.echothree.control.user.club.common.result.ClubResultFactory;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.club.server.control.ClubControl;
 import com.echothree.model.control.filter.common.FilterKinds;
@@ -29,6 +30,7 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.subscription.common.SubscriptionConstants;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
+import com.echothree.model.data.club.server.entity.Club;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -94,6 +96,7 @@ public class CreateClubCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ClubResultFactory.getCreateClubResult();
         var clubName = form.getClubName();
         var club = clubControl.getClubByName(clubName);
         
@@ -149,7 +152,12 @@ public class CreateClubCommand
             addExecutionError(ExecutionErrors.DuplicateClubName.name(), clubName);
         }
         
-        return null;
+        if(club != null) {
+            result.setEntityRef(club.getPrimaryKey().getEntityRef());
+            result.setClubName(club.getLastDetail().getClubName());
+        }
+
+        return result;
     }
     
 }

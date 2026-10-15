@@ -17,15 +17,17 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.CreateBirthdayFormatForm;
+import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.party.server.entity.BirthdayFormat;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -68,6 +70,7 @@ public class CreateBirthdayFormatCommand
     
     @Override
     protected BaseResult execute() {
+        var result = PartyResultFactory.getCreateBirthdayFormatResult();
         var birthdayFormatName = form.getBirthdayFormatName();
         var birthdayFormat = partyControl.getBirthdayFormatByName(birthdayFormatName);
         
@@ -86,7 +89,12 @@ public class CreateBirthdayFormatCommand
             addExecutionError(ExecutionErrors.DuplicateBirthdayFormatName.name(), birthdayFormatName);
         }
         
-        return null;
+        if(birthdayFormat != null) {
+            result.setEntityRef(birthdayFormat.getPrimaryKey().getEntityRef());
+            result.setBirthdayFormatName(birthdayFormat.getLastDetail().getBirthdayFormatName());
+        }
+
+        return result;
     }
     
 }

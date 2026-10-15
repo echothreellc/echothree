@@ -17,17 +17,19 @@
 package com.echothree.control.user.contactlist.server.command;
 
 import com.echothree.control.user.contactlist.common.form.CreateContactListContactMechanismPurposeForm;
+import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
 import com.echothree.model.control.contact.server.logic.ContactMechanismPurposeLogic;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.contactlist.server.logic.ContactListLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.contactlist.server.entity.ContactListContactMechanismPurpose;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -76,6 +78,8 @@ public class CreateContactListContactMechanismPurposeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ContactListResultFactory.getCreateContactListContactMechanismPurposeResult();
+        ContactListContactMechanismPurpose contactListContactMechanismPurpose = null;
         var contactListName = form.getContactListName();
         var contactList = contactListLogic.getContactListByName(this, contactListName);
         
@@ -84,20 +88,26 @@ public class CreateContactListContactMechanismPurposeCommand
             var contactMechanismPurpose = contactMechanismPurposeLogic.getContactMechanismPurposeByName(this, contactMechanismPurposeName);
             
             if(!hasExecutionErrors()) {
-                var contactListContactMechanismPurpose = contactListControl.getContactListContactMechanismPurpose(contactList, contactMechanismPurpose);
+                contactListContactMechanismPurpose = contactListControl.getContactListContactMechanismPurpose(contactList, contactMechanismPurpose);
                 
                 if(contactListContactMechanismPurpose == null) {
                     var isDefault = Boolean.valueOf(form.getIsDefault());
                     var sortOrder = Integer.valueOf(form.getSortOrder());
                     
-                    contactListControl.createContactListContactMechanismPurpose(contactList, contactMechanismPurpose, isDefault, sortOrder, getPartyPK());
+                    contactListContactMechanismPurpose = contactListControl.createContactListContactMechanismPurpose(contactList, contactMechanismPurpose, isDefault, sortOrder, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateContactListContactMechanismPurpose.name(), contactListName, contactMechanismPurposeName);
                 }
             }
         }
         
-        return null;
+        if(contactListContactMechanismPurpose != null) {
+            result.setEntityRef(contactListContactMechanismPurpose.getPrimaryKey().getEntityRef());
+            result.setContactListName(contactListContactMechanismPurpose.getLastDetail().getContactList().getLastDetail().getContactListName());
+            result.setContactMechanismPurposeName(contactListContactMechanismPurpose.getLastDetail().getContactMechanismPurpose().getContactMechanismPurposeName());
+        }
+
+        return result;
     }
     
 }

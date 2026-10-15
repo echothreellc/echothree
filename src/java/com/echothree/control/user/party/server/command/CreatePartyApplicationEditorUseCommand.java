@@ -17,13 +17,15 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.CreatePartyApplicationEditorUseForm;
-import com.echothree.model.control.party.server.control.PartyApplicationEditorUseControl;
+import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.core.server.logic.ApplicationLogic;
 import com.echothree.model.control.core.server.logic.EditorLogic;
 import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.party.server.control.PartyApplicationEditorUseControl;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.party.server.entity.PartyApplicationEditorUse;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -82,6 +84,8 @@ public class CreatePartyApplicationEditorUseCommand
     
     @Override
     protected BaseResult execute() {
+        var result = PartyResultFactory.getCreatePartyApplicationEditorUseResult();
+        PartyApplicationEditorUse partyApplicationEditorUse = null;
         var partyName = form.getPartyName();
         var party = partyLogic.getPartyByName(this, partyName);
         
@@ -94,7 +98,7 @@ public class CreatePartyApplicationEditorUseCommand
                 var applicationEditorUse = applicationLogic.getApplicationEditorUseByName(this, application, applicationEditorUseName);
                 
                 if(!hasExecutionErrors()) {
-                    var partyApplicationEditorUse = partyApplicationEditorUseControl.getPartyApplicationEditorUse(party, applicationEditorUse);
+                    partyApplicationEditorUse = partyApplicationEditorUseControl.getPartyApplicationEditorUse(party, applicationEditorUse);
                     
                     if(partyApplicationEditorUse == null) {
                         var editorName = form.getEditorName();
@@ -109,7 +113,7 @@ public class CreatePartyApplicationEditorUseCommand
                                 var strPreferredWidth = form.getPreferredWidth();
                                 var preferredWidth = strPreferredWidth == null ? null : Integer.valueOf(strPreferredWidth);
 
-                                partyApplicationEditorUseControl.createPartyApplicationEditorUse(party, applicationEditorUse, applicationEditor, preferredHeight, preferredWidth,
+                                partyApplicationEditorUse = partyApplicationEditorUseControl.createPartyApplicationEditorUse(party, applicationEditorUse, applicationEditor, preferredHeight, preferredWidth,
                                         getPartyPK());
                             }
                         }
@@ -120,7 +124,14 @@ public class CreatePartyApplicationEditorUseCommand
             }
         }
         
-        return null;
+        if(partyApplicationEditorUse != null) {
+            result.setEntityRef(partyApplicationEditorUse.getPrimaryKey().getEntityRef());
+            result.setPartyName(partyApplicationEditorUse.getLastDetail().getParty().getLastDetail().getPartyName());
+            result.setApplicationName(partyApplicationEditorUse.getLastDetail().getApplicationEditorUse().getLastDetail().getApplication().getLastDetail().getApplicationName());
+            result.setApplicationEditorUseName(partyApplicationEditorUse.getLastDetail().getApplicationEditorUse().getLastDetail().getApplicationEditorUseName());
+        }
+
+        return result;
     }
     
 }

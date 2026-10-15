@@ -17,10 +17,12 @@
 package com.echothree.control.user.cancellationpolicy.server.command;
 
 import com.echothree.control.user.cancellationpolicy.common.form.CreateCancellationPolicyForm;
+import com.echothree.control.user.cancellationpolicy.common.result.CancellationPolicyResultFactory;
 import com.echothree.model.control.cancellationpolicy.server.logic.CancellationPolicyLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -70,6 +72,7 @@ public class CreateCancellationPolicyCommand
     
     @Override
     protected BaseResult execute() {
+        var result = CancellationPolicyResultFactory.getCreateCancellationPolicyResult();
         var cancellationKindName = form.getCancellationKindName();
         var cancellationPolicyName = form.getCancellationPolicyName();
         var isDefault = Boolean.valueOf(form.getIsDefault());
@@ -78,11 +81,16 @@ public class CreateCancellationPolicyCommand
         var policyMimeTypeName = form.getPolicyMimeTypeName();
         var policy = form.getPolicy();
         var partyPK = getPartyPK();
-
-        cancellationPolicyLogic.createCancellationPolicy(this, cancellationKindName, cancellationPolicyName,
+        var cancellationPolicy = cancellationPolicyLogic.createCancellationPolicy(this, cancellationKindName, cancellationPolicyName,
                 isDefault, sortOrder, getPreferredLanguage(), description, policyMimeTypeName, policy, partyPK);
 
-        return null;
+        if(cancellationPolicy != null) {
+            result.setEntityRef(cancellationPolicy.getPrimaryKey().getEntityRef());
+            result.setCancellationKindName(cancellationPolicy.getLastDetail().getCancellationKind().getLastDetail().getCancellationKindName());
+            result.setCancellationPolicyName(cancellationPolicy.getLastDetail().getCancellationPolicyName());
+        }
+
+        return result;
     }
     
 }

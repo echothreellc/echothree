@@ -45,7 +45,7 @@ public class PrinterBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createPrinterGroup(UserVisitPK userVisitPK, CreatePrinterGroupForm form) {
+    public CommandResult<CreatePrinterGroupResult> createPrinterGroup(UserVisitPK userVisitPK, CreatePrinterGroupForm form) {
         return CDI.current().select(CreatePrinterGroupCommand.class).get().run(userVisitPK, form);
     }
     
@@ -123,7 +123,7 @@ public class PrinterBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createPrinter(UserVisitPK userVisitPK, CreatePrinterForm form) {
+    public CommandResult<CreatePrinterResult> createPrinter(UserVisitPK userVisitPK, CreatePrinterForm form) {
         return CDI.current().select(CreatePrinterCommand.class).get().run(userVisitPK, form);
     }
     
@@ -225,7 +225,7 @@ public class PrinterBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createPrinterGroupUseType(UserVisitPK userVisitPK, CreatePrinterGroupUseTypeForm form) {
+    public CommandResult<CreatePrinterGroupUseTypeResult> createPrinterGroupUseType(UserVisitPK userVisitPK, CreatePrinterGroupUseTypeForm form) {
         return CDI.current().select(CreatePrinterGroupUseTypeCommand.class).get().run(userVisitPK, form);
     }
 

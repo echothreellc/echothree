@@ -17,6 +17,7 @@
 package com.echothree.control.user.index.server.command;
 
 import com.echothree.control.user.index.common.form.CreateIndexForm;
+import com.echothree.control.user.index.common.result.IndexResultFactory;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.index.server.logic.IndexLogic;
 import com.echothree.model.control.index.server.logic.IndexTypeLogic;
@@ -24,11 +25,12 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -83,6 +85,7 @@ public class CreateIndexCommand
     
     @Override
     protected BaseResult execute() {
+        var result = IndexResultFactory.getCreateIndexResult();
         var indexName = form.getIndexName();
         var index = indexControl.getIndexByName(indexName);
         
@@ -130,7 +133,12 @@ public class CreateIndexCommand
             addExecutionError(ExecutionErrors.DuplicateIndexName.name(), indexName);
         }
         
-        return null;
+        if(index != null) {
+            result.setEntityRef(index.getPrimaryKey().getEntityRef());
+            result.setIndexName(index.getLastDetail().getIndexName());
+        }
+
+        return result;
     }
     
 }

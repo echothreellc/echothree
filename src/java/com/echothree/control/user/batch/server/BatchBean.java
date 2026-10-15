@@ -45,7 +45,7 @@ public class BatchBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createBatchType(UserVisitPK userVisitPK, CreateBatchTypeForm form) {
+    public CommandResult<CreateBatchTypeResult> createBatchType(UserVisitPK userVisitPK, CreateBatchTypeForm form) {
         return CDI.current().select(CreateBatchTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -137,7 +137,7 @@ public class BatchBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createBatchAliasType(UserVisitPK userVisitPK, CreateBatchAliasTypeForm form) {
+    public CommandResult<CreateBatchAliasTypeResult> createBatchAliasType(UserVisitPK userVisitPK, CreateBatchAliasTypeForm form) {
         return CDI.current().select(CreateBatchAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 

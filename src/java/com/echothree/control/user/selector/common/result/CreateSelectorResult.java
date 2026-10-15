@@ -16,13 +16,13 @@
 
 package com.echothree.control.user.selector.common.result;
 
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
 import com.echothree.control.user.selector.common.spec.SelectorSpec;
 import com.echothree.util.common.command.BaseResult;
 
 public interface CreateSelectorResult
-        extends SelectorSpec, BaseResult {
+        extends SelectorSpec, EntityRefSpec, BaseResult {
 
-    String getEntityRef();
-    void setEntityRef(String entityRef);
+    // Nothing additional beyond SelectorSpec, EntityRefSpec, BaseResult
 
 }

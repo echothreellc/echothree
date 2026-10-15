@@ -35,7 +35,7 @@ public interface ClubService
     //   Clubs
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createClub(UserVisitPK userVisitPK, CreateClubForm form);
+    CommandResult<CreateClubResult> createClub(UserVisitPK userVisitPK, CreateClubForm form);
     
     CommandResult<GetClubsResult> getClubs(UserVisitPK userVisitPK, GetClubsForm form);
     

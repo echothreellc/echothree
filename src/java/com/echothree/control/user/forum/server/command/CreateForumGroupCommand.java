@@ -17,14 +17,15 @@
 package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.CreateForumGroupForm;
+import com.echothree.control.user.forum.common.result.ForumResultFactory;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.icon.common.IconConstants;
 import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -59,6 +60,7 @@ public class CreateForumGroupCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ForumResultFactory.getCreateForumGroupResult();
         var forumGroupName = form.getForumGroupName();
         var forumGroup = forumControl.getForumGroupByName(forumGroupName);
         
@@ -94,7 +96,12 @@ public class CreateForumGroupCommand
             addExecutionError(ExecutionErrors.DuplicateForumGroupName.name(), forumGroupName);
         }
         
-        return null;
+        if(forumGroup != null) {
+            result.setEntityRef(forumGroup.getPrimaryKey().getEntityRef());
+            result.setForumGroupName(forumGroup.getLastDetail().getForumGroupName());
+        }
+
+        return result;
     }
     
 }

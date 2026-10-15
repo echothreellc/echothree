@@ -17,10 +17,12 @@
 package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.form.CreateTransactionEntityRoleTypeForm;
+import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.accounting.server.entity.TransactionEntityRoleType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -70,12 +72,15 @@ public class CreateTransactionEntityRoleTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = AccountingResultFactory.getCreateTransactionEntityRoleTypeResult();
+        TransactionEntityRoleType transactionEntityRoleType = null;
         var transactionTypeName = form.getTransactionTypeName();
         var transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
         
         if(transactionType != null) {
             var transactionEntityRoleTypeName = form.getTransactionEntityRoleTypeName();
-            var transactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeByName(transactionType, transactionEntityRoleTypeName);
+
+            transactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeByName(transactionType, transactionEntityRoleTypeName);
             
             if(transactionEntityRoleType == null) {
                 var componentVendorName = form.getComponentVendorName();
@@ -109,7 +114,13 @@ public class CreateTransactionEntityRoleTypeCommand
             addExecutionError(ExecutionErrors.UnknownTransactionTypeName.name(), transactionTypeName);
         }
         
-        return null;
+        if(transactionEntityRoleType != null) {
+            result.setEntityRef(transactionEntityRoleType.getPrimaryKey().getEntityRef());
+            result.setTransactionTypeName(transactionEntityRoleType.getLastDetail().getTransactionType().getLastDetail().getTransactionTypeName());
+            result.setTransactionEntityRoleTypeName(transactionEntityRoleType.getLastDetail().getTransactionEntityRoleTypeName());
+        }
+
+        return result;
     }
     
 }

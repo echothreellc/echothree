@@ -17,17 +17,19 @@
 package com.echothree.control.user.contactlist.server.command;
 
 import com.echothree.control.user.contactlist.common.form.CreateContactListForm;
+import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
+import com.echothree.model.control.contactlist.common.workflow.PartyContactListStatusConstants;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.contactlist.common.workflow.PartyContactListStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
+import com.echothree.model.data.contactlist.server.entity.ContactList;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -69,7 +71,6 @@ public class CreateContactListCommand
     @Inject
     WorkflowControl workflowControl;
 
-    
     /** Creates a new instance of CreateContactListCommand */
     public CreateContactListCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -77,6 +78,7 @@ public class CreateContactListCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ContactListResultFactory.getCreateContactListResult();
         var contactListName = form.getContactListName();
         var contactList = contactListControl.getContactListByName(contactListName);
 
@@ -126,7 +128,12 @@ public class CreateContactListCommand
             addExecutionError(ExecutionErrors.DuplicateContactListName.name(), contactListName);
         }
 
-        return null;
+        if(contactList != null) {
+            result.setEntityRef(contactList.getPrimaryKey().getEntityRef());
+            result.setContactListName(contactList.getLastDetail().getContactListName());
+        }
+
+        return result;
     }
     
 }

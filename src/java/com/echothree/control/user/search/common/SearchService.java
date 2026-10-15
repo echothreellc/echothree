@@ -35,7 +35,7 @@ public interface SearchService
     //   Search Default Operators
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createSearchDefaultOperator(UserVisitPK userVisitPK, CreateSearchDefaultOperatorForm form);
+    CommandResult<CreateSearchDefaultOperatorResult> createSearchDefaultOperator(UserVisitPK userVisitPK, CreateSearchDefaultOperatorForm form);
     
     CommandResult<GetSearchDefaultOperatorChoicesResult> getSearchDefaultOperatorChoices(UserVisitPK userVisitPK, GetSearchDefaultOperatorChoicesForm form);
     
@@ -67,7 +67,7 @@ public interface SearchService
     //   Search Sort Directions
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createSearchSortDirection(UserVisitPK userVisitPK, CreateSearchSortDirectionForm form);
+    CommandResult<CreateSearchSortDirectionResult> createSearchSortDirection(UserVisitPK userVisitPK, CreateSearchSortDirectionForm form);
     
     CommandResult<GetSearchSortDirectionChoicesResult> getSearchSortDirectionChoices(UserVisitPK userVisitPK, GetSearchSortDirectionChoicesForm form);
     
@@ -99,7 +99,7 @@ public interface SearchService
     //   Search Kinds
     // -------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createSearchKind(UserVisitPK userVisitPK, CreateSearchKindForm form);
+    CommandResult<CreateSearchKindResult> createSearchKind(UserVisitPK userVisitPK, CreateSearchKindForm form);
 
     CommandResult<GetSearchKindsResult> getSearchKinds(UserVisitPK userVisitPK, GetSearchKindsForm form);
 
@@ -131,7 +131,7 @@ public interface SearchService
     //   Search Types
     // -------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createSearchType(UserVisitPK userVisitPK, CreateSearchTypeForm form);
+    CommandResult<CreateSearchTypeResult> createSearchType(UserVisitPK userVisitPK, CreateSearchTypeForm form);
 
     CommandResult<GetSearchTypesResult> getSearchTypes(UserVisitPK userVisitPK, GetSearchTypesForm form);
 
@@ -163,7 +163,7 @@ public interface SearchService
     //   Search Sort Orders
     // -------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createSearchSortOrder(UserVisitPK userVisitPK, CreateSearchSortOrderForm form);
+    CommandResult<CreateSearchSortOrderResult> createSearchSortOrder(UserVisitPK userVisitPK, CreateSearchSortOrderForm form);
 
     CommandResult<GetSearchSortOrdersResult> getSearchSortOrders(UserVisitPK userVisitPK, GetSearchSortOrdersForm form);
 
@@ -195,7 +195,7 @@ public interface SearchService
     //   Search Use Types
     // -------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createSearchUseType(UserVisitPK userVisitPK, CreateSearchUseTypeForm form);
+    CommandResult<CreateSearchUseTypeResult> createSearchUseType(UserVisitPK userVisitPK, CreateSearchUseTypeForm form);
 
     CommandResult<GetSearchUseTypesResult> getSearchUseTypes(UserVisitPK userVisitPK, GetSearchUseTypesForm form);
 
@@ -259,7 +259,7 @@ public interface SearchService
     //   Search Check Spelling Action Types
     // -------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createSearchCheckSpellingActionType(UserVisitPK userVisitPK, CreateSearchCheckSpellingActionTypeForm form);
+    CommandResult<CreateSearchCheckSpellingActionTypeResult> createSearchCheckSpellingActionType(UserVisitPK userVisitPK, CreateSearchCheckSpellingActionTypeForm form);
 
     CommandResult<GetSearchCheckSpellingActionTypesResult> getSearchCheckSpellingActionTypes(UserVisitPK userVisitPK, GetSearchCheckSpellingActionTypesForm form);
 

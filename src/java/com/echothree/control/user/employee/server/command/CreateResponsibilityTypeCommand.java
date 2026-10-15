@@ -17,12 +17,13 @@
 package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.form.CreateResponsibilityTypeForm;
+import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -54,6 +55,7 @@ public class CreateResponsibilityTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = EmployeeResultFactory.getCreateResponsibilityTypeResult();
         var responsibilityTypeName = form.getResponsibilityTypeName();
         var responsibilityType = employeeControl.getResponsibilityTypeByName(responsibilityTypeName);
         
@@ -72,7 +74,12 @@ public class CreateResponsibilityTypeCommand
             addExecutionError(ExecutionErrors.DuplicateResponsibilityTypeName.name(), responsibilityTypeName);
         }
         
-        return null;
+        if(responsibilityType != null) {
+            result.setEntityRef(responsibilityType.getPrimaryKey().getEntityRef());
+            result.setResponsibilityTypeName(responsibilityType.getLastDetail().getResponsibilityTypeName());
+        }
+
+        return result;
     }
     
 }

@@ -17,8 +17,10 @@
 package com.echothree.control.user.associate.server.command;
 
 import com.echothree.control.user.associate.common.form.CreateAssociateForm;
+import com.echothree.control.user.associate.common.result.AssociateResultFactory;
 import com.echothree.model.control.associate.server.control.AssociateControl;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.data.associate.server.entity.Associate;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -60,12 +62,15 @@ public class CreateAssociateCommand
     
     @Override
     protected BaseResult execute() {
+        var result = AssociateResultFactory.getCreateAssociateResult();
+        Associate associate = null;
         var associateProgramName = form.getAssociateProgramName();
         var associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
         
         if(associateProgram != null) {
             var associateName = form.getAssociateName();
-            var associate = associateControl.getAssociateByName(associateProgram, associateName);
+
+            associate = associateControl.getAssociateByName(associateProgram, associateName);
             
             if(associate == null) {
                 var partyName = form.getPartyName();
@@ -79,7 +84,7 @@ public class CreateAssociateCommand
                         var description = form.getDescription();
                         var summary = form.getSummary();
                         
-                        associateControl.createAssociate(associateProgram, associateName, party, description, summaryMimeType,
+                        associate = associateControl.createAssociate(associateProgram, associateName, party, description, summaryMimeType,
                                 summary, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownSummaryMimeTypeName.name(), summaryMimeTypeName);
@@ -94,7 +99,13 @@ public class CreateAssociateCommand
             addExecutionError(ExecutionErrors.UnknownAssociateProgramName.name(), associateProgramName);
         }
         
-        return null;
+        if(associate != null) {
+            result.setEntityRef(associate.getPrimaryKey().getEntityRef());
+            result.setAssociateProgramName(associate.getLastDetail().getAssociateProgram().getLastDetail().getAssociateProgramName());
+            result.setAssociateName(associate.getLastDetail().getAssociateName());
+        }
+
+        return result;
     }
     
 }

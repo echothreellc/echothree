@@ -17,15 +17,17 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.CreateHarmonizedTariffScheduleCodeUseTypeForm;
+import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -68,6 +70,7 @@ public class CreateHarmonizedTariffScheduleCodeUseTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ItemResultFactory.getCreateHarmonizedTariffScheduleCodeUseTypeResult();
         var harmonizedTariffScheduleCodeUseTypeName = form.getHarmonizedTariffScheduleCodeUseTypeName();
         var harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeByName(harmonizedTariffScheduleCodeUseTypeName);
         
@@ -86,7 +89,12 @@ public class CreateHarmonizedTariffScheduleCodeUseTypeCommand
             addExecutionError(ExecutionErrors.DuplicateHarmonizedTariffScheduleCodeUseTypeName.name(), harmonizedTariffScheduleCodeUseTypeName);
         }
         
-        return null;
+        if(harmonizedTariffScheduleCodeUseType != null) {
+            result.setEntityRef(harmonizedTariffScheduleCodeUseType.getPrimaryKey().getEntityRef());
+            result.setHarmonizedTariffScheduleCodeUseTypeName(harmonizedTariffScheduleCodeUseType.getLastDetail().getHarmonizedTariffScheduleCodeUseTypeName());
+        }
+
+        return result;
     }
     
 }

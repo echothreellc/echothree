@@ -17,6 +17,7 @@
 package com.echothree.control.user.chain.server.command;
 
 import com.echothree.control.user.chain.common.form.CreateChainActionForm;
+import com.echothree.control.user.chain.common.result.ChainResultFactory;
 import com.echothree.model.control.chain.common.ChainActionTypes;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.letter.server.control.LetterControl;
@@ -186,6 +187,8 @@ public class CreateChainActionCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ChainResultFactory.getCreateChainActionResult();
+        ChainAction chainAction = null;
         var chainKindName = form.getChainKindName();
         var chainKind = chainControl.getChainKindByName(chainKindName);
 
@@ -203,7 +206,8 @@ public class CreateChainActionCommand
 
                     if(chainActionSet != null) {
                         var chainActionName = form.getChainActionName();
-                        var chainAction = chainControl.getChainActionByName(chainActionSet, chainActionName);
+
+                        chainAction = chainControl.getChainActionByName(chainActionSet, chainActionName);
 
                         if(chainAction == null) {
                             var chainActionTypeName = form.getChainActionTypeName();
@@ -254,7 +258,16 @@ public class CreateChainActionCommand
             addExecutionError(ExecutionErrors.UnknownChainKindName.name(), chainKindName);
         }
 
-        return null;
+        if(chainAction != null) {
+            result.setEntityRef(chainAction.getPrimaryKey().getEntityRef());
+            result.setChainKindName(chainAction.getLastDetail().getChainActionSet().getLastDetail().getChain().getLastDetail().getChainType().getLastDetail().getChainKind().getLastDetail().getChainKindName());
+            result.setChainTypeName(chainAction.getLastDetail().getChainActionSet().getLastDetail().getChain().getLastDetail().getChainType().getLastDetail().getChainTypeName());
+            result.setChainName(chainAction.getLastDetail().getChainActionSet().getLastDetail().getChain().getLastDetail().getChainName());
+            result.setChainActionSetName(chainAction.getLastDetail().getChainActionSet().getLastDetail().getChainActionSetName());
+            result.setChainActionName(chainAction.getLastDetail().getChainActionName());
+        }
+
+        return result;
     }
     
 }

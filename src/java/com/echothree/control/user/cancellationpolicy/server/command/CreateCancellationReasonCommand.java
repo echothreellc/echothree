@@ -17,15 +17,17 @@
 package com.echothree.control.user.cancellationpolicy.server.command;
 
 import com.echothree.control.user.cancellationpolicy.common.form.CreateCancellationReasonForm;
+import com.echothree.control.user.cancellationpolicy.common.result.CancellationPolicyResultFactory;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.cancellationpolicy.server.entity.CancellationReason;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -69,12 +71,15 @@ public class CreateCancellationReasonCommand
     
     @Override
     protected BaseResult execute() {
+        var result = CancellationPolicyResultFactory.getCreateCancellationReasonResult();
+        CancellationReason cancellationReason = null;
         var cancellationKindName = form.getCancellationKindName();
         var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
         
         if(cancellationKind != null) {
             var cancellationReasonName = form.getCancellationReasonName();
-            var cancellationReason = cancellationPolicyControl.getCancellationReasonByName(cancellationKind, cancellationReasonName);
+
+            cancellationReason = cancellationPolicyControl.getCancellationReasonByName(cancellationKind, cancellationReasonName);
             
             if(cancellationReason == null) {
                 var partyPK = getPartyPK();
@@ -94,7 +99,13 @@ public class CreateCancellationReasonCommand
             addExecutionError(ExecutionErrors.DuplicateCancellationKindName.name(), cancellationKindName);
         }
         
-        return null;
+        if(cancellationReason != null) {
+            result.setEntityRef(cancellationReason.getPrimaryKey().getEntityRef());
+            result.setCancellationKindName(cancellationReason.getLastDetail().getCancellationKind().getLastDetail().getCancellationKindName());
+            result.setCancellationReasonName(cancellationReason.getLastDetail().getCancellationReasonName());
+        }
+
+        return result;
     }
     
 }

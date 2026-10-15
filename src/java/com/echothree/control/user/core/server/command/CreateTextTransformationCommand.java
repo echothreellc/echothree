@@ -17,10 +17,12 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateTextTransformationForm;
+import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.server.control.TextControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.core.server.entity.TextTransformation;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -68,6 +70,7 @@ public class CreateTextTransformationCommand
     
     @Override
     protected BaseResult execute() {
+        var result = CoreResultFactory.getCreateTextTransformationResult();
         var textTransformationName = form.getTextTransformationName();
         var textTransformation = textControl.getTextTransformationByName(textTransformationName);
         
@@ -86,7 +89,12 @@ public class CreateTextTransformationCommand
             addExecutionError(ExecutionErrors.DuplicateTextTransformationName.name(), textTransformationName);
         }
         
-        return null;
+        if(textTransformation != null) {
+            result.setEntityRef(textTransformation.getPrimaryKey().getEntityRef());
+            result.setTextTransformationName(textTransformation.getLastDetail().getTextTransformationName());
+        }
+
+        return result;
     }
     
 }

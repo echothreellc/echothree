@@ -199,7 +199,7 @@ public class OrderBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createOrderAliasType(UserVisitPK userVisitPK, CreateOrderAliasTypeForm form) {
+    public CommandResult<CreateOrderAliasTypeResult> createOrderAliasType(UserVisitPK userVisitPK, CreateOrderAliasTypeForm form) {
         return CDI.current().select(CreateOrderAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -364,7 +364,7 @@ public class OrderBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createOrderAdjustmentType(UserVisitPK userVisitPK, CreateOrderAdjustmentTypeForm form) {
+    public CommandResult<CreateOrderAdjustmentTypeResult> createOrderAdjustmentType(UserVisitPK userVisitPK, CreateOrderAdjustmentTypeForm form) {
         return CDI.current().select(CreateOrderAdjustmentTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -432,7 +432,7 @@ public class OrderBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createOrderLineAdjustmentType(UserVisitPK userVisitPK, CreateOrderLineAdjustmentTypeForm form) {
+    public CommandResult<CreateOrderLineAdjustmentTypeResult> createOrderLineAdjustmentType(UserVisitPK userVisitPK, CreateOrderLineAdjustmentTypeForm form) {
         return CDI.current().select(CreateOrderLineAdjustmentTypeCommand.class).get().run(userVisitPK, form);
     }
 

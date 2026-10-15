@@ -17,11 +17,13 @@
 package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.CreateOrderAliasTypeForm;
+import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.model.control.order.server.control.OrderAliasControl;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.order.server.entity.OrderAliasType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -74,12 +76,15 @@ public class CreateOrderAliasTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = OrderResultFactory.getCreateOrderAliasTypeResult();
+        OrderAliasType orderAliasType = null;
         var orderTypeName = form.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderAliasTypeName = form.getOrderAliasTypeName();
-            var orderAliasType = orderAliasControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
+
+            orderAliasType = orderAliasControl.getOrderAliasTypeByName(orderType, orderAliasTypeName);
 
             if(orderAliasType == null) {
                 var createdBy = getPartyPK();
@@ -100,7 +105,13 @@ public class CreateOrderAliasTypeCommand
             addExecutionError(ExecutionErrors.UnknownOrderTypeName.name(), orderTypeName);
         }
 
-        return null;
+        if(orderAliasType != null) {
+            result.setEntityRef(orderAliasType.getPrimaryKey().getEntityRef());
+            result.setOrderTypeName(orderAliasType.getLastDetail().getOrderType().getLastDetail().getOrderTypeName());
+            result.setOrderAliasTypeName(orderAliasType.getLastDetail().getOrderAliasTypeName());
+        }
+
+        return result;
     }
     
 }

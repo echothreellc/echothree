@@ -17,12 +17,14 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateApplicationEditorUseForm;
+import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.server.control.ApplicationControl;
 import com.echothree.model.control.core.server.control.EditorControl;
 import com.echothree.model.control.core.server.logic.ApplicationLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.core.server.entity.ApplicationEditorUse;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -80,12 +82,15 @@ public class CreateApplicationEditorUseCommand
     
     @Override
     protected BaseResult execute() {
+        var result = CoreResultFactory.getCreateApplicationEditorUseResult();
+        ApplicationEditorUse applicationEditorUse = null;
         var applicationName = form.getApplicationName();
         var application = applicationLogic.getApplicationByName(this, applicationName);
         
         if(!hasExecutionErrors()) {
             var applicationEditorUseName = form.getApplicationEditorUseName();
-            var applicationEditorUse = applicationControl.getApplicationEditorUseByName(application, applicationEditorUseName);
+
+            applicationEditorUse = applicationControl.getApplicationEditorUseByName(application, applicationEditorUseName);
 
             if(applicationEditorUse == null) {
                 var defaultEditorName = form.getDefaultEditorName();
@@ -119,7 +124,13 @@ public class CreateApplicationEditorUseCommand
             }
         }
         
-        return null;
+        if(applicationEditorUse != null) {
+            result.setEntityRef(applicationEditorUse.getPrimaryKey().getEntityRef());
+            result.setApplicationName(applicationEditorUse.getLastDetail().getApplication().getLastDetail().getApplicationName());
+            result.setApplicationEditorUseName(applicationEditorUse.getLastDetail().getApplicationEditorUseName());
+        }
+
+        return result;
     }
     
 }

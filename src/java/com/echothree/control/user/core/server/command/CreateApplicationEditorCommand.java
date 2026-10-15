@@ -17,12 +17,14 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateApplicationEditorForm;
+import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.server.control.ApplicationControl;
 import com.echothree.model.control.core.server.logic.ApplicationLogic;
 import com.echothree.model.control.core.server.logic.EditorLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.core.server.entity.ApplicationEditor;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -76,6 +78,8 @@ public class CreateApplicationEditorCommand
     
     @Override
     protected BaseResult execute() {
+        var result = CoreResultFactory.getCreateApplicationEditorResult();
+        ApplicationEditor applicationEditor = null;
         var applicationName = form.getApplicationName();
         var application = applicationLogic.getApplicationByName(this, applicationName);
         
@@ -84,20 +88,26 @@ public class CreateApplicationEditorCommand
             var editor = editorLogic.getEditorByName(this, editorName);
             
             if(!hasExecutionErrors()) {
-                var applicationEditor = applicationControl.getApplicationEditor(application, editor);
+                applicationEditor = applicationControl.getApplicationEditor(application, editor);
                 
                 if(applicationEditor == null) {
                     var isDefault = Boolean.valueOf(form.getIsDefault());
                     var sortOrder = Integer.valueOf(form.getSortOrder());
                     
-                    applicationControl.createApplicationEditor(application, editor, isDefault, sortOrder, getPartyPK());
+                    applicationEditor = applicationControl.createApplicationEditor(application, editor, isDefault, sortOrder, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateApplicationEditor.name(), applicationName, editorName);
                 }
             }
         }
         
-        return null;
+        if(applicationEditor != null) {
+            result.setEntityRef(applicationEditor.getPrimaryKey().getEntityRef());
+            result.setApplicationName(applicationEditor.getLastDetail().getApplication().getLastDetail().getApplicationName());
+            result.setEditorName(applicationEditor.getLastDetail().getEditor().getLastDetail().getEditorName());
+        }
+
+        return result;
     }
     
 }

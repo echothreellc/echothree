@@ -165,7 +165,7 @@ public class CoreBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createCommand(UserVisitPK userVisitPK, CreateCommandForm form) {
+    public CommandResult<CreateCommandResult> createCommand(UserVisitPK userVisitPK, CreateCommandForm form) {
         return CDI.current().select(CreateCommandCommand.class).get().run(userVisitPK, form);
     }
     
@@ -223,7 +223,7 @@ public class CoreBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createCommandMessageType(UserVisitPK userVisitPK, CreateCommandMessageTypeForm form) {
+    public CommandResult<CreateCommandMessageTypeResult> createCommandMessageType(UserVisitPK userVisitPK, CreateCommandMessageTypeForm form) {
         return CDI.current().select(CreateCommandMessageTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -291,7 +291,7 @@ public class CoreBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createCommandMessage(UserVisitPK userVisitPK, CreateCommandMessageForm form) {
+    public CommandResult<CreateCommandMessageResult> createCommandMessage(UserVisitPK userVisitPK, CreateCommandMessageForm form) {
         return CDI.current().select(CreateCommandMessageCommand.class).get().run(userVisitPK, form);
     }
 
@@ -872,7 +872,7 @@ public class CoreBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createEntityIntegerRange(UserVisitPK userVisitPK, CreateEntityIntegerRangeForm form) {
+    public CommandResult<CreateEntityIntegerRangeResult> createEntityIntegerRange(UserVisitPK userVisitPK, CreateEntityIntegerRangeForm form) {
         return CDI.current().select(CreateEntityIntegerRangeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -940,7 +940,7 @@ public class CoreBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createEntityLongRange(UserVisitPK userVisitPK, CreateEntityLongRangeForm form) {
+    public CommandResult<CreateEntityLongRangeResult> createEntityLongRange(UserVisitPK userVisitPK, CreateEntityLongRangeForm form) {
         return CDI.current().select(CreateEntityLongRangeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -1041,7 +1041,7 @@ public class CoreBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createMimeType(UserVisitPK userVisitPK, CreateMimeTypeForm form) {
+    public CommandResult<CreateMimeTypeResult> createMimeType(UserVisitPK userVisitPK, CreateMimeTypeForm form) {
         return CDI.current().select(CreateMimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1142,7 +1142,7 @@ public class CoreBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createProtocol(UserVisitPK userVisitPK, CreateProtocolForm form) {
+    public CommandResult<CreateProtocolResult> createProtocol(UserVisitPK userVisitPK, CreateProtocolForm form) {
         return CDI.current().select(CreateProtocolCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1210,7 +1210,7 @@ public class CoreBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createService(UserVisitPK userVisitPK, CreateServiceForm form) {
+    public CommandResult<CreateServiceResult> createService(UserVisitPK userVisitPK, CreateServiceForm form) {
         return CDI.current().select(CreateServiceCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1278,7 +1278,7 @@ public class CoreBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createServer(UserVisitPK userVisitPK, CreateServerForm form) {
+    public CommandResult<CreateServerResult> createServer(UserVisitPK userVisitPK, CreateServerForm form) {
         return CDI.current().select(CreateServerCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1878,7 +1878,7 @@ public class CoreBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createApplication(UserVisitPK userVisitPK, CreateApplicationForm form) {
+    public CommandResult<CreateApplicationResult> createApplication(UserVisitPK userVisitPK, CreateApplicationForm form) {
         return CDI.current().select(CreateApplicationCommand.class).get().run(userVisitPK, form);
     }
     
@@ -1946,7 +1946,7 @@ public class CoreBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createEditor(UserVisitPK userVisitPK, CreateEditorForm form) {
+    public CommandResult<CreateEditorResult> createEditor(UserVisitPK userVisitPK, CreateEditorForm form) {
         return CDI.current().select(CreateEditorCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2014,7 +2014,7 @@ public class CoreBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createApplicationEditor(UserVisitPK userVisitPK, CreateApplicationEditorForm form) {
+    public CommandResult<CreateApplicationEditorResult> createApplicationEditor(UserVisitPK userVisitPK, CreateApplicationEditorForm form) {
         return CDI.current().select(CreateApplicationEditorCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2053,7 +2053,7 @@ public class CoreBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createApplicationEditorUse(UserVisitPK userVisitPK, CreateApplicationEditorUseForm form) {
+    public CommandResult<CreateApplicationEditorUseResult> createApplicationEditorUse(UserVisitPK userVisitPK, CreateApplicationEditorUseForm form) {
         return CDI.current().select(CreateApplicationEditorUseCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2305,7 +2305,7 @@ public class CoreBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createFontStyle(UserVisitPK userVisitPK, CreateFontStyleForm form) {
+    public CommandResult<CreateFontStyleResult> createFontStyle(UserVisitPK userVisitPK, CreateFontStyleForm form) {
         return CDI.current().select(CreateFontStyleCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2373,7 +2373,7 @@ public class CoreBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createFontWeight(UserVisitPK userVisitPK, CreateFontWeightForm form) {
+    public CommandResult<CreateFontWeightResult> createFontWeight(UserVisitPK userVisitPK, CreateFontWeightForm form) {
         return CDI.current().select(CreateFontWeightCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2441,7 +2441,7 @@ public class CoreBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createTextDecoration(UserVisitPK userVisitPK, CreateTextDecorationForm form) {
+    public CommandResult<CreateTextDecorationResult> createTextDecoration(UserVisitPK userVisitPK, CreateTextDecorationForm form) {
         return CDI.current().select(CreateTextDecorationCommand.class).get().run(userVisitPK, form);
     }
     
@@ -2509,7 +2509,7 @@ public class CoreBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createTextTransformation(UserVisitPK userVisitPK, CreateTextTransformationForm form) {
+    public CommandResult<CreateTextTransformationResult> createTextTransformation(UserVisitPK userVisitPK, CreateTextTransformationForm form) {
         return CDI.current().select(CreateTextTransformationCommand.class).get().run(userVisitPK, form);
     }
     

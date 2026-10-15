@@ -45,7 +45,7 @@ public class PeriodBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createPeriodKind(UserVisitPK userVisitPK, CreatePeriodKindForm form) {
+    public CommandResult<CreatePeriodKindResult> createPeriodKind(UserVisitPK userVisitPK, CreatePeriodKindForm form) {
         return CDI.current().select(CreatePeriodKindCommand.class).get().run(userVisitPK, form);
     }
     
@@ -108,7 +108,7 @@ public class PeriodBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createPeriodType(UserVisitPK userVisitPK, CreatePeriodTypeForm form) {
+    public CommandResult<CreatePeriodTypeResult> createPeriodType(UserVisitPK userVisitPK, CreatePeriodTypeForm form) {
         return CDI.current().select(CreatePeriodTypeCommand.class).get().run(userVisitPK, form);
     }
     

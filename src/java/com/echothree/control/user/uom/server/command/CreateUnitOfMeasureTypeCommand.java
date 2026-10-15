@@ -17,13 +17,15 @@
 package com.echothree.control.user.uom.server.command;
 
 import com.echothree.control.user.uom.common.form.CreateUnitOfMeasureTypeForm;
+import com.echothree.control.user.uom.common.result.UomResultFactory;
 import com.echothree.model.control.accounting.server.logic.SymbolPositionLogic;
 import com.echothree.model.control.uom.server.control.UomControl;
+import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -63,12 +65,15 @@ public class CreateUnitOfMeasureTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = UomResultFactory.getCreateUnitOfMeasureTypeResult();
+        UnitOfMeasureType unitOfMeasureType = null;
         var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
         var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
         
         if(unitOfMeasureKind != null) {
             var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
+
+            unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
             
             if(unitOfMeasureType == null) {
                 var symbolPosition = symbolPositionLogic.getSymbolPositionByName(this, form.getSymbolPositionName());
@@ -117,7 +122,13 @@ public class CreateUnitOfMeasureTypeCommand
             addExecutionError(ExecutionErrors.UnknownUnitOfMeasureKindName.name(), unitOfMeasureKindName);
         }
         
-        return null;
+        if(unitOfMeasureType != null) {
+            result.setEntityRef(unitOfMeasureType.getPrimaryKey().getEntityRef());
+            result.setUnitOfMeasureKindName(unitOfMeasureType.getLastDetail().getUnitOfMeasureKind().getLastDetail().getUnitOfMeasureKindName());
+            result.setUnitOfMeasureTypeName(unitOfMeasureType.getLastDetail().getUnitOfMeasureTypeName());
+        }
+
+        return result;
     }
     
 }

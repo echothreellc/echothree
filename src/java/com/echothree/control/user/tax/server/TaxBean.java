@@ -45,7 +45,7 @@ public class TaxBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createTaxClassification(UserVisitPK userVisitPK, CreateTaxClassificationForm form) {
+    public CommandResult<CreateTaxClassificationResult> createTaxClassification(UserVisitPK userVisitPK, CreateTaxClassificationForm form) {
         return CDI.current().select(CreateTaxClassificationCommand.class).get().run(userVisitPK, form);
     }
 
@@ -142,7 +142,7 @@ public class TaxBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createTax(UserVisitPK userVisitPK, CreateTaxForm form) {
+    public CommandResult<CreateTaxResult> createTax(UserVisitPK userVisitPK, CreateTaxForm form) {
         return CDI.current().select(CreateTaxCommand.class).get().run(userVisitPK, form);
     }
     

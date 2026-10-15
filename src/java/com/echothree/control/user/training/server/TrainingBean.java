@@ -113,7 +113,7 @@ public class TrainingBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createTrainingClassSection(UserVisitPK userVisitPK, CreateTrainingClassSectionForm form) {
+    public CommandResult<CreateTrainingClassSectionResult> createTrainingClassSection(UserVisitPK userVisitPK, CreateTrainingClassSectionForm form) {
         return CDI.current().select(CreateTrainingClassSectionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -171,7 +171,7 @@ public class TrainingBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createTrainingClassPage(UserVisitPK userVisitPK, CreateTrainingClassPageForm form) {
+    public CommandResult<CreateTrainingClassPageResult> createTrainingClassPage(UserVisitPK userVisitPK, CreateTrainingClassPageForm form) {
         return CDI.current().select(CreateTrainingClassPageCommand.class).get().run(userVisitPK, form);
     }
     
@@ -229,7 +229,7 @@ public class TrainingBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createTrainingClassQuestion(UserVisitPK userVisitPK, CreateTrainingClassQuestionForm form) {
+    public CommandResult<CreateTrainingClassQuestionResult> createTrainingClassQuestion(UserVisitPK userVisitPK, CreateTrainingClassQuestionForm form) {
         return CDI.current().select(CreateTrainingClassQuestionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -287,7 +287,7 @@ public class TrainingBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createTrainingClassAnswer(UserVisitPK userVisitPK, CreateTrainingClassAnswerForm form) {
+    public CommandResult<CreateTrainingClassAnswerResult> createTrainingClassAnswer(UserVisitPK userVisitPK, CreateTrainingClassAnswerForm form) {
         return CDI.current().select(CreateTrainingClassAnswerCommand.class).get().run(userVisitPK, form);
     }
     
@@ -345,7 +345,7 @@ public class TrainingBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createPartyTrainingClass(UserVisitPK userVisitPK, CreatePartyTrainingClassForm form) {
+    public CommandResult<CreatePartyTrainingClassResult> createPartyTrainingClass(UserVisitPK userVisitPK, CreatePartyTrainingClassForm form) {
         return CDI.current().select(CreatePartyTrainingClassCommand.class).get().run(userVisitPK, form);
     }
 

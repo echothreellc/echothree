@@ -45,7 +45,7 @@ public class SearchBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createSearchDefaultOperator(UserVisitPK userVisitPK, CreateSearchDefaultOperatorForm form) {
+    public CommandResult<CreateSearchDefaultOperatorResult> createSearchDefaultOperator(UserVisitPK userVisitPK, CreateSearchDefaultOperatorForm form) {
         return CDI.current().select(CreateSearchDefaultOperatorCommand.class).get().run(userVisitPK, form);
     }
     
@@ -113,7 +113,7 @@ public class SearchBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createSearchSortDirection(UserVisitPK userVisitPK, CreateSearchSortDirectionForm form) {
+    public CommandResult<CreateSearchSortDirectionResult> createSearchSortDirection(UserVisitPK userVisitPK, CreateSearchSortDirectionForm form) {
         return CDI.current().select(CreateSearchSortDirectionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -181,7 +181,7 @@ public class SearchBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createSearchKind(UserVisitPK userVisitPK, CreateSearchKindForm form) {
+    public CommandResult<CreateSearchKindResult> createSearchKind(UserVisitPK userVisitPK, CreateSearchKindForm form) {
         return CDI.current().select(CreateSearchKindCommand.class).get().run(userVisitPK, form);
     }
 
@@ -249,7 +249,7 @@ public class SearchBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createSearchType(UserVisitPK userVisitPK, CreateSearchTypeForm form) {
+    public CommandResult<CreateSearchTypeResult> createSearchType(UserVisitPK userVisitPK, CreateSearchTypeForm form) {
         return CDI.current().select(CreateSearchTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -317,7 +317,7 @@ public class SearchBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createSearchSortOrder(UserVisitPK userVisitPK, CreateSearchSortOrderForm form) {
+    public CommandResult<CreateSearchSortOrderResult> createSearchSortOrder(UserVisitPK userVisitPK, CreateSearchSortOrderForm form) {
         return CDI.current().select(CreateSearchSortOrderCommand.class).get().run(userVisitPK, form);
     }
 
@@ -385,7 +385,7 @@ public class SearchBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createSearchUseType(UserVisitPK userVisitPK, CreateSearchUseTypeForm form) {
+    public CommandResult<CreateSearchUseTypeResult> createSearchUseType(UserVisitPK userVisitPK, CreateSearchUseTypeForm form) {
         return CDI.current().select(CreateSearchUseTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -521,7 +521,7 @@ public class SearchBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createSearchCheckSpellingActionType(UserVisitPK userVisitPK, CreateSearchCheckSpellingActionTypeForm form) {
+    public CommandResult<CreateSearchCheckSpellingActionTypeResult> createSearchCheckSpellingActionType(UserVisitPK userVisitPK, CreateSearchCheckSpellingActionTypeForm form) {
         return CDI.current().select(CreateSearchCheckSpellingActionTypeCommand.class).get().run(userVisitPK, form);
     }
 

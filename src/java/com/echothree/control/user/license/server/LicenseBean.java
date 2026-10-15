@@ -45,7 +45,7 @@ public class LicenseBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createLicenseType(UserVisitPK userVisitPK, CreateLicenseTypeForm form) {
+    public CommandResult<CreateLicenseTypeResult> createLicenseType(UserVisitPK userVisitPK, CreateLicenseTypeForm form) {
         return CDI.current().select(CreateLicenseTypeCommand.class).get().run(userVisitPK, form);
     }
     

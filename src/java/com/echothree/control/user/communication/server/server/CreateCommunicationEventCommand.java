@@ -17,6 +17,7 @@
 package com.echothree.control.user.communication.server.server;
 
 import com.echothree.control.user.communication.common.form.CreateCommunicationEventForm;
+import com.echothree.control.user.communication.common.result.CommunicationResultFactory;
 import com.echothree.model.control.accounting.common.AccountingConstants;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.communication.common.CommunicationConstants;
@@ -38,6 +39,7 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.control.workeffort.server.logic.WorkEffortLogic;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
+import com.echothree.model.data.communication.server.entity.CommunicationEvent;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -49,11 +51,11 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.io.ByteArrayInputStream;
 import java.util.List;
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
 
 @Dependent
 public class CreateCommunicationEventCommand
@@ -112,6 +114,8 @@ public class CreateCommunicationEventCommand
     
     @Override
     protected BaseResult execute() {
+        var result = CommunicationResultFactory.getCreateCommunicationEventResult();
+        CommunicationEvent communicationEvent = null;
         var communicationSourceName = form.getCommunicationSourceName();
         var communicationSource = communicationControl.getCommunicationSourceByName(communicationSourceName);
 
@@ -271,7 +275,6 @@ public class CreateCommunicationEventCommand
                         if(!hasExecutionErrors()) {
                             var documentType = documentControl.getDocumentTypeByName(DocumentConstants.DocumentType_COMMUNICATION_EVENT_EMAIL);
                             var mimeType = mimeTypeControl.getMimeTypeByName(MimeTypes.MESSAGE_RFC822.mimeTypeName());
-
                             var document = documentControl.createDocument(documentType, mimeType, null, createdBy);
                             documentControl.createDocumentBlob(document, blobDocument, createdBy);
 
@@ -280,12 +283,12 @@ public class CreateCommunicationEventCommand
                             }
 
                             var communicationEventPurpose = communicationControl.getDefaultCommunicationEventPurpose();
-                            var communicationEvent = communicationControl.createCommunicationEvent(communicationEventType, communicationSource, communicationEventPurpose, null, null,
+
+                            communicationEvent = communicationControl.createCommunicationEvent(communicationEventType, communicationSource, communicationEventPurpose, null, null,
                                     partyContactMechanism, document, createdBy);
 
                             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(communicationEvent.getPrimaryKey());
                             var workEffort = workEffortLogic.createWorkEffort(preparedWorkEffort, entityInstance, createdBy);
-
                             var senderRoleType = communicationControl.getCommunicationEventRoleTypeByName(CommunicationConstants.CommunicationEventRoleType_SENDER);
                             communicationControl.createCommunicationEventRole(communicationEvent, party, senderRoleType, createdBy);
 
@@ -305,7 +308,12 @@ public class CreateCommunicationEventCommand
             addExecutionError(ExecutionErrors.UnknownCommunicationSourceName.name(), communicationSourceName);
         }
 
-        return null;
+        if(communicationEvent != null) {
+            result.setEntityRef(communicationEvent.getPrimaryKey().getEntityRef());
+            result.setCommunicationEventName(communicationEvent.getLastDetail().getCommunicationEventName());
+        }
+
+        return result;
     }
     
 }

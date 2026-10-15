@@ -16,13 +16,11 @@
 
 package com.echothree.control.user.payment.common.result;
 
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
 import com.echothree.util.common.command.BaseResult;
 
 public interface CreatePartyPaymentMethodResult
-        extends BaseResult {
-    
-    String getEntityRef();
-    void setEntityRef(String entityRef);
+        extends EntityRefSpec, BaseResult {
 
     String getPartyPaymentMethodName();
     void setPartyPaymentMethodName(String partyPaymentMethodName);

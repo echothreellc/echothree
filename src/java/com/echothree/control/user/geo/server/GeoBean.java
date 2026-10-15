@@ -45,7 +45,7 @@ public class GeoBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createGeoCodeType(UserVisitPK userVisitPK, CreateGeoCodeTypeForm form) {
+    public CommandResult<CreateGeoCodeTypeResult> createGeoCodeType(UserVisitPK userVisitPK, CreateGeoCodeTypeForm form) {
         return CDI.current().select(CreateGeoCodeTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -113,7 +113,7 @@ public class GeoBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createGeoCodeScope(UserVisitPK userVisitPK, CreateGeoCodeScopeForm form) {
+    public CommandResult<CreateGeoCodeScopeResult> createGeoCodeScope(UserVisitPK userVisitPK, CreateGeoCodeScopeForm form) {
         return CDI.current().select(CreateGeoCodeScopeCommand.class).get().run(userVisitPK, form);
     }
 

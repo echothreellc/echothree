@@ -35,7 +35,7 @@ public interface ChainService
     //   Chain Action Types
     // -------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createChainActionType(UserVisitPK userVisitPK, CreateChainActionTypeForm form);
+    CommandResult<CreateChainActionTypeResult> createChainActionType(UserVisitPK userVisitPK, CreateChainActionTypeForm form);
 
     CommandResult<GetChainActionTypesResult> getChainActionTypes(UserVisitPK userVisitPK, GetChainActionTypesForm form);
 
@@ -73,7 +73,7 @@ public interface ChainService
     //   Chain Kinds
     // -------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createChainKind(UserVisitPK userVisitPK, CreateChainKindForm form);
+    CommandResult<CreateChainKindResult> createChainKind(UserVisitPK userVisitPK, CreateChainKindForm form);
 
     CommandResult<GetChainKindsResult> getChainKinds(UserVisitPK userVisitPK, GetChainKindsForm form);
 
@@ -105,7 +105,7 @@ public interface ChainService
     //   Chain Types
     // -------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createChainType(UserVisitPK userVisitPK, CreateChainTypeForm form);
+    CommandResult<CreateChainTypeResult> createChainType(UserVisitPK userVisitPK, CreateChainTypeForm form);
 
     CommandResult<GetChainTypesResult> getChainTypes(UserVisitPK userVisitPK, GetChainTypesForm form);
 
@@ -137,7 +137,7 @@ public interface ChainService
     //   Chain Entity Role Types
     // -------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createChainEntityRoleType(UserVisitPK userVisitPK, CreateChainEntityRoleTypeForm form);
+    CommandResult<CreateChainEntityRoleTypeResult> createChainEntityRoleType(UserVisitPK userVisitPK, CreateChainEntityRoleTypeForm form);
 
     CommandResult<GetChainEntityRoleTypesResult> getChainEntityRoleTypes(UserVisitPK userVisitPK, GetChainEntityRoleTypesForm form);
 
@@ -165,7 +165,7 @@ public interface ChainService
     //   Chains
     // -------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createChain(UserVisitPK userVisitPK, CreateChainForm form);
+    CommandResult<CreateChainResult> createChain(UserVisitPK userVisitPK, CreateChainForm form);
 
     CommandResult<GetChainsResult> getChains(UserVisitPK userVisitPK, GetChainsForm form);
 
@@ -197,7 +197,7 @@ public interface ChainService
     //   Chain Action Sets
     // -------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createChainActionSet(UserVisitPK userVisitPK, CreateChainActionSetForm form);
+    CommandResult<CreateChainActionSetResult> createChainActionSet(UserVisitPK userVisitPK, CreateChainActionSetForm form);
 
     CommandResult<GetChainActionSetsResult> getChainActionSets(UserVisitPK userVisitPK, GetChainActionSetsForm form);
 
@@ -229,7 +229,7 @@ public interface ChainService
     //   Chain Actions
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createChainAction(UserVisitPK userVisitPK, CreateChainActionForm form);
+    CommandResult<CreateChainActionResult> createChainAction(UserVisitPK userVisitPK, CreateChainActionForm form);
     
     CommandResult<GetChainActionsResult> getChainActions(UserVisitPK userVisitPK, GetChainActionsForm form);
     

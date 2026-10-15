@@ -45,7 +45,7 @@ public class WorkEffortBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createWorkEffortType(UserVisitPK userVisitPK, CreateWorkEffortTypeForm form) {
+    public CommandResult<CreateWorkEffortTypeResult> createWorkEffortType(UserVisitPK userVisitPK, CreateWorkEffortTypeForm form) {
         return CDI.current().select(CreateWorkEffortTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -93,7 +93,7 @@ public class WorkEffortBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createWorkEffortScope(UserVisitPK userVisitPK, CreateWorkEffortScopeForm form) {
+    public CommandResult<CreateWorkEffortScopeResult> createWorkEffortScope(UserVisitPK userVisitPK, CreateWorkEffortScopeForm form) {
         return CDI.current().select(CreateWorkEffortScopeCommand.class).get().run(userVisitPK, form);
     }
     

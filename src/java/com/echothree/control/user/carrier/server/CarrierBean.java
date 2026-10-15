@@ -45,7 +45,7 @@ public class CarrierBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createCarrierType(UserVisitPK userVisitPK, CreateCarrierTypeForm form) {
+    public CommandResult<CreateCarrierTypeResult> createCarrierType(UserVisitPK userVisitPK, CreateCarrierTypeForm form) {
         return CDI.current().select(CreateCarrierTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -107,7 +107,7 @@ public class CarrierBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createCarrierService(UserVisitPK userVisitPK, CreateCarrierServiceForm form) {
+    public CommandResult<CreateCarrierServiceResult> createCarrierService(UserVisitPK userVisitPK, CreateCarrierServiceForm form) {
         return CDI.current().select(CreateCarrierServiceCommand.class).get().run(userVisitPK, form);
     }
     
@@ -175,7 +175,7 @@ public class CarrierBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createCarrierOption(UserVisitPK userVisitPK, CreateCarrierOptionForm form) {
+    public CommandResult<CreateCarrierOptionResult> createCarrierOption(UserVisitPK userVisitPK, CreateCarrierOptionForm form) {
         return CDI.current().select(CreateCarrierOptionCommand.class).get().run(userVisitPK, form);
     }
     

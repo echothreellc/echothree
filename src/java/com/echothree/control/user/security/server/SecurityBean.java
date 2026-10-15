@@ -215,7 +215,7 @@ public class SecurityBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createPartySecurityRoleTemplate(UserVisitPK userVisitPK, CreatePartySecurityRoleTemplateForm form) {
+    public CommandResult<CreatePartySecurityRoleTemplateResult> createPartySecurityRoleTemplate(UserVisitPK userVisitPK, CreatePartySecurityRoleTemplateForm form) {
         return CDI.current().select(CreatePartySecurityRoleTemplateCommand.class).get().run(userVisitPK, form);
     }
     

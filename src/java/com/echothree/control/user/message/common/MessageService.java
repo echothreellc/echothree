@@ -55,7 +55,7 @@ public interface MessageService
     //   Messages
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createMessage(UserVisitPK userVisitPK, CreateMessageForm form);
+    CommandResult<CreateMessageResult> createMessage(UserVisitPK userVisitPK, CreateMessageForm form);
     
     CommandResult<GetMessageResult> getMessage(UserVisitPK userVisitPK, GetMessageForm form);
     

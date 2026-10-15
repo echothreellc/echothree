@@ -45,7 +45,7 @@ public class IconBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createIconUsageType(UserVisitPK userVisitPK, CreateIconUsageTypeForm form) {
+    public CommandResult<CreateIconUsageTypeResult> createIconUsageType(UserVisitPK userVisitPK, CreateIconUsageTypeForm form) {
         return CDI.current().select(CreateIconUsageTypeCommand.class).get().run(userVisitPK, form);
     }
     

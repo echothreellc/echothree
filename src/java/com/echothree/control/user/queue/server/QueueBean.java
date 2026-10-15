@@ -45,7 +45,7 @@ public class QueueBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createQueueType(UserVisitPK userVisitPK, CreateQueueTypeForm form) {
+    public CommandResult<CreateQueueTypeResult> createQueueType(UserVisitPK userVisitPK, CreateQueueTypeForm form) {
         return CDI.current().select(CreateQueueTypeCommand.class).get().run(userVisitPK, form);
     }
     

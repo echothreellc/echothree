@@ -17,6 +17,7 @@
 package com.echothree.control.user.tax.server.command;
 
 import com.echothree.control.user.tax.common.form.CreateTaxClassificationForm;
+import com.echothree.control.user.tax.common.result.TaxResultFactory;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
 import com.echothree.model.control.geo.server.control.GeoControl;
@@ -24,11 +25,12 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.tax.server.control.TaxControl;
+import com.echothree.model.data.tax.server.entity.TaxClassification;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -80,12 +82,15 @@ public class CreateTaxClassificationCommand
     
     @Override
     protected BaseResult execute() {
+        var result = TaxResultFactory.getCreateTaxClassificationResult();
+        TaxClassification taxClassification = null;
         var countryName = form.getCountryName();
         var geoCode = geoControl.getCountryByAlias(countryName);
         
         if(geoCode != null) {
             var taxClassificationName = form.getTaxClassificationName();
-            var taxClassification = taxControl.getTaxClassificationByName(geoCode, taxClassificationName);
+
+            taxClassification = taxControl.getTaxClassificationByName(geoCode, taxClassificationName);
             
             if(taxClassification == null) {
                 var overview = form.getOverview();
@@ -113,7 +118,13 @@ public class CreateTaxClassificationCommand
             addExecutionError(ExecutionErrors.UnknownGeoCodeName.name(), countryName);
         }
         
-        return null;
+        if(taxClassification != null) {
+            result.setEntityRef(taxClassification.getPrimaryKey().getEntityRef());
+            result.setCountryName(form.getCountryName());
+            result.setTaxClassificationName(taxClassification.getLastDetail().getTaxClassificationName());
+        }
+
+        return result;
     }
     
 }

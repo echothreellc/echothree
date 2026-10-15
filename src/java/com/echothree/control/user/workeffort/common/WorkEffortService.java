@@ -29,7 +29,7 @@ public interface WorkEffortService
     //   Work Effort Types
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createWorkEffortType(UserVisitPK userVisitPK, CreateWorkEffortTypeForm form);
+    CommandResult<CreateWorkEffortTypeResult> createWorkEffortType(UserVisitPK userVisitPK, CreateWorkEffortTypeForm form);
     
     CommandResult<GetWorkEffortTypesResult> getWorkEffortTypes(UserVisitPK userVisitPK, GetWorkEffortTypesForm form);
     
@@ -53,7 +53,7 @@ public interface WorkEffortService
     //   Work Effort Scopes
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createWorkEffortScope(UserVisitPK userVisitPK, CreateWorkEffortScopeForm form);
+    CommandResult<CreateWorkEffortScopeResult> createWorkEffortScope(UserVisitPK userVisitPK, CreateWorkEffortScopeForm form);
     
     CommandResult<GetWorkEffortScopesResult> getWorkEffortScopes(UserVisitPK userVisitPK, GetWorkEffortScopesForm form);
     

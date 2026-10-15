@@ -17,6 +17,8 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateCommandForm;
+import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.data.core.server.entity.Command;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -50,12 +52,15 @@ public class CreateCommandCommand
     
     @Override
     protected BaseResult execute() {
+        var result = CoreResultFactory.getCreateCommandResult();
+        Command command = null;
         var componentVendorName = form.getComponentVendorName();
         var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var commandName = form.getCommandName();
-            var command = commandControl.getCommandByName(componentVendor, commandName);
+
+            command = commandControl.getCommandByName(componentVendor, commandName);
             
             if(command == null) {
                 var partyPK = getPartyPK();
@@ -74,7 +79,13 @@ public class CreateCommandCommand
             addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
         }
         
-        return null;
+        if(command != null) {
+            result.setEntityRef(command.getPrimaryKey().getEntityRef());
+            result.setComponentVendorName(command.getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName());
+            result.setCommandName(command.getLastDetail().getCommandName());
+        }
+
+        return result;
     }
     
 }

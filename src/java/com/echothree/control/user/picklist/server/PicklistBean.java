@@ -45,7 +45,7 @@ public class PicklistBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createPicklistType(UserVisitPK userVisitPK, CreatePicklistTypeForm form) {
+    public CommandResult<CreatePicklistTypeResult> createPicklistType(UserVisitPK userVisitPK, CreatePicklistTypeForm form) {
         return CDI.current().select(CreatePicklistTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -113,7 +113,7 @@ public class PicklistBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createPicklistTimeType(UserVisitPK userVisitPK, CreatePicklistTimeTypeForm form) {
+    public CommandResult<CreatePicklistTimeTypeResult> createPicklistTimeType(UserVisitPK userVisitPK, CreatePicklistTimeTypeForm form) {
         return CDI.current().select(CreatePicklistTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -181,7 +181,7 @@ public class PicklistBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createPicklistAliasType(UserVisitPK userVisitPK, CreatePicklistAliasTypeForm form) {
+    public CommandResult<CreatePicklistAliasTypeResult> createPicklistAliasType(UserVisitPK userVisitPK, CreatePicklistAliasTypeForm form) {
         return CDI.current().select(CreatePicklistAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 

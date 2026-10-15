@@ -81,7 +81,7 @@ public interface ReturnPolicyService
     //   Return Policies
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createReturnPolicy(UserVisitPK userVisitPK, CreateReturnPolicyForm form);
+    CommandResult<CreateReturnPolicyResult> createReturnPolicy(UserVisitPK userVisitPK, CreateReturnPolicyForm form);
     
     CommandResult<GetReturnPoliciesResult> getReturnPolicies(UserVisitPK userVisitPK, GetReturnPoliciesForm form);
     
@@ -127,7 +127,7 @@ public interface ReturnPolicyService
     //   Return Reasons
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createReturnReason(UserVisitPK userVisitPK, CreateReturnReasonForm form);
+    CommandResult<CreateReturnReasonResult> createReturnReason(UserVisitPK userVisitPK, CreateReturnReasonForm form);
     
     CommandResult<GetReturnReasonsResult> getReturnReasons(UserVisitPK userVisitPK, GetReturnReasonsForm form);
     
@@ -171,7 +171,7 @@ public interface ReturnPolicyService
     //   Return Types
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createReturnType(UserVisitPK userVisitPK, CreateReturnTypeForm form);
+    CommandResult<CreateReturnTypeResult> createReturnType(UserVisitPK userVisitPK, CreateReturnTypeForm form);
     
     CommandResult<GetReturnTypesResult> getReturnTypes(UserVisitPK userVisitPK, GetReturnTypesForm form);
     

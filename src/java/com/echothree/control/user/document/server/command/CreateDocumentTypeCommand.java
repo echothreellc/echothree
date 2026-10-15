@@ -17,6 +17,7 @@
 package com.echothree.control.user.document.server.command;
 
 import com.echothree.control.user.document.common.form.CreateDocumentTypeForm;
+import com.echothree.control.user.document.common.result.DocumentResultFactory;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -73,6 +74,7 @@ public class CreateDocumentTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = DocumentResultFactory.getCreateDocumentTypeResult();
         var documentTypeName = form.getDocumentTypeName();
         var documentType = documentControl.getDocumentTypeByName(documentTypeName);
 
@@ -116,7 +118,12 @@ public class CreateDocumentTypeCommand
             addExecutionError(ExecutionErrors.DuplicateDocumentTypeName.name(), documentTypeName);
         }
 
-        return null;
+        if(documentType != null) {
+            result.setEntityRef(documentType.getPrimaryKey().getEntityRef());
+            result.setDocumentTypeName(documentType.getLastDetail().getDocumentTypeName());
+        }
+
+        return result;
     }
     
 }

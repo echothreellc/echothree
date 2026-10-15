@@ -17,12 +17,13 @@
 package com.echothree.control.user.icon.server.command;
 
 import com.echothree.control.user.icon.common.form.CreateIconUsageTypeForm;
+import com.echothree.control.user.icon.common.result.IconResultFactory;
 import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -54,6 +55,7 @@ public class CreateIconUsageTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = IconResultFactory.getCreateIconUsageTypeResult();
         var iconUsageTypeName = form.getIconUsageTypeName();
         var iconUsageType = iconControl.getIconUsageTypeByName(iconUsageTypeName);
         
@@ -72,7 +74,12 @@ public class CreateIconUsageTypeCommand
             addExecutionError(ExecutionErrors.DuplicateIconUsageTypeName.name(), iconUsageTypeName);
         }
         
-        return null;
+        if(iconUsageType != null) {
+            result.setEntityRef(iconUsageType.getPrimaryKey().getEntityRef());
+            result.setIconUsageTypeName(iconUsageType.getLastDetail().getIconUsageTypeName());
+        }
+
+        return result;
     }
     
 }

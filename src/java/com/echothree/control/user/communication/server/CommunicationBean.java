@@ -81,7 +81,7 @@ public class CommunicationBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createCommunicationEventPurpose(UserVisitPK userVisitPK, CreateCommunicationEventPurposeForm form) {
+    public CommandResult<CreateCommunicationEventPurposeResult> createCommunicationEventPurpose(UserVisitPK userVisitPK, CreateCommunicationEventPurposeForm form) {
         return CDI.current().select(CreateCommunicationEventPurposeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -162,7 +162,7 @@ public class CommunicationBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createCommunicationSource(UserVisitPK userVisitPK, CreateCommunicationSourceForm form) {
+    public CommandResult<CreateCommunicationSourceResult> createCommunicationSource(UserVisitPK userVisitPK, CreateCommunicationSourceForm form) {
         return CDI.current().select(CreateCommunicationSourceCommand.class).get().run(userVisitPK, form);
     }
     
@@ -210,7 +210,7 @@ public class CommunicationBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createCommunicationEvent(UserVisitPK userVisitPK, CreateCommunicationEventForm form) {
+    public CommandResult<CreateCommunicationEventResult> createCommunicationEvent(UserVisitPK userVisitPK, CreateCommunicationEventForm form) {
         return CDI.current().select(CreateCommunicationEventCommand.class).get().run(userVisitPK, form);
     }
     

@@ -17,6 +17,7 @@
 package com.echothree.control.user.workrequirement.server.command;
 
 import com.echothree.control.user.workrequirement.common.form.CreateWorkRequirementTypeForm;
+import com.echothree.control.user.workrequirement.common.result.WorkRequirementResultFactory;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.uom.common.UomConstants;
@@ -28,10 +29,11 @@ import com.echothree.model.control.workrequirement.server.control.WorkRequiremen
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
+import com.echothree.model.data.workrequirement.server.entity.WorkRequirementType;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -83,12 +85,15 @@ public class CreateWorkRequirementTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = WorkRequirementResultFactory.getCreateWorkRequirementTypeResult();
+        WorkRequirementType workRequirementType = null;
         var workEffortTypeName = form.getWorkEffortTypeName();
         var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
         if(workEffortType != null) {
             var workRequirementTypeName = form.getWorkRequirementTypeName();
-            var workRequirementType = workRequirementControl.getWorkRequirementTypeByName(workEffortType, workRequirementTypeName);
+
+            workRequirementType = workRequirementControl.getWorkRequirementTypeByName(workEffortType, workRequirementTypeName);
             
             if(workRequirementType == null) {
                 var workRequirementSequenceName = form.getWorkRequirementSequenceName();
@@ -179,7 +184,13 @@ public class CreateWorkRequirementTypeCommand
             addExecutionError(ExecutionErrors.UnknownWorkEffortTypeName.name(), workEffortTypeName);
         }
         
-        return null;
+        if(workRequirementType != null) {
+            result.setEntityRef(workRequirementType.getPrimaryKey().getEntityRef());
+            result.setWorkEffortTypeName(workRequirementType.getLastDetail().getWorkEffortType().getLastDetail().getWorkEffortTypeName());
+            result.setWorkRequirementTypeName(workRequirementType.getLastDetail().getWorkRequirementTypeName());
+        }
+
+        return result;
     }
     
     private WorkflowStep resolveWorkflowStep(final String workflowStepName, final String workflowName) {

@@ -17,11 +17,13 @@
 package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.CreateOrderLineAdjustmentTypeForm;
+import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.model.control.order.server.control.OrderLineAdjustmentControl;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.order.server.entity.OrderLineAdjustmentType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -73,12 +75,15 @@ public class CreateOrderLineAdjustmentTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = OrderResultFactory.getCreateOrderLineAdjustmentTypeResult();
+        OrderLineAdjustmentType orderLineAdjustmentType = null;
         var orderTypeName = form.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderLineAdjustmentTypeName = form.getOrderLineAdjustmentTypeName();
-            var orderLineAdjustmentType = orderLineAdjustmentControl.getOrderLineAdjustmentTypeByName(orderType, orderLineAdjustmentTypeName);
+
+            orderLineAdjustmentType = orderLineAdjustmentControl.getOrderLineAdjustmentTypeByName(orderType, orderLineAdjustmentTypeName);
 
             if(orderLineAdjustmentType == null) {
                 var partyPK = getPartyPK();
@@ -98,7 +103,13 @@ public class CreateOrderLineAdjustmentTypeCommand
             addExecutionError(ExecutionErrors.UnknownOrderTypeName.name(), orderTypeName);
         }
 
-        return null;
+        if(orderLineAdjustmentType != null) {
+            result.setEntityRef(orderLineAdjustmentType.getPrimaryKey().getEntityRef());
+            result.setOrderTypeName(orderLineAdjustmentType.getLastDetail().getOrderType().getLastDetail().getOrderTypeName());
+            result.setOrderLineAdjustmentTypeName(orderLineAdjustmentType.getLastDetail().getOrderLineAdjustmentTypeName());
+        }
+
+        return result;
     }
     
 }

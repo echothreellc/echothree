@@ -17,16 +17,18 @@
 package com.echothree.control.user.returnpolicy.server.command;
 
 import com.echothree.control.user.returnpolicy.common.form.CreateReturnTypeForm;
+import com.echothree.control.user.returnpolicy.common.result.ReturnPolicyResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
+import com.echothree.model.data.returnpolicy.server.entity.ReturnType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -74,12 +76,15 @@ public class CreateReturnTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ReturnPolicyResultFactory.getCreateReturnTypeResult();
+        ReturnType returnType = null;
         var returnKindName = form.getReturnKindName();
         var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
         
         if(returnKind != null) {
             var returnTypeName = form.getReturnTypeName();
-            var returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
+
+            returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
             
             if(returnType == null) {
                 var returnSequenceName = form.getReturnSequenceName();
@@ -107,7 +112,13 @@ public class CreateReturnTypeCommand
             addExecutionError(ExecutionErrors.DuplicateReturnKindName.name(), returnKindName);
         }
         
-        return null;
+        if(returnType != null) {
+            result.setEntityRef(returnType.getPrimaryKey().getEntityRef());
+            result.setReturnKindName(returnType.getLastDetail().getReturnKind().getLastDetail().getReturnKindName());
+            result.setReturnTypeName(returnType.getLastDetail().getReturnTypeName());
+        }
+
+        return result;
     }
     
 }

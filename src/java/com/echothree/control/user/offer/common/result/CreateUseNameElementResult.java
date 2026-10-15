@@ -16,8 +16,8 @@
 
 package com.echothree.control.user.offer.common.result;
 
-import com.echothree.control.user.offer.common.spec.UseNameElementSpec;
 import com.echothree.control.user.core.common.spec.EntityRefSpec;
+import com.echothree.control.user.offer.common.spec.UseNameElementSpec;
 import com.echothree.util.common.command.BaseResult;
 
 public interface CreateUseNameElementResult

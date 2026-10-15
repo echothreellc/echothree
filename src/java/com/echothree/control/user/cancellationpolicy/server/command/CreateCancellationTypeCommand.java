@@ -17,17 +17,19 @@
 package com.echothree.control.user.cancellationpolicy.server.command;
 
 import com.echothree.control.user.cancellationpolicy.common.form.CreateCancellationTypeForm;
+import com.echothree.control.user.cancellationpolicy.common.result.CancellationPolicyResultFactory;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
+import com.echothree.model.data.cancellationpolicy.server.entity.CancellationType;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -75,12 +77,15 @@ public class CreateCancellationTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = CancellationPolicyResultFactory.getCreateCancellationTypeResult();
+        CancellationType cancellationType = null;
         var cancellationKindName = form.getCancellationKindName();
         var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
         
         if(cancellationKind != null) {
             var cancellationTypeName = form.getCancellationTypeName();
-            var cancellationType = cancellationPolicyControl.getCancellationTypeByName(cancellationKind, cancellationTypeName);
+
+            cancellationType = cancellationPolicyControl.getCancellationTypeByName(cancellationKind, cancellationTypeName);
             
             if(cancellationType == null) {
                 var cancellationSequenceName = form.getCancellationSequenceName();
@@ -112,7 +117,13 @@ public class CreateCancellationTypeCommand
             addExecutionError(ExecutionErrors.DuplicateCancellationKindName.name(), cancellationKindName);
         }
         
-        return null;
+        if(cancellationType != null) {
+            result.setEntityRef(cancellationType.getPrimaryKey().getEntityRef());
+            result.setCancellationKindName(cancellationType.getLastDetail().getCancellationKind().getLastDetail().getCancellationKindName());
+            result.setCancellationTypeName(cancellationType.getLastDetail().getCancellationTypeName());
+        }
+
+        return result;
     }
     
 }

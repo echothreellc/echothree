@@ -17,7 +17,9 @@
 package com.echothree.control.user.comment.server.command;
 
 import com.echothree.control.user.comment.common.form.CreateCommentUsageTypeForm;
+import com.echothree.control.user.comment.common.result.CommentResultFactory;
 import com.echothree.model.control.comment.server.control.CommentControl;
+import com.echothree.model.data.comment.server.entity.CommentUsageType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -57,6 +59,8 @@ public class CreateCommentUsageTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = CommentResultFactory.getCreateCommentUsageTypeResult();
+        CommentUsageType commentUsageType = null;
         var componentVendorName = form.getComponentVendorName();
         var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
         
@@ -70,7 +74,8 @@ public class CreateCommentUsageTypeCommand
                 
                 if(commentType != null) {
                     var commentUsageTypeName = form.getCommentUsageTypeName();
-                    var commentUsageType = commentControl.getCommentUsageTypeByName(commentType, commentUsageTypeName);
+
+                    commentUsageType = commentControl.getCommentUsageTypeByName(commentType, commentUsageTypeName);
                     
                     if(commentUsageType == null) {
                         var partyPK = getPartyPK();
@@ -96,7 +101,15 @@ public class CreateCommentUsageTypeCommand
             addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
         }
         
-        return null;
+        if(commentUsageType != null) {
+            result.setEntityRef(commentUsageType.getPrimaryKey().getEntityRef());
+            result.setComponentVendorName(commentUsageType.getLastDetail().getCommentType().getLastDetail().getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName());
+            result.setEntityTypeName(commentUsageType.getLastDetail().getCommentType().getLastDetail().getEntityType().getLastDetail().getEntityTypeName());
+            result.setCommentTypeName(commentUsageType.getLastDetail().getCommentType().getLastDetail().getCommentTypeName());
+            result.setCommentUsageTypeName(commentUsageType.getLastDetail().getCommentUsageTypeName());
+        }
+
+        return result;
     }
     
 }

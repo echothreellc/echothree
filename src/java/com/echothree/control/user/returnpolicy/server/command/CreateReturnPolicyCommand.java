@@ -17,10 +17,12 @@
 package com.echothree.control.user.returnpolicy.server.command;
 
 import com.echothree.control.user.returnpolicy.common.form.CreateReturnPolicyForm;
+import com.echothree.control.user.returnpolicy.common.result.ReturnPolicyResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.returnpolicy.server.logic.ReturnPolicyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -70,6 +72,7 @@ public class CreateReturnPolicyCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ReturnPolicyResultFactory.getCreateReturnPolicyResult();
         var returnKindName = form.getReturnKindName();
         var returnPolicyName = form.getReturnPolicyName();
         var isDefault = Boolean.valueOf(form.getIsDefault());
@@ -78,11 +81,16 @@ public class CreateReturnPolicyCommand
         var policyMimeTypeName = form.getPolicyMimeTypeName();
         var policy = form.getPolicy();
         var partyPK = getPartyPK();
-
-        returnPolicyLogic.createReturnPolicy(this, returnKindName, returnPolicyName,
+        var returnPolicy = returnPolicyLogic.createReturnPolicy(this, returnKindName, returnPolicyName,
                 isDefault, sortOrder, getPreferredLanguage(), description, policyMimeTypeName, policy, partyPK);
 
-        return null;
+        if(returnPolicy != null) {
+            result.setEntityRef(returnPolicy.getPrimaryKey().getEntityRef());
+            result.setReturnKindName(returnPolicy.getLastDetail().getReturnKind().getLastDetail().getReturnKindName());
+            result.setReturnPolicyName(returnPolicy.getLastDetail().getReturnPolicyName());
+        }
+
+        return result;
     }
     
 }

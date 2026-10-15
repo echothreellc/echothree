@@ -17,17 +17,19 @@
 package com.echothree.control.user.training.server.command;
 
 import com.echothree.control.user.training.common.form.CreateTrainingClassAnswerForm;
+import com.echothree.control.user.training.common.result.TrainingResultFactory;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
+import com.echothree.model.data.training.server.entity.TrainingClassAnswer;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -79,6 +81,8 @@ public class CreateTrainingClassAnswerCommand
     
     @Override
     protected BaseResult execute() {
+        var result = TrainingResultFactory.getCreateTrainingClassAnswerResult();
+        TrainingClassAnswer trainingClassAnswer = null;
         var trainingClassName = form.getTrainingClassName();
         var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
@@ -92,7 +96,8 @@ public class CreateTrainingClassAnswerCommand
 
                 if(trainingClassQuestion != null) {
                     var trainingClassAnswerName = form.getTrainingClassAnswerName();
-                    var trainingClassAnswer = trainingControl.getTrainingClassAnswerByName(trainingClassQuestion, trainingClassAnswerName);
+
+                    trainingClassAnswer = trainingControl.getTrainingClassAnswerByName(trainingClassQuestion, trainingClassAnswerName);
 
                     if(trainingClassAnswer == null) {
                         var answer = form.getAnswer();
@@ -140,7 +145,15 @@ public class CreateTrainingClassAnswerCommand
             addExecutionError(ExecutionErrors.UnknownTrainingClassName.name(), trainingClassName);
         }
 
-        return null;
+        if(trainingClassAnswer != null) {
+            result.setEntityRef(trainingClassAnswer.getPrimaryKey().getEntityRef());
+            result.setTrainingClassName(trainingClassAnswer.getLastDetail().getTrainingClassQuestion().getLastDetail().getTrainingClassSection().getLastDetail().getTrainingClass().getLastDetail().getTrainingClassName());
+            result.setTrainingClassSectionName(trainingClassAnswer.getLastDetail().getTrainingClassQuestion().getLastDetail().getTrainingClassSection().getLastDetail().getTrainingClassSectionName());
+            result.setTrainingClassQuestionName(trainingClassAnswer.getLastDetail().getTrainingClassQuestion().getLastDetail().getTrainingClassQuestionName());
+            result.setTrainingClassAnswerName(trainingClassAnswer.getLastDetail().getTrainingClassAnswerName());
+        }
+
+        return result;
     }
     
 }

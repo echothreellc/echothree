@@ -35,7 +35,7 @@ public interface DocumentService
     //   Document Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createDocumentType(UserVisitPK userVisitPK, CreateDocumentTypeForm form);
+    CommandResult<CreateDocumentTypeResult> createDocumentType(UserVisitPK userVisitPK, CreateDocumentTypeForm form);
 
     CommandResult<GetDocumentTypeChoicesResult> getDocumentTypeChoices(UserVisitPK userVisitPK, GetDocumentTypeChoicesForm form);
 
@@ -67,7 +67,7 @@ public interface DocumentService
     //   Document Type Usage Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createDocumentTypeUsageType(UserVisitPK userVisitPK, CreateDocumentTypeUsageTypeForm form);
+    CommandResult<CreateDocumentTypeUsageTypeResult> createDocumentTypeUsageType(UserVisitPK userVisitPK, CreateDocumentTypeUsageTypeForm form);
 
     CommandResult<GetDocumentTypeUsageTypeChoicesResult> getDocumentTypeUsageTypeChoices(UserVisitPK userVisitPK, GetDocumentTypeUsageTypeChoicesForm form);
 

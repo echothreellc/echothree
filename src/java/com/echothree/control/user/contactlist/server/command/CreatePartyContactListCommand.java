@@ -17,6 +17,7 @@
 package com.echothree.control.user.contactlist.server.command;
 
 import com.echothree.control.user.contactlist.common.form.CreatePartyContactListForm;
+import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.contactlist.server.logic.ContactListLogic;
@@ -24,11 +25,12 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.contactlist.server.entity.PartyContactList;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -71,7 +73,6 @@ public class CreatePartyContactListCommand
     @Inject
     ContactListLogic contactListLogic;
 
-    
     /** Creates a new instance of CreatePartyContactListCommand */
     public CreatePartyContactListCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -79,6 +80,8 @@ public class CreatePartyContactListCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ContactListResultFactory.getCreatePartyContactListResult();
+        PartyContactList partyContactList = null;
         var partyName = form.getPartyName();
         var party = partyControl.getPartyByName(partyName);
         
@@ -87,7 +90,7 @@ public class CreatePartyContactListCommand
             var contactList = contactListControl.getContactListByName(contactListName);
             
             if(contactList != null) {
-                var partyContactList = contactListControl.getPartyContactList(party, contactList);
+                partyContactList = contactListControl.getPartyContactList(party, contactList);
                 
                 if(partyContactList == null) {
                     var preferredContactMechanismPurposeName = form.getPreferredContactMechanismPurposeName();
@@ -98,7 +101,7 @@ public class CreatePartyContactListCommand
 
                         if(preferredContactMechanismPurpose == null || preferredContactListContactMechanismPurpose != null) {
                             // ExecutionErrorAccumulator is passed in as null so that an Exception will be thrown if there is an error.
-                            contactListLogic.addContactListToParty(null, party, contactList, preferredContactListContactMechanismPurpose, getPartyPK());
+                            partyContactList = contactListLogic.addContactListToParty(null, party, contactList, preferredContactListContactMechanismPurpose, getPartyPK());
                         } else {
                             addExecutionError(ExecutionErrors.UnknownContactListContactMechanismPurpose.name(), contactListName, preferredContactMechanismPurposeName);
                         }
@@ -115,7 +118,13 @@ public class CreatePartyContactListCommand
             addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
         }
         
-        return null;
+        if(partyContactList != null) {
+            result.setEntityRef(partyContactList.getPrimaryKey().getEntityRef());
+            result.setPartyName(partyContactList.getLastDetail().getParty().getLastDetail().getPartyName());
+            result.setContactListName(partyContactList.getLastDetail().getContactList().getLastDetail().getContactListName());
+        }
+
+        return result;
     }
     
 }

@@ -17,13 +17,15 @@
 package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.form.CreateEmploymentForm;
+import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.data.employee.server.entity.Employment;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -60,6 +62,8 @@ public class CreateEmploymentCommand
     
     @Override
     protected BaseResult execute() {
+        var result = EmployeeResultFactory.getCreateEmploymentResult();
+        Employment employment = null;
         var partyName = form.getPartyName();
         var party = partyControl.getPartyByName(partyName);
 
@@ -80,7 +84,7 @@ public class CreateEmploymentCommand
                         var strEndTime = form.getEndTime();
                         var endTime = strEndTime == null ? null : Long.valueOf(strEndTime);
 
-                        employeeControl.createEmployment(party, partyCompany.getParty(), startTime, endTime, terminationType, terminationReason, getPartyPK());
+                        employment = employeeControl.createEmployment(party, partyCompany.getParty(), startTime, endTime, terminationType, terminationReason, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownTerminationReasonName.name(), terminationReasonName);
                     }
@@ -94,7 +98,12 @@ public class CreateEmploymentCommand
             addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
         }
         
-        return null;
+        if(employment != null) {
+            result.setEntityRef(employment.getPrimaryKey().getEntityRef());
+            result.setEmploymentName(employment.getLastDetail().getEmploymentName());
+        }
+
+        return result;
     }
     
 }

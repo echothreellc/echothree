@@ -16,14 +16,12 @@
 
 package com.echothree.control.user.party.common.result;
 
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
 import com.echothree.util.common.command.BaseResult;
 
 public interface CreateDivisionResult
-        extends BaseResult {
-    
-    String getEntityRef();
-    void setEntityRef(String entityRef);
-    
+        extends EntityRefSpec, BaseResult {
+
     String getDivisionName();
     void setDivisionName(String divisionName);
     

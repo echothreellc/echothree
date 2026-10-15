@@ -17,16 +17,18 @@
 package com.echothree.control.user.period.server.command;
 
 import com.echothree.control.user.period.common.form.CreatePeriodTypeForm;
+import com.echothree.control.user.period.common.result.PeriodResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.period.server.control.PeriodControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
+import com.echothree.model.data.period.server.entity.PeriodType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -67,7 +69,6 @@ public class CreatePeriodTypeCommand
 
     @Inject
     WorkflowControl workflowControl;
-
     
     /** Creates a new instance of CreatePeriodTypeCommand */
     public CreatePeriodTypeCommand() {
@@ -76,6 +77,8 @@ public class CreatePeriodTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = PeriodResultFactory.getCreatePeriodTypeResult();
+        PeriodType periodType = null;
         var workflowName = form.getWorkflowName();
         var workflowEntranceName = form.getWorkflowEntranceName();
         var parameterCount = (workflowName == null ? 0 : 1) + (workflowEntranceName == null ? 0 : 1);
@@ -86,7 +89,8 @@ public class CreatePeriodTypeCommand
 
             if(periodKind != null) {
                 var periodTypeName = form.getPeriodTypeName();
-                var periodType = periodControl.getPeriodTypeByName(periodKind, periodTypeName);
+
+                periodType = periodControl.getPeriodTypeByName(periodKind, periodTypeName);
 
                 if(periodType == null) {
                     var parentPeriodTypeName = form.getParentPeriodTypeName();
@@ -128,7 +132,13 @@ public class CreatePeriodTypeCommand
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
 
-        return null;
+        if(periodType != null) {
+            result.setEntityRef(periodType.getPrimaryKey().getEntityRef());
+            result.setPeriodKindName(periodType.getLastDetail().getPeriodKind().getLastDetail().getPeriodKindName());
+            result.setPeriodTypeName(periodType.getLastDetail().getPeriodTypeName());
+        }
+
+        return result;
     }
     
 }

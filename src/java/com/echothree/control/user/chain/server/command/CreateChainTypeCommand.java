@@ -17,15 +17,17 @@
 package com.echothree.control.user.chain.server.command;
 
 import com.echothree.control.user.chain.common.form.CreateChainTypeForm;
+import com.echothree.control.user.chain.common.result.ChainResultFactory;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.chain.server.entity.ChainType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -69,12 +71,15 @@ public class CreateChainTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ChainResultFactory.getCreateChainTypeResult();
+        ChainType chainType = null;
         var chainKindName = form.getChainKindName();
         var chainKind = chainControl.getChainKindByName(chainKindName);
         
         if(chainKind != null) {
             var chainTypeName = form.getChainTypeName();
-            var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+
+            chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
             
             if(chainType == null) {
                 var partyPK = getPartyPK();
@@ -94,7 +99,13 @@ public class CreateChainTypeCommand
             addExecutionError(ExecutionErrors.UnknownChainKindName.name(), chainKindName);
         }
         
-        return null;
+        if(chainType != null) {
+            result.setEntityRef(chainType.getPrimaryKey().getEntityRef());
+            result.setChainKindName(chainType.getLastDetail().getChainKind().getLastDetail().getChainKindName());
+            result.setChainTypeName(chainType.getLastDetail().getChainTypeName());
+        }
+
+        return result;
     }
     
 }

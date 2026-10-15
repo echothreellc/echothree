@@ -17,6 +17,7 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateMimeTypeForm;
+import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -50,8 +51,9 @@ public class CreateMimeTypeCommand
     
    @Override
     protected BaseResult execute() {
-       var mimeTypeName = form.getMimeTypeName();
-       var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
+        var result = CoreResultFactory.getCreateMimeTypeResult();
+        var mimeTypeName = form.getMimeTypeName();
+        var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
 
         if(mimeType == null) {
             var entityAttributeTypeName = form.getEntityAttributeTypeName();
@@ -77,7 +79,12 @@ public class CreateMimeTypeCommand
             addExecutionError(ExecutionErrors.DuplicateMimeTypeName.name(), mimeTypeName);
         }
 
-        return null;
+        if(mimeType != null) {
+            result.setEntityRef(mimeType.getPrimaryKey().getEntityRef());
+            result.setMimeTypeName(mimeType.getLastDetail().getMimeTypeName());
+        }
+
+        return result;
     }
     
 }

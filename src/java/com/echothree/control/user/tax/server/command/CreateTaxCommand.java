@@ -17,15 +17,16 @@
 package com.echothree.control.user.tax.server.command;
 
 import com.echothree.control.user.tax.common.form.CreateTaxForm;
+import com.echothree.control.user.tax.common.result.TaxResultFactory;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -69,6 +70,7 @@ public class CreateTaxCommand
     
     @Override
     protected BaseResult execute() {
+        var result = TaxResultFactory.getCreateTaxResult();
         var taxName = form.getTaxName();
         var tax = taxControl.getTaxByName(taxName);
         
@@ -114,7 +116,12 @@ public class CreateTaxCommand
             addExecutionError(ExecutionErrors.DuplicateTaxName.name(), taxName);
         }
         
-        return null;
+        if(tax != null) {
+            result.setEntityRef(tax.getPrimaryKey().getEntityRef());
+            result.setTaxName(tax.getLastDetail().getTaxName());
+        }
+
+        return result;
     }
     
 }

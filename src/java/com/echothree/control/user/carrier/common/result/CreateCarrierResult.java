@@ -16,14 +16,12 @@
 
 package com.echothree.control.user.carrier.common.result;
 
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
 import com.echothree.util.common.command.BaseResult;
 
 public interface CreateCarrierResult
-        extends BaseResult {
-    
-    String getEntityRef();
-    void setEntityRef(String entityRef);
-    
+        extends EntityRefSpec, BaseResult {
+
     String getCarrierName();
     void setCarrierName(String carrierName);
     

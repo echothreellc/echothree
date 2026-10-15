@@ -29,7 +29,7 @@ public interface EmployeeService
     //   Responsibility Types
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createResponsibilityType(UserVisitPK userVisitPK, CreateResponsibilityTypeForm form);
+    CommandResult<CreateResponsibilityTypeResult> createResponsibilityType(UserVisitPK userVisitPK, CreateResponsibilityTypeForm form);
     
     CommandResult<GetResponsibilityTypesResult> getResponsibilityTypes(UserVisitPK userVisitPK, GetResponsibilityTypesForm form);
     
@@ -59,7 +59,7 @@ public interface EmployeeService
     //   Skill Types
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createSkillType(UserVisitPK userVisitPK, CreateSkillTypeForm form);
+    CommandResult<CreateSkillTypeResult> createSkillType(UserVisitPK userVisitPK, CreateSkillTypeForm form);
     
     CommandResult<GetSkillTypesResult> getSkillTypes(UserVisitPK userVisitPK, GetSkillTypesForm form);
     
@@ -89,7 +89,7 @@ public interface EmployeeService
     //   Leave Types
     // -------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createLeaveType(UserVisitPK userVisitPK, CreateLeaveTypeForm form);
+    CommandResult<CreateLeaveTypeResult> createLeaveType(UserVisitPK userVisitPK, CreateLeaveTypeForm form);
 
     CommandResult<GetLeaveTypesResult> getLeaveTypes(UserVisitPK userVisitPK, GetLeaveTypesForm form);
 
@@ -121,7 +121,7 @@ public interface EmployeeService
     //   Leave Reasons
     // -------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createLeaveReason(UserVisitPK userVisitPK, CreateLeaveReasonForm form);
+    CommandResult<CreateLeaveReasonResult> createLeaveReason(UserVisitPK userVisitPK, CreateLeaveReasonForm form);
 
     CommandResult<GetLeaveReasonsResult> getLeaveReasons(UserVisitPK userVisitPK, GetLeaveReasonsForm form);
 
@@ -153,7 +153,7 @@ public interface EmployeeService
     //   Leaves
     // -------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createLeave(UserVisitPK userVisitPK, CreateLeaveForm form);
+    CommandResult<CreateLeaveResult> createLeave(UserVisitPK userVisitPK, CreateLeaveForm form);
 
     CommandResult<GetLeaveStatusChoicesResult> getLeaveStatusChoices(UserVisitPK userVisitPK, GetLeaveStatusChoicesForm form);
 
@@ -171,7 +171,7 @@ public interface EmployeeService
     //   Termination Reasons
     // -------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createTerminationReason(UserVisitPK userVisitPK, CreateTerminationReasonForm form);
+    CommandResult<CreateTerminationReasonResult> createTerminationReason(UserVisitPK userVisitPK, CreateTerminationReasonForm form);
 
     CommandResult<GetTerminationReasonsResult> getTerminationReasons(UserVisitPK userVisitPK, GetTerminationReasonsForm form);
 
@@ -201,7 +201,7 @@ public interface EmployeeService
     //   Termination Types
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createTerminationType(UserVisitPK userVisitPK, CreateTerminationTypeForm form);
+    CommandResult<CreateTerminationTypeResult> createTerminationType(UserVisitPK userVisitPK, CreateTerminationTypeForm form);
     
     CommandResult<GetTerminationTypesResult> getTerminationTypes(UserVisitPK userVisitPK, GetTerminationTypesForm form);
     
@@ -231,7 +231,7 @@ public interface EmployeeService
     //   Employments
     // -------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createEmployment(UserVisitPK userVisitPK, CreateEmploymentForm form);
+    CommandResult<CreateEmploymentResult> createEmployment(UserVisitPK userVisitPK, CreateEmploymentForm form);
 
     CommandResult<GetEmploymentsResult> getEmployments(UserVisitPK userVisitPK, GetEmploymentsForm form);
 
@@ -265,7 +265,7 @@ public interface EmployeeService
     //   Employee Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createEmployeeType(UserVisitPK userVisitPK, CreateEmployeeTypeForm form);
+    CommandResult<CreateEmployeeTypeResult> createEmployeeType(UserVisitPK userVisitPK, CreateEmployeeTypeForm form);
     
     CommandResult<GetEmployeeTypeChoicesResult> getEmployeeTypeChoices(UserVisitPK userVisitPK, GetEmployeeTypeChoicesForm form);
     

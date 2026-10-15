@@ -17,14 +17,16 @@
 package com.echothree.control.user.shipment.server.command;
 
 import com.echothree.control.user.shipment.common.form.CreateShipmentTimeTypeForm;
+import com.echothree.control.user.shipment.common.result.ShipmentResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipment.server.control.ShipmentControl;
+import com.echothree.model.data.shipment.server.entity.ShipmentTimeType;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -68,12 +70,15 @@ public class CreateShipmentTimeTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ShipmentResultFactory.getCreateShipmentTimeTypeResult();
+        ShipmentTimeType shipmentTimeType = null;
         var shipmentTypeName = form.getShipmentTypeName();
         var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
 
         if(shipmentType != null) {
             var shipmentTimeTypeName = form.getShipmentTimeTypeName();
-            var shipmentTimeType = shipmentControl.getShipmentTimeTypeByName(shipmentType, shipmentTimeTypeName);
+
+            shipmentTimeType = shipmentControl.getShipmentTimeTypeByName(shipmentType, shipmentTimeTypeName);
 
             if(shipmentTimeType == null) {
                 var partyPK = getPartyPK();
@@ -93,7 +98,13 @@ public class CreateShipmentTimeTypeCommand
             addExecutionError(ExecutionErrors.UnknownShipmentTypeName.name(), shipmentTypeName);
         }
 
-        return null;
+        if(shipmentTimeType != null) {
+            result.setEntityRef(shipmentTimeType.getPrimaryKey().getEntityRef());
+            result.setShipmentTypeName(shipmentTimeType.getLastDetail().getShipmentType().getLastDetail().getShipmentTypeName());
+            result.setShipmentTimeTypeName(shipmentTimeType.getLastDetail().getShipmentTimeTypeName());
+        }
+
+        return result;
     }
     
 }

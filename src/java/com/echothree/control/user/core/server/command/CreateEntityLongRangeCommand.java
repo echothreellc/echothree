@@ -17,15 +17,17 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateEntityLongRangeForm;
+import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.core.server.entity.EntityLongRange;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -68,6 +70,8 @@ public class CreateEntityLongRangeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = CoreResultFactory.getCreateEntityLongRangeResult();
+        EntityLongRange entityLongRange = null;
         var componentVendorName = form.getComponentVendorName();
         var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
 
@@ -84,7 +88,8 @@ public class CreateEntityLongRangeCommand
 
                     if(entityAttributeTypeName.equals(EntityAttributeTypes.LONG.name())) {
                         var entityLongRangeName = form.getEntityLongRangeName();
-                        var entityLongRange = coreControl.getEntityLongRangeByName(entityAttribute, entityLongRangeName);
+
+                        entityLongRange = coreControl.getEntityLongRangeByName(entityAttribute, entityLongRangeName);
 
                         if(entityLongRange == null) {
                             var partyPK = getPartyPK();
@@ -122,7 +127,15 @@ public class CreateEntityLongRangeCommand
             addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
         }
 
-        return null;
+        if(entityLongRange != null) {
+            result.setEntityRef(entityLongRange.getPrimaryKey().getEntityRef());
+            result.setComponentVendorName(entityLongRange.getLastDetail().getEntityAttribute().getLastDetail().getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName());
+            result.setEntityTypeName(entityLongRange.getLastDetail().getEntityAttribute().getLastDetail().getEntityType().getLastDetail().getEntityTypeName());
+            result.setEntityAttributeName(entityLongRange.getLastDetail().getEntityAttribute().getLastDetail().getEntityAttributeName());
+            result.setEntityLongRangeName(entityLongRange.getLastDetail().getEntityLongRangeName());
+        }
+
+        return result;
     }
     
 }

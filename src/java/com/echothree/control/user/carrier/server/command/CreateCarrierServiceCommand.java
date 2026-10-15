@@ -17,6 +17,7 @@
 package com.echothree.control.user.carrier.server.command;
 
 import com.echothree.control.user.carrier.common.form.CreateCarrierServiceForm;
+import com.echothree.control.user.carrier.common.result.CarrierResultFactory;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -24,6 +25,7 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.control.SelectorControl;
+import com.echothree.model.data.carrier.server.entity.CarrierService;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -78,13 +80,16 @@ public class CreateCarrierServiceCommand
     
     @Override
     protected BaseResult execute() {
+        var result = CarrierResultFactory.getCreateCarrierServiceResult();
+        CarrierService carrierService = null;
         var carrierName = form.getCarrierName();
         var carrier = carrierControl.getCarrierByName(carrierName);
         
         if(carrier != null) {
             var carrierParty = carrier.getParty();
             var carrierServiceName = form.getCarrierServiceName();
-            var carrierService = carrierControl.getCarrierServiceByName(carrierParty, carrierServiceName);
+
+            carrierService = carrierControl.getCarrierServiceByName(carrierParty, carrierServiceName);
             
             if(carrierService == null) {
                 var geoCodeSelectorName = form.getGeoCodeSelectorName();
@@ -156,7 +161,13 @@ public class CreateCarrierServiceCommand
             addExecutionError(ExecutionErrors.UnknownCarrierName.name(), carrierName);
         }
         
-        return null;
+        if(carrierService != null) {
+            result.setEntityRef(carrierService.getPrimaryKey().getEntityRef());
+            result.setCarrierName(form.getCarrierName());
+            result.setCarrierServiceName(carrierService.getLastDetail().getCarrierServiceName());
+        }
+
+        return result;
     }
     
 }

@@ -17,12 +17,12 @@
 package com.echothree.control.user.contact.common.result;
 
 import com.echothree.control.user.contact.common.spec.ContactMechanismSpec;
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
 import com.echothree.util.common.command.BaseResult;
 
 public interface CreateContactPostalAddressResult
-        extends BaseResult, ContactMechanismSpec {
-    
-    String getEntityRef();
-    void setEntityRef(String entityRef);
-    
+        extends EntityRefSpec, BaseResult, ContactMechanismSpec {
+
+    // Nothing additional beyond EntityRefSpec, BaseResult, ContactMechanismSpec
+
 }

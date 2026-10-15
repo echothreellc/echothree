@@ -137,7 +137,7 @@ public class CancellationPolicyBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createCancellationPolicy(UserVisitPK userVisitPK, CreateCancellationPolicyForm form) {
+    public CommandResult<CreateCancellationPolicyResult> createCancellationPolicy(UserVisitPK userVisitPK, CreateCancellationPolicyForm form) {
         return CDI.current().select(CreateCancellationPolicyCommand.class).get().run(userVisitPK, form);
     }
     
@@ -234,7 +234,7 @@ public class CancellationPolicyBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createCancellationReason(UserVisitPK userVisitPK, CreateCancellationReasonForm form) {
+    public CommandResult<CreateCancellationReasonResult> createCancellationReason(UserVisitPK userVisitPK, CreateCancellationReasonForm form) {
         return CDI.current().select(CreateCancellationReasonCommand.class).get().run(userVisitPK, form);
     }
     
@@ -326,7 +326,7 @@ public class CancellationPolicyBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createCancellationType(UserVisitPK userVisitPK, CreateCancellationTypeForm form) {
+    public CommandResult<CreateCancellationTypeResult> createCancellationType(UserVisitPK userVisitPK, CreateCancellationTypeForm form) {
         return CDI.current().select(CreateCancellationTypeCommand.class).get().run(userVisitPK, form);
     }
     

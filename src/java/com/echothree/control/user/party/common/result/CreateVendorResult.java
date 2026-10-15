@@ -16,13 +16,11 @@
 
 package com.echothree.control.user.party.common.result;
 
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
 import com.echothree.util.common.command.BaseResult;
 
 public interface CreateVendorResult
-        extends BaseResult {
-    
-    String getEntityRef();
-    void setEntityRef(String entityRef);
+        extends EntityRefSpec, BaseResult {
 
     String getVendorName();
     void setVendorName(String vendorName);

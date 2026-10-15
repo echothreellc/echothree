@@ -17,6 +17,7 @@
 package com.echothree.control.user.invoice.server.command;
 
 import com.echothree.control.user.invoice.common.form.CreateInvoiceLineTypeForm;
+import com.echothree.control.user.invoice.common.result.InvoiceResultFactory;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -24,10 +25,10 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.invoice.server.entity.InvoiceLineType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -76,12 +77,15 @@ public class CreateInvoiceLineTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = InvoiceResultFactory.getCreateInvoiceLineTypeResult();
+        InvoiceLineType invoiceLineType = null;
         var invoiceTypeName = form.getInvoiceTypeName();
         var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
         
         if(invoiceType != null) {
             var invoiceLineTypeName = form.getInvoiceLineTypeName();
-            var invoiceLineType = invoiceControl.getInvoiceLineTypeByName(invoiceType, invoiceLineTypeName);
+
+            invoiceLineType = invoiceControl.getInvoiceLineTypeByName(invoiceType, invoiceLineTypeName);
             
             if(invoiceLineType == null) {
                 var parentInvoiceLineTypeName = form.getParentInvoiceLineTypeName();
@@ -120,7 +124,13 @@ public class CreateInvoiceLineTypeCommand
             addExecutionError(ExecutionErrors.UnknownInvoiceTypeName.name(), invoiceTypeName);
         }
         
-        return null;
+        if(invoiceLineType != null) {
+            result.setEntityRef(invoiceLineType.getPrimaryKey().getEntityRef());
+            result.setInvoiceTypeName(invoiceLineType.getLastDetail().getInvoiceType().getLastDetail().getInvoiceTypeName());
+            result.setInvoiceLineTypeName(invoiceLineType.getLastDetail().getInvoiceLineTypeName());
+        }
+
+        return result;
     }
     
 }

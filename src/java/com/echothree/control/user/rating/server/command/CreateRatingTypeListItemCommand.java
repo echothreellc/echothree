@@ -17,7 +17,9 @@
 package com.echothree.control.user.rating.server.command;
 
 import com.echothree.control.user.rating.common.form.CreateRatingTypeListItemForm;
+import com.echothree.control.user.rating.common.result.RatingResultFactory;
 import com.echothree.model.control.rating.server.control.RatingControl;
+import com.echothree.model.data.rating.server.entity.RatingTypeListItem;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -57,6 +59,8 @@ public class CreateRatingTypeListItemCommand
     
     @Override
     protected BaseResult execute() {
+        var result = RatingResultFactory.getCreateRatingTypeListItemResult();
+        RatingTypeListItem ratingTypeListItem = null;
         var componentVendorName = form.getComponentVendorName();
         var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
         
@@ -70,7 +74,8 @@ public class CreateRatingTypeListItemCommand
                 
                 if(ratingType != null) {
                     var ratingTypeListItemName = form.getRatingTypeListItemName();
-                    var ratingTypeListItem = ratingControl.getRatingTypeListItemByName(ratingType, ratingTypeListItemName);
+
+                    ratingTypeListItem = ratingControl.getRatingTypeListItemByName(ratingType, ratingTypeListItemName);
                     
                     if(ratingTypeListItem == null) {
                         var partyPK = getPartyPK();
@@ -98,7 +103,15 @@ public class CreateRatingTypeListItemCommand
             addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
         }
         
-        return null;
+        if(ratingTypeListItem != null) {
+            result.setEntityRef(ratingTypeListItem.getPrimaryKey().getEntityRef());
+            result.setComponentVendorName(ratingTypeListItem.getLastDetail().getRatingType().getLastDetail().getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName());
+            result.setEntityTypeName(ratingTypeListItem.getLastDetail().getRatingType().getLastDetail().getEntityType().getLastDetail().getEntityTypeName());
+            result.setRatingTypeName(ratingTypeListItem.getLastDetail().getRatingType().getLastDetail().getRatingTypeName());
+            result.setRatingTypeListItemName(ratingTypeListItem.getLastDetail().getRatingTypeListItemName());
+        }
+
+        return result;
     }
     
 }

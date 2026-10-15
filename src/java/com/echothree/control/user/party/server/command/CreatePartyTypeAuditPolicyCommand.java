@@ -17,15 +17,17 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.CreatePartyTypeAuditPolicyForm;
+import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.util.Conversion;
+import com.echothree.model.data.party.server.entity.PartyTypeAuditPolicy;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -60,6 +62,8 @@ public class CreatePartyTypeAuditPolicyCommand
     
     @Override
     protected BaseResult execute() {
+        var result = PartyResultFactory.getCreatePartyTypeAuditPolicyResult();
+        PartyTypeAuditPolicy partyTypeAuditPolicy = null;
         var rawRetainUserVisitsTime = form.getRetainUserVisitsTime();
         var lockoutInactiveTimeUnitOfMeasureTypeName = form.getRetainUserVisitsTimeUnitOfMeasureTypeName();
         var lockoutInactiveTimeParameterCount = (rawRetainUserVisitsTime == null ? 0 : 1) + (lockoutInactiveTimeUnitOfMeasureTypeName == null ? 0 : 1);
@@ -70,7 +74,7 @@ public class CreatePartyTypeAuditPolicyCommand
 
             if(partyType != null) {
                 if(partyType.getAllowUserLogins()) {
-                    var partyTypeAuditPolicy = partyControl.getPartyTypeAuditPolicy(partyType);
+                    partyTypeAuditPolicy = partyControl.getPartyTypeAuditPolicy(partyType);
 
                     if(partyTypeAuditPolicy == null) {
                         var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
@@ -86,7 +90,7 @@ public class CreatePartyTypeAuditPolicyCommand
                                 var lockoutInactiveTimeConversion = lockoutInactiveTime == null ? null
                                         : new Conversion(uomControl, lockoutInactiveTimeUnitOfMeasureType, lockoutInactiveTime).convertToLowestUnitOfMeasureType();
 
-                                partyControl.createPartyTypeAuditPolicy(partyType, auditCommands, lockoutInactiveTimeConversion == null ? null : lockoutInactiveTimeConversion.getQuantity(), getPartyPK());
+                                partyTypeAuditPolicy = partyControl.createPartyTypeAuditPolicy(partyType, auditCommands, lockoutInactiveTimeConversion == null ? null : lockoutInactiveTimeConversion.getQuantity(), getPartyPK());
                             } else {
                                 addExecutionError(ExecutionErrors.UnknownRetainUserVisitsTimeUnitOfMeasureTypeName.name(), lockoutInactiveTimeUnitOfMeasureTypeName);
                             }
@@ -106,7 +110,12 @@ public class CreatePartyTypeAuditPolicyCommand
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
 
-        return null;
+        if(partyTypeAuditPolicy != null) {
+            result.setEntityRef(partyTypeAuditPolicy.getPrimaryKey().getEntityRef());
+            result.setPartyTypeName(partyTypeAuditPolicy.getLastDetail().getPartyType().getPartyTypeName());
+        }
+
+        return result;
     }
     
 }

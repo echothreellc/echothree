@@ -61,7 +61,7 @@ public interface CommentService
     //   Comment Usage Types
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createCommentUsageType(UserVisitPK userVisitPK, CreateCommentUsageTypeForm form);
+    CommandResult<CreateCommentUsageTypeResult> createCommentUsageType(UserVisitPK userVisitPK, CreateCommentUsageTypeForm form);
     
     CommandResult<GetCommentUsageTypeResult> getCommentUsageType(UserVisitPK userVisitPK, GetCommentUsageTypeForm form);
     

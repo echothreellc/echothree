@@ -35,7 +35,7 @@ public interface PeriodService
     //   Period Kinds
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createPeriodKind(UserVisitPK userVisitPK, CreatePeriodKindForm form);
+    CommandResult<CreatePeriodKindResult> createPeriodKind(UserVisitPK userVisitPK, CreatePeriodKindForm form);
     
     CommandResult<GetPeriodKindsResult> getPeriodKinds(UserVisitPK userVisitPK, GetPeriodKindsForm form);
     
@@ -65,7 +65,7 @@ public interface PeriodService
     //   Period Types
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createPeriodType(UserVisitPK userVisitPK, CreatePeriodTypeForm form);
+    CommandResult<CreatePeriodTypeResult> createPeriodType(UserVisitPK userVisitPK, CreatePeriodTypeForm form);
     
     CommandResult<GetPeriodTypesResult> getPeriodTypes(UserVisitPK userVisitPK, GetPeriodTypesForm form);
     

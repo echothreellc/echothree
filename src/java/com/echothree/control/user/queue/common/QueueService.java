@@ -35,7 +35,7 @@ public interface QueueService
     //   Queue Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createQueueType(UserVisitPK userVisitPK, CreateQueueTypeForm form);
+    CommandResult<CreateQueueTypeResult> createQueueType(UserVisitPK userVisitPK, CreateQueueTypeForm form);
     
     CommandResult<GetQueueTypeChoicesResult> getQueueTypeChoices(UserVisitPK userVisitPK, GetQueueTypeChoicesForm form);
     

@@ -35,7 +35,7 @@ public interface IconService
     //   Icon Usage Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createIconUsageType(UserVisitPK userVisitPK, CreateIconUsageTypeForm form);
+    CommandResult<CreateIconUsageTypeResult> createIconUsageType(UserVisitPK userVisitPK, CreateIconUsageTypeForm form);
     
     // --------------------------------------------------------------------------------
     //   Icon Usage Type Descriptions

@@ -142,7 +142,7 @@ public class ReturnPolicyBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createReturnPolicy(UserVisitPK userVisitPK, CreateReturnPolicyForm form) {
+    public CommandResult<CreateReturnPolicyResult> createReturnPolicy(UserVisitPK userVisitPK, CreateReturnPolicyForm form) {
         return CDI.current().select(CreateReturnPolicyCommand.class).get().run(userVisitPK, form);
     }
     
@@ -239,7 +239,7 @@ public class ReturnPolicyBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createReturnReason(UserVisitPK userVisitPK, CreateReturnReasonForm form) {
+    public CommandResult<CreateReturnReasonResult> createReturnReason(UserVisitPK userVisitPK, CreateReturnReasonForm form) {
         return CDI.current().select(CreateReturnReasonCommand.class).get().run(userVisitPK, form);
     }
     
@@ -331,7 +331,7 @@ public class ReturnPolicyBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createReturnType(UserVisitPK userVisitPK, CreateReturnTypeForm form) {
+    public CommandResult<CreateReturnTypeResult> createReturnType(UserVisitPK userVisitPK, CreateReturnTypeForm form) {
         return CDI.current().select(CreateReturnTypeCommand.class).get().run(userVisitPK, form);
     }
     

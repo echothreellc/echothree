@@ -35,7 +35,7 @@ public interface GeoService
     //   Geo Code Types
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createGeoCodeType(UserVisitPK userVisitPK, CreateGeoCodeTypeForm form);
+    CommandResult<CreateGeoCodeTypeResult> createGeoCodeType(UserVisitPK userVisitPK, CreateGeoCodeTypeForm form);
 
     CommandResult<GetGeoCodeTypeChoicesResult> getGeoCodeTypeChoices(UserVisitPK userVisitPK, GetGeoCodeTypeChoicesForm form);
 
@@ -67,7 +67,7 @@ public interface GeoService
     //   Geo Code Scopes
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createGeoCodeScope(UserVisitPK userVisitPK, CreateGeoCodeScopeForm form);
+    CommandResult<CreateGeoCodeScopeResult> createGeoCodeScope(UserVisitPK userVisitPK, CreateGeoCodeScopeForm form);
 
     CommandResult<GetGeoCodeScopeChoicesResult> getGeoCodeScopeChoices(UserVisitPK userVisitPK, GetGeoCodeScopeChoicesForm form);
 

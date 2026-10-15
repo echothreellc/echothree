@@ -17,10 +17,12 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.CreateLotAliasTypeForm;
+import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.inventory.server.control.LotAliasControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.inventory.server.entity.LotAliasType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -31,8 +33,8 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
-import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateLotAliasTypeCommand
@@ -68,6 +70,7 @@ public class CreateLotAliasTypeCommand
 
     @Override
     protected BaseResult execute() {
+        var result = InventoryResultFactory.getCreateLotAliasTypeResult();
         var lotAliasTypeName = form.getLotAliasTypeName();
         var lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
@@ -87,7 +90,12 @@ public class CreateLotAliasTypeCommand
             addExecutionError(ExecutionErrors.DuplicateLotAliasTypeName.name(), lotAliasTypeName);
         }
 
-        return null;
+        if(lotAliasType != null) {
+            result.setEntityRef(lotAliasType.getPrimaryKey().getEntityRef());
+            result.setLotAliasTypeName(lotAliasType.getLastDetail().getLotAliasTypeName());
+        }
+
+        return result;
     }
 
 }

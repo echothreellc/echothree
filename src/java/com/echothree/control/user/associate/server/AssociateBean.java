@@ -45,7 +45,7 @@ public class AssociateBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createAssociateProgram(UserVisitPK userVisitPK, CreateAssociateProgramForm form) {
+    public CommandResult<CreateAssociateProgramResult> createAssociateProgram(UserVisitPK userVisitPK, CreateAssociateProgramForm form) {
         return CDI.current().select(CreateAssociateProgramCommand.class).get().run(userVisitPK, form);
     }
     
@@ -108,7 +108,7 @@ public class AssociateBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createAssociate(UserVisitPK userVisitPK, CreateAssociateForm form) {
+    public CommandResult<CreateAssociateResult> createAssociate(UserVisitPK userVisitPK, CreateAssociateForm form) {
         return CDI.current().select(CreateAssociateCommand.class).get().run(userVisitPK, form);
     }
     
@@ -137,7 +137,7 @@ public class AssociateBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createAssociatePartyContactMechanism(UserVisitPK userVisitPK, CreateAssociatePartyContactMechanismForm form) {
+    public CommandResult<CreateAssociatePartyContactMechanismResult> createAssociatePartyContactMechanism(UserVisitPK userVisitPK, CreateAssociatePartyContactMechanismForm form) {
         return CDI.current().select(CreateAssociatePartyContactMechanismCommand.class).get().run(userVisitPK, form);
     }
     

@@ -91,7 +91,7 @@ public interface PartyService
     //   Party Type Password String Policies
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createPartyTypePasswordStringPolicy(UserVisitPK userVisitPK, CreatePartyTypePasswordStringPolicyForm form);
+    CommandResult<CreatePartyTypePasswordStringPolicyResult> createPartyTypePasswordStringPolicy(UserVisitPK userVisitPK, CreatePartyTypePasswordStringPolicyForm form);
     
     CommandResult<EditPartyTypePasswordStringPolicyResult> editPartyTypePasswordStringPolicy(UserVisitPK userVisitPK, EditPartyTypePasswordStringPolicyForm form);
     
@@ -101,7 +101,7 @@ public interface PartyService
     //   Party Type Lockout Policies
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createPartyTypeLockoutPolicy(UserVisitPK userVisitPK, CreatePartyTypeLockoutPolicyForm form);
+    CommandResult<CreatePartyTypeLockoutPolicyResult> createPartyTypeLockoutPolicy(UserVisitPK userVisitPK, CreatePartyTypeLockoutPolicyForm form);
     
     CommandResult<EditPartyTypeLockoutPolicyResult> editPartyTypeLockoutPolicy(UserVisitPK userVisitPK, EditPartyTypeLockoutPolicyForm form);
     
@@ -111,7 +111,7 @@ public interface PartyService
     //   Party Type Audit Policies
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createPartyTypeAuditPolicy(UserVisitPK userVisitPK, CreatePartyTypeAuditPolicyForm form);
+    CommandResult<CreatePartyTypeAuditPolicyResult> createPartyTypeAuditPolicy(UserVisitPK userVisitPK, CreatePartyTypeAuditPolicyForm form);
     
     CommandResult<EditPartyTypeAuditPolicyResult> editPartyTypeAuditPolicy(UserVisitPK userVisitPK, EditPartyTypeAuditPolicyForm form);
     
@@ -153,7 +153,7 @@ public interface PartyService
     //   Date Time Formats
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createDateTimeFormat(UserVisitPK userVisitPK, CreateDateTimeFormatForm form);
+    CommandResult<CreateDateTimeFormatResult> createDateTimeFormat(UserVisitPK userVisitPK, CreateDateTimeFormatForm form);
     
     CommandResult<GetDateTimeFormatChoicesResult> getDateTimeFormatChoices(UserVisitPK userVisitPK, GetDateTimeFormatChoicesForm getDateTimeFormatChoicesForm);
     
@@ -179,7 +179,7 @@ public interface PartyService
     //   Time Zones
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createTimeZone(UserVisitPK userVisitPK, CreateTimeZoneForm form);
+    CommandResult<CreateTimeZoneResult> createTimeZone(UserVisitPK userVisitPK, CreateTimeZoneForm form);
     
     CommandResult<GetTimeZoneChoicesResult> getTimeZoneChoices(UserVisitPK userVisitPK, GetTimeZoneChoicesForm form);
     
@@ -341,7 +341,7 @@ public interface PartyService
     //   Genders
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createGender(UserVisitPK userVisitPK, CreateGenderForm form);
+    CommandResult<CreateGenderResult> createGender(UserVisitPK userVisitPK, CreateGenderForm form);
     
     CommandResult<GetGenderChoicesResult> getGenderChoices(UserVisitPK userVisitPK, GetGenderChoicesForm form);
     
@@ -371,7 +371,7 @@ public interface PartyService
     //   Birthday Formats
     // --------------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createBirthdayFormat(UserVisitPK userVisitPK, CreateBirthdayFormatForm form);
+    CommandResult<CreateBirthdayFormatResult> createBirthdayFormat(UserVisitPK userVisitPK, CreateBirthdayFormatForm form);
 
     CommandResult<GetBirthdayFormatChoicesResult> getBirthdayFormatChoices(UserVisitPK userVisitPK, GetBirthdayFormatChoicesForm form);
 
@@ -479,7 +479,7 @@ public interface PartyService
     //   Party Application Editor Uses
     // --------------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createPartyApplicationEditorUse(UserVisitPK userVisitPK, CreatePartyApplicationEditorUseForm form);
+    CommandResult<CreatePartyApplicationEditorUseResult> createPartyApplicationEditorUse(UserVisitPK userVisitPK, CreatePartyApplicationEditorUseForm form);
 
     CommandResult<GetPartyApplicationEditorUseResult> getPartyApplicationEditorUse(UserVisitPK userVisitPK, GetPartyApplicationEditorUseForm form);
 

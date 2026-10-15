@@ -420,7 +420,7 @@ public class InventoryBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createLotTimeType(UserVisitPK userVisitPK, CreateLotTimeTypeForm form) {
+    public CommandResult<CreateLotTimeTypeResult> createLotTimeType(UserVisitPK userVisitPK, CreateLotTimeTypeForm form) {
         return CDI.current().select(CreateLotTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -488,7 +488,7 @@ public class InventoryBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createLotAliasType(UserVisitPK userVisitPK, CreateLotAliasTypeForm form) {
+    public CommandResult<CreateLotAliasTypeResult> createLotAliasType(UserVisitPK userVisitPK, CreateLotAliasTypeForm form) {
         return CDI.current().select(CreateLotAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 

@@ -35,7 +35,7 @@ public interface LetterService
     //   Letter Sources
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createLetterSource(UserVisitPK userVisitPK, CreateLetterSourceForm form);
+    CommandResult<CreateLetterSourceResult> createLetterSource(UserVisitPK userVisitPK, CreateLetterSourceForm form);
     
     CommandResult<GetLetterSourceChoicesResult> getLetterSourceChoices(UserVisitPK userVisitPK, GetLetterSourceChoicesForm form);
     
@@ -65,7 +65,7 @@ public interface LetterService
     //   Letters
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createLetter(UserVisitPK userVisitPK, CreateLetterForm form);
+    CommandResult<CreateLetterResult> createLetter(UserVisitPK userVisitPK, CreateLetterForm form);
     
     CommandResult<GetLetterChoicesResult> getLetterChoices(UserVisitPK userVisitPK, GetLetterChoicesForm form);
     

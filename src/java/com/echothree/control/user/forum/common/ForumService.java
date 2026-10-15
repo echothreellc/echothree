@@ -35,7 +35,7 @@ public interface ForumService
     //   Forum Groups
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createForumGroup(UserVisitPK userVisitPK, CreateForumGroupForm form);
+    CommandResult<CreateForumGroupResult> createForumGroup(UserVisitPK userVisitPK, CreateForumGroupForm form);
     
     CommandResult<GetForumGroupResult> getForumGroup(UserVisitPK userVisitPK, GetForumGroupForm form);
     
@@ -63,7 +63,7 @@ public interface ForumService
     //   Forums
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createForum(UserVisitPK userVisitPK, CreateForumForm form);
+    CommandResult<CreateForumResult> createForum(UserVisitPK userVisitPK, CreateForumForm form);
     
     CommandResult<GetForumResult> getForum(UserVisitPK userVisitPK, GetForumForm form);
     

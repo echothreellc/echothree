@@ -17,10 +17,12 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateFontWeightForm;
+import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.server.control.FontControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.core.server.entity.FontWeight;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -68,6 +70,7 @@ public class CreateFontWeightCommand
     
     @Override
     protected BaseResult execute() {
+        var result = CoreResultFactory.getCreateFontWeightResult();
         var fontWeightName = form.getFontWeightName();
         var fontWeight = fontControl.getFontWeightByName(fontWeightName);
         
@@ -86,7 +89,12 @@ public class CreateFontWeightCommand
             addExecutionError(ExecutionErrors.DuplicateFontWeightName.name(), fontWeightName);
         }
         
-        return null;
+        if(fontWeight != null) {
+            result.setEntityRef(fontWeight.getPrimaryKey().getEntityRef());
+            result.setFontWeightName(fontWeight.getLastDetail().getFontWeightName());
+        }
+
+        return result;
     }
     
 }

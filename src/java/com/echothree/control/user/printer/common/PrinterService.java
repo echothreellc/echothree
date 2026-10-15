@@ -35,7 +35,7 @@ public interface PrinterService
     //   Printer Groups
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createPrinterGroup(UserVisitPK userVisitPK, CreatePrinterGroupForm form);
+    CommandResult<CreatePrinterGroupResult> createPrinterGroup(UserVisitPK userVisitPK, CreatePrinterGroupForm form);
     
     CommandResult<GetPrinterGroupChoicesResult> getPrinterGroupChoices(UserVisitPK userVisitPK, GetPrinterGroupChoicesForm form);
 
@@ -71,7 +71,7 @@ public interface PrinterService
     //   Printers
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createPrinter(UserVisitPK userVisitPK, CreatePrinterForm form);
+    CommandResult<CreatePrinterResult> createPrinter(UserVisitPK userVisitPK, CreatePrinterForm form);
 
     CommandResult<GetPrinterResult> getPrinter(UserVisitPK userVisitPK, GetPrinterForm form);
 
@@ -119,7 +119,7 @@ public interface PrinterService
     //   Printer Group Use Types
     // -------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createPrinterGroupUseType(UserVisitPK userVisitPK, CreatePrinterGroupUseTypeForm form);
+    CommandResult<CreatePrinterGroupUseTypeResult> createPrinterGroupUseType(UserVisitPK userVisitPK, CreatePrinterGroupUseTypeForm form);
 
     CommandResult<GetPrinterGroupUseTypeChoicesResult> getPrinterGroupUseTypeChoices(UserVisitPK userVisitPK, GetPrinterGroupUseTypeChoicesForm form);
 

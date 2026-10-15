@@ -17,10 +17,12 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.CreateLotTimeTypeForm;
+import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.inventory.server.control.LotTimeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.inventory.server.entity.LotTimeType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -31,8 +33,8 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
-import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateLotTimeTypeCommand
@@ -67,6 +69,7 @@ public class CreateLotTimeTypeCommand
 
     @Override
     protected BaseResult execute() {
+        var result = InventoryResultFactory.getCreateLotTimeTypeResult();
         var lotTimeTypeName = form.getLotTimeTypeName();
         var lotTimeType = lotTimeControl.getLotTimeTypeByName(lotTimeTypeName);
 
@@ -85,7 +88,12 @@ public class CreateLotTimeTypeCommand
             addExecutionError(ExecutionErrors.DuplicateLotTimeTypeName.name(), lotTimeTypeName);
         }
 
-        return null;
+        if(lotTimeType != null) {
+            result.setEntityRef(lotTimeType.getPrimaryKey().getEntityRef());
+            result.setLotTimeTypeName(lotTimeType.getLastDetail().getLotTimeTypeName());
+        }
+
+        return result;
     }
 
 }

@@ -45,7 +45,7 @@ public class ChainBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createChainActionType(UserVisitPK userVisitPK, CreateChainActionTypeForm form) {
+    public CommandResult<CreateChainActionTypeResult> createChainActionType(UserVisitPK userVisitPK, CreateChainActionTypeForm form) {
         return CDI.current().select(CreateChainActionTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -122,7 +122,7 @@ public class ChainBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createChainKind(UserVisitPK userVisitPK, CreateChainKindForm form) {
+    public CommandResult<CreateChainKindResult> createChainKind(UserVisitPK userVisitPK, CreateChainKindForm form) {
         return CDI.current().select(CreateChainKindCommand.class).get().run(userVisitPK, form);
     }
 
@@ -190,7 +190,7 @@ public class ChainBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createChainType(UserVisitPK userVisitPK, CreateChainTypeForm form) {
+    public CommandResult<CreateChainTypeResult> createChainType(UserVisitPK userVisitPK, CreateChainTypeForm form) {
         return CDI.current().select(CreateChainTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -258,7 +258,7 @@ public class ChainBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createChainEntityRoleType(UserVisitPK userVisitPK, CreateChainEntityRoleTypeForm form) {
+    public CommandResult<CreateChainEntityRoleTypeResult> createChainEntityRoleType(UserVisitPK userVisitPK, CreateChainEntityRoleTypeForm form) {
         return CDI.current().select(CreateChainEntityRoleTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -316,7 +316,7 @@ public class ChainBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createChain(UserVisitPK userVisitPK, CreateChainForm form) {
+    public CommandResult<CreateChainResult> createChain(UserVisitPK userVisitPK, CreateChainForm form) {
         return CDI.current().select(CreateChainCommand.class).get().run(userVisitPK, form);
     }
 
@@ -384,7 +384,7 @@ public class ChainBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createChainActionSet(UserVisitPK userVisitPK, CreateChainActionSetForm form) {
+    public CommandResult<CreateChainActionSetResult> createChainActionSet(UserVisitPK userVisitPK, CreateChainActionSetForm form) {
         return CDI.current().select(CreateChainActionSetCommand.class).get().run(userVisitPK, form);
     }
 
@@ -452,7 +452,7 @@ public class ChainBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createChainAction(UserVisitPK userVisitPK, CreateChainActionForm form) {
+    public CommandResult<CreateChainActionResult> createChainAction(UserVisitPK userVisitPK, CreateChainActionForm form) {
         return CDI.current().select(CreateChainActionCommand.class).get().run(userVisitPK, form);
     }
 
