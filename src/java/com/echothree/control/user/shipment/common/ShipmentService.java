@@ -65,7 +65,7 @@ public interface ShipmentService
     //   Shipment Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createShipmentType(UserVisitPK userVisitPK, CreateShipmentTypeForm form);
+    CommandResult<CreateShipmentTypeResult> createShipmentType(UserVisitPK userVisitPK, CreateShipmentTypeForm form);
 
     CommandResult<GetShipmentTypeChoicesResult> getShipmentTypeChoices(UserVisitPK userVisitPK, GetShipmentTypeChoicesForm form);
 
@@ -97,7 +97,7 @@ public interface ShipmentService
     //   Shipment Time Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createShipmentTimeType(UserVisitPK userVisitPK, CreateShipmentTimeTypeForm form);
+    CommandResult<CreateShipmentTimeTypeResult> createShipmentTimeType(UserVisitPK userVisitPK, CreateShipmentTimeTypeForm form);
 
     CommandResult<GetShipmentTimeTypeChoicesResult> getShipmentTimeTypeChoices(UserVisitPK userVisitPK, GetShipmentTimeTypeChoicesForm form);
 
@@ -143,7 +143,7 @@ public interface ShipmentService
     //   Shipment Alias Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createShipmentAliasType(UserVisitPK userVisitPK, CreateShipmentAliasTypeForm form);
+    CommandResult<CreateShipmentAliasTypeResult> createShipmentAliasType(UserVisitPK userVisitPK, CreateShipmentAliasTypeForm form);
 
     CommandResult<GetShipmentAliasTypeChoicesResult> getShipmentAliasTypeChoices(UserVisitPK userVisitPK, GetShipmentAliasTypeChoicesForm form);
 

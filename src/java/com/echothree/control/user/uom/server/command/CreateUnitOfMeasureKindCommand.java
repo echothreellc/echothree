@@ -17,12 +17,13 @@
 package com.echothree.control.user.uom.server.command;
 
 import com.echothree.control.user.uom.common.form.CreateUnitOfMeasureKindForm;
+import com.echothree.control.user.uom.common.result.UomResultFactory;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -55,6 +56,7 @@ public class CreateUnitOfMeasureKindCommand
     
     @Override
     protected BaseResult execute() {
+        var result = UomResultFactory.getCreateUnitOfMeasureKindResult();
         var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
         var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
         
@@ -76,7 +78,12 @@ public class CreateUnitOfMeasureKindCommand
             addExecutionError(ExecutionErrors.DuplicateUnitOfMeasureKindName.name(), unitOfMeasureKindName);
         }
         
-        return null;
+        if(unitOfMeasureKind != null) {
+            result.setEntityRef(unitOfMeasureKind.getPrimaryKey().getEntityRef());
+            result.setUnitOfMeasureKindName(unitOfMeasureKind.getLastDetail().getUnitOfMeasureKindName());
+        }
+
+        return result;
     }
     
 }

@@ -194,7 +194,7 @@ public class AccountingBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createGlAccountClass(UserVisitPK userVisitPK, CreateGlAccountClassForm form) {
+    public CommandResult<CreateGlAccountClassResult> createGlAccountClass(UserVisitPK userVisitPK, CreateGlAccountClassForm form) {
         return CDI.current().select(CreateGlAccountClassCommand.class).get().run(userVisitPK, form);
     }
     
@@ -262,7 +262,7 @@ public class AccountingBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createGlAccountCategory(UserVisitPK userVisitPK, CreateGlAccountCategoryForm form) {
+    public CommandResult<CreateGlAccountCategoryResult> createGlAccountCategory(UserVisitPK userVisitPK, CreateGlAccountCategoryForm form) {
         return CDI.current().select(CreateGlAccountCategoryCommand.class).get().run(userVisitPK, form);
     }
     
@@ -330,7 +330,7 @@ public class AccountingBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createGlResourceType(UserVisitPK userVisitPK, CreateGlResourceTypeForm form) {
+    public CommandResult<CreateGlResourceTypeResult> createGlResourceType(UserVisitPK userVisitPK, CreateGlResourceTypeForm form) {
         return CDI.current().select(CreateGlResourceTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -529,7 +529,7 @@ public class AccountingBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createTransactionType(UserVisitPK userVisitPK, CreateTransactionTypeForm form) {
+    public CommandResult<CreateTransactionTypeResult> createTransactionType(UserVisitPK userVisitPK, CreateTransactionTypeForm form) {
         return CDI.current().select(CreateTransactionTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -587,7 +587,7 @@ public class AccountingBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createTransactionGlAccountCategory(UserVisitPK userVisitPK, CreateTransactionGlAccountCategoryForm form) {
+    public CommandResult<CreateTransactionGlAccountCategoryResult> createTransactionGlAccountCategory(UserVisitPK userVisitPK, CreateTransactionGlAccountCategoryForm form) {
         return CDI.current().select(CreateTransactionGlAccountCategoryCommand.class).get().run(userVisitPK, form);
     }
     
@@ -645,7 +645,7 @@ public class AccountingBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createTransactionEntityRoleType(UserVisitPK userVisitPK, CreateTransactionEntityRoleTypeForm form) {
+    public CommandResult<CreateTransactionEntityRoleTypeResult> createTransactionEntityRoleType(UserVisitPK userVisitPK, CreateTransactionEntityRoleTypeForm form) {
         return CDI.current().select(CreateTransactionEntityRoleTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -740,7 +740,7 @@ public class AccountingBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createSymbolPosition(UserVisitPK userVisitPK, CreateSymbolPositionForm form) {
+    public CommandResult<CreateSymbolPositionResult> createSymbolPosition(UserVisitPK userVisitPK, CreateSymbolPositionForm form) {
         return CDI.current().select(CreateSymbolPositionCommand.class).get().run(userVisitPK, form);
     }
     

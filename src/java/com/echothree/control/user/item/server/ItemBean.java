@@ -1241,7 +1241,7 @@ public class ItemBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createHarmonizedTariffScheduleCode(UserVisitPK userVisitPK, CreateHarmonizedTariffScheduleCodeForm form) {
+    public CommandResult<CreateHarmonizedTariffScheduleCodeResult> createHarmonizedTariffScheduleCode(UserVisitPK userVisitPK, CreateHarmonizedTariffScheduleCodeForm form) {
         return CDI.current().select(CreateHarmonizedTariffScheduleCodeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1309,7 +1309,7 @@ public class ItemBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createHarmonizedTariffScheduleCodeUnit(UserVisitPK userVisitPK, CreateHarmonizedTariffScheduleCodeUnitForm form) {
+    public CommandResult<CreateHarmonizedTariffScheduleCodeUnitResult> createHarmonizedTariffScheduleCodeUnit(UserVisitPK userVisitPK, CreateHarmonizedTariffScheduleCodeUnitForm form) {
         return CDI.current().select(CreateHarmonizedTariffScheduleCodeUnitCommand.class).get().run(userVisitPK, form);
     }
 
@@ -1377,7 +1377,7 @@ public class ItemBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createHarmonizedTariffScheduleCodeUseType(UserVisitPK userVisitPK, CreateHarmonizedTariffScheduleCodeUseTypeForm form) {
+    public CommandResult<CreateHarmonizedTariffScheduleCodeUseTypeResult> createHarmonizedTariffScheduleCodeUseType(UserVisitPK userVisitPK, CreateHarmonizedTariffScheduleCodeUseTypeForm form) {
         return CDI.current().select(CreateHarmonizedTariffScheduleCodeUseTypeCommand.class).get().run(userVisitPK, form);
     }
 

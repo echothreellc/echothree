@@ -17,15 +17,17 @@
 package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.CreateSearchSortOrderForm;
+import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.search.server.entity.SearchSortOrder;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -69,12 +71,15 @@ public class CreateSearchSortOrderCommand
     
     @Override
     protected BaseResult execute() {
+        var result = SearchResultFactory.getCreateSearchSortOrderResult();
+        SearchSortOrder searchSortOrder = null;
         var searchKindName = form.getSearchKindName();
         var searchKind = searchControl.getSearchKindByName(searchKindName);
         
         if(searchKind != null) {
             var searchSortOrderName = form.getSearchSortOrderName();
-            var searchSortOrder = searchControl.getSearchSortOrderByName(searchKind, searchSortOrderName);
+
+            searchSortOrder = searchControl.getSearchSortOrderByName(searchKind, searchSortOrderName);
             
             if(searchSortOrder == null) {
                 var partyPK = getPartyPK();
@@ -94,7 +99,13 @@ public class CreateSearchSortOrderCommand
             addExecutionError(ExecutionErrors.DuplicateSearchKindName.name(), searchKindName);
         }
         
-        return null;
+        if(searchSortOrder != null) {
+            result.setEntityRef(searchSortOrder.getPrimaryKey().getEntityRef());
+            result.setSearchKindName(searchSortOrder.getLastDetail().getSearchKind().getLastDetail().getSearchKindName());
+            result.setSearchSortOrderName(searchSortOrder.getLastDetail().getSearchSortOrderName());
+        }
+
+        return result;
     }
     
 }

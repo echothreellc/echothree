@@ -17,6 +17,7 @@
 package com.echothree.control.user.workeffort.server.command;
 
 import com.echothree.control.user.workeffort.common.form.CreateWorkEffortTypeForm;
+import com.echothree.control.user.workeffort.common.result.WorkEffortResultFactory;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.uom.common.UomConstants;
@@ -75,6 +76,7 @@ public class CreateWorkEffortTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = WorkEffortResultFactory.getCreateWorkEffortTypeResult();
         var workEffortTypeName = form.getWorkEffortTypeName();
         var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
@@ -195,7 +197,12 @@ public class CreateWorkEffortTypeCommand
             addExecutionError(ExecutionErrors.DuplicateWorkEffortTypeName.name(), workEffortTypeName);
         }
         
-        return null;
+        if(workEffortType != null) {
+            result.setEntityRef(workEffortType.getPrimaryKey().getEntityRef());
+            result.setWorkEffortTypeName(workEffortType.getLastDetail().getWorkEffortTypeName());
+        }
+
+        return result;
     }
     
 }

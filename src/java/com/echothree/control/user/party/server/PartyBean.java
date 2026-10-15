@@ -143,7 +143,7 @@ public class PartyBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createPartyTypePasswordStringPolicy(UserVisitPK userVisitPK, CreatePartyTypePasswordStringPolicyForm form) {
+    public CommandResult<CreatePartyTypePasswordStringPolicyResult> createPartyTypePasswordStringPolicy(UserVisitPK userVisitPK, CreatePartyTypePasswordStringPolicyForm form) {
         return CDI.current().select(CreatePartyTypePasswordStringPolicyCommand.class).get().run(userVisitPK, form);
     }
     
@@ -162,7 +162,7 @@ public class PartyBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createPartyTypeLockoutPolicy(UserVisitPK userVisitPK, CreatePartyTypeLockoutPolicyForm form) {
+    public CommandResult<CreatePartyTypeLockoutPolicyResult> createPartyTypeLockoutPolicy(UserVisitPK userVisitPK, CreatePartyTypeLockoutPolicyForm form) {
         return CDI.current().select(CreatePartyTypeLockoutPolicyCommand.class).get().run(userVisitPK, form);
     }
     
@@ -181,7 +181,7 @@ public class PartyBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createPartyTypeAuditPolicy(UserVisitPK userVisitPK, CreatePartyTypeAuditPolicyForm form) {
+    public CommandResult<CreatePartyTypeAuditPolicyResult> createPartyTypeAuditPolicy(UserVisitPK userVisitPK, CreatePartyTypeAuditPolicyForm form) {
         return CDI.current().select(CreatePartyTypeAuditPolicyCommand.class).get().run(userVisitPK, form);
     }
     
@@ -268,7 +268,7 @@ public class PartyBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createDateTimeFormat(UserVisitPK userVisitPK, CreateDateTimeFormatForm form) {
+    public CommandResult<CreateDateTimeFormatResult> createDateTimeFormat(UserVisitPK userVisitPK, CreateDateTimeFormatForm form) {
         return CDI.current().select(CreateDateTimeFormatCommand.class).get().run(userVisitPK, form);
     }
     
@@ -321,7 +321,7 @@ public class PartyBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createTimeZone(UserVisitPK userVisitPK, CreateTimeZoneForm form) {
+    public CommandResult<CreateTimeZoneResult> createTimeZone(UserVisitPK userVisitPK, CreateTimeZoneForm form) {
         return CDI.current().select(CreateTimeZoneCommand.class).get().run(userVisitPK, form);
     }
     
@@ -648,7 +648,7 @@ public class PartyBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createGender(UserVisitPK userVisitPK, CreateGenderForm form) {
+    public CommandResult<CreateGenderResult> createGender(UserVisitPK userVisitPK, CreateGenderForm form) {
         return CDI.current().select(CreateGenderCommand.class).get().run(userVisitPK, form);
     }
     
@@ -711,7 +711,7 @@ public class PartyBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createBirthdayFormat(UserVisitPK userVisitPK, CreateBirthdayFormatForm form) {
+    public CommandResult<CreateBirthdayFormatResult> createBirthdayFormat(UserVisitPK userVisitPK, CreateBirthdayFormatForm form) {
         return CDI.current().select(CreateBirthdayFormatCommand.class).get().run(userVisitPK, form);
     }
 
@@ -933,7 +933,7 @@ public class PartyBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createPartyApplicationEditorUse(UserVisitPK userVisitPK, CreatePartyApplicationEditorUseForm form) {
+    public CommandResult<CreatePartyApplicationEditorUseResult> createPartyApplicationEditorUse(UserVisitPK userVisitPK, CreatePartyApplicationEditorUseForm form) {
         return CDI.current().select(CreatePartyApplicationEditorUseCommand.class).get().run(userVisitPK, form);
     }
 

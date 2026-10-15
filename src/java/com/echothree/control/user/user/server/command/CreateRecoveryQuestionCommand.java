@@ -17,11 +17,12 @@
 package com.echothree.control.user.user.server.command;
 
 import com.echothree.control.user.user.common.form.CreateRecoveryQuestionForm;
+import com.echothree.control.user.user.common.result.UserResultFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -50,6 +51,7 @@ public class CreateRecoveryQuestionCommand
     
     @Override
     protected BaseResult execute() {
+        var result = UserResultFactory.getCreateRecoveryQuestionResult();
         var recoveryQuestionName = form.getRecoveryQuestionName();
         var recoveryQuestion = userControl.getRecoveryQuestionByName(recoveryQuestionName);
         
@@ -68,7 +70,12 @@ public class CreateRecoveryQuestionCommand
             addExecutionError(ExecutionErrors.DuplicateRecoveryQuestionName.name(), recoveryQuestionName);
         }
         
-        return null;
+        if(recoveryQuestion != null) {
+            result.setEntityRef(recoveryQuestion.getPrimaryKey().getEntityRef());
+            result.setRecoveryQuestionName(recoveryQuestion.getLastDetail().getRecoveryQuestionName());
+        }
+
+        return result;
     }
     
 }

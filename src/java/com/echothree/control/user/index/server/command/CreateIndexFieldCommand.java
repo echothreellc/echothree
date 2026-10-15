@@ -17,15 +17,17 @@
 package com.echothree.control.user.index.server.command;
 
 import com.echothree.control.user.index.common.form.CreateIndexFieldForm;
+import com.echothree.control.user.index.common.result.IndexResultFactory;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.index.server.entity.IndexField;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -69,12 +71,15 @@ public class CreateIndexFieldCommand
     
     @Override
     protected BaseResult execute() {
+        var result = IndexResultFactory.getCreateIndexFieldResult();
+        IndexField indexField = null;
         var indexTypeName = form.getIndexTypeName();
         var indexType = indexControl.getIndexTypeByName(indexTypeName);
         
         if(indexType != null) {
             var indexFieldName = form.getIndexFieldName();
-            var indexField = indexControl.getIndexFieldByName(indexType, indexFieldName);
+
+            indexField = indexControl.getIndexFieldByName(indexType, indexFieldName);
             
             if(indexField == null) {
                 var partyPK = getPartyPK();
@@ -94,7 +99,13 @@ public class CreateIndexFieldCommand
             addExecutionError(ExecutionErrors.DuplicateIndexTypeName.name(), indexTypeName);
         }
         
-        return null;
+        if(indexField != null) {
+            result.setEntityRef(indexField.getPrimaryKey().getEntityRef());
+            result.setIndexTypeName(indexField.getLastDetail().getIndexType().getLastDetail().getIndexTypeName());
+            result.setIndexFieldName(indexField.getLastDetail().getIndexFieldName());
+        }
+
+        return result;
     }
     
 }

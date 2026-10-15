@@ -81,7 +81,7 @@ public class InvoiceBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createInvoiceType(UserVisitPK userVisitPK, CreateInvoiceTypeForm form) {
+    public CommandResult<CreateInvoiceTypeResult> createInvoiceType(UserVisitPK userVisitPK, CreateInvoiceTypeForm form) {
         return CDI.current().select(CreateInvoiceTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -144,7 +144,7 @@ public class InvoiceBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createInvoiceTimeType(UserVisitPK userVisitPK, CreateInvoiceTimeTypeForm form) {
+    public CommandResult<CreateInvoiceTimeTypeResult> createInvoiceTimeType(UserVisitPK userVisitPK, CreateInvoiceTimeTypeForm form) {
         return CDI.current().select(CreateInvoiceTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -212,7 +212,7 @@ public class InvoiceBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createInvoiceLineType(UserVisitPK userVisitPK, CreateInvoiceLineTypeForm form) {
+    public CommandResult<CreateInvoiceLineTypeResult> createInvoiceLineType(UserVisitPK userVisitPK, CreateInvoiceLineTypeForm form) {
         return CDI.current().select(CreateInvoiceLineTypeCommand.class).get().run(userVisitPK, form);
     }
     

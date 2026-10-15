@@ -17,15 +17,17 @@
 package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.form.CreateTransactionGlAccountCategoryForm;
+import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.accounting.server.entity.TransactionGlAccountCategory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -72,12 +74,15 @@ public class CreateTransactionGlAccountCategoryCommand
     
     @Override
     protected BaseResult execute() {
+        var result = AccountingResultFactory.getCreateTransactionGlAccountCategoryResult();
+        TransactionGlAccountCategory transactionGlAccountCategory = null;
         var transactionTypeName = form.getTransactionTypeName();
         var transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
         
         if(transactionType != null) {
             var transactionGlAccountCategoryName = form.getTransactionGlAccountCategoryName();
-            var transactionGlAccountCategory = accountingControl.getTransactionGlAccountCategoryByName(transactionType, transactionGlAccountCategoryName);
+
+            transactionGlAccountCategory = accountingControl.getTransactionGlAccountCategoryByName(transactionType, transactionGlAccountCategoryName);
             
             if(transactionGlAccountCategory == null) {
                 var glAccountCategoryName = form.getGlAccountCategoryName();
@@ -118,7 +123,13 @@ public class CreateTransactionGlAccountCategoryCommand
             addExecutionError(ExecutionErrors.UnknownTransactionTypeName.name(), transactionTypeName);
         }
         
-        return null;
+        if(transactionGlAccountCategory != null) {
+            result.setEntityRef(transactionGlAccountCategory.getPrimaryKey().getEntityRef());
+            result.setTransactionTypeName(transactionGlAccountCategory.getLastDetail().getTransactionType().getLastDetail().getTransactionTypeName());
+            result.setTransactionGlAccountCategoryName(transactionGlAccountCategory.getLastDetail().getTransactionGlAccountCategoryName());
+        }
+
+        return result;
     }
     
 }

@@ -17,15 +17,17 @@
 package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.form.CreateEmployeeTypeForm;
+import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.employee.server.entity.EmployeeType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -68,6 +70,7 @@ public class CreateEmployeeTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = EmployeeResultFactory.getCreateEmployeeTypeResult();
         var employeeTypeName = form.getEmployeeTypeName();
         var employeeType = employeeControl.getEmployeeTypeByName(employeeTypeName);
         
@@ -86,7 +89,12 @@ public class CreateEmployeeTypeCommand
             addExecutionError(ExecutionErrors.DuplicateEmployeeTypeName.name(), employeeTypeName);
         }
         
-        return null;
+        if(employeeType != null) {
+            result.setEntityRef(employeeType.getPrimaryKey().getEntityRef());
+            result.setEmployeeTypeName(employeeType.getLastDetail().getEmployeeTypeName());
+        }
+
+        return result;
     }
     
 }

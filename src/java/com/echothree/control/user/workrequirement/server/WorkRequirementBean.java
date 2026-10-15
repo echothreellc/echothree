@@ -45,7 +45,7 @@ public class WorkRequirementBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createWorkRequirementType(UserVisitPK userVisitPK, CreateWorkRequirementTypeForm form) {
+    public CommandResult<CreateWorkRequirementTypeResult> createWorkRequirementType(UserVisitPK userVisitPK, CreateWorkRequirementTypeForm form) {
         return CDI.current().select(CreateWorkRequirementTypeCommand.class).get().run(userVisitPK, form);
     }
     

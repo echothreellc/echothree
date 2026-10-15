@@ -17,12 +17,13 @@
 package com.echothree.control.user.contact.server.command;
 
 import com.echothree.control.user.contact.common.form.CreatePostalAddressFormatForm;
+import com.echothree.control.user.contact.common.result.ContactResultFactory;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -54,6 +55,7 @@ public class CreatePostalAddressFormatCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ContactResultFactory.getCreatePostalAddressFormatResult();
         var postalAddressFormatName = form.getPostalAddressFormatName();
         var postalAddressFormat = contactControl.getPostalAddressFormatByName(postalAddressFormatName);
         
@@ -72,7 +74,12 @@ public class CreatePostalAddressFormatCommand
             addExecutionError(ExecutionErrors.DuplicatePostalAddressFormatName.name(), postalAddressFormatName);
         }
         
-        return null;
+        if(postalAddressFormat != null) {
+            result.setEntityRef(postalAddressFormat.getPrimaryKey().getEntityRef());
+            result.setPostalAddressFormatName(postalAddressFormat.getLastDetail().getPostalAddressFormatName());
+        }
+
+        return result;
     }
     
 }

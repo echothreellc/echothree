@@ -45,7 +45,7 @@ public class ClubBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createClub(UserVisitPK userVisitPK, CreateClubForm form) {
+    public CommandResult<CreateClubResult> createClub(UserVisitPK userVisitPK, CreateClubForm form) {
         return CDI.current().select(CreateClubCommand.class).get().run(userVisitPK, form);
     }
     

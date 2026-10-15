@@ -17,18 +17,20 @@
 package com.echothree.control.user.chain.server.command;
 
 import com.echothree.control.user.chain.common.form.CreateChainForm;
+import com.echothree.control.user.chain.common.result.ChainResultFactory;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
+import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -77,6 +79,8 @@ public class CreateChainCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ChainResultFactory.getCreateChainResult();
+        Chain chain = null;
         var chainKindName = form.getChainKindName();
         var chainKind = chainControl.getChainKindByName(chainKindName);
 
@@ -86,7 +90,8 @@ public class CreateChainCommand
 
             if(chainType != null) {
                 var chainName = form.getChainName();
-                var chain = chainControl.getChainByName(chainType, chainName);
+
+                chain = chainControl.getChainByName(chainType, chainName);
 
                 if(chain == null) {
                     var chainInstanceSequenceName = form.getChainInstanceSequenceName();
@@ -122,7 +127,14 @@ public class CreateChainCommand
             addExecutionError(ExecutionErrors.UnknownChainKindName.name(), chainKindName);
         }
 
-        return null;
+        if(chain != null) {
+            result.setEntityRef(chain.getPrimaryKey().getEntityRef());
+            result.setChainKindName(chain.getLastDetail().getChainType().getLastDetail().getChainKind().getLastDetail().getChainKindName());
+            result.setChainTypeName(chain.getLastDetail().getChainType().getLastDetail().getChainTypeName());
+            result.setChainName(chain.getLastDetail().getChainName());
+        }
+
+        return result;
     }
 
 }

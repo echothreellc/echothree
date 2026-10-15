@@ -45,7 +45,7 @@ public class ScaleBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createScaleType(UserVisitPK userVisitPK, CreateScaleTypeForm form) {
+    public CommandResult<CreateScaleTypeResult> createScaleType(UserVisitPK userVisitPK, CreateScaleTypeForm form) {
         return CDI.current().select(CreateScaleTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -113,7 +113,7 @@ public class ScaleBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createScale(UserVisitPK userVisitPK, CreateScaleForm form) {
+    public CommandResult<CreateScaleResult> createScale(UserVisitPK userVisitPK, CreateScaleForm form) {
         return CDI.current().select(CreateScaleCommand.class).get().run(userVisitPK, form);
     }
     
@@ -181,7 +181,7 @@ public class ScaleBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createScaleUseType(UserVisitPK userVisitPK, CreateScaleUseTypeForm form) {
+    public CommandResult<CreateScaleUseTypeResult> createScaleUseType(UserVisitPK userVisitPK, CreateScaleUseTypeForm form) {
         return CDI.current().select(CreateScaleUseTypeCommand.class).get().run(userVisitPK, form);
     }
 

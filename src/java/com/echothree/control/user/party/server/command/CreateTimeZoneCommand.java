@@ -17,12 +17,13 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.CreateTimeZoneForm;
+import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -55,6 +56,7 @@ public class CreateTimeZoneCommand
     
     @Override
     protected BaseResult execute() {
+        var result = PartyResultFactory.getCreateTimeZoneResult();
         var javaTimeZoneName = form.getJavaTimeZoneName();
         var timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
         
@@ -81,7 +83,12 @@ public class CreateTimeZoneCommand
             addExecutionError(ExecutionErrors.DuplicateJavaTimeZoneName.name(), javaTimeZoneName);
         }
         
-        return null;
+        if(timeZone != null) {
+            result.setEntityRef(timeZone.getPrimaryKey().getEntityRef());
+            result.setJavaTimeZoneName(timeZone.getLastDetail().getJavaTimeZoneName());
+        }
+
+        return result;
     }
     
 }

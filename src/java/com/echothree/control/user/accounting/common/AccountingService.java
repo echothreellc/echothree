@@ -109,7 +109,7 @@ public interface AccountingService
     //   Gl Account Classes
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createGlAccountClass(UserVisitPK userVisitPK, CreateGlAccountClassForm form);
+    CommandResult<CreateGlAccountClassResult> createGlAccountClass(UserVisitPK userVisitPK, CreateGlAccountClassForm form);
     
     CommandResult<GetGlAccountClassChoicesResult> getGlAccountClassChoices(UserVisitPK userVisitPK, GetGlAccountClassChoicesForm form);
     
@@ -141,7 +141,7 @@ public interface AccountingService
     //   Gl Account Categories
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createGlAccountCategory(UserVisitPK userVisitPK, CreateGlAccountCategoryForm form);
+    CommandResult<CreateGlAccountCategoryResult> createGlAccountCategory(UserVisitPK userVisitPK, CreateGlAccountCategoryForm form);
     
     CommandResult<GetGlAccountCategoryChoicesResult> getGlAccountCategoryChoices(UserVisitPK userVisitPK, GetGlAccountCategoryChoicesForm form);
     
@@ -173,7 +173,7 @@ public interface AccountingService
     //   Gl Resource Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createGlResourceType(UserVisitPK userVisitPK, CreateGlResourceTypeForm form);
+    CommandResult<CreateGlResourceTypeResult> createGlResourceType(UserVisitPK userVisitPK, CreateGlResourceTypeForm form);
     
     CommandResult<GetGlResourceTypeChoicesResult> getGlResourceTypeChoices(UserVisitPK userVisitPK, GetGlResourceTypeChoicesForm form);
     
@@ -267,7 +267,7 @@ public interface AccountingService
     //   Transaction Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createTransactionType(UserVisitPK userVisitPK, CreateTransactionTypeForm form);
+    CommandResult<CreateTransactionTypeResult> createTransactionType(UserVisitPK userVisitPK, CreateTransactionTypeForm form);
     
     CommandResult<GetTransactionTypeResult> getTransactionType(UserVisitPK userVisitPK, GetTransactionTypeForm form);
     
@@ -295,7 +295,7 @@ public interface AccountingService
     //   Transaction Gl Account Categories
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createTransactionGlAccountCategory(UserVisitPK userVisitPK, CreateTransactionGlAccountCategoryForm form);
+    CommandResult<CreateTransactionGlAccountCategoryResult> createTransactionGlAccountCategory(UserVisitPK userVisitPK, CreateTransactionGlAccountCategoryForm form);
     
     CommandResult<GetTransactionGlAccountCategoryResult> getTransactionGlAccountCategory(UserVisitPK userVisitPK, GetTransactionGlAccountCategoryForm form);
     
@@ -323,7 +323,7 @@ public interface AccountingService
     //   Transaction Entity Role Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createTransactionEntityRoleType(UserVisitPK userVisitPK, CreateTransactionEntityRoleTypeForm form);
+    CommandResult<CreateTransactionEntityRoleTypeResult> createTransactionEntityRoleType(UserVisitPK userVisitPK, CreateTransactionEntityRoleTypeForm form);
     
     CommandResult<GetTransactionEntityRoleTypeResult> getTransactionEntityRoleType(UserVisitPK userVisitPK, GetTransactionEntityRoleTypeForm form);
     
@@ -371,7 +371,7 @@ public interface AccountingService
     //   Symbol Positions
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createSymbolPosition(UserVisitPK userVisitPK, CreateSymbolPositionForm form);
+    CommandResult<CreateSymbolPositionResult> createSymbolPosition(UserVisitPK userVisitPK, CreateSymbolPositionForm form);
     
     CommandResult<GetSymbolPositionChoicesResult> getSymbolPositionChoices(UserVisitPK userVisitPK, GetSymbolPositionChoicesForm form);
     

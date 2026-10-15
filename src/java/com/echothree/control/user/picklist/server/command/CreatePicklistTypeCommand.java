@@ -17,6 +17,7 @@
 package com.echothree.control.user.picklist.server.command;
 
 import com.echothree.control.user.picklist.common.form.CreatePicklistTypeForm;
+import com.echothree.control.user.picklist.common.result.PicklistResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -25,10 +26,10 @@ import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.picklist.server.entity.PicklistType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -81,6 +82,7 @@ public class CreatePicklistTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = PicklistResultFactory.getCreatePicklistTypeResult();
         var picklistTypeName = form.getPicklistTypeName();
         var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
 
@@ -137,7 +139,12 @@ public class CreatePicklistTypeCommand
             addExecutionError(ExecutionErrors.DuplicatePicklistTypeName.name(), picklistTypeName);
         }
 
-        return null;
+        if(picklistType != null) {
+            result.setEntityRef(picklistType.getPrimaryKey().getEntityRef());
+            result.setPicklistTypeName(picklistType.getLastDetail().getPicklistTypeName());
+        }
+
+        return result;
     }
     
 }

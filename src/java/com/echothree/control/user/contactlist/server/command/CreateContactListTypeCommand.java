@@ -17,6 +17,7 @@
 package com.echothree.control.user.contactlist.server.command;
 
 import com.echothree.control.user.contactlist.common.form.CreateContactListTypeForm;
+import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
 import com.echothree.model.control.chain.common.ChainKinds;
 import com.echothree.model.control.chain.common.ChainTypes;
 import com.echothree.model.control.chain.server.control.ChainControl;
@@ -24,6 +25,7 @@ import com.echothree.model.control.contactlist.server.control.ContactListControl
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.contactlist.server.entity.ContactListType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -77,6 +79,7 @@ public class CreateContactListTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ContactListResultFactory.getCreateContactListTypeResult();
         var contactListTypeName = form.getContactListTypeName();
         var contactListType = contactListControl.getContactListTypeByName(contactListTypeName);
 
@@ -122,7 +125,12 @@ public class CreateContactListTypeCommand
             addExecutionError(ExecutionErrors.DuplicateContactListTypeName.name(), contactListTypeName);
         }
         
-        return null;
+        if(contactListType != null) {
+            result.setEntityRef(contactListType.getPrimaryKey().getEntityRef());
+            result.setContactListTypeName(contactListType.getLastDetail().getContactListTypeName());
+        }
+
+        return result;
     }
     
 }

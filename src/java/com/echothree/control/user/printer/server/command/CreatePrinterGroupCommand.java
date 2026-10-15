@@ -17,6 +17,7 @@
 package com.echothree.control.user.printer.server.command;
 
 import com.echothree.control.user.printer.common.form.CreatePrinterGroupForm;
+import com.echothree.control.user.printer.common.result.PrinterResultFactory;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.printer.common.workflow.PrinterGroupStatusConstants;
 import com.echothree.model.control.printer.server.control.PrinterControl;
@@ -69,8 +70,9 @@ public class CreatePrinterGroupCommand
     
    @Override
     protected BaseResult execute() {
-       var printerGroupName = form.getPrinterGroupName();
-       var printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
+        var result = PrinterResultFactory.getCreatePrinterGroupResult();
+        var printerGroupName = form.getPrinterGroupName();
+        var printerGroup = printerControl.getPrinterGroupByName(printerGroupName);
         
         if(printerGroup == null) {
             var keepPrintedJobsTime = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_TIME,
@@ -100,7 +102,12 @@ public class CreatePrinterGroupCommand
             addExecutionError(ExecutionErrors.DuplicatePrinterGroupName.name(), printerGroupName);
         }
         
-        return null;
+        if(printerGroup != null) {
+            result.setEntityRef(printerGroup.getPrimaryKey().getEntityRef());
+            result.setPrinterGroupName(printerGroup.getLastDetail().getPrinterGroupName());
+        }
+
+        return result;
     }
     
 }

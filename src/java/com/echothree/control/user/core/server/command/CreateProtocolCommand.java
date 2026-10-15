@@ -17,10 +17,12 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateProtocolForm;
+import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.core.server.entity.Protocol;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -68,6 +70,7 @@ public class CreateProtocolCommand
     
     @Override
     protected BaseResult execute() {
+        var result = CoreResultFactory.getCreateProtocolResult();
         var protocolName = form.getProtocolName();
         var protocol = serverControl.getProtocolByName(protocolName);
         
@@ -86,7 +89,12 @@ public class CreateProtocolCommand
             addExecutionError(ExecutionErrors.DuplicateProtocolName.name(), protocolName);
         }
         
-        return null;
+        if(protocol != null) {
+            result.setEntityRef(protocol.getPrimaryKey().getEntityRef());
+            result.setProtocolName(protocol.getLastDetail().getProtocolName());
+        }
+
+        return result;
     }
     
 }

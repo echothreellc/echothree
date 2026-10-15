@@ -115,7 +115,7 @@ public interface SecurityService
     //   Party Security Role Templates
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createPartySecurityRoleTemplate(UserVisitPK userVisitPK, CreatePartySecurityRoleTemplateForm form);
+    CommandResult<CreatePartySecurityRoleTemplateResult> createPartySecurityRoleTemplate(UserVisitPK userVisitPK, CreatePartySecurityRoleTemplateForm form);
     
     CommandResult<GetPartySecurityRoleTemplateResult> getPartySecurityRoleTemplate(UserVisitPK userVisitPK, GetPartySecurityRoleTemplateForm form);
     

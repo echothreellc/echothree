@@ -17,12 +17,13 @@
 package com.echothree.control.user.printer.server.command;
 
 import com.echothree.control.user.printer.common.form.CreatePrinterGroupUseTypeForm;
+import com.echothree.control.user.printer.common.result.PrinterResultFactory;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -53,8 +54,9 @@ public class CreatePrinterGroupUseTypeCommand
     
    @Override
     protected BaseResult execute() {
-       var printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
-       var printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
+        var result = PrinterResultFactory.getCreatePrinterGroupUseTypeResult();
+        var printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
+        var printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
         
         if(printerGroupUseType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());
@@ -73,7 +75,12 @@ public class CreatePrinterGroupUseTypeCommand
             addExecutionError(ExecutionErrors.DuplicatePrinterGroupUseTypeName.name(), printerGroupUseTypeName);
         }
         
-        return null;
+        if(printerGroupUseType != null) {
+            result.setEntityRef(printerGroupUseType.getPrimaryKey().getEntityRef());
+            result.setPrinterGroupUseTypeName(printerGroupUseType.getLastDetail().getPrinterGroupUseTypeName());
+        }
+
+        return result;
     }
     
 }

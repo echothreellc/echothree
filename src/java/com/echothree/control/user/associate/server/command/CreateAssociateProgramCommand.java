@@ -17,15 +17,16 @@
 package com.echothree.control.user.associate.server.command;
 
 import com.echothree.control.user.associate.common.form.CreateAssociateProgramForm;
+import com.echothree.control.user.associate.common.result.AssociateResultFactory;
 import com.echothree.model.control.associate.server.control.AssociateControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -65,6 +66,7 @@ public class CreateAssociateProgramCommand
     
     @Override
     protected BaseResult execute() {
+        var result = AssociateResultFactory.getCreateAssociateProgramResult();
         var associateProgramName = form.getAssociateProgramName();
         var associateProgram = associateControl.getAssociateProgramByName(associateProgramName);
         
@@ -141,7 +143,12 @@ public class CreateAssociateProgramCommand
             addExecutionError(ExecutionErrors.DuplicateAssociateProgramName.name(), associateProgramName);
         }
         
-        return null;
+        if(associateProgram != null) {
+            result.setEntityRef(associateProgram.getPrimaryKey().getEntityRef());
+            result.setAssociateProgramName(associateProgram.getLastDetail().getAssociateProgramName());
+        }
+
+        return result;
     }
     
 }

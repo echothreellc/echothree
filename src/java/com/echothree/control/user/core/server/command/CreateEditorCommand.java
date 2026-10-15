@@ -17,10 +17,12 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateEditorForm;
+import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.server.control.EditorControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.core.server.entity.Editor;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -75,6 +77,7 @@ public class CreateEditorCommand
     
     @Override
     protected BaseResult execute() {
+        var result = CoreResultFactory.getCreateEditorResult();
         var editorName = form.getEditorName();
         var editor = editorControl.getEditorByName(editorName);
         
@@ -107,7 +110,12 @@ public class CreateEditorCommand
             addExecutionError(ExecutionErrors.DuplicateEditorName.name(), editorName);
         }
         
-        return null;
+        if(editor != null) {
+            result.setEntityRef(editor.getPrimaryKey().getEntityRef());
+            result.setEditorName(editor.getLastDetail().getEditorName());
+        }
+
+        return result;
     }
     
 }

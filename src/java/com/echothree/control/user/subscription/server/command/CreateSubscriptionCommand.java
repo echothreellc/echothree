@@ -17,6 +17,7 @@
 package com.echothree.control.user.subscription.server.command;
 
 import com.echothree.control.user.subscription.common.form.CreateSubscriptionForm;
+import com.echothree.control.user.subscription.common.result.SubscriptionResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -26,6 +27,7 @@ import com.echothree.model.control.subscription.server.logic.SubscriptionLogic;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.util.Conversion;
+import com.echothree.model.data.subscription.server.entity.Subscription;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -83,6 +85,8 @@ public class CreateSubscriptionCommand
     
     @Override
     protected BaseResult execute() {
+        var result = SubscriptionResultFactory.getCreateSubscriptionResult();
+        Subscription subscription = null;
         var subscriptionKindName = form.getSubscriptionKindName();
         var subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
         
@@ -95,7 +99,7 @@ public class CreateSubscriptionCommand
                 var party = partyControl.getPartyByName(partyName);
                 
                 if(party != null) {
-                    var subscription = subscriptionControl.getSubscription(subscriptionType, party);
+                    subscription = subscriptionControl.getSubscription(subscriptionType, party);
                     
                     if(subscription == null) {
                         var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
@@ -121,7 +125,7 @@ public class CreateSubscriptionCommand
                                 }
                                 
                                 // ExecutionErrorAccumulator is passed in as null so that an Exception will be thrown if there is an error.
-                                subscriptionLogic.createSubscription(null, session, subscriptionType, party, endTime, createdBy);
+                                subscription = subscriptionLogic.createSubscription(null, session, subscriptionType, party, endTime, createdBy);
                             } else {
                                 addExecutionError(ExecutionErrors.MissingSubscriptionTime.name());
                             }
@@ -141,7 +145,12 @@ public class CreateSubscriptionCommand
             addExecutionError(ExecutionErrors.UnknownSubscriptionKindName.name(), subscriptionKindName);
         }
         
-        return null;
+        if(subscription != null) {
+            result.setEntityRef(subscription.getPrimaryKey().getEntityRef());
+            result.setSubscriptionName(subscription.getLastDetail().getSubscriptionName());
+        }
+
+        return result;
     }
     
 }

@@ -17,15 +17,17 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.CreatePartyTypePasswordStringPolicyForm;
+import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.util.Conversion;
+import com.echothree.model.data.party.server.entity.PartyTypePasswordStringPolicy;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -76,6 +78,8 @@ public class CreatePartyTypePasswordStringPolicyCommand
     
     @Override
     protected BaseResult execute() {
+        var result = PartyResultFactory.getCreatePartyTypePasswordStringPolicyResult();
+        PartyTypePasswordStringPolicy partyTypePasswordStringPolicy = null;
         var rawMinimumPasswordLifetime = form.getMinimumPasswordLifetime();
         var minimumPasswordLifetimeUnitOfMeasureTypeName = form.getMinimumPasswordLifetimeUnitOfMeasureTypeName();
         var minimumPasswordLifetimeParameterCount = (rawMinimumPasswordLifetime == null ? 0 : 1) + (minimumPasswordLifetimeUnitOfMeasureTypeName == null ? 0 : 1);
@@ -94,7 +98,7 @@ public class CreatePartyTypePasswordStringPolicyCommand
             
             if(partyType != null) {
                 if(partyType.getAllowUserLogins()) {
-                    var partyTypePasswordStringPolicy = partyControl.getPartyTypePasswordStringPolicy(partyType);
+                    partyTypePasswordStringPolicy = partyControl.getPartyTypePasswordStringPolicy(partyType);
 
                     if(partyTypePasswordStringPolicy == null) {
                         var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
@@ -142,7 +146,7 @@ public class CreatePartyTypePasswordStringPolicyCommand
                                         var rawMinimumCharacterTypes = form.getMinimumCharacterTypes();
                                         var minimumCharacterTypes = rawMinimumCharacterTypes == null? null: Integer.valueOf(rawMinimumCharacterTypes);
 
-                                        partyControl.createPartyTypePasswordStringPolicy(partyType, forceChangeAfterCreate, forceChangeAfterReset, allowChange,
+                                        partyTypePasswordStringPolicy = partyControl.createPartyTypePasswordStringPolicy(partyType, forceChangeAfterCreate, forceChangeAfterReset, allowChange,
                                                 passwordHistory, minimumPasswordLifetimeConversion == null? null: minimumPasswordLifetimeConversion.getQuantity(),
                                                 maximumPasswordLifetimeConversion == null? null: maximumPasswordLifetimeConversion.getQuantity(),
                                                 expirationWarningTimeConversion == null? null: expirationWarningTimeConversion.getQuantity(),
@@ -174,7 +178,12 @@ public class CreatePartyTypePasswordStringPolicyCommand
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
         
-        return null;
+        if(partyTypePasswordStringPolicy != null) {
+            result.setEntityRef(partyTypePasswordStringPolicy.getPrimaryKey().getEntityRef());
+            result.setPartyTypeName(partyTypePasswordStringPolicy.getLastDetail().getPartyType().getPartyTypeName());
+        }
+
+        return result;
     }
     
 }

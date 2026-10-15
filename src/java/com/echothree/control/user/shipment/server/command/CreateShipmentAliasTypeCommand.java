@@ -17,14 +17,16 @@
 package com.echothree.control.user.shipment.server.command;
 
 import com.echothree.control.user.shipment.common.form.CreateShipmentAliasTypeForm;
+import com.echothree.control.user.shipment.common.result.ShipmentResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipment.server.control.ShipmentControl;
+import com.echothree.model.data.shipment.server.entity.ShipmentAliasType;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -69,12 +71,15 @@ public class CreateShipmentAliasTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ShipmentResultFactory.getCreateShipmentAliasTypeResult();
+        ShipmentAliasType shipmentAliasType = null;
         var shipmentTypeName = form.getShipmentTypeName();
         var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
 
         if(shipmentType != null) {
             var shipmentAliasTypeName = form.getShipmentAliasTypeName();
-            var shipmentAliasType = shipmentControl.getShipmentAliasTypeByName(shipmentType, shipmentAliasTypeName);
+
+            shipmentAliasType = shipmentControl.getShipmentAliasTypeByName(shipmentType, shipmentAliasTypeName);
 
             if(shipmentAliasType == null) {
                 var createdBy = getPartyPK();
@@ -95,7 +100,13 @@ public class CreateShipmentAliasTypeCommand
             addExecutionError(ExecutionErrors.UnknownShipmentTypeName.name(), shipmentTypeName);
         }
 
-        return null;
+        if(shipmentAliasType != null) {
+            result.setEntityRef(shipmentAliasType.getPrimaryKey().getEntityRef());
+            result.setShipmentTypeName(shipmentAliasType.getLastDetail().getShipmentType().getLastDetail().getShipmentTypeName());
+            result.setShipmentAliasTypeName(shipmentAliasType.getLastDetail().getShipmentAliasTypeName());
+        }
+
+        return result;
     }
     
 }

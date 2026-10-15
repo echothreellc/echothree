@@ -619,7 +619,7 @@ public interface ItemService
     //   Harmonized Tariff Schedule Codes
     // -------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createHarmonizedTariffScheduleCode(UserVisitPK userVisitPK, CreateHarmonizedTariffScheduleCodeForm form);
+    CommandResult<CreateHarmonizedTariffScheduleCodeResult> createHarmonizedTariffScheduleCode(UserVisitPK userVisitPK, CreateHarmonizedTariffScheduleCodeForm form);
 
     CommandResult<GetHarmonizedTariffScheduleCodesResult> getHarmonizedTariffScheduleCodes(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodesForm form);
 
@@ -651,7 +651,7 @@ public interface ItemService
     //   Harmonized Tariff Schedule Code Units
     // -------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createHarmonizedTariffScheduleCodeUnit(UserVisitPK userVisitPK, CreateHarmonizedTariffScheduleCodeUnitForm form);
+    CommandResult<CreateHarmonizedTariffScheduleCodeUnitResult> createHarmonizedTariffScheduleCodeUnit(UserVisitPK userVisitPK, CreateHarmonizedTariffScheduleCodeUnitForm form);
 
     CommandResult<GetHarmonizedTariffScheduleCodeUnitsResult> getHarmonizedTariffScheduleCodeUnits(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUnitsForm form);
 
@@ -683,7 +683,7 @@ public interface ItemService
     //   Harmonized Tariff Schedule Code Use Types
     // -------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createHarmonizedTariffScheduleCodeUseType(UserVisitPK userVisitPK, CreateHarmonizedTariffScheduleCodeUseTypeForm form);
+    CommandResult<CreateHarmonizedTariffScheduleCodeUseTypeResult> createHarmonizedTariffScheduleCodeUseType(UserVisitPK userVisitPK, CreateHarmonizedTariffScheduleCodeUseTypeForm form);
 
     CommandResult<GetHarmonizedTariffScheduleCodeUseTypesResult> getHarmonizedTariffScheduleCodeUseTypes(UserVisitPK userVisitPK, GetHarmonizedTariffScheduleCodeUseTypesForm form);
 

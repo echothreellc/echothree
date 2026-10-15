@@ -45,7 +45,7 @@ public class LetterBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createLetterSource(UserVisitPK userVisitPK, CreateLetterSourceForm form) {
+    public CommandResult<CreateLetterSourceResult> createLetterSource(UserVisitPK userVisitPK, CreateLetterSourceForm form) {
         return CDI.current().select(CreateLetterSourceCommand.class).get().run(userVisitPK, form);
     }
     
@@ -108,7 +108,7 @@ public class LetterBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createLetter(UserVisitPK userVisitPK, CreateLetterForm form) {
+    public CommandResult<CreateLetterResult> createLetter(UserVisitPK userVisitPK, CreateLetterForm form) {
         return CDI.current().select(CreateLetterCommand.class).get().run(userVisitPK, form);
     }
     

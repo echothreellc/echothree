@@ -45,7 +45,7 @@ public class ShippingBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createShippingMethod(UserVisitPK userVisitPK, CreateShippingMethodForm form) {
+    public CommandResult<CreateShippingMethodResult> createShippingMethod(UserVisitPK userVisitPK, CreateShippingMethodForm form) {
         return CDI.current().select(CreateShippingMethodCommand.class).get().run(userVisitPK, form);
     }
     

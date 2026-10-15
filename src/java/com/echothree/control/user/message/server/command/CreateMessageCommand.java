@@ -17,6 +17,7 @@
 package com.echothree.control.user.message.server.command;
 
 import com.echothree.control.user.message.common.form.CreateMessageForm;
+import com.echothree.control.user.message.common.result.MessageResultFactory;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.data.core.server.entity.MimeType;
@@ -84,6 +85,8 @@ public class CreateMessageCommand
     
     @Override
     protected BaseResult execute() {
+        var result = MessageResultFactory.getCreateMessageResult();
+        Message message = null;
         var componentVendorName = form.getComponentVendorName();
         var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
         
@@ -97,7 +100,8 @@ public class CreateMessageCommand
                 
                 if(messageType != null) {
                     var messageName = form.getMessageName();
-                    var message = messageControl.getMessageByName(messageType, messageName);
+
+                    message = messageControl.getMessageByName(messageType, messageName);
                     
                     if(message == null) {
                         var mimeTypeName = form.getMimeTypeName();
@@ -165,7 +169,15 @@ public class CreateMessageCommand
             addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
         }
         
-        return null;
+        if(message != null) {
+            result.setEntityRef(message.getPrimaryKey().getEntityRef());
+            result.setComponentVendorName(message.getLastDetail().getMessageType().getLastDetail().getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName());
+            result.setEntityTypeName(message.getLastDetail().getMessageType().getLastDetail().getEntityType().getLastDetail().getEntityTypeName());
+            result.setMessageTypeName(message.getLastDetail().getMessageType().getLastDetail().getMessageTypeName());
+            result.setMessageName(message.getLastDetail().getMessageName());
+        }
+
+        return result;
     }
     
 }

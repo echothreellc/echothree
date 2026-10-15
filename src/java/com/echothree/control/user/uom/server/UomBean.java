@@ -45,7 +45,7 @@ public class UomBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createUnitOfMeasureKind(UserVisitPK userVisitPK, CreateUnitOfMeasureKindForm form) {
+    public CommandResult<CreateUnitOfMeasureKindResult> createUnitOfMeasureKind(UserVisitPK userVisitPK, CreateUnitOfMeasureKindForm form) {
         return CDI.current().select(CreateUnitOfMeasureKindCommand.class).get().run(userVisitPK, form);
     }
     
@@ -109,7 +109,7 @@ public class UomBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createUnitOfMeasureType(UserVisitPK userVisitPK, CreateUnitOfMeasureTypeForm form) {
+    public CommandResult<CreateUnitOfMeasureTypeResult> createUnitOfMeasureType(UserVisitPK userVisitPK, CreateUnitOfMeasureTypeForm form) {
         return CDI.current().select(CreateUnitOfMeasureTypeCommand.class).get().run(userVisitPK, form);
     }
     

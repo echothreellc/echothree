@@ -17,9 +17,11 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateCommandMessageForm;
+import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.core.server.entity.CommandMessage;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -63,12 +65,15 @@ public class CreateCommandMessageCommand
     
     @Override
     protected BaseResult execute() {
+        var result = CoreResultFactory.getCreateCommandMessageResult();
+        CommandMessage commandMessage = null;
         var commandMessageTypeName = form.getCommandMessageTypeName();
         var commandMessageType = commandControl.getCommandMessageTypeByName(commandMessageTypeName);
         
         if(commandMessageType != null) {
             var commandMessageKey = form.getCommandMessageKey();
-            var commandMessage = commandControl.getCommandMessageByKey(commandMessageType, commandMessageKey);
+
+            commandMessage = commandControl.getCommandMessageByKey(commandMessageType, commandMessageKey);
             
             if(commandMessage == null) {
                 var partyPK = getPartyPK();
@@ -86,7 +91,13 @@ public class CreateCommandMessageCommand
             addExecutionError(ExecutionErrors.UnknownCommandMessageTypeName.name(), commandMessageTypeName);
         }
         
-        return null;
+        if(commandMessage != null) {
+            result.setEntityRef(commandMessage.getPrimaryKey().getEntityRef());
+            result.setCommandMessageTypeName(commandMessage.getLastDetail().getCommandMessageType().getLastDetail().getCommandMessageTypeName());
+            result.setCommandMessageKey(commandMessage.getLastDetail().getCommandMessageKey());
+        }
+
+        return result;
     }
     
 }

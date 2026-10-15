@@ -95,7 +95,7 @@ public interface CoreService
     //   Commands
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createCommand(UserVisitPK userVisitPK, CreateCommandForm form);
+    CommandResult<CreateCommandResult> createCommand(UserVisitPK userVisitPK, CreateCommandForm form);
     
     CommandResult<GetCommandResult> getCommand(UserVisitPK userVisitPK, GetCommandForm form);
     
@@ -123,7 +123,7 @@ public interface CoreService
     //   Command Message Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createCommandMessageType(UserVisitPK userVisitPK, CreateCommandMessageTypeForm form);
+    CommandResult<CreateCommandMessageTypeResult> createCommandMessageType(UserVisitPK userVisitPK, CreateCommandMessageTypeForm form);
     
     CommandResult<GetCommandMessageTypeChoicesResult> getCommandMessageTypeChoices(UserVisitPK userVisitPK, GetCommandMessageTypeChoicesForm form);
     
@@ -155,7 +155,7 @@ public interface CoreService
     //   Command Messages
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createCommandMessage(UserVisitPK userVisitPK, CreateCommandMessageForm form);
+    CommandResult<CreateCommandMessageResult> createCommandMessage(UserVisitPK userVisitPK, CreateCommandMessageForm form);
     
     CommandResult<GetCommandMessageResult> getCommandMessage(UserVisitPK userVisitPK, GetCommandMessageForm form);
 
@@ -445,7 +445,7 @@ public interface CoreService
     //   Entity Integer Ranges
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createEntityIntegerRange(UserVisitPK userVisitPK, CreateEntityIntegerRangeForm form);
+    CommandResult<CreateEntityIntegerRangeResult> createEntityIntegerRange(UserVisitPK userVisitPK, CreateEntityIntegerRangeForm form);
     
     CommandResult<GetEntityIntegerRangeResult> getEntityIntegerRange(UserVisitPK userVisitPK, GetEntityIntegerRangeForm form);
     
@@ -477,7 +477,7 @@ public interface CoreService
     //   Entity Long Ranges
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createEntityLongRange(UserVisitPK userVisitPK, CreateEntityLongRangeForm form);
+    CommandResult<CreateEntityLongRangeResult> createEntityLongRange(UserVisitPK userVisitPK, CreateEntityLongRangeForm form);
     
     CommandResult<GetEntityLongRangeResult> getEntityLongRange(UserVisitPK userVisitPK, GetEntityLongRangeForm form);
     
@@ -527,7 +527,7 @@ public interface CoreService
     //   Mime Types
     // -------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createMimeType(UserVisitPK userVisitPK, CreateMimeTypeForm form);
+    CommandResult<CreateMimeTypeResult> createMimeType(UserVisitPK userVisitPK, CreateMimeTypeForm form);
 
     CommandResult<GetMimeTypesResult> getMimeTypes(UserVisitPK userVisitPK, GetMimeTypesForm form);
 
@@ -577,7 +577,7 @@ public interface CoreService
     //   Protocols
     // --------------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createProtocol(UserVisitPK userVisitPK, CreateProtocolForm form);
+    CommandResult<CreateProtocolResult> createProtocol(UserVisitPK userVisitPK, CreateProtocolForm form);
 
     CommandResult<GetProtocolChoicesResult> getProtocolChoices(UserVisitPK userVisitPK, GetProtocolChoicesForm form);
 
@@ -609,7 +609,7 @@ public interface CoreService
     //   Services
     // --------------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createService(UserVisitPK userVisitPK, CreateServiceForm form);
+    CommandResult<CreateServiceResult> createService(UserVisitPK userVisitPK, CreateServiceForm form);
 
     CommandResult<GetServiceChoicesResult> getServiceChoices(UserVisitPK userVisitPK, GetServiceChoicesForm form);
 
@@ -641,7 +641,7 @@ public interface CoreService
     //   Servers
     // --------------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createServer(UserVisitPK userVisitPK, CreateServerForm form);
+    CommandResult<CreateServerResult> createServer(UserVisitPK userVisitPK, CreateServerForm form);
 
     CommandResult<GetServerChoicesResult> getServerChoices(UserVisitPK userVisitPK, GetServerChoicesForm form);
 
@@ -953,7 +953,7 @@ public interface CoreService
     //   Applications
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createApplication(UserVisitPK userVisitPK, CreateApplicationForm form);
+    CommandResult<CreateApplicationResult> createApplication(UserVisitPK userVisitPK, CreateApplicationForm form);
     
     CommandResult<GetApplicationChoicesResult> getApplicationChoices(UserVisitPK userVisitPK, GetApplicationChoicesForm form);
     
@@ -985,7 +985,7 @@ public interface CoreService
     //   Editors
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createEditor(UserVisitPK userVisitPK, CreateEditorForm form);
+    CommandResult<CreateEditorResult> createEditor(UserVisitPK userVisitPK, CreateEditorForm form);
     
     CommandResult<GetEditorChoicesResult> getEditorChoices(UserVisitPK userVisitPK, GetEditorChoicesForm form);
     
@@ -1017,7 +1017,7 @@ public interface CoreService
     //   Application Editors
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createApplicationEditor(UserVisitPK userVisitPK, CreateApplicationEditorForm form);
+    CommandResult<CreateApplicationEditorResult> createApplicationEditor(UserVisitPK userVisitPK, CreateApplicationEditorForm form);
     
     CommandResult<GetApplicationEditorChoicesResult> getApplicationEditorChoices(UserVisitPK userVisitPK, GetApplicationEditorChoicesForm form);
     
@@ -1035,7 +1035,7 @@ public interface CoreService
     //   Application Editor Uses
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createApplicationEditorUse(UserVisitPK userVisitPK, CreateApplicationEditorUseForm form);
+    CommandResult<CreateApplicationEditorUseResult> createApplicationEditorUse(UserVisitPK userVisitPK, CreateApplicationEditorUseForm form);
     
     CommandResult<GetApplicationEditorUseChoicesResult> getApplicationEditorUseChoices(UserVisitPK userVisitPK, GetApplicationEditorUseChoicesForm form);
     
@@ -1155,7 +1155,7 @@ public interface CoreService
     //   Font Styles
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createFontStyle(UserVisitPK userVisitPK, CreateFontStyleForm form);
+    CommandResult<CreateFontStyleResult> createFontStyle(UserVisitPK userVisitPK, CreateFontStyleForm form);
     
     CommandResult<GetFontStyleChoicesResult> getFontStyleChoices(UserVisitPK userVisitPK, GetFontStyleChoicesForm form);
     
@@ -1187,7 +1187,7 @@ public interface CoreService
     //   Font Weights
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createFontWeight(UserVisitPK userVisitPK, CreateFontWeightForm form);
+    CommandResult<CreateFontWeightResult> createFontWeight(UserVisitPK userVisitPK, CreateFontWeightForm form);
     
     CommandResult<GetFontWeightChoicesResult> getFontWeightChoices(UserVisitPK userVisitPK, GetFontWeightChoicesForm form);
     
@@ -1219,7 +1219,7 @@ public interface CoreService
     //   Font Decorations
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createTextDecoration(UserVisitPK userVisitPK, CreateTextDecorationForm form);
+    CommandResult<CreateTextDecorationResult> createTextDecoration(UserVisitPK userVisitPK, CreateTextDecorationForm form);
     
     CommandResult<GetTextDecorationChoicesResult> getTextDecorationChoices(UserVisitPK userVisitPK, GetTextDecorationChoicesForm form);
     
@@ -1251,7 +1251,7 @@ public interface CoreService
     //   Font Transformations
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createTextTransformation(UserVisitPK userVisitPK, CreateTextTransformationForm form);
+    CommandResult<CreateTextTransformationResult> createTextTransformation(UserVisitPK userVisitPK, CreateTextTransformationForm form);
     
     CommandResult<GetTextTransformationChoicesResult> getTextTransformationChoices(UserVisitPK userVisitPK, GetTextTransformationChoicesForm form);
     

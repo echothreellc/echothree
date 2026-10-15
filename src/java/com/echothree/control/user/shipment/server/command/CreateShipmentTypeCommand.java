@@ -17,6 +17,7 @@
 package com.echothree.control.user.shipment.server.command;
 
 import com.echothree.control.user.shipment.common.form.CreateShipmentTypeForm;
+import com.echothree.control.user.shipment.common.result.ShipmentResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -24,10 +25,10 @@ import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.shipment.server.control.ShipmentControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.shipment.server.entity.ShipmentType;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -81,6 +82,7 @@ public class CreateShipmentTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ShipmentResultFactory.getCreateShipmentTypeResult();
         var shipmentTypeName = form.getShipmentTypeName();
         var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
 
@@ -144,7 +146,12 @@ public class CreateShipmentTypeCommand
             addExecutionError(ExecutionErrors.DuplicateShipmentTypeName.name(), shipmentTypeName);
         }
 
-        return null;
+        if(shipmentType != null) {
+            result.setEntityRef(shipmentType.getPrimaryKey().getEntityRef());
+            result.setShipmentTypeName(shipmentType.getLastDetail().getShipmentTypeName());
+        }
+
+        return result;
     }
     
 }

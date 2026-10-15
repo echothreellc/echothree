@@ -35,7 +35,7 @@ public interface ContactListService
     //   Contact List Types
     // -------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createContactListType(UserVisitPK userVisitPK, CreateContactListTypeForm form);
+    CommandResult<CreateContactListTypeResult> createContactListType(UserVisitPK userVisitPK, CreateContactListTypeForm form);
 
     CommandResult<GetContactListTypesResult> getContactListTypes(UserVisitPK userVisitPK, GetContactListTypesForm form);
 
@@ -67,7 +67,7 @@ public interface ContactListService
     //   Contact List Groups
     // --------------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createContactListGroup(UserVisitPK userVisitPK, CreateContactListGroupForm form);
+    CommandResult<CreateContactListGroupResult> createContactListGroup(UserVisitPK userVisitPK, CreateContactListGroupForm form);
 
     CommandResult<GetContactListGroupsResult> getContactListGroups(UserVisitPK userVisitPK, GetContactListGroupsForm form);
 
@@ -99,7 +99,7 @@ public interface ContactListService
     //   Contact List Frequencies
     // --------------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createContactListFrequency(UserVisitPK userVisitPK, CreateContactListFrequencyForm form);
+    CommandResult<CreateContactListFrequencyResult> createContactListFrequency(UserVisitPK userVisitPK, CreateContactListFrequencyForm form);
 
     CommandResult<GetContactListFrequenciesResult> getContactListFrequencies(UserVisitPK userVisitPK, GetContactListFrequenciesForm form);
 
@@ -131,7 +131,7 @@ public interface ContactListService
     //   Contact Lists
     // --------------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createContactList(UserVisitPK userVisitPK, CreateContactListForm form);
+    CommandResult<CreateContactListResult> createContactList(UserVisitPK userVisitPK, CreateContactListForm form);
 
     CommandResult<GetContactListsResult> getContactLists(UserVisitPK userVisitPK, GetContactListsForm form);
 
@@ -219,7 +219,7 @@ public interface ContactListService
     //   Contact List Contact Mechanism Purposes
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createContactListContactMechanismPurpose(UserVisitPK userVisitPK, CreateContactListContactMechanismPurposeForm form);
+    CommandResult<CreateContactListContactMechanismPurposeResult> createContactListContactMechanismPurpose(UserVisitPK userVisitPK, CreateContactListContactMechanismPurposeForm form);
     
     CommandResult<GetContactListContactMechanismPurposeChoicesResult> getContactListContactMechanismPurposeChoices(UserVisitPK userVisitPK, GetContactListContactMechanismPurposeChoicesForm form);
     
@@ -237,7 +237,7 @@ public interface ContactListService
     //   Party Contact Lists
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createPartyContactList(UserVisitPK userVisitPK, CreatePartyContactListForm form);
+    CommandResult<CreatePartyContactListResult> createPartyContactList(UserVisitPK userVisitPK, CreatePartyContactListForm form);
 
     CommandResult<GetPartyContactListsResult> getPartyContactLists(UserVisitPK userVisitPK, GetPartyContactListsForm form);
 

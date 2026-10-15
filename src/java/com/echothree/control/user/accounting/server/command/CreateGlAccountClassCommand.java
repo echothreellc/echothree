@@ -17,16 +17,17 @@
 package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.form.CreateGlAccountClassForm;
+import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.accounting.server.entity.GlAccountClass;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -70,6 +71,7 @@ public class CreateGlAccountClassCommand
     
     @Override
     protected BaseResult execute() {
+        var result = AccountingResultFactory.getCreateGlAccountClassResult();
         var glAccountClassName = form.getGlAccountClassName();
         var glAccountClass = accountingControl.getGlAccountClassByName(glAccountClassName);
         
@@ -100,7 +102,12 @@ public class CreateGlAccountClassCommand
             addExecutionError(ExecutionErrors.DuplicateGlAccountClassName.name(), glAccountClassName);
         }
         
-        return null;
+        if(glAccountClass != null) {
+            result.setEntityRef(glAccountClass.getPrimaryKey().getEntityRef());
+            result.setGlAccountClassName(glAccountClass.getLastDetail().getGlAccountClassName());
+        }
+
+        return result;
     }
     
 }

@@ -45,7 +45,7 @@ public class EmployeeBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createResponsibilityType(UserVisitPK userVisitPK, CreateResponsibilityTypeForm form) {
+    public CommandResult<CreateResponsibilityTypeResult> createResponsibilityType(UserVisitPK userVisitPK, CreateResponsibilityTypeForm form) {
         return CDI.current().select(CreateResponsibilityTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -108,7 +108,7 @@ public class EmployeeBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createSkillType(UserVisitPK userVisitPK, CreateSkillTypeForm form) {
+    public CommandResult<CreateSkillTypeResult> createSkillType(UserVisitPK userVisitPK, CreateSkillTypeForm form) {
         return CDI.current().select(CreateSkillTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -171,7 +171,7 @@ public class EmployeeBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createLeaveType(UserVisitPK userVisitPK, CreateLeaveTypeForm form) {
+    public CommandResult<CreateLeaveTypeResult> createLeaveType(UserVisitPK userVisitPK, CreateLeaveTypeForm form) {
         return CDI.current().select(CreateLeaveTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -239,7 +239,7 @@ public class EmployeeBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createLeaveReason(UserVisitPK userVisitPK, CreateLeaveReasonForm form) {
+    public CommandResult<CreateLeaveReasonResult> createLeaveReason(UserVisitPK userVisitPK, CreateLeaveReasonForm form) {
         return CDI.current().select(CreateLeaveReasonCommand.class).get().run(userVisitPK, form);
     }
 
@@ -307,7 +307,7 @@ public class EmployeeBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createLeave(UserVisitPK userVisitPK, CreateLeaveForm form) {
+    public CommandResult<CreateLeaveResult> createLeave(UserVisitPK userVisitPK, CreateLeaveForm form) {
         return CDI.current().select(CreateLeaveCommand.class).get().run(userVisitPK, form);
     }
 
@@ -346,7 +346,7 @@ public class EmployeeBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createTerminationReason(UserVisitPK userVisitPK, CreateTerminationReasonForm form) {
+    public CommandResult<CreateTerminationReasonResult> createTerminationReason(UserVisitPK userVisitPK, CreateTerminationReasonForm form) {
         return CDI.current().select(CreateTerminationReasonCommand.class).get().run(userVisitPK, form);
     }
 
@@ -409,7 +409,7 @@ public class EmployeeBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createTerminationType(UserVisitPK userVisitPK, CreateTerminationTypeForm form) {
+    public CommandResult<CreateTerminationTypeResult> createTerminationType(UserVisitPK userVisitPK, CreateTerminationTypeForm form) {
         return CDI.current().select(CreateTerminationTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -472,7 +472,7 @@ public class EmployeeBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createEmployment(UserVisitPK userVisitPK, CreateEmploymentForm form) {
+    public CommandResult<CreateEmploymentResult> createEmployment(UserVisitPK userVisitPK, CreateEmploymentForm form) {
         return CDI.current().select(CreateEmploymentCommand.class).get().run(userVisitPK, form);
     }
 
@@ -539,7 +539,7 @@ public class EmployeeBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createEmployeeType(UserVisitPK userVisitPK, CreateEmployeeTypeForm form) {
+    public CommandResult<CreateEmployeeTypeResult> createEmployeeType(UserVisitPK userVisitPK, CreateEmployeeTypeForm form) {
         return CDI.current().select(CreateEmployeeTypeCommand.class).get().run(userVisitPK, form);
     }
     

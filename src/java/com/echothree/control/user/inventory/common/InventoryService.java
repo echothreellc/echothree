@@ -221,7 +221,7 @@ public interface InventoryService
     //   Lot Time Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createLotTimeType(UserVisitPK userVisitPK, CreateLotTimeTypeForm form);
+    CommandResult<CreateLotTimeTypeResult> createLotTimeType(UserVisitPK userVisitPK, CreateLotTimeTypeForm form);
 
     CommandResult<GetLotTimeTypeChoicesResult> getLotTimeTypeChoices(UserVisitPK userVisitPK, GetLotTimeTypeChoicesForm form);
 
@@ -253,7 +253,7 @@ public interface InventoryService
     //   Lot Alias Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createLotAliasType(UserVisitPK userVisitPK, CreateLotAliasTypeForm form);
+    CommandResult<CreateLotAliasTypeResult> createLotAliasType(UserVisitPK userVisitPK, CreateLotAliasTypeForm form);
 
     CommandResult<GetLotAliasTypeChoicesResult> getLotAliasTypeChoices(UserVisitPK userVisitPK, GetLotAliasTypeChoicesForm form);
 

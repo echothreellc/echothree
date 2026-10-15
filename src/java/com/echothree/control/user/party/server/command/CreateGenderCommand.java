@@ -17,12 +17,13 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.CreateGenderForm;
+import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -54,6 +55,7 @@ public class CreateGenderCommand
     
     @Override
     protected BaseResult execute() {
+        var result = PartyResultFactory.getCreateGenderResult();
         var genderName = form.getGenderName();
         var gender = partyControl.getGenderByName(genderName);
         
@@ -72,7 +74,12 @@ public class CreateGenderCommand
             addExecutionError(ExecutionErrors.DuplicateGenderName.name(), genderName);
         }
         
-        return null;
+        if(gender != null) {
+            result.setEntityRef(gender.getPrimaryKey().getEntityRef());
+            result.setGenderName(gender.getLastDetail().getGenderName());
+        }
+
+        return result;
     }
     
 }

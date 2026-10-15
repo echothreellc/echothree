@@ -17,15 +17,17 @@
 package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.CreateSearchCheckSpellingActionTypeForm;
+import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.search.server.entity.SearchCheckSpellingActionType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -68,6 +70,7 @@ public class CreateSearchCheckSpellingActionTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = SearchResultFactory.getCreateSearchCheckSpellingActionTypeResult();
         var searchCheckSpellingActionTypeName = form.getSearchCheckSpellingActionTypeName();
         var searchCheckSpellingActionType = searchControl.getSearchCheckSpellingActionTypeByName(searchCheckSpellingActionTypeName);
         
@@ -86,7 +89,12 @@ public class CreateSearchCheckSpellingActionTypeCommand
             addExecutionError(ExecutionErrors.DuplicateSearchCheckSpellingActionTypeName.name(), searchCheckSpellingActionTypeName);
         }
         
-        return null;
+        if(searchCheckSpellingActionType != null) {
+            result.setEntityRef(searchCheckSpellingActionType.getPrimaryKey().getEntityRef());
+            result.setSearchCheckSpellingActionTypeName(searchCheckSpellingActionType.getLastDetail().getSearchCheckSpellingActionTypeName());
+        }
+
+        return result;
     }
     
 }

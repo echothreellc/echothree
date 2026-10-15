@@ -61,7 +61,7 @@ public interface TrainingService
     //   Training Class Sections
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createTrainingClassSection(UserVisitPK userVisitPK, CreateTrainingClassSectionForm form);
+    CommandResult<CreateTrainingClassSectionResult> createTrainingClassSection(UserVisitPK userVisitPK, CreateTrainingClassSectionForm form);
     
     CommandResult<GetTrainingClassSectionsResult> getTrainingClassSections(UserVisitPK userVisitPK, GetTrainingClassSectionsForm form);
     
@@ -89,7 +89,7 @@ public interface TrainingService
     //   Training Class Pages
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createTrainingClassPage(UserVisitPK userVisitPK, CreateTrainingClassPageForm form);
+    CommandResult<CreateTrainingClassPageResult> createTrainingClassPage(UserVisitPK userVisitPK, CreateTrainingClassPageForm form);
     
     CommandResult<GetTrainingClassPagesResult> getTrainingClassPages(UserVisitPK userVisitPK, GetTrainingClassPagesForm form);
     
@@ -117,7 +117,7 @@ public interface TrainingService
     //   Training Class Questions
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createTrainingClassQuestion(UserVisitPK userVisitPK, CreateTrainingClassQuestionForm form);
+    CommandResult<CreateTrainingClassQuestionResult> createTrainingClassQuestion(UserVisitPK userVisitPK, CreateTrainingClassQuestionForm form);
     
     CommandResult<GetTrainingClassQuestionsResult> getTrainingClassQuestions(UserVisitPK userVisitPK, GetTrainingClassQuestionsForm form);
     
@@ -145,7 +145,7 @@ public interface TrainingService
     //   Training Class Answers
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createTrainingClassAnswer(UserVisitPK userVisitPK, CreateTrainingClassAnswerForm form);
+    CommandResult<CreateTrainingClassAnswerResult> createTrainingClassAnswer(UserVisitPK userVisitPK, CreateTrainingClassAnswerForm form);
     
     CommandResult<GetTrainingClassAnswersResult> getTrainingClassAnswers(UserVisitPK userVisitPK, GetTrainingClassAnswersForm form);
     
@@ -173,7 +173,7 @@ public interface TrainingService
     //   Party Training Classes
     // -------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createPartyTrainingClass(UserVisitPK userVisitPK, CreatePartyTrainingClassForm form);
+    CommandResult<CreatePartyTrainingClassResult> createPartyTrainingClass(UserVisitPK userVisitPK, CreatePartyTrainingClassForm form);
 
     CommandResult<GetPartyTrainingClassStatusChoicesResult> getPartyTrainingClassStatusChoices(UserVisitPK userVisitPK, GetPartyTrainingClassStatusChoicesForm form);
 

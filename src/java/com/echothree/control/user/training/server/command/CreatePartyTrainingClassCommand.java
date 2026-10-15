@@ -17,17 +17,19 @@
 package com.echothree.control.user.training.server.command;
 
 import com.echothree.control.user.training.common.form.CreatePartyTrainingClassForm;
+import com.echothree.control.user.training.common.result.TrainingResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.training.server.logic.PartyTrainingClassLogic;
+import com.echothree.model.data.training.server.entity.PartyTrainingClass;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -76,6 +78,8 @@ public class CreatePartyTrainingClassCommand
     
     @Override
     protected BaseResult execute() {
+        var result = TrainingResultFactory.getCreatePartyTrainingClassResult();
+        PartyTrainingClass partyTrainingClass = null;
         var partyName = form.getPartyName();
         var party = partyControl.getPartyByName(partyName);
 
@@ -96,7 +100,7 @@ public class CreatePartyTrainingClassCommand
                                 completedTime, validUntilTime);
 
                         if(!hasExecutionErrors()) {
-                            partyTrainingClassLogic.createPartyTrainingClass(session, preparedPartyTrainingClass, getPartyPK());
+                            partyTrainingClass = partyTrainingClassLogic.createPartyTrainingClass(session, preparedPartyTrainingClass, getPartyPK());
                         }
                     } else {
                         addExecutionError(ExecutionErrors.InvalidValidUntilTime.name());
@@ -111,7 +115,12 @@ public class CreatePartyTrainingClassCommand
             addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
         }
 
-        return null;
+        if(partyTrainingClass != null) {
+            result.setEntityRef(partyTrainingClass.getPrimaryKey().getEntityRef());
+            result.setPartyTrainingClassName(partyTrainingClass.getLastDetail().getPartyTrainingClassName());
+        }
+
+        return result;
     }
 
 }

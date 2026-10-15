@@ -17,17 +17,19 @@
 package com.echothree.control.user.letter.server.command;
 
 import com.echothree.control.user.letter.common.form.CreateLetterForm;
+import com.echothree.control.user.letter.common.result.LetterResultFactory;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.letter.server.entity.Letter;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -80,6 +82,8 @@ public class CreateLetterCommand
     
     @Override
     protected BaseResult execute() {
+        var result = LetterResultFactory.getCreateLetterResult();
+        Letter letter = null;
         var chainKindName = form.getChainKindName();
         var chainKind = chainControl.getChainKindByName(chainKindName);
         
@@ -89,7 +93,8 @@ public class CreateLetterCommand
             
             if(chainType != null) {
                 var letterName = form.getLetterName();
-                var letter = letterControl.getLetterByName(chainType, letterName);
+
+                letter = letterControl.getLetterByName(chainType, letterName);
                 
                 if(letter == null) {
                     var letterSourceName = form.getLetterSourceName();
@@ -127,7 +132,14 @@ public class CreateLetterCommand
             addExecutionError(ExecutionErrors.UnknownChainKindName.name(), chainKindName);
         }
         
-        return null;
+        if(letter != null) {
+            result.setEntityRef(letter.getPrimaryKey().getEntityRef());
+            result.setChainKindName(letter.getLastDetail().getChainType().getLastDetail().getChainKind().getLastDetail().getChainKindName());
+            result.setChainTypeName(letter.getLastDetail().getChainType().getLastDetail().getChainTypeName());
+            result.setLetterName(letter.getLastDetail().getLetterName());
+        }
+
+        return result;
     }
     
 }

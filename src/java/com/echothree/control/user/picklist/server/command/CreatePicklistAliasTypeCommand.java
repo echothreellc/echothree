@@ -17,15 +17,17 @@
 package com.echothree.control.user.picklist.server.command;
 
 import com.echothree.control.user.picklist.common.form.CreatePicklistAliasTypeForm;
+import com.echothree.control.user.picklist.common.result.PicklistResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.picklist.server.entity.PicklistAliasType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -69,12 +71,15 @@ public class CreatePicklistAliasTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = PicklistResultFactory.getCreatePicklistAliasTypeResult();
+        PicklistAliasType picklistAliasType = null;
         var picklistTypeName = form.getPicklistTypeName();
         var picklistType = picklistControl.getPicklistTypeByName(picklistTypeName);
 
         if(picklistType != null) {
             var picklistAliasTypeName = form.getPicklistAliasTypeName();
-            var picklistAliasType = picklistControl.getPicklistAliasTypeByName(picklistType, picklistAliasTypeName);
+
+            picklistAliasType = picklistControl.getPicklistAliasTypeByName(picklistType, picklistAliasTypeName);
 
             if(picklistAliasType == null) {
                 var createdBy = getPartyPK();
@@ -95,7 +100,13 @@ public class CreatePicklistAliasTypeCommand
             addExecutionError(ExecutionErrors.UnknownPicklistTypeName.name(), picklistTypeName);
         }
 
-        return null;
+        if(picklistAliasType != null) {
+            result.setEntityRef(picklistAliasType.getPrimaryKey().getEntityRef());
+            result.setPicklistTypeName(picklistAliasType.getLastDetail().getPicklistType().getLastDetail().getPicklistTypeName());
+            result.setPicklistAliasTypeName(picklistAliasType.getLastDetail().getPicklistAliasTypeName());
+        }
+
+        return result;
     }
     
 }

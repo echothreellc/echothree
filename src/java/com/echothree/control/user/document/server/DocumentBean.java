@@ -45,7 +45,7 @@ public class DocumentBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createDocumentType(UserVisitPK userVisitPK, CreateDocumentTypeForm form) {
+    public CommandResult<CreateDocumentTypeResult> createDocumentType(UserVisitPK userVisitPK, CreateDocumentTypeForm form) {
         return CDI.current().select(CreateDocumentTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -113,7 +113,7 @@ public class DocumentBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createDocumentTypeUsageType(UserVisitPK userVisitPK, CreateDocumentTypeUsageTypeForm form) {
+    public CommandResult<CreateDocumentTypeUsageTypeResult> createDocumentTypeUsageType(UserVisitPK userVisitPK, CreateDocumentTypeUsageTypeForm form) {
         return CDI.current().select(CreateDocumentTypeUsageTypeCommand.class).get().run(userVisitPK, form);
     }
 

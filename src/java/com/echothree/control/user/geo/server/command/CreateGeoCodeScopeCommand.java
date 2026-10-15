@@ -17,15 +17,17 @@
 package com.echothree.control.user.geo.server.command;
 
 import com.echothree.control.user.geo.common.form.CreateGeoCodeScopeForm;
+import com.echothree.control.user.geo.common.result.GeoResultFactory;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.geo.server.entity.GeoCodeScope;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -69,6 +71,7 @@ public class CreateGeoCodeScopeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = GeoResultFactory.getCreateGeoCodeScopeResult();
         var geoCodeScopeName = form.getGeoCodeScopeName();
         var geoCodeScope = geoControl.getGeoCodeScopeByName(geoCodeScopeName);
         
@@ -87,7 +90,12 @@ public class CreateGeoCodeScopeCommand
             addExecutionError(ExecutionErrors.DuplicateGeoCodeScopeName.name(), geoCodeScopeName);
         }
         
-        return null;
+        if(geoCodeScope != null) {
+            result.setEntityRef(geoCodeScope.getPrimaryKey().getEntityRef());
+            result.setGeoCodeScopeName(geoCodeScope.getLastDetail().getGeoCodeScopeName());
+        }
+
+        return result;
     }
     
 }

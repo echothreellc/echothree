@@ -131,7 +131,7 @@ public interface ContentService
     //   Content Sections
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createContentSection(UserVisitPK userVisitPK, CreateContentSectionForm form);
+    CommandResult<CreateContentSectionResult> createContentSection(UserVisitPK userVisitPK, CreateContentSectionForm form);
     
     CommandResult<GetContentSectionResult> getContentSection(UserVisitPK userVisitPK, GetContentSectionForm form);
     
@@ -163,7 +163,7 @@ public interface ContentService
     //  Content Pages
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createContentPage(UserVisitPK userVisitPK, CreateContentPageForm form);
+    CommandResult<CreateContentPageResult> createContentPage(UserVisitPK userVisitPK, CreateContentPageForm form);
     
     CommandResult<GetContentPageResult> getContentPage(UserVisitPK userVisitPK, GetContentPageForm form);
     
@@ -279,7 +279,7 @@ public interface ContentService
     //   Content Forums
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createContentForum(UserVisitPK userVisitPK, CreateContentForumForm form);
+    CommandResult<CreateContentForumResult> createContentForum(UserVisitPK userVisitPK, CreateContentForumForm form);
     
     CommandResult<GetContentForumResult> getContentForum(UserVisitPK userVisitPK, GetContentForumForm form);
     

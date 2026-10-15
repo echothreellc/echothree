@@ -35,7 +35,7 @@ public interface LicenseService
     //   License Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createLicenseType(UserVisitPK userVisitPK, CreateLicenseTypeForm form);
+    CommandResult<CreateLicenseTypeResult> createLicenseType(UserVisitPK userVisitPK, CreateLicenseTypeForm form);
     
     CommandResult<GetLicenseTypeChoicesResult> getLicenseTypeChoices(UserVisitPK userVisitPK, GetLicenseTypeChoicesForm form);
     

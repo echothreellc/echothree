@@ -17,15 +17,17 @@
 package com.echothree.control.user.document.server.command;
 
 import com.echothree.control.user.document.common.form.CreateDocumentTypeUsageTypeForm;
+import com.echothree.control.user.document.common.result.DocumentResultFactory;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.document.server.entity.DocumentTypeUsageType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -68,6 +70,7 @@ public class CreateDocumentTypeUsageTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = DocumentResultFactory.getCreateDocumentTypeUsageTypeResult();
         var documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
         var documentTypeUsageType = documentControl.getDocumentTypeUsageTypeByName(documentTypeUsageTypeName);
 
@@ -86,7 +89,12 @@ public class CreateDocumentTypeUsageTypeCommand
             addExecutionError(ExecutionErrors.DuplicateDocumentTypeUsageTypeName.name(), documentTypeUsageTypeName);
         }
 
-        return null;
+        if(documentTypeUsageType != null) {
+            result.setEntityRef(documentTypeUsageType.getPrimaryKey().getEntityRef());
+            result.setDocumentTypeUsageTypeName(documentTypeUsageType.getLastDetail().getDocumentTypeUsageTypeName());
+        }
+
+        return result;
     }
     
 }

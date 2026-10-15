@@ -17,10 +17,12 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateServiceForm;
+import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.core.server.entity.Service;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -70,6 +72,7 @@ public class CreateServiceCommand
     
     @Override
     protected BaseResult execute() {
+        var result = CoreResultFactory.getCreateServiceResult();
         var serviceName = form.getServiceName();
         var service = serverControl.getServiceByName(serviceName);
         
@@ -96,7 +99,12 @@ public class CreateServiceCommand
             addExecutionError(ExecutionErrors.DuplicateServiceName.name(), serviceName);
         }
         
-        return null;
+        if(service != null) {
+            result.setEntityRef(service.getPrimaryKey().getEntityRef());
+            result.setServiceName(service.getLastDetail().getServiceName());
+        }
+
+        return result;
     }
     
 }

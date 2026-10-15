@@ -35,7 +35,7 @@ public interface BatchService
     //   Batch Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createBatchType(UserVisitPK userVisitPK, CreateBatchTypeForm form);
+    CommandResult<CreateBatchTypeResult> createBatchType(UserVisitPK userVisitPK, CreateBatchTypeForm form);
     
     CommandResult<GetBatchTypeChoicesResult> getBatchTypeChoices(UserVisitPK userVisitPK, GetBatchTypeChoicesForm form);
     
@@ -79,7 +79,7 @@ public interface BatchService
     //   Batch Alias Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createBatchAliasType(UserVisitPK userVisitPK, CreateBatchAliasTypeForm form);
+    CommandResult<CreateBatchAliasTypeResult> createBatchAliasType(UserVisitPK userVisitPK, CreateBatchAliasTypeForm form);
 
     CommandResult<GetBatchAliasTypeChoicesResult> getBatchAliasTypeChoices(UserVisitPK userVisitPK, GetBatchAliasTypeChoicesForm form);
 

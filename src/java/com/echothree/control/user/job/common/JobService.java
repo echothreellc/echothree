@@ -35,7 +35,7 @@ public interface JobService
     //   Jobs
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createJob(UserVisitPK userVisitPK, CreateJobForm form);
+    CommandResult<CreateJobResult> createJob(UserVisitPK userVisitPK, CreateJobForm form);
     
     CommandResult<GetJobResult> getJob(UserVisitPK userVisitPK, GetJobForm form);
     

@@ -17,15 +17,17 @@
 package com.echothree.control.user.returnpolicy.server.command;
 
 import com.echothree.control.user.returnpolicy.common.form.CreateReturnReasonForm;
+import com.echothree.control.user.returnpolicy.common.result.ReturnPolicyResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.returnpolicy.server.entity.ReturnReason;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -69,12 +71,15 @@ public class CreateReturnReasonCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ReturnPolicyResultFactory.getCreateReturnReasonResult();
+        ReturnReason returnReason = null;
         var returnKindName = form.getReturnKindName();
         var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
         
         if(returnKind != null) {
             var returnReasonName = form.getReturnReasonName();
-            var returnReason = returnPolicyControl.getReturnReasonByName(returnKind, returnReasonName);
+
+            returnReason = returnPolicyControl.getReturnReasonByName(returnKind, returnReasonName);
             
             if(returnReason == null) {
                 var partyPK = getPartyPK();
@@ -94,7 +99,13 @@ public class CreateReturnReasonCommand
             addExecutionError(ExecutionErrors.DuplicateReturnKindName.name(), returnKindName);
         }
         
-        return null;
+        if(returnReason != null) {
+            result.setEntityRef(returnReason.getPrimaryKey().getEntityRef());
+            result.setReturnKindName(returnReason.getLastDetail().getReturnKind().getLastDetail().getReturnKindName());
+            result.setReturnReasonName(returnReason.getLastDetail().getReturnReasonName());
+        }
+
+        return result;
     }
     
 }

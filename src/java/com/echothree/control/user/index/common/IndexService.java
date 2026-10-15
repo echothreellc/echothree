@@ -35,7 +35,7 @@ public interface IndexService
     //   Index Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createIndexType(UserVisitPK userVisitPK, CreateIndexTypeForm form);
+    CommandResult<CreateIndexTypeResult> createIndexType(UserVisitPK userVisitPK, CreateIndexTypeForm form);
     
     CommandResult<GetIndexTypeChoicesResult> getIndexTypeChoices(UserVisitPK userVisitPK, GetIndexTypeChoicesForm form);
     
@@ -67,7 +67,7 @@ public interface IndexService
     //   Index Fields
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createIndexField(UserVisitPK userVisitPK, CreateIndexFieldForm form);
+    CommandResult<CreateIndexFieldResult> createIndexField(UserVisitPK userVisitPK, CreateIndexFieldForm form);
     
     CommandResult<GetIndexFieldChoicesResult> getIndexFieldChoices(UserVisitPK userVisitPK, GetIndexFieldChoicesForm form);
     
@@ -99,7 +99,7 @@ public interface IndexService
     //   Indexes
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createIndex(UserVisitPK userVisitPK, CreateIndexForm form);
+    CommandResult<CreateIndexResult> createIndex(UserVisitPK userVisitPK, CreateIndexForm form);
     
     CommandResult<GetIndexChoicesResult> getIndexChoices(UserVisitPK userVisitPK, GetIndexChoicesForm form);
     

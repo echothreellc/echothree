@@ -51,7 +51,7 @@ public interface ContactService
     //   Contact Mechanism Alias Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createContactMechanismAliasType(UserVisitPK userVisitPK, CreateContactMechanismAliasTypeForm form);
+    CommandResult<CreateContactMechanismAliasTypeResult> createContactMechanismAliasType(UserVisitPK userVisitPK, CreateContactMechanismAliasTypeForm form);
     
     CommandResult<GetContactMechanismAliasTypesResult> getContactMechanismAliasTypes(UserVisitPK userVisitPK, GetContactMechanismAliasTypesForm form);
     
@@ -205,7 +205,7 @@ public interface ContactService
     //   Postal Address Formats
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createPostalAddressFormat(UserVisitPK userVisitPK, CreatePostalAddressFormatForm form);
+    CommandResult<CreatePostalAddressFormatResult> createPostalAddressFormat(UserVisitPK userVisitPK, CreatePostalAddressFormatForm form);
     
     CommandResult<GetPostalAddressFormatResult> getPostalAddressFormat(UserVisitPK userVisitPK, GetPostalAddressFormatForm form);
     

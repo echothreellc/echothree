@@ -35,7 +35,7 @@ public interface PicklistService
     //   Picklist Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createPicklistType(UserVisitPK userVisitPK, CreatePicklistTypeForm form);
+    CommandResult<CreatePicklistTypeResult> createPicklistType(UserVisitPK userVisitPK, CreatePicklistTypeForm form);
 
     CommandResult<GetPicklistTypeChoicesResult> getPicklistTypeChoices(UserVisitPK userVisitPK, GetPicklistTypeChoicesForm form);
 
@@ -67,7 +67,7 @@ public interface PicklistService
     //   Picklist Time Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createPicklistTimeType(UserVisitPK userVisitPK, CreatePicklistTimeTypeForm form);
+    CommandResult<CreatePicklistTimeTypeResult> createPicklistTimeType(UserVisitPK userVisitPK, CreatePicklistTimeTypeForm form);
 
     CommandResult<GetPicklistTimeTypeChoicesResult> getPicklistTimeTypeChoices(UserVisitPK userVisitPK, GetPicklistTimeTypeChoicesForm form);
 
@@ -99,7 +99,7 @@ public interface PicklistService
     //   Picklist Alias Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createPicklistAliasType(UserVisitPK userVisitPK, CreatePicklistAliasTypeForm form);
+    CommandResult<CreatePicklistAliasTypeResult> createPicklistAliasType(UserVisitPK userVisitPK, CreatePicklistAliasTypeForm form);
 
     CommandResult<GetPicklistAliasTypeChoicesResult> getPicklistAliasTypeChoices(UserVisitPK userVisitPK, GetPicklistAliasTypeChoicesForm form);
 

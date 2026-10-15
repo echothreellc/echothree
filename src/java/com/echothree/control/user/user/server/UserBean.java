@@ -45,7 +45,7 @@ public class UserBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createRecoveryQuestion(UserVisitPK userVisitPK, CreateRecoveryQuestionForm form) {
+    public CommandResult<CreateRecoveryQuestionResult> createRecoveryQuestion(UserVisitPK userVisitPK, CreateRecoveryQuestionForm form) {
         return CDI.current().select(CreateRecoveryQuestionCommand.class).get().run(userVisitPK, form);
     }
     

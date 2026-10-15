@@ -35,7 +35,7 @@ public interface SubscriptionService
     //   Subscription Kinds
     // -------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createSubscriptionKind(UserVisitPK userVisitPK, CreateSubscriptionKindForm form);
+    CommandResult<CreateSubscriptionKindResult> createSubscriptionKind(UserVisitPK userVisitPK, CreateSubscriptionKindForm form);
 
     CommandResult<GetSubscriptionKindsResult> getSubscriptionKinds(UserVisitPK userVisitPK, GetSubscriptionKindsForm form);
 
@@ -67,7 +67,7 @@ public interface SubscriptionService
     //   Subscription Types
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createSubscriptionType(UserVisitPK userVisitPK, CreateSubscriptionTypeForm form);
+    CommandResult<CreateSubscriptionTypeResult> createSubscriptionType(UserVisitPK userVisitPK, CreateSubscriptionTypeForm form);
     
     CommandResult<GetSubscriptionTypesResult> getSubscriptionTypes(UserVisitPK userVisitPK, GetSubscriptionTypesForm form);
     
@@ -107,7 +107,7 @@ public interface SubscriptionService
     //   Subscriptions
     // --------------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createSubscription(UserVisitPK userVisitPK, CreateSubscriptionForm form);
+    CommandResult<CreateSubscriptionResult> createSubscription(UserVisitPK userVisitPK, CreateSubscriptionForm form);
     
     CommandResult<GetSubscriptionsResult> getSubscriptions(UserVisitPK userVisitPK, GetSubscriptionsForm form);
     

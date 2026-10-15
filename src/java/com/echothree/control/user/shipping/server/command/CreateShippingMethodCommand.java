@@ -17,6 +17,7 @@
 package com.echothree.control.user.shipping.server.command;
 
 import com.echothree.control.user.shipping.common.form.CreateShippingMethodForm;
+import com.echothree.control.user.shipping.common.result.ShippingResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -25,6 +26,7 @@ import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.selector.server.entity.Selector;
+import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -76,6 +78,7 @@ public class CreateShippingMethodCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ShippingResultFactory.getCreateShippingMethodResult();
         var shippingMethodName = form.getShippingMethodName();
         var shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
         
@@ -142,7 +145,12 @@ public class CreateShippingMethodCommand
             addExecutionError(ExecutionErrors.DuplicateShippingMethodName.name(), shippingMethodName);
         }
         
-        return null;
+        if(shippingMethod != null) {
+            result.setEntityRef(shippingMethod.getPrimaryKey().getEntityRef());
+            result.setShippingMethodName(shippingMethod.getLastDetail().getShippingMethodName());
+        }
+
+        return result;
     }
     
 }

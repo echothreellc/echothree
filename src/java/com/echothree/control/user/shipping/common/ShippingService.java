@@ -35,7 +35,7 @@ public interface ShippingService
     //   Shipping Methods
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createShippingMethod(UserVisitPK userVisitPK, CreateShippingMethodForm form);
+    CommandResult<CreateShippingMethodResult> createShippingMethod(UserVisitPK userVisitPK, CreateShippingMethodForm form);
     
     CommandResult<GetShippingMethodResult> getShippingMethod(UserVisitPK userVisitPK, GetShippingMethodForm form);
     

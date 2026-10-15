@@ -17,15 +17,17 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.CreatePartyTypeLockoutPolicyForm;
+import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.util.Conversion;
+import com.echothree.model.data.party.server.entity.PartyTypeLockoutPolicy;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -63,6 +65,8 @@ public class CreatePartyTypeLockoutPolicyCommand
     
     @Override
     protected BaseResult execute() {
+        var result = PartyResultFactory.getCreatePartyTypeLockoutPolicyResult();
+        PartyTypeLockoutPolicy partyTypeLockoutPolicy = null;
         var rawResetFailureCountTime = form.getResetFailureCountTime();
         var resetFailureCountTimeUnitOfMeasureTypeName = form.getResetFailureCountTimeUnitOfMeasureTypeName();
         var resetFailureCountTimeParameterCount = (rawResetFailureCountTime == null ? 0 : 1) + (resetFailureCountTimeUnitOfMeasureTypeName == null ? 0 : 1);
@@ -77,7 +81,7 @@ public class CreatePartyTypeLockoutPolicyCommand
             
             if(partyType != null) {
                 if(partyType.getAllowUserLogins()) {
-                    var partyTypeLockoutPolicy = partyControl.getPartyTypeLockoutPolicy(partyType);
+                    partyTypeLockoutPolicy = partyControl.getPartyTypeLockoutPolicy(partyType);
 
                     if(partyTypeLockoutPolicy == null) {
                         var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
@@ -100,7 +104,7 @@ public class CreatePartyTypeLockoutPolicyCommand
                                     var lockoutInactiveTime = rawLockoutInactiveTime == null? null: Long.valueOf(rawLockoutInactiveTime);
                                     var lockoutInactiveTimeConversion = lockoutInactiveTime == null? null: new Conversion(uomControl, lockoutInactiveTimeUnitOfMeasureType, lockoutInactiveTime).convertToLowestUnitOfMeasureType();
 
-                                    partyControl.createPartyTypeLockoutPolicy(partyType, lockoutFailureCount,
+                                    partyTypeLockoutPolicy = partyControl.createPartyTypeLockoutPolicy(partyType, lockoutFailureCount,
                                             resetFailureCountTimeConversion == null? null: resetFailureCountTimeConversion.getQuantity(),
                                             manualLockoutReset,
                                             lockoutInactiveTimeConversion == null? null: lockoutInactiveTimeConversion.getQuantity(),
@@ -127,7 +131,12 @@ public class CreatePartyTypeLockoutPolicyCommand
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
         
-        return null;
+        if(partyTypeLockoutPolicy != null) {
+            result.setEntityRef(partyTypeLockoutPolicy.getPrimaryKey().getEntityRef());
+            result.setPartyTypeName(partyTypeLockoutPolicy.getLastDetail().getPartyType().getPartyTypeName());
+        }
+
+        return result;
     }
     
 }

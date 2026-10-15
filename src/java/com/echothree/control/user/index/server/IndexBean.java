@@ -45,7 +45,7 @@ public class IndexBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createIndexType(UserVisitPK userVisitPK, CreateIndexTypeForm form) {
+    public CommandResult<CreateIndexTypeResult> createIndexType(UserVisitPK userVisitPK, CreateIndexTypeForm form) {
         return CDI.current().select(CreateIndexTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -113,7 +113,7 @@ public class IndexBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createIndexField(UserVisitPK userVisitPK, CreateIndexFieldForm form) {
+    public CommandResult<CreateIndexFieldResult> createIndexField(UserVisitPK userVisitPK, CreateIndexFieldForm form) {
         return CDI.current().select(CreateIndexFieldCommand.class).get().run(userVisitPK, form);
     }
     
@@ -181,7 +181,7 @@ public class IndexBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createIndex(UserVisitPK userVisitPK, CreateIndexForm form) {
+    public CommandResult<CreateIndexResult> createIndex(UserVisitPK userVisitPK, CreateIndexForm form) {
         return CDI.current().select(CreateIndexCommand.class).get().run(userVisitPK, form);
     }
     

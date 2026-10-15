@@ -17,15 +17,17 @@
 package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.CreateContentPageForm;
+import com.echothree.control.user.content.common.result.ContentResultFactory;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.content.server.entity.ContentPage;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -71,6 +73,8 @@ public class CreateContentPageCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ContentResultFactory.getCreateContentPageResult();
+        ContentPage contentPage = null;
         var contentCollectionName = form.getContentCollectionName();
         var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
@@ -80,7 +84,8 @@ public class CreateContentPageCommand
             
             if(contentSection != null) {
                 var contentPageName = form.getContentPageName();
-                var contentPage = contentControl.getContentPageByName(contentSection, contentPageName);
+
+                contentPage = contentControl.getContentPageByName(contentSection, contentPageName);
                 
                 if(contentPage == null) {
                     var contentPageLayoutName = form.getContentPageLayoutName();
@@ -112,7 +117,14 @@ public class CreateContentPageCommand
             addExecutionError(ExecutionErrors.UnknownContentCollectionName.name(), contentCollectionName);
         }
         
-        return null;
+        if(contentPage != null) {
+            result.setEntityRef(contentPage.getPrimaryKey().getEntityRef());
+            result.setContentCollectionName(contentPage.getLastDetail().getContentSection().getLastDetail().getContentCollection().getLastDetail().getContentCollectionName());
+            result.setContentSectionName(contentPage.getLastDetail().getContentSection().getLastDetail().getContentSectionName());
+            result.setContentPageName(contentPage.getLastDetail().getContentPageName());
+        }
+
+        return result;
     }
     
 }

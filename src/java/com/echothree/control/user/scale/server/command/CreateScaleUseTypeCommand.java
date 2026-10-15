@@ -17,12 +17,13 @@
 package com.echothree.control.user.scale.server.command;
 
 import com.echothree.control.user.scale.common.form.CreateScaleUseTypeForm;
+import com.echothree.control.user.scale.common.result.ScaleResultFactory;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -53,8 +54,9 @@ public class CreateScaleUseTypeCommand
     
    @Override
     protected BaseResult execute() {
-       var scaleUseTypeName = form.getScaleUseTypeName();
-       var scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
+        var result = ScaleResultFactory.getCreateScaleUseTypeResult();
+        var scaleUseTypeName = form.getScaleUseTypeName();
+        var scaleUseType = scaleControl.getScaleUseTypeByName(scaleUseTypeName);
         
         if(scaleUseType == null) {
             var isDefault = Boolean.valueOf(form.getIsDefault());
@@ -73,7 +75,12 @@ public class CreateScaleUseTypeCommand
             addExecutionError(ExecutionErrors.DuplicateScaleUseTypeName.name(), scaleUseTypeName);
         }
         
-        return null;
+        if(scaleUseType != null) {
+            result.setEntityRef(scaleUseType.getPrimaryKey().getEntityRef());
+            result.setScaleUseTypeName(scaleUseType.getLastDetail().getScaleUseTypeName());
+        }
+
+        return result;
     }
     
 }

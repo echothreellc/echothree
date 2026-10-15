@@ -17,16 +17,18 @@
 package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.CreateContentSectionForm;
+import com.echothree.control.user.content.common.result.ContentResultFactory;
 import com.echothree.model.control.content.common.ContentSections;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.content.server.entity.ContentSection;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -71,12 +73,15 @@ public class CreateContentSectionCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ContentResultFactory.getCreateContentSectionResult();
+        ContentSection contentSection = null;
         var contentCollectionName = form.getContentCollectionName();
         var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
         if(contentCollection != null) {
             var contentSectionName = form.getContentSectionName();
-            var contentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
+
+            contentSection = contentControl.getContentSectionByName(contentCollection, contentSectionName);
             
             if(contentSection == null) {
                 var parentContentSectionName = form.getParentContentSectionName();
@@ -104,7 +109,13 @@ public class CreateContentSectionCommand
             addExecutionError(ExecutionErrors.UnknownContentCollectionName.name(), contentCollectionName);
         }
         
-        return null;
+        if(contentSection != null) {
+            result.setEntityRef(contentSection.getPrimaryKey().getEntityRef());
+            result.setContentCollectionName(contentSection.getLastDetail().getContentCollection().getLastDetail().getContentCollectionName());
+            result.setContentSectionName(contentSection.getLastDetail().getContentSectionName());
+        }
+
+        return result;
     }
     
 }

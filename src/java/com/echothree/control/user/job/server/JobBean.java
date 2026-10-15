@@ -45,7 +45,7 @@ public class JobBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createJob(UserVisitPK userVisitPK, CreateJobForm form) {
+    public CommandResult<CreateJobResult> createJob(UserVisitPK userVisitPK, CreateJobForm form) {
         return CDI.current().select(CreateJobCommand.class).get().run(userVisitPK, form);
     }
     

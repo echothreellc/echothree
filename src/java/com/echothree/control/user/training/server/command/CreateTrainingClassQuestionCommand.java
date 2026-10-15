@@ -17,17 +17,19 @@
 package com.echothree.control.user.training.server.command;
 
 import com.echothree.control.user.training.common.form.CreateTrainingClassQuestionForm;
+import com.echothree.control.user.training.common.result.TrainingResultFactory;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
+import com.echothree.model.data.training.server.entity.TrainingClassQuestion;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -77,6 +79,8 @@ public class CreateTrainingClassQuestionCommand
     
     @Override
     protected BaseResult execute() {
+        var result = TrainingResultFactory.getCreateTrainingClassQuestionResult();
+        TrainingClassQuestion trainingClassQuestion = null;
         var trainingClassName = form.getTrainingClassName();
         var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
@@ -86,7 +90,8 @@ public class CreateTrainingClassQuestionCommand
 
             if(trainingClassSection != null) {
                 var trainingClassQuestionName = form.getTrainingClassQuestionName();
-                var trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
+
+                trainingClassQuestion = trainingControl.getTrainingClassQuestionByName(trainingClassSection, trainingClassQuestionName);
 
                 if(trainingClassQuestion == null) {
                     var question = form.getQuestion();
@@ -118,7 +123,14 @@ public class CreateTrainingClassQuestionCommand
             addExecutionError(ExecutionErrors.UnknownTrainingClassName.name(), trainingClassName);
         }
 
-        return null;
+        if(trainingClassQuestion != null) {
+            result.setEntityRef(trainingClassQuestion.getPrimaryKey().getEntityRef());
+            result.setTrainingClassName(trainingClassQuestion.getLastDetail().getTrainingClassSection().getLastDetail().getTrainingClass().getLastDetail().getTrainingClassName());
+            result.setTrainingClassSectionName(trainingClassQuestion.getLastDetail().getTrainingClassSection().getLastDetail().getTrainingClassSectionName());
+            result.setTrainingClassQuestionName(trainingClassQuestion.getLastDetail().getTrainingClassQuestionName());
+        }
+
+        return result;
     }
     
 }

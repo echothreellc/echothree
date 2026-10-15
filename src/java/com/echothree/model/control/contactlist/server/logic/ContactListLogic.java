@@ -161,7 +161,7 @@ public class ContactListLogic
         return contactListControl.getPartyContactList(party, contactList) != null;
     }
     
-    public void addContactListToParty(final ExecutionErrorAccumulator eea, final Party party, final ContactList contactList,
+    public PartyContactList addContactListToParty(final ExecutionErrorAccumulator eea, final Party party, final ContactList contactList,
             final ContactListContactMechanismPurpose preferredContactListContactMechanismPurpose, final BasePK createdBy) {
         var partyContactList = contactListControl.createPartyContactList(party, contactList, preferredContactListContactMechanismPurpose, createdBy);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(partyContactList.getPrimaryKey());
@@ -175,6 +175,8 @@ public class ContactListLogic
         } else if(workflowEntranceName.equals(PartyContactListStatusConstants.WorkflowEntrance_NEW_ACTIVE)) {
             contactListChainLogic.createContactListSubscribeChainInstance(eea, party, partyContactList, createdBy);
         }
+
+        return partyContactList;
     }
     
     public void removeContactListFromParty(final ExecutionErrorAccumulator eea, final PartyContactList partyContactList, final BasePK deletedBy) {

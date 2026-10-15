@@ -111,7 +111,7 @@ public interface OrderService
     //   Order Alias Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createOrderAliasType(UserVisitPK userVisitPK, CreateOrderAliasTypeForm form);
+    CommandResult<CreateOrderAliasTypeResult> createOrderAliasType(UserVisitPK userVisitPK, CreateOrderAliasTypeForm form);
 
     CommandResult<GetOrderAliasTypeChoicesResult> getOrderAliasTypeChoices(UserVisitPK userVisitPK, GetOrderAliasTypeChoicesForm form);
 
@@ -189,7 +189,7 @@ public interface OrderService
     //   Order Adjustment Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createOrderAdjustmentType(UserVisitPK userVisitPK, CreateOrderAdjustmentTypeForm form);
+    CommandResult<CreateOrderAdjustmentTypeResult> createOrderAdjustmentType(UserVisitPK userVisitPK, CreateOrderAdjustmentTypeForm form);
 
     CommandResult<GetOrderAdjustmentTypeChoicesResult> getOrderAdjustmentTypeChoices(UserVisitPK userVisitPK, GetOrderAdjustmentTypeChoicesForm form);
 
@@ -221,7 +221,7 @@ public interface OrderService
     //   Order Line Adjustment Types
     // --------------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createOrderLineAdjustmentType(UserVisitPK userVisitPK, CreateOrderLineAdjustmentTypeForm form);
+    CommandResult<CreateOrderLineAdjustmentTypeResult> createOrderLineAdjustmentType(UserVisitPK userVisitPK, CreateOrderLineAdjustmentTypeForm form);
 
     CommandResult<GetOrderLineAdjustmentTypeChoicesResult> getOrderLineAdjustmentTypeChoices(UserVisitPK userVisitPK, GetOrderLineAdjustmentTypeChoicesForm form);
 

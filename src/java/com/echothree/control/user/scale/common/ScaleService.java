@@ -35,7 +35,7 @@ public interface ScaleService
     //   Scale Types
     // -------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createScaleType(UserVisitPK userVisitPK, CreateScaleTypeForm form);
+    CommandResult<CreateScaleTypeResult> createScaleType(UserVisitPK userVisitPK, CreateScaleTypeForm form);
 
     CommandResult<GetScaleTypeChoicesResult> getScaleTypeChoices(UserVisitPK userVisitPK, GetScaleTypeChoicesForm form);
 
@@ -67,7 +67,7 @@ public interface ScaleService
     //   Scales
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createScale(UserVisitPK userVisitPK, CreateScaleForm form);
+    CommandResult<CreateScaleResult> createScale(UserVisitPK userVisitPK, CreateScaleForm form);
     
     CommandResult<GetScaleChoicesResult> getScaleChoices(UserVisitPK userVisitPK, GetScaleChoicesForm form);
 
@@ -99,7 +99,7 @@ public interface ScaleService
     //   Scale Use Types
     // -------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createScaleUseType(UserVisitPK userVisitPK, CreateScaleUseTypeForm form);
+    CommandResult<CreateScaleUseTypeResult> createScaleUseType(UserVisitPK userVisitPK, CreateScaleUseTypeForm form);
 
     CommandResult<GetScaleUseTypeChoicesResult> getScaleUseTypeChoices(UserVisitPK userVisitPK, GetScaleUseTypeChoicesForm form);
 

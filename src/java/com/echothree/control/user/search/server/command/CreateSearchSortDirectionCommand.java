@@ -17,15 +17,17 @@
 package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.CreateSearchSortDirectionForm;
+import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.search.server.entity.SearchSortDirection;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -68,6 +70,7 @@ public class CreateSearchSortDirectionCommand
     
     @Override
     protected BaseResult execute() {
+        var result = SearchResultFactory.getCreateSearchSortDirectionResult();
         var searchSortDirectionName = form.getSearchSortDirectionName();
         var searchSortDirection = searchControl.getSearchSortDirectionByName(searchSortDirectionName);
         
@@ -86,7 +89,12 @@ public class CreateSearchSortDirectionCommand
             addExecutionError(ExecutionErrors.DuplicateSearchSortDirectionName.name(), searchSortDirectionName);
         }
         
-        return null;
+        if(searchSortDirection != null) {
+            result.setEntityRef(searchSortDirection.getPrimaryKey().getEntityRef());
+            result.setSearchSortDirectionName(searchSortDirection.getLastDetail().getSearchSortDirectionName());
+        }
+
+        return result;
     }
     
 }

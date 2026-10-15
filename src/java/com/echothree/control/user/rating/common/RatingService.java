@@ -63,7 +63,7 @@ public interface RatingService
     //   Rating Type List Items
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createRatingTypeListItem(UserVisitPK userVisitPK, CreateRatingTypeListItemForm form);
+    CommandResult<CreateRatingTypeListItemResult> createRatingTypeListItem(UserVisitPK userVisitPK, CreateRatingTypeListItemForm form);
     
     CommandResult<GetRatingTypeListItemResult> getRatingTypeListItem(UserVisitPK userVisitPK, GetRatingTypeListItemForm form);
     

@@ -35,7 +35,7 @@ public interface UserService
     //   Recovery Questions
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createRecoveryQuestion(UserVisitPK userVisitPK, CreateRecoveryQuestionForm form);
+    CommandResult<CreateRecoveryQuestionResult> createRecoveryQuestion(UserVisitPK userVisitPK, CreateRecoveryQuestionForm form);
     
     CommandResult<GetRecoveryQuestionsResult> getRecoveryQuestions(UserVisitPK userVisitPK, GetRecoveryQuestionsForm form);
     

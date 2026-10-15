@@ -17,17 +17,19 @@
 package com.echothree.control.user.training.server.command;
 
 import com.echothree.control.user.training.common.form.CreateTrainingClassPageForm;
+import com.echothree.control.user.training.common.result.TrainingResultFactory;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
+import com.echothree.model.data.training.server.entity.TrainingClassPage;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -78,6 +80,8 @@ public class CreateTrainingClassPageCommand
     
     @Override
     protected BaseResult execute() {
+        var result = TrainingResultFactory.getCreateTrainingClassPageResult();
+        TrainingClassPage trainingClassPage = null;
         var trainingClassName = form.getTrainingClassName();
         var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
@@ -87,7 +91,8 @@ public class CreateTrainingClassPageCommand
 
             if(trainingClassSection != null) {
                 var trainingClassPageName = form.getTrainingClassPageName();
-                var trainingClassPage = trainingControl.getTrainingClassPageByName(trainingClassSection, trainingClassPageName);
+
+                trainingClassPage = trainingControl.getTrainingClassPageByName(trainingClassSection, trainingClassPageName);
 
                 if(trainingClassPage == null) {
                     var page = form.getPage();
@@ -117,7 +122,14 @@ public class CreateTrainingClassPageCommand
             addExecutionError(ExecutionErrors.UnknownTrainingClassName.name(), trainingClassName);
         }
 
-        return null;
+        if(trainingClassPage != null) {
+            result.setEntityRef(trainingClassPage.getPrimaryKey().getEntityRef());
+            result.setTrainingClassName(trainingClassPage.getLastDetail().getTrainingClassSection().getLastDetail().getTrainingClass().getLastDetail().getTrainingClassName());
+            result.setTrainingClassSectionName(trainingClassPage.getLastDetail().getTrainingClassSection().getLastDetail().getTrainingClassSectionName());
+            result.setTrainingClassPageName(trainingClassPage.getLastDetail().getTrainingClassPageName());
+        }
+
+        return result;
     }
     
 }

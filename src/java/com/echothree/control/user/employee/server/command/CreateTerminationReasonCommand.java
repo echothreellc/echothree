@@ -17,15 +17,17 @@
 package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.form.CreateTerminationReasonForm;
+import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.employee.server.entity.TerminationReason;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -68,6 +70,7 @@ public class CreateTerminationReasonCommand
     
     @Override
     protected BaseResult execute() {
+        var result = EmployeeResultFactory.getCreateTerminationReasonResult();
         var terminationReasonName = form.getTerminationReasonName();
         var terminationReason = employeeControl.getTerminationReasonByName(terminationReasonName);
         
@@ -86,7 +89,12 @@ public class CreateTerminationReasonCommand
             addExecutionError(ExecutionErrors.DuplicateTerminationReasonName.name(), terminationReasonName);
         }
         
-        return null;
+        if(terminationReason != null) {
+            result.setEntityRef(terminationReason.getPrimaryKey().getEntityRef());
+            result.setTerminationReasonName(terminationReason.getLastDetail().getTerminationReasonName());
+        }
+
+        return result;
     }
     
 }

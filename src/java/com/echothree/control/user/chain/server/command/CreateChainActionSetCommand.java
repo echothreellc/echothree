@@ -17,15 +17,17 @@
 package com.echothree.control.user.chain.server.command;
 
 import com.echothree.control.user.chain.common.form.CreateChainActionSetForm;
+import com.echothree.control.user.chain.common.result.ChainResultFactory;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.chain.server.entity.ChainActionSet;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -71,6 +73,8 @@ public class CreateChainActionSetCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ChainResultFactory.getCreateChainActionSetResult();
+        ChainActionSet chainActionSet = null;
         var chainKindName = form.getChainKindName();
         var chainKind = chainControl.getChainKindByName(chainKindName);
 
@@ -84,7 +88,8 @@ public class CreateChainActionSetCommand
 
                 if(chain != null) {
                     var chainActionSetName = form.getChainActionSetName();
-                    var chainActionSet = chainControl.getChainActionSetByName(chain, chainActionSetName);
+
+                    chainActionSet = chainControl.getChainActionSetByName(chain, chainActionSetName);
 
                     if(chainActionSet == null) {
                         var partyPK = getPartyPK();
@@ -110,7 +115,15 @@ public class CreateChainActionSetCommand
             addExecutionError(ExecutionErrors.UnknownChainKindName.name(), chainKindName);
         }
 
-        return null;
+        if(chainActionSet != null) {
+            result.setEntityRef(chainActionSet.getPrimaryKey().getEntityRef());
+            result.setChainKindName(chainActionSet.getLastDetail().getChain().getLastDetail().getChainType().getLastDetail().getChainKind().getLastDetail().getChainKindName());
+            result.setChainTypeName(chainActionSet.getLastDetail().getChain().getLastDetail().getChainType().getLastDetail().getChainTypeName());
+            result.setChainName(chainActionSet.getLastDetail().getChain().getLastDetail().getChainName());
+            result.setChainActionSetName(chainActionSet.getLastDetail().getChainActionSetName());
+        }
+
+        return result;
     }
     
 }

@@ -17,10 +17,12 @@
 package com.echothree.control.user.subscription.server.command;
 
 import com.echothree.control.user.subscription.common.form.CreateSubscriptionKindForm;
+import com.echothree.control.user.subscription.common.result.SubscriptionResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
+import com.echothree.model.data.subscription.server.entity.SubscriptionKind;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -67,6 +69,7 @@ public class CreateSubscriptionKindCommand
     
     @Override
     protected BaseResult execute() {
+        var result = SubscriptionResultFactory.getCreateSubscriptionKindResult();
         var subscriptionKindName = form.getSubscriptionKindName();
         var subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
         
@@ -85,7 +88,12 @@ public class CreateSubscriptionKindCommand
             addExecutionError(ExecutionErrors.DuplicateSubscriptionKindName.name(), subscriptionKindName);
         }
         
-        return null;
+        if(subscriptionKind != null) {
+            result.setEntityRef(subscriptionKind.getPrimaryKey().getEntityRef());
+            result.setSubscriptionKindName(subscriptionKind.getLastDetail().getSubscriptionKindName());
+        }
+
+        return result;
     }
     
 }

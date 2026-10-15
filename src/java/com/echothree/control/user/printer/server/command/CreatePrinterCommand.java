@@ -17,6 +17,7 @@
 package com.echothree.control.user.printer.server.command;
 
 import com.echothree.control.user.printer.common.form.CreatePrinterForm;
+import com.echothree.control.user.printer.common.result.PrinterResultFactory;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.printer.common.workflow.PrinterStatusConstants;
 import com.echothree.model.control.printer.server.control.PrinterControl;
@@ -62,6 +63,7 @@ public class CreatePrinterCommand
     
    @Override
     protected BaseResult execute() {
+        var result = PrinterResultFactory.getCreatePrinterResult();
         var printerName = form.getPrinterName();
         var printer = printerControl.getPrinterByName(printerName);
         
@@ -92,7 +94,12 @@ public class CreatePrinterCommand
             addExecutionError(ExecutionErrors.DuplicatePrinterName.name(), printerName);
         }
         
-        return null;
+        if(printer != null) {
+            result.setEntityRef(printer.getPrimaryKey().getEntityRef());
+            result.setPrinterName(printer.getLastDetail().getPrinterName());
+        }
+
+        return result;
     }
     
 }

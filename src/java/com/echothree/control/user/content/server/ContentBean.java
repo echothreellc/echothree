@@ -238,7 +238,7 @@ public class ContentBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createContentSection(UserVisitPK userVisitPK, CreateContentSectionForm form) {
+    public CommandResult<CreateContentSectionResult> createContentSection(UserVisitPK userVisitPK, CreateContentSectionForm form) {
         return CDI.current().select(CreateContentSectionCommand.class).get().run(userVisitPK, form);
     }
     
@@ -306,7 +306,7 @@ public class ContentBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createContentPage(UserVisitPK userVisitPK, CreateContentPageForm form) {
+    public CommandResult<CreateContentPageResult> createContentPage(UserVisitPK userVisitPK, CreateContentPageForm form) {
         return CDI.current().select(CreateContentPageCommand.class).get().run(userVisitPK, form);
     }
     
@@ -548,7 +548,7 @@ public class ContentBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createContentForum(UserVisitPK userVisitPK, CreateContentForumForm form) {
+    public CommandResult<CreateContentForumResult> createContentForum(UserVisitPK userVisitPK, CreateContentForumForm form) {
         return CDI.current().select(CreateContentForumCommand.class).get().run(userVisitPK, form);
     }
     

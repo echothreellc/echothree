@@ -17,16 +17,18 @@
 package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.CreateContentForumForm;
+import com.echothree.control.user.content.common.result.ContentResultFactory;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.content.server.entity.ContentForum;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -71,6 +73,8 @@ public class CreateContentForumCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ContentResultFactory.getCreateContentForumResult();
+        ContentForum contentForum = null;
         var contentCollectionName = form.getContentCollectionName();
         var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
         
@@ -79,12 +83,12 @@ public class CreateContentForumCommand
             var forum = forumControl.getForumByName(forumName);
             
             if(forum != null) {
-                var contentForum = contentControl.getContentForum(contentCollection, forum);
+                contentForum = contentControl.getContentForum(contentCollection, forum);
                 
                 if(contentForum == null) {
                     var isDefault = Boolean.valueOf(form.getIsDefault());
                     
-                    contentControl.createContentForum(contentCollection, forum, isDefault, getPartyPK());
+                    contentForum = contentControl.createContentForum(contentCollection, forum, isDefault, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateContentForum.name());
                 }
@@ -95,7 +99,13 @@ public class CreateContentForumCommand
             addExecutionError(ExecutionErrors.UnknownContentCollectionName.name(), contentCollectionName);
         }
         
-        return null;
+        if(contentForum != null) {
+            result.setEntityRef(contentForum.getPrimaryKey().getEntityRef());
+            result.setContentCollectionName(contentForum.getLastDetail().getContentCollection().getLastDetail().getContentCollectionName());
+            result.setForumName(contentForum.getLastDetail().getForum().getLastDetail().getForumName());
+        }
+
+        return result;
     }
     
 }

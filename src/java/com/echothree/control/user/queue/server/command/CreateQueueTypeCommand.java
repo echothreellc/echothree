@@ -17,15 +17,17 @@
 package com.echothree.control.user.queue.server.command;
 
 import com.echothree.control.user.queue.common.form.CreateQueueTypeForm;
+import com.echothree.control.user.queue.common.result.QueueResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -68,6 +70,7 @@ public class CreateQueueTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = QueueResultFactory.getCreateQueueTypeResult();
         var queueTypeName = form.getQueueTypeName();
         var queueType = queueControl.getQueueTypeByName(queueTypeName);
         
@@ -86,7 +89,12 @@ public class CreateQueueTypeCommand
             addExecutionError(ExecutionErrors.DuplicateQueueTypeName.name(), queueTypeName);
         }
         
-        return null;
+        if(queueType != null) {
+            result.setEntityRef(queueType.getPrimaryKey().getEntityRef());
+            result.setQueueTypeName(queueType.getLastDetail().getQueueTypeName());
+        }
+
+        return result;
     }
     
 }

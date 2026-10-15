@@ -17,15 +17,17 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateEntityIntegerRangeForm;
+import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.core.server.entity.EntityIntegerRange;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -68,6 +70,8 @@ public class CreateEntityIntegerRangeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = CoreResultFactory.getCreateEntityIntegerRangeResult();
+        EntityIntegerRange entityIntegerRange = null;
         var componentVendorName = form.getComponentVendorName();
         var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
         
@@ -84,7 +88,8 @@ public class CreateEntityIntegerRangeCommand
                     
                     if(entityAttributeTypeName.equals(EntityAttributeTypes.INTEGER.name())) {
                         var entityIntegerRangeName = form.getEntityIntegerRangeName();
-                        var entityIntegerRange = coreControl.getEntityIntegerRangeByName(entityAttribute, entityIntegerRangeName);
+
+                        entityIntegerRange = coreControl.getEntityIntegerRangeByName(entityAttribute, entityIntegerRangeName);
 
                         if(entityIntegerRange == null) {
                             var partyPK = getPartyPK();
@@ -122,7 +127,15 @@ public class CreateEntityIntegerRangeCommand
             addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
         }
         
-        return null;
+        if(entityIntegerRange != null) {
+            result.setEntityRef(entityIntegerRange.getPrimaryKey().getEntityRef());
+            result.setComponentVendorName(entityIntegerRange.getLastDetail().getEntityAttribute().getLastDetail().getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName());
+            result.setEntityTypeName(entityIntegerRange.getLastDetail().getEntityAttribute().getLastDetail().getEntityType().getLastDetail().getEntityTypeName());
+            result.setEntityAttributeName(entityIntegerRange.getLastDetail().getEntityAttribute().getLastDetail().getEntityAttributeName());
+            result.setEntityIntegerRangeName(entityIntegerRange.getLastDetail().getEntityIntegerRangeName());
+        }
+
+        return result;
     }
     
 }

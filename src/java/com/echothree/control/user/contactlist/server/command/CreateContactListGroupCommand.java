@@ -17,15 +17,17 @@
 package com.echothree.control.user.contactlist.server.command;
 
 import com.echothree.control.user.contactlist.common.form.CreateContactListGroupForm;
+import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.contactlist.server.entity.ContactListGroup;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -68,6 +70,7 @@ public class CreateContactListGroupCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ContactListResultFactory.getCreateContactListGroupResult();
         var contactListGroupName = form.getContactListGroupName();
         var contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
         
@@ -86,7 +89,12 @@ public class CreateContactListGroupCommand
             addExecutionError(ExecutionErrors.DuplicateContactListGroupName.name(), contactListGroupName);
         }
         
-        return null;
+        if(contactListGroup != null) {
+            result.setEntityRef(contactListGroup.getPrimaryKey().getEntityRef());
+            result.setContactListGroupName(contactListGroup.getLastDetail().getContactListGroupName());
+        }
+
+        return result;
     }
     
 }

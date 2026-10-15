@@ -17,11 +17,13 @@
 package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.CreateOrderAdjustmentTypeForm;
+import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.model.control.order.server.control.OrderAdjustmentControl;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.order.server.entity.OrderAdjustmentType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -73,12 +75,15 @@ public class CreateOrderAdjustmentTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = OrderResultFactory.getCreateOrderAdjustmentTypeResult();
+        OrderAdjustmentType orderAdjustmentType = null;
         var orderTypeName = form.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
 
         if(orderType != null) {
             var orderAdjustmentTypeName = form.getOrderAdjustmentTypeName();
-            var orderAdjustmentType = orderAdjustmentControl.getOrderAdjustmentTypeByName(orderType, orderAdjustmentTypeName);
+
+            orderAdjustmentType = orderAdjustmentControl.getOrderAdjustmentTypeByName(orderType, orderAdjustmentTypeName);
 
             if(orderAdjustmentType == null) {
                 var partyPK = getPartyPK();
@@ -98,7 +103,13 @@ public class CreateOrderAdjustmentTypeCommand
             addExecutionError(ExecutionErrors.UnknownOrderTypeName.name(), orderTypeName);
         }
 
-        return null;
+        if(orderAdjustmentType != null) {
+            result.setEntityRef(orderAdjustmentType.getPrimaryKey().getEntityRef());
+            result.setOrderTypeName(orderAdjustmentType.getLastDetail().getOrderType().getLastDetail().getOrderTypeName());
+            result.setOrderAdjustmentTypeName(orderAdjustmentType.getLastDetail().getOrderAdjustmentTypeName());
+        }
+
+        return result;
     }
     
 }

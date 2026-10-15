@@ -17,6 +17,7 @@
 package com.echothree.control.user.forum.server.command;
 
 import com.echothree.control.user.forum.common.form.CreateForumForm;
+import com.echothree.control.user.forum.common.result.ForumResultFactory;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.icon.common.IconConstants;
 import com.echothree.model.control.icon.server.control.IconControl;
@@ -24,10 +25,10 @@ import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -68,6 +69,7 @@ public class CreateForumCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ForumResultFactory.getCreateForumResult();
         var forumName = form.getForumName();
         var forum = forumControl.getForumByName(forumName);
         
@@ -140,7 +142,12 @@ public class CreateForumCommand
             addExecutionError(ExecutionErrors.DuplicateForumName.name(), forumName);
         }
         
-        return null;
+        if(forum != null) {
+            result.setEntityRef(forum.getPrimaryKey().getEntityRef());
+            result.setForumName(forum.getLastDetail().getForumName());
+        }
+
+        return result;
     }
     
 }

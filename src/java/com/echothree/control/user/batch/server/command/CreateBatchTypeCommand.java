@@ -17,6 +17,7 @@
 package com.echothree.control.user.batch.server.command;
 
 import com.echothree.control.user.batch.common.form.CreateBatchTypeForm;
+import com.echothree.control.user.batch.common.result.BatchResultFactory;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -25,10 +26,10 @@ import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.batch.server.entity.BatchType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -81,6 +82,7 @@ public class CreateBatchTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = BatchResultFactory.getCreateBatchTypeResult();
         var batchTypeName = form.getBatchTypeName();
         var batchType = batchControl.getBatchTypeByName(batchTypeName);
 
@@ -137,7 +139,12 @@ public class CreateBatchTypeCommand
             addExecutionError(ExecutionErrors.DuplicateBatchTypeName.name(), batchTypeName);
         }
 
-        return null;
+        if(batchType != null) {
+            result.setEntityRef(batchType.getPrimaryKey().getEntityRef());
+            result.setBatchTypeName(batchType.getLastDetail().getBatchTypeName());
+        }
+
+        return result;
     }
     
 }

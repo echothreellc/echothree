@@ -29,7 +29,7 @@ public interface WorkRequirementService
     //   Work Requirement Types
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createWorkRequirementType(UserVisitPK userVisitPK, CreateWorkRequirementTypeForm form);
+    CommandResult<CreateWorkRequirementTypeResult> createWorkRequirementType(UserVisitPK userVisitPK, CreateWorkRequirementTypeForm form);
     
     CommandResult<GetWorkRequirementTypesResult> getWorkRequirementTypes(UserVisitPK userVisitPK, GetWorkRequirementTypesForm form);
     

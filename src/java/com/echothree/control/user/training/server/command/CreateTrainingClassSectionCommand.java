@@ -17,17 +17,19 @@
 package com.echothree.control.user.training.server.command;
 
 import com.echothree.control.user.training.common.form.CreateTrainingClassSectionForm;
+import com.echothree.control.user.training.common.result.TrainingResultFactory;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
+import com.echothree.model.data.training.server.entity.TrainingClassSection;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -79,12 +81,15 @@ public class CreateTrainingClassSectionCommand
     
     @Override
     protected BaseResult execute() {
+        var result = TrainingResultFactory.getCreateTrainingClassSectionResult();
+        TrainingClassSection trainingClassSection = null;
         var trainingClassName = form.getTrainingClassName();
         var trainingClass = trainingControl.getTrainingClassByName(trainingClassName);
 
         if(trainingClass != null) {
             var trainingClassSectionName = form.getTrainingClassSectionName();
-            var trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
+
+            trainingClassSection = trainingControl.getTrainingClassSectionByName(trainingClass, trainingClassSectionName);
 
             if(trainingClassSection == null) {
                 var overview = form.getOverview();
@@ -123,7 +128,13 @@ public class CreateTrainingClassSectionCommand
             addExecutionError(ExecutionErrors.UnknownTrainingClassName.name(), trainingClassName);
         }
 
-        return null;
+        if(trainingClassSection != null) {
+            result.setEntityRef(trainingClassSection.getPrimaryKey().getEntityRef());
+            result.setTrainingClassName(trainingClassSection.getLastDetail().getTrainingClass().getLastDetail().getTrainingClassName());
+            result.setTrainingClassSectionName(trainingClassSection.getLastDetail().getTrainingClassSectionName());
+        }
+
+        return result;
     }
     
 }

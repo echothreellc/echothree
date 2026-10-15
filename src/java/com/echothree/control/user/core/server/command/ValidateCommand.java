@@ -35,6 +35,7 @@ public class ValidateCommand
         super(null, null, false);
     }
 
+    @Override
     protected List<FieldDefinition> getFormFieldDefinitions() {
         return form.getFormFieldDefinitions();
     }

@@ -108,7 +108,7 @@ public class ShipmentBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createShipmentType(UserVisitPK userVisitPK, CreateShipmentTypeForm form) {
+    public CommandResult<CreateShipmentTypeResult> createShipmentType(UserVisitPK userVisitPK, CreateShipmentTypeForm form) {
         return CDI.current().select(CreateShipmentTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -176,7 +176,7 @@ public class ShipmentBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createShipmentTimeType(UserVisitPK userVisitPK, CreateShipmentTimeTypeForm form) {
+    public CommandResult<CreateShipmentTimeTypeResult> createShipmentTimeType(UserVisitPK userVisitPK, CreateShipmentTimeTypeForm form) {
         return CDI.current().select(CreateShipmentTimeTypeCommand.class).get().run(userVisitPK, form);
     }
 
@@ -273,7 +273,7 @@ public class ShipmentBean
     // --------------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createShipmentAliasType(UserVisitPK userVisitPK, CreateShipmentAliasTypeForm form) {
+    public CommandResult<CreateShipmentAliasTypeResult> createShipmentAliasType(UserVisitPK userVisitPK, CreateShipmentAliasTypeForm form) {
         return CDI.current().select(CreateShipmentAliasTypeCommand.class).get().run(userVisitPK, form);
     }
 

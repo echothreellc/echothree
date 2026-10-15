@@ -17,6 +17,7 @@
 package com.echothree.control.user.communication.server.server;
 
 import com.echothree.control.user.communication.common.form.CreateCommunicationSourceForm;
+import com.echothree.control.user.communication.common.result.CommunicationResultFactory;
 import com.echothree.model.control.communication.common.CommunicationConstants;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.control.core.server.control.ServerControl;
@@ -99,6 +100,7 @@ public class CreateCommunicationSourceCommand
     
     @Override
     protected BaseResult execute() {
+        var result = CommunicationResultFactory.getCreateCommunicationSourceResult();
         var communicationSourceName = form.getCommunicationSourceName();
         var communicationSource = communicationControl.getCommunicationSourceByName(communicationSourceName);
         
@@ -181,7 +183,12 @@ public class CreateCommunicationSourceCommand
             addExecutionError(ExecutionErrors.DuplicateCommunicationSourceName.name(), communicationSourceName);
         }
         
-        return null;
+        if(communicationSource != null) {
+            result.setEntityRef(communicationSource.getPrimaryKey().getEntityRef());
+            result.setCommunicationSourceName(communicationSource.getLastDetail().getCommunicationSourceName());
+        }
+
+        return result;
     }
     
 }

@@ -17,15 +17,17 @@
 package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.form.CreateTransactionTypeForm;
+import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.accounting.server.entity.TransactionType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -67,6 +69,7 @@ public class CreateTransactionTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = AccountingResultFactory.getCreateTransactionTypeResult();
         var transactionTypeName = form.getTransactionTypeName();
         var transactionType = accountingControl.getTransactionTypeByName(transactionTypeName);
         
@@ -84,7 +87,12 @@ public class CreateTransactionTypeCommand
             addExecutionError(ExecutionErrors.DuplicateTransactionTypeName.name(), transactionTypeName);
         }
         
-        return null;
+        if(transactionType != null) {
+            result.setEntityRef(transactionType.getPrimaryKey().getEntityRef());
+            result.setTransactionTypeName(transactionType.getLastDetail().getTransactionTypeName());
+        }
+
+        return result;
     }
     
 }

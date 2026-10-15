@@ -53,7 +53,7 @@ public interface CommunicationService
     //   Communication Event Purposes
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createCommunicationEventPurpose(UserVisitPK userVisitPK, CreateCommunicationEventPurposeForm form);
+    CommandResult<CreateCommunicationEventPurposeResult> createCommunicationEventPurpose(UserVisitPK userVisitPK, CreateCommunicationEventPurposeForm form);
     
     CommandResult<GetCommunicationEventPurposesResult> getCommunicationEventPurposes(UserVisitPK userVisitPK, GetCommunicationEventPurposesForm form);
     
@@ -95,7 +95,7 @@ public interface CommunicationService
     //   Communication Sources
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createCommunicationSource(UserVisitPK userVisitPK, CreateCommunicationSourceForm form);
+    CommandResult<CreateCommunicationSourceResult> createCommunicationSource(UserVisitPK userVisitPK, CreateCommunicationSourceForm form);
     
     CommandResult<GetCommunicationSourcesResult> getCommunicationSources(UserVisitPK userVisitPK, GetCommunicationSourcesForm form);
     
@@ -119,7 +119,7 @@ public interface CommunicationService
     //   Communication Events
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createCommunicationEvent(UserVisitPK userVisitPK, CreateCommunicationEventForm form);
+    CommandResult<CreateCommunicationEventResult> createCommunicationEvent(UserVisitPK userVisitPK, CreateCommunicationEventForm form);
     
     CommandResult<GetCommunicationEventResult> getCommunicationEvent(UserVisitPK userVisitPK, GetCommunicationEventForm form);
     

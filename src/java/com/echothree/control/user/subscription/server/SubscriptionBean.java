@@ -45,7 +45,7 @@ public class SubscriptionBean
     // -------------------------------------------------------------------------
 
     @Override
-    public CommandResult<VoidResult> createSubscriptionKind(UserVisitPK userVisitPK, CreateSubscriptionKindForm form) {
+    public CommandResult<CreateSubscriptionKindResult> createSubscriptionKind(UserVisitPK userVisitPK, CreateSubscriptionKindForm form) {
         return CDI.current().select(CreateSubscriptionKindCommand.class).get().run(userVisitPK, form);
     }
 
@@ -113,7 +113,7 @@ public class SubscriptionBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createSubscriptionType(UserVisitPK userVisitPK, CreateSubscriptionTypeForm form) {
+    public CommandResult<CreateSubscriptionTypeResult> createSubscriptionType(UserVisitPK userVisitPK, CreateSubscriptionTypeForm form) {
         return CDI.current().select(CreateSubscriptionTypeCommand.class).get().run(userVisitPK, form);
     }
     
@@ -195,7 +195,7 @@ public class SubscriptionBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createSubscription(UserVisitPK userVisitPK, CreateSubscriptionForm form) {
+    public CommandResult<CreateSubscriptionResult> createSubscription(UserVisitPK userVisitPK, CreateSubscriptionForm form) {
         return CDI.current().select(CreateSubscriptionCommand.class).get().run(userVisitPK, form);
     }
     

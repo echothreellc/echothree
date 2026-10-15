@@ -17,10 +17,12 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateApplicationForm;
+import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.server.control.ApplicationControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.core.server.entity.Application;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -68,6 +70,7 @@ public class CreateApplicationCommand
     
     @Override
     protected BaseResult execute() {
+        var result = CoreResultFactory.getCreateApplicationResult();
         var applicationName = form.getApplicationName();
         var application = applicationControl.getApplicationByName(applicationName);
         
@@ -86,7 +89,12 @@ public class CreateApplicationCommand
             addExecutionError(ExecutionErrors.DuplicateApplicationName.name(), applicationName);
         }
         
-        return null;
+        if(application != null) {
+            result.setEntityRef(application.getPrimaryKey().getEntityRef());
+            result.setApplicationName(application.getLastDetail().getApplicationName());
+        }
+
+        return result;
     }
     
 }

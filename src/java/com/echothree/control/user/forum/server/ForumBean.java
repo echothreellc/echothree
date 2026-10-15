@@ -45,7 +45,7 @@ public class ForumBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createForumGroup(UserVisitPK userVisitPK, CreateForumGroupForm form) {
+    public CommandResult<CreateForumGroupResult> createForumGroup(UserVisitPK userVisitPK, CreateForumGroupForm form) {
         return CDI.current().select(CreateForumGroupCommand.class).get().run(userVisitPK, form);
     }
     
@@ -103,7 +103,7 @@ public class ForumBean
     // --------------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createForum(UserVisitPK userVisitPK, CreateForumForm form) {
+    public CommandResult<CreateForumResult> createForum(UserVisitPK userVisitPK, CreateForumForm form) {
         return CDI.current().select(CreateForumCommand.class).get().run(userVisitPK, form);
     }
     

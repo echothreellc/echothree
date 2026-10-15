@@ -17,6 +17,7 @@
 package com.echothree.control.user.carrier.server.command;
 
 import com.echothree.control.user.carrier.common.form.CreateCarrierOptionForm;
+import com.echothree.control.user.carrier.common.result.CarrierResultFactory;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -24,6 +25,7 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.control.SelectorControl;
+import com.echothree.model.data.carrier.server.entity.CarrierOption;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -86,13 +88,16 @@ public class CreateCarrierOptionCommand
     
     @Override
     protected BaseResult execute() {
+        var result = CarrierResultFactory.getCreateCarrierOptionResult();
+        CarrierOption carrierOption = null;
         var carrierName = form.getCarrierName();
         var carrier = carrierControl.getCarrierByName(carrierName);
         
         if(carrier != null) {
             var carrierParty = carrier.getParty();
             var carrierOptionName = form.getCarrierOptionName();
-            var carrierOption = carrierControl.getCarrierOptionByName(carrierParty, carrierOptionName);
+
+            carrierOption = carrierControl.getCarrierOptionByName(carrierParty, carrierOptionName);
             
             if(carrierOption == null) {
                 var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.POSTAL_ADDRESS.name());
@@ -263,7 +268,13 @@ public class CreateCarrierOptionCommand
             addExecutionError(ExecutionErrors.UnknownCarrierName.name(), carrierName);
         }
         
-        return null;
+        if(carrierOption != null) {
+            result.setEntityRef(carrierOption.getPrimaryKey().getEntityRef());
+            result.setCarrierName(form.getCarrierName());
+            result.setCarrierOptionName(carrierOption.getLastDetail().getCarrierOptionName());
+        }
+
+        return result;
     }
     
 }

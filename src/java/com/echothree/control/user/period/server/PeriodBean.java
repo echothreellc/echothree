@@ -108,7 +108,7 @@ public class PeriodBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createPeriodType(UserVisitPK userVisitPK, CreatePeriodTypeForm form) {
+    public CommandResult<CreatePeriodTypeResult> createPeriodType(UserVisitPK userVisitPK, CreatePeriodTypeForm form) {
         return CDI.current().select(CreatePeriodTypeCommand.class).get().run(userVisitPK, form);
     }
     

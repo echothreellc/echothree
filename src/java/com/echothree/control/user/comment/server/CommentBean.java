@@ -98,7 +98,7 @@ public class CommentBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult<VoidResult> createCommentUsageType(UserVisitPK userVisitPK, CreateCommentUsageTypeForm form) {
+    public CommandResult<CreateCommentUsageTypeResult> createCommentUsageType(UserVisitPK userVisitPK, CreateCommentUsageTypeForm form) {
         return CDI.current().select(CreateCommentUsageTypeCommand.class).get().run(userVisitPK, form);
     }
     

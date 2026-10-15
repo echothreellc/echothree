@@ -17,6 +17,7 @@
 package com.echothree.control.user.workeffort.server.command;
 
 import com.echothree.control.user.workeffort.common.form.CreateWorkEffortScopeForm;
+import com.echothree.control.user.workeffort.common.result.WorkEffortResultFactory;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.uom.common.UomConstants;
@@ -27,10 +28,11 @@ import com.echothree.model.control.workrequirement.server.control.WorkRequiremen
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -79,12 +81,15 @@ public class CreateWorkEffortScopeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = WorkEffortResultFactory.getCreateWorkEffortScopeResult();
+        WorkEffortScope workEffortScope = null;
         var workEffortTypeName = form.getWorkEffortTypeName();
         var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
         
         if(workEffortType != null) {
             var workEffortScopeName = form.getWorkEffortScopeName();
-            var workEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, workEffortScopeName);
+
+            workEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, workEffortScopeName);
             
             if(workEffortScope == null) {
                 var workEffortSequenceName = form.getWorkEffortSequenceName();
@@ -200,7 +205,13 @@ public class CreateWorkEffortScopeCommand
             addExecutionError(ExecutionErrors.UnknownWorkEffortTypeName.name(), workEffortTypeName);
         }
         
-        return null;
+        if(workEffortScope != null) {
+            result.setEntityRef(workEffortScope.getPrimaryKey().getEntityRef());
+            result.setWorkEffortTypeName(workEffortScope.getLastDetail().getWorkEffortType().getLastDetail().getWorkEffortTypeName());
+            result.setWorkEffortScopeName(workEffortScope.getLastDetail().getWorkEffortScopeName());
+        }
+
+        return result;
     }
     
 }

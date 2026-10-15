@@ -35,7 +35,7 @@ public interface AssociateService
     //   Associate Programs
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createAssociateProgram(UserVisitPK userVisitPK, CreateAssociateProgramForm form);
+    CommandResult<CreateAssociateProgramResult> createAssociateProgram(UserVisitPK userVisitPK, CreateAssociateProgramForm form);
     
     CommandResult<GetAssociateProgramResult> getAssociateProgram(UserVisitPK userVisitPK, GetAssociateProgramForm form);
     
@@ -65,7 +65,7 @@ public interface AssociateService
     //   Associates
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createAssociate(UserVisitPK userVisitPK, CreateAssociateForm form);
+    CommandResult<CreateAssociateResult> createAssociate(UserVisitPK userVisitPK, CreateAssociateForm form);
     
     CommandResult<GetAssociateResult> getAssociate(UserVisitPK userVisitPK, GetAssociateForm form);
     
@@ -79,7 +79,7 @@ public interface AssociateService
     //   Associate Contact Mechanisms
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createAssociatePartyContactMechanism(UserVisitPK userVisitPK, CreateAssociatePartyContactMechanismForm form);
+    CommandResult<CreateAssociatePartyContactMechanismResult> createAssociatePartyContactMechanism(UserVisitPK userVisitPK, CreateAssociatePartyContactMechanismForm form);
     
     CommandResult<GetAssociatePartyContactMechanismResult> getAssociatePartyContactMechanism(UserVisitPK userVisitPK, GetAssociatePartyContactMechanismForm form);
     

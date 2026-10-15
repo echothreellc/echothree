@@ -35,7 +35,7 @@ public interface TaxService
     //   Tax Classifications
     // -------------------------------------------------------------------------
 
-    CommandResult<VoidResult> createTaxClassification(UserVisitPK userVisitPK, CreateTaxClassificationForm form);
+    CommandResult<CreateTaxClassificationResult> createTaxClassification(UserVisitPK userVisitPK, CreateTaxClassificationForm form);
 
     CommandResult<GetTaxClassificationsResult> getTaxClassifications(UserVisitPK userVisitPK, GetTaxClassificationsForm form);
 
@@ -81,7 +81,7 @@ public interface TaxService
     //   Taxes
     // -------------------------------------------------------------------------
     
-    CommandResult<VoidResult> createTax(UserVisitPK userVisitPK, CreateTaxForm form);
+    CommandResult<CreateTaxResult> createTax(UserVisitPK userVisitPK, CreateTaxForm form);
     
     CommandResult<GetTaxesResult> getTaxes(UserVisitPK userVisitPK, GetTaxesForm form);
     

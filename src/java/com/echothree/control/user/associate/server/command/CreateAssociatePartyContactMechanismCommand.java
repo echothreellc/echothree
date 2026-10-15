@@ -17,14 +17,16 @@
 package com.echothree.control.user.associate.server.command;
 
 import com.echothree.control.user.associate.common.form.CreateAssociatePartyContactMechanismForm;
+import com.echothree.control.user.associate.common.result.AssociateResultFactory;
 import com.echothree.model.control.associate.server.control.AssociateControl;
 import com.echothree.model.control.contact.server.control.ContactControl;
+import com.echothree.model.data.associate.server.entity.AssociatePartyContactMechanism;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -64,6 +66,8 @@ public class CreateAssociatePartyContactMechanismCommand
     
     @Override
     protected BaseResult execute() {
+        var result = AssociateResultFactory.getCreateAssociatePartyContactMechanismResult();
+        AssociatePartyContactMechanism associatePartyContactMechanism = null;
         var contactMechanismName = form.getContactMechanismName();
         var contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
         var alias = form.getAlias();
@@ -79,7 +83,8 @@ public class CreateAssociatePartyContactMechanismCommand
                 
                 if(associate != null) {
                     var associatePartyContactMechanismName = form.getAssociatePartyContactMechanismName();
-                    var associatePartyContactMechanism = associateControl.getAssociatePartyContactMechanismByName(associate,
+
+                    associatePartyContactMechanism = associateControl.getAssociatePartyContactMechanismByName(associate,
                             associatePartyContactMechanismName);
                     
                     if(associatePartyContactMechanism == null) {
@@ -116,7 +121,7 @@ public class CreateAssociatePartyContactMechanismCommand
                                 var isDefault = Boolean.valueOf(form.getIsDefault());
                                 var sortOrder = Integer.valueOf(form.getSortOrder());
                                 
-                                associateControl.createAssociatePartyContactMechanism(associate, associatePartyContactMechanismName,
+                                associatePartyContactMechanism = associateControl.createAssociatePartyContactMechanism(associate, associatePartyContactMechanismName,
                                         partyContactMechanism, isDefault, sortOrder, getPartyPK());
                             } else {
                                 addExecutionError(ExecutionErrors.UnknownPartyContactMechanism.name(), contactMechanismName);
@@ -135,7 +140,14 @@ public class CreateAssociatePartyContactMechanismCommand
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
         
-        return null;
+        if(associatePartyContactMechanism != null) {
+            result.setEntityRef(associatePartyContactMechanism.getPrimaryKey().getEntityRef());
+            result.setAssociateProgramName(associatePartyContactMechanism.getLastDetail().getAssociate().getLastDetail().getAssociateProgram().getLastDetail().getAssociateProgramName());
+            result.setAssociateName(associatePartyContactMechanism.getLastDetail().getAssociate().getLastDetail().getAssociateName());
+            result.setAssociatePartyContactMechanismName(associatePartyContactMechanism.getLastDetail().getAssociatePartyContactMechanismName());
+        }
+
+        return result;
     }
     
 }
