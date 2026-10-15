@@ -386,6 +386,9 @@ import com.echothree.control.user.payment.server.command.GetPaymentProcessorType
 import com.echothree.control.user.payment.server.command.GetPaymentProcessorTypeCommand;
 import com.echothree.control.user.payment.server.command.GetPaymentProcessorTypesCommand;
 import com.echothree.control.user.payment.server.command.GetPaymentProcessorsCommand;
+import com.echothree.control.user.period.common.PeriodUtil;
+import com.echothree.control.user.period.server.command.GetPeriodKindCommand;
+import com.echothree.control.user.period.server.command.GetPeriodKindsCommand;
 import com.echothree.control.user.queue.common.QueueUtil;
 import com.echothree.control.user.queue.server.command.GetQueueTypeCommand;
 import com.echothree.control.user.queue.server.command.GetQueueTypesCommand;
@@ -731,6 +734,7 @@ import com.echothree.model.control.payment.server.graphql.PaymentProcessorTransa
 import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeCodeObject;
 import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeCodeTypeObject;
 import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeObject;
+import com.echothree.model.control.period.server.graphql.PeriodKindObject;
 import com.echothree.model.control.queue.server.graphql.QueueTypeObject;
 import com.echothree.model.control.returnpolicy.server.graphql.ReturnKindObject;
 import com.echothree.model.control.returnpolicy.server.graphql.ReturnPolicyObject;
@@ -1153,6 +1157,8 @@ import com.echothree.model.data.payment.server.entity.PaymentProcessorTransactio
 import com.echothree.model.data.payment.server.entity.PaymentProcessorType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCode;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeType;
+import com.echothree.model.data.period.common.PeriodKindConstants;
+import com.echothree.model.data.period.server.entity.PeriodKind;
 import com.echothree.model.data.queue.common.QueueTypeConstants;
 import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.returnpolicy.common.ReturnKindConstants;
@@ -15552,6 +15558,59 @@ public interface GraphQlQueries {
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, contactListContactMechanismPurposes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("periodKind")
+    static PeriodKindObject periodKind(final DataFetchingEnvironment env,
+            @GraphQLName("periodKindName") final String periodKindName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        PeriodKind periodKind;
+
+        try {
+            var commandForm = PeriodUtil.getHome().getGetPeriodKindForm();
+
+            commandForm.setPeriodKindName(periodKindName);
+            commandForm.setUuid(id);
+
+            periodKind = CDI.current().select(GetPeriodKindCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return periodKind == null ? null : new PeriodKindObject(periodKind);
+    }
+
+    @GraphQLField
+    @GraphQLName("periodKinds")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<PeriodKindObject> periodKinds(final DataFetchingEnvironment env) {
+        CountingPaginatedData<PeriodKindObject> data;
+
+        try {
+            var commandForm = PeriodUtil.getHome().getGetPeriodKindsForm();
+            var command = CDI.current().select(GetPeriodKindsCommand.class).get();
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, PeriodKindConstants.COMPONENT_VENDOR_NAME, PeriodKindConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var periodKinds = entities.stream()
+                            .map(PeriodKindObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, periodKinds);
                 }
             }
         } catch (NamingException ex) {
