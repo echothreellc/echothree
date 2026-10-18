@@ -18,21 +18,21 @@ package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.edit.OfferDescriptionEdit;
 import com.echothree.control.user.offer.common.edit.OfferEditFactory;
-import com.echothree.control.user.offer.common.form.EditOfferDescriptionForm;
+import com.echothree.control.user.offer.common.result.EditOfferDescriptionResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.control.user.offer.common.spec.OfferDescriptionSpec;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.logic.OfferLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.offer.server.entity.Offer;
+import com.echothree.model.data.offer.server.entity.OfferDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -42,12 +42,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditOfferDescriptionCommand
-        extends BaseEditCommand<OfferDescriptionSpec, OfferDescriptionEdit> {
-    
+        extends BaseAbstractEditCommand<OfferDescriptionSpec, OfferDescriptionEdit, EditOfferDescriptionResult, OfferDescription, Offer> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -55,12 +55,12 @@ public class EditOfferDescriptionCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.Offer.name(), SecurityRoles.Description.name())
                 ))
         ));
-        
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OfferName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
@@ -70,73 +70,70 @@ public class EditOfferDescriptionCommand
     OfferControl offerControl;
 
     @Inject
-    PartyControl partyControl;
+    LanguageLogic languageLogic;
 
-    
+    @Inject
+    OfferLogic offerLogic;
+
     /** Creates a new instance of EditOfferDescriptionCommand */
     public EditOfferDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = OfferResultFactory.getEditOfferDescriptionResult();
-        var offerName = spec.getOfferName();
-        var offer = offerControl.getOfferByName(offerName);
-        
-        if(offer != null) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = partyControl.getLanguageByIsoName(languageIsoName);
-            
-            if(language != null) {
-                if(editMode.equals(EditMode.LOCK)) {
-                    var offerDescription = offerControl.getOfferDescription(offer, language);
-                    
-                    if(offerDescription != null) {
-                        result.setOfferDescription(offerControl.getOfferDescriptionTransfer(getUserVisit(), offerDescription));
-                        
-                        if(lockEntity(offer)) {
-                            var edit = OfferEditFactory.getOfferDescriptionEdit();
-                            
-                            result.setEdit(edit);
-                            edit.setDescription(offerDescription.getDescription());
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                        }
-                        
-                        result.setEntityLock(getEntityLockTransfer(offer));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownOfferDescription.name());
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var offerDescriptionValue = offerControl.getOfferDescriptionValueForUpdate(offer, language);
-                    
-                    if(offerDescriptionValue != null) {
-                        if(lockEntityForUpdate(offer)) {
-                            try {
-                                var description = edit.getDescription();
-                                
-                                offerDescriptionValue.setDescription(description);
-                                
-                                offerControl.updateOfferDescriptionFromValue(offerDescriptionValue, getPartyPK());
-                            } finally {
-                                unlockEntity(offer);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownOfferDescription.name());
-                    }
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownOfferName.name(), offerName);
-        }
-        
-        return result;
+    public EditOfferDescriptionResult getResult() {
+        return OfferResultFactory.getEditOfferDescriptionResult();
     }
-    
+
+    @Override
+    public OfferDescriptionEdit getEdit() {
+        return OfferEditFactory.getOfferDescriptionEdit();
+    }
+
+    @Override
+    public OfferDescription getEntity(EditOfferDescriptionResult result) {
+        OfferDescription offerDescription = null;
+        var offerName = spec.getOfferName();
+        var offer = offerLogic.getOfferByName(this, offerName);
+
+        if(!hasExecutionErrors()) {
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = languageLogic.getLanguageByName(this, languageIsoName);
+
+            if(!hasExecutionErrors()) {
+                offerDescription = offerControl.getOfferDescription(offer, language, editModeToEntityPermission(editMode));
+
+                if(offerDescription == null) {
+                    addExecutionError(ExecutionErrors.UnknownOfferDescription.name(), offerName, languageIsoName);
+                }
+            }
+        }
+
+        return offerDescription;
+    }
+
+    @Override
+    public Offer getLockEntity(OfferDescription offerDescription) {
+        return offerDescription.getOffer();
+    }
+
+    @Override
+    public void fillInResult(EditOfferDescriptionResult result, OfferDescription offerDescription) {
+        result.setOfferDescription(offerControl.getOfferDescriptionTransfer(getUserVisit(), offerDescription));
+    }
+
+    @Override
+    public void doLock(OfferDescriptionEdit edit, OfferDescription offerDescription) {
+        edit.setDescription(offerDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(OfferDescription offerDescription) {
+        var offerDescriptionValue = offerControl.getOfferDescriptionValue(offerDescription);
+
+        offerDescriptionValue.setDescription(edit.getDescription());
+
+        offerControl.updateOfferDescriptionFromValue(offerDescriptionValue, getPartyPK());
+    }
+
 }
