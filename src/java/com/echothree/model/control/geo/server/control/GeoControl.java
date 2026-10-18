@@ -2101,7 +2101,7 @@ public class GeoControl
         return geoCodeDescription;
     }
     
-    private GeoCodeDescription getGeoCodeDescription(GeoCode geoCode, Language language, EntityPermission entityPermission) {
+    public GeoCodeDescription getGeoCodeDescription(GeoCode geoCode, Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(GeoCodeDescriptions.fields())
                 .from(GeoCodeDescriptions)
