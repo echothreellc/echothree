@@ -18,36 +18,33 @@ package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.edit.EmployeeEditFactory;
 import com.echothree.control.user.employee.common.edit.TerminationReasonEdit;
-import com.echothree.control.user.employee.common.form.EditTerminationReasonForm;
+import com.echothree.control.user.employee.common.result.EditTerminationReasonResult;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.control.user.employee.common.spec.TerminationReasonSpec;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
+import com.echothree.model.control.employee.server.logic.TerminationReasonLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.data.employee.server.entity.TerminationReason;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class EditTerminationReasonCommand
-        extends BaseEditCommand<TerminationReasonSpec, TerminationReasonEdit> {
+        extends BaseAbstractEditCommand<TerminationReasonSpec, TerminationReasonEdit, EditTerminationReasonResult, TerminationReason, TerminationReason> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -59,7 +56,7 @@ public class EditTerminationReasonCommand
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TerminationReasonName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TerminationReasonName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
@@ -71,83 +68,76 @@ public class EditTerminationReasonCommand
     @Inject
     EmployeeControl employeeControl;
 
-    
+    @Inject
+    TerminationReasonLogic terminationReasonLogic;
+
     /** Creates a new instance of EditTerminationReasonCommand */
     public EditTerminationReasonCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = EmployeeResultFactory.getEditTerminationReasonResult();
-        
-        if(editMode.equals(EditMode.LOCK)) {
-            var terminationReasonName = spec.getTerminationReasonName();
-            var terminationReason = employeeControl.getTerminationReasonByName(terminationReasonName);
-            
-            if(terminationReason != null) {
-                result.setTerminationReason(employeeControl.getTerminationReasonTransfer(getUserVisit(), terminationReason));
-                
-                if(lockEntity(terminationReason)) {
-                    var terminationReasonDescription = employeeControl.getTerminationReasonDescription(terminationReason, getPreferredLanguage());
-                    var edit = EmployeeEditFactory.getTerminationReasonEdit();
-                    var terminationReasonDetail = terminationReason.getLastDetail();
-                    
-                    result.setEdit(edit);
-                    edit.setTerminationReasonName(terminationReasonDetail.getTerminationReasonName());
-                    edit.setIsDefault(terminationReasonDetail.getIsDefault().toString());
-                    edit.setSortOrder(terminationReasonDetail.getSortOrder().toString());
-                    
-                    if(terminationReasonDescription != null)
-                        edit.setDescription(terminationReasonDescription.getDescription());
-                } else {
-                    addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                }
-                
-                result.setEntityLock(getEntityLockTransfer(terminationReason));
-            } else {
-                addExecutionError(ExecutionErrors.UnknownTerminationReasonName.name(), terminationReasonName);
-            }
-        } else if(editMode.equals(EditMode.UPDATE)) {
-            var terminationReasonName = spec.getTerminationReasonName();
-            var terminationReason = employeeControl.getTerminationReasonByNameForUpdate(terminationReasonName);
-            
-            if(terminationReason != null) {
-                if(lockEntityForUpdate(terminationReason)) {
-                    try {
-                        var partyPK = getPartyPK();
-                        var terminationReasonDetailValue = employeeControl.getTerminationReasonDetailValueForUpdate(terminationReason);
-                        var terminationReasonDescription = employeeControl.getTerminationReasonDescriptionForUpdate(terminationReason, getPreferredLanguage());
-                        var description = edit.getDescription();
-                        
-                        terminationReasonDetailValue.setTerminationReasonName(edit.getTerminationReasonName());
-                        terminationReasonDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
-                        terminationReasonDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
-                        
-                        employeeControl.updateTerminationReasonFromValue(terminationReasonDetailValue, partyPK);
-                        
-                        if(terminationReasonDescription == null && description != null) {
-                            employeeControl.createTerminationReasonDescription(terminationReason, getPreferredLanguage(), description, partyPK);
-                        } else if(terminationReasonDescription != null && description == null) {
-                            employeeControl.deleteTerminationReasonDescription(terminationReasonDescription, partyPK);
-                        } else if(terminationReasonDescription != null && description != null) {
-                            var terminationReasonDescriptionValue = employeeControl.getTerminationReasonDescriptionValue(terminationReasonDescription);
-                            
-                            terminationReasonDescriptionValue.setDescription(description);
-                            employeeControl.updateTerminationReasonDescriptionFromValue(terminationReasonDescriptionValue, partyPK);
-                        }
-                    } finally {
-                        unlockEntity(terminationReason);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.EntityLockStale.name());
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownTerminationReasonName.name(), terminationReasonName);
-            }
-        }
-        
-        return result;
+    public EditTerminationReasonResult getResult() {
+        return EmployeeResultFactory.getEditTerminationReasonResult();
     }
-    
+
+    @Override
+    public TerminationReasonEdit getEdit() {
+        return EmployeeEditFactory.getTerminationReasonEdit();
+    }
+
+    @Override
+    public TerminationReason getEntity(EditTerminationReasonResult result) {
+        return terminationReasonLogic.getTerminationReasonByName(this, spec.getTerminationReasonName(), editModeToEntityPermission(editMode));
+    }
+
+    @Override
+    public TerminationReason getLockEntity(TerminationReason terminationReason) {
+        return terminationReason;
+    }
+
+    @Override
+    public void fillInResult(EditTerminationReasonResult result, TerminationReason terminationReason) {
+        result.setTerminationReason(employeeControl.getTerminationReasonTransfer(getUserVisit(), terminationReason));
+    }
+
+    @Override
+    public void doLock(TerminationReasonEdit edit, TerminationReason terminationReason) {
+        var terminationReasonDescription = employeeControl.getTerminationReasonDescription(terminationReason, getPreferredLanguage());
+        var terminationReasonDetail = terminationReason.getLastDetail();
+
+        edit.setTerminationReasonName(terminationReasonDetail.getTerminationReasonName());
+        edit.setIsDefault(terminationReasonDetail.getIsDefault().toString());
+        edit.setSortOrder(terminationReasonDetail.getSortOrder().toString());
+
+        if(terminationReasonDescription != null) {
+            edit.setDescription(terminationReasonDescription.getDescription());
+        }
+    }
+
+    @Override
+    public void doUpdate(TerminationReason terminationReason) {
+        var partyPK = getPartyPK();
+        var terminationReasonDetailValue = employeeControl.getTerminationReasonDetailValueForUpdate(terminationReason);
+        var terminationReasonDescription = employeeControl.getTerminationReasonDescriptionForUpdate(terminationReason, getPreferredLanguage());
+        var description = edit.getDescription();
+
+        terminationReasonDetailValue.setTerminationReasonName(edit.getTerminationReasonName());
+        terminationReasonDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+        terminationReasonDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        employeeControl.updateTerminationReasonFromValue(terminationReasonDetailValue, partyPK);
+
+        if(terminationReasonDescription == null && description != null) {
+            employeeControl.createTerminationReasonDescription(terminationReason, getPreferredLanguage(), description, partyPK);
+        } else if(terminationReasonDescription != null && description == null) {
+            employeeControl.deleteTerminationReasonDescription(terminationReasonDescription, partyPK);
+        } else if(terminationReasonDescription != null && description != null) {
+            var terminationReasonDescriptionValue = employeeControl.getTerminationReasonDescriptionValue(terminationReasonDescription);
+
+            terminationReasonDescriptionValue.setDescription(description);
+            employeeControl.updateTerminationReasonDescriptionFromValue(terminationReasonDescriptionValue, partyPK);
+        }
+    }
+
 }
