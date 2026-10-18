@@ -4281,7 +4281,7 @@ public class AccountingControl
         return transactionEntityRoleTypeDescription;
     }
     
-    private TransactionEntityRoleTypeDescription getTransactionEntityRoleTypeDescription(TransactionEntityRoleType transactionEntityRoleType, Language language, EntityPermission entityPermission) {
+    public TransactionEntityRoleTypeDescription getTransactionEntityRoleTypeDescription(TransactionEntityRoleType transactionEntityRoleType, Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(TransactionEntityRoleTypeDescriptions.fields())
                 .from(TransactionEntityRoleTypeDescriptions)
