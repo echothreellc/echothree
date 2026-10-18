@@ -22,6 +22,7 @@ import com.echothree.control.user.employee.common.result.EditEmployeeTypeResult;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.control.user.employee.common.spec.EmployeeTypeSpec;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
+import com.echothree.model.control.employee.server.logic.EmployeeTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -68,7 +69,10 @@ public class EditEmployeeTypeCommand
     @Inject
     EmployeeControl employeeControl;
 
-    
+    @Inject
+    EmployeeTypeLogic employeeTypeLogic;
+
+
     /** Creates a new instance of EditEmployeeTypeCommand */
     public EditEmployeeTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -86,14 +90,7 @@ public class EditEmployeeTypeCommand
 
     @Override
     public EmployeeType getEntity(EditEmployeeTypeResult result) {
-        var employeeTypeName = spec.getEmployeeTypeName();
-        var employeeType = employeeControl.getEmployeeTypeByName(employeeTypeName, editModeToEntityPermission(editMode));
-
-        if(employeeType == null) {
-            addExecutionError(ExecutionErrors.UnknownEmployeeTypeName.name(), employeeTypeName);
-        }
-
-        return employeeType;
+        return employeeTypeLogic.getEmployeeTypeByName(this, spec.getEmployeeTypeName(), editModeToEntityPermission(editMode));
     }
 
     @Override
