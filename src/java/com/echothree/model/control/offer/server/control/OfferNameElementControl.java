@@ -244,7 +244,7 @@ public class OfferNameElementControl
         return offerNameElementDescription;
     }
     
-    private OfferNameElementDescription getOfferNameElementDescription(OfferNameElement offerNameElement, Language language,
+    public OfferNameElementDescription getOfferNameElementDescription(OfferNameElement offerNameElement, Language language,
             EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(OfferNameElementDescriptions.fields())
