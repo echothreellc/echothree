@@ -18,21 +18,21 @@ package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.edit.AccountingEditFactory;
 import com.echothree.control.user.accounting.common.edit.GlAccountCategoryDescriptionEdit;
-import com.echothree.control.user.accounting.common.form.EditGlAccountCategoryDescriptionForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
+import com.echothree.control.user.accounting.common.result.EditGlAccountCategoryDescriptionResult;
 import com.echothree.control.user.accounting.common.spec.GlAccountCategoryDescriptionSpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.accounting.server.logic.GlAccountCategoryLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.accounting.server.entity.GlAccountCategory;
+import com.echothree.model.data.accounting.server.entity.GlAccountCategoryDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -42,12 +42,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditGlAccountCategoryDescriptionCommand
-        extends BaseEditCommand<GlAccountCategoryDescriptionSpec, GlAccountCategoryDescriptionEdit> {
-    
+        extends BaseAbstractEditCommand<GlAccountCategoryDescriptionSpec, GlAccountCategoryDescriptionEdit, EditGlAccountCategoryDescriptionResult, GlAccountCategoryDescription, GlAccountCategory> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -55,12 +55,12 @@ public class EditGlAccountCategoryDescriptionCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.GlAccountCategory.name(), SecurityRoles.Description.name())
                 ))
         ));
-        
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GlAccountCategoryName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
@@ -70,77 +70,70 @@ public class EditGlAccountCategoryDescriptionCommand
     AccountingControl accountingControl;
 
     @Inject
-    PartyControl partyControl;
+    GlAccountCategoryLogic glAccountCategoryLogic;
 
-    
+    @Inject
+    LanguageLogic languageLogic;
+
     /** Creates a new instance of EditGlAccountCategoryDescriptionCommand */
     public EditGlAccountCategoryDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = AccountingResultFactory.getEditGlAccountCategoryDescriptionResult();
-        var glAccountCategoryName = spec.getGlAccountCategoryName();
-        var glAccountCategory = accountingControl.getGlAccountCategoryByName(glAccountCategoryName);
-        
-        if(glAccountCategory != null) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = partyControl.getLanguageByIsoName(languageIsoName);
-            
-            if(language != null) {
-                if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    var glAccountCategoryDescription = accountingControl.getGlAccountCategoryDescription(glAccountCategory, language);
-                    
-                    if(glAccountCategoryDescription != null) {
-                        if(editMode.equals(EditMode.LOCK)) {
-                            result.setGlAccountCategoryDescription(accountingControl.getGlAccountCategoryDescriptionTransfer(getUserVisit(), glAccountCategoryDescription));
-
-                            if(lockEntity(glAccountCategory)) {
-                                var edit = AccountingEditFactory.getGlAccountCategoryDescriptionEdit();
-
-                                result.setEdit(edit);
-                                edit.setDescription(glAccountCategoryDescription.getDescription());
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                            }
-
-                            result.setEntityLock(getEntityLockTransfer(glAccountCategory));
-                        } else { // EditMode.ABANDON
-                            unlockEntity(glAccountCategory);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownGlAccountCategoryDescription.name());
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var glAccountCategoryDescriptionValue = accountingControl.getGlAccountCategoryDescriptionValueForUpdate(glAccountCategory, language);
-                    
-                    if(glAccountCategoryDescriptionValue != null) {
-                        if(lockEntityForUpdate(glAccountCategory)) {
-                            try {
-                                var description = edit.getDescription();
-                                
-                                glAccountCategoryDescriptionValue.setDescription(description);
-                                
-                                accountingControl.updateGlAccountCategoryDescriptionFromValue(glAccountCategoryDescriptionValue, getPartyPK());
-                            } finally {
-                                unlockEntity(glAccountCategory);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownGlAccountCategoryDescription.name());
-                    }
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownGlAccountCategoryName.name(), glAccountCategoryName);
-        }
-        
-        return result;
+    public EditGlAccountCategoryDescriptionResult getResult() {
+        return AccountingResultFactory.getEditGlAccountCategoryDescriptionResult();
     }
-    
+
+    @Override
+    public GlAccountCategoryDescriptionEdit getEdit() {
+        return AccountingEditFactory.getGlAccountCategoryDescriptionEdit();
+    }
+
+    @Override
+    public GlAccountCategoryDescription getEntity(EditGlAccountCategoryDescriptionResult result) {
+        GlAccountCategoryDescription glAccountCategoryDescription = null;
+        var glAccountCategoryName = spec.getGlAccountCategoryName();
+        var glAccountCategory = glAccountCategoryLogic.getGlAccountCategoryByName(this, glAccountCategoryName);
+
+        if(!hasExecutionErrors()) {
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = languageLogic.getLanguageByName(this, languageIsoName);
+
+            if(!hasExecutionErrors()) {
+                glAccountCategoryDescription = accountingControl.getGlAccountCategoryDescription(glAccountCategory, language, editModeToEntityPermission(editMode));
+
+                if(glAccountCategoryDescription == null) {
+                    addExecutionError(ExecutionErrors.UnknownGlAccountCategoryDescription.name(), glAccountCategoryName, languageIsoName);
+                }
+            }
+        }
+
+        return glAccountCategoryDescription;
+    }
+
+    @Override
+    public GlAccountCategory getLockEntity(GlAccountCategoryDescription glAccountCategoryDescription) {
+        return glAccountCategoryDescription.getGlAccountCategory();
+    }
+
+    @Override
+    public void fillInResult(EditGlAccountCategoryDescriptionResult result, GlAccountCategoryDescription glAccountCategoryDescription) {
+        result.setGlAccountCategoryDescription(accountingControl.getGlAccountCategoryDescriptionTransfer(getUserVisit(), glAccountCategoryDescription));
+    }
+
+    @Override
+    public void doLock(GlAccountCategoryDescriptionEdit edit, GlAccountCategoryDescription glAccountCategoryDescription) {
+        edit.setDescription(glAccountCategoryDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(GlAccountCategoryDescription glAccountCategoryDescription) {
+        var glAccountCategoryDescriptionValue = accountingControl.getGlAccountCategoryDescriptionValue(glAccountCategoryDescription);
+
+        glAccountCategoryDescriptionValue.setDescription(edit.getDescription());
+
+        accountingControl.updateGlAccountCategoryDescriptionFromValue(glAccountCategoryDescriptionValue, getPartyPK());
+    }
+
 }
