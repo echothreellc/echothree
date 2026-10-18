@@ -3258,7 +3258,7 @@ public class AccountingControl
         return glAccountDescription;
     }
     
-    private GlAccountDescription getGlAccountDescription(GlAccount glAccount, Language language, EntityPermission entityPermission) {
+    public GlAccountDescription getGlAccountDescription(GlAccount glAccount, Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(GlAccountDescriptions.fields())
                 .from(GlAccountDescriptions)
