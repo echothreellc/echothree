@@ -24,12 +24,10 @@ import com.echothree.control.user.offer.common.spec.OfferNameElementDescriptionS
 import com.echothree.model.control.offer.server.control.OfferNameElementControl;
 import com.echothree.model.control.offer.server.logic.OfferNameElementLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.offer.server.entity.OfferNameElement;
 import com.echothree.model.data.offer.server.entity.OfferNameElementDescription;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
@@ -70,9 +68,6 @@ public class EditOfferNameElementDescriptionCommand
     OfferNameElementControl offerNameElementControl;
 
     @Inject
-    LanguageLogic languageLogic;
-
-    @Inject
     OfferNameElementLogic offerNameElementLogic;
 
     /** Creates a new instance of EditOfferNameElementDescriptionCommand */
@@ -92,25 +87,7 @@ public class EditOfferNameElementDescriptionCommand
 
     @Override
     public OfferNameElementDescription getEntity(EditOfferNameElementDescriptionResult result) {
-        OfferNameElementDescription offerNameElementDescription = null;
-        var offerNameElementName = spec.getOfferNameElementName();
-        var offerNameElement = offerNameElementLogic.getOfferNameElementByName(this, offerNameElementName);
-
-        if(!hasExecutionErrors()) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = languageLogic.getLanguageByName(this, languageIsoName);
-
-            if(!hasExecutionErrors()) {
-                offerNameElementDescription = offerNameElementControl.getOfferNameElementDescription(offerNameElement, language,
-                        editModeToEntityPermission(editMode));
-
-                if(offerNameElementDescription == null) {
-                    addExecutionError(ExecutionErrors.UnknownOfferNameElementDescription.name(), offerNameElementName, languageIsoName);
-                }
-            }
-        }
-
-        return offerNameElementDescription;
+        return offerNameElementLogic.getOfferNameElementDescriptionBySpec(this, spec, editModeToEntityPermission(editMode));
     }
 
     @Override

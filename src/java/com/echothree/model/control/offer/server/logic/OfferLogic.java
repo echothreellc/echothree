@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.offer.server.logic;
 
+import com.echothree.control.user.offer.common.spec.OfferDescriptionSpec;
 import com.echothree.control.user.offer.common.spec.OfferUniversalSpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
@@ -24,12 +25,15 @@ import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.offer.common.exception.CannotDeleteOfferInUseException;
 import com.echothree.model.control.offer.common.exception.DuplicateOfferNameException;
 import com.echothree.model.control.offer.common.exception.UnknownDefaultOfferException;
+import com.echothree.model.control.offer.common.exception.UnknownOfferDescriptionException;
 import com.echothree.model.control.offer.common.exception.UnknownOfferNameException;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.offer.server.entity.Offer;
+import com.echothree.model.data.offer.server.entity.OfferDescription;
 import com.echothree.model.data.offer.server.factory.OfferFactory;
 import com.echothree.model.data.offer.server.value.OfferDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
@@ -62,6 +66,9 @@ public class OfferLogic
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
 
     @Inject
     OfferItemLogic offerItemLogic;
@@ -153,6 +160,28 @@ public class OfferLogic
     public Offer getOfferByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
             final OfferUniversalSpec universalSpec, boolean allowDefault) {
         return getOfferByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
+    }
+
+    public OfferDescription getOfferDescriptionBySpec(final ExecutionErrorAccumulator eea,
+            final OfferDescriptionSpec spec, final EntityPermission entityPermission) {
+        OfferDescription offerDescription = null;
+        var offerName = spec.getOfferName();
+        var offer = getOfferByName(eea, offerName);
+
+        if(!hasExecutionErrors(eea)) {
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = languageLogic.getLanguageByName(eea, languageIsoName);
+
+            if(!hasExecutionErrors(eea)) {
+                offerDescription = offerControl.getOfferDescription(offer, language, entityPermission);
+
+                if(offerDescription == null) {
+                    handleExecutionError(UnknownOfferDescriptionException.class, eea, ExecutionErrors.UnknownOfferDescription.name(), offerName, languageIsoName);
+                }
+            }
+        }
+
+        return offerDescription;
     }
 
     public void updateOfferFromValue(OfferDetailValue offerDetailValue, BasePK updatedBy) {

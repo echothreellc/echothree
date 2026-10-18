@@ -22,14 +22,12 @@ import com.echothree.control.user.geo.common.result.EditGeoCodeDateTimeFormatRes
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
 import com.echothree.control.user.geo.common.spec.GeoCodeDateTimeFormatSpec;
 import com.echothree.model.control.geo.server.control.GeoControl;
-import com.echothree.model.control.geo.server.logic.GeoCodeLogic;
+import com.echothree.model.control.geo.server.logic.GeoCodeDateTimeFormatLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.logic.DateTimeFormatLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeDateTimeFormat;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
@@ -71,10 +69,7 @@ public class EditGeoCodeDateTimeFormatCommand
     GeoControl geoControl;
 
     @Inject
-    DateTimeFormatLogic dateTimeFormatLogic;
-
-    @Inject
-    GeoCodeLogic geoCodeLogic;
+    GeoCodeDateTimeFormatLogic geoCodeDateTimeFormatLogic;
 
     /** Creates a new instance of EditGeoCodeDateTimeFormatCommand */
     public EditGeoCodeDateTimeFormatCommand() {
@@ -93,24 +88,7 @@ public class EditGeoCodeDateTimeFormatCommand
 
     @Override
     public GeoCodeDateTimeFormat getEntity(EditGeoCodeDateTimeFormatResult result) {
-        GeoCodeDateTimeFormat geoCodeDateTimeFormat = null;
-        var geoCodeName = spec.getGeoCodeName();
-        var geoCode = geoCodeLogic.getGeoCodeByName(this, geoCodeName);
-
-        if(!hasExecutionErrors()) {
-            var dateTimeFormatName = spec.getDateTimeFormatName();
-            var dateTimeFormat = dateTimeFormatLogic.getDateTimeFormatByName(this, dateTimeFormatName);
-
-            if(!hasExecutionErrors()) {
-                geoCodeDateTimeFormat = geoControl.getGeoCodeDateTimeFormat(geoCode, dateTimeFormat, editModeToEntityPermission(editMode));
-
-                if(geoCodeDateTimeFormat == null) {
-                    addExecutionError(ExecutionErrors.UnknownGeoCodeDateTimeFormat.name(), geoCodeName, dateTimeFormatName);
-                }
-            }
-        }
-
-        return geoCodeDateTimeFormat;
+        return geoCodeDateTimeFormatLogic.getGeoCodeDateTimeFormatBySpec(this, spec, editModeToEntityPermission(editMode));
     }
 
     @Override

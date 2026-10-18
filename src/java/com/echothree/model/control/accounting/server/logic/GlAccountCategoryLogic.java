@@ -16,16 +16,20 @@
 
 package com.echothree.model.control.accounting.server.logic;
 
+import com.echothree.control.user.accounting.common.spec.GlAccountCategoryDescriptionSpec;
 import com.echothree.control.user.accounting.common.spec.GlAccountCategoryUniversalSpec;
 import com.echothree.model.control.accounting.common.exception.DuplicateGlAccountCategoryNameException;
 import com.echothree.model.control.accounting.common.exception.UnknownDefaultGlAccountCategoryException;
+import com.echothree.model.control.accounting.common.exception.UnknownGlAccountCategoryDescriptionException;
 import com.echothree.model.control.accounting.common.exception.UnknownGlAccountCategoryNameException;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.data.accounting.server.entity.GlAccountCategory;
+import com.echothree.model.data.accounting.server.entity.GlAccountCategoryDescription;
 import com.echothree.model.data.accounting.server.value.GlAccountCategoryDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -45,6 +49,9 @@ public class GlAccountCategoryLogic
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
 
     protected GlAccountCategoryLogic() {
         super();
@@ -134,6 +141,28 @@ public class GlAccountCategoryLogic
     public GlAccountCategory getGlAccountCategoryByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
             final GlAccountCategoryUniversalSpec universalSpec, boolean allowDefault) {
         return getGlAccountCategoryByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
+    }
+
+    public GlAccountCategoryDescription getGlAccountCategoryDescriptionBySpec(final ExecutionErrorAccumulator eea,
+            final GlAccountCategoryDescriptionSpec spec, final EntityPermission entityPermission) {
+        GlAccountCategoryDescription glAccountCategoryDescription = null;
+        var glAccountCategoryName = spec.getGlAccountCategoryName();
+        var glAccountCategory = getGlAccountCategoryByName(eea, glAccountCategoryName);
+
+        if(!hasExecutionErrors(eea)) {
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = languageLogic.getLanguageByName(eea, languageIsoName);
+
+            if(!hasExecutionErrors(eea)) {
+                glAccountCategoryDescription = accountingControl.getGlAccountCategoryDescription(glAccountCategory, language, entityPermission);
+
+                if(glAccountCategoryDescription == null) {
+                    handleExecutionError(UnknownGlAccountCategoryDescriptionException.class, eea, ExecutionErrors.UnknownGlAccountCategoryDescription.name(), glAccountCategoryName, languageIsoName);
+                }
+            }
+        }
+
+        return glAccountCategoryDescription;
     }
 
     public void updateGlAccountCategoryFromValue(GlAccountCategoryDetailValue glAccountCategoryDetailValue, BasePK updatedBy) {

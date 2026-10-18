@@ -22,14 +22,12 @@ import com.echothree.control.user.geo.common.result.EditGeoCodeTimeZoneResult;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
 import com.echothree.control.user.geo.common.spec.GeoCodeTimeZoneSpec;
 import com.echothree.model.control.geo.server.control.GeoControl;
-import com.echothree.model.control.geo.server.logic.GeoCodeLogic;
+import com.echothree.model.control.geo.server.logic.GeoCodeTimeZoneLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.logic.TimeZoneLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeTimeZone;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
@@ -71,10 +69,7 @@ public class EditGeoCodeTimeZoneCommand
     GeoControl geoControl;
 
     @Inject
-    GeoCodeLogic geoCodeLogic;
-
-    @Inject
-    TimeZoneLogic timeZoneLogic;
+    GeoCodeTimeZoneLogic geoCodeTimeZoneLogic;
 
     /** Creates a new instance of EditGeoCodeTimeZoneCommand */
     public EditGeoCodeTimeZoneCommand() {
@@ -93,24 +88,7 @@ public class EditGeoCodeTimeZoneCommand
 
     @Override
     public GeoCodeTimeZone getEntity(EditGeoCodeTimeZoneResult result) {
-        GeoCodeTimeZone geoCodeTimeZone = null;
-        var geoCodeName = spec.getGeoCodeName();
-        var geoCode = geoCodeLogic.getGeoCodeByName(this, geoCodeName);
-
-        if(!hasExecutionErrors()) {
-            var javaTimeZoneName = spec.getJavaTimeZoneName();
-            var timeZone = timeZoneLogic.getTimeZoneByName(this, javaTimeZoneName);
-
-            if(!hasExecutionErrors()) {
-                geoCodeTimeZone = geoControl.getGeoCodeTimeZone(geoCode, timeZone, editModeToEntityPermission(editMode));
-
-                if(geoCodeTimeZone == null) {
-                    addExecutionError(ExecutionErrors.UnknownGeoCodeTimeZone.name(), geoCodeName, javaTimeZoneName);
-                }
-            }
-        }
-
-        return geoCodeTimeZone;
+        return geoCodeTimeZoneLogic.getGeoCodeTimeZoneBySpec(this, spec, editModeToEntityPermission(editMode));
     }
 
     @Override

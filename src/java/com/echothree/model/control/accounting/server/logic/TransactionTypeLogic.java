@@ -16,14 +16,18 @@
 
 package com.echothree.model.control.accounting.server.logic;
 
+import com.echothree.control.user.accounting.common.spec.TransactionTypeDescriptionSpec;
 import com.echothree.control.user.accounting.common.spec.TransactionTypeUniversalSpec;
+import com.echothree.model.control.accounting.common.exception.UnknownTransactionTypeDescriptionException;
 import com.echothree.model.control.accounting.common.exception.UnknownTransactionTypeNameException;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.data.accounting.server.entity.TransactionType;
+import com.echothree.model.data.accounting.server.entity.TransactionTypeDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -40,6 +44,9 @@ public class TransactionTypeLogic
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
 
     protected TransactionTypeLogic() {
         super();
@@ -98,6 +105,28 @@ public class TransactionTypeLogic
     public TransactionType getTransactionTypeByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
             final TransactionTypeUniversalSpec universalSpec) {
         return getTransactionTypeByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
+    }
+
+    public TransactionTypeDescription getTransactionTypeDescriptionBySpec(final ExecutionErrorAccumulator eea,
+            final TransactionTypeDescriptionSpec spec, final EntityPermission entityPermission) {
+        TransactionTypeDescription transactionTypeDescription = null;
+        var transactionTypeName = spec.getTransactionTypeName();
+        var transactionType = getTransactionTypeByName(eea, transactionTypeName);
+
+        if(!hasExecutionErrors(eea)) {
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = languageLogic.getLanguageByName(eea, languageIsoName);
+
+            if(!hasExecutionErrors(eea)) {
+                transactionTypeDescription = accountingControl.getTransactionTypeDescription(transactionType, language, entityPermission);
+
+                if(transactionTypeDescription == null) {
+                    handleExecutionError(UnknownTransactionTypeDescriptionException.class, eea, ExecutionErrors.UnknownTransactionTypeDescription.name(), transactionTypeName, languageIsoName);
+                }
+            }
+        }
+
+        return transactionTypeDescription;
     }
 
 }

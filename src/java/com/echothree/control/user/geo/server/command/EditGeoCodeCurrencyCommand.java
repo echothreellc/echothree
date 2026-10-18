@@ -21,15 +21,13 @@ import com.echothree.control.user.geo.common.edit.GeoEditFactory;
 import com.echothree.control.user.geo.common.result.EditGeoCodeCurrencyResult;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
 import com.echothree.control.user.geo.common.spec.GeoCodeCurrencySpec;
-import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
 import com.echothree.model.control.geo.server.control.GeoControl;
-import com.echothree.model.control.geo.server.logic.GeoCodeLogic;
+import com.echothree.model.control.geo.server.logic.GeoCodeCurrencyLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeCurrency;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
@@ -71,10 +69,7 @@ public class EditGeoCodeCurrencyCommand
     GeoControl geoControl;
 
     @Inject
-    CurrencyLogic currencyLogic;
-
-    @Inject
-    GeoCodeLogic geoCodeLogic;
+    GeoCodeCurrencyLogic geoCodeCurrencyLogic;
 
     /** Creates a new instance of EditGeoCodeCurrencyCommand */
     public EditGeoCodeCurrencyCommand() {
@@ -93,24 +88,7 @@ public class EditGeoCodeCurrencyCommand
 
     @Override
     public GeoCodeCurrency getEntity(EditGeoCodeCurrencyResult result) {
-        GeoCodeCurrency geoCodeCurrency = null;
-        var geoCodeName = spec.getGeoCodeName();
-        var geoCode = geoCodeLogic.getGeoCodeByName(this, geoCodeName);
-
-        if(!hasExecutionErrors()) {
-            var currencyIsoName = spec.getCurrencyIsoName();
-            var currency = currencyLogic.getCurrencyByName(this, currencyIsoName);
-
-            if(!hasExecutionErrors()) {
-                geoCodeCurrency = geoControl.getGeoCodeCurrency(geoCode, currency, editModeToEntityPermission(editMode));
-
-                if(geoCodeCurrency == null) {
-                    addExecutionError(ExecutionErrors.UnknownGeoCodeCurrency.name(), geoCodeName, currencyIsoName);
-                }
-            }
-        }
-
-        return geoCodeCurrency;
+        return geoCodeCurrencyLogic.getGeoCodeCurrencyBySpec(this, spec, editModeToEntityPermission(editMode));
     }
 
     @Override

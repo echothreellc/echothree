@@ -24,12 +24,10 @@ import com.echothree.control.user.accounting.common.spec.SymbolPositionDescripti
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.accounting.server.logic.SymbolPositionLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.accounting.server.entity.SymbolPosition;
 import com.echothree.model.data.accounting.server.entity.SymbolPositionDescription;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
@@ -70,9 +68,6 @@ public class EditSymbolPositionDescriptionCommand
     AccountingControl accountingControl;
 
     @Inject
-    LanguageLogic languageLogic;
-
-    @Inject
     SymbolPositionLogic symbolPositionLogic;
 
     /** Creates a new instance of EditSymbolPositionDescriptionCommand */
@@ -92,24 +87,7 @@ public class EditSymbolPositionDescriptionCommand
 
     @Override
     public SymbolPositionDescription getEntity(EditSymbolPositionDescriptionResult result) {
-        SymbolPositionDescription symbolPositionDescription = null;
-        var symbolPositionName = spec.getSymbolPositionName();
-        var symbolPosition = symbolPositionLogic.getSymbolPositionByName(this, symbolPositionName);
-
-        if(!hasExecutionErrors()) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = languageLogic.getLanguageByName(this, languageIsoName);
-
-            if(!hasExecutionErrors()) {
-                symbolPositionDescription = accountingControl.getSymbolPositionDescription(symbolPosition, language, editModeToEntityPermission(editMode));
-
-                if(symbolPositionDescription == null) {
-                    addExecutionError(ExecutionErrors.UnknownSymbolPositionDescription.name(), symbolPositionName, languageIsoName);
-                }
-            }
-        }
-
-        return symbolPositionDescription;
+        return symbolPositionLogic.getSymbolPositionDescriptionBySpec(this, spec, editModeToEntityPermission(editMode));
     }
 
     @Override

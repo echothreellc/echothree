@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.geo.server.logic;
 
+import com.echothree.control.user.geo.common.spec.GeoCodeDescriptionSpec;
 import com.echothree.control.user.geo.common.spec.GeoCodeUniversalSpec;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.core.common.ComponentVendors;
@@ -23,13 +24,16 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.geo.common.exception.UnknownGeoCodeAliasTypeNameException;
+import com.echothree.model.control.geo.common.exception.UnknownGeoCodeDescriptionException;
 import com.echothree.model.control.geo.common.exception.UnknownGeoCodeNameException;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeAlias;
+import com.echothree.model.data.geo.server.entity.GeoCodeDescription;
 import com.echothree.model.data.geo.server.entity.GeoCodeScope;
 import com.echothree.model.data.geo.server.entity.GeoCodeType;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -61,6 +65,9 @@ public class GeoCodeLogic
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
 
     protected GeoCodeLogic() {
         super();
@@ -134,6 +141,28 @@ public class GeoCodeLogic
         }
 
         return geoCodeAlias == null ? null : geoCodeAlias.getGeoCode();
+    }
+
+    public GeoCodeDescription getGeoCodeDescriptionBySpec(final ExecutionErrorAccumulator eea,
+            final GeoCodeDescriptionSpec spec, final EntityPermission entityPermission) {
+        GeoCodeDescription geoCodeDescription = null;
+        var geoCodeName = spec.getGeoCodeName();
+        var geoCode = getGeoCodeByName(eea, geoCodeName);
+
+        if(!hasExecutionErrors(eea)) {
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = languageLogic.getLanguageByName(eea, languageIsoName);
+
+            if(!hasExecutionErrors(eea)) {
+                geoCodeDescription = geoControl.getGeoCodeDescription(geoCode, language, entityPermission);
+
+                if(geoCodeDescription == null) {
+                    handleExecutionError(UnknownGeoCodeDescriptionException.class, eea, ExecutionErrors.UnknownGeoCodeDescription.name(), geoCodeName, languageIsoName);
+                }
+            }
+        }
+
+        return geoCodeDescription;
     }
 
     public void deleteGeoCode(final ExecutionErrorAccumulator eea, final GeoCode geoCode, final BasePK deletedBy) {

@@ -24,12 +24,10 @@ import com.echothree.control.user.accounting.common.spec.TransactionEntityRoleTy
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.accounting.server.logic.TransactionEntityRoleTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.accounting.server.entity.TransactionEntityRoleType;
 import com.echothree.model.data.accounting.server.entity.TransactionEntityRoleTypeDescription;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
@@ -71,9 +69,6 @@ public class EditTransactionEntityRoleTypeDescriptionCommand
     AccountingControl accountingControl;
 
     @Inject
-    LanguageLogic languageLogic;
-
-    @Inject
     TransactionEntityRoleTypeLogic transactionEntityRoleTypeLogic;
 
     /** Creates a new instance of EditTransactionEntityRoleTypeDescriptionCommand */
@@ -93,28 +88,7 @@ public class EditTransactionEntityRoleTypeDescriptionCommand
 
     @Override
     public TransactionEntityRoleTypeDescription getEntity(EditTransactionEntityRoleTypeDescriptionResult result) {
-        TransactionEntityRoleTypeDescription transactionEntityRoleTypeDescription = null;
-        var transactionTypeName = spec.getTransactionTypeName();
-        var transactionEntityRoleTypeName = spec.getTransactionEntityRoleTypeName();
-        var transactionEntityRoleType = transactionEntityRoleTypeLogic.getTransactionEntityRoleTypeByName(this,
-                transactionTypeName, transactionEntityRoleTypeName);
-
-        if(!hasExecutionErrors()) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = languageLogic.getLanguageByName(this, languageIsoName);
-
-            if(!hasExecutionErrors()) {
-                transactionEntityRoleTypeDescription = accountingControl.getTransactionEntityRoleTypeDescription(transactionEntityRoleType,
-                        language, editModeToEntityPermission(editMode));
-
-                if(transactionEntityRoleTypeDescription == null) {
-                    addExecutionError(ExecutionErrors.UnknownTransactionEntityRoleTypeDescription.name(), transactionTypeName,
-                            transactionEntityRoleTypeName, languageIsoName);
-                }
-            }
-        }
-
-        return transactionEntityRoleTypeDescription;
+        return transactionEntityRoleTypeLogic.getTransactionEntityRoleTypeDescriptionBySpec(this, spec, editModeToEntityPermission(editMode));
     }
 
     @Override

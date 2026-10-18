@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.offer.server.logic;
 
+import com.echothree.control.user.offer.common.spec.UseDescriptionSpec;
 import com.echothree.control.user.offer.common.spec.UseUniversalSpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
@@ -24,10 +25,13 @@ import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.offer.common.exception.CannotDeleteUseInUseException;
 import com.echothree.model.control.offer.common.exception.DuplicateUseNameException;
 import com.echothree.model.control.offer.common.exception.UnknownDefaultUseException;
+import com.echothree.model.control.offer.common.exception.UnknownUseDescriptionException;
 import com.echothree.model.control.offer.common.exception.UnknownUseNameException;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.control.offer.server.control.UseControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.data.offer.server.entity.Use;
+import com.echothree.model.data.offer.server.entity.UseDescription;
 import com.echothree.model.data.offer.server.entity.UseType;
 import com.echothree.model.data.offer.server.value.UseDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
@@ -51,6 +55,9 @@ public class UseLogic
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
 
     protected UseLogic() {
         super();
@@ -140,6 +147,28 @@ public class UseLogic
         return getUseByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
     }
 
+    public UseDescription getUseDescriptionBySpec(final ExecutionErrorAccumulator eea,
+            final UseDescriptionSpec spec, final EntityPermission entityPermission) {
+        UseDescription useDescription = null;
+        var useName = spec.getUseName();
+        var use = getUseByName(eea, useName);
+
+        if(!hasExecutionErrors(eea)) {
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = languageLogic.getLanguageByName(eea, languageIsoName);
+
+            if(!hasExecutionErrors(eea)) {
+                useDescription = useControl.getUseDescription(use, language, entityPermission);
+
+                if(useDescription == null) {
+                    handleExecutionError(UnknownUseDescriptionException.class, eea, ExecutionErrors.UnknownUseDescription.name(), useName, languageIsoName);
+                }
+            }
+        }
+
+        return useDescription;
+    }
+
     public void updateUseFromValue(UseDetailValue useDetailValue, BasePK updatedBy) {
         useControl.updateUseFromValue(useDetailValue, updatedBy);
     }
@@ -152,4 +181,5 @@ public class UseLogic
         }
     }
     
+
 }

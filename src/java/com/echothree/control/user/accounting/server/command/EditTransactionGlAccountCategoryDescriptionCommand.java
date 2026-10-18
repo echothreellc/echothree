@@ -24,12 +24,10 @@ import com.echothree.control.user.accounting.common.spec.TransactionGlAccountCat
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.accounting.server.logic.TransactionGlAccountCategoryLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.accounting.server.entity.TransactionGlAccountCategory;
 import com.echothree.model.data.accounting.server.entity.TransactionGlAccountCategoryDescription;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
@@ -71,9 +69,6 @@ public class EditTransactionGlAccountCategoryDescriptionCommand
     AccountingControl accountingControl;
 
     @Inject
-    LanguageLogic languageLogic;
-
-    @Inject
     TransactionGlAccountCategoryLogic transactionGlAccountCategoryLogic;
 
     /** Creates a new instance of EditTransactionGlAccountCategoryDescriptionCommand */
@@ -93,28 +88,7 @@ public class EditTransactionGlAccountCategoryDescriptionCommand
 
     @Override
     public TransactionGlAccountCategoryDescription getEntity(EditTransactionGlAccountCategoryDescriptionResult result) {
-        TransactionGlAccountCategoryDescription transactionGlAccountCategoryDescription = null;
-        var transactionTypeName = spec.getTransactionTypeName();
-        var transactionGlAccountCategoryName = spec.getTransactionGlAccountCategoryName();
-        var transactionGlAccountCategory = transactionGlAccountCategoryLogic.getTransactionGlAccountCategoryByName(this,
-                transactionTypeName, transactionGlAccountCategoryName);
-
-        if(!hasExecutionErrors()) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = languageLogic.getLanguageByName(this, languageIsoName);
-
-            if(!hasExecutionErrors()) {
-                transactionGlAccountCategoryDescription = accountingControl.getTransactionGlAccountCategoryDescription(transactionGlAccountCategory,
-                        language, editModeToEntityPermission(editMode));
-
-                if(transactionGlAccountCategoryDescription == null) {
-                    addExecutionError(ExecutionErrors.UnknownTransactionGlAccountCategoryDescription.name(), transactionTypeName,
-                            transactionGlAccountCategoryName, languageIsoName);
-                }
-            }
-        }
-
-        return transactionGlAccountCategoryDescription;
+        return transactionGlAccountCategoryLogic.getTransactionGlAccountCategoryDescriptionBySpec(this, spec, editModeToEntityPermission(editMode));
     }
 
     @Override

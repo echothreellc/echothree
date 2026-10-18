@@ -24,12 +24,10 @@ import com.echothree.control.user.accounting.common.spec.ItemAccountingCategoryD
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.accounting.server.logic.ItemAccountingCategoryLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategoryDescription;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
@@ -72,9 +70,6 @@ public class EditItemAccountingCategoryDescriptionCommand
     @Inject
     ItemAccountingCategoryLogic itemAccountingCategoryLogic;
 
-    @Inject
-    LanguageLogic languageLogic;
-
     /** Creates a new instance of EditItemAccountingCategoryDescriptionCommand */
     public EditItemAccountingCategoryDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -92,25 +87,7 @@ public class EditItemAccountingCategoryDescriptionCommand
 
     @Override
     public ItemAccountingCategoryDescription getEntity(EditItemAccountingCategoryDescriptionResult result) {
-        ItemAccountingCategoryDescription itemAccountingCategoryDescription = null;
-        var itemAccountingCategoryName = spec.getItemAccountingCategoryName();
-        var itemAccountingCategory = itemAccountingCategoryLogic.getItemAccountingCategoryByName(this, itemAccountingCategoryName);
-
-        if(!hasExecutionErrors()) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = languageLogic.getLanguageByName(this, languageIsoName);
-
-            if(!hasExecutionErrors()) {
-                itemAccountingCategoryDescription = accountingControl.getItemAccountingCategoryDescription(itemAccountingCategory, language,
-                        editModeToEntityPermission(editMode));
-
-                if(itemAccountingCategoryDescription == null) {
-                    addExecutionError(ExecutionErrors.UnknownItemAccountingCategoryDescription.name(), itemAccountingCategoryName, languageIsoName);
-                }
-            }
-        }
-
-        return itemAccountingCategoryDescription;
+        return itemAccountingCategoryLogic.getItemAccountingCategoryDescriptionBySpec(this, spec, editModeToEntityPermission(editMode));
     }
 
     @Override

@@ -16,16 +16,20 @@
 
 package com.echothree.model.control.accounting.server.logic;
 
+import com.echothree.control.user.accounting.common.spec.GlResourceTypeDescriptionSpec;
 import com.echothree.control.user.accounting.common.spec.GlResourceTypeUniversalSpec;
 import com.echothree.model.control.accounting.common.exception.DuplicateGlResourceTypeNameException;
 import com.echothree.model.control.accounting.common.exception.UnknownDefaultGlResourceTypeException;
+import com.echothree.model.control.accounting.common.exception.UnknownGlResourceTypeDescriptionException;
 import com.echothree.model.control.accounting.common.exception.UnknownGlResourceTypeNameException;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.data.accounting.server.entity.GlResourceType;
+import com.echothree.model.data.accounting.server.entity.GlResourceTypeDescription;
 import com.echothree.model.data.accounting.server.value.GlResourceTypeDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -45,6 +49,9 @@ public class GlResourceTypeLogic
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
 
     protected GlResourceTypeLogic() {
         super();
@@ -134,6 +141,28 @@ public class GlResourceTypeLogic
     public GlResourceType getGlResourceTypeByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
             final GlResourceTypeUniversalSpec universalSpec, boolean allowDefault) {
         return getGlResourceTypeByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
+    }
+
+    public GlResourceTypeDescription getGlResourceTypeDescriptionBySpec(final ExecutionErrorAccumulator eea,
+            final GlResourceTypeDescriptionSpec spec, final EntityPermission entityPermission) {
+        GlResourceTypeDescription glResourceTypeDescription = null;
+        var glResourceTypeName = spec.getGlResourceTypeName();
+        var glResourceType = getGlResourceTypeByName(eea, glResourceTypeName);
+
+        if(!hasExecutionErrors(eea)) {
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = languageLogic.getLanguageByName(eea, languageIsoName);
+
+            if(!hasExecutionErrors(eea)) {
+                glResourceTypeDescription = accountingControl.getGlResourceTypeDescription(glResourceType, language, entityPermission);
+
+                if(glResourceTypeDescription == null) {
+                    handleExecutionError(UnknownGlResourceTypeDescriptionException.class, eea, ExecutionErrors.UnknownGlResourceTypeDescription.name(), glResourceTypeName, languageIsoName);
+                }
+            }
+        }
+
+        return glResourceTypeDescription;
     }
 
     public void updateGlResourceTypeFromValue(GlResourceTypeDetailValue glResourceTypeDetailValue, BasePK updatedBy) {

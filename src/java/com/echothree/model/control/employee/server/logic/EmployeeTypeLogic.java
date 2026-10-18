@@ -16,9 +16,13 @@
 
 package com.echothree.model.control.employee.server.logic;
 
+import com.echothree.control.user.employee.common.spec.EmployeeTypeDescriptionSpec;
+import com.echothree.model.control.employee.common.exception.UnknownEmployeeTypeDescriptionException;
 import com.echothree.model.control.employee.common.exception.UnknownEmployeeTypeNameException;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.data.employee.server.entity.EmployeeType;
+import com.echothree.model.data.employee.server.entity.EmployeeTypeDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -32,6 +36,9 @@ public class EmployeeTypeLogic
 
     @Inject
     EmployeeControl employeeControl;
+
+    @Inject
+    LanguageLogic languageLogic;
 
     protected EmployeeTypeLogic() {
         super();
@@ -54,6 +61,28 @@ public class EmployeeTypeLogic
 
     public EmployeeType getEmployeeTypeByNameForUpdate(final ExecutionErrorAccumulator eea, final String employeeTypeName) {
         return getEmployeeTypeByName(eea, employeeTypeName, EntityPermission.READ_WRITE);
+    }
+
+    public EmployeeTypeDescription getEmployeeTypeDescriptionBySpec(final ExecutionErrorAccumulator eea,
+            final EmployeeTypeDescriptionSpec spec, final EntityPermission entityPermission) {
+        EmployeeTypeDescription employeeTypeDescription = null;
+        var employeeTypeName = spec.getEmployeeTypeName();
+        var employeeType = getEmployeeTypeByName(eea, employeeTypeName);
+
+        if(!hasExecutionErrors(eea)) {
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = languageLogic.getLanguageByName(eea, languageIsoName);
+
+            if(!hasExecutionErrors(eea)) {
+                employeeTypeDescription = employeeControl.getEmployeeTypeDescription(employeeType, language, entityPermission);
+
+                if(employeeTypeDescription == null) {
+                    handleExecutionError(UnknownEmployeeTypeDescriptionException.class, eea, ExecutionErrors.UnknownEmployeeTypeDescription.name(), employeeTypeName, languageIsoName);
+                }
+            }
+        }
+
+        return employeeTypeDescription;
     }
 
 }

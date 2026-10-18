@@ -16,15 +16,19 @@
 
 package com.echothree.model.control.offer.server.logic;
 
+import com.echothree.control.user.offer.common.spec.UseNameElementDescriptionSpec;
 import com.echothree.control.user.offer.common.spec.UseNameElementUniversalSpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.offer.common.exception.DuplicateUseNameElementNameException;
+import com.echothree.model.control.offer.common.exception.UnknownUseNameElementDescriptionException;
 import com.echothree.model.control.offer.common.exception.UnknownUseNameElementNameException;
 import com.echothree.model.control.offer.server.control.UseNameElementControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.data.offer.server.entity.UseNameElement;
+import com.echothree.model.data.offer.server.entity.UseNameElementDescription;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -43,6 +47,9 @@ public class UseNameElementLogic
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
 
     protected UseNameElementLogic() {
         super();
@@ -119,6 +126,29 @@ public class UseNameElementLogic
     public UseNameElement getUseNameElementByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
             final UseNameElementUniversalSpec universalSpec) {
         return getUseNameElementByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
+    }
+
+    public UseNameElementDescription getUseNameElementDescriptionBySpec(final ExecutionErrorAccumulator eea,
+            final UseNameElementDescriptionSpec spec, final EntityPermission entityPermission) {
+        UseNameElementDescription useNameElementDescription = null;
+        var useNameElementName = spec.getUseNameElementName();
+        var useNameElement = getUseNameElementByName(eea, useNameElementName);
+
+        if(!hasExecutionErrors(eea)) {
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = languageLogic.getLanguageByName(eea, languageIsoName);
+
+            if(!hasExecutionErrors(eea)) {
+                useNameElementDescription = useNameElementControl.getUseNameElementDescription(useNameElement, language,
+                        entityPermission);
+
+                if(useNameElementDescription == null) {
+                    handleExecutionError(UnknownUseNameElementDescriptionException.class, eea, ExecutionErrors.UnknownUseNameElementDescription.name(), useNameElementName, languageIsoName);
+                }
+            }
+        }
+
+        return useNameElementDescription;
     }
 
     public void deleteUseNameElement(final ExecutionErrorAccumulator eea, final UseNameElement useNameElement,

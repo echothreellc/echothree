@@ -22,17 +22,13 @@ import com.echothree.control.user.offer.common.result.EditOfferItemPriceResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.control.user.offer.common.spec.OfferItemPriceSpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
-import com.echothree.model.control.inventory.server.logic.InventoryConditionLogic;
 import com.echothree.model.control.item.common.ItemPriceTypes;
-import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.offer.server.logic.OfferItemLogic;
-import com.echothree.model.control.offer.server.logic.OfferLogic;
+import com.echothree.model.control.offer.server.logic.OfferItemPriceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.data.offer.server.entity.OfferItem;
 import com.echothree.model.data.offer.server.entity.OfferItemPrice;
 import com.echothree.util.common.form.BaseForm;
@@ -88,22 +84,10 @@ public class EditOfferItemPriceCommand
     OfferItemControl offerItemControl;
 
     @Inject
-    CurrencyLogic currencyLogic;
-
-    @Inject
-    InventoryConditionLogic inventoryConditionLogic;
-
-    @Inject
-    ItemLogic itemLogic;
-
-    @Inject
     OfferItemLogic offerItemLogic;
 
     @Inject
-    OfferLogic offerLogic;
-
-    @Inject
-    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+    OfferItemPriceLogic offerItemPriceLogic;
 
     /** Creates a new instance of EditOfferItemPriceCommand */
     public EditOfferItemPriceCommand() {
@@ -129,42 +113,7 @@ public class EditOfferItemPriceCommand
 
     @Override
     public OfferItemPrice getEntity(EditOfferItemPriceResult result) {
-        OfferItemPrice offerItemPrice = null;
-        var offerName = spec.getOfferName();
-        var offer = offerLogic.getOfferByName(this, offerName);
-
-        if(!hasExecutionErrors()) {
-            var itemName = spec.getItemName();
-            var inventoryConditionName = spec.getInventoryConditionName();
-            var unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
-            var currencyIsoName = spec.getCurrencyIsoName();
-            var item = itemLogic.getItemByName(this, itemName);
-            var inventoryCondition = inventoryConditionLogic.getInventoryConditionByName(this, inventoryConditionName);
-            var currency = currencyLogic.getCurrencyByName(this, currencyIsoName);
-
-            if(!hasExecutionErrors()) {
-                var offerItem = offerItemControl.getOfferItem(offer, item);
-
-                if(offerItem != null) {
-                    var unitOfMeasureType = unitOfMeasureTypeLogic.getUnitOfMeasureTypeByName(this,
-                            item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
-
-                    if(!hasExecutionErrors()) {
-                        offerItemPrice = offerItemControl.getOfferItemPrice(offerItem, inventoryCondition, unitOfMeasureType,
-                                currency, editModeToEntityPermission(editMode));
-
-                        if(offerItemPrice == null) {
-                            addExecutionError(ExecutionErrors.UnknownOfferItemPrice.name(), offerName, itemName,
-                                    inventoryConditionName, unitOfMeasureTypeName, currencyIsoName);
-                        }
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownOfferItem.name(), offerName, itemName);
-                }
-            }
-        }
-
-        return offerItemPrice;
+        return offerItemPriceLogic.getOfferItemPriceBySpec(this, spec, editModeToEntityPermission(editMode));
     }
 
     @Override

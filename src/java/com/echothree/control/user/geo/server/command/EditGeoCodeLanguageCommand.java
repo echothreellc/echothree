@@ -22,14 +22,12 @@ import com.echothree.control.user.geo.common.result.EditGeoCodeLanguageResult;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
 import com.echothree.control.user.geo.common.spec.GeoCodeLanguageSpec;
 import com.echothree.model.control.geo.server.control.GeoControl;
-import com.echothree.model.control.geo.server.logic.GeoCodeLogic;
+import com.echothree.model.control.geo.server.logic.GeoCodeLanguageLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeLanguage;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
@@ -71,10 +69,7 @@ public class EditGeoCodeLanguageCommand
     GeoControl geoControl;
 
     @Inject
-    GeoCodeLogic geoCodeLogic;
-
-    @Inject
-    LanguageLogic languageLogic;
+    GeoCodeLanguageLogic geoCodeLanguageLogic;
 
     /** Creates a new instance of EditGeoCodeLanguageCommand */
     public EditGeoCodeLanguageCommand() {
@@ -93,24 +88,7 @@ public class EditGeoCodeLanguageCommand
 
     @Override
     public GeoCodeLanguage getEntity(EditGeoCodeLanguageResult result) {
-        GeoCodeLanguage geoCodeLanguage = null;
-        var geoCodeName = spec.getGeoCodeName();
-        var geoCode = geoCodeLogic.getGeoCodeByName(this, geoCodeName);
-
-        if(!hasExecutionErrors()) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = languageLogic.getLanguageByName(this, languageIsoName);
-
-            if(!hasExecutionErrors()) {
-                geoCodeLanguage = geoControl.getGeoCodeLanguage(geoCode, language, editModeToEntityPermission(editMode));
-
-                if(geoCodeLanguage == null) {
-                    addExecutionError(ExecutionErrors.UnknownGeoCodeLanguage.name(), geoCodeName, languageIsoName);
-                }
-            }
-        }
-
-        return geoCodeLanguage;
+        return geoCodeLanguageLogic.getGeoCodeLanguageBySpec(this, spec, editModeToEntityPermission(editMode));
     }
 
     @Override
