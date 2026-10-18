@@ -18,21 +18,21 @@ package com.echothree.control.user.geo.server.command;
 
 import com.echothree.control.user.geo.common.edit.GeoCodeLanguageEdit;
 import com.echothree.control.user.geo.common.edit.GeoEditFactory;
-import com.echothree.control.user.geo.common.form.EditGeoCodeLanguageForm;
+import com.echothree.control.user.geo.common.result.EditGeoCodeLanguageResult;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
 import com.echothree.control.user.geo.common.spec.GeoCodeLanguageSpec;
 import com.echothree.model.control.geo.server.control.GeoControl;
+import com.echothree.model.control.geo.server.logic.GeoCodeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.geo.server.entity.GeoCode;
+import com.echothree.model.data.geo.server.entity.GeoCodeLanguage;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -42,12 +42,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditGeoCodeLanguageCommand
-        extends BaseEditCommand<GeoCodeLanguageSpec, GeoCodeLanguageEdit> {
-    
+        extends BaseAbstractEditCommand<GeoCodeLanguageSpec, GeoCodeLanguageEdit, EditGeoCodeLanguageResult, GeoCodeLanguage, GeoCode> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -55,12 +55,12 @@ public class EditGeoCodeLanguageCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.GeoCodeLanguage.name(), SecurityRoles.Edit.name())
                 ))
         ));
-        
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GeoCodeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
@@ -71,81 +71,72 @@ public class EditGeoCodeLanguageCommand
     GeoControl geoControl;
 
     @Inject
-    PartyControl partyControl;
+    GeoCodeLogic geoCodeLogic;
 
-    
+    @Inject
+    LanguageLogic languageLogic;
+
     /** Creates a new instance of EditGeoCodeLanguageCommand */
     public EditGeoCodeLanguageCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = GeoResultFactory.getEditGeoCodeLanguageResult();
-        var geoCodeName = spec.getGeoCodeName();
-        var geoCode = geoControl.getGeoCodeByName(geoCodeName);
-        
-        if(geoCode != null) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = partyControl.getLanguageByIsoName(languageIsoName);
-            
-            if(language != null) {
-                if(editMode.equals(EditMode.LOCK)) {
-                    var geoCodeLanguage = geoControl.getGeoCodeLanguage(geoCode, language);
-                    
-                    if(geoCodeLanguage != null) {
-                        result.setGeoCodeLanguage(geoControl.getGeoCodeLanguageTransfer(getUserVisit(), geoCodeLanguage));
-                        
-                        if(lockEntity(geoCode)) {
-                            var edit = GeoEditFactory.getGeoCodeLanguageEdit();
-                            
-                            result.setEdit(edit);
-                            edit.setIsDefault(geoCodeLanguage.getIsDefault().toString());
-                            edit.setSortOrder(geoCodeLanguage.getSortOrder().toString());
-                            
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                        }
-                        
-                        result.setEntityLock(getEntityLockTransfer(geoCode));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownGeoCodeLanguage.name(), geoCodeName, languageIsoName);
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var geoCodeLanguage = geoControl.getGeoCodeLanguageForUpdate(geoCode, language);
-                    
-                    if(geoCodeLanguage != null) {
-                        var geoCodeLanguageValue = geoControl.getGeoCodeLanguageValue(geoCodeLanguage);
-                        
-                        if(lockEntityForUpdate(geoCode)) {
-                            try {
-                                geoCodeLanguageValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
-                                geoCodeLanguageValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
-                                
-                                geoControl.updateGeoCodeLanguageFromValue(geoCodeLanguageValue, getPartyPK());
-                            } finally {
-                                unlockEntity(geoCode);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownGeoCodeLanguage.name(), geoCodeName, languageIsoName);
-                    }
-                    
-                    if(hasExecutionErrors()) {
-                        result.setGeoCodeLanguage(geoControl.getGeoCodeLanguageTransfer(getUserVisit(), geoCodeLanguage));
-                        result.setEntityLock(getEntityLockTransfer(geoCode));
-                    }
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownGeoCodeName.name(), geoCodeName);
-        }
-        
-        return result;
+    public EditGeoCodeLanguageResult getResult() {
+        return GeoResultFactory.getEditGeoCodeLanguageResult();
     }
-    
+
+    @Override
+    public GeoCodeLanguageEdit getEdit() {
+        return GeoEditFactory.getGeoCodeLanguageEdit();
+    }
+
+    @Override
+    public GeoCodeLanguage getEntity(EditGeoCodeLanguageResult result) {
+        GeoCodeLanguage geoCodeLanguage = null;
+        var geoCodeName = spec.getGeoCodeName();
+        var geoCode = geoCodeLogic.getGeoCodeByName(this, geoCodeName);
+
+        if(!hasExecutionErrors()) {
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = languageLogic.getLanguageByName(this, languageIsoName);
+
+            if(!hasExecutionErrors()) {
+                geoCodeLanguage = geoControl.getGeoCodeLanguage(geoCode, language, editModeToEntityPermission(editMode));
+
+                if(geoCodeLanguage == null) {
+                    addExecutionError(ExecutionErrors.UnknownGeoCodeLanguage.name(), geoCodeName, languageIsoName);
+                }
+            }
+        }
+
+        return geoCodeLanguage;
+    }
+
+    @Override
+    public GeoCode getLockEntity(GeoCodeLanguage geoCodeLanguage) {
+        return geoCodeLanguage.getGeoCode();
+    }
+
+    @Override
+    public void fillInResult(EditGeoCodeLanguageResult result, GeoCodeLanguage geoCodeLanguage) {
+        result.setGeoCodeLanguage(geoControl.getGeoCodeLanguageTransfer(getUserVisit(), geoCodeLanguage));
+    }
+
+    @Override
+    public void doLock(GeoCodeLanguageEdit edit, GeoCodeLanguage geoCodeLanguage) {
+        edit.setIsDefault(geoCodeLanguage.getIsDefault().toString());
+        edit.setSortOrder(geoCodeLanguage.getSortOrder().toString());
+    }
+
+    @Override
+    public void doUpdate(GeoCodeLanguage geoCodeLanguage) {
+        var geoCodeLanguageValue = geoControl.getGeoCodeLanguageValue(geoCodeLanguage);
+
+        geoCodeLanguageValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+        geoCodeLanguageValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        geoControl.updateGeoCodeLanguageFromValue(geoCodeLanguageValue, getPartyPK());
+    }
+
 }

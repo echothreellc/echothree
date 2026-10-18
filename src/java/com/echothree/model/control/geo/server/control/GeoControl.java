@@ -2680,7 +2680,7 @@ public class GeoControl
                 .orElse(0L);
     }
 
-    private GeoCodeLanguage getGeoCodeLanguage(GeoCode geoCode, Language language, EntityPermission entityPermission) {
+    public GeoCodeLanguage getGeoCodeLanguage(GeoCode geoCode, Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(GeoCodeLanguages.fields())
                 .from(GeoCodeLanguages)
