@@ -18,20 +18,23 @@ package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.edit.AccountingEditFactory;
 import com.echothree.control.user.accounting.common.edit.TransactionGlAccountCategoryEdit;
-import com.echothree.control.user.accounting.common.form.EditTransactionGlAccountCategoryForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
+import com.echothree.control.user.accounting.common.result.EditTransactionGlAccountCategoryResult;
 import com.echothree.control.user.accounting.common.spec.TransactionGlAccountCategorySpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.accounting.server.logic.GlAccountCategoryLogic;
+import com.echothree.model.control.accounting.server.logic.GlAccountLogic;
+import com.echothree.model.control.accounting.server.logic.TransactionGlAccountCategoryLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.accounting.server.entity.GlAccount;
+import com.echothree.model.data.accounting.server.entity.GlAccountCategory;
+import com.echothree.model.data.accounting.server.entity.TransactionGlAccountCategory;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -41,12 +44,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditTransactionGlAccountCategoryCommand
-        extends BaseEditCommand<TransactionGlAccountCategorySpec, TransactionGlAccountCategoryEdit> {
-    
+        extends BaseAbstractEditCommand<TransactionGlAccountCategorySpec, TransactionGlAccountCategoryEdit, EditTransactionGlAccountCategoryResult, TransactionGlAccountCategory, TransactionGlAccountCategory> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -54,12 +57,12 @@ public class EditTransactionGlAccountCategoryCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.TransactionGlAccountCategory.name(), SecurityRoles.Edit.name())
                 ))
         ));
-        
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TransactionTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TransactionGlAccountCategoryName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TransactionGlAccountCategoryName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("GlAccountCategoryName", FieldType.ENTITY_NAME, false, null, null),
@@ -72,139 +75,129 @@ public class EditTransactionGlAccountCategoryCommand
     @Inject
     AccountingControl accountingControl;
 
-    
+    @Inject
+    GlAccountCategoryLogic glAccountCategoryLogic;
+
+    @Inject
+    GlAccountLogic glAccountLogic;
+
+    @Inject
+    TransactionGlAccountCategoryLogic transactionGlAccountCategoryLogic;
+
     /** Creates a new instance of EditTransactionGlAccountCategoryCommand */
     public EditTransactionGlAccountCategoryCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = AccountingResultFactory.getEditTransactionGlAccountCategoryResult();
-        var transactionTypeName = spec.getTransactionTypeName();
-        var transactionType = accountingControl.getTransactionTypeByNameForUpdate(transactionTypeName);
-        
-        if(transactionType != null) {
-            var transactionGlAccountCategoryName = spec.getTransactionGlAccountCategoryName();
+    public EditTransactionGlAccountCategoryResult getResult() {
+        return AccountingResultFactory.getEditTransactionGlAccountCategoryResult();
+    }
 
-            if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                var transactionGlAccountCategory = accountingControl.getTransactionGlAccountCategoryByName(transactionType, transactionGlAccountCategoryName);
+    @Override
+    public TransactionGlAccountCategoryEdit getEdit() {
+        return AccountingEditFactory.getTransactionGlAccountCategoryEdit();
+    }
 
-                if(transactionGlAccountCategory != null) {
-                    if(editMode.equals(EditMode.LOCK)) {
-                        if(lockEntity(transactionGlAccountCategory)) {
-                            var transactionGlAccountCategoryDescription = accountingControl.getTransactionGlAccountCategoryDescription(transactionGlAccountCategory, getPreferredLanguage());
-                            var transactionGlAccount = accountingControl.getTransactionGlAccount(transactionGlAccountCategory);
-                            var edit = AccountingEditFactory.getTransactionGlAccountCategoryEdit();
-                            var transactionGlAccountCategoryDetail = transactionGlAccountCategory.getLastDetail();
-                            var glAccountCategory = transactionGlAccountCategoryDetail.getGlAccountCategory();
+    @Override
+    public TransactionGlAccountCategory getEntity(EditTransactionGlAccountCategoryResult result) {
+        return transactionGlAccountCategoryLogic.getTransactionGlAccountCategoryByName(this, spec.getTransactionTypeName(),
+                spec.getTransactionGlAccountCategoryName(), editModeToEntityPermission(editMode));
+    }
 
-                            result.setTransactionGlAccountCategory(accountingControl.getTransactionGlAccountCategoryTransfer(getUserVisit(), transactionGlAccountCategory));
+    @Override
+    public TransactionGlAccountCategory getLockEntity(TransactionGlAccountCategory transactionGlAccountCategory) {
+        return transactionGlAccountCategory;
+    }
 
-                            result.setEdit(edit);
-                            edit.setTransactionGlAccountCategoryName(transactionGlAccountCategoryDetail.getTransactionGlAccountCategoryName());
-                            edit.setGlAccountCategoryName(glAccountCategory == null? null: glAccountCategory.getLastDetail().getGlAccountCategoryName());
-                            edit.setSortOrder(transactionGlAccountCategoryDetail.getSortOrder().toString());
-                            edit.setGlAccountName(transactionGlAccount == null? null: transactionGlAccount.getGlAccount().getLastDetail().getGlAccountName());
+    @Override
+    public void fillInResult(EditTransactionGlAccountCategoryResult result, TransactionGlAccountCategory transactionGlAccountCategory) {
+        result.setTransactionGlAccountCategory(accountingControl.getTransactionGlAccountCategoryTransfer(getUserVisit(), transactionGlAccountCategory));
+    }
 
-                            if(transactionGlAccountCategoryDescription != null) {
-                                edit.setDescription(transactionGlAccountCategoryDescription.getDescription());
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                        }
+    private GlAccountCategory glAccountCategory;
+    private GlAccount glAccount;
 
-                        result.setEntityLock(getEntityLockTransfer(transactionGlAccountCategory));
-                    } else { // EditMode.ABANDON
-                        unlockEntity(transactionGlAccountCategory);
+    @Override
+    public void doLock(TransactionGlAccountCategoryEdit edit, TransactionGlAccountCategory transactionGlAccountCategory) {
+        var transactionGlAccountCategoryDescription = accountingControl.getTransactionGlAccountCategoryDescription(transactionGlAccountCategory, getPreferredLanguage());
+        var transactionGlAccount = accountingControl.getTransactionGlAccount(transactionGlAccountCategory);
+        var transactionGlAccountCategoryDetail = transactionGlAccountCategory.getLastDetail();
+        var glAccountCategory = transactionGlAccountCategoryDetail.getGlAccountCategory();
+
+        edit.setTransactionGlAccountCategoryName(transactionGlAccountCategoryDetail.getTransactionGlAccountCategoryName());
+        edit.setGlAccountCategoryName(glAccountCategory == null? null: glAccountCategory.getLastDetail().getGlAccountCategoryName());
+        edit.setSortOrder(transactionGlAccountCategoryDetail.getSortOrder().toString());
+        edit.setGlAccountName(transactionGlAccount == null? null: transactionGlAccount.getGlAccount().getLastDetail().getGlAccountName());
+
+        if(transactionGlAccountCategoryDescription != null) {
+            edit.setDescription(transactionGlAccountCategoryDescription.getDescription());
+        }
+    }
+
+    @Override
+    public void canUpdate(TransactionGlAccountCategory transactionGlAccountCategory) {
+        var transactionType = transactionGlAccountCategory.getLastDetail().getTransactionType();
+        var transactionGlAccountCategoryName = edit.getTransactionGlAccountCategoryName();
+        var duplicateTransactionGlAccountCategory = accountingControl.getTransactionGlAccountCategoryByName(transactionType, transactionGlAccountCategoryName);
+
+        if(duplicateTransactionGlAccountCategory == null || transactionGlAccountCategory.equals(duplicateTransactionGlAccountCategory)) {
+            var glAccountCategoryName = edit.getGlAccountCategoryName();
+
+            glAccountCategory = glAccountCategoryName == null? null: glAccountCategoryLogic.getGlAccountCategoryByName(this, glAccountCategoryName);
+
+            if(!hasExecutionErrors()) {
+                var glAccountName = edit.getGlAccountName();
+
+                glAccount = glAccountName == null? null: glAccountLogic.getGlAccountByName(this, glAccountName);
+
+                if(!hasExecutionErrors()) {
+                    if(glAccountCategory != null && glAccount != null && !glAccountCategory.equals(glAccount.getLastDetail().getGlAccountCategory())) {
+                        addExecutionError(ExecutionErrors.InvalidGlAccountCategory.name());
                     }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownTransactionGlAccountCategoryName.name(), transactionTypeName, transactionGlAccountCategoryName);
-                }
-            } else if(editMode.equals(EditMode.UPDATE)) {
-                var transactionGlAccountCategory = accountingControl.getTransactionGlAccountCategoryByNameForUpdate(transactionType, transactionGlAccountCategoryName);
-
-                if(transactionGlAccountCategory != null) {
-                    transactionGlAccountCategoryName = edit.getTransactionGlAccountCategoryName();
-                    var duplicateTransactionGlAccountCategory = accountingControl.getTransactionGlAccountCategoryByName(transactionType, transactionGlAccountCategoryName);
-
-                    if(duplicateTransactionGlAccountCategory == null || transactionGlAccountCategory.equals(duplicateTransactionGlAccountCategory)) {
-                        var glAccountCategoryName = edit.getGlAccountCategoryName();
-                        var glAccountCategory = glAccountCategoryName == null? null: accountingControl.getGlAccountCategoryByName(glAccountCategoryName);
-
-                        if(glAccountCategoryName == null || glAccountCategory != null) {
-                            var glAccountName = edit.getGlAccountName();
-                            var glAccount = glAccountName == null? null: accountingControl.getGlAccountByName(glAccountName);
-
-                            if(glAccountName == null || glAccount != null) {
-                                if(glAccountCategory == null || glAccount == null? true: glAccountCategory.equals(glAccount.getLastDetail().getGlAccountCategory())) {
-                                    if(lockEntityForUpdate(transactionGlAccountCategory)) {
-                                        try {
-                                            var partyPK = getPartyPK();
-                                            var transactionGlAccountCategoryDetailValue = accountingControl.getTransactionGlAccountCategoryDetailValueForUpdate(transactionGlAccountCategory);
-                                            var transactionGlAccountCategoryDescription = accountingControl.getTransactionGlAccountCategoryDescriptionForUpdate(transactionGlAccountCategory, getPreferredLanguage());
-                                            var transactionGlAccount = accountingControl.getTransactionGlAccount(transactionGlAccountCategory);
-                                            var description = edit.getDescription();
-
-                                            transactionGlAccountCategoryDetailValue.setTransactionGlAccountCategoryName(edit.getTransactionGlAccountCategoryName());
-                                            transactionGlAccountCategoryDetailValue.setGlAccountCategoryPK(glAccountCategory == null? null: glAccountCategory.getPrimaryKey());
-                                            transactionGlAccountCategoryDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
-
-                                            accountingControl.updateTransactionGlAccountCategoryFromValue(transactionGlAccountCategoryDetailValue, partyPK);
-
-                                            if(transactionGlAccountCategoryDescription == null && description != null) {
-                                                accountingControl.createTransactionGlAccountCategoryDescription(transactionGlAccountCategory, getPreferredLanguage(), description, partyPK);
-                                            } else if(transactionGlAccountCategoryDescription != null && description == null) {
-                                                accountingControl.deleteTransactionGlAccountCategoryDescription(transactionGlAccountCategoryDescription, partyPK);
-                                            } else if(transactionGlAccountCategoryDescription != null && description != null) {
-                                                var transactionGlAccountCategoryDescriptionValue = accountingControl.getTransactionGlAccountCategoryDescriptionValue(transactionGlAccountCategoryDescription);
-
-                                                transactionGlAccountCategoryDescriptionValue.setDescription(description);
-                                                accountingControl.updateTransactionGlAccountCategoryDescriptionFromValue(transactionGlAccountCategoryDescriptionValue, partyPK);
-                                            }
-
-                                            if(transactionGlAccount == null && glAccount != null) {
-                                                accountingControl.createTransactionGlAccount(transactionGlAccountCategory, glAccount, partyPK);
-                                            } else if(transactionGlAccount != null && glAccount == null) {
-                                                accountingControl.deleteTransactionGlAccount(transactionGlAccount, partyPK);
-                                            } else if(transactionGlAccount != null && glAccount != null) {
-                                                var transactionGlAccountValue = accountingControl.getTransactionGlAccountValue(transactionGlAccount);
-
-                                                transactionGlAccountValue.setGlAccountPK(glAccount.getPrimaryKey());
-                                                accountingControl.updateTransactionGlAccountFromValue(transactionGlAccountValue, partyPK);
-                                            }
-                                        } finally {
-                                            unlockEntity(transactionGlAccountCategory);
-                                        }
-                                    } else {
-                                        addExecutionError(ExecutionErrors.EntityLockStale.name());
-                                    }
-                                } else {
-                                    addExecutionError(ExecutionErrors.InvalidGlAccountCategory.name());
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownGlAccountName.name(), glAccountName);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownGlAccountCategoryName.name(), glAccountCategoryName);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.DuplicateTransactionGlAccountCategoryName.name(), transactionTypeName, transactionGlAccountCategoryName);
-                    }
-
-                    if(hasExecutionErrors()) {
-                        result.setTransactionGlAccountCategory(accountingControl.getTransactionGlAccountCategoryTransfer(getUserVisit(), transactionGlAccountCategory));
-                        result.setEntityLock(getEntityLockTransfer(transactionGlAccountCategory));
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownTransactionGlAccountCategoryName.name(), transactionTypeName, transactionGlAccountCategoryName);
                 }
             }
         } else {
-            addExecutionError(ExecutionErrors.UnknownTransactionTypeName.name(), transactionTypeName);
+            addExecutionError(ExecutionErrors.DuplicateTransactionGlAccountCategoryName.name(),
+                    transactionType.getLastDetail().getTransactionTypeName(), transactionGlAccountCategoryName);
         }
-        
-        return result;
     }
-    
+
+    @Override
+    public void doUpdate(TransactionGlAccountCategory transactionGlAccountCategory) {
+        var partyPK = getPartyPK();
+        var transactionGlAccountCategoryDetailValue = accountingControl.getTransactionGlAccountCategoryDetailValueForUpdate(transactionGlAccountCategory);
+        var transactionGlAccountCategoryDescription = accountingControl.getTransactionGlAccountCategoryDescriptionForUpdate(transactionGlAccountCategory, getPreferredLanguage());
+        var transactionGlAccount = accountingControl.getTransactionGlAccount(transactionGlAccountCategory);
+        var description = edit.getDescription();
+
+        transactionGlAccountCategoryDetailValue.setTransactionGlAccountCategoryName(edit.getTransactionGlAccountCategoryName());
+        transactionGlAccountCategoryDetailValue.setGlAccountCategoryPK(glAccountCategory == null? null: glAccountCategory.getPrimaryKey());
+        transactionGlAccountCategoryDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        accountingControl.updateTransactionGlAccountCategoryFromValue(transactionGlAccountCategoryDetailValue, partyPK);
+
+        if(transactionGlAccountCategoryDescription == null && description != null) {
+            accountingControl.createTransactionGlAccountCategoryDescription(transactionGlAccountCategory, getPreferredLanguage(), description, partyPK);
+        } else if(transactionGlAccountCategoryDescription != null && description == null) {
+            accountingControl.deleteTransactionGlAccountCategoryDescription(transactionGlAccountCategoryDescription, partyPK);
+        } else if(transactionGlAccountCategoryDescription != null && description != null) {
+            var transactionGlAccountCategoryDescriptionValue = accountingControl.getTransactionGlAccountCategoryDescriptionValue(transactionGlAccountCategoryDescription);
+
+            transactionGlAccountCategoryDescriptionValue.setDescription(description);
+            accountingControl.updateTransactionGlAccountCategoryDescriptionFromValue(transactionGlAccountCategoryDescriptionValue, partyPK);
+        }
+
+        if(transactionGlAccount == null && glAccount != null) {
+            accountingControl.createTransactionGlAccount(transactionGlAccountCategory, glAccount, partyPK);
+        } else if(transactionGlAccount != null && glAccount == null) {
+            accountingControl.deleteTransactionGlAccount(transactionGlAccount, partyPK);
+        } else if(transactionGlAccount != null && glAccount != null) {
+            var transactionGlAccountValue = accountingControl.getTransactionGlAccountValue(transactionGlAccount);
+
+            transactionGlAccountValue.setGlAccountPK(glAccount.getPrimaryKey());
+            accountingControl.updateTransactionGlAccountFromValue(transactionGlAccountValue, partyPK);
+        }
+    }
+
 }
