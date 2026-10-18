@@ -968,7 +968,7 @@ public class EmployeeControl
         return skillTypeDescription;
     }
     
-    private SkillTypeDescription getSkillTypeDescription(SkillType skillType,
+    public SkillTypeDescription getSkillTypeDescription(SkillType skillType,
             Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(SkillTypeDescriptions.fields())
