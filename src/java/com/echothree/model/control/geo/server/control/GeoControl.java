@@ -3505,7 +3505,7 @@ public class GeoControl
                 .orElse(0L);
     }
 
-    private GeoCodeDateTimeFormat getGeoCodeDateTimeFormat(GeoCode geoCode, DateTimeFormat dateTimeFormat, EntityPermission entityPermission) {
+    public GeoCodeDateTimeFormat getGeoCodeDateTimeFormat(GeoCode geoCode, DateTimeFormat dateTimeFormat, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(GeoCodeDateTimeFormats.fields())
                 .from(GeoCodeDateTimeFormats)

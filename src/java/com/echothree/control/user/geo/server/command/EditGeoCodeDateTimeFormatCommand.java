@@ -18,21 +18,21 @@ package com.echothree.control.user.geo.server.command;
 
 import com.echothree.control.user.geo.common.edit.GeoCodeDateTimeFormatEdit;
 import com.echothree.control.user.geo.common.edit.GeoEditFactory;
-import com.echothree.control.user.geo.common.form.EditGeoCodeDateTimeFormatForm;
+import com.echothree.control.user.geo.common.result.EditGeoCodeDateTimeFormatResult;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
 import com.echothree.control.user.geo.common.spec.GeoCodeDateTimeFormatSpec;
 import com.echothree.model.control.geo.server.control.GeoControl;
+import com.echothree.model.control.geo.server.logic.GeoCodeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.DateTimeFormatLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.geo.server.entity.GeoCode;
+import com.echothree.model.data.geo.server.entity.GeoCodeDateTimeFormat;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -42,12 +42,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditGeoCodeDateTimeFormatCommand
-        extends BaseEditCommand<GeoCodeDateTimeFormatSpec, GeoCodeDateTimeFormatEdit> {
-    
+        extends BaseAbstractEditCommand<GeoCodeDateTimeFormatSpec, GeoCodeDateTimeFormatEdit, EditGeoCodeDateTimeFormatResult, GeoCodeDateTimeFormat, GeoCode> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -55,12 +55,12 @@ public class EditGeoCodeDateTimeFormatCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.GeoCodeDateTimeFormat.name(), SecurityRoles.Edit.name())
                 ))
         ));
-        
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GeoCodeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("DateTimeFormatName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
@@ -71,81 +71,72 @@ public class EditGeoCodeDateTimeFormatCommand
     GeoControl geoControl;
 
     @Inject
-    PartyControl partyControl;
+    DateTimeFormatLogic dateTimeFormatLogic;
 
-    
+    @Inject
+    GeoCodeLogic geoCodeLogic;
+
     /** Creates a new instance of EditGeoCodeDateTimeFormatCommand */
     public EditGeoCodeDateTimeFormatCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = GeoResultFactory.getEditGeoCodeDateTimeFormatResult();
-        var geoCodeName = spec.getGeoCodeName();
-        var geoCode = geoControl.getGeoCodeByName(geoCodeName);
-        
-        if(geoCode != null) {
-            var dateTimeFormatName = spec.getDateTimeFormatName();
-            var dateTimeFormat = partyControl.getDateTimeFormatByName(dateTimeFormatName);
-            
-            if(dateTimeFormat != null) {
-                if(editMode.equals(EditMode.LOCK)) {
-                    var geoCodeDateTimeFormat = geoControl.getGeoCodeDateTimeFormat(geoCode, dateTimeFormat);
-                    
-                    if(geoCodeDateTimeFormat != null) {
-                        result.setGeoCodeDateTimeFormat(geoControl.getGeoCodeDateTimeFormatTransfer(getUserVisit(), geoCodeDateTimeFormat));
-                        
-                        if(lockEntity(geoCode)) {
-                            var edit = GeoEditFactory.getGeoCodeDateTimeFormatEdit();
-                            
-                            result.setEdit(edit);
-                            edit.setIsDefault(geoCodeDateTimeFormat.getIsDefault().toString());
-                            edit.setSortOrder(geoCodeDateTimeFormat.getSortOrder().toString());
-                            
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                        }
-                        
-                        result.setEntityLock(getEntityLockTransfer(geoCode));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownGeoCodeDateTimeFormat.name(), geoCodeName, dateTimeFormatName);
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var geoCodeDateTimeFormat = geoControl.getGeoCodeDateTimeFormatForUpdate(geoCode, dateTimeFormat);
-                    
-                    if(geoCodeDateTimeFormat != null) {
-                        var geoCodeDateTimeFormatValue = geoControl.getGeoCodeDateTimeFormatValue(geoCodeDateTimeFormat);
-                        
-                        if(lockEntityForUpdate(geoCode)) {
-                            try {
-                                geoCodeDateTimeFormatValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
-                                geoCodeDateTimeFormatValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
-                                
-                                geoControl.updateGeoCodeDateTimeFormatFromValue(geoCodeDateTimeFormatValue, getPartyPK());
-                            } finally {
-                                unlockEntity(geoCode);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownGeoCodeDateTimeFormat.name(), geoCodeName, dateTimeFormatName);
-                    }
-                    
-                    if(hasExecutionErrors()) {
-                        result.setGeoCodeDateTimeFormat(geoControl.getGeoCodeDateTimeFormatTransfer(getUserVisit(), geoCodeDateTimeFormat));
-                        result.setEntityLock(getEntityLockTransfer(geoCode));
-                    }
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownDateTimeFormatName.name(), dateTimeFormatName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownGeoCodeName.name(), geoCodeName);
-        }
-        
-        return result;
+    public EditGeoCodeDateTimeFormatResult getResult() {
+        return GeoResultFactory.getEditGeoCodeDateTimeFormatResult();
     }
-    
+
+    @Override
+    public GeoCodeDateTimeFormatEdit getEdit() {
+        return GeoEditFactory.getGeoCodeDateTimeFormatEdit();
+    }
+
+    @Override
+    public GeoCodeDateTimeFormat getEntity(EditGeoCodeDateTimeFormatResult result) {
+        GeoCodeDateTimeFormat geoCodeDateTimeFormat = null;
+        var geoCodeName = spec.getGeoCodeName();
+        var geoCode = geoCodeLogic.getGeoCodeByName(this, geoCodeName);
+
+        if(!hasExecutionErrors()) {
+            var dateTimeFormatName = spec.getDateTimeFormatName();
+            var dateTimeFormat = dateTimeFormatLogic.getDateTimeFormatByName(this, dateTimeFormatName);
+
+            if(!hasExecutionErrors()) {
+                geoCodeDateTimeFormat = geoControl.getGeoCodeDateTimeFormat(geoCode, dateTimeFormat, editModeToEntityPermission(editMode));
+
+                if(geoCodeDateTimeFormat == null) {
+                    addExecutionError(ExecutionErrors.UnknownGeoCodeDateTimeFormat.name(), geoCodeName, dateTimeFormatName);
+                }
+            }
+        }
+
+        return geoCodeDateTimeFormat;
+    }
+
+    @Override
+    public GeoCode getLockEntity(GeoCodeDateTimeFormat geoCodeDateTimeFormat) {
+        return geoCodeDateTimeFormat.getGeoCode();
+    }
+
+    @Override
+    public void fillInResult(EditGeoCodeDateTimeFormatResult result, GeoCodeDateTimeFormat geoCodeDateTimeFormat) {
+        result.setGeoCodeDateTimeFormat(geoControl.getGeoCodeDateTimeFormatTransfer(getUserVisit(), geoCodeDateTimeFormat));
+    }
+
+    @Override
+    public void doLock(GeoCodeDateTimeFormatEdit edit, GeoCodeDateTimeFormat geoCodeDateTimeFormat) {
+        edit.setIsDefault(geoCodeDateTimeFormat.getIsDefault().toString());
+        edit.setSortOrder(geoCodeDateTimeFormat.getSortOrder().toString());
+    }
+
+    @Override
+    public void doUpdate(GeoCodeDateTimeFormat geoCodeDateTimeFormat) {
+        var geoCodeDateTimeFormatValue = geoControl.getGeoCodeDateTimeFormatValue(geoCodeDateTimeFormat);
+
+        geoCodeDateTimeFormatValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+        geoCodeDateTimeFormatValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        geoControl.updateGeoCodeDateTimeFormatFromValue(geoCodeDateTimeFormatValue, getPartyPK());
+    }
+
 }
