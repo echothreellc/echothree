@@ -18,21 +18,21 @@ package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.edit.OfferCustomerTypeEdit;
 import com.echothree.control.user.offer.common.edit.OfferEditFactory;
-import com.echothree.control.user.offer.common.form.EditOfferCustomerTypeForm;
+import com.echothree.control.user.offer.common.result.EditOfferCustomerTypeResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.control.user.offer.common.spec.OfferCustomerTypeSpec;
-import com.echothree.model.control.customer.server.control.CustomerControl;
+import com.echothree.model.control.customer.server.logic.CustomerTypeLogic;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.logic.OfferLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.offer.server.entity.Offer;
+import com.echothree.model.data.offer.server.entity.OfferCustomerType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -42,12 +42,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditOfferCustomerTypeCommand
-        extends BaseEditCommand<OfferCustomerTypeSpec, OfferCustomerTypeEdit> {
-    
+        extends BaseAbstractEditCommand<OfferCustomerTypeSpec, OfferCustomerTypeEdit, EditOfferCustomerTypeResult, OfferCustomerType, Offer> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -55,12 +55,12 @@ public class EditOfferCustomerTypeCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.OfferCustomerType.name(), SecurityRoles.Edit.name())
                 ))
         ));
-        
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OfferName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
@@ -68,77 +68,75 @@ public class EditOfferCustomerTypeCommand
     }
 
     @Inject
-    CustomerControl customerControl;
-
-    @Inject
     OfferControl offerControl;
 
-    
+    @Inject
+    CustomerTypeLogic customerTypeLogic;
+
+    @Inject
+    OfferLogic offerLogic;
+
     /** Creates a new instance of EditOfferCustomerTypeCommand */
     public EditOfferCustomerTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = OfferResultFactory.getEditOfferCustomerTypeResult();
+    public EditOfferCustomerTypeResult getResult() {
+        return OfferResultFactory.getEditOfferCustomerTypeResult();
+    }
+
+    @Override
+    public OfferCustomerTypeEdit getEdit() {
+        return OfferEditFactory.getOfferCustomerTypeEdit();
+    }
+
+    @Override
+    public OfferCustomerType getEntity(EditOfferCustomerTypeResult result) {
+        OfferCustomerType offerCustomerType = null;
         var offerName = spec.getOfferName();
-        var offer = offerControl.getOfferByName(offerName);
-        
-        if(offer != null) {
+        var offer = offerLogic.getOfferByName(this, offerName);
+
+        if(!hasExecutionErrors()) {
             var customerTypeName = spec.getCustomerTypeName();
-            var customerType = customerControl.getCustomerTypeByName(customerTypeName);
+            var customerType = customerTypeLogic.getCustomerTypeByName(this, customerTypeName);
 
-            if(customerType != null) {
-                if(editMode.equals(EditMode.LOCK)) {
-                    var offerCustomerType = offerControl.getOfferCustomerType(offer, customerType);
+            if(!hasExecutionErrors()) {
+                offerCustomerType = offerControl.getOfferCustomerType(offer, customerType, editModeToEntityPermission(editMode));
 
-                    if(offerCustomerType != null) {
-                        result.setOfferCustomerType(offerControl.getOfferCustomerTypeTransfer(getUserVisit(), offerCustomerType));
-
-                        if(lockEntity(offer)) {
-                            var edit = OfferEditFactory.getOfferCustomerTypeEdit();
-
-                            result.setEdit(edit);
-                            edit.setIsDefault(offerCustomerType.getIsDefault().toString());
-                            edit.setSortOrder(offerCustomerType.getSortOrder().toString());
-
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                        }
-
-                        result.setEntityLock(getEntityLockTransfer(offerCustomerType));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownOfferCustomerType.name(), offerName, customerTypeName);
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var offerCustomerTypeValue = offerControl.getOfferCustomerTypeValueForUpdate(offer, customerType);
-
-                    if(offerCustomerTypeValue != null) {
-                        if(lockEntityForUpdate(offer)) {
-                            try {
-                                offerCustomerTypeValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
-                                offerCustomerTypeValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
-
-                                offerControl.updateOfferCustomerTypeFromValue(offerCustomerTypeValue, getPartyPK());
-                            } finally {
-                                unlockEntity(offer);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownOfferCustomerType.name(), offerName, customerTypeName);
-                    }
+                if(offerCustomerType == null) {
+                    addExecutionError(ExecutionErrors.UnknownOfferCustomerType.name(), offerName, customerTypeName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownCustomerTypeName.name(), customerTypeName);
             }
-    } else {
-        addExecutionError(ExecutionErrors.UnknownOfferName.name(), offerName);
+        }
+
+        return offerCustomerType;
     }
-        
-        return result;
+
+    @Override
+    public Offer getLockEntity(OfferCustomerType offerCustomerType) {
+        return offerCustomerType.getOffer();
     }
-    
+
+    @Override
+    public void fillInResult(EditOfferCustomerTypeResult result, OfferCustomerType offerCustomerType) {
+        result.setOfferCustomerType(offerControl.getOfferCustomerTypeTransfer(getUserVisit(), offerCustomerType));
+    }
+
+    @Override
+    public void doLock(OfferCustomerTypeEdit edit, OfferCustomerType offerCustomerType) {
+        edit.setIsDefault(offerCustomerType.getIsDefault().toString());
+        edit.setSortOrder(offerCustomerType.getSortOrder().toString());
+    }
+
+    @Override
+    public void doUpdate(OfferCustomerType offerCustomerType) {
+        var offerCustomerTypeValue = offerCustomerType.getOfferCustomerTypeValue().clone();
+
+        offerCustomerTypeValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+        offerCustomerTypeValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        offerControl.updateOfferCustomerTypeFromValue(offerCustomerTypeValue, getPartyPK());
+    }
+
 }

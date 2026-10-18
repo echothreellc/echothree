@@ -735,7 +735,7 @@ public class OfferControl
                 .orElse(0L);
     }
 
-    private OfferCustomerType getOfferCustomerType(Offer offer, CustomerType customerType, EntityPermission entityPermission) {
+    public OfferCustomerType getOfferCustomerType(Offer offer, CustomerType customerType, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(OfferCustomerTypes.fields())
                 .from(OfferCustomerTypes)
