@@ -18,36 +18,33 @@ package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.edit.EmployeeEditFactory;
 import com.echothree.control.user.employee.common.edit.TerminationTypeEdit;
-import com.echothree.control.user.employee.common.form.EditTerminationTypeForm;
+import com.echothree.control.user.employee.common.result.EditTerminationTypeResult;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.control.user.employee.common.spec.TerminationTypeSpec;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
+import com.echothree.model.control.employee.server.logic.TerminationTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.data.employee.server.entity.TerminationType;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class EditTerminationTypeCommand
-        extends BaseEditCommand<TerminationTypeSpec, TerminationTypeEdit> {
+        extends BaseAbstractEditCommand<TerminationTypeSpec, TerminationTypeEdit, EditTerminationTypeResult, TerminationType, TerminationType> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -59,7 +56,7 @@ public class EditTerminationTypeCommand
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TerminationTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TerminationTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
@@ -71,83 +68,76 @@ public class EditTerminationTypeCommand
     @Inject
     EmployeeControl employeeControl;
 
-    
+    @Inject
+    TerminationTypeLogic terminationTypeLogic;
+
     /** Creates a new instance of EditTerminationTypeCommand */
     public EditTerminationTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = EmployeeResultFactory.getEditTerminationTypeResult();
-        
-        if(editMode.equals(EditMode.LOCK)) {
-            var terminationTypeName = spec.getTerminationTypeName();
-            var terminationType = employeeControl.getTerminationTypeByName(terminationTypeName);
-            
-            if(terminationType != null) {
-                result.setTerminationType(employeeControl.getTerminationTypeTransfer(getUserVisit(), terminationType));
-                
-                if(lockEntity(terminationType)) {
-                    var terminationTypeDescription = employeeControl.getTerminationTypeDescription(terminationType, getPreferredLanguage());
-                    var edit = EmployeeEditFactory.getTerminationTypeEdit();
-                    var terminationTypeDetail = terminationType.getLastDetail();
-                    
-                    result.setEdit(edit);
-                    edit.setTerminationTypeName(terminationTypeDetail.getTerminationTypeName());
-                    edit.setIsDefault(terminationTypeDetail.getIsDefault().toString());
-                    edit.setSortOrder(terminationTypeDetail.getSortOrder().toString());
-                    
-                    if(terminationTypeDescription != null)
-                        edit.setDescription(terminationTypeDescription.getDescription());
-                } else {
-                    addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                }
-                
-                result.setEntityLock(getEntityLockTransfer(terminationType));
-            } else {
-                addExecutionError(ExecutionErrors.UnknownTerminationTypeName.name(), terminationTypeName);
-            }
-        } else if(editMode.equals(EditMode.UPDATE)) {
-            var terminationTypeName = spec.getTerminationTypeName();
-            var terminationType = employeeControl.getTerminationTypeByNameForUpdate(terminationTypeName);
-            
-            if(terminationType != null) {
-                if(lockEntityForUpdate(terminationType)) {
-                    try {
-                        var partyPK = getPartyPK();
-                        var terminationTypeDetailValue = employeeControl.getTerminationTypeDetailValueForUpdate(terminationType);
-                        var terminationTypeDescription = employeeControl.getTerminationTypeDescriptionForUpdate(terminationType, getPreferredLanguage());
-                        var description = edit.getDescription();
-                        
-                        terminationTypeDetailValue.setTerminationTypeName(edit.getTerminationTypeName());
-                        terminationTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
-                        terminationTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
-                        
-                        employeeControl.updateTerminationTypeFromValue(terminationTypeDetailValue, partyPK);
-                        
-                        if(terminationTypeDescription == null && description != null) {
-                            employeeControl.createTerminationTypeDescription(terminationType, getPreferredLanguage(), description, partyPK);
-                        } else if(terminationTypeDescription != null && description == null) {
-                            employeeControl.deleteTerminationTypeDescription(terminationTypeDescription, partyPK);
-                        } else if(terminationTypeDescription != null && description != null) {
-                            var terminationTypeDescriptionValue = employeeControl.getTerminationTypeDescriptionValue(terminationTypeDescription);
-                            
-                            terminationTypeDescriptionValue.setDescription(description);
-                            employeeControl.updateTerminationTypeDescriptionFromValue(terminationTypeDescriptionValue, partyPK);
-                        }
-                    } finally {
-                        unlockEntity(terminationType);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.EntityLockStale.name());
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownTerminationTypeName.name(), terminationTypeName);
-            }
-        }
-        
-        return result;
+    public EditTerminationTypeResult getResult() {
+        return EmployeeResultFactory.getEditTerminationTypeResult();
     }
-    
+
+    @Override
+    public TerminationTypeEdit getEdit() {
+        return EmployeeEditFactory.getTerminationTypeEdit();
+    }
+
+    @Override
+    public TerminationType getEntity(EditTerminationTypeResult result) {
+        return terminationTypeLogic.getTerminationTypeByName(this, spec.getTerminationTypeName(), editModeToEntityPermission(editMode));
+    }
+
+    @Override
+    public TerminationType getLockEntity(TerminationType terminationType) {
+        return terminationType;
+    }
+
+    @Override
+    public void fillInResult(EditTerminationTypeResult result, TerminationType terminationType) {
+        result.setTerminationType(employeeControl.getTerminationTypeTransfer(getUserVisit(), terminationType));
+    }
+
+    @Override
+    public void doLock(TerminationTypeEdit edit, TerminationType terminationType) {
+        var terminationTypeDescription = employeeControl.getTerminationTypeDescription(terminationType, getPreferredLanguage());
+        var terminationTypeDetail = terminationType.getLastDetail();
+
+        edit.setTerminationTypeName(terminationTypeDetail.getTerminationTypeName());
+        edit.setIsDefault(terminationTypeDetail.getIsDefault().toString());
+        edit.setSortOrder(terminationTypeDetail.getSortOrder().toString());
+
+        if(terminationTypeDescription != null) {
+            edit.setDescription(terminationTypeDescription.getDescription());
+        }
+    }
+
+    @Override
+    public void doUpdate(TerminationType terminationType) {
+        var partyPK = getPartyPK();
+        var terminationTypeDetailValue = employeeControl.getTerminationTypeDetailValueForUpdate(terminationType);
+        var terminationTypeDescription = employeeControl.getTerminationTypeDescriptionForUpdate(terminationType, getPreferredLanguage());
+        var description = edit.getDescription();
+
+        terminationTypeDetailValue.setTerminationTypeName(edit.getTerminationTypeName());
+        terminationTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+        terminationTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        employeeControl.updateTerminationTypeFromValue(terminationTypeDetailValue, partyPK);
+
+        if(terminationTypeDescription == null && description != null) {
+            employeeControl.createTerminationTypeDescription(terminationType, getPreferredLanguage(), description, partyPK);
+        } else if(terminationTypeDescription != null && description == null) {
+            employeeControl.deleteTerminationTypeDescription(terminationTypeDescription, partyPK);
+        } else if(terminationTypeDescription != null && description != null) {
+            var terminationTypeDescriptionValue = employeeControl.getTerminationTypeDescriptionValue(terminationTypeDescription);
+
+            terminationTypeDescriptionValue.setDescription(description);
+            employeeControl.updateTerminationTypeDescriptionFromValue(terminationTypeDescriptionValue, partyPK);
+        }
+    }
+
 }

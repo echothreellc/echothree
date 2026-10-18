@@ -2776,7 +2776,7 @@ public class EmployeeControl
                 .orElse(0L);
     }
 
-    private TerminationType getTerminationTypeByName(String terminationTypeName, EntityPermission entityPermission) {
+    public TerminationType getTerminationTypeByName(String terminationTypeName, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(TerminationTypes.fields())
                 .from(TerminationTypes)
