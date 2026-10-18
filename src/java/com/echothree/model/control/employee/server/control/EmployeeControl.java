@@ -319,7 +319,7 @@ public class EmployeeControl
                 .orElse(0L);
     }
 
-    private ResponsibilityType getResponsibilityTypeByName(String responsibilityTypeName, EntityPermission entityPermission) {
+    public ResponsibilityType getResponsibilityTypeByName(String responsibilityTypeName, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(ResponsibilityTypes.fields())
                 .from(ResponsibilityTypes)
