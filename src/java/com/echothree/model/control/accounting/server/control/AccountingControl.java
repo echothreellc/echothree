@@ -3603,7 +3603,7 @@ public class AccountingControl
         return transactionTypeDescription;
     }
     
-    private TransactionTypeDescription getTransactionTypeDescription(TransactionType transactionType, Language language, EntityPermission entityPermission) {
+    public TransactionTypeDescription getTransactionTypeDescription(TransactionType transactionType, Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(TransactionTypeDescriptions.fields())
                 .from(TransactionTypeDescriptions)
