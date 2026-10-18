@@ -18,37 +18,36 @@ package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.edit.EmployeeEditFactory;
 import com.echothree.control.user.employee.common.edit.TerminationReasonDescriptionEdit;
-import com.echothree.control.user.employee.common.form.EditTerminationReasonDescriptionForm;
+import com.echothree.control.user.employee.common.result.EditTerminationReasonDescriptionResult;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.control.user.employee.common.spec.TerminationReasonDescriptionSpec;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
+import com.echothree.model.control.employee.server.logic.TerminationReasonLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.employee.server.entity.TerminationReason;
+import com.echothree.model.data.employee.server.entity.TerminationReasonDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class EditTerminationReasonDescriptionCommand
-        extends BaseEditCommand<TerminationReasonDescriptionSpec, TerminationReasonDescriptionEdit> {
+        extends BaseAbstractEditCommand<TerminationReasonDescriptionSpec, TerminationReasonDescriptionEdit, EditTerminationReasonDescriptionResult, TerminationReasonDescription, TerminationReason> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -61,7 +60,7 @@ public class EditTerminationReasonDescriptionCommand
                 new FieldDefinition("TerminationReasonName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
@@ -71,73 +70,71 @@ public class EditTerminationReasonDescriptionCommand
     EmployeeControl employeeControl;
 
     @Inject
-    PartyControl partyControl;
+    LanguageLogic languageLogic;
 
-    
+    @Inject
+    TerminationReasonLogic terminationReasonLogic;
+
     /** Creates a new instance of EditTerminationReasonDescriptionCommand */
     public EditTerminationReasonDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = EmployeeResultFactory.getEditTerminationReasonDescriptionResult();
-        var terminationReasonName = spec.getTerminationReasonName();
-        var terminationReason = employeeControl.getTerminationReasonByName(terminationReasonName);
-        
-        if(terminationReason != null) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = partyControl.getLanguageByIsoName(languageIsoName);
-            
-            if(language != null) {
-                if(editMode.equals(EditMode.LOCK)) {
-                    var terminationReasonDescription = employeeControl.getTerminationReasonDescription(terminationReason, language);
-                    
-                    if(terminationReasonDescription != null) {
-                        result.setTerminationReasonDescription(employeeControl.getTerminationReasonDescriptionTransfer(getUserVisit(), terminationReasonDescription));
-                        
-                        if(lockEntity(terminationReason)) {
-                            var edit = EmployeeEditFactory.getTerminationReasonDescriptionEdit();
-                            
-                            result.setEdit(edit);
-                            edit.setDescription(terminationReasonDescription.getDescription());
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                        }
-                        
-                        result.setEntityLock(getEntityLockTransfer(terminationReason));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownTerminationReasonDescription.name());
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var terminationReasonDescriptionValue = employeeControl.getTerminationReasonDescriptionValueForUpdate(terminationReason, language);
-                    
-                    if(terminationReasonDescriptionValue != null) {
-                        if(lockEntityForUpdate(terminationReason)) {
-                            try {
-                                var description = edit.getDescription();
-                                
-                                terminationReasonDescriptionValue.setDescription(description);
-                                
-                                employeeControl.updateTerminationReasonDescriptionFromValue(terminationReasonDescriptionValue, getPartyPK());
-                            } finally {
-                                unlockEntity(terminationReason);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownTerminationReasonDescription.name());
-                    }
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownTerminationReasonName.name(), terminationReasonName);
-        }
-        
-        return result;
+    public EditTerminationReasonDescriptionResult getResult() {
+        return EmployeeResultFactory.getEditTerminationReasonDescriptionResult();
     }
-    
+
+    @Override
+    public TerminationReasonDescriptionEdit getEdit() {
+        return EmployeeEditFactory.getTerminationReasonDescriptionEdit();
+    }
+
+    @Override
+    public TerminationReasonDescription getEntity(EditTerminationReasonDescriptionResult result) {
+        TerminationReasonDescription terminationReasonDescription = null;
+        var terminationReasonName = spec.getTerminationReasonName();
+        var terminationReason = terminationReasonLogic.getTerminationReasonByName(this, terminationReasonName);
+
+        if(!hasExecutionErrors()) {
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = languageLogic.getLanguageByName(this, languageIsoName);
+
+            if(!hasExecutionErrors()) {
+                terminationReasonDescription = employeeControl.getTerminationReasonDescription(terminationReason, language,
+                        editModeToEntityPermission(editMode));
+
+                if(terminationReasonDescription == null) {
+                    addExecutionError(ExecutionErrors.UnknownTerminationReasonDescription.name(), terminationReasonName, languageIsoName);
+                }
+            }
+        }
+
+        return terminationReasonDescription;
+    }
+
+    @Override
+    public TerminationReason getLockEntity(TerminationReasonDescription terminationReasonDescription) {
+        return terminationReasonDescription.getTerminationReason();
+    }
+
+    @Override
+    public void fillInResult(EditTerminationReasonDescriptionResult result, TerminationReasonDescription terminationReasonDescription) {
+        result.setTerminationReasonDescription(employeeControl.getTerminationReasonDescriptionTransfer(getUserVisit(), terminationReasonDescription));
+    }
+
+    @Override
+    public void doLock(TerminationReasonDescriptionEdit edit, TerminationReasonDescription terminationReasonDescription) {
+        edit.setDescription(terminationReasonDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(TerminationReasonDescription terminationReasonDescription) {
+        var terminationReasonDescriptionValue = employeeControl.getTerminationReasonDescriptionValue(terminationReasonDescription);
+
+        terminationReasonDescriptionValue.setDescription(edit.getDescription());
+
+        employeeControl.updateTerminationReasonDescriptionFromValue(terminationReasonDescriptionValue, getPartyPK());
+    }
+
 }

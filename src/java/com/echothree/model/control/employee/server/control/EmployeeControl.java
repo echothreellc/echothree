@@ -2584,7 +2584,7 @@ public class EmployeeControl
         return terminationReasonDescription;
     }
     
-    private TerminationReasonDescription getTerminationReasonDescription(TerminationReason terminationReason,
+    public TerminationReasonDescription getTerminationReasonDescription(TerminationReason terminationReason,
             Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(TerminationReasonDescriptions.fields())
