@@ -18,21 +18,21 @@ package com.echothree.control.user.period.server.command;
 
 import com.echothree.control.user.period.common.edit.PeriodEditFactory;
 import com.echothree.control.user.period.common.edit.PeriodTypeDescriptionEdit;
-import com.echothree.control.user.period.common.form.EditPeriodTypeDescriptionForm;
+import com.echothree.control.user.period.common.result.EditPeriodTypeDescriptionResult;
 import com.echothree.control.user.period.common.result.PeriodResultFactory;
 import com.echothree.control.user.period.common.spec.PeriodTypeDescriptionSpec;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.period.server.control.PeriodControl;
+import com.echothree.model.control.period.server.logic.PeriodKindLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.period.server.entity.PeriodType;
+import com.echothree.model.data.period.server.entity.PeriodTypeDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -42,12 +42,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditPeriodTypeDescriptionCommand
-        extends BaseEditCommand<PeriodTypeDescriptionSpec, PeriodTypeDescriptionEdit> {
-    
+        extends BaseAbstractEditCommand<PeriodTypeDescriptionSpec, PeriodTypeDescriptionEdit, EditPeriodTypeDescriptionResult, PeriodTypeDescription, PeriodType> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -55,106 +55,93 @@ public class EditPeriodTypeDescriptionCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.PeriodType.name(), SecurityRoles.Description.name())
                 ))
         ));
-        
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PeriodKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PeriodTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
 
     @Inject
-    PartyControl partyControl;
-
-    @Inject
     PeriodControl periodControl;
 
-    
+    @Inject
+    LanguageLogic languageLogic;
+
+    @Inject
+    PeriodKindLogic periodKindLogic;
+
     /** Creates a new instance of EditPeriodTypeDescriptionCommand */
     public EditPeriodTypeDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
-    @Override
-    protected BaseResult execute() {
-        var result = PeriodResultFactory.getEditPeriodTypeDescriptionResult();
-        var periodKindName = spec.getPeriodKindName();
-        var periodKind = periodControl.getPeriodKindByName(periodKindName);
 
-        if(periodKind != null) {
+    @Override
+    public EditPeriodTypeDescriptionResult getResult() {
+        return PeriodResultFactory.getEditPeriodTypeDescriptionResult();
+    }
+
+    @Override
+    public PeriodTypeDescriptionEdit getEdit() {
+        return PeriodEditFactory.getPeriodTypeDescriptionEdit();
+    }
+
+    @Override
+    public PeriodTypeDescription getEntity(EditPeriodTypeDescriptionResult result) {
+        PeriodTypeDescription periodTypeDescription = null;
+        var periodKindName = spec.getPeriodKindName();
+        var periodKind = periodKindLogic.getPeriodKindByName(this, periodKindName);
+
+        if(!hasExecutionErrors()) {
             var periodTypeName = spec.getPeriodTypeName();
             var periodType = periodControl.getPeriodTypeByName(periodKind, periodTypeName);
 
             if(periodType != null) {
                 var languageIsoName = spec.getLanguageIsoName();
-                var language = partyControl.getLanguageByIsoName(languageIsoName);
+                var language = languageLogic.getLanguageByName(this, languageIsoName);
 
-                if(language != null) {
-                    if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                        var periodTypeDescription = periodControl.getPeriodTypeDescription(periodType, language);
+                if(!hasExecutionErrors()) {
+                    periodTypeDescription = periodControl.getPeriodTypeDescription(periodType, language, editModeToEntityPermission(editMode));
 
-                        if(periodTypeDescription != null) {
-                            if(editMode.equals(EditMode.LOCK)) {
-                                result.setPeriodTypeDescription(periodControl.getPeriodTypeDescriptionTransfer(getUserVisit(), periodTypeDescription));
-
-                                if(lockEntity(periodType)) {
-                                    var edit = PeriodEditFactory.getPeriodTypeDescriptionEdit();
-
-                                    result.setEdit(edit);
-                                    edit.setDescription(periodTypeDescription.getDescription());
-                                } else {
-                                    addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                                }
-
-                                result.setEntityLock(getEntityLockTransfer(periodType));
-                            } else { // EditMode.ABANDON
-                                unlockEntity(periodType);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownPeriodTypeDescription.name());
-                        }
-                    } else if(editMode.equals(EditMode.UPDATE)) {
-                        var periodTypeDescription = periodControl.getPeriodTypeDescriptionForUpdate(periodType, language);
-                        var periodTypeDescriptionValue = periodControl.getPeriodTypeDescriptionValue(periodTypeDescription);
-
-                        if(periodTypeDescriptionValue != null) {
-                            if(lockEntityForUpdate(periodType)) {
-                                try {
-                                    var description = edit.getDescription();
-
-                                    periodTypeDescriptionValue.setDescription(description);
-
-                                    periodControl.updatePeriodTypeDescriptionFromValue(periodTypeDescriptionValue, getPartyPK());
-                                } finally {
-                                    unlockEntity(periodType);
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockStale.name());
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownPeriodTypeDescription.name());
-                        }
-
-                        if(hasExecutionErrors()) {
-                            result.setPeriodTypeDescription(periodControl.getPeriodTypeDescriptionTransfer(getUserVisit(), periodTypeDescription));
-                            result.setEntityLock(getEntityLockTransfer(periodType));
-                        }
+                    if(periodTypeDescription == null) {
+                        addExecutionError(ExecutionErrors.UnknownPeriodTypeDescription.name(), periodKindName, periodTypeName, languageIsoName);
                     }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownPeriodTypeName.name(), periodTypeName);
+                addExecutionError(ExecutionErrors.UnknownPeriodTypeName.name(), periodKindName, periodTypeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownPeriodKindName.name(), periodKindName);
         }
 
-        return result;
+        return periodTypeDescription;
+    }
+
+    @Override
+    public PeriodType getLockEntity(PeriodTypeDescription periodTypeDescription) {
+        return periodTypeDescription.getPeriodType();
+    }
+
+    @Override
+    public void fillInResult(EditPeriodTypeDescriptionResult result, PeriodTypeDescription periodTypeDescription) {
+        result.setPeriodTypeDescription(periodControl.getPeriodTypeDescriptionTransfer(getUserVisit(), periodTypeDescription));
+    }
+
+    @Override
+    public void doLock(PeriodTypeDescriptionEdit edit, PeriodTypeDescription periodTypeDescription) {
+        edit.setDescription(periodTypeDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(PeriodTypeDescription periodTypeDescription) {
+        var periodTypeDescriptionValue = periodControl.getPeriodTypeDescriptionValue(periodTypeDescription);
+
+        periodTypeDescriptionValue.setDescription(edit.getDescription());
+
+        periodControl.updatePeriodTypeDescriptionFromValue(periodTypeDescriptionValue, getPartyPK());
     }
 
 }
