@@ -997,7 +997,7 @@ public class OfferControl
                 .orElse(0L);
     }
 
-    private OfferChainType getOfferChainType(Offer offer, ChainType chainType, EntityPermission entityPermission) {
+    public OfferChainType getOfferChainType(Offer offer, ChainType chainType, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(OfferChainTypes.fields())
                 .from(OfferChainTypes)
