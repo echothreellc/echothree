@@ -18,14 +18,12 @@ package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.edit.OfferEdit;
 import com.echothree.control.user.offer.common.edit.OfferEditFactory;
-import com.echothree.control.user.offer.common.form.EditOfferForm;
+import com.echothree.control.user.offer.common.result.EditOfferResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.control.user.offer.common.spec.OfferSpec;
 import com.echothree.model.control.filter.common.FilterKinds;
 import com.echothree.model.control.filter.common.FilterTypes;
-import com.echothree.model.control.filter.server.control.FilterControl;
-import com.echothree.model.control.filter.server.control.FilterKindControl;
-import com.echothree.model.control.filter.server.control.FilterTypeControl;
+import com.echothree.model.control.filter.server.logic.FilterLogic;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.logic.OfferLogic;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -33,19 +31,17 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.common.SelectorTypes;
-import com.echothree.model.control.selector.server.control.SelectorControl;
+import com.echothree.model.control.selector.server.logic.SelectorLogic;
 import com.echothree.model.control.sequence.common.SequenceTypes;
-import com.echothree.model.control.sequence.server.control.SequenceControl;
+import com.echothree.model.control.sequence.server.logic.SequenceLogic;
 import com.echothree.model.data.filter.server.entity.Filter;
+import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -55,12 +51,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditOfferCommand
-        extends BaseEditCommand<OfferSpec, OfferEdit> {
-    
+        extends BaseAbstractEditCommand<OfferSpec, OfferEdit, EditOfferResult, Offer, Offer> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -68,11 +64,11 @@ public class EditOfferCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.Offer.name(), SecurityRoles.Edit.name())
                 ))
         ));
-        
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OfferName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OfferName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SalesOrderSequenceName", FieldType.ENTITY_NAME, false, null, null),
@@ -85,177 +81,129 @@ public class EditOfferCommand
     }
 
     @Inject
-    FilterControl filterControl;
-
-    @Inject
-    FilterKindControl filterKindControl;
-
-    @Inject
-    FilterTypeControl filterTypeControl;
-
-    @Inject
     OfferControl offerControl;
 
     @Inject
-    SelectorControl selectorControl;
-
-    @Inject
-    SequenceControl sequenceControl;
+    FilterLogic filterLogic;
 
     @Inject
     OfferLogic offerLogic;
 
-    
+    @Inject
+    SelectorLogic selectorLogic;
+
+    @Inject
+    SequenceLogic sequenceLogic;
+
     /** Creates a new instance of EditOfferCommand */
     public EditOfferCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = OfferResultFactory.getEditOfferResult();
-        
-        if(editMode.equals(EditMode.LOCK)) {
-            var offerName = spec.getOfferName();
-            var offer = offerControl.getOfferByName(offerName);
-            
-            if(offer != null) {
-                result.setOffer(offerControl.getOfferTransfer(getUserVisit(), offer));
-                
-                if(lockEntity(offer)) {
-                    var offerDescription = offerControl.getOfferDescription(offer, getPreferredLanguage());
-                    var edit = OfferEditFactory.getOfferEdit();
-                    var offerDetail = offer.getLastDetail();
-                    var salesOrderSequence = offerDetail.getSalesOrderSequence();
-                    var offerItemSelector = offerDetail.getOfferItemSelector();
-                    var offerItemPriceFilter = offerDetail.getOfferItemPriceFilter();
-                    
-                    result.setEdit(edit);
-                    edit.setOfferName(offerDetail.getOfferName());
-                    edit.setSalesOrderSequenceName(salesOrderSequence == null? null: salesOrderSequence.getLastDetail().getSequenceName());
-                    edit.setOfferItemSelectorName(offerItemSelector == null? null: offerItemSelector.getLastDetail().getSelectorName());
-                    edit.setOfferItemPriceFilterName(offerItemPriceFilter == null? null: offerItemPriceFilter.getLastDetail().getFilterName());
-                    edit.setIsDefault(offerDetail.getIsDefault().toString());
-                    edit.setSortOrder(offerDetail.getSortOrder().toString());
-                    
-                    if(offerDescription != null) {
-                        edit.setDescription(offerDescription.getDescription());
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                }
-                
-                result.setEntityLock(getEntityLockTransfer(offer));
-            } else {
-                addExecutionError(ExecutionErrors.UnknownOfferName.name(), offerName);
-            }
-        } else if(editMode.equals(EditMode.UPDATE)) {
-            var offerName = spec.getOfferName();
-            var offer = offerControl.getOfferByNameForUpdate(offerName);
-            
-            if(offer != null) {
-                offerName = edit.getOfferName();
-                var duplicateOffer = offerControl.getOfferByName(offerName);
-                
-                if(duplicateOffer == null || offer.equals(duplicateOffer)) {
-                    var salesOrderSequenceName = edit.getSalesOrderSequenceName();
-                    Sequence salesOrderSequence = null;
-                    
-                    if(salesOrderSequenceName != null) {
-                        var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SALES_ORDER.name());
-                        
-                        if(sequenceType != null) {
-                            salesOrderSequence = sequenceControl.getSequenceByName(sequenceType, salesOrderSequenceName);
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.SALES_ORDER.name());
-                        }
-                    }
-                    
-                    if(salesOrderSequenceName == null || salesOrderSequence != null) {
-                        var offerItemSelectorName = edit.getOfferItemSelectorName();
-                        Selector offerItemSelector = null;
-                        
-                        if(offerItemSelectorName != null) {
-                            var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
-                            
-                            if(selectorKind != null) {
-                                var selectorType = selectorControl.getSelectorTypeByName(selectorKind,
-                                        SelectorTypes.OFFER.name());
-                                
-                                if(selectorType != null) {
-                                    offerItemSelector = selectorControl.getSelectorByName(selectorType, offerItemSelectorName);
-                                } else {
-                                    addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), SelectorTypes.OFFER.name());
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), SelectorKinds.ITEM.name());
-                            }
-                        }
-                        
-                        if(offerItemSelectorName == null || offerItemSelector != null) {
-                            var offerItemPriceFilterName = edit.getOfferItemPriceFilterName();
-                            Filter offerItemPriceFilter = null;
-                            
-                            if(offerItemPriceFilterName != null) {
-                                var filterKind = filterKindControl.getFilterKindByName(FilterKinds.PRICE.name());
-                                var filterType = filterTypeControl.getFilterTypeByName(filterKind, FilterTypes.OFFER_ITEM_PRICE.name());
-                                
-                                if(filterType != null) {
-                                    offerItemPriceFilter = filterControl.getFilterByName(filterType, offerItemPriceFilterName);
-                                }
-                            }
-                            
-                            if(offerItemPriceFilterName == null || offerItemPriceFilter != null) {
-                                if(lockEntityForUpdate(offer)) {
-                                    try {
-                                        var partyPK = getPartyPK();
-                                        var offerDetailValue = offerControl.getOfferDetailValueForUpdate(offer);
-                                        var offerDescription = offerControl.getOfferDescriptionForUpdate(offer, getPreferredLanguage());
-                                        var description = edit.getDescription();
-
-                                        offerDetailValue.setOfferName(edit.getOfferName());
-                                        offerDetailValue.setSalesOrderSequencePK(salesOrderSequence == null? null: salesOrderSequence.getPrimaryKey());
-                                        offerDetailValue.setOfferItemSelectorPK(offerItemSelector == null? null: offerItemSelector.getPrimaryKey());
-                                        offerDetailValue.setOfferItemPriceFilterPK(offerItemPriceFilter == null? null: offerItemPriceFilter.getPrimaryKey());
-                                        offerDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
-                                        offerDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
-
-                                        offerLogic.updateOfferFromValue(offerDetailValue, partyPK);
-
-                                        if(offerDescription == null && description != null) {
-                                            offerControl.createOfferDescription(offer, getPreferredLanguage(), description, partyPK);
-                                        } else if(offerDescription != null && description == null) {
-                                            offerControl.deleteOfferDescription(offerDescription, partyPK);
-                                        } else if(offerDescription != null && description != null) {
-                                            var offerDescriptionValue = offerControl.getOfferDescriptionValue(offerDescription);
-
-                                            offerDescriptionValue.setDescription(description);
-                                            offerControl.updateOfferDescriptionFromValue(offerDescriptionValue, partyPK);
-                                        }
-                                    } finally {
-                                        unlockEntity(offer);
-                                    }
-                                } else {
-                                    addExecutionError(ExecutionErrors.EntityLockStale.name());
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownOfferItemPriceFilterName.name(), offerItemPriceFilterName);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownOfferItemSelectorName.name(), offerItemSelectorName);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownSalesOrderSequenceName.name(), salesOrderSequenceName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.DuplicateOfferName.name(), offerName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownOfferName.name(), offerName);
-            }
-        }
-        
-        return result;
+    public EditOfferResult getResult() {
+        return OfferResultFactory.getEditOfferResult();
     }
-    
+
+    @Override
+    public OfferEdit getEdit() {
+        return OfferEditFactory.getOfferEdit();
+    }
+
+    @Override
+    public Offer getEntity(EditOfferResult result) {
+        return offerLogic.getOfferByName(this, spec.getOfferName(), editModeToEntityPermission(editMode));
+    }
+
+    @Override
+    public Offer getLockEntity(Offer offer) {
+        return offer;
+    }
+
+    @Override
+    public void fillInResult(EditOfferResult result, Offer offer) {
+        result.setOffer(offerControl.getOfferTransfer(getUserVisit(), offer));
+    }
+
+    private Sequence salesOrderSequence;
+    private Selector offerItemSelector;
+    private Filter offerItemPriceFilter;
+
+    @Override
+    public void doLock(OfferEdit edit, Offer offer) {
+        var offerDescription = offerControl.getOfferDescription(offer, getPreferredLanguage());
+        var offerDetail = offer.getLastDetail();
+        var salesOrderSequence = offerDetail.getSalesOrderSequence();
+        var offerItemSelector = offerDetail.getOfferItemSelector();
+        var offerItemPriceFilter = offerDetail.getOfferItemPriceFilter();
+
+        edit.setOfferName(offerDetail.getOfferName());
+        edit.setSalesOrderSequenceName(salesOrderSequence == null? null: salesOrderSequence.getLastDetail().getSequenceName());
+        edit.setOfferItemSelectorName(offerItemSelector == null? null: offerItemSelector.getLastDetail().getSelectorName());
+        edit.setOfferItemPriceFilterName(offerItemPriceFilter == null? null: offerItemPriceFilter.getLastDetail().getFilterName());
+        edit.setIsDefault(offerDetail.getIsDefault().toString());
+        edit.setSortOrder(offerDetail.getSortOrder().toString());
+
+        if(offerDescription != null) {
+            edit.setDescription(offerDescription.getDescription());
+        }
+    }
+
+    @Override
+    public void canUpdate(Offer offer) {
+        var offerName = edit.getOfferName();
+        var duplicateOffer = offerControl.getOfferByName(offerName);
+
+        if(duplicateOffer == null || offer.equals(duplicateOffer)) {
+            var salesOrderSequenceName = edit.getSalesOrderSequenceName();
+
+            salesOrderSequence = salesOrderSequenceName == null? null: sequenceLogic.getSequenceByName(this,
+                    SequenceTypes.SALES_ORDER.name(), salesOrderSequenceName);
+
+            if(!hasExecutionErrors()) {
+                var offerItemSelectorName = edit.getOfferItemSelectorName();
+
+                offerItemSelector = offerItemSelectorName == null? null: selectorLogic.getSelectorByName(this,
+                        SelectorKinds.ITEM.name(), SelectorTypes.OFFER.name(), offerItemSelectorName);
+
+                if(!hasExecutionErrors()) {
+                    var offerItemPriceFilterName = edit.getOfferItemPriceFilterName();
+
+                    offerItemPriceFilter = offerItemPriceFilterName == null? null: filterLogic.getFilterByName(this,
+                            FilterKinds.PRICE.name(), FilterTypes.OFFER_ITEM_PRICE.name(), offerItemPriceFilterName);
+                }
+            }
+        } else {
+            addExecutionError(ExecutionErrors.DuplicateOfferName.name(), offerName);
+        }
+    }
+
+    @Override
+    public void doUpdate(Offer offer) {
+        var partyPK = getPartyPK();
+        var offerDetailValue = offerControl.getOfferDetailValueForUpdate(offer);
+        var offerDescription = offerControl.getOfferDescriptionForUpdate(offer, getPreferredLanguage());
+        var description = edit.getDescription();
+
+        offerDetailValue.setOfferName(edit.getOfferName());
+        offerDetailValue.setSalesOrderSequencePK(salesOrderSequence == null? null: salesOrderSequence.getPrimaryKey());
+        offerDetailValue.setOfferItemSelectorPK(offerItemSelector == null? null: offerItemSelector.getPrimaryKey());
+        offerDetailValue.setOfferItemPriceFilterPK(offerItemPriceFilter == null? null: offerItemPriceFilter.getPrimaryKey());
+        offerDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+        offerDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        offerLogic.updateOfferFromValue(offerDetailValue, partyPK);
+
+        if(offerDescription == null && description != null) {
+            offerControl.createOfferDescription(offer, getPreferredLanguage(), description, partyPK);
+        } else if(offerDescription != null && description == null) {
+            offerControl.deleteOfferDescription(offerDescription, partyPK);
+        } else if(offerDescription != null && description != null) {
+            var offerDescriptionValue = offerControl.getOfferDescriptionValue(offerDescription);
+
+            offerDescriptionValue.setDescription(description);
+            offerControl.updateOfferDescriptionFromValue(offerDescriptionValue, partyPK);
+        }
+    }
+
 }
