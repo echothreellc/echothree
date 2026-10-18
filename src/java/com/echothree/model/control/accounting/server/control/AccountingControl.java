@@ -946,7 +946,7 @@ public class AccountingControl
         return itemAccountingCategoryDescription;
     }
     
-    private ItemAccountingCategoryDescription getItemAccountingCategoryDescription(ItemAccountingCategory itemAccountingCategory,
+    public ItemAccountingCategoryDescription getItemAccountingCategoryDescription(ItemAccountingCategory itemAccountingCategory,
             Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(ItemAccountingCategoryDescriptions.fields())

@@ -18,21 +18,21 @@ package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.edit.AccountingEditFactory;
 import com.echothree.control.user.accounting.common.edit.ItemAccountingCategoryDescriptionEdit;
-import com.echothree.control.user.accounting.common.form.EditItemAccountingCategoryDescriptionForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
+import com.echothree.control.user.accounting.common.result.EditItemAccountingCategoryDescriptionResult;
 import com.echothree.control.user.accounting.common.spec.ItemAccountingCategoryDescriptionSpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.accounting.server.logic.ItemAccountingCategoryLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
+import com.echothree.model.data.accounting.server.entity.ItemAccountingCategoryDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -42,12 +42,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditItemAccountingCategoryDescriptionCommand
-        extends BaseEditCommand<ItemAccountingCategoryDescriptionSpec, ItemAccountingCategoryDescriptionEdit> {
-    
+        extends BaseAbstractEditCommand<ItemAccountingCategoryDescriptionSpec, ItemAccountingCategoryDescriptionEdit, EditItemAccountingCategoryDescriptionResult, ItemAccountingCategoryDescription, ItemAccountingCategory> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -55,12 +55,12 @@ public class EditItemAccountingCategoryDescriptionCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.ItemAccountingCategory.name(), SecurityRoles.Description.name())
                 ))
         ));
-        
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemAccountingCategoryName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
@@ -70,77 +70,71 @@ public class EditItemAccountingCategoryDescriptionCommand
     AccountingControl accountingControl;
 
     @Inject
-    PartyControl partyControl;
+    ItemAccountingCategoryLogic itemAccountingCategoryLogic;
 
-    
+    @Inject
+    LanguageLogic languageLogic;
+
     /** Creates a new instance of EditItemAccountingCategoryDescriptionCommand */
     public EditItemAccountingCategoryDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = AccountingResultFactory.getEditItemAccountingCategoryDescriptionResult();
-        var itemAccountingCategoryName = spec.getItemAccountingCategoryName();
-        var itemAccountingCategory = accountingControl.getItemAccountingCategoryByName(itemAccountingCategoryName);
-        
-        if(itemAccountingCategory != null) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = partyControl.getLanguageByIsoName(languageIsoName);
-            
-            if(language != null) {
-                if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    var itemAccountingCategoryDescription = accountingControl.getItemAccountingCategoryDescription(itemAccountingCategory, language);
-                    
-                    if(itemAccountingCategoryDescription != null) {
-                        if(editMode.equals(EditMode.LOCK)) {
-                            result.setItemAccountingCategoryDescription(accountingControl.getItemAccountingCategoryDescriptionTransfer(getUserVisit(), itemAccountingCategoryDescription));
-
-                            if(lockEntity(itemAccountingCategory)) {
-                                var edit = AccountingEditFactory.getItemAccountingCategoryDescriptionEdit();
-
-                                result.setEdit(edit);
-                                edit.setDescription(itemAccountingCategoryDescription.getDescription());
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                            }
-
-                            result.setEntityLock(getEntityLockTransfer(itemAccountingCategory));
-                        } else { // EditMode.ABANDON
-                            unlockEntity(itemAccountingCategory);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownItemAccountingCategoryDescription.name());
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var itemAccountingCategoryDescriptionValue = accountingControl.getItemAccountingCategoryDescriptionValueForUpdate(itemAccountingCategory, language);
-                    
-                    if(itemAccountingCategoryDescriptionValue != null) {
-                        if(lockEntityForUpdate(itemAccountingCategory)) {
-                            try {
-                                var description = edit.getDescription();
-                                
-                                itemAccountingCategoryDescriptionValue.setDescription(description);
-                                
-                                accountingControl.updateItemAccountingCategoryDescriptionFromValue(itemAccountingCategoryDescriptionValue, getPartyPK());
-                            } finally {
-                                unlockEntity(itemAccountingCategory);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownItemAccountingCategoryDescription.name());
-                    }
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownItemAccountingCategoryName.name(), itemAccountingCategoryName);
-        }
-        
-        return result;
+    public EditItemAccountingCategoryDescriptionResult getResult() {
+        return AccountingResultFactory.getEditItemAccountingCategoryDescriptionResult();
     }
-    
+
+    @Override
+    public ItemAccountingCategoryDescriptionEdit getEdit() {
+        return AccountingEditFactory.getItemAccountingCategoryDescriptionEdit();
+    }
+
+    @Override
+    public ItemAccountingCategoryDescription getEntity(EditItemAccountingCategoryDescriptionResult result) {
+        ItemAccountingCategoryDescription itemAccountingCategoryDescription = null;
+        var itemAccountingCategoryName = spec.getItemAccountingCategoryName();
+        var itemAccountingCategory = itemAccountingCategoryLogic.getItemAccountingCategoryByName(this, itemAccountingCategoryName);
+
+        if(!hasExecutionErrors()) {
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = languageLogic.getLanguageByName(this, languageIsoName);
+
+            if(!hasExecutionErrors()) {
+                itemAccountingCategoryDescription = accountingControl.getItemAccountingCategoryDescription(itemAccountingCategory, language,
+                        editModeToEntityPermission(editMode));
+
+                if(itemAccountingCategoryDescription == null) {
+                    addExecutionError(ExecutionErrors.UnknownItemAccountingCategoryDescription.name(), itemAccountingCategoryName, languageIsoName);
+                }
+            }
+        }
+
+        return itemAccountingCategoryDescription;
+    }
+
+    @Override
+    public ItemAccountingCategory getLockEntity(ItemAccountingCategoryDescription itemAccountingCategoryDescription) {
+        return itemAccountingCategoryDescription.getItemAccountingCategory();
+    }
+
+    @Override
+    public void fillInResult(EditItemAccountingCategoryDescriptionResult result, ItemAccountingCategoryDescription itemAccountingCategoryDescription) {
+        result.setItemAccountingCategoryDescription(accountingControl.getItemAccountingCategoryDescriptionTransfer(getUserVisit(), itemAccountingCategoryDescription));
+    }
+
+    @Override
+    public void doLock(ItemAccountingCategoryDescriptionEdit edit, ItemAccountingCategoryDescription itemAccountingCategoryDescription) {
+        edit.setDescription(itemAccountingCategoryDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(ItemAccountingCategoryDescription itemAccountingCategoryDescription) {
+        var itemAccountingCategoryDescriptionValue = accountingControl.getItemAccountingCategoryDescriptionValue(itemAccountingCategoryDescription);
+
+        itemAccountingCategoryDescriptionValue.setDescription(edit.getDescription());
+
+        accountingControl.updateItemAccountingCategoryDescriptionFromValue(itemAccountingCategoryDescriptionValue, getPartyPK());
+    }
+
 }
