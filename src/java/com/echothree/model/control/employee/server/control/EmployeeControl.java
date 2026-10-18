@@ -548,7 +548,7 @@ public class EmployeeControl
         return responsibilityTypeDescription;
     }
     
-    private ResponsibilityTypeDescription getResponsibilityTypeDescription(ResponsibilityType responsibilityType,
+    public ResponsibilityTypeDescription getResponsibilityTypeDescription(ResponsibilityType responsibilityType,
             Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(ResponsibilityTypeDescriptions.fields())
