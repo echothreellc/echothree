@@ -244,7 +244,7 @@ public class UseNameElementControl
         return useNameElementDescription;
     }
 
-    private UseNameElementDescription getUseNameElementDescription(UseNameElement useNameElement, Language language,
+    public UseNameElementDescription getUseNameElementDescription(UseNameElement useNameElement, Language language,
             EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(UseNameElementDescriptions.fields())
