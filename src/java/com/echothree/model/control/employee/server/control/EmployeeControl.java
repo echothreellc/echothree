@@ -3746,7 +3746,7 @@ public class EmployeeControl
         return employeeTypeDescription;
     }
     
-    private EmployeeTypeDescription getEmployeeTypeDescription(EmployeeType employeeType, Language language, EntityPermission entityPermission) {
+    public EmployeeTypeDescription getEmployeeTypeDescription(EmployeeType employeeType, Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(EmployeeTypeDescriptions.fields())
                 .from(EmployeeTypeDescriptions)
