@@ -2511,7 +2511,7 @@ public class AccountingControl
         return glResourceTypeDescription;
     }
     
-    private GlResourceTypeDescription getGlResourceTypeDescription(GlResourceType glResourceType, Language language, EntityPermission entityPermission) {
+    public GlResourceTypeDescription getGlResourceTypeDescription(GlResourceType glResourceType, Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(GlResourceTypeDescriptions.fields())
                 .from(GlResourceTypeDescriptions)
