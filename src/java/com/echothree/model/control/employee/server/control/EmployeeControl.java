@@ -740,7 +740,7 @@ public class EmployeeControl
                 .orElse(0L);
     }
 
-    private SkillType getSkillTypeByName(String skillTypeName, EntityPermission entityPermission) {
+    public SkillType getSkillTypeByName(String skillTypeName, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(SkillTypes.fields())
                 .from(SkillTypes)
