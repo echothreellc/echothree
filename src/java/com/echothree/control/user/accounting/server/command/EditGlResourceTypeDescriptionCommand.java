@@ -18,21 +18,21 @@ package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.edit.AccountingEditFactory;
 import com.echothree.control.user.accounting.common.edit.GlResourceTypeDescriptionEdit;
-import com.echothree.control.user.accounting.common.form.EditGlResourceTypeDescriptionForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
+import com.echothree.control.user.accounting.common.result.EditGlResourceTypeDescriptionResult;
 import com.echothree.control.user.accounting.common.spec.GlResourceTypeDescriptionSpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.accounting.server.logic.GlResourceTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.accounting.server.entity.GlResourceType;
+import com.echothree.model.data.accounting.server.entity.GlResourceTypeDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -42,12 +42,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditGlResourceTypeDescriptionCommand
-        extends BaseEditCommand<GlResourceTypeDescriptionSpec, GlResourceTypeDescriptionEdit> {
-    
+        extends BaseAbstractEditCommand<GlResourceTypeDescriptionSpec, GlResourceTypeDescriptionEdit, EditGlResourceTypeDescriptionResult, GlResourceTypeDescription, GlResourceType> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -55,12 +55,12 @@ public class EditGlResourceTypeDescriptionCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.GlResourceType.name(), SecurityRoles.Description.name())
                 ))
         ));
-        
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GlResourceTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
@@ -70,77 +70,70 @@ public class EditGlResourceTypeDescriptionCommand
     AccountingControl accountingControl;
 
     @Inject
-    PartyControl partyControl;
+    GlResourceTypeLogic glResourceTypeLogic;
 
-    
+    @Inject
+    LanguageLogic languageLogic;
+
     /** Creates a new instance of EditGlResourceTypeDescriptionCommand */
     public EditGlResourceTypeDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = AccountingResultFactory.getEditGlResourceTypeDescriptionResult();
-        var glResourceTypeName = spec.getGlResourceTypeName();
-        var glResourceType = accountingControl.getGlResourceTypeByName(glResourceTypeName);
-        
-        if(glResourceType != null) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = partyControl.getLanguageByIsoName(languageIsoName);
-            
-            if(language != null) {
-                if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    var glResourceTypeDescription = accountingControl.getGlResourceTypeDescription(glResourceType, language);
-                    
-                    if(glResourceTypeDescription != null) {
-                        if(editMode.equals(EditMode.LOCK)) {
-                            result.setGlResourceTypeDescription(accountingControl.getGlResourceTypeDescriptionTransfer(getUserVisit(), glResourceTypeDescription));
-
-                            if(lockEntity(glResourceType)) {
-                                var edit = AccountingEditFactory.getGlResourceTypeDescriptionEdit();
-
-                                result.setEdit(edit);
-                                edit.setDescription(glResourceTypeDescription.getDescription());
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                            }
-
-                            result.setEntityLock(getEntityLockTransfer(glResourceType));
-                        } else { // EditMode.ABANDON
-                            unlockEntity(glResourceType);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownGlResourceTypeDescription.name());
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var glResourceTypeDescriptionValue = accountingControl.getGlResourceTypeDescriptionValueForUpdate(glResourceType, language);
-                    
-                    if(glResourceTypeDescriptionValue != null) {
-                        if(lockEntityForUpdate(glResourceType)) {
-                            try {
-                                var description = edit.getDescription();
-                                
-                                glResourceTypeDescriptionValue.setDescription(description);
-                                
-                                accountingControl.updateGlResourceTypeDescriptionFromValue(glResourceTypeDescriptionValue, getPartyPK());
-                            } finally {
-                                unlockEntity(glResourceType);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownGlResourceTypeDescription.name());
-                    }
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownGlResourceTypeName.name(), glResourceTypeName);
-        }
-        
-        return result;
+    public EditGlResourceTypeDescriptionResult getResult() {
+        return AccountingResultFactory.getEditGlResourceTypeDescriptionResult();
     }
-    
+
+    @Override
+    public GlResourceTypeDescriptionEdit getEdit() {
+        return AccountingEditFactory.getGlResourceTypeDescriptionEdit();
+    }
+
+    @Override
+    public GlResourceTypeDescription getEntity(EditGlResourceTypeDescriptionResult result) {
+        GlResourceTypeDescription glResourceTypeDescription = null;
+        var glResourceTypeName = spec.getGlResourceTypeName();
+        var glResourceType = glResourceTypeLogic.getGlResourceTypeByName(this, glResourceTypeName);
+
+        if(!hasExecutionErrors()) {
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = languageLogic.getLanguageByName(this, languageIsoName);
+
+            if(!hasExecutionErrors()) {
+                glResourceTypeDescription = accountingControl.getGlResourceTypeDescription(glResourceType, language, editModeToEntityPermission(editMode));
+
+                if(glResourceTypeDescription == null) {
+                    addExecutionError(ExecutionErrors.UnknownGlResourceTypeDescription.name(), glResourceTypeName, languageIsoName);
+                }
+            }
+        }
+
+        return glResourceTypeDescription;
+    }
+
+    @Override
+    public GlResourceType getLockEntity(GlResourceTypeDescription glResourceTypeDescription) {
+        return glResourceTypeDescription.getGlResourceType();
+    }
+
+    @Override
+    public void fillInResult(EditGlResourceTypeDescriptionResult result, GlResourceTypeDescription glResourceTypeDescription) {
+        result.setGlResourceTypeDescription(accountingControl.getGlResourceTypeDescriptionTransfer(getUserVisit(), glResourceTypeDescription));
+    }
+
+    @Override
+    public void doLock(GlResourceTypeDescriptionEdit edit, GlResourceTypeDescription glResourceTypeDescription) {
+        edit.setDescription(glResourceTypeDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(GlResourceTypeDescription glResourceTypeDescription) {
+        var glResourceTypeDescriptionValue = accountingControl.getGlResourceTypeDescriptionValue(glResourceTypeDescription);
+
+        glResourceTypeDescriptionValue.setDescription(edit.getDescription());
+
+        accountingControl.updateGlResourceTypeDescriptionFromValue(glResourceTypeDescriptionValue, getPartyPK());
+    }
+
 }
