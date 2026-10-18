@@ -396,7 +396,7 @@ public class PeriodControl
         return periodKindDescription;
     }
     
-    private PeriodKindDescription getPeriodKindDescription(PeriodKind periodKind, Language language, EntityPermission entityPermission) {
+    public PeriodKindDescription getPeriodKindDescription(PeriodKind periodKind, Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PeriodKindDescriptions.fields())
                 .from(PeriodKindDescriptions)
