@@ -2355,7 +2355,7 @@ public class EmployeeControl
                 .orElse(0L);
     }
 
-    private TerminationReason getTerminationReasonByName(String terminationReasonName, EntityPermission entityPermission) {
+    public TerminationReason getTerminationReasonByName(String terminationReasonName, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(TerminationReasons.fields())
                 .from(TerminationReasons)
