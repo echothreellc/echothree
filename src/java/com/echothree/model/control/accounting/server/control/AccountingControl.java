@@ -3924,7 +3924,7 @@ public class AccountingControl
         return transactionGlAccountCategoryDescription;
     }
     
-    private TransactionGlAccountCategoryDescription getTransactionGlAccountCategoryDescription(TransactionGlAccountCategory transactionGlAccountCategory, Language language, EntityPermission entityPermission) {
+    public TransactionGlAccountCategoryDescription getTransactionGlAccountCategoryDescription(TransactionGlAccountCategory transactionGlAccountCategory, Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(TransactionGlAccountCategoryDescriptions.fields())
                 .from(TransactionGlAccountCategoryDescriptions)
