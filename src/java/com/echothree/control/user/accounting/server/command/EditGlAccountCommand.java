@@ -18,22 +18,25 @@ package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.edit.AccountingEditFactory;
 import com.echothree.control.user.accounting.common.edit.GlAccountEdit;
-import com.echothree.control.user.accounting.common.form.EditGlAccountForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
+import com.echothree.control.user.accounting.common.result.EditGlAccountResult;
 import com.echothree.control.user.accounting.common.spec.GlAccountUniversalSpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.accounting.server.logic.GlAccountCategoryLogic;
+import com.echothree.model.control.accounting.server.logic.GlAccountClassLogic;
 import com.echothree.model.control.accounting.server.logic.GlAccountLogic;
+import com.echothree.model.control.accounting.server.logic.GlResourceTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
+import com.echothree.model.data.accounting.server.entity.GlAccountCategory;
+import com.echothree.model.data.accounting.server.entity.GlAccountClass;
+import com.echothree.model.data.accounting.server.entity.GlResourceType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -43,12 +46,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditGlAccountCommand
-        extends BaseEditCommand<GlAccountUniversalSpec, GlAccountEdit> {
-    
+        extends BaseAbstractEditCommand<GlAccountUniversalSpec, GlAccountEdit, EditGlAccountResult, GlAccount, GlAccount> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -56,13 +59,13 @@ public class EditGlAccountCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.GlAccount.name(), SecurityRoles.Edit.name())
                 ))
         ));
-        
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GlAccountName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GlAccountName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ParentGlAccountName", FieldType.ENTITY_NAME, false, null, null),
@@ -78,142 +81,133 @@ public class EditGlAccountCommand
     AccountingControl accountingControl;
 
     @Inject
+    GlAccountCategoryLogic glAccountCategoryLogic;
+
+    @Inject
+    GlAccountClassLogic glAccountClassLogic;
+
+    @Inject
     GlAccountLogic glAccountLogic;
 
-    
+    @Inject
+    GlResourceTypeLogic glResourceTypeLogic;
+
     /** Creates a new instance of EditGlAccountCommand */
     public EditGlAccountCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = AccountingResultFactory.getEditGlAccountResult();
-        
-        if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            var glAccount = glAccountLogic.getGlAccountByUniversalSpec(this, spec, false, null);
+    public EditGlAccountResult getResult() {
+        return AccountingResultFactory.getEditGlAccountResult();
+    }
 
-            if(!hasExecutionErrors()) {
-                if(editMode.equals(EditMode.LOCK)) {
-                    if(lockEntity(glAccount)) {
-                        var glAccountDescription = accountingControl.getGlAccountDescription(glAccount, getPreferredLanguage());
-                        var edit = AccountingEditFactory.getGlAccountEdit();
-                        var glAccountDetail = glAccount.getLastDetail();
-                        var parentGlAccount = glAccountDetail.getParentGlAccount();
-                        var glAccountCategory = glAccountDetail.getGlAccountCategory();
-                        var isDefault = glAccountDetail.getIsDefault();
+    @Override
+    public GlAccountEdit getEdit() {
+        return AccountingEditFactory.getGlAccountEdit();
+    }
 
-                        result.setGlAccount(accountingControl.getGlAccountTransfer(getUserVisit(), glAccount));
+    @Override
+    public GlAccount getEntity(EditGlAccountResult result) {
+        return glAccountLogic.getGlAccountByUniversalSpec(this, spec, false, null, editModeToEntityPermission(editMode));
+    }
 
-                        result.setEdit(edit);
-                        edit.setGlAccountName(glAccountDetail.getGlAccountName());
-                        edit.setParentGlAccountName(parentGlAccount == null? null: parentGlAccount.getLastDetail().getGlAccountName());
-                        edit.setGlAccountClassName(glAccountDetail.getGlAccountClass().getLastDetail().getGlAccountClassName());
-                        edit.setGlAccountCategoryName(glAccountCategory == null? null: glAccountCategory.getLastDetail().getGlAccountCategoryName());
-                        edit.setGlResourceTypeName(glAccountDetail.getGlResourceType().getLastDetail().getGlResourceTypeName());
-                        edit.setIsDefault(isDefault == null? null: isDefault.toString());
+    @Override
+    public GlAccount getLockEntity(GlAccount glAccount) {
+        return glAccount;
+    }
 
-                        if(glAccountDescription != null) {
-                            edit.setDescription(glAccountDescription.getDescription());
+    @Override
+    public void fillInResult(EditGlAccountResult result, GlAccount glAccount) {
+        result.setGlAccount(accountingControl.getGlAccountTransfer(getUserVisit(), glAccount));
+    }
+
+    private GlAccount parentGlAccount;
+    private GlAccountClass glAccountClass;
+    private GlAccountCategory glAccountCategory;
+    private GlResourceType glResourceType;
+
+    @Override
+    public void doLock(GlAccountEdit edit, GlAccount glAccount) {
+        var glAccountDescription = accountingControl.getGlAccountDescription(glAccount, getPreferredLanguage());
+        var glAccountDetail = glAccount.getLastDetail();
+        var parentGlAccount = glAccountDetail.getParentGlAccount();
+        var glAccountCategory = glAccountDetail.getGlAccountCategory();
+        var isDefault = glAccountDetail.getIsDefault();
+
+        edit.setGlAccountName(glAccountDetail.getGlAccountName());
+        edit.setParentGlAccountName(parentGlAccount == null? null: parentGlAccount.getLastDetail().getGlAccountName());
+        edit.setGlAccountClassName(glAccountDetail.getGlAccountClass().getLastDetail().getGlAccountClassName());
+        edit.setGlAccountCategoryName(glAccountCategory == null? null: glAccountCategory.getLastDetail().getGlAccountCategoryName());
+        edit.setGlResourceTypeName(glAccountDetail.getGlResourceType().getLastDetail().getGlResourceTypeName());
+        edit.setIsDefault(isDefault == null? null: isDefault.toString());
+
+        if(glAccountDescription != null) {
+            edit.setDescription(glAccountDescription.getDescription());
+        }
+    }
+
+    @Override
+    public void canUpdate(GlAccount glAccount) {
+        var glAccountName = edit.getGlAccountName();
+        var duplicateGlAccount = accountingControl.getGlAccountByName(glAccountName);
+
+        if(duplicateGlAccount == null || glAccount.equals(duplicateGlAccount)) {
+            var parentGlAccountName = edit.getParentGlAccountName();
+
+            parentGlAccount = parentGlAccountName == null? null: accountingControl.getGlAccountByName(parentGlAccountName);
+
+            if(parentGlAccountName == null || parentGlAccount != null) {
+                if(accountingControl.isParentGlAccountSafe(glAccount, parentGlAccount)) {
+                    glAccountClass = glAccountClassLogic.getGlAccountClassByName(this, edit.getGlAccountClassName());
+
+                    if(!hasExecutionErrors()) {
+                        var glAccountCategoryName = edit.getGlAccountCategoryName();
+
+                        glAccountCategory = glAccountCategoryName == null? null: glAccountCategoryLogic.getGlAccountCategoryByName(this, glAccountCategoryName);
+
+                        if(!hasExecutionErrors()) {
+                            glResourceType = glResourceTypeLogic.getGlResourceTypeByName(this, edit.getGlResourceTypeName());
                         }
-                    } else {
-                        addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                    }
-
-                    result.setEntityLock(getEntityLockTransfer(glAccount));
-                } else { // EditMode.ABANDON
-                    unlockEntity(glAccount);
-                }
-            }
-        } else if(editMode.equals(EditMode.UPDATE)) {
-            var glAccount = glAccountLogic.getGlAccountByUniversalSpecForUpdate(this, spec, false, null);
-
-            if(!hasExecutionErrors()) {
-                var glAccountName = edit.getGlAccountName();
-                var duplicateGlAccount = accountingControl.getGlAccountByName(glAccountName);
-                
-                if(duplicateGlAccount == null || glAccount.equals(duplicateGlAccount)) {
-                    var parentGlAccountName = edit.getParentGlAccountName();
-                    GlAccount parentGlAccount = null;
-                    
-                    if(parentGlAccountName != null) {
-                        parentGlAccount = accountingControl.getGlAccountByName(parentGlAccountName);
-                    }
-                    
-                    if(parentGlAccountName == null || parentGlAccount != null) {
-                        if(accountingControl.isParentGlAccountSafe(glAccount, parentGlAccount)) {
-                            var glAccountClassName = edit.getGlAccountClassName();
-                            var glAccountClass = accountingControl.getGlAccountClassByName(glAccountClassName);
-                            
-                            if(glAccountClass != null) {
-                                var glAccountCategoryName = edit.getGlAccountCategoryName();
-                                var glAccountCategory = glAccountCategoryName == null? null: accountingControl.getGlAccountCategoryByName(glAccountCategoryName);
-                                
-                                if(glAccountCategoryName == null || glAccountCategory != null) {
-                                    var glResourceTypeName = edit.getGlResourceTypeName();
-                                    var glResourceType = accountingControl.getGlResourceTypeByName(glResourceTypeName);
-                                    
-                                    if(glResourceType != null) {
-                                        if(lockEntityForUpdate(glAccount)) {
-                                            try {
-                                                var partyPK = getPartyPK();
-                                                var glAccountDetailValue = accountingControl.getGlAccountDetailValueForUpdate(glAccount);
-                                                var glAccountDescription = accountingControl.getGlAccountDescriptionForUpdate(glAccount, getPreferredLanguage());
-                                                var isDefault = glAccountCategory == null? null: Boolean.valueOf(edit.getIsDefault());
-                                                var description = edit.getDescription();
-                                                
-                                                glAccountDetailValue.setGlAccountName(glAccountName);
-                                                glAccountDetailValue.setParentGlAccountPK(parentGlAccount == null? null: parentGlAccount.getPrimaryKey());
-                                                glAccountDetailValue.setGlAccountClassPK(glAccountClass.getPrimaryKey());
-                                                glAccountDetailValue.setGlAccountCategoryPK(glAccountCategory == null? null: glAccountCategory.getPrimaryKey());
-                                                glAccountDetailValue.setGlResourceTypePK(glResourceType.getPrimaryKey());
-                                                glAccountDetailValue.setIsDefault(isDefault);
-                                                
-                                                glAccountLogic.updateGlAccountFromValue(glAccountDetailValue, partyPK);
-                                                
-                                                if(glAccountDescription == null && description != null) {
-                                                    accountingControl.createGlAccountDescription(glAccount, getPreferredLanguage(), description, partyPK);
-                                                } else if(glAccountDescription != null && description == null) {
-                                                    accountingControl.deleteGlAccountDescription(glAccountDescription, partyPK);
-                                                } else if(glAccountDescription != null && description != null) {
-                                                    var glAccountDescriptionValue = accountingControl.getGlAccountDescriptionValue(glAccountDescription);
-                                                    
-                                                    glAccountDescriptionValue.setDescription(description);
-                                                    accountingControl.updateGlAccountDescriptionFromValue(glAccountDescriptionValue, partyPK);
-                                                }
-                                            } finally {
-                                                unlockEntity(glAccount);
-                                            }
-                                        } else {
-                                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                                        }
-                                    } else {
-                                        addExecutionError(ExecutionErrors.UnknownGlResourceTypeName.name(), glResourceTypeName);
-                                    }
-                                } else {
-                                    addExecutionError(ExecutionErrors.UnknownGlAccountCategoryName.name(), glAccountCategoryName);
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownGlAccountClassName.name(), glAccountClassName);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.InvalidParentGlAccount.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownParentGlAccountName.name(), parentGlAccountName);
                     }
                 } else {
-                    addExecutionError(ExecutionErrors.DuplicateGlAccountName.name(), glAccountName);
+                    addExecutionError(ExecutionErrors.InvalidParentGlAccount.name());
                 }
+            } else {
+                addExecutionError(ExecutionErrors.UnknownParentGlAccountName.name(), parentGlAccountName);
             }
-            
-            if(hasExecutionErrors()) {
-                result.setGlAccount(accountingControl.getGlAccountTransfer(getUserVisit(), glAccount));
-                result.setEntityLock(getEntityLockTransfer(glAccount));
-            }
+        } else {
+            addExecutionError(ExecutionErrors.DuplicateGlAccountName.name(), glAccountName);
         }
-        
-        return result;
     }
-    
+
+    @Override
+    public void doUpdate(GlAccount glAccount) {
+        var partyPK = getPartyPK();
+        var glAccountDetailValue = accountingControl.getGlAccountDetailValueForUpdate(glAccount);
+        var glAccountDescription = accountingControl.getGlAccountDescriptionForUpdate(glAccount, getPreferredLanguage());
+        var isDefault = glAccountCategory == null? null: Boolean.valueOf(edit.getIsDefault());
+        var description = edit.getDescription();
+
+        glAccountDetailValue.setGlAccountName(edit.getGlAccountName());
+        glAccountDetailValue.setParentGlAccountPK(parentGlAccount == null? null: parentGlAccount.getPrimaryKey());
+        glAccountDetailValue.setGlAccountClassPK(glAccountClass.getPrimaryKey());
+        glAccountDetailValue.setGlAccountCategoryPK(glAccountCategory == null? null: glAccountCategory.getPrimaryKey());
+        glAccountDetailValue.setGlResourceTypePK(glResourceType.getPrimaryKey());
+        glAccountDetailValue.setIsDefault(isDefault);
+
+        glAccountLogic.updateGlAccountFromValue(glAccountDetailValue, partyPK);
+
+        if(glAccountDescription == null && description != null) {
+            accountingControl.createGlAccountDescription(glAccount, getPreferredLanguage(), description, partyPK);
+        } else if(glAccountDescription != null && description == null) {
+            accountingControl.deleteGlAccountDescription(glAccountDescription, partyPK);
+        } else if(glAccountDescription != null && description != null) {
+            var glAccountDescriptionValue = accountingControl.getGlAccountDescriptionValue(glAccountDescription);
+
+            glAccountDescriptionValue.setDescription(description);
+            accountingControl.updateGlAccountDescriptionFromValue(glAccountDescriptionValue, partyPK);
+        }
+    }
+
 }
