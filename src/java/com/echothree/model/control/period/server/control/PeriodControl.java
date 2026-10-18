@@ -852,7 +852,7 @@ public class PeriodControl
         return periodTypeDescription;
     }
     
-    private PeriodTypeDescription getPeriodTypeDescription(PeriodType periodType, Language language, EntityPermission entityPermission) {
+    public PeriodTypeDescription getPeriodTypeDescription(PeriodType periodType, Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PeriodTypeDescriptions.fields())
                 .from(PeriodTypeDescriptions)
