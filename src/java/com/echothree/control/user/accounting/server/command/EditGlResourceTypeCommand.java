@@ -18,20 +18,19 @@ package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.edit.AccountingEditFactory;
 import com.echothree.control.user.accounting.common.edit.GlResourceTypeEdit;
-import com.echothree.control.user.accounting.common.form.EditGlResourceTypeForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
+import com.echothree.control.user.accounting.common.result.EditGlResourceTypeResult;
 import com.echothree.control.user.accounting.common.spec.GlResourceTypeSpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.accounting.server.logic.GlResourceTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.accounting.server.entity.GlResourceType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -41,12 +40,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditGlResourceTypeCommand
-        extends BaseEditCommand<GlResourceTypeSpec, GlResourceTypeEdit> {
-    
+        extends BaseAbstractEditCommand<GlResourceTypeSpec, GlResourceTypeEdit, EditGlResourceTypeResult, GlResourceType, GlResourceType> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -54,11 +53,11 @@ public class EditGlResourceTypeCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.GlResourceType.name(), SecurityRoles.Edit.name())
                 ))
         ));
-        
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GlResourceTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GlResourceTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
@@ -70,100 +69,86 @@ public class EditGlResourceTypeCommand
     @Inject
     AccountingControl accountingControl;
 
-    
+    @Inject
+    GlResourceTypeLogic glResourceTypeLogic;
+
     /** Creates a new instance of EditGlResourceTypeCommand */
     public EditGlResourceTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = AccountingResultFactory.getEditGlResourceTypeResult();
-        
-        if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            var glResourceTypeName = spec.getGlResourceTypeName();
-            var glResourceType = accountingControl.getGlResourceTypeByName(glResourceTypeName);
-            
-            if(glResourceType != null) {
-                if(editMode.equals(EditMode.LOCK)) {
-                    if(lockEntity(glResourceType)) {
-                        var glResourceTypeDescription = accountingControl.getGlResourceTypeDescription(glResourceType, getPreferredLanguage());
-                        var edit = AccountingEditFactory.getGlResourceTypeEdit();
-                        var glResourceTypeDetail = glResourceType.getLastDetail();
-
-                        result.setGlResourceType(accountingControl.getGlResourceTypeTransfer(getUserVisit(), glResourceType));
-
-                        result.setEdit(edit);
-                        edit.setGlResourceTypeName(glResourceTypeDetail.getGlResourceTypeName());
-                        edit.setIsDefault(glResourceTypeDetail.getIsDefault().toString());
-                        edit.setSortOrder(glResourceTypeDetail.getSortOrder().toString());
-
-                        if(glResourceTypeDescription != null) {
-                            edit.setDescription(glResourceTypeDescription.getDescription());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                    }
-
-                    result.setEntityLock(getEntityLockTransfer(glResourceType));
-                } else { // EditMode.ABANDON
-                    unlockEntity(glResourceType);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownGlResourceTypeName.name(), glResourceTypeName);
-            }
-        } else if(editMode.equals(EditMode.UPDATE)) {
-            var glResourceTypeName = spec.getGlResourceTypeName();
-            var glResourceType = accountingControl.getGlResourceTypeByNameForUpdate(glResourceTypeName);
-            
-            if(glResourceType != null) {
-                glResourceTypeName = edit.getGlResourceTypeName();
-                var duplicateGlResourceType = accountingControl.getGlResourceTypeByName(glResourceTypeName);
-                
-                if(duplicateGlResourceType == null || glResourceType.equals(duplicateGlResourceType)) {
-                    if(lockEntityForUpdate(glResourceType)) {
-                        try {
-                            var partyPK = getPartyPK();
-                            var glResourceTypeDetailValue = accountingControl.getGlResourceTypeDetailValueForUpdate(glResourceType);
-                            var glResourceTypeDescription = accountingControl.getGlResourceTypeDescriptionForUpdate(glResourceType, getPreferredLanguage());
-                            var description = edit.getDescription();
-                            
-                            glResourceTypeDetailValue.setGlResourceTypeName(edit.getGlResourceTypeName());
-                            glResourceTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
-                            glResourceTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
-                            
-                            accountingControl.updateGlResourceTypeFromValue(glResourceTypeDetailValue, partyPK);
-                            
-                            if(glResourceTypeDescription == null && description != null) {
-                                accountingControl.createGlResourceTypeDescription(glResourceType, getPreferredLanguage(), description, partyPK);
-                            } else if(glResourceTypeDescription != null && description == null) {
-                                accountingControl.deleteGlResourceTypeDescription(glResourceTypeDescription, partyPK);
-                            } else if(glResourceTypeDescription != null && description != null) {
-                                var glResourceTypeDescriptionValue = accountingControl.getGlResourceTypeDescriptionValue(glResourceTypeDescription);
-                                
-                                glResourceTypeDescriptionValue.setDescription(description);
-                                accountingControl.updateGlResourceTypeDescriptionFromValue(glResourceTypeDescriptionValue, partyPK);
-                            }
-                        } finally {
-                            unlockEntity(glResourceType);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.EntityLockStale.name());
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.DuplicateGlResourceTypeName.name(), glResourceTypeName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownGlResourceTypeName.name(), glResourceTypeName);
-            }
-            
-            if(hasExecutionErrors()) {
-                result.setGlResourceType(accountingControl.getGlResourceTypeTransfer(getUserVisit(), glResourceType));
-                result.setEntityLock(getEntityLockTransfer(glResourceType));
-            }
-        }
-        
-        return result;
+    public EditGlResourceTypeResult getResult() {
+        return AccountingResultFactory.getEditGlResourceTypeResult();
     }
-    
+
+    @Override
+    public GlResourceTypeEdit getEdit() {
+        return AccountingEditFactory.getGlResourceTypeEdit();
+    }
+
+    @Override
+    public GlResourceType getEntity(EditGlResourceTypeResult result) {
+        return glResourceTypeLogic.getGlResourceTypeByName(this, spec.getGlResourceTypeName(), editModeToEntityPermission(editMode));
+    }
+
+    @Override
+    public GlResourceType getLockEntity(GlResourceType glResourceType) {
+        return glResourceType;
+    }
+
+    @Override
+    public void fillInResult(EditGlResourceTypeResult result, GlResourceType glResourceType) {
+        result.setGlResourceType(accountingControl.getGlResourceTypeTransfer(getUserVisit(), glResourceType));
+    }
+
+    @Override
+    public void doLock(GlResourceTypeEdit edit, GlResourceType glResourceType) {
+        var glResourceTypeDescription = accountingControl.getGlResourceTypeDescription(glResourceType, getPreferredLanguage());
+        var glResourceTypeDetail = glResourceType.getLastDetail();
+
+        edit.setGlResourceTypeName(glResourceTypeDetail.getGlResourceTypeName());
+        edit.setIsDefault(glResourceTypeDetail.getIsDefault().toString());
+        edit.setSortOrder(glResourceTypeDetail.getSortOrder().toString());
+
+        if(glResourceTypeDescription != null) {
+            edit.setDescription(glResourceTypeDescription.getDescription());
+        }
+    }
+
+    @Override
+    public void canUpdate(GlResourceType glResourceType) {
+        var glResourceTypeName = edit.getGlResourceTypeName();
+        var duplicateGlResourceType = accountingControl.getGlResourceTypeByName(glResourceTypeName);
+
+        if(duplicateGlResourceType != null && !glResourceType.equals(duplicateGlResourceType)) {
+            addExecutionError(ExecutionErrors.DuplicateGlResourceTypeName.name(), glResourceTypeName);
+        }
+    }
+
+    @Override
+    public void doUpdate(GlResourceType glResourceType) {
+        var partyPK = getPartyPK();
+        var glResourceTypeDetailValue = accountingControl.getGlResourceTypeDetailValueForUpdate(glResourceType);
+        var glResourceTypeDescription = accountingControl.getGlResourceTypeDescriptionForUpdate(glResourceType, getPreferredLanguage());
+        var description = edit.getDescription();
+
+        glResourceTypeDetailValue.setGlResourceTypeName(edit.getGlResourceTypeName());
+        glResourceTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+        glResourceTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        accountingControl.updateGlResourceTypeFromValue(glResourceTypeDetailValue, partyPK);
+
+        if(glResourceTypeDescription == null && description != null) {
+            accountingControl.createGlResourceTypeDescription(glResourceType, getPreferredLanguage(), description, partyPK);
+        } else if(glResourceTypeDescription != null && description == null) {
+            accountingControl.deleteGlResourceTypeDescription(glResourceTypeDescription, partyPK);
+        } else if(glResourceTypeDescription != null && description != null) {
+            var glResourceTypeDescriptionValue = accountingControl.getGlResourceTypeDescriptionValue(glResourceTypeDescription);
+
+            glResourceTypeDescriptionValue.setDescription(description);
+            accountingControl.updateGlResourceTypeDescriptionFromValue(glResourceTypeDescriptionValue, partyPK);
+        }
+    }
+
 }
