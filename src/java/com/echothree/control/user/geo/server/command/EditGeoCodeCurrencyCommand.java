@@ -18,21 +18,21 @@ package com.echothree.control.user.geo.server.command;
 
 import com.echothree.control.user.geo.common.edit.GeoCodeCurrencyEdit;
 import com.echothree.control.user.geo.common.edit.GeoEditFactory;
-import com.echothree.control.user.geo.common.form.EditGeoCodeCurrencyForm;
+import com.echothree.control.user.geo.common.result.EditGeoCodeCurrencyResult;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
 import com.echothree.control.user.geo.common.spec.GeoCodeCurrencySpec;
-import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
 import com.echothree.model.control.geo.server.control.GeoControl;
+import com.echothree.model.control.geo.server.logic.GeoCodeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.geo.server.entity.GeoCode;
+import com.echothree.model.data.geo.server.entity.GeoCodeCurrency;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -42,12 +42,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditGeoCodeCurrencyCommand
-        extends BaseEditCommand<GeoCodeCurrencySpec, GeoCodeCurrencyEdit> {
-    
+        extends BaseAbstractEditCommand<GeoCodeCurrencySpec, GeoCodeCurrencyEdit, EditGeoCodeCurrencyResult, GeoCodeCurrency, GeoCode> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -55,12 +55,12 @@ public class EditGeoCodeCurrencyCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.GeoCodeCurrency.name(), SecurityRoles.Edit.name())
                 ))
         ));
-        
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GeoCodeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
@@ -68,84 +68,75 @@ public class EditGeoCodeCurrencyCommand
     }
 
     @Inject
-    AccountingControl accountingControl;
-
-    @Inject
     GeoControl geoControl;
 
-    
+    @Inject
+    CurrencyLogic currencyLogic;
+
+    @Inject
+    GeoCodeLogic geoCodeLogic;
+
     /** Creates a new instance of EditGeoCodeCurrencyCommand */
     public EditGeoCodeCurrencyCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = GeoResultFactory.getEditGeoCodeCurrencyResult();
-        var geoCodeName = spec.getGeoCodeName();
-        var geoCode = geoControl.getGeoCodeByName(geoCodeName);
-        
-        if(geoCode != null) {
-            var currencyIsoName = spec.getCurrencyIsoName();
-            var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
-            
-            if(currency != null) {
-                if(editMode.equals(EditMode.LOCK)) {
-                    var geoCodeCurrency = geoControl.getGeoCodeCurrency(geoCode, currency);
-                    
-                    if(geoCodeCurrency != null) {
-                        result.setGeoCodeCurrency(geoControl.getGeoCodeCurrencyTransfer(getUserVisit(), geoCodeCurrency));
-                        
-                        if(lockEntity(geoCode)) {
-                            var edit = GeoEditFactory.getGeoCodeCurrencyEdit();
-                            
-                            result.setEdit(edit);
-                            edit.setIsDefault(geoCodeCurrency.getIsDefault().toString());
-                            edit.setSortOrder(geoCodeCurrency.getSortOrder().toString());
-                            
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                        }
-                        
-                        result.setEntityLock(getEntityLockTransfer(geoCode));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownGeoCodeCurrency.name(), geoCodeName, currencyIsoName);
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var geoCodeCurrency = geoControl.getGeoCodeCurrencyForUpdate(geoCode, currency);
-                    
-                    if(geoCodeCurrency != null) {
-                        var geoCodeCurrencyValue = geoControl.getGeoCodeCurrencyValue(geoCodeCurrency);
-                        
-                        if(lockEntityForUpdate(geoCode)) {
-                            try {
-                                geoCodeCurrencyValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
-                                geoCodeCurrencyValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
-                                
-                                geoControl.updateGeoCodeCurrencyFromValue(geoCodeCurrencyValue, getPartyPK());
-                            } finally {
-                                unlockEntity(geoCode);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownGeoCodeCurrency.name(), geoCodeName, currencyIsoName);
-                    }
-                    
-                    if(hasExecutionErrors()) {
-                        result.setGeoCodeCurrency(geoControl.getGeoCodeCurrencyTransfer(getUserVisit(), geoCodeCurrency));
-                        result.setEntityLock(getEntityLockTransfer(geoCode));
-                    }
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownCurrencyIsoName.name(), currencyIsoName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownGeoCodeName.name(), geoCodeName);
-        }
-        
-        return result;
+    public EditGeoCodeCurrencyResult getResult() {
+        return GeoResultFactory.getEditGeoCodeCurrencyResult();
     }
-    
+
+    @Override
+    public GeoCodeCurrencyEdit getEdit() {
+        return GeoEditFactory.getGeoCodeCurrencyEdit();
+    }
+
+    @Override
+    public GeoCodeCurrency getEntity(EditGeoCodeCurrencyResult result) {
+        GeoCodeCurrency geoCodeCurrency = null;
+        var geoCodeName = spec.getGeoCodeName();
+        var geoCode = geoCodeLogic.getGeoCodeByName(this, geoCodeName);
+
+        if(!hasExecutionErrors()) {
+            var currencyIsoName = spec.getCurrencyIsoName();
+            var currency = currencyLogic.getCurrencyByName(this, currencyIsoName);
+
+            if(!hasExecutionErrors()) {
+                geoCodeCurrency = geoControl.getGeoCodeCurrency(geoCode, currency, editModeToEntityPermission(editMode));
+
+                if(geoCodeCurrency == null) {
+                    addExecutionError(ExecutionErrors.UnknownGeoCodeCurrency.name(), geoCodeName, currencyIsoName);
+                }
+            }
+        }
+
+        return geoCodeCurrency;
+    }
+
+    @Override
+    public GeoCode getLockEntity(GeoCodeCurrency geoCodeCurrency) {
+        return geoCodeCurrency.getGeoCode();
+    }
+
+    @Override
+    public void fillInResult(EditGeoCodeCurrencyResult result, GeoCodeCurrency geoCodeCurrency) {
+        result.setGeoCodeCurrency(geoControl.getGeoCodeCurrencyTransfer(getUserVisit(), geoCodeCurrency));
+    }
+
+    @Override
+    public void doLock(GeoCodeCurrencyEdit edit, GeoCodeCurrency geoCodeCurrency) {
+        edit.setIsDefault(geoCodeCurrency.getIsDefault().toString());
+        edit.setSortOrder(geoCodeCurrency.getSortOrder().toString());
+    }
+
+    @Override
+    public void doUpdate(GeoCodeCurrency geoCodeCurrency) {
+        var geoCodeCurrencyValue = geoControl.getGeoCodeCurrencyValue(geoCodeCurrency);
+
+        geoCodeCurrencyValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+        geoCodeCurrencyValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        geoControl.updateGeoCodeCurrencyFromValue(geoCodeCurrencyValue, getPartyPK());
+    }
+
 }

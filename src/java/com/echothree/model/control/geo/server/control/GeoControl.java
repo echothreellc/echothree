@@ -2955,7 +2955,7 @@ public class GeoControl
                 .orElse(0L);
     }
 
-    private GeoCodeCurrency getGeoCodeCurrency(GeoCode geoCode, Currency currency, EntityPermission entityPermission) {
+    public GeoCodeCurrency getGeoCodeCurrency(GeoCode geoCode, Currency currency, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(GeoCodeCurrencies.fields())
                 .from(GeoCodeCurrencies)
