@@ -485,7 +485,7 @@ public class OfferItemControl
         return getOfferItemPrices(item, inventoryCondition, unitOfMeasureType, currency, EntityPermission.READ_WRITE);
     }
 
-    private OfferItemPrice getOfferItemPrice(OfferItem offerItem, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
+    public OfferItemPrice getOfferItemPrice(OfferItem offerItem, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
             Currency currency, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(OfferItemPrices.fields())
