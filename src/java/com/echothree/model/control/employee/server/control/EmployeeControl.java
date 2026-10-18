@@ -3005,7 +3005,7 @@ public class EmployeeControl
         return terminationTypeDescription;
     }
     
-    private TerminationTypeDescription getTerminationTypeDescription(TerminationType terminationType,
+    public TerminationTypeDescription getTerminationTypeDescription(TerminationType terminationType,
             Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(TerminationTypeDescriptions.fields())

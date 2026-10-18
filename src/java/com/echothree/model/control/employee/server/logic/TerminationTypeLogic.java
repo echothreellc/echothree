@@ -16,9 +16,13 @@
 
 package com.echothree.model.control.employee.server.logic;
 
+import com.echothree.control.user.employee.common.spec.TerminationTypeDescriptionSpec;
+import com.echothree.model.control.employee.common.exception.UnknownTerminationTypeDescriptionException;
 import com.echothree.model.control.employee.common.exception.UnknownTerminationTypeNameException;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.data.employee.server.entity.TerminationType;
+import com.echothree.model.data.employee.server.entity.TerminationTypeDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -32,6 +36,9 @@ public class TerminationTypeLogic
 
     @Inject
     EmployeeControl employeeControl;
+
+    @Inject
+    LanguageLogic languageLogic;
 
     protected TerminationTypeLogic() {
         super();
@@ -54,6 +61,29 @@ public class TerminationTypeLogic
 
     public TerminationType getTerminationTypeByNameForUpdate(final ExecutionErrorAccumulator eea, final String terminationTypeName) {
         return getTerminationTypeByName(eea, terminationTypeName, EntityPermission.READ_WRITE);
+    }
+
+    public TerminationTypeDescription getTerminationTypeDescriptionBySpec(final ExecutionErrorAccumulator eea,
+            final TerminationTypeDescriptionSpec spec, final EntityPermission entityPermission) {
+        TerminationTypeDescription terminationTypeDescription = null;
+        var terminationTypeName = spec.getTerminationTypeName();
+        var terminationType = getTerminationTypeByName(eea, terminationTypeName);
+
+        if(!hasExecutionErrors(eea)) {
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = languageLogic.getLanguageByName(eea, languageIsoName);
+
+            if(!hasExecutionErrors(eea)) {
+                terminationTypeDescription = employeeControl.getTerminationTypeDescription(terminationType, language, entityPermission);
+
+                if(terminationTypeDescription == null) {
+                    handleExecutionError(UnknownTerminationTypeDescriptionException.class, eea,
+                            ExecutionErrors.UnknownTerminationTypeDescription.name(), terminationTypeName, languageIsoName);
+                }
+            }
+        }
+
+        return terminationTypeDescription;
     }
 
 }
