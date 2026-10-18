@@ -5481,7 +5481,7 @@ public class AccountingControl
         return symbolPositionDescription;
     }
     
-    private SymbolPositionDescription getSymbolPositionDescription(SymbolPosition symbolPosition, Language language, EntityPermission entityPermission) {
+    public SymbolPositionDescription getSymbolPositionDescription(SymbolPosition symbolPosition, Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(SymbolPositionDescriptions.fields())
                 .from(SymbolPositionDescriptions)

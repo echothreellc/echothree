@@ -18,21 +18,21 @@ package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.edit.AccountingEditFactory;
 import com.echothree.control.user.accounting.common.edit.SymbolPositionDescriptionEdit;
-import com.echothree.control.user.accounting.common.form.EditSymbolPositionDescriptionForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
+import com.echothree.control.user.accounting.common.result.EditSymbolPositionDescriptionResult;
 import com.echothree.control.user.accounting.common.spec.SymbolPositionDescriptionSpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.accounting.server.logic.SymbolPositionLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.accounting.server.entity.SymbolPosition;
+import com.echothree.model.data.accounting.server.entity.SymbolPositionDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -42,12 +42,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditSymbolPositionDescriptionCommand
-        extends BaseEditCommand<SymbolPositionDescriptionSpec, SymbolPositionDescriptionEdit> {
-    
+        extends BaseAbstractEditCommand<SymbolPositionDescriptionSpec, SymbolPositionDescriptionEdit, EditSymbolPositionDescriptionResult, SymbolPositionDescription, SymbolPosition> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -55,12 +55,12 @@ public class EditSymbolPositionDescriptionCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.SymbolPosition.name(), SecurityRoles.Description.name())
                 ))
         ));
-        
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SymbolPositionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
@@ -70,77 +70,70 @@ public class EditSymbolPositionDescriptionCommand
     AccountingControl accountingControl;
 
     @Inject
-    PartyControl partyControl;
+    LanguageLogic languageLogic;
 
-    
+    @Inject
+    SymbolPositionLogic symbolPositionLogic;
+
     /** Creates a new instance of EditSymbolPositionDescriptionCommand */
     public EditSymbolPositionDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = AccountingResultFactory.getEditSymbolPositionDescriptionResult();
-        var symbolPositionName = spec.getSymbolPositionName();
-        var symbolPosition = accountingControl.getSymbolPositionByName(symbolPositionName);
-        
-        if(symbolPosition != null) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = partyControl.getLanguageByIsoName(languageIsoName);
-            
-            if(language != null) {
-                if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    var symbolPositionDescription = accountingControl.getSymbolPositionDescription(symbolPosition, language);
-                    
-                    if(symbolPositionDescription != null) {
-                        if(editMode.equals(EditMode.LOCK)) {
-                            result.setSymbolPositionDescription(accountingControl.getSymbolPositionDescriptionTransfer(getUserVisit(), symbolPositionDescription));
-
-                            if(lockEntity(symbolPosition)) {
-                                var edit = AccountingEditFactory.getSymbolPositionDescriptionEdit();
-
-                                result.setEdit(edit);
-                                edit.setDescription(symbolPositionDescription.getDescription());
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                            }
-
-                            result.setEntityLock(getEntityLockTransfer(symbolPosition));
-                        } else { // EditMode.ABANDON
-                            unlockEntity(symbolPosition);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownSymbolPositionDescription.name());
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var symbolPositionDescriptionValue = accountingControl.getSymbolPositionDescriptionValueForUpdate(symbolPosition, language);
-                    
-                    if(symbolPositionDescriptionValue != null) {
-                        if(lockEntityForUpdate(symbolPosition)) {
-                            try {
-                                var description = edit.getDescription();
-                                
-                                symbolPositionDescriptionValue.setDescription(description);
-                                
-                                accountingControl.updateSymbolPositionDescriptionFromValue(symbolPositionDescriptionValue, getPartyPK());
-                            } finally {
-                                unlockEntity(symbolPosition);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownSymbolPositionDescription.name());
-                    }
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownSymbolPositionName.name(), symbolPositionName);
-        }
-        
-        return result;
+    public EditSymbolPositionDescriptionResult getResult() {
+        return AccountingResultFactory.getEditSymbolPositionDescriptionResult();
     }
-    
+
+    @Override
+    public SymbolPositionDescriptionEdit getEdit() {
+        return AccountingEditFactory.getSymbolPositionDescriptionEdit();
+    }
+
+    @Override
+    public SymbolPositionDescription getEntity(EditSymbolPositionDescriptionResult result) {
+        SymbolPositionDescription symbolPositionDescription = null;
+        var symbolPositionName = spec.getSymbolPositionName();
+        var symbolPosition = symbolPositionLogic.getSymbolPositionByName(this, symbolPositionName);
+
+        if(!hasExecutionErrors()) {
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = languageLogic.getLanguageByName(this, languageIsoName);
+
+            if(!hasExecutionErrors()) {
+                symbolPositionDescription = accountingControl.getSymbolPositionDescription(symbolPosition, language, editModeToEntityPermission(editMode));
+
+                if(symbolPositionDescription == null) {
+                    addExecutionError(ExecutionErrors.UnknownSymbolPositionDescription.name(), symbolPositionName, languageIsoName);
+                }
+            }
+        }
+
+        return symbolPositionDescription;
+    }
+
+    @Override
+    public SymbolPosition getLockEntity(SymbolPositionDescription symbolPositionDescription) {
+        return symbolPositionDescription.getSymbolPosition();
+    }
+
+    @Override
+    public void fillInResult(EditSymbolPositionDescriptionResult result, SymbolPositionDescription symbolPositionDescription) {
+        result.setSymbolPositionDescription(accountingControl.getSymbolPositionDescriptionTransfer(getUserVisit(), symbolPositionDescription));
+    }
+
+    @Override
+    public void doLock(SymbolPositionDescriptionEdit edit, SymbolPositionDescription symbolPositionDescription) {
+        edit.setDescription(symbolPositionDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(SymbolPositionDescription symbolPositionDescription) {
+        var symbolPositionDescriptionValue = accountingControl.getSymbolPositionDescriptionValue(symbolPositionDescription);
+
+        symbolPositionDescriptionValue.setDescription(edit.getDescription());
+
+        accountingControl.updateSymbolPositionDescriptionFromValue(symbolPositionDescriptionValue, getPartyPK());
+    }
+
 }
