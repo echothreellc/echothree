@@ -18,21 +18,21 @@ package com.echothree.control.user.period.server.command;
 
 import com.echothree.control.user.period.common.edit.PeriodEditFactory;
 import com.echothree.control.user.period.common.edit.PeriodKindEdit;
-import com.echothree.control.user.period.common.form.EditPeriodKindForm;
+import com.echothree.control.user.period.common.result.EditPeriodKindResult;
 import com.echothree.control.user.period.common.result.PeriodResultFactory;
 import com.echothree.control.user.period.common.spec.PeriodKindSpec;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.period.server.control.PeriodControl;
+import com.echothree.model.control.period.server.logic.PeriodKindLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.workflow.server.logic.WorkflowEntranceLogic;
+import com.echothree.model.data.period.server.entity.PeriodKind;
+import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -42,12 +42,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditPeriodKindCommand
-        extends BaseEditCommand<PeriodKindSpec, PeriodKindEdit> {
-    
+        extends BaseAbstractEditCommand<PeriodKindSpec, PeriodKindEdit, EditPeriodKindResult, PeriodKind, PeriodKind> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -55,11 +55,11 @@ public class EditPeriodKindCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.PeriodKind.name(), SecurityRoles.Edit.name())
                 ))
         ));
-        
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PeriodKindName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PeriodKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, false, null, null),
@@ -74,122 +74,105 @@ public class EditPeriodKindCommand
     PeriodControl periodControl;
 
     @Inject
-    WorkflowControl workflowControl;
+    PeriodKindLogic periodKindLogic;
 
-    
+    @Inject
+    WorkflowEntranceLogic workflowEntranceLogic;
+
     /** Creates a new instance of EditPeriodKindCommand */
     public EditPeriodKindCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = PeriodResultFactory.getEditPeriodKindResult();
-        
-        if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            var periodKindName = spec.getPeriodKindName();
-            var periodKind = periodControl.getPeriodKindByName(periodKindName);
-            
-            if(periodKind != null) {
-                if(editMode.equals(EditMode.LOCK)) {
-                    if(lockEntity(periodKind)) {
-                        var periodKindDescription = periodControl.getPeriodKindDescription(periodKind, getPreferredLanguage());
-                        var edit = PeriodEditFactory.getPeriodKindEdit();
-                        var periodKindDetail = periodKind.getLastDetail();
-                        var workflowEntrance = periodKindDetail.getWorkflowEntrance();
-                        var workflow = workflowEntrance == null? null: workflowEntrance.getLastDetail().getWorkflow();
-
-                        result.setPeriodKind(periodControl.getPeriodKindTransfer(getUserVisit(), periodKind));
-
-                        result.setEdit(edit);
-                        edit.setPeriodKindName(periodKindDetail.getPeriodKindName());
-                        edit.setWorkflowName(workflow == null? null: workflow.getLastDetail().getWorkflowName());
-                        edit.setWorkflowEntranceName(workflowEntrance == null? null: workflowEntrance.getLastDetail().getWorkflowEntranceName());
-                        edit.setIsDefault(periodKindDetail.getIsDefault().toString());
-                        edit.setSortOrder(periodKindDetail.getSortOrder().toString());
-
-                        if(periodKindDescription != null) {
-                            edit.setDescription(periodKindDescription.getDescription());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                    }
-
-                    result.setEntityLock(getEntityLockTransfer(periodKind));
-                } else { // EditMode.ABANDON
-                    unlockEntity(periodKind);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownPeriodKindName.name(), periodKindName);
-            }
-        } else if(editMode.equals(EditMode.UPDATE)) {
-            var periodKindName = spec.getPeriodKindName();
-            var periodKind = periodControl.getPeriodKindByNameForUpdate(periodKindName);
-
-            if(periodKind != null) {
-                periodKindName = edit.getPeriodKindName();
-                var duplicatePeriodKind = periodControl.getPeriodKindByName(periodKindName);
-
-                if(duplicatePeriodKind == null || periodKind.equals(duplicatePeriodKind)) {
-                    var workflowName = edit.getWorkflowName();
-                    var workflowEntranceName = edit.getWorkflowEntranceName();
-                    var parameterCount = (workflowName == null ? 0 : 1) + (workflowEntranceName == null ? 0 : 1);
-
-                    if(parameterCount == 0 || parameterCount == 2) {
-                        var workflow = workflowName == null ? null : workflowControl.getWorkflowByName(workflowName);
-
-                        if(workflowName == null || workflow != null) {
-                            var workflowEntrance = workflowEntranceName == null? null: workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
-
-                            if(workflowEntranceName == null || workflowEntrance != null) {
-                                if(lockEntityForUpdate(periodKind)) {
-                                    try {
-                                        var partyPK = getPartyPK();
-                                        var periodKindDetailValue = periodControl.getPeriodKindDetailValueForUpdate(periodKind);
-                                        var periodKindDescription = periodControl.getPeriodKindDescriptionForUpdate(periodKind, getPreferredLanguage());
-                                        var description = edit.getDescription();
-
-                                        periodKindDetailValue.setPeriodKindName(edit.getPeriodKindName());
-                                        periodKindDetailValue.setWorkflowEntrancePK(workflowEntrance == null? null: workflowEntrance.getPrimaryKey());
-                                        periodKindDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
-                                        periodKindDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
-
-                                        periodControl.updatePeriodKindFromValue(periodKindDetailValue, partyPK);
-
-                                        if(periodKindDescription == null && description != null) {
-                                            periodControl.createPeriodKindDescription(periodKind, getPreferredLanguage(), description, partyPK);
-                                        } else if(periodKindDescription != null && description == null) {
-                                            periodControl.deletePeriodKindDescription(periodKindDescription, partyPK);
-                                        } else if(periodKindDescription != null && description != null) {
-                                            var periodKindDescriptionValue = periodControl.getPeriodKindDescriptionValue(periodKindDescription);
-
-                                            periodKindDescriptionValue.setDescription(description);
-                                            periodControl.updatePeriodKindDescriptionFromValue(periodKindDescriptionValue, partyPK);
-                                        }
-                                    } finally {
-                                        unlockEntity(periodKind);
-                                    }
-                                } else {
-                                    addExecutionError(ExecutionErrors.EntityLockStale.name());
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownWorkflowEntranceName.name(), workflowName, workflowEntranceName);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownWorkflowName.name(), workflowName);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.InvalidParameterCount.name());
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.DuplicatePeriodKindName.name(), periodKindName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownPeriodKindName.name(), periodKindName);
-            }
-        }
-        
-        return result;
+    public EditPeriodKindResult getResult() {
+        return PeriodResultFactory.getEditPeriodKindResult();
     }
-    
+
+    @Override
+    public PeriodKindEdit getEdit() {
+        return PeriodEditFactory.getPeriodKindEdit();
+    }
+
+    @Override
+    public PeriodKind getEntity(EditPeriodKindResult result) {
+        return periodKindLogic.getPeriodKindByName(this, spec.getPeriodKindName(), editModeToEntityPermission(editMode));
+    }
+
+    @Override
+    public PeriodKind getLockEntity(PeriodKind periodKind) {
+        return periodKind;
+    }
+
+    @Override
+    public void fillInResult(EditPeriodKindResult result, PeriodKind periodKind) {
+        result.setPeriodKind(periodControl.getPeriodKindTransfer(getUserVisit(), periodKind));
+    }
+
+    private WorkflowEntrance workflowEntrance;
+
+    @Override
+    public void doLock(PeriodKindEdit edit, PeriodKind periodKind) {
+        var periodKindDescription = periodControl.getPeriodKindDescription(periodKind, getPreferredLanguage());
+        var periodKindDetail = periodKind.getLastDetail();
+        var workflowEntrance = periodKindDetail.getWorkflowEntrance();
+        var workflow = workflowEntrance == null? null: workflowEntrance.getLastDetail().getWorkflow();
+
+        edit.setPeriodKindName(periodKindDetail.getPeriodKindName());
+        edit.setWorkflowName(workflow == null? null: workflow.getLastDetail().getWorkflowName());
+        edit.setWorkflowEntranceName(workflowEntrance == null? null: workflowEntrance.getLastDetail().getWorkflowEntranceName());
+        edit.setIsDefault(periodKindDetail.getIsDefault().toString());
+        edit.setSortOrder(periodKindDetail.getSortOrder().toString());
+
+        if(periodKindDescription != null) {
+            edit.setDescription(periodKindDescription.getDescription());
+        }
+    }
+
+    @Override
+    public void canUpdate(PeriodKind periodKind) {
+        var periodKindName = edit.getPeriodKindName();
+        var duplicatePeriodKind = periodControl.getPeriodKindByName(periodKindName);
+
+        if(duplicatePeriodKind == null || periodKind.equals(duplicatePeriodKind)) {
+            var workflowName = edit.getWorkflowName();
+            var workflowEntranceName = edit.getWorkflowEntranceName();
+            var parameterCount = (workflowName == null ? 0 : 1) + (workflowEntranceName == null ? 0 : 1);
+
+            if(parameterCount == 0 || parameterCount == 2) {
+                workflowEntrance = parameterCount == 0? null: workflowEntranceLogic.getWorkflowEntranceByName(this, workflowName, workflowEntranceName);
+            } else {
+                addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+            }
+        } else {
+            addExecutionError(ExecutionErrors.DuplicatePeriodKindName.name(), periodKindName);
+        }
+    }
+
+    @Override
+    public void doUpdate(PeriodKind periodKind) {
+        var partyPK = getPartyPK();
+        var periodKindDetailValue = periodControl.getPeriodKindDetailValueForUpdate(periodKind);
+        var periodKindDescription = periodControl.getPeriodKindDescriptionForUpdate(periodKind, getPreferredLanguage());
+        var description = edit.getDescription();
+
+        periodKindDetailValue.setPeriodKindName(edit.getPeriodKindName());
+        periodKindDetailValue.setWorkflowEntrancePK(workflowEntrance == null? null: workflowEntrance.getPrimaryKey());
+        periodKindDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+        periodKindDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        periodControl.updatePeriodKindFromValue(periodKindDetailValue, partyPK);
+
+        if(periodKindDescription == null && description != null) {
+            periodControl.createPeriodKindDescription(periodKind, getPreferredLanguage(), description, partyPK);
+        } else if(periodKindDescription != null && description == null) {
+            periodControl.deletePeriodKindDescription(periodKindDescription, partyPK);
+        } else if(periodKindDescription != null && description != null) {
+            var periodKindDescriptionValue = periodControl.getPeriodKindDescriptionValue(periodKindDescription);
+
+            periodKindDescriptionValue.setDescription(description);
+            periodControl.updatePeriodKindDescriptionFromValue(periodKindDescriptionValue, partyPK);
+        }
+    }
+
 }
