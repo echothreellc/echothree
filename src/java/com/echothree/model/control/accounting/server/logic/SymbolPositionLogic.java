@@ -22,6 +22,7 @@ import com.echothree.model.data.accounting.server.entity.SymbolPosition;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
@@ -36,14 +37,19 @@ public class SymbolPositionLogic
         super();
     }
 
-    public SymbolPosition getSymbolPositionByName(final ExecutionErrorAccumulator eea, final String symbolPositionName) {
-        var symbolPosition = accountingControl.getSymbolPositionByName(symbolPositionName);
+    public SymbolPosition getSymbolPositionByName(final ExecutionErrorAccumulator eea, final String symbolPositionName,
+            final EntityPermission entityPermission) {
+        var symbolPosition = accountingControl.getSymbolPositionByName(symbolPositionName, entityPermission);
 
         if(symbolPosition == null) {
             handleExecutionError(UnknownSymbolPositionNameException.class, eea, ExecutionErrors.UnknownSymbolPositionName.name(), symbolPositionName);
         }
 
         return symbolPosition;
+    }
+
+    public SymbolPosition getSymbolPositionByName(final ExecutionErrorAccumulator eea, final String symbolPositionName) {
+        return getSymbolPositionByName(eea, symbolPositionName, EntityPermission.READ_ONLY);
     }
 
 }

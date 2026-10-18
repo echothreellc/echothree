@@ -5251,7 +5251,7 @@ public class AccountingControl
                 .orElse(0L);
     }
 
-    private SymbolPosition getSymbolPositionByName(String symbolPositionName, EntityPermission entityPermission) {
+    public SymbolPosition getSymbolPositionByName(String symbolPositionName, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(SymbolPositions.fields())
                 .from(SymbolPositions)
