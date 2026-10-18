@@ -23,7 +23,7 @@ import com.echothree.control.user.period.common.result.PeriodResultFactory;
 import com.echothree.control.user.period.common.spec.PeriodTypeSpec;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.period.server.control.PeriodControl;
-import com.echothree.model.control.period.server.logic.PeriodKindLogic;
+import com.echothree.model.control.period.server.logic.PeriodTypeLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.workflow.server.logic.WorkflowEntranceLogic;
@@ -76,7 +76,7 @@ public class EditPeriodTypeCommand
     PeriodControl periodControl;
 
     @Inject
-    PeriodKindLogic periodKindLogic;
+    PeriodTypeLogic periodTypeLogic;
 
     @Inject
     WorkflowEntranceLogic workflowEntranceLogic;
@@ -98,21 +98,7 @@ public class EditPeriodTypeCommand
 
     @Override
     public PeriodType getEntity(EditPeriodTypeResult result) {
-        PeriodType periodType = null;
-        var periodKindName = spec.getPeriodKindName();
-        var periodKind = periodKindLogic.getPeriodKindByName(this, periodKindName);
-
-        if(!hasExecutionErrors()) {
-            var periodTypeName = spec.getPeriodTypeName();
-
-            periodType = periodControl.getPeriodTypeByName(periodKind, periodTypeName, editModeToEntityPermission(editMode));
-
-            if(periodType == null) {
-                addExecutionError(ExecutionErrors.UnknownPeriodTypeName.name(), periodKindName, periodTypeName);
-            }
-        }
-
-        return periodType;
+        return periodTypeLogic.getPeriodTypeBySpec(this, spec, editModeToEntityPermission(editMode));
     }
 
     @Override

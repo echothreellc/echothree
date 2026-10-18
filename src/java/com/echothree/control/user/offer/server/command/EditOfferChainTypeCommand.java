@@ -22,16 +22,14 @@ import com.echothree.control.user.offer.common.result.EditOfferChainTypeResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.control.user.offer.common.spec.OfferChainTypeSpec;
 import com.echothree.model.control.chain.server.logic.ChainLogic;
-import com.echothree.model.control.chain.server.logic.ChainTypeLogic;
 import com.echothree.model.control.offer.server.control.OfferControl;
-import com.echothree.model.control.offer.server.logic.OfferLogic;
+import com.echothree.model.control.offer.server.logic.OfferChainTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferChainType;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
@@ -76,10 +74,7 @@ public class EditOfferChainTypeCommand
     ChainLogic chainLogic;
 
     @Inject
-    ChainTypeLogic chainTypeLogic;
-
-    @Inject
-    OfferLogic offerLogic;
+    OfferChainTypeLogic offerChainTypeLogic;
 
     /** Creates a new instance of EditOfferChainTypeCommand */
     public EditOfferChainTypeCommand() {
@@ -98,25 +93,7 @@ public class EditOfferChainTypeCommand
 
     @Override
     public OfferChainType getEntity(EditOfferChainTypeResult result) {
-        OfferChainType offerChainType = null;
-        var offerName = spec.getOfferName();
-        var offer = offerLogic.getOfferByName(this, offerName);
-
-        if(!hasExecutionErrors()) {
-            var chainKindName = spec.getChainKindName();
-            var chainTypeName = spec.getChainTypeName();
-            var chainType = chainTypeLogic.getChainTypeByName(this, chainKindName, chainTypeName);
-
-            if(!hasExecutionErrors()) {
-                offerChainType = offerControl.getOfferChainType(offer, chainType, editModeToEntityPermission(editMode));
-
-                if(offerChainType == null) {
-                    addExecutionError(ExecutionErrors.UnknownOfferChainType.name(), offerName, chainKindName, chainTypeName);
-                }
-            }
-        }
-
-        return offerChainType;
+        return offerChainTypeLogic.getOfferChainTypeBySpec(this, spec, editModeToEntityPermission(editMode));
     }
 
     @Override

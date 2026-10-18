@@ -16,9 +16,13 @@
 
 package com.echothree.model.control.accounting.server.logic;
 
+import com.echothree.control.user.accounting.common.spec.SymbolPositionDescriptionSpec;
+import com.echothree.model.control.accounting.common.exception.UnknownSymbolPositionDescriptionException;
 import com.echothree.model.control.accounting.common.exception.UnknownSymbolPositionNameException;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.data.accounting.server.entity.SymbolPosition;
+import com.echothree.model.data.accounting.server.entity.SymbolPositionDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -32,6 +36,9 @@ public class SymbolPositionLogic
 
     @Inject
     AccountingControl accountingControl;
+
+    @Inject
+    LanguageLogic languageLogic;
 
     protected SymbolPositionLogic() {
         super();
@@ -50,6 +57,28 @@ public class SymbolPositionLogic
 
     public SymbolPosition getSymbolPositionByName(final ExecutionErrorAccumulator eea, final String symbolPositionName) {
         return getSymbolPositionByName(eea, symbolPositionName, EntityPermission.READ_ONLY);
+    }
+
+    public SymbolPositionDescription getSymbolPositionDescriptionBySpec(final ExecutionErrorAccumulator eea,
+            final SymbolPositionDescriptionSpec spec, final EntityPermission entityPermission) {
+        SymbolPositionDescription symbolPositionDescription = null;
+        var symbolPositionName = spec.getSymbolPositionName();
+        var symbolPosition = getSymbolPositionByName(eea, symbolPositionName);
+
+        if(!hasExecutionErrors(eea)) {
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = languageLogic.getLanguageByName(eea, languageIsoName);
+
+            if(!hasExecutionErrors(eea)) {
+                symbolPositionDescription = accountingControl.getSymbolPositionDescription(symbolPosition, language, entityPermission);
+
+                if(symbolPositionDescription == null) {
+                    handleExecutionError(UnknownSymbolPositionDescriptionException.class, eea, ExecutionErrors.UnknownSymbolPositionDescription.name(), symbolPositionName, languageIsoName);
+                }
+            }
+        }
+
+        return symbolPositionDescription;
     }
 
 }

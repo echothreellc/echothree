@@ -24,12 +24,10 @@ import com.echothree.control.user.employee.common.spec.EmployeeTypeDescriptionSp
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.employee.server.logic.EmployeeTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.employee.server.entity.EmployeeType;
 import com.echothree.model.data.employee.server.entity.EmployeeTypeDescription;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
@@ -72,9 +70,6 @@ public class EditEmployeeTypeDescriptionCommand
     @Inject
     EmployeeTypeLogic employeeTypeLogic;
 
-    @Inject
-    LanguageLogic languageLogic;
-
     /** Creates a new instance of EditEmployeeTypeDescriptionCommand */
     public EditEmployeeTypeDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -92,24 +87,7 @@ public class EditEmployeeTypeDescriptionCommand
 
     @Override
     public EmployeeTypeDescription getEntity(EditEmployeeTypeDescriptionResult result) {
-        EmployeeTypeDescription employeeTypeDescription = null;
-        var employeeTypeName = spec.getEmployeeTypeName();
-        var employeeType = employeeTypeLogic.getEmployeeTypeByName(this, employeeTypeName);
-
-        if(!hasExecutionErrors()) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = languageLogic.getLanguageByName(this, languageIsoName);
-
-            if(!hasExecutionErrors()) {
-                employeeTypeDescription = employeeControl.getEmployeeTypeDescription(employeeType, language, editModeToEntityPermission(editMode));
-
-                if(employeeTypeDescription == null) {
-                    addExecutionError(ExecutionErrors.UnknownEmployeeTypeDescription.name(), employeeTypeName, languageIsoName);
-                }
-            }
-        }
-
-        return employeeTypeDescription;
+        return employeeTypeLogic.getEmployeeTypeDescriptionBySpec(this, spec, editModeToEntityPermission(editMode));
     }
 
     @Override

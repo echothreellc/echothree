@@ -16,9 +16,11 @@
 
 package com.echothree.model.control.accounting.server.logic;
 
+import com.echothree.control.user.accounting.common.spec.ItemAccountingCategoryDescriptionSpec;
 import com.echothree.control.user.accounting.common.spec.ItemAccountingCategoryUniversalSpec;
 import com.echothree.model.control.accounting.common.exception.DuplicateItemAccountingCategoryNameException;
 import com.echothree.model.control.accounting.common.exception.UnknownDefaultItemAccountingCategoryException;
+import com.echothree.model.control.accounting.common.exception.UnknownItemAccountingCategoryDescriptionException;
 import com.echothree.model.control.accounting.common.exception.UnknownItemAccountingCategoryNameException;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.core.common.ComponentVendors;
@@ -26,8 +28,10 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
+import com.echothree.model.data.accounting.server.entity.ItemAccountingCategoryDescription;
 import com.echothree.model.data.accounting.server.value.ItemAccountingCategoryDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -50,6 +54,9 @@ public class ItemAccountingCategoryLogic
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
 
     protected ItemAccountingCategoryLogic() {
         super();
@@ -141,6 +148,29 @@ public class ItemAccountingCategoryLogic
     public ItemAccountingCategory getItemAccountingCategoryByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
             final ItemAccountingCategoryUniversalSpec universalSpec, boolean allowDefault) {
         return getItemAccountingCategoryByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
+    }
+
+    public ItemAccountingCategoryDescription getItemAccountingCategoryDescriptionBySpec(final ExecutionErrorAccumulator eea,
+            final ItemAccountingCategoryDescriptionSpec spec, final EntityPermission entityPermission) {
+        ItemAccountingCategoryDescription itemAccountingCategoryDescription = null;
+        var itemAccountingCategoryName = spec.getItemAccountingCategoryName();
+        var itemAccountingCategory = getItemAccountingCategoryByName(eea, itemAccountingCategoryName);
+
+        if(!hasExecutionErrors(eea)) {
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = languageLogic.getLanguageByName(eea, languageIsoName);
+
+            if(!hasExecutionErrors(eea)) {
+                itemAccountingCategoryDescription = accountingControl.getItemAccountingCategoryDescription(itemAccountingCategory, language,
+                        entityPermission);
+
+                if(itemAccountingCategoryDescription == null) {
+                    handleExecutionError(UnknownItemAccountingCategoryDescriptionException.class, eea, ExecutionErrors.UnknownItemAccountingCategoryDescription.name(), itemAccountingCategoryName, languageIsoName);
+                }
+            }
+        }
+
+        return itemAccountingCategoryDescription;
     }
 
     public void updateItemAccountingCategoryFromValue(ItemAccountingCategoryDetailValue itemAccountingCategoryDetailValue, BasePK updatedBy) {

@@ -16,19 +16,23 @@
 
 package com.echothree.model.control.accounting.server.logic;
 
+import com.echothree.control.user.accounting.common.spec.GlAccountDescriptionSpec;
 import com.echothree.control.user.accounting.common.spec.GlAccountUniversalSpec;
 import com.echothree.model.control.accounting.common.exception.DuplicateGlAccountNameException;
 import com.echothree.model.control.accounting.common.exception.UnknownDefaultGlAccountException;
+import com.echothree.model.control.accounting.common.exception.UnknownGlAccountDescriptionException;
 import com.echothree.model.control.accounting.common.exception.UnknownGlAccountNameException;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.accounting.server.entity.GlAccountCategory;
 import com.echothree.model.data.accounting.server.entity.GlAccountClass;
+import com.echothree.model.data.accounting.server.entity.GlAccountDescription;
 import com.echothree.model.data.accounting.server.entity.GlAccountType;
 import com.echothree.model.data.accounting.server.entity.GlResourceType;
 import com.echothree.model.data.accounting.server.value.GlAccountDetailValue;
@@ -53,6 +57,9 @@ public class GlAccountLogic
 
     @Inject
     GlAccountCategoryLogic glAccountCategoryLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
 
     protected GlAccountLogic() {
         super();
@@ -175,6 +182,28 @@ public class GlAccountLogic
         }
 
         return glAccount;
+    }
+
+    public GlAccountDescription getGlAccountDescriptionBySpec(final ExecutionErrorAccumulator eea,
+            final GlAccountDescriptionSpec spec, final EntityPermission entityPermission) {
+        GlAccountDescription glAccountDescription = null;
+        var glAccountName = spec.getGlAccountName();
+        var glAccount = getGlAccountByName(eea, glAccountName);
+
+        if(!hasExecutionErrors(eea)) {
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = languageLogic.getLanguageByName(eea, languageIsoName);
+
+            if(!hasExecutionErrors(eea)) {
+                glAccountDescription = accountingControl.getGlAccountDescription(glAccount, language, entityPermission);
+
+                if(glAccountDescription == null) {
+                    handleExecutionError(UnknownGlAccountDescriptionException.class, eea, ExecutionErrors.UnknownGlAccountDescription.name(), glAccountName, languageIsoName);
+                }
+            }
+        }
+
+        return glAccountDescription;
     }
 
     public void updateGlAccountFromValue(GlAccountDetailValue glAccountDetailValue, BasePK updatedBy) {

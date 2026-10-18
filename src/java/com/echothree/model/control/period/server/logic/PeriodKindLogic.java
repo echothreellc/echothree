@@ -16,17 +16,21 @@
 
 package com.echothree.model.control.period.server.logic;
 
+import com.echothree.control.user.period.common.spec.PeriodKindDescriptionSpec;
 import com.echothree.control.user.period.common.spec.PeriodKindUniversalSpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.period.common.exception.DuplicatePeriodKindNameException;
 import com.echothree.model.control.period.common.exception.UnknownDefaultPeriodKindException;
+import com.echothree.model.control.period.common.exception.UnknownPeriodKindDescriptionException;
 import com.echothree.model.control.period.common.exception.UnknownPeriodKindNameException;
 import com.echothree.model.control.period.server.control.PeriodControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.period.server.entity.PeriodKind;
+import com.echothree.model.data.period.server.entity.PeriodKindDescription;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -45,6 +49,9 @@ public class PeriodKindLogic
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
 
     protected PeriodKindLogic() {
         super();
@@ -132,6 +139,28 @@ public class PeriodKindLogic
     public PeriodKind getPeriodKindByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
             final PeriodKindUniversalSpec universalSpec, boolean allowDefault) {
         return getPeriodKindByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
+    }
+
+    public PeriodKindDescription getPeriodKindDescriptionBySpec(final ExecutionErrorAccumulator eea,
+            final PeriodKindDescriptionSpec spec, final EntityPermission entityPermission) {
+        PeriodKindDescription periodKindDescription = null;
+        var periodKindName = spec.getPeriodKindName();
+        var periodKind = getPeriodKindByName(eea, periodKindName);
+
+        if(!hasExecutionErrors(eea)) {
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = languageLogic.getLanguageByName(eea, languageIsoName);
+
+            if(!hasExecutionErrors(eea)) {
+                periodKindDescription = periodControl.getPeriodKindDescription(periodKind, language, entityPermission);
+
+                if(periodKindDescription == null) {
+                    handleExecutionError(UnknownPeriodKindDescriptionException.class, eea, ExecutionErrors.UnknownPeriodKindDescription.name(), periodKindName, languageIsoName);
+                }
+            }
+        }
+
+        return periodKindDescription;
     }
 
     public void deletePeriodKind(final ExecutionErrorAccumulator eea, final PeriodKind periodKind,

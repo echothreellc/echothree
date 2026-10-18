@@ -16,15 +16,19 @@
 
 package com.echothree.model.control.offer.server.logic;
 
+import com.echothree.control.user.offer.common.spec.OfferNameElementDescriptionSpec;
 import com.echothree.control.user.offer.common.spec.OfferNameElementUniversalSpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.offer.common.exception.DuplicateOfferNameElementNameException;
+import com.echothree.model.control.offer.common.exception.UnknownOfferNameElementDescriptionException;
 import com.echothree.model.control.offer.common.exception.UnknownOfferNameElementNameException;
 import com.echothree.model.control.offer.server.control.OfferNameElementControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.data.offer.server.entity.OfferNameElement;
+import com.echothree.model.data.offer.server.entity.OfferNameElementDescription;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -43,6 +47,9 @@ public class OfferNameElementLogic
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
 
     protected OfferNameElementLogic() {
         super();
@@ -119,6 +126,29 @@ public class OfferNameElementLogic
     public OfferNameElement getOfferNameElementByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
             final OfferNameElementUniversalSpec universalSpec) {
         return getOfferNameElementByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
+    }
+
+    public OfferNameElementDescription getOfferNameElementDescriptionBySpec(final ExecutionErrorAccumulator eea,
+            final OfferNameElementDescriptionSpec spec, final EntityPermission entityPermission) {
+        OfferNameElementDescription offerNameElementDescription = null;
+        var offerNameElementName = spec.getOfferNameElementName();
+        var offerNameElement = getOfferNameElementByName(eea, offerNameElementName);
+
+        if(!hasExecutionErrors(eea)) {
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = languageLogic.getLanguageByName(eea, languageIsoName);
+
+            if(!hasExecutionErrors(eea)) {
+                offerNameElementDescription = offerNameElementControl.getOfferNameElementDescription(offerNameElement, language,
+                        entityPermission);
+
+                if(offerNameElementDescription == null) {
+                    handleExecutionError(UnknownOfferNameElementDescriptionException.class, eea, ExecutionErrors.UnknownOfferNameElementDescription.name(), offerNameElementName, languageIsoName);
+                }
+            }
+        }
+
+        return offerNameElementDescription;
     }
 
     public void deleteOfferNameElement(final ExecutionErrorAccumulator eea, final OfferNameElement offerNameElement,

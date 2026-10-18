@@ -24,12 +24,10 @@ import com.echothree.control.user.offer.common.spec.OfferDescriptionSpec;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.logic.OfferLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferDescription;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
@@ -70,9 +68,6 @@ public class EditOfferDescriptionCommand
     OfferControl offerControl;
 
     @Inject
-    LanguageLogic languageLogic;
-
-    @Inject
     OfferLogic offerLogic;
 
     /** Creates a new instance of EditOfferDescriptionCommand */
@@ -92,24 +87,7 @@ public class EditOfferDescriptionCommand
 
     @Override
     public OfferDescription getEntity(EditOfferDescriptionResult result) {
-        OfferDescription offerDescription = null;
-        var offerName = spec.getOfferName();
-        var offer = offerLogic.getOfferByName(this, offerName);
-
-        if(!hasExecutionErrors()) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = languageLogic.getLanguageByName(this, languageIsoName);
-
-            if(!hasExecutionErrors()) {
-                offerDescription = offerControl.getOfferDescription(offer, language, editModeToEntityPermission(editMode));
-
-                if(offerDescription == null) {
-                    addExecutionError(ExecutionErrors.UnknownOfferDescription.name(), offerName, languageIsoName);
-                }
-            }
-        }
-
-        return offerDescription;
+        return offerLogic.getOfferDescriptionBySpec(this, spec, editModeToEntityPermission(editMode));
     }
 
     @Override

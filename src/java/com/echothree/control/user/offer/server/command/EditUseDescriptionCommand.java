@@ -24,12 +24,10 @@ import com.echothree.control.user.offer.common.spec.UseDescriptionSpec;
 import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.offer.server.logic.UseLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.model.data.offer.server.entity.UseDescription;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
@@ -70,9 +68,6 @@ public class EditUseDescriptionCommand
     UseControl useControl;
 
     @Inject
-    LanguageLogic languageLogic;
-
-    @Inject
     UseLogic useLogic;
 
     /** Creates a new instance of EditUseDescriptionCommand */
@@ -92,24 +87,7 @@ public class EditUseDescriptionCommand
 
     @Override
     public UseDescription getEntity(EditUseDescriptionResult result) {
-        UseDescription useDescription = null;
-        var useName = spec.getUseName();
-        var use = useLogic.getUseByName(this, useName);
-
-        if(!hasExecutionErrors()) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = languageLogic.getLanguageByName(this, languageIsoName);
-
-            if(!hasExecutionErrors()) {
-                useDescription = useControl.getUseDescription(use, language, editModeToEntityPermission(editMode));
-
-                if(useDescription == null) {
-                    addExecutionError(ExecutionErrors.UnknownUseDescription.name(), useName, languageIsoName);
-                }
-            }
-        }
-
-        return useDescription;
+        return useLogic.getUseDescriptionBySpec(this, spec, editModeToEntityPermission(editMode));
     }
 
     @Override

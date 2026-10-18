@@ -24,12 +24,10 @@ import com.echothree.control.user.accounting.common.spec.GlResourceTypeDescripti
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.accounting.server.logic.GlResourceTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.accounting.server.entity.GlResourceType;
 import com.echothree.model.data.accounting.server.entity.GlResourceTypeDescription;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
@@ -72,9 +70,6 @@ public class EditGlResourceTypeDescriptionCommand
     @Inject
     GlResourceTypeLogic glResourceTypeLogic;
 
-    @Inject
-    LanguageLogic languageLogic;
-
     /** Creates a new instance of EditGlResourceTypeDescriptionCommand */
     public EditGlResourceTypeDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -92,24 +87,7 @@ public class EditGlResourceTypeDescriptionCommand
 
     @Override
     public GlResourceTypeDescription getEntity(EditGlResourceTypeDescriptionResult result) {
-        GlResourceTypeDescription glResourceTypeDescription = null;
-        var glResourceTypeName = spec.getGlResourceTypeName();
-        var glResourceType = glResourceTypeLogic.getGlResourceTypeByName(this, glResourceTypeName);
-
-        if(!hasExecutionErrors()) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = languageLogic.getLanguageByName(this, languageIsoName);
-
-            if(!hasExecutionErrors()) {
-                glResourceTypeDescription = accountingControl.getGlResourceTypeDescription(glResourceType, language, editModeToEntityPermission(editMode));
-
-                if(glResourceTypeDescription == null) {
-                    addExecutionError(ExecutionErrors.UnknownGlResourceTypeDescription.name(), glResourceTypeName, languageIsoName);
-                }
-            }
-        }
-
-        return glResourceTypeDescription;
+        return glResourceTypeLogic.getGlResourceTypeDescriptionBySpec(this, spec, editModeToEntityPermission(editMode));
     }
 
     @Override

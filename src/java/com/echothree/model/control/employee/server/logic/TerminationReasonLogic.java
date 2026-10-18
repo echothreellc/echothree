@@ -16,9 +16,13 @@
 
 package com.echothree.model.control.employee.server.logic;
 
+import com.echothree.control.user.employee.common.spec.TerminationReasonDescriptionSpec;
+import com.echothree.model.control.employee.common.exception.UnknownTerminationReasonDescriptionException;
 import com.echothree.model.control.employee.common.exception.UnknownTerminationReasonNameException;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.data.employee.server.entity.TerminationReason;
+import com.echothree.model.data.employee.server.entity.TerminationReasonDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -32,6 +36,9 @@ public class TerminationReasonLogic
 
     @Inject
     EmployeeControl employeeControl;
+
+    @Inject
+    LanguageLogic languageLogic;
 
     protected TerminationReasonLogic() {
         super();
@@ -54,6 +61,29 @@ public class TerminationReasonLogic
 
     public TerminationReason getTerminationReasonByNameForUpdate(final ExecutionErrorAccumulator eea, final String terminationReasonName) {
         return getTerminationReasonByName(eea, terminationReasonName, EntityPermission.READ_WRITE);
+    }
+
+    public TerminationReasonDescription getTerminationReasonDescriptionBySpec(final ExecutionErrorAccumulator eea,
+            final TerminationReasonDescriptionSpec spec, final EntityPermission entityPermission) {
+        TerminationReasonDescription terminationReasonDescription = null;
+        var terminationReasonName = spec.getTerminationReasonName();
+        var terminationReason = getTerminationReasonByName(eea, terminationReasonName);
+
+        if(!hasExecutionErrors(eea)) {
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = languageLogic.getLanguageByName(eea, languageIsoName);
+
+            if(!hasExecutionErrors(eea)) {
+                terminationReasonDescription = employeeControl.getTerminationReasonDescription(terminationReason, language,
+                        entityPermission);
+
+                if(terminationReasonDescription == null) {
+                    handleExecutionError(UnknownTerminationReasonDescriptionException.class, eea, ExecutionErrors.UnknownTerminationReasonDescription.name(), terminationReasonName, languageIsoName);
+                }
+            }
+        }
+
+        return terminationReasonDescription;
     }
 
 }

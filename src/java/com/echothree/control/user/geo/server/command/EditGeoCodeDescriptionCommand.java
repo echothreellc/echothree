@@ -24,12 +24,10 @@ import com.echothree.control.user.geo.common.spec.GeoCodeDescriptionSpec;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.geo.server.logic.GeoCodeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeDescription;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
@@ -72,9 +70,6 @@ public class EditGeoCodeDescriptionCommand
     @Inject
     GeoCodeLogic geoCodeLogic;
 
-    @Inject
-    LanguageLogic languageLogic;
-
     /** Creates a new instance of EditGeoCodeDescriptionCommand */
     public EditGeoCodeDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -92,24 +87,7 @@ public class EditGeoCodeDescriptionCommand
 
     @Override
     public GeoCodeDescription getEntity(EditGeoCodeDescriptionResult result) {
-        GeoCodeDescription geoCodeDescription = null;
-        var geoCodeName = spec.getGeoCodeName();
-        var geoCode = geoCodeLogic.getGeoCodeByName(this, geoCodeName);
-
-        if(!hasExecutionErrors()) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = languageLogic.getLanguageByName(this, languageIsoName);
-
-            if(!hasExecutionErrors()) {
-                geoCodeDescription = geoControl.getGeoCodeDescription(geoCode, language, editModeToEntityPermission(editMode));
-
-                if(geoCodeDescription == null) {
-                    addExecutionError(ExecutionErrors.UnknownGeoCodeDescription.name(), geoCodeName, languageIsoName);
-                }
-            }
-        }
-
-        return geoCodeDescription;
+        return geoCodeLogic.getGeoCodeDescriptionBySpec(this, spec, editModeToEntityPermission(editMode));
     }
 
     @Override

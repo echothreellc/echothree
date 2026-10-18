@@ -16,16 +16,20 @@
 
 package com.echothree.model.control.accounting.server.logic;
 
+import com.echothree.control.user.accounting.common.spec.TransactionGlAccountCategoryDescriptionSpec;
 import com.echothree.control.user.accounting.common.spec.TransactionGlAccountCategoryUniversalSpec;
 import com.echothree.model.control.accounting.common.exception.DuplicateTransactionGlAccountCategoryNameException;
+import com.echothree.model.control.accounting.common.exception.UnknownTransactionGlAccountCategoryDescriptionException;
 import com.echothree.model.control.accounting.common.exception.UnknownTransactionGlAccountCategoryNameException;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.data.accounting.server.entity.GlAccountCategory;
 import com.echothree.model.data.accounting.server.entity.TransactionGlAccountCategory;
+import com.echothree.model.data.accounting.server.entity.TransactionGlAccountCategoryDescription;
 import com.echothree.model.data.accounting.server.entity.TransactionType;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -46,6 +50,9 @@ public class TransactionGlAccountCategoryLogic
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
 
     @Inject
     TransactionTypeLogic transactionTypeLogic;
@@ -168,6 +175,32 @@ public class TransactionGlAccountCategoryLogic
     public TransactionGlAccountCategory getTransactionGlAccountCategoryByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
             final TransactionGlAccountCategoryUniversalSpec universalSpec) {
         return getTransactionGlAccountCategoryByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
+    }
+
+    public TransactionGlAccountCategoryDescription getTransactionGlAccountCategoryDescriptionBySpec(final ExecutionErrorAccumulator eea,
+            final TransactionGlAccountCategoryDescriptionSpec spec, final EntityPermission entityPermission) {
+        TransactionGlAccountCategoryDescription transactionGlAccountCategoryDescription = null;
+        var transactionTypeName = spec.getTransactionTypeName();
+        var transactionGlAccountCategoryName = spec.getTransactionGlAccountCategoryName();
+        var transactionGlAccountCategory = getTransactionGlAccountCategoryByName(eea,
+                transactionTypeName, transactionGlAccountCategoryName);
+
+        if(!hasExecutionErrors(eea)) {
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = languageLogic.getLanguageByName(eea, languageIsoName);
+
+            if(!hasExecutionErrors(eea)) {
+                transactionGlAccountCategoryDescription = accountingControl.getTransactionGlAccountCategoryDescription(transactionGlAccountCategory,
+                        language, entityPermission);
+
+                if(transactionGlAccountCategoryDescription == null) {
+                    handleExecutionError(UnknownTransactionGlAccountCategoryDescriptionException.class, eea, ExecutionErrors.UnknownTransactionGlAccountCategoryDescription.name(), transactionTypeName,
+                            transactionGlAccountCategoryName, languageIsoName);
+                }
+            }
+        }
+
+        return transactionGlAccountCategoryDescription;
     }
 
     public void deleteTransactionGlAccountCategory(final ExecutionErrorAccumulator eea, final TransactionGlAccountCategory transactionGlAccountCategory,

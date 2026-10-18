@@ -22,14 +22,12 @@ import com.echothree.control.user.period.common.result.EditPeriodKindDescription
 import com.echothree.control.user.period.common.result.PeriodResultFactory;
 import com.echothree.control.user.period.common.spec.PeriodKindDescriptionSpec;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.period.server.control.PeriodControl;
 import com.echothree.model.control.period.server.logic.PeriodKindLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.period.server.entity.PeriodKind;
 import com.echothree.model.data.period.server.entity.PeriodKindDescription;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
@@ -70,9 +68,6 @@ public class EditPeriodKindDescriptionCommand
     PeriodControl periodControl;
 
     @Inject
-    LanguageLogic languageLogic;
-
-    @Inject
     PeriodKindLogic periodKindLogic;
 
     /** Creates a new instance of EditPeriodKindDescriptionCommand */
@@ -92,24 +87,7 @@ public class EditPeriodKindDescriptionCommand
 
     @Override
     public PeriodKindDescription getEntity(EditPeriodKindDescriptionResult result) {
-        PeriodKindDescription periodKindDescription = null;
-        var periodKindName = spec.getPeriodKindName();
-        var periodKind = periodKindLogic.getPeriodKindByName(this, periodKindName);
-
-        if(!hasExecutionErrors()) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = languageLogic.getLanguageByName(this, languageIsoName);
-
-            if(!hasExecutionErrors()) {
-                periodKindDescription = periodControl.getPeriodKindDescription(periodKind, language, editModeToEntityPermission(editMode));
-
-                if(periodKindDescription == null) {
-                    addExecutionError(ExecutionErrors.UnknownPeriodKindDescription.name(), periodKindName, languageIsoName);
-                }
-            }
-        }
-
-        return periodKindDescription;
+        return periodKindLogic.getPeriodKindDescriptionBySpec(this, spec, editModeToEntityPermission(editMode));
     }
 
     @Override

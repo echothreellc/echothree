@@ -16,15 +16,19 @@
 
 package com.echothree.model.control.accounting.server.logic;
 
+import com.echothree.control.user.accounting.common.spec.TransactionEntityRoleTypeDescriptionSpec;
 import com.echothree.control.user.accounting.common.spec.TransactionEntityRoleTypeUniversalSpec;
 import com.echothree.model.control.accounting.common.exception.DuplicateTransactionEntityRoleTypeNameException;
+import com.echothree.model.control.accounting.common.exception.UnknownTransactionEntityRoleTypeDescriptionException;
 import com.echothree.model.control.accounting.common.exception.UnknownTransactionEntityRoleTypeNameException;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.data.accounting.server.entity.TransactionEntityRoleType;
+import com.echothree.model.data.accounting.server.entity.TransactionEntityRoleTypeDescription;
 import com.echothree.model.data.accounting.server.entity.TransactionType;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.party.server.entity.Language;
@@ -46,6 +50,9 @@ public class TransactionEntityRoleTypeLogic
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
 
     @Inject
     TransactionTypeLogic transactionTypeLogic;
@@ -168,6 +175,32 @@ public class TransactionEntityRoleTypeLogic
     public TransactionEntityRoleType getTransactionEntityRoleTypeByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
             final TransactionEntityRoleTypeUniversalSpec universalSpec) {
         return getTransactionEntityRoleTypeByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
+    }
+
+    public TransactionEntityRoleTypeDescription getTransactionEntityRoleTypeDescriptionBySpec(final ExecutionErrorAccumulator eea,
+            final TransactionEntityRoleTypeDescriptionSpec spec, final EntityPermission entityPermission) {
+        TransactionEntityRoleTypeDescription transactionEntityRoleTypeDescription = null;
+        var transactionTypeName = spec.getTransactionTypeName();
+        var transactionEntityRoleTypeName = spec.getTransactionEntityRoleTypeName();
+        var transactionEntityRoleType = getTransactionEntityRoleTypeByName(eea,
+                transactionTypeName, transactionEntityRoleTypeName);
+
+        if(!hasExecutionErrors(eea)) {
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = languageLogic.getLanguageByName(eea, languageIsoName);
+
+            if(!hasExecutionErrors(eea)) {
+                transactionEntityRoleTypeDescription = accountingControl.getTransactionEntityRoleTypeDescription(transactionEntityRoleType,
+                        language, entityPermission);
+
+                if(transactionEntityRoleTypeDescription == null) {
+                    handleExecutionError(UnknownTransactionEntityRoleTypeDescriptionException.class, eea, ExecutionErrors.UnknownTransactionEntityRoleTypeDescription.name(), transactionTypeName,
+                            transactionEntityRoleTypeName, languageIsoName);
+                }
+            }
+        }
+
+        return transactionEntityRoleTypeDescription;
     }
 
     public void deleteTransactionEntityRoleType(final ExecutionErrorAccumulator eea, final TransactionEntityRoleType transactionEntityRoleType,

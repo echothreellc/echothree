@@ -24,12 +24,10 @@ import com.echothree.control.user.employee.common.spec.TerminationReasonDescript
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.employee.server.logic.TerminationReasonLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.employee.server.entity.TerminationReason;
 import com.echothree.model.data.employee.server.entity.TerminationReasonDescription;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
@@ -70,9 +68,6 @@ public class EditTerminationReasonDescriptionCommand
     EmployeeControl employeeControl;
 
     @Inject
-    LanguageLogic languageLogic;
-
-    @Inject
     TerminationReasonLogic terminationReasonLogic;
 
     /** Creates a new instance of EditTerminationReasonDescriptionCommand */
@@ -92,25 +87,7 @@ public class EditTerminationReasonDescriptionCommand
 
     @Override
     public TerminationReasonDescription getEntity(EditTerminationReasonDescriptionResult result) {
-        TerminationReasonDescription terminationReasonDescription = null;
-        var terminationReasonName = spec.getTerminationReasonName();
-        var terminationReason = terminationReasonLogic.getTerminationReasonByName(this, terminationReasonName);
-
-        if(!hasExecutionErrors()) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = languageLogic.getLanguageByName(this, languageIsoName);
-
-            if(!hasExecutionErrors()) {
-                terminationReasonDescription = employeeControl.getTerminationReasonDescription(terminationReason, language,
-                        editModeToEntityPermission(editMode));
-
-                if(terminationReasonDescription == null) {
-                    addExecutionError(ExecutionErrors.UnknownTerminationReasonDescription.name(), terminationReasonName, languageIsoName);
-                }
-            }
-        }
-
-        return terminationReasonDescription;
+        return terminationReasonLogic.getTerminationReasonDescriptionBySpec(this, spec, editModeToEntityPermission(editMode));
     }
 
     @Override

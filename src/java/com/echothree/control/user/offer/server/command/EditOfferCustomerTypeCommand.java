@@ -21,15 +21,13 @@ import com.echothree.control.user.offer.common.edit.OfferEditFactory;
 import com.echothree.control.user.offer.common.result.EditOfferCustomerTypeResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.control.user.offer.common.spec.OfferCustomerTypeSpec;
-import com.echothree.model.control.customer.server.logic.CustomerTypeLogic;
 import com.echothree.model.control.offer.server.control.OfferControl;
-import com.echothree.model.control.offer.server.logic.OfferLogic;
+import com.echothree.model.control.offer.server.logic.OfferCustomerTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferCustomerType;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
@@ -71,10 +69,7 @@ public class EditOfferCustomerTypeCommand
     OfferControl offerControl;
 
     @Inject
-    CustomerTypeLogic customerTypeLogic;
-
-    @Inject
-    OfferLogic offerLogic;
+    OfferCustomerTypeLogic offerCustomerTypeLogic;
 
     /** Creates a new instance of EditOfferCustomerTypeCommand */
     public EditOfferCustomerTypeCommand() {
@@ -93,24 +88,7 @@ public class EditOfferCustomerTypeCommand
 
     @Override
     public OfferCustomerType getEntity(EditOfferCustomerTypeResult result) {
-        OfferCustomerType offerCustomerType = null;
-        var offerName = spec.getOfferName();
-        var offer = offerLogic.getOfferByName(this, offerName);
-
-        if(!hasExecutionErrors()) {
-            var customerTypeName = spec.getCustomerTypeName();
-            var customerType = customerTypeLogic.getCustomerTypeByName(this, customerTypeName);
-
-            if(!hasExecutionErrors()) {
-                offerCustomerType = offerControl.getOfferCustomerType(offer, customerType, editModeToEntityPermission(editMode));
-
-                if(offerCustomerType == null) {
-                    addExecutionError(ExecutionErrors.UnknownOfferCustomerType.name(), offerName, customerTypeName);
-                }
-            }
-        }
-
-        return offerCustomerType;
+        return offerCustomerTypeLogic.getOfferCustomerTypeBySpec(this, spec, editModeToEntityPermission(editMode));
     }
 
     @Override

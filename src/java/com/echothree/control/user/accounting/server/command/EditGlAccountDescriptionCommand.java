@@ -24,12 +24,10 @@ import com.echothree.control.user.accounting.common.spec.GlAccountDescriptionSpe
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.accounting.server.logic.GlAccountLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.accounting.server.entity.GlAccountDescription;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
@@ -72,9 +70,6 @@ public class EditGlAccountDescriptionCommand
     @Inject
     GlAccountLogic glAccountLogic;
 
-    @Inject
-    LanguageLogic languageLogic;
-
     /** Creates a new instance of EditGlAccountDescriptionCommand */
     public EditGlAccountDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -92,24 +87,7 @@ public class EditGlAccountDescriptionCommand
 
     @Override
     public GlAccountDescription getEntity(EditGlAccountDescriptionResult result) {
-        GlAccountDescription glAccountDescription = null;
-        var glAccountName = spec.getGlAccountName();
-        var glAccount = glAccountLogic.getGlAccountByName(this, glAccountName);
-
-        if(!hasExecutionErrors()) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = languageLogic.getLanguageByName(this, languageIsoName);
-
-            if(!hasExecutionErrors()) {
-                glAccountDescription = accountingControl.getGlAccountDescription(glAccount, language, editModeToEntityPermission(editMode));
-
-                if(glAccountDescription == null) {
-                    addExecutionError(ExecutionErrors.UnknownGlAccountDescription.name(), glAccountName, languageIsoName);
-                }
-            }
-        }
-
-        return glAccountDescription;
+        return glAccountLogic.getGlAccountDescriptionBySpec(this, spec, editModeToEntityPermission(editMode));
     }
 
     @Override
