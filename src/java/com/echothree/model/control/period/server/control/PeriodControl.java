@@ -644,7 +644,7 @@ public class PeriodControl
         return getDefaultPeriodTypeForUpdate(periodKind).getLastDetailForUpdate().getPeriodTypeDetailValue().clone();
     }
     
-    private PeriodType getPeriodTypeByName(PeriodKind periodKind, String periodTypeName, EntityPermission entityPermission) {
+    public PeriodType getPeriodTypeByName(PeriodKind periodKind, String periodTypeName, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PeriodTypes.fields())
                 .from(PeriodTypes)
