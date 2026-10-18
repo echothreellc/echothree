@@ -3229,7 +3229,7 @@ public class GeoControl
                 .orElse(0L);
     }
 
-    private GeoCodeTimeZone getGeoCodeTimeZone(GeoCode geoCode, TimeZone timeZone, EntityPermission entityPermission) {
+    public GeoCodeTimeZone getGeoCodeTimeZone(GeoCode geoCode, TimeZone timeZone, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(GeoCodeTimeZones.fields())
                 .from(GeoCodeTimeZones)

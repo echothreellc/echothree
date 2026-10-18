@@ -18,21 +18,21 @@ package com.echothree.control.user.geo.server.command;
 
 import com.echothree.control.user.geo.common.edit.GeoCodeTimeZoneEdit;
 import com.echothree.control.user.geo.common.edit.GeoEditFactory;
-import com.echothree.control.user.geo.common.form.EditGeoCodeTimeZoneForm;
+import com.echothree.control.user.geo.common.result.EditGeoCodeTimeZoneResult;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
 import com.echothree.control.user.geo.common.spec.GeoCodeTimeZoneSpec;
 import com.echothree.model.control.geo.server.control.GeoControl;
+import com.echothree.model.control.geo.server.logic.GeoCodeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.TimeZoneLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.geo.server.entity.GeoCode;
+import com.echothree.model.data.geo.server.entity.GeoCodeTimeZone;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -42,12 +42,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditGeoCodeTimeZoneCommand
-        extends BaseEditCommand<GeoCodeTimeZoneSpec, GeoCodeTimeZoneEdit> {
-    
+        extends BaseAbstractEditCommand<GeoCodeTimeZoneSpec, GeoCodeTimeZoneEdit, EditGeoCodeTimeZoneResult, GeoCodeTimeZone, GeoCode> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -55,12 +55,12 @@ public class EditGeoCodeTimeZoneCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.GeoCodeTimeZone.name(), SecurityRoles.Edit.name())
                 ))
         ));
-        
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GeoCodeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("JavaTimeZoneName", FieldType.TIME_ZONE_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
@@ -71,81 +71,72 @@ public class EditGeoCodeTimeZoneCommand
     GeoControl geoControl;
 
     @Inject
-    PartyControl partyControl;
+    GeoCodeLogic geoCodeLogic;
 
-    
+    @Inject
+    TimeZoneLogic timeZoneLogic;
+
     /** Creates a new instance of EditGeoCodeTimeZoneCommand */
     public EditGeoCodeTimeZoneCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = GeoResultFactory.getEditGeoCodeTimeZoneResult();
-        var geoCodeName = spec.getGeoCodeName();
-        var geoCode = geoControl.getGeoCodeByName(geoCodeName);
-        
-        if(geoCode != null) {
-            var javaTimeZoneName = spec.getJavaTimeZoneName();
-            var timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
-            
-            if(timeZone != null) {
-                if(editMode.equals(EditMode.LOCK)) {
-                    var geoCodeTimeZone = geoControl.getGeoCodeTimeZone(geoCode, timeZone);
-                    
-                    if(geoCodeTimeZone != null) {
-                        result.setGeoCodeTimeZone(geoControl.getGeoCodeTimeZoneTransfer(getUserVisit(), geoCodeTimeZone));
-                        
-                        if(lockEntity(geoCode)) {
-                            var edit = GeoEditFactory.getGeoCodeTimeZoneEdit();
-                            
-                            result.setEdit(edit);
-                            edit.setIsDefault(geoCodeTimeZone.getIsDefault().toString());
-                            edit.setSortOrder(geoCodeTimeZone.getSortOrder().toString());
-                            
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                        }
-                        
-                        result.setEntityLock(getEntityLockTransfer(geoCode));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownGeoCodeTimeZone.name(), geoCodeName, javaTimeZoneName);
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var geoCodeTimeZone = geoControl.getGeoCodeTimeZoneForUpdate(geoCode, timeZone);
-                    
-                    if(geoCodeTimeZone != null) {
-                        var geoCodeTimeZoneValue = geoControl.getGeoCodeTimeZoneValue(geoCodeTimeZone);
-                        
-                        if(lockEntityForUpdate(geoCode)) {
-                            try {
-                                geoCodeTimeZoneValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
-                                geoCodeTimeZoneValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
-                                
-                                geoControl.updateGeoCodeTimeZoneFromValue(geoCodeTimeZoneValue, getPartyPK());
-                            } finally {
-                                unlockEntity(geoCode);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownGeoCodeTimeZone.name(), geoCodeName, javaTimeZoneName);
-                    }
-                    
-                    if(hasExecutionErrors()) {
-                        result.setGeoCodeTimeZone(geoControl.getGeoCodeTimeZoneTransfer(getUserVisit(), geoCodeTimeZone));
-                        result.setEntityLock(getEntityLockTransfer(geoCode));
-                    }
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownJavaTimeZoneName.name(), javaTimeZoneName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownGeoCodeName.name(), geoCodeName);
-        }
-        
-        return result;
+    public EditGeoCodeTimeZoneResult getResult() {
+        return GeoResultFactory.getEditGeoCodeTimeZoneResult();
     }
-    
+
+    @Override
+    public GeoCodeTimeZoneEdit getEdit() {
+        return GeoEditFactory.getGeoCodeTimeZoneEdit();
+    }
+
+    @Override
+    public GeoCodeTimeZone getEntity(EditGeoCodeTimeZoneResult result) {
+        GeoCodeTimeZone geoCodeTimeZone = null;
+        var geoCodeName = spec.getGeoCodeName();
+        var geoCode = geoCodeLogic.getGeoCodeByName(this, geoCodeName);
+
+        if(!hasExecutionErrors()) {
+            var javaTimeZoneName = spec.getJavaTimeZoneName();
+            var timeZone = timeZoneLogic.getTimeZoneByName(this, javaTimeZoneName);
+
+            if(!hasExecutionErrors()) {
+                geoCodeTimeZone = geoControl.getGeoCodeTimeZone(geoCode, timeZone, editModeToEntityPermission(editMode));
+
+                if(geoCodeTimeZone == null) {
+                    addExecutionError(ExecutionErrors.UnknownGeoCodeTimeZone.name(), geoCodeName, javaTimeZoneName);
+                }
+            }
+        }
+
+        return geoCodeTimeZone;
+    }
+
+    @Override
+    public GeoCode getLockEntity(GeoCodeTimeZone geoCodeTimeZone) {
+        return geoCodeTimeZone.getGeoCode();
+    }
+
+    @Override
+    public void fillInResult(EditGeoCodeTimeZoneResult result, GeoCodeTimeZone geoCodeTimeZone) {
+        result.setGeoCodeTimeZone(geoControl.getGeoCodeTimeZoneTransfer(getUserVisit(), geoCodeTimeZone));
+    }
+
+    @Override
+    public void doLock(GeoCodeTimeZoneEdit edit, GeoCodeTimeZone geoCodeTimeZone) {
+        edit.setIsDefault(geoCodeTimeZone.getIsDefault().toString());
+        edit.setSortOrder(geoCodeTimeZone.getSortOrder().toString());
+    }
+
+    @Override
+    public void doUpdate(GeoCodeTimeZone geoCodeTimeZone) {
+        var geoCodeTimeZoneValue = geoControl.getGeoCodeTimeZoneValue(geoCodeTimeZone);
+
+        geoCodeTimeZoneValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+        geoCodeTimeZoneValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        geoControl.updateGeoCodeTimeZoneFromValue(geoCodeTimeZoneValue, getPartyPK());
+    }
+
 }
