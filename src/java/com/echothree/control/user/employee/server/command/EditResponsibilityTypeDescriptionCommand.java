@@ -23,10 +23,8 @@ import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.control.user.employee.common.spec.ResponsibilityTypeDescriptionSpec;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.employee.server.logic.ResponsibilityTypeLogic;
-import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.data.employee.server.entity.ResponsibilityType;
 import com.echothree.model.data.employee.server.entity.ResponsibilityTypeDescription;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
@@ -56,9 +54,6 @@ public class EditResponsibilityTypeDescriptionCommand
     EmployeeControl employeeControl;
 
     @Inject
-    LanguageLogic languageLogic;
-
-    @Inject
     ResponsibilityTypeLogic responsibilityTypeLogic;
 
     /** Creates a new instance of EditResponsibilityTypeDescriptionCommand */
@@ -78,25 +73,7 @@ public class EditResponsibilityTypeDescriptionCommand
 
     @Override
     public ResponsibilityTypeDescription getEntity(EditResponsibilityTypeDescriptionResult result) {
-        ResponsibilityTypeDescription responsibilityTypeDescription = null;
-        var responsibilityTypeName = spec.getResponsibilityTypeName();
-        var responsibilityType = responsibilityTypeLogic.getResponsibilityTypeByName(this, responsibilityTypeName);
-
-        if(!hasExecutionErrors()) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = languageLogic.getLanguageByName(this, languageIsoName);
-
-            if(!hasExecutionErrors()) {
-                responsibilityTypeDescription = employeeControl.getResponsibilityTypeDescription(responsibilityType, language,
-                        editModeToEntityPermission(editMode));
-
-                if(responsibilityTypeDescription == null) {
-                    addExecutionError(ExecutionErrors.UnknownResponsibilityTypeDescription.name(), responsibilityTypeName, languageIsoName);
-                }
-            }
-        }
-
-        return responsibilityTypeDescription;
+        return responsibilityTypeLogic.getResponsibilityTypeDescriptionBySpec(this, spec, editModeToEntityPermission(editMode));
     }
 
     @Override
