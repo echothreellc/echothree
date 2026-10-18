@@ -18,36 +18,33 @@ package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.edit.EmployeeEditFactory;
 import com.echothree.control.user.employee.common.edit.SkillTypeDescriptionEdit;
-import com.echothree.control.user.employee.common.form.EditSkillTypeDescriptionForm;
+import com.echothree.control.user.employee.common.result.EditSkillTypeDescriptionResult;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.control.user.employee.common.spec.SkillTypeDescriptionSpec;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
-import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.control.employee.server.logic.SkillTypeLogic;
+import com.echothree.model.data.employee.server.entity.SkillType;
+import com.echothree.model.data.employee.server.entity.SkillTypeDescription;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
-import java.util.ArrayList;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class EditSkillTypeDescriptionCommand
-        extends BaseEditCommand<SkillTypeDescriptionSpec, SkillTypeDescriptionEdit> {
-    
+        extends BaseAbstractEditCommand<SkillTypeDescriptionSpec, SkillTypeDescriptionEdit, EditSkillTypeDescriptionResult, SkillTypeDescription, SkillType> {
+
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SkillTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
@@ -57,73 +54,50 @@ public class EditSkillTypeDescriptionCommand
     EmployeeControl employeeControl;
 
     @Inject
-    PartyControl partyControl;
+    SkillTypeLogic skillTypeLogic;
 
-    
     /** Creates a new instance of EditSkillTypeDescriptionCommand */
     public EditSkillTypeDescriptionCommand() {
         super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = EmployeeResultFactory.getEditSkillTypeDescriptionResult();
-        var skillTypeName = spec.getSkillTypeName();
-        var skillType = employeeControl.getSkillTypeByName(skillTypeName);
-        
-        if(skillType != null) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = partyControl.getLanguageByIsoName(languageIsoName);
-            
-            if(language != null) {
-                if(editMode.equals(EditMode.LOCK)) {
-                    var skillTypeDescription = employeeControl.getSkillTypeDescription(skillType, language);
-                    
-                    if(skillTypeDescription != null) {
-                        result.setSkillTypeDescription(employeeControl.getSkillTypeDescriptionTransfer(getUserVisit(), skillTypeDescription));
-                        
-                        if(lockEntity(skillType)) {
-                            var edit = EmployeeEditFactory.getSkillTypeDescriptionEdit();
-                            
-                            result.setEdit(edit);
-                            edit.setDescription(skillTypeDescription.getDescription());
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                        }
-                        
-                        result.setEntityLock(getEntityLockTransfer(skillType));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownSkillTypeDescription.name());
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var skillTypeDescriptionValue = employeeControl.getSkillTypeDescriptionValueForUpdate(skillType, language);
-                    
-                    if(skillTypeDescriptionValue != null) {
-                        if(lockEntityForUpdate(skillType)) {
-                            try {
-                                var description = edit.getDescription();
-                                
-                                skillTypeDescriptionValue.setDescription(description);
-                                
-                                employeeControl.updateSkillTypeDescriptionFromValue(skillTypeDescriptionValue, getPartyPK());
-                            } finally {
-                                unlockEntity(skillType);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownSkillTypeDescription.name());
-                    }
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownSkillTypeName.name(), skillTypeName);
-        }
-        
-        return result;
+    public EditSkillTypeDescriptionResult getResult() {
+        return EmployeeResultFactory.getEditSkillTypeDescriptionResult();
     }
-    
+
+    @Override
+    public SkillTypeDescriptionEdit getEdit() {
+        return EmployeeEditFactory.getSkillTypeDescriptionEdit();
+    }
+
+    @Override
+    public SkillTypeDescription getEntity(EditSkillTypeDescriptionResult result) {
+        return skillTypeLogic.getSkillTypeDescriptionBySpec(this, spec, editModeToEntityPermission(editMode));
+    }
+
+    @Override
+    public SkillType getLockEntity(SkillTypeDescription skillTypeDescription) {
+        return skillTypeDescription.getSkillType();
+    }
+
+    @Override
+    public void fillInResult(EditSkillTypeDescriptionResult result, SkillTypeDescription skillTypeDescription) {
+        result.setSkillTypeDescription(employeeControl.getSkillTypeDescriptionTransfer(getUserVisit(), skillTypeDescription));
+    }
+
+    @Override
+    public void doLock(SkillTypeDescriptionEdit edit, SkillTypeDescription skillTypeDescription) {
+        edit.setDescription(skillTypeDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(SkillTypeDescription skillTypeDescription) {
+        var skillTypeDescriptionValue = employeeControl.getSkillTypeDescriptionValue(skillTypeDescription);
+
+        skillTypeDescriptionValue.setDescription(edit.getDescription());
+
+        employeeControl.updateSkillTypeDescriptionFromValue(skillTypeDescriptionValue, getPartyPK());
+    }
+
 }

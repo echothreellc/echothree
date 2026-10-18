@@ -16,9 +16,13 @@
 
 package com.echothree.model.control.employee.server.logic;
 
+import com.echothree.control.user.employee.common.spec.SkillTypeDescriptionSpec;
+import com.echothree.model.control.employee.common.exception.UnknownSkillTypeDescriptionException;
 import com.echothree.model.control.employee.common.exception.UnknownSkillTypeNameException;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.data.employee.server.entity.SkillType;
+import com.echothree.model.data.employee.server.entity.SkillTypeDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -32,6 +36,9 @@ public class SkillTypeLogic
 
     @Inject
     EmployeeControl employeeControl;
+
+    @Inject
+    LanguageLogic languageLogic;
 
     protected SkillTypeLogic() {
         super();
@@ -54,6 +61,29 @@ public class SkillTypeLogic
 
     public SkillType getSkillTypeByNameForUpdate(final ExecutionErrorAccumulator eea, final String skillTypeName) {
         return getSkillTypeByName(eea, skillTypeName, EntityPermission.READ_WRITE);
+    }
+
+    public SkillTypeDescription getSkillTypeDescriptionBySpec(final ExecutionErrorAccumulator eea,
+            final SkillTypeDescriptionSpec spec, final EntityPermission entityPermission) {
+        SkillTypeDescription skillTypeDescription = null;
+        var skillTypeName = spec.getSkillTypeName();
+        var skillType = getSkillTypeByName(eea, skillTypeName);
+
+        if(!hasExecutionErrors(eea)) {
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = languageLogic.getLanguageByName(eea, languageIsoName);
+
+            if(!hasExecutionErrors(eea)) {
+                skillTypeDescription = employeeControl.getSkillTypeDescription(skillType, language, entityPermission);
+
+                if(skillTypeDescription == null) {
+                    handleExecutionError(UnknownSkillTypeDescriptionException.class, eea,
+                            ExecutionErrors.UnknownSkillTypeDescription.name(), skillTypeName, languageIsoName);
+                }
+            }
+        }
+
+        return skillTypeDescription;
     }
 
 }
