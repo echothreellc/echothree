@@ -18,21 +18,21 @@ package com.echothree.control.user.geo.server.command;
 
 import com.echothree.control.user.geo.common.edit.GeoCodeDescriptionEdit;
 import com.echothree.control.user.geo.common.edit.GeoEditFactory;
-import com.echothree.control.user.geo.common.form.EditGeoCodeDescriptionForm;
+import com.echothree.control.user.geo.common.result.EditGeoCodeDescriptionResult;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
 import com.echothree.control.user.geo.common.spec.GeoCodeDescriptionSpec;
 import com.echothree.model.control.geo.server.control.GeoControl;
+import com.echothree.model.control.geo.server.logic.GeoCodeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.geo.server.entity.GeoCode;
+import com.echothree.model.data.geo.server.entity.GeoCodeDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -42,12 +42,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditGeoCodeDescriptionCommand
-        extends BaseEditCommand<GeoCodeDescriptionSpec, GeoCodeDescriptionEdit> {
-    
+        extends BaseAbstractEditCommand<GeoCodeDescriptionSpec, GeoCodeDescriptionEdit, EditGeoCodeDescriptionResult, GeoCodeDescription, GeoCode> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -55,13 +55,12 @@ public class EditGeoCodeDescriptionCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.GeoCode.name(), SecurityRoles.Description.name())
                 ))
         ));
-        
-        
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GeoCodeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
@@ -71,73 +70,70 @@ public class EditGeoCodeDescriptionCommand
     GeoControl geoControl;
 
     @Inject
-    PartyControl partyControl;
+    GeoCodeLogic geoCodeLogic;
 
-    
+    @Inject
+    LanguageLogic languageLogic;
+
     /** Creates a new instance of EditGeoCodeDescriptionCommand */
     public EditGeoCodeDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = GeoResultFactory.getEditGeoCodeDescriptionResult();
-        var geoCodeName = spec.getGeoCodeName();
-        var geoCode = geoControl.getGeoCodeByName(geoCodeName);
-        
-        if(geoCode != null) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = partyControl.getLanguageByIsoName(languageIsoName);
-            
-            if(language != null) {
-                if(editMode.equals(EditMode.LOCK)) {
-                    var geoCodeDescription = geoControl.getGeoCodeDescription(geoCode, language);
-                    
-                    if(geoCodeDescription != null) {
-                        result.setGeoCodeDescription(geoControl.getGeoCodeDescriptionTransfer(getUserVisit(), geoCodeDescription));
-                        
-                        if(lockEntity(geoCode)) {
-                            var edit = GeoEditFactory.getGeoCodeDescriptionEdit();
-                            
-                            result.setEdit(edit);
-                            edit.setDescription(geoCodeDescription.getDescription());
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                        }
-                        
-                        result.setEntityLock(getEntityLockTransfer(geoCode));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownGeoCodeDescription.name(), geoCodeName, languageIsoName);
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var geoCodeDescriptionValue = geoControl.getGeoCodeDescriptionValueForUpdate(geoCode, language);
-                    
-                    if(geoCodeDescriptionValue != null) {
-                        if(lockEntityForUpdate(geoCode)) {
-                            try {
-                                var description = edit.getDescription();
-                                
-                                geoCodeDescriptionValue.setDescription(description);
-                                
-                                geoControl.updateGeoCodeDescriptionFromValue(geoCodeDescriptionValue, getPartyPK());
-                            } finally {
-                                unlockEntity(geoCode);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownGeoCodeDescription.name(), geoCodeName, languageIsoName);
-                    }
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownGeoCodeName.name(), geoCodeName);
-        }
-        
-        return result;
+    public EditGeoCodeDescriptionResult getResult() {
+        return GeoResultFactory.getEditGeoCodeDescriptionResult();
     }
-    
+
+    @Override
+    public GeoCodeDescriptionEdit getEdit() {
+        return GeoEditFactory.getGeoCodeDescriptionEdit();
+    }
+
+    @Override
+    public GeoCodeDescription getEntity(EditGeoCodeDescriptionResult result) {
+        GeoCodeDescription geoCodeDescription = null;
+        var geoCodeName = spec.getGeoCodeName();
+        var geoCode = geoCodeLogic.getGeoCodeByName(this, geoCodeName);
+
+        if(!hasExecutionErrors()) {
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = languageLogic.getLanguageByName(this, languageIsoName);
+
+            if(!hasExecutionErrors()) {
+                geoCodeDescription = geoControl.getGeoCodeDescription(geoCode, language, editModeToEntityPermission(editMode));
+
+                if(geoCodeDescription == null) {
+                    addExecutionError(ExecutionErrors.UnknownGeoCodeDescription.name(), geoCodeName, languageIsoName);
+                }
+            }
+        }
+
+        return geoCodeDescription;
+    }
+
+    @Override
+    public GeoCode getLockEntity(GeoCodeDescription geoCodeDescription) {
+        return geoCodeDescription.getGeoCode();
+    }
+
+    @Override
+    public void fillInResult(EditGeoCodeDescriptionResult result, GeoCodeDescription geoCodeDescription) {
+        result.setGeoCodeDescription(geoControl.getGeoCodeDescriptionTransfer(getUserVisit(), geoCodeDescription));
+    }
+
+    @Override
+    public void doLock(GeoCodeDescriptionEdit edit, GeoCodeDescription geoCodeDescription) {
+        edit.setDescription(geoCodeDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(GeoCodeDescription geoCodeDescription) {
+        var geoCodeDescriptionValue = geoControl.getGeoCodeDescriptionValue(geoCodeDescription);
+
+        geoCodeDescriptionValue.setDescription(edit.getDescription());
+
+        geoControl.updateGeoCodeDescriptionFromValue(geoCodeDescriptionValue, getPartyPK());
+    }
+
 }
