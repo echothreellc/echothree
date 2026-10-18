@@ -513,7 +513,7 @@ public class OfferControl
         return offerDescription;
     }
     
-    private OfferDescription getOfferDescription(Offer offer, Language language, EntityPermission entityPermission) {
+    public OfferDescription getOfferDescription(Offer offer, Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(OfferDescriptions.fields())
                 .from(OfferDescriptions)
