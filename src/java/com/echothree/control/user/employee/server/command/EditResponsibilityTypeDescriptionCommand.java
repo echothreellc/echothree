@@ -18,36 +18,33 @@ package com.echothree.control.user.employee.server.command;
 
 import com.echothree.control.user.employee.common.edit.EmployeeEditFactory;
 import com.echothree.control.user.employee.common.edit.ResponsibilityTypeDescriptionEdit;
-import com.echothree.control.user.employee.common.form.EditResponsibilityTypeDescriptionForm;
+import com.echothree.control.user.employee.common.result.EditResponsibilityTypeDescriptionResult;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.control.user.employee.common.spec.ResponsibilityTypeDescriptionSpec;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
-import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.control.employee.server.logic.ResponsibilityTypeLogic;
+import com.echothree.model.data.employee.server.entity.ResponsibilityType;
+import com.echothree.model.data.employee.server.entity.ResponsibilityTypeDescription;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
-import java.util.ArrayList;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class EditResponsibilityTypeDescriptionCommand
-        extends BaseEditCommand<ResponsibilityTypeDescriptionSpec, ResponsibilityTypeDescriptionEdit> {
-    
+        extends BaseAbstractEditCommand<ResponsibilityTypeDescriptionSpec, ResponsibilityTypeDescriptionEdit, EditResponsibilityTypeDescriptionResult, ResponsibilityTypeDescription, ResponsibilityType> {
+
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ResponsibilityTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
@@ -57,73 +54,50 @@ public class EditResponsibilityTypeDescriptionCommand
     EmployeeControl employeeControl;
 
     @Inject
-    PartyControl partyControl;
+    ResponsibilityTypeLogic responsibilityTypeLogic;
 
-    
     /** Creates a new instance of EditResponsibilityTypeDescriptionCommand */
     public EditResponsibilityTypeDescriptionCommand() {
         super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = EmployeeResultFactory.getEditResponsibilityTypeDescriptionResult();
-        var responsibilityTypeName = spec.getResponsibilityTypeName();
-        var responsibilityType = employeeControl.getResponsibilityTypeByName(responsibilityTypeName);
-        
-        if(responsibilityType != null) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = partyControl.getLanguageByIsoName(languageIsoName);
-            
-            if(language != null) {
-                if(editMode.equals(EditMode.LOCK)) {
-                    var responsibilityTypeDescription = employeeControl.getResponsibilityTypeDescription(responsibilityType, language);
-                    
-                    if(responsibilityTypeDescription != null) {
-                        result.setResponsibilityTypeDescription(employeeControl.getResponsibilityTypeDescriptionTransfer(getUserVisit(), responsibilityTypeDescription));
-                        
-                        if(lockEntity(responsibilityType)) {
-                            var edit = EmployeeEditFactory.getResponsibilityTypeDescriptionEdit();
-                            
-                            result.setEdit(edit);
-                            edit.setDescription(responsibilityTypeDescription.getDescription());
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                        }
-                        
-                        result.setEntityLock(getEntityLockTransfer(responsibilityType));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownResponsibilityTypeDescription.name());
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var responsibilityTypeDescriptionValue = employeeControl.getResponsibilityTypeDescriptionValueForUpdate(responsibilityType, language);
-                    
-                    if(responsibilityTypeDescriptionValue != null) {
-                        if(lockEntityForUpdate(responsibilityType)) {
-                            try {
-                                var description = edit.getDescription();
-                                
-                                responsibilityTypeDescriptionValue.setDescription(description);
-                                
-                                employeeControl.updateResponsibilityTypeDescriptionFromValue(responsibilityTypeDescriptionValue, getPartyPK());
-                            } finally {
-                                unlockEntity(responsibilityType);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownResponsibilityTypeDescription.name());
-                    }
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownResponsibilityTypeName.name(), responsibilityTypeName);
-        }
-        
-        return result;
+    public EditResponsibilityTypeDescriptionResult getResult() {
+        return EmployeeResultFactory.getEditResponsibilityTypeDescriptionResult();
     }
-    
+
+    @Override
+    public ResponsibilityTypeDescriptionEdit getEdit() {
+        return EmployeeEditFactory.getResponsibilityTypeDescriptionEdit();
+    }
+
+    @Override
+    public ResponsibilityTypeDescription getEntity(EditResponsibilityTypeDescriptionResult result) {
+        return responsibilityTypeLogic.getResponsibilityTypeDescriptionBySpec(this, spec, editModeToEntityPermission(editMode));
+    }
+
+    @Override
+    public ResponsibilityType getLockEntity(ResponsibilityTypeDescription responsibilityTypeDescription) {
+        return responsibilityTypeDescription.getResponsibilityType();
+    }
+
+    @Override
+    public void fillInResult(EditResponsibilityTypeDescriptionResult result, ResponsibilityTypeDescription responsibilityTypeDescription) {
+        result.setResponsibilityTypeDescription(employeeControl.getResponsibilityTypeDescriptionTransfer(getUserVisit(), responsibilityTypeDescription));
+    }
+
+    @Override
+    public void doLock(ResponsibilityTypeDescriptionEdit edit, ResponsibilityTypeDescription responsibilityTypeDescription) {
+        edit.setDescription(responsibilityTypeDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(ResponsibilityTypeDescription responsibilityTypeDescription) {
+        var responsibilityTypeDescriptionValue = employeeControl.getResponsibilityTypeDescriptionValue(responsibilityTypeDescription);
+
+        responsibilityTypeDescriptionValue.setDescription(edit.getDescription());
+
+        employeeControl.updateResponsibilityTypeDescriptionFromValue(responsibilityTypeDescriptionValue, getPartyPK());
+    }
+
 }
