@@ -18,20 +18,21 @@ package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.edit.AccountingEditFactory;
 import com.echothree.control.user.accounting.common.edit.TransactionEntityRoleTypeEdit;
-import com.echothree.control.user.accounting.common.form.EditTransactionEntityRoleTypeForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
+import com.echothree.control.user.accounting.common.result.EditTransactionEntityRoleTypeResult;
 import com.echothree.control.user.accounting.common.spec.TransactionEntityRoleTypeSpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.accounting.server.logic.TransactionEntityRoleTypeLogic;
+import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
+import com.echothree.model.data.accounting.server.entity.TransactionEntityRoleType;
+import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -41,12 +42,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditTransactionEntityRoleTypeCommand
-        extends BaseEditCommand<TransactionEntityRoleTypeSpec, TransactionEntityRoleTypeEdit> {
-    
+        extends BaseAbstractEditCommand<TransactionEntityRoleTypeSpec, TransactionEntityRoleTypeEdit, EditTransactionEntityRoleTypeResult, TransactionEntityRoleType, TransactionEntityRoleType> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -54,12 +55,12 @@ public class EditTransactionEntityRoleTypeCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.TransactionEntityRoleType.name(), SecurityRoles.Edit.name())
                 ))
         ));
-        
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TransactionTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TransactionEntityRoleTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TransactionEntityRoleTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
@@ -72,123 +73,99 @@ public class EditTransactionEntityRoleTypeCommand
     @Inject
     AccountingControl accountingControl;
 
-    
+    @Inject
+    EntityTypeLogic entityTypeLogic;
+
+    @Inject
+    TransactionEntityRoleTypeLogic transactionEntityRoleTypeLogic;
+
     /** Creates a new instance of EditTransactionEntityRoleTypeCommand */
     public EditTransactionEntityRoleTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = AccountingResultFactory.getEditTransactionEntityRoleTypeResult();
-        var transactionTypeName = spec.getTransactionTypeName();
-        var transactionType = accountingControl.getTransactionTypeByNameForUpdate(transactionTypeName);
-        
-        if(transactionType != null) {
-            var transactionEntityRoleTypeName = spec.getTransactionEntityRoleTypeName();
-
-            if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                var transactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeByName(transactionType, transactionEntityRoleTypeName);
-
-                if(transactionEntityRoleType != null) {
-                    if(editMode.equals(EditMode.LOCK)) {
-                        if(lockEntity(transactionEntityRoleType)) {
-                            var transactionEntityRoleTypeDescription = accountingControl.getTransactionEntityRoleTypeDescription(transactionEntityRoleType, getPreferredLanguage());
-                            var edit = AccountingEditFactory.getTransactionEntityRoleTypeEdit();
-                            var transactionEntityRoleTypeDetail = transactionEntityRoleType.getLastDetail();
-                            var entityTypeDetail = transactionEntityRoleTypeDetail.getEntityType().getLastDetail();
-                            var componentVendorDetail = entityTypeDetail.getComponentVendor().getLastDetail();
-
-                            result.setTransactionEntityRoleType(accountingControl.getTransactionEntityRoleTypeTransfer(getUserVisit(), transactionEntityRoleType));
-
-                            result.setEdit(edit);
-                            edit.setTransactionEntityRoleTypeName(transactionEntityRoleTypeDetail.getTransactionEntityRoleTypeName());
-                            edit.setComponentVendorName(componentVendorDetail.getComponentVendorName());
-                            edit.setEntityTypeName(entityTypeDetail.getEntityTypeName());
-                            edit.setSortOrder(transactionEntityRoleTypeDetail.getSortOrder().toString());
-
-                            if(transactionEntityRoleTypeDescription != null) {
-                                edit.setDescription(transactionEntityRoleTypeDescription.getDescription());
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                        }
-
-                        result.setEntityLock(getEntityLockTransfer(transactionEntityRoleType));
-                    } else { // EditMode.ABANDON
-                        unlockEntity(transactionEntityRoleType);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownTransactionEntityRoleTypeName.name(), transactionTypeName, transactionEntityRoleTypeName);
-                }
-            } else if(editMode.equals(EditMode.UPDATE)) {
-                var transactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeByNameForUpdate(transactionType, transactionEntityRoleTypeName);
-
-                if(transactionEntityRoleType != null) {
-                    transactionEntityRoleTypeName = edit.getTransactionEntityRoleTypeName();
-                    var duplicateTransactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeByName(transactionType, transactionEntityRoleTypeName);
-
-                    if(duplicateTransactionEntityRoleType == null || transactionEntityRoleType.equals(duplicateTransactionEntityRoleType)) {
-                        var componentVendorName = edit.getComponentVendorName();
-                        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
-
-                        if(componentVendor != null) {
-                            var entityTypeName = edit.getEntityTypeName();
-                            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
-
-                            if(entityType != null) {
-                                if(lockEntityForUpdate(transactionEntityRoleType)) {
-                                    try {
-                                        var partyPK = getPartyPK();
-                                        var transactionEntityRoleTypeDetailValue = accountingControl.getTransactionEntityRoleTypeDetailValueForUpdate(transactionEntityRoleType);
-                                        var transactionEntityRoleTypeDescription = accountingControl.getTransactionEntityRoleTypeDescriptionForUpdate(transactionEntityRoleType, getPreferredLanguage());
-                                        var description = edit.getDescription();
-
-                                        transactionEntityRoleTypeDetailValue.setTransactionEntityRoleTypeName(edit.getTransactionEntityRoleTypeName());
-                                        transactionEntityRoleTypeDetailValue.setEntityTypePK(entityType.getPrimaryKey());
-                                        transactionEntityRoleTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
-
-                                        accountingControl.updateTransactionEntityRoleTypeFromValue(transactionEntityRoleTypeDetailValue, partyPK);
-
-                                        if(transactionEntityRoleTypeDescription == null && description != null) {
-                                            accountingControl.createTransactionEntityRoleTypeDescription(transactionEntityRoleType, getPreferredLanguage(), description, partyPK);
-                                        } else if(transactionEntityRoleTypeDescription != null && description == null) {
-                                            accountingControl.deleteTransactionEntityRoleTypeDescription(transactionEntityRoleTypeDescription, partyPK);
-                                        } else if(transactionEntityRoleTypeDescription != null && description != null) {
-                                            var transactionEntityRoleTypeDescriptionValue = accountingControl.getTransactionEntityRoleTypeDescriptionValue(transactionEntityRoleTypeDescription);
-
-                                            transactionEntityRoleTypeDescriptionValue.setDescription(description);
-                                            accountingControl.updateTransactionEntityRoleTypeDescriptionFromValue(transactionEntityRoleTypeDescriptionValue, partyPK);
-                                        }
-                                    } finally {
-                                        unlockEntity(transactionEntityRoleType);
-                                    }
-                                } else {
-                                    addExecutionError(ExecutionErrors.EntityLockStale.name());
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), componentVendorName, entityTypeName);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.DuplicateTransactionEntityRoleTypeName.name(), transactionTypeName, transactionEntityRoleTypeName);
-                    }
-
-                    if(hasExecutionErrors()) {
-                        result.setTransactionEntityRoleType(accountingControl.getTransactionEntityRoleTypeTransfer(getUserVisit(), transactionEntityRoleType));
-                        result.setEntityLock(getEntityLockTransfer(transactionEntityRoleType));
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownTransactionEntityRoleTypeName.name(), transactionTypeName, transactionEntityRoleTypeName);
-                }
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownTransactionTypeName.name(), transactionTypeName);
-        }
-        
-        return result;
+    public EditTransactionEntityRoleTypeResult getResult() {
+        return AccountingResultFactory.getEditTransactionEntityRoleTypeResult();
     }
-    
+
+    @Override
+    public TransactionEntityRoleTypeEdit getEdit() {
+        return AccountingEditFactory.getTransactionEntityRoleTypeEdit();
+    }
+
+    @Override
+    public TransactionEntityRoleType getEntity(EditTransactionEntityRoleTypeResult result) {
+        return transactionEntityRoleTypeLogic.getTransactionEntityRoleTypeByName(this, spec.getTransactionTypeName(),
+                spec.getTransactionEntityRoleTypeName(), editModeToEntityPermission(editMode));
+    }
+
+    @Override
+    public TransactionEntityRoleType getLockEntity(TransactionEntityRoleType transactionEntityRoleType) {
+        return transactionEntityRoleType;
+    }
+
+    @Override
+    public void fillInResult(EditTransactionEntityRoleTypeResult result, TransactionEntityRoleType transactionEntityRoleType) {
+        result.setTransactionEntityRoleType(accountingControl.getTransactionEntityRoleTypeTransfer(getUserVisit(), transactionEntityRoleType));
+    }
+
+    private EntityType entityType;
+
+    @Override
+    public void doLock(TransactionEntityRoleTypeEdit edit, TransactionEntityRoleType transactionEntityRoleType) {
+        var transactionEntityRoleTypeDescription = accountingControl.getTransactionEntityRoleTypeDescription(transactionEntityRoleType, getPreferredLanguage());
+        var transactionEntityRoleTypeDetail = transactionEntityRoleType.getLastDetail();
+        var entityTypeDetail = transactionEntityRoleTypeDetail.getEntityType().getLastDetail();
+        var componentVendorDetail = entityTypeDetail.getComponentVendor().getLastDetail();
+
+        edit.setTransactionEntityRoleTypeName(transactionEntityRoleTypeDetail.getTransactionEntityRoleTypeName());
+        edit.setComponentVendorName(componentVendorDetail.getComponentVendorName());
+        edit.setEntityTypeName(entityTypeDetail.getEntityTypeName());
+        edit.setSortOrder(transactionEntityRoleTypeDetail.getSortOrder().toString());
+
+        if(transactionEntityRoleTypeDescription != null) {
+            edit.setDescription(transactionEntityRoleTypeDescription.getDescription());
+        }
+    }
+
+    @Override
+    public void canUpdate(TransactionEntityRoleType transactionEntityRoleType) {
+        var transactionType = transactionEntityRoleType.getLastDetail().getTransactionType();
+        var transactionEntityRoleTypeName = edit.getTransactionEntityRoleTypeName();
+        var duplicateTransactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeByName(transactionType, transactionEntityRoleTypeName);
+
+        if(duplicateTransactionEntityRoleType == null || transactionEntityRoleType.equals(duplicateTransactionEntityRoleType)) {
+            entityType = entityTypeLogic.getEntityTypeByName(this, edit.getComponentVendorName(), edit.getEntityTypeName());
+        } else {
+            addExecutionError(ExecutionErrors.DuplicateTransactionEntityRoleTypeName.name(),
+                    transactionType.getLastDetail().getTransactionTypeName(), transactionEntityRoleTypeName);
+        }
+    }
+
+    @Override
+    public void doUpdate(TransactionEntityRoleType transactionEntityRoleType) {
+        var partyPK = getPartyPK();
+        var transactionEntityRoleTypeDetailValue = accountingControl.getTransactionEntityRoleTypeDetailValueForUpdate(transactionEntityRoleType);
+        var transactionEntityRoleTypeDescription = accountingControl.getTransactionEntityRoleTypeDescriptionForUpdate(transactionEntityRoleType, getPreferredLanguage());
+        var description = edit.getDescription();
+
+        transactionEntityRoleTypeDetailValue.setTransactionEntityRoleTypeName(edit.getTransactionEntityRoleTypeName());
+        transactionEntityRoleTypeDetailValue.setEntityTypePK(entityType.getPrimaryKey());
+        transactionEntityRoleTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        accountingControl.updateTransactionEntityRoleTypeFromValue(transactionEntityRoleTypeDetailValue, partyPK);
+
+        if(transactionEntityRoleTypeDescription == null && description != null) {
+            accountingControl.createTransactionEntityRoleTypeDescription(transactionEntityRoleType, getPreferredLanguage(), description, partyPK);
+        } else if(transactionEntityRoleTypeDescription != null && description == null) {
+            accountingControl.deleteTransactionEntityRoleTypeDescription(transactionEntityRoleTypeDescription, partyPK);
+        } else if(transactionEntityRoleTypeDescription != null && description != null) {
+            var transactionEntityRoleTypeDescriptionValue = accountingControl.getTransactionEntityRoleTypeDescriptionValue(transactionEntityRoleTypeDescription);
+
+            transactionEntityRoleTypeDescriptionValue.setDescription(description);
+            accountingControl.updateTransactionEntityRoleTypeDescriptionFromValue(transactionEntityRoleTypeDescriptionValue, partyPK);
+        }
+    }
+
 }
