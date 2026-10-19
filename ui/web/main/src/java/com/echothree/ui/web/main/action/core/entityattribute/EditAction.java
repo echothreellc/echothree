@@ -18,10 +18,6 @@ package com.echothree.ui.web.main.action.core.entityattribute;
 
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
-import static com.echothree.model.control.core.common.EntityAttributeTypes.BLOB;
-import static com.echothree.model.control.core.common.EntityAttributeTypes.LISTITEM;
-import static com.echothree.model.control.core.common.EntityAttributeTypes.MULTIPLELISTITEM;
-import static com.echothree.model.control.core.common.EntityAttributeTypes.STRING;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -82,7 +78,12 @@ public class EditAction
                 spec.setEntityTypeName(entityTypeName);
                 spec.setEntityAttributeName(originalEntityAttributeName);
                 
-                if(wasPost(request)) {
+                var refreshUnitOfMeasureTypes = wasPost(request)
+                        && "true".equals(request.getParameter(ParameterConstants.REFRESH_UNIT_OF_MEASURE_TYPES));
+                if(refreshUnitOfMeasureTypes)
+                    actionForm.clearUnitOfMeasureTypeChoice();
+
+                if(wasPost(request) && !refreshUnitOfMeasureTypes) {
                     var edit = CoreUtil.getHome().getEntityAttributeEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
@@ -93,9 +94,13 @@ public class EditAction
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
                     
-                    switch(EntityAttributeTypes.valueOf(actionForm.getEntityAttributeTypeChoice())) {
+                    var entityAttributeType = EntityAttributeTypes.valueOf(actionForm.getEntityAttributeTypeChoice());
+                    switch(entityAttributeType) {
                         case BLOB:
                             edit.setCheckContentWebAddress(actionForm.getCheckContentWebAddress().toString());
+                            break;
+                        case WORKFLOW:
+                            edit.setWorkflowName(actionForm.getWorkflowChoice());
                             break;
                         case STRING:
                             edit.setValidationPattern(actionForm.getValidationPattern());
@@ -106,6 +111,26 @@ public class EditAction
                             break;
                         default:
                             break;
+                    }
+
+                    if(entityAttributeType == EntityAttributeTypes.INTEGER) {
+                        edit.setUpperRangeIntegerValue(actionForm.getUpperRangeIntegerValue());
+                        edit.setUpperLimitIntegerValue(actionForm.getUpperLimitIntegerValue());
+                        edit.setLowerLimitIntegerValue(actionForm.getLowerLimitIntegerValue());
+                        edit.setLowerRangeIntegerValue(actionForm.getLowerRangeIntegerValue());
+                    }
+
+                    if(entityAttributeType == EntityAttributeTypes.LONG) {
+                        edit.setUpperRangeLongValue(actionForm.getUpperRangeLongValue());
+                        edit.setUpperLimitLongValue(actionForm.getUpperLimitLongValue());
+                        edit.setLowerLimitLongValue(actionForm.getLowerLimitLongValue());
+                        edit.setLowerRangeLongValue(actionForm.getLowerRangeLongValue());
+                    }
+
+                    if(entityAttributeType == EntityAttributeTypes.INTEGER
+                            || entityAttributeType == EntityAttributeTypes.LONG) {
+                        edit.setUnitOfMeasureKindName(actionForm.getUnitOfMeasureKindChoice());
+                        edit.setUnitOfMeasureTypeName(actionForm.getUnitOfMeasureTypeChoice());
                     }
 
                     var commandResult = CoreUtil.getHome().editEntityAttribute(getUserVisitPK(request), commandForm);
@@ -135,7 +160,7 @@ public class EditAction
                     if(result != null) {
                         var edit = result.getEdit();
                         
-                        if(edit != null) {
+                        if(edit != null && !refreshUnitOfMeasureTypes) {
                             actionForm.setEntityAttributeTypeChoice(result.getEntityAttribute().getEntityAttributeType().getEntityAttributeTypeName());
                             
                             actionForm.setComponentVendorName(componentVendorName);
@@ -146,6 +171,17 @@ public class EditAction
                             actionForm.setCheckContentWebAddress(Boolean.valueOf(edit.getCheckContentWebAddress()));
                             actionForm.setValidationPattern(edit.getValidationPattern());
                             actionForm.setEntityListItemSequenceChoice(edit.getEntityListItemSequenceName());
+                            actionForm.setUpperRangeIntegerValue(edit.getUpperRangeIntegerValue());
+                            actionForm.setUpperLimitIntegerValue(edit.getUpperLimitIntegerValue());
+                            actionForm.setLowerLimitIntegerValue(edit.getLowerLimitIntegerValue());
+                            actionForm.setLowerRangeIntegerValue(edit.getLowerRangeIntegerValue());
+                            actionForm.setUpperRangeLongValue(edit.getUpperRangeLongValue());
+                            actionForm.setUpperLimitLongValue(edit.getUpperLimitLongValue());
+                            actionForm.setLowerLimitLongValue(edit.getLowerLimitLongValue());
+                            actionForm.setLowerRangeLongValue(edit.getLowerRangeLongValue());
+                            actionForm.setUnitOfMeasureKindChoice(edit.getUnitOfMeasureKindName());
+                            actionForm.setUnitOfMeasureTypeChoice(edit.getUnitOfMeasureTypeName());
+                            actionForm.setWorkflowChoice(edit.getWorkflowName());
                             actionForm.setSortOrder(edit.getSortOrder());
                             actionForm.setDescription(edit.getDescription());
                         }

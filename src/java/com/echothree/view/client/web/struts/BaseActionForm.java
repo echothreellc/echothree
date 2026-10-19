@@ -54,6 +54,10 @@ public class BaseActionForm
         userVisitPK = null;
     }
     
+    public List<LabelValueBean> convertChoicesOrEmptyChoice(BaseChoicesBean choices) {
+        return choices == null ? List.of(new LabelValueBean("", "")) : convertChoices(choices);
+    }
+
     public List<LabelValueBean> convertChoices(BaseChoicesBean choices) {
         var labels = choices.getLabels();
         var values = choices.getValues();

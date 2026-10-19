@@ -31,10 +31,12 @@ import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceTypeLogic;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
+import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -92,6 +94,8 @@ public class EditEntityAttributeCommand
     @Inject
     UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
 
+    @Inject
+    WorkflowLogic workflowLogic;
     
     /** Creates a new instance of EditEntityAttributeCommand */
     public EditEntityAttributeCommand() {
@@ -149,6 +153,7 @@ public class EditEntityAttributeCommand
 
     Sequence entityListItemSequence = null;
     UnitOfMeasureType unitOfMeasureType = null;
+    Workflow workflow = null;
     
     @Override
     public void doLock(EntityAttributeEdit edit, EntityAttribute entityAttribute) {
@@ -179,10 +184,15 @@ public class EditEntityAttributeCommand
                 var entityAttributeNumeric = coreControl.getEntityAttributeNumericForUpdate(entityAttribute);
 
                 if(entityAttributeInteger != null) {
-                    edit.setUpperLimitIntegerValue(entityAttributeInteger.getUpperLimitIntegerValue().toString());
-                    edit.setUpperRangeIntegerValue(entityAttributeInteger.getUpperRangeIntegerValue().toString());
-                    edit.setLowerRangeIntegerValue(entityAttributeInteger.getLowerRangeIntegerValue().toString());
-                    edit.setLowerLimitIntegerValue(entityAttributeInteger.getLowerLimitIntegerValue().toString());
+                    var upperLimitIntegerValue = entityAttributeInteger.getUpperLimitIntegerValue();
+                    var upperRangeIntegerValue = entityAttributeInteger.getUpperRangeIntegerValue();
+                    var lowerRangeIntegerValue = entityAttributeInteger.getLowerRangeIntegerValue();
+                    var lowerLimitIntegerValue = entityAttributeInteger.getLowerLimitIntegerValue();
+
+                    edit.setUpperLimitIntegerValue(upperLimitIntegerValue == null ? null : upperLimitIntegerValue.toString());
+                    edit.setUpperRangeIntegerValue(upperRangeIntegerValue == null ? null : upperRangeIntegerValue.toString());
+                    edit.setLowerRangeIntegerValue(lowerRangeIntegerValue == null ? null : lowerRangeIntegerValue.toString());
+                    edit.setLowerLimitIntegerValue(lowerLimitIntegerValue == null ? null : lowerLimitIntegerValue.toString());
                 }
 
                 if(entityAttributeNumeric != null) {
@@ -201,10 +211,15 @@ public class EditEntityAttributeCommand
                 var entityAttributeNumeric = coreControl.getEntityAttributeNumericForUpdate(entityAttribute);
 
                 if(entityAttributeLong != null) {
-                    edit.setUpperLimitLongValue(entityAttributeLong.getUpperLimitLongValue().toString());
-                    edit.setUpperRangeLongValue(entityAttributeLong.getUpperRangeLongValue().toString());
-                    edit.setLowerRangeLongValue(entityAttributeLong.getLowerRangeLongValue().toString());
-                    edit.setLowerLimitLongValue(entityAttributeLong.getLowerLimitLongValue().toString());
+                    var upperLimitLongValue = entityAttributeLong.getUpperLimitLongValue();
+                    var upperRangeLongValue = entityAttributeLong.getUpperRangeLongValue();
+                    var lowerRangeLongValue = entityAttributeLong.getLowerRangeLongValue();
+                    var lowerLimitLongValue = entityAttributeLong.getLowerLimitLongValue();
+
+                    edit.setUpperLimitLongValue(upperLimitLongValue == null ? null : upperLimitLongValue.toString());
+                    edit.setUpperRangeLongValue(upperRangeLongValue == null ? null : upperRangeLongValue.toString());
+                    edit.setLowerRangeLongValue(lowerRangeLongValue == null ? null : lowerRangeLongValue.toString());
+                    edit.setLowerLimitLongValue(lowerLimitLongValue == null ? null : lowerLimitLongValue.toString());
                 }
 
                 if(entityAttributeNumeric != null) {
@@ -216,6 +231,13 @@ public class EditEntityAttributeCommand
                         edit.setUnitOfMeasureKindName(unitOfMeasureTypeDetail.getUnitOfMeasureKind().getLastDetail().getUnitOfMeasureKindName());
                         edit.setUnitOfMeasureTypeName(unitOfMeasureTypeDetail.getUnitOfMeasureTypeName());
                     }
+                }
+            }
+            case WORKFLOW -> {
+                var entityAttributeWorkflow = coreControl.getEntityAttributeWorkflowForUpdate(entityAttribute);
+
+                if(entityAttributeWorkflow != null) {
+                    edit.setWorkflowName(entityAttributeWorkflow.getWorkflow().getLastDetail().getWorkflowName());
                 }
             }
             case LISTITEM, MULTIPLELISTITEM -> {
@@ -272,6 +294,10 @@ public class EditEntityAttributeCommand
                 } else {
                     addExecutionError(ExecutionErrors.InvalidParameterCount.name());
                 }
+            }
+
+            if(!hasExecutionErrors() && entityAttributeTypeName.equals(EntityAttributeTypes.WORKFLOW.name())) {
+                workflow = workflowLogic.getWorkflowByName(this, edit.getWorkflowName());
             }
         } else {
             addExecutionError(ExecutionErrors.DuplicateEntityAttributeName.name(), entityAttributeName);
@@ -416,6 +442,18 @@ public class EditEntityAttributeCommand
                         entityAttributeListItemValue.setEntityListItemSequencePK(entityListItemSequence.getPrimaryKey());
                         coreControl.updateEntityAttributeListItemFromValue(entityAttributeListItemValue, partyPK);
                     }
+                }
+            }
+            case WORKFLOW -> {
+                var entityAttributeWorkflow = coreControl.getEntityAttributeWorkflowForUpdate(entityAttribute);
+
+                if(entityAttributeWorkflow == null) {
+                    coreControl.createEntityAttributeWorkflow(entityAttribute, workflow, partyPK);
+                } else {
+                    var entityAttributeWorkflowValue = coreControl.getEntityAttributeWorkflowValue(entityAttributeWorkflow);
+
+                    entityAttributeWorkflowValue.setWorkflowPK(workflow.getPrimaryKey());
+                    coreControl.updateEntityAttributeWorkflowFromValue(entityAttributeWorkflowValue, partyPK);
                 }
             }
             default -> {
