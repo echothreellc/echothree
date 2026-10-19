@@ -201,7 +201,7 @@
                                     <td>
                                         <html:select property="unitOfMeasureTypeChoice">
                                             <html:optionsCollection property="unitOfMeasureTypeChoices" />
-                                        </html:select>
+                                        </html:select> <span id="unitOfMeasureTypeRequired" hidden="hidden">(*)</span>
                                         <et:validationErrors id="errorMessage" property="UnitOfMeasureTypeName">
                                             <p><c:out value="${errorMessage}" /></p>
                                         </et:validationErrors>
@@ -260,6 +260,7 @@
                                 function updateUnitOfMeasureTypeChoice() {
                                     unitOfMeasureTypeChoice.disabled = !unitOfMeasureKindChoice.value;
                                     unitOfMeasureTypeChoice.required = !!unitOfMeasureKindChoice.value;
+                                    document.getElementById('unitOfMeasureTypeRequired').hidden = !unitOfMeasureTypeChoice.required;
                                 }
 
                                 unitOfMeasureKindChoice.addEventListener('change', function() {

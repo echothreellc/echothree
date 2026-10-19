@@ -194,7 +194,7 @@
                         <td>
                             <html:select property="unitOfMeasureTypeChoice">
                                 <html:optionsCollection property="unitOfMeasureTypeChoices" />
-                            </html:select>
+                            </html:select> <span id="unitOfMeasureTypeRequired" hidden="hidden">(*)</span>
                             <et:validationErrors id="errorMessage" property="UnitOfMeasureTypeName">
                                 <p><c:out value="${errorMessage}" /></p>
                             </et:validationErrors>
@@ -268,6 +268,7 @@
                     var usesUnits = type === 'INTEGER' || type === 'LONG';
                     unitOfMeasureTypeChoice.disabled = !usesUnits || !unitOfMeasureKindChoice.value;
                     unitOfMeasureTypeChoice.required = usesUnits && !!unitOfMeasureKindChoice.value;
+                    document.getElementById('unitOfMeasureTypeRequired').hidden = !unitOfMeasureTypeChoice.required;
                     workflowChoice.required = type === 'WORKFLOW';
                     document.getElementById('workflowRequired').hidden = !workflowChoice.required;
                 }
