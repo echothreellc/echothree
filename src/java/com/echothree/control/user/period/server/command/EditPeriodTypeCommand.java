@@ -123,7 +123,7 @@ public class EditPeriodTypeCommand
         var workflow = workflowEntrance == null? null: workflowEntrance.getLastDetail().getWorkflow();
 
         edit.setPeriodTypeName(periodTypeDetail.getPeriodTypeName());
-        edit.setParentPeriodType(parentPeriodType == null? null: parentPeriodType.getLastDetail().getPeriodTypeName());
+        edit.setParentPeriodTypeName(parentPeriodType == null? null: parentPeriodType.getLastDetail().getPeriodTypeName());
         edit.setWorkflowName(workflow == null? null: workflow.getLastDetail().getWorkflowName());
         edit.setWorkflowEntranceName(workflowEntrance == null? null: workflowEntrance.getLastDetail().getWorkflowEntranceName());
         edit.setIsDefault(periodTypeDetail.getIsDefault().toString());

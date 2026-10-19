@@ -6105,7 +6105,6 @@ public interface GraphQlMutations {
     @GraphQLRelayMutation
     static MutationResultObject deleteEntityAttributeGroup(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLID final String id,
-            @GraphQLName("entityRef") final String entityRef,
             @GraphQLName("componentVendorName") final String componentVendorName,
             @GraphQLName("entityTypeName") final String entityTypeName,
             @GraphQLName("entityAttributeGroupName") final String entityAttributeGroupName) {
@@ -6115,7 +6114,6 @@ public interface GraphQlMutations {
             var commandForm = CoreUtil.getHome().getDeleteEntityAttributeGroupForm();
 
             commandForm.setUuid(id);
-            commandForm.setEntityRef(entityRef);
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setEntityAttributeGroupName(entityAttributeGroupName);
@@ -6133,7 +6131,6 @@ public interface GraphQlMutations {
     @GraphQLRelayMutation
     static MutationResultWithIdObject editEntityAttributeGroup(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLID final String id,
-            @GraphQLName("entityRef") final String entityRef,
             @GraphQLName("componentVendorName") final String componentVendorName,
             @GraphQLName("entityTypeName") final String entityTypeName,
             @GraphQLName("originalEntityAttributeGroupName") final String originalEntityAttributeGroupName,
@@ -6147,7 +6144,6 @@ public interface GraphQlMutations {
             var spec = CoreUtil.getHome().getEntityAttributeGroupUniversalSpec();
 
             spec.setUuid(id);
-            spec.setEntityRef(entityRef);
             spec.setComponentVendorName(componentVendorName);
             spec.setEntityTypeName(entityTypeName);
             spec.setEntityAttributeGroupName(originalEntityAttributeGroupName);
@@ -17793,6 +17789,132 @@ public interface GraphQlMutations {
                 commandForm.setEditMode(EditMode.UPDATE);
 
                 commandResult = PeriodUtil.getHome().editPeriodKind(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createPeriodType(final DataFetchingEnvironment env,
+            @GraphQLName("periodKindName") @GraphQLNonNull final String periodKindName,
+            @GraphQLName("periodTypeName") @GraphQLNonNull final String periodTypeName,
+            @GraphQLName("parentPeriodTypeName") final String parentPeriodTypeName,
+            @GraphQLName("workflowName") final String workflowName,
+            @GraphQLName("workflowEntranceName") final String workflowEntranceName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = PeriodUtil.getHome().getCreatePeriodTypeForm();
+
+            commandForm.setPeriodKindName(periodKindName);
+            commandForm.setPeriodTypeName(periodTypeName);
+            commandForm.setParentPeriodTypeName(parentPeriodTypeName);
+            commandForm.setWorkflowName(workflowName);
+            commandForm.setWorkflowEntranceName(workflowEntranceName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = PeriodUtil.getHome().createPeriodType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deletePeriodType(final DataFetchingEnvironment env,
+            @GraphQLName("periodKindName") @GraphQLNonNull final String periodKindName,
+            @GraphQLName("periodTypeName") @GraphQLNonNull final String periodTypeName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = PeriodUtil.getHome().getDeletePeriodTypeForm();
+
+            commandForm.setPeriodKindName(periodKindName);
+            commandForm.setPeriodTypeName(periodTypeName);
+
+            var commandResult = PeriodUtil.getHome().deletePeriodType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject editPeriodType(final DataFetchingEnvironment env,
+            @GraphQLName("periodKindName") @GraphQLNonNull final String periodKindName,
+            @GraphQLName("originalPeriodTypeName") @GraphQLNonNull final String originalPeriodTypeName,
+            @GraphQLName("periodTypeName") final String periodTypeName,
+            @GraphQLName("parentPeriodTypeName") final String parentPeriodTypeName,
+            @GraphQLName("workflowName") final String workflowName,
+            @GraphQLName("workflowEntranceName") final String workflowEntranceName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = PeriodUtil.getHome().getPeriodTypeSpec();
+
+            spec.setPeriodKindName(periodKindName);
+            spec.setPeriodTypeName(originalPeriodTypeName);
+
+            var commandForm = PeriodUtil.getHome().getEditPeriodTypeForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = PeriodUtil.getHome().editPeriodType(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getPeriodType().getEntityInstance());
+
+                if(arguments.containsKey("periodTypeName"))
+                    edit.setPeriodTypeName(periodTypeName);
+                if(arguments.containsKey("parentPeriodTypeName"))
+                    edit.setParentPeriodTypeName(parentPeriodTypeName);
+                if(arguments.containsKey("workflowName"))
+                    edit.setWorkflowName(workflowName);
+                if(arguments.containsKey("workflowEntranceName"))
+                    edit.setWorkflowEntranceName(workflowEntranceName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = PeriodUtil.getHome().editPeriodType(BaseGraphQl.getUserVisitPK(env), commandForm);
             }
 
             mutationResultObject.setCommandResult(commandResult);

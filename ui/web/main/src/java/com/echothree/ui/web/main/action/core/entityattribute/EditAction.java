@@ -96,21 +96,12 @@ public class EditAction
                     
                     var entityAttributeType = EntityAttributeTypes.valueOf(actionForm.getEntityAttributeTypeChoice());
                     switch(entityAttributeType) {
-                        case BLOB:
-                            edit.setCheckContentWebAddress(actionForm.getCheckContentWebAddress().toString());
-                            break;
-                        case WORKFLOW:
-                            edit.setWorkflowName(actionForm.getWorkflowChoice());
-                            break;
-                        case STRING:
-                            edit.setValidationPattern(actionForm.getValidationPattern());
-                            break;
-                        case LISTITEM:
-                        case MULTIPLELISTITEM:
-                            edit.setEntityListItemSequenceName(actionForm.getEntityListItemSequenceChoice());
-                            break;
-                        default:
-                            break;
+                        case BLOB -> edit.setCheckContentWebAddress(actionForm.getCheckContentWebAddress().toString());
+                        case WORKFLOW -> edit.setWorkflowName(actionForm.getWorkflowChoice());
+                        case STRING -> edit.setValidationPattern(actionForm.getValidationPattern());
+                        case LISTITEM, MULTIPLELISTITEM -> edit.setEntityListItemSequenceName(actionForm.getEntityListItemSequenceChoice());
+                        default -> {
+                        }
                     }
 
                     if(entityAttributeType == EntityAttributeTypes.INTEGER) {

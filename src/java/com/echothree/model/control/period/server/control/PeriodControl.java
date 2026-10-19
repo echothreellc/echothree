@@ -616,7 +616,7 @@ public class PeriodControl
         return getPeriodTypes(periodKind, EntityPermission.READ_WRITE);
     }
     
-    private PeriodType getDefaultPeriodType(PeriodKind periodKind, EntityPermission entityPermission) {
+    public PeriodType getDefaultPeriodType(PeriodKind periodKind, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PeriodTypes.fields())
                 .from(PeriodTypes)

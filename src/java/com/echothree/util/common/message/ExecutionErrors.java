@@ -1490,6 +1490,7 @@ public enum ExecutionErrors {
     DuplicatePeriodTypeDescription,
     UnknownPeriodTypeName,
     UnknownPeriodTypeDescription,
+    UnknownDefaultPeriodType,
     UnknownParentPeriodTypeName,
     InvalidParentPeriodType,
     DuplicatePeriodName,

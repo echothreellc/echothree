@@ -84,21 +84,12 @@ public class AddAction
                     
                     var entityAttributeType = EntityAttributeTypes.valueOf(entityAttributeTypeChoice);
                     switch(entityAttributeType) {
-                        case BLOB:
-                            commandForm.setCheckContentWebAddress(actionForm.getCheckContentWebAddress().toString());
-                            break;
-                        case WORKFLOW:
-                            commandForm.setWorkflowName(actionForm.getWorkflowChoice());
-                            break;
-                        case STRING:
-                            commandForm.setValidationPattern(actionForm.getValidationPattern());
-                            break;
-                        case LISTITEM:
-                        case MULTIPLELISTITEM:
-                            commandForm.setEntityListItemSequenceName(actionForm.getEntityListItemSequenceChoice());
-                            break;
-                        default:
-                            break;
+                        case BLOB -> commandForm.setCheckContentWebAddress(actionForm.getCheckContentWebAddress().toString());
+                        case WORKFLOW -> commandForm.setWorkflowName(actionForm.getWorkflowChoice());
+                        case STRING -> commandForm.setValidationPattern(actionForm.getValidationPattern());
+                        case LISTITEM, MULTIPLELISTITEM -> commandForm.setEntityListItemSequenceName(actionForm.getEntityListItemSequenceChoice());
+                        default -> {
+                        }
                     }
 
                     if(entityAttributeType == EntityAttributeTypes.INTEGER) {
