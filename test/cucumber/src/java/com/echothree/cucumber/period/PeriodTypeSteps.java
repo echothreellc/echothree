@@ -278,6 +278,14 @@ public class PeriodTypeSteps implements En {
                         periodTypeEdit.setWorkflowEntranceName(value);
                     }
                 });
+
+        Then("^the period type's parent period type name should be ([a-zA-Z0-9-_]*)$",
+                (String parentPeriodTypeName) -> {
+                    var periodTypeEdit = CurrentPersona.persona.periodTypeEdit;
+
+                    assertThat(periodTypeEdit).isNotNull();
+                    assertThat(periodTypeEdit.getParentPeriodTypeName()).isEqualTo(parentPeriodTypeName);
+                });
     }
 
 }
