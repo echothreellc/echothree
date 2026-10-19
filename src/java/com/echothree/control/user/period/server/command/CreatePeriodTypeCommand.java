@@ -94,7 +94,7 @@ public class CreatePeriodTypeCommand
 
                 if(periodType == null) {
                     var parentPeriodTypeName = form.getParentPeriodTypeName();
-                    var parentPeriodType = periodControl.getPeriodTypeByName(periodKind, parentPeriodTypeName);
+                    var parentPeriodType = parentPeriodTypeName == null ? null : periodControl.getPeriodTypeByName(periodKind, parentPeriodTypeName);
 
                     if(parentPeriodTypeName == null || parentPeriodType != null) {
                         var workflow = workflowName == null ? null : workflowControl.getWorkflowByName(workflowName);
