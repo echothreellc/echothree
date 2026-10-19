@@ -68,6 +68,7 @@ public interface ParameterConstants {
     String UNIT_OF_MEASURE_NAME = "UnitOfMeasureName";
     String UNIT_OF_MEASURE_KIND_NAME = "UnitOfMeasureKindName";
     String UNIT_OF_MEASURE_TYPE_NAME = "UnitOfMeasureTypeName";
+    String REFRESH_UNIT_OF_MEASURE_TYPES = "refreshUnitOfMeasureTypes";
     String WAREHOUSE_NAME = "WarehouseName";
     String ORIGINAL_GL_ACCOUNT_NAME = "OriginalGlAccountName";
     String GL_ACCOUNT_NAME = "GlAccountName";

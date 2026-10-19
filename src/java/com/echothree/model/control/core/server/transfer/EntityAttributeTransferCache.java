@@ -25,6 +25,7 @@ import com.echothree.model.control.core.common.transfer.EntityAttributeTransfer;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.uom.server.control.UomControl;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -45,6 +46,9 @@ public class EntityAttributeTransferCache
     @Inject
     UomControl uomControl;
 
+    @Inject
+    WorkflowControl workflowControl;
+
     boolean includeDefault;
     boolean includeValue;
     boolean includeEntityListItems;
@@ -59,8 +63,11 @@ public class EntityAttributeTransferCache
     boolean filterTrackRevisions;
     boolean filterCheckContentWebAddress;
     boolean filterValidationPattern;
+    boolean filterEntityAttributeInteger;
+    boolean filterEntityAttributeLong;
     boolean filterEntityListItemSequence;
     boolean filterUnitOfMeasureType;
+    boolean filterWorkflow;
     boolean filterSortOrder;
     boolean filterDescription;
     boolean filterEntityInstance;
@@ -90,8 +97,11 @@ public class EntityAttributeTransferCache
                 filterTrackRevisions = !properties.contains(CoreProperties.TRACK_REVISIONS);
                 filterCheckContentWebAddress = !properties.contains(CoreProperties.CHECK_CONTENT_WEB_ADDRESS);
                 filterValidationPattern = !properties.contains(CoreProperties.VALIDATION_PATTERN);
+                filterEntityAttributeInteger = !properties.contains(CoreProperties.ENTITY_ATTRIBUTE_INTEGER);
+                filterEntityAttributeLong = !properties.contains(CoreProperties.ENTITY_ATTRIBUTE_LONG);
                 filterEntityListItemSequence = !properties.contains(CoreProperties.ENTITY_LIST_ITEM_SEQUENCE);
                 filterUnitOfMeasureType = !properties.contains(CoreProperties.UNIT_OF_MEASURE_TYPE);
+                filterWorkflow = !properties.contains(CoreProperties.WORKFLOW);
                 filterSortOrder = !properties.contains(CoreProperties.SORT_ORDER);
                 filterDescription = !properties.contains(CoreProperties.DESCRIPTION);
                 filterEntityInstance = !properties.contains(CoreProperties.ENTITY_INSTANCE);
@@ -136,7 +146,16 @@ public class EntityAttributeTransferCache
                     }
                 }
                 case INTEGER -> {
-                    // TODO
+                    if(!filterEntityAttributeInteger) {
+                        var entityAttributeInteger = coreControl.getEntityAttributeInteger(entityAttribute);
+
+                        if(entityAttributeInteger != null) {
+                            entityAttributeTransfer.setUpperRangeIntegerValue(entityAttributeInteger.getUpperRangeIntegerValue());
+                            entityAttributeTransfer.setUpperLimitIntegerValue(entityAttributeInteger.getUpperLimitIntegerValue());
+                            entityAttributeTransfer.setLowerLimitIntegerValue(entityAttributeInteger.getLowerLimitIntegerValue());
+                            entityAttributeTransfer.setLowerRangeIntegerValue(entityAttributeInteger.getLowerRangeIntegerValue());
+                        }
+                    }
 
                     if(!filterUnitOfMeasureType) {
                         var entityAttributeNumeric = coreControl.getEntityAttributeNumeric(entityAttribute);
@@ -151,7 +170,17 @@ public class EntityAttributeTransferCache
                     }
                 }
                 case LONG -> {
-                    // TODO
+                    if(!filterEntityAttributeLong) {
+                        var entityAttributeLong = coreControl.getEntityAttributeLong(entityAttribute);
+
+                        if(entityAttributeLong != null) {
+                            entityAttributeTransfer.setUpperRangeLongValue(entityAttributeLong.getUpperRangeLongValue());
+                            entityAttributeTransfer.setUpperLimitLongValue(entityAttributeLong.getUpperLimitLongValue());
+                            entityAttributeTransfer.setLowerLimitLongValue(entityAttributeLong.getLowerLimitLongValue());
+                            entityAttributeTransfer.setLowerRangeLongValue(entityAttributeLong.getLowerRangeLongValue());
+                        }
+                    }
+
                     if(!filterUnitOfMeasureType) {
                         var entityAttributeNumeric = coreControl.getEntityAttributeNumeric(entityAttribute);
 
@@ -161,6 +190,15 @@ public class EntityAttributeTransferCache
 
                                 entityAttributeTransfer.setUnitOfMeasureType(unitOfMeasureType == null ? null : uomControl.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureType));
                             }
+                        }
+                    }
+                }
+                case WORKFLOW -> {
+                    if(!filterWorkflow) {
+                        var entityAttributeWorkflow = coreControl.getEntityAttributeWorkflow(entityAttribute);
+
+                        if(entityAttributeWorkflow != null) {
+                            entityAttributeTransfer.setWorkflow(workflowControl.getWorkflowTransfer(userVisit, entityAttributeWorkflow.getWorkflow()));
                         }
                     }
                 }

@@ -54,7 +54,11 @@
                         <p class="executionErrors"><c:out value="${errorMessage}" /></p><br />
                     </et:executionErrors>
                     <html:form action="/Core/EntityAttribute/Edit" method="POST" focus="entityAttributeName">
-                        <table>
+                        <table class="entityAttributeForm">
+                            <colgroup>
+                                <col class="entityAttributeFormLabel" />
+                                <col />
+                            </colgroup>
                             <tr>
                                 <td align=right><fmt:message key="label.entityAttributeName" />:</td>
                                 <td>
@@ -73,35 +77,154 @@
                                     </et:validationErrors>
                                 </td>
                             </tr>
-                            <tr>
-                                <td align=right><fmt:message key="label.checkContentWebAddress" />:</td>
-                                <td>
-                                    <html:checkbox property="checkContentWebAddress" /> (*) (Used only for &quot;Binary Large Object&quot; attributes.)
-                                    <et:validationErrors id="errorMessage" property="CheckContentWebAddress">
-                                        <p><c:out value="${errorMessage}" /></p>
-                                    </et:validationErrors>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align=right><fmt:message key="label.validationPattern" />:</td>
-                                <td>
-                                    <html:text property="validationPattern" size="40" maxlength="128" /> (Used only for &quot;String&quot; attributes.)
-                                    <et:validationErrors id="errorMessage" property="ValidationPattern">
-                                        <p><c:out value="${errorMessage}" /></p>
-                                    </et:validationErrors>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align=right><fmt:message key="label.entityListItemSequence" />:</td>
-                                <td>
-                                    <html:select property="entityListItemSequenceChoice">
-                                        <html:optionsCollection property="entityListItemSequenceChoices" />
-                                    </html:select> (Used only for &quot;Choice from List&quot; and &quot;Multiple Choices from List&quot; attributes.)
-                                    <et:validationErrors id="errorMessage" property="EntityListItemSequenceName">
-                                        <p><c:out value="${errorMessage}" /></p>
-                                    </et:validationErrors>
-                                </td>
-                            </tr>
+                            <c:if test="${EntityAttributeEdit.entityAttributeTypeChoice == 'BLOB'}">
+                                <tr>
+                                    <td align=right><fmt:message key="label.checkContentWebAddress" />:</td>
+                                    <td>
+                                        <html:checkbox property="checkContentWebAddress" /> (*)
+                                        <et:validationErrors id="errorMessage" property="CheckContentWebAddress">
+                                            <p><c:out value="${errorMessage}" /></p>
+                                        </et:validationErrors>
+                                    </td>
+                                </tr>
+                            </c:if>
+                            <c:if test="${EntityAttributeEdit.entityAttributeTypeChoice == 'STRING'}">
+                                <tr>
+                                    <td align=right><fmt:message key="label.validationPattern" />:</td>
+                                    <td>
+                                        <html:text property="validationPattern" size="40" maxlength="128" />
+                                        <et:validationErrors id="errorMessage" property="ValidationPattern">
+                                            <p><c:out value="${errorMessage}" /></p>
+                                        </et:validationErrors>
+                                    </td>
+                                </tr>
+                            </c:if>
+                            <c:if test="${EntityAttributeEdit.entityAttributeTypeChoice == 'LISTITEM' || EntityAttributeEdit.entityAttributeTypeChoice == 'MULTIPLELISTITEM'}">
+                                <tr>
+                                    <td align=right><fmt:message key="label.entityListItemSequence" />:</td>
+                                    <td>
+                                        <html:select property="entityListItemSequenceChoice">
+                                            <html:optionsCollection property="entityListItemSequenceChoices" />
+                                        </html:select>
+                                        <et:validationErrors id="errorMessage" property="EntityListItemSequenceName">
+                                            <p><c:out value="${errorMessage}" /></p>
+                                        </et:validationErrors>
+                                    </td>
+                                </tr>
+                            </c:if>
+                            <c:if test="${EntityAttributeEdit.entityAttributeTypeChoice == 'INTEGER'}">
+                                <tr>
+                                    <td align=right><fmt:message key="label.upperRangeIntegerValue" />:</td>
+                                    <td>
+                                        <html:text property="upperRangeIntegerValue" size="12" maxlength="12" />
+                                        <et:validationErrors id="errorMessage" property="UpperRangeIntegerValue">
+                                            <p><c:out value="${errorMessage}" /></p>
+                                        </et:validationErrors>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align=right><fmt:message key="label.upperLimitIntegerValue" />:</td>
+                                    <td>
+                                        <html:text property="upperLimitIntegerValue" size="12" maxlength="12" />
+                                        <et:validationErrors id="errorMessage" property="UpperLimitIntegerValue">
+                                            <p><c:out value="${errorMessage}" /></p>
+                                        </et:validationErrors>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align=right><fmt:message key="label.lowerLimitIntegerValue" />:</td>
+                                    <td>
+                                        <html:text property="lowerLimitIntegerValue" size="12" maxlength="12" />
+                                        <et:validationErrors id="errorMessage" property="LowerLimitIntegerValue">
+                                            <p><c:out value="${errorMessage}" /></p>
+                                        </et:validationErrors>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align=right><fmt:message key="label.lowerRangeIntegerValue" />:</td>
+                                    <td>
+                                        <html:text property="lowerRangeIntegerValue" size="12" maxlength="12" />
+                                        <et:validationErrors id="errorMessage" property="LowerRangeIntegerValue">
+                                            <p><c:out value="${errorMessage}" /></p>
+                                        </et:validationErrors>
+                                    </td>
+                                </tr>
+                            </c:if>
+                            <c:if test="${EntityAttributeEdit.entityAttributeTypeChoice == 'LONG'}">
+                                <tr>
+                                    <td align=right><fmt:message key="label.upperRangeLongValue" />:</td>
+                                    <td>
+                                        <html:text property="upperRangeLongValue" size="20" maxlength="20" />
+                                        <et:validationErrors id="errorMessage" property="UpperRangeLongValue">
+                                            <p><c:out value="${errorMessage}" /></p>
+                                        </et:validationErrors>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align=right><fmt:message key="label.upperLimitLongValue" />:</td>
+                                    <td>
+                                        <html:text property="upperLimitLongValue" size="20" maxlength="20" />
+                                        <et:validationErrors id="errorMessage" property="UpperLimitLongValue">
+                                            <p><c:out value="${errorMessage}" /></p>
+                                        </et:validationErrors>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align=right><fmt:message key="label.lowerLimitLongValue" />:</td>
+                                    <td>
+                                        <html:text property="lowerLimitLongValue" size="20" maxlength="20" />
+                                        <et:validationErrors id="errorMessage" property="LowerLimitLongValue">
+                                            <p><c:out value="${errorMessage}" /></p>
+                                        </et:validationErrors>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align=right><fmt:message key="label.lowerRangeLongValue" />:</td>
+                                    <td>
+                                        <html:text property="lowerRangeLongValue" size="20" maxlength="20" />
+                                        <et:validationErrors id="errorMessage" property="LowerRangeLongValue">
+                                            <p><c:out value="${errorMessage}" /></p>
+                                        </et:validationErrors>
+                                    </td>
+                                </tr>
+                            </c:if>
+                            <c:if test="${EntityAttributeEdit.entityAttributeTypeChoice == 'INTEGER' || EntityAttributeEdit.entityAttributeTypeChoice == 'LONG'}">
+                                <tr>
+                                    <td align=right><fmt:message key="label.unitOfMeasureKindName" />:</td>
+                                    <td>
+                                        <html:select property="unitOfMeasureKindChoice" styleId="unitOfMeasureKindChoice">
+                                            <html:optionsCollection property="unitOfMeasureKindChoices" />
+                                        </html:select>
+                                        <et:validationErrors id="errorMessage" property="UnitOfMeasureKindName">
+                                            <p><c:out value="${errorMessage}" /></p>
+                                        </et:validationErrors>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align=right><fmt:message key="label.unitOfMeasureTypeName" />:</td>
+                                    <td>
+                                        <html:select property="unitOfMeasureTypeChoice">
+                                            <html:optionsCollection property="unitOfMeasureTypeChoices" />
+                                        </html:select> <span id="unitOfMeasureTypeRequired" hidden="hidden">(*)</span>
+                                        <et:validationErrors id="errorMessage" property="UnitOfMeasureTypeName">
+                                            <p><c:out value="${errorMessage}" /></p>
+                                        </et:validationErrors>
+                                    </td>
+                                </tr>
+                            </c:if>
+                            <c:if test="${EntityAttributeEdit.entityAttributeTypeChoice == 'WORKFLOW'}">
+                                <tr>
+                                    <td align=right><fmt:message key="label.workflow" />:</td>
+                                    <td>
+                                        <html:select property="workflowChoice">
+                                            <html:optionsCollection property="workflowChoices" />
+                                        </html:select> (*)
+                                        <et:validationErrors id="errorMessage" property="WorkflowName">
+                                            <p><c:out value="${errorMessage}" /></p>
+                                        </et:validationErrors>
+                                    </td>
+                                </tr>
+                            </c:if>
                             <tr>
                                 <td align=right><fmt:message key="label.sortOrder" />:</td>
                                 <td>
@@ -122,6 +245,7 @@
                             </tr>
                             <tr>
                                 <td>
+                                    <input type="hidden" name="refreshUnitOfMeasureTypes" value="false" />
                                     <html:hidden property="entityAttributeTypeChoice" />
                                     <html:hidden property="componentVendorName" />
                                     <html:hidden property="entityTypeName" />
@@ -131,6 +255,30 @@
                             </tr>
                         </table>
                     </html:form>
+                    <c:if test="${EntityAttributeEdit.entityAttributeTypeChoice == 'INTEGER' || EntityAttributeEdit.entityAttributeTypeChoice == 'LONG'}">
+                        <script type="text/javascript">
+                            (function() {
+                                var unitOfMeasureKindChoice = document.getElementById('unitOfMeasureKindChoice');
+                                var unitOfMeasureTypeChoice = unitOfMeasureKindChoice.form.elements['unitOfMeasureTypeChoice'];
+
+                                function updateUnitOfMeasureTypeChoice() {
+                                    unitOfMeasureTypeChoice.disabled = !unitOfMeasureKindChoice.value;
+                                    unitOfMeasureTypeChoice.required = !!unitOfMeasureKindChoice.value;
+                                    document.getElementById('unitOfMeasureTypeRequired').hidden = !unitOfMeasureTypeChoice.required;
+                                }
+
+                                unitOfMeasureKindChoice.addEventListener('change', function() {
+                                    unitOfMeasureTypeChoice.value = '';
+                                    unitOfMeasureKindChoice.form.elements['refreshUnitOfMeasureTypes'].value = 'true';
+                                    unitOfMeasureKindChoice.form.submit();
+                                });
+                                unitOfMeasureKindChoice.form.addEventListener('reset', function() {
+                                    setTimeout(updateUnitOfMeasureTypeChoice, 0);
+                                });
+                                updateUnitOfMeasureTypeChoice();
+                            })();
+                        </script>
+                    </c:if>
                 </c:otherwise>
             </c:choose>
         </div>

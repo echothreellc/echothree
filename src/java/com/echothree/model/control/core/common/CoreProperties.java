@@ -27,6 +27,8 @@ public interface CoreProperties {
     String DELETED_TIME = "deletedTime";
     String DESCRIPTION = "description";
     String ENTITY_ATTRIBUTE = "entityAttribute";
+    String ENTITY_ATTRIBUTE_INTEGER = "entityAttributeInteger";
+    String ENTITY_ATTRIBUTE_LONG = "entityAttributeLong";
     String ENTITY_ATTRIBUTE_NAME = "entityAttributeName";
     String ENTITY_ATTRIBUTE_TYPE = "entityAttributeType";
     String ENTITY_ATTRIBUTE_TYPE_NAME = "entityAttributeTypeName";
@@ -62,5 +64,6 @@ public interface CoreProperties {
     String UNIT_OF_MEASURE_TYPE = "unitOfMeasureType";
     String VALID_UNTIL_TIME = "validUntilTime";
     String VALIDATION_PATTERN = "validationPattern";
-    
+    String WORKFLOW = "workflow";
+
 }

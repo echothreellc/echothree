@@ -89,18 +89,18 @@ public class CreateEntityAttributeCommand
         BLOB_FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CheckContentWebAddress", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("ValidationPattern", FieldType.NULL, false, null, null),
-                new FieldDefinition("UpperRangeIntegerValue", FieldType.SIGNED_INTEGER, false, null, null),
-                new FieldDefinition("UpperLimitIntegerValue", FieldType.SIGNED_INTEGER, false, null, null),
-                new FieldDefinition("LowerLimitIntegerValue", FieldType.SIGNED_INTEGER, false, null, null),
-                new FieldDefinition("LowerRangeIntegerValue", FieldType.SIGNED_INTEGER, false, null, null),
-                new FieldDefinition("UpperRangeLongValue", FieldType.SIGNED_LONG, false, null, null),
-                new FieldDefinition("UpperLimitLongValue", FieldType.SIGNED_LONG, false, null, null),
-                new FieldDefinition("LowerLimitLongValue", FieldType.SIGNED_LONG, false, null, null),
-                new FieldDefinition("LowerRangeLongValue", FieldType.SIGNED_LONG, false, null, null),
-                new FieldDefinition("UnitOfMeasureKindName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("UpperRangeIntegerValue", FieldType.NULL, false, null, null),
+                new FieldDefinition("UpperLimitIntegerValue", FieldType.NULL, false, null, null),
+                new FieldDefinition("LowerLimitIntegerValue", FieldType.NULL, false, null, null),
+                new FieldDefinition("LowerRangeIntegerValue", FieldType.NULL, false, null, null),
+                new FieldDefinition("UpperRangeLongValue", FieldType.NULL, false, null, null),
+                new FieldDefinition("UpperLimitLongValue", FieldType.NULL, false, null, null),
+                new FieldDefinition("LowerLimitLongValue", FieldType.NULL, false, null, null),
+                new FieldDefinition("LowerRangeLongValue", FieldType.NULL, false, null, null),
+                new FieldDefinition("UnitOfMeasureKindName", FieldType.NULL, false, null, null),
+                new FieldDefinition("UnitOfMeasureTypeName", FieldType.NULL, false, null, null),
                 new FieldDefinition("EntityListItemSequenceName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("WorkflowName", FieldType.NULL, false, null, null)
         );
         
         STRING_FORM_FIELD_DEFINITIONS = List.of(
@@ -117,7 +117,7 @@ public class CreateEntityAttributeCommand
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.NULL, false, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.NULL, false, null, null),
                 new FieldDefinition("EntityListItemSequenceName", FieldType.NULL, false, null, null),
-                new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("WorkflowName", FieldType.NULL, false, null, null)
         );
         
         INTEGER_FORM_FIELD_DEFINITIONS = List.of(
@@ -134,7 +134,7 @@ public class CreateEntityAttributeCommand
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityListItemSequenceName", FieldType.NULL, false, null, null),
-                new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("WorkflowName", FieldType.NULL, false, null, null)
         );
         
         LONG_FORM_FIELD_DEFINITIONS = List.of(
@@ -151,7 +151,7 @@ public class CreateEntityAttributeCommand
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityListItemSequenceName", FieldType.NULL, false, null, null),
-                new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("WorkflowName", FieldType.NULL, false, null, null)
         );
         
         LISTITEM_FORM_FIELD_DEFINITIONS = List.of(
@@ -168,7 +168,7 @@ public class CreateEntityAttributeCommand
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.NULL, false, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.NULL, false, null, null),
                 new FieldDefinition("EntityListItemSequenceName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("WorkflowName", FieldType.NULL, false, null, null)
         );
         
         MULTIPLELISTITEM_FORM_FIELD_DEFINITIONS = List.of(
@@ -185,7 +185,7 @@ public class CreateEntityAttributeCommand
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.NULL, false, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.NULL, false, null, null),
                 new FieldDefinition("EntityListItemSequenceName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("WorkflowName", FieldType.NULL, false, null, null)
         );
 
         WORKFLOW_FORM_FIELD_DEFINITIONS = List.of(
@@ -219,7 +219,7 @@ public class CreateEntityAttributeCommand
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.NULL, false, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.NULL, false, null, null),
                 new FieldDefinition("EntityListItemSequenceName", FieldType.NULL, false, null, null),
-                new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("WorkflowName", FieldType.NULL, false, null, null)
         );
     }
 
@@ -241,7 +241,6 @@ public class CreateEntityAttributeCommand
     @Inject
     WorkflowLogic workflowLogic;
 
-    
     /** Creates a new instance of CreateEntityAttributeCommand */
     public CreateEntityAttributeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);

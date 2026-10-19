@@ -18,10 +18,6 @@ package com.echothree.ui.web.main.action.core.entityattribute;
 
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
-import static com.echothree.model.control.core.common.EntityAttributeTypes.BLOB;
-import static com.echothree.model.control.core.common.EntityAttributeTypes.LISTITEM;
-import static com.echothree.model.control.core.common.EntityAttributeTypes.MULTIPLELISTITEM;
-import static com.echothree.model.control.core.common.EntityAttributeTypes.STRING;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -66,14 +62,17 @@ public class AddAction
             if(forwardKey == null) {
                 var actionForm = (AddActionForm)form;
                 
-                if(wasPost(request)) {
+                if(componentVendorName == null)
+                    componentVendorName = actionForm.getComponentVendorName();
+                if(entityTypeName == null)
+                    entityTypeName = actionForm.getEntityTypeName();
+
+                if(wasPost(request) && "true".equals(request.getParameter(ParameterConstants.REFRESH_UNIT_OF_MEASURE_TYPES))) {
+                    actionForm.clearUnitOfMeasureTypeChoice();
+                    forwardKey = ForwardConstants.FORM;
+                } else if(wasPost(request)) {
                     var commandForm = CoreUtil.getHome().getCreateEntityAttributeForm();
                     var entityAttributeTypeChoice = actionForm.getEntityAttributeTypeChoice();
-                    
-                    if(componentVendorName == null)
-                        componentVendorName = actionForm.getComponentVendorName();
-                    if(entityTypeName == null)
-                        entityTypeName = actionForm.getEntityTypeName();
                     
                     commandForm.setComponentVendorName(componentVendorName);
                     commandForm.setEntityTypeName(entityTypeName);
@@ -83,9 +82,13 @@ public class AddAction
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
                     
-                    switch(EntityAttributeTypes.valueOf(entityAttributeTypeChoice)) {
+                    var entityAttributeType = EntityAttributeTypes.valueOf(entityAttributeTypeChoice);
+                    switch(entityAttributeType) {
                         case BLOB:
                             commandForm.setCheckContentWebAddress(actionForm.getCheckContentWebAddress().toString());
+                            break;
+                        case WORKFLOW:
+                            commandForm.setWorkflowName(actionForm.getWorkflowChoice());
                             break;
                         case STRING:
                             commandForm.setValidationPattern(actionForm.getValidationPattern());
@@ -96,6 +99,26 @@ public class AddAction
                             break;
                         default:
                             break;
+                    }
+
+                    if(entityAttributeType == EntityAttributeTypes.INTEGER) {
+                        commandForm.setUpperRangeIntegerValue(actionForm.getUpperRangeIntegerValue());
+                        commandForm.setUpperLimitIntegerValue(actionForm.getUpperLimitIntegerValue());
+                        commandForm.setLowerLimitIntegerValue(actionForm.getLowerLimitIntegerValue());
+                        commandForm.setLowerRangeIntegerValue(actionForm.getLowerRangeIntegerValue());
+                    }
+
+                    if(entityAttributeType == EntityAttributeTypes.LONG) {
+                        commandForm.setUpperRangeLongValue(actionForm.getUpperRangeLongValue());
+                        commandForm.setUpperLimitLongValue(actionForm.getUpperLimitLongValue());
+                        commandForm.setLowerLimitLongValue(actionForm.getLowerLimitLongValue());
+                        commandForm.setLowerRangeLongValue(actionForm.getLowerRangeLongValue());
+                    }
+
+                    if(entityAttributeType == EntityAttributeTypes.INTEGER
+                            || entityAttributeType == EntityAttributeTypes.LONG) {
+                        commandForm.setUnitOfMeasureKindName(actionForm.getUnitOfMeasureKindChoice());
+                        commandForm.setUnitOfMeasureTypeName(actionForm.getUnitOfMeasureTypeChoice());
                     }
 
                     var commandResult = CoreUtil.getHome().createEntityAttribute(getUserVisitPK(request), commandForm);
