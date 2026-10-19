@@ -759,7 +759,7 @@ public class PeriodControl
             var periodKind = periodTypeDetail.getPeriodKind();
             var periodKindPK = periodKind.getPrimaryKey();
             var periodTypeName = periodTypeDetailValue.getPeriodTypeName();
-            var parentPeriodTypePK = periodTypeDetailValue.getPeriodTypePK();
+            var parentPeriodTypePK = periodTypeDetailValue.getParentPeriodTypePK();
             var workflowEntrancePK = periodTypeDetailValue.getWorkflowEntrancePK();
             var isDefault = periodTypeDetailValue.getIsDefault();
             var sortOrder = periodTypeDetailValue.getSortOrder();
