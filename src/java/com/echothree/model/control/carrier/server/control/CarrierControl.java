@@ -1669,7 +1669,7 @@ public class CarrierControl
             var recommendedOrderSelectorPK = carrierOptionDetailValue.getRecommendedOrderSelectorPK();
             var requiredOrderSelectorPK = carrierOptionDetailValue.getRequiredOrderSelectorPK();
             var recommendedShipmentSelectorPK = carrierOptionDetailValue.getRecommendedShipmentSelectorPK();
-            var requiredShipmentSelectorPK = carrierOptionDetailValue.getRequiredItemSelectorPK();
+            var requiredShipmentSelectorPK = carrierOptionDetailValue.getRequiredShipmentSelectorPK();
             var isDefault = carrierOptionDetailValue.getIsDefault();
             var sortOrder = carrierOptionDetailValue.getSortOrder();
             
@@ -2162,7 +2162,7 @@ public class CarrierControl
             var recommendedOrderSelectorPK = carrierServiceOptionValue.getRecommendedOrderSelectorPK();
             var requiredOrderSelectorPK = carrierServiceOptionValue.getRequiredOrderSelectorPK();
             var recommendedShipmentSelectorPK = carrierServiceOptionValue.getRecommendedShipmentSelectorPK();
-            var requiredShipmentSelectorPK = carrierServiceOptionValue.getRequiredItemSelectorPK();
+            var requiredShipmentSelectorPK = carrierServiceOptionValue.getRequiredShipmentSelectorPK();
             
             carrierServiceOption = carrierServiceOptionFactory.create(carrierServicePK, carrierOptionPK, isRecommended, isRequired,
                     recommendedGeoCodeSelectorPK, requiredGeoCodeSelectorPK, recommendedItemSelectorPK, requiredItemSelectorPK, recommendedOrderSelectorPK,

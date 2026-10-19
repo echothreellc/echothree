@@ -838,7 +838,7 @@ public class AccountingControl
             var parentItemAccountingCategoryPK = itemAccountingCategoryDetailValue.getParentItemAccountingCategoryPK();
             var inventoryGlAccountPK = itemAccountingCategoryDetailValue.getInventoryGlAccountPK();
             var salesGlAccountPK = itemAccountingCategoryDetailValue.getSalesGlAccountPK();
-            var returnsGlAccountPK = itemAccountingCategoryDetailValue.getReturnsCogsGlAccountPK();
+            var returnsGlAccountPK = itemAccountingCategoryDetailValue.getReturnsGlAccountPK();
             var cogsGlAccountPK = itemAccountingCategoryDetailValue.getCogsGlAccountPK();
             var returnsCogsGlAccountPK = itemAccountingCategoryDetailValue.getReturnsCogsGlAccountPK();
             var isDefault = itemAccountingCategoryDetailValue.getIsDefault();

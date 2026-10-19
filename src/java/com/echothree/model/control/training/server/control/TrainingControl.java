@@ -470,7 +470,7 @@ public class TrainingControl
             var estimatedReadingTime = trainingClassDetailValue.getEstimatedReadingTime();
             var readingTimeAllowed = trainingClassDetailValue.getReadingTimeAllowed();
             var estimatedTestingTime = trainingClassDetailValue.getEstimatedTestingTime();
-            var testingTimeAllowed = trainingClassDetailValue.getEstimatedTestingTime();
+            var testingTimeAllowed = trainingClassDetailValue.getTestingTimeAllowed();
             var requiredCompletionTime = trainingClassDetailValue.getRequiredCompletionTime();
             var workEffortScopePK = trainingClassDetailValue.getWorkEffortScopePK();
             var defaultPercentageToPass = trainingClassDetailValue.getDefaultPercentageToPass();

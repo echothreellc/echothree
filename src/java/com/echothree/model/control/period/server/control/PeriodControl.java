@@ -1177,7 +1177,7 @@ public class PeriodControl
             var periodPK = periodDetail.getPeriodPK(); // Not updated
             var periodKindPK = periodDetail.getPeriodKindPK(); // Not updated
             var periodName = periodDetailValue.getPeriodName();
-            var parentPeriodPK = periodDetailValue.getPeriodPK();
+            var parentPeriodPK = periodDetailValue.getParentPeriodPK();
             var periodTypePK = periodDetailValue.getPeriodTypePK();
             var startTime = periodDetailValue.getStartTime();
             var endTime = periodDetailValue.getEndTime();
