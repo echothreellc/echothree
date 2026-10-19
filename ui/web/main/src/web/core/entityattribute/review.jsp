@@ -91,7 +91,7 @@
             <fmt:message key="label.entityAttributeType" />: ${entityAttribute.entityAttributeType.description}<br />
             <fmt:message key="label.trackRevisions" />:
             <c:choose>
-                <c:when test="${entityType.trackRevisions}">
+                <c:when test="${entityAttribute.trackRevisions}">
                     <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
@@ -99,6 +99,153 @@
                 </c:otherwise>
             </c:choose>
             <br />
+            <c:choose>
+                <c:when test="${entityAttribute.entityAttributeType.entityAttributeTypeName == 'BLOB'}">
+                    <fmt:message key="label.checkContentWebAddress" />:
+                    <c:choose>
+                        <c:when test="${entityAttribute.checkContentWebAddress}">
+                            <fmt:message key="phrase.yes" />
+                        </c:when>
+                        <c:otherwise>
+                            <fmt:message key="phrase.no" />
+                        </c:otherwise>
+                    </c:choose>
+                    <br />
+                </c:when>
+                <c:when test="${entityAttribute.entityAttributeType.entityAttributeTypeName == 'STRING'}">
+                    <fmt:message key="label.validationPattern" />:
+                    <c:choose>
+                        <c:when test="${entityAttribute.validationPattern != null}">
+                            <c:out value="${entityAttribute.validationPattern}" />
+                        </c:when>
+                        <c:otherwise>
+                            <i><fmt:message key="phrase.notSet" /></i>
+                        </c:otherwise>
+                    </c:choose>
+                    <br />
+                </c:when>
+                <c:when test="${entityAttribute.entityAttributeType.entityAttributeTypeName == 'INTEGER'}">
+                    <fmt:message key="label.upperRangeIntegerValue" />:
+                    <c:choose>
+                        <c:when test="${entityAttribute.upperRangeIntegerValue != null}">
+                            <c:out value="${entityAttribute.upperRangeIntegerValue}" />
+                        </c:when>
+                        <c:otherwise>
+                            <i><fmt:message key="phrase.notSet" /></i>
+                        </c:otherwise>
+                    </c:choose>
+                    <br />
+                    <fmt:message key="label.upperLimitIntegerValue" />:
+                    <c:choose>
+                        <c:when test="${entityAttribute.upperLimitIntegerValue != null}">
+                            <c:out value="${entityAttribute.upperLimitIntegerValue}" />
+                        </c:when>
+                        <c:otherwise>
+                            <i><fmt:message key="phrase.notSet" /></i>
+                        </c:otherwise>
+                    </c:choose>
+                    <br />
+                    <fmt:message key="label.lowerLimitIntegerValue" />:
+                    <c:choose>
+                        <c:when test="${entityAttribute.lowerLimitIntegerValue != null}">
+                            <c:out value="${entityAttribute.lowerLimitIntegerValue}" />
+                        </c:when>
+                        <c:otherwise>
+                            <i><fmt:message key="phrase.notSet" /></i>
+                        </c:otherwise>
+                    </c:choose>
+                    <br />
+                    <fmt:message key="label.lowerRangeIntegerValue" />:
+                    <c:choose>
+                        <c:when test="${entityAttribute.lowerRangeIntegerValue != null}">
+                            <c:out value="${entityAttribute.lowerRangeIntegerValue}" />
+                        </c:when>
+                        <c:otherwise>
+                            <i><fmt:message key="phrase.notSet" /></i>
+                        </c:otherwise>
+                    </c:choose>
+                    <br />
+                </c:when>
+                <c:when test="${entityAttribute.entityAttributeType.entityAttributeTypeName == 'LONG'}">
+                    <fmt:message key="label.upperRangeLongValue" />:
+                    <c:choose>
+                        <c:when test="${entityAttribute.upperRangeLongValue != null}">
+                            <c:out value="${entityAttribute.upperRangeLongValue}" />
+                        </c:when>
+                        <c:otherwise>
+                            <i><fmt:message key="phrase.notSet" /></i>
+                        </c:otherwise>
+                    </c:choose>
+                    <br />
+                    <fmt:message key="label.upperLimitLongValue" />:
+                    <c:choose>
+                        <c:when test="${entityAttribute.upperLimitLongValue != null}">
+                            <c:out value="${entityAttribute.upperLimitLongValue}" />
+                        </c:when>
+                        <c:otherwise>
+                            <i><fmt:message key="phrase.notSet" /></i>
+                        </c:otherwise>
+                    </c:choose>
+                    <br />
+                    <fmt:message key="label.lowerLimitLongValue" />:
+                    <c:choose>
+                        <c:when test="${entityAttribute.lowerLimitLongValue != null}">
+                            <c:out value="${entityAttribute.lowerLimitLongValue}" />
+                        </c:when>
+                        <c:otherwise>
+                            <i><fmt:message key="phrase.notSet" /></i>
+                        </c:otherwise>
+                    </c:choose>
+                    <br />
+                    <fmt:message key="label.lowerRangeLongValue" />:
+                    <c:choose>
+                        <c:when test="${entityAttribute.lowerRangeLongValue != null}">
+                            <c:out value="${entityAttribute.lowerRangeLongValue}" />
+                        </c:when>
+                        <c:otherwise>
+                            <i><fmt:message key="phrase.notSet" /></i>
+                        </c:otherwise>
+                    </c:choose>
+                    <br />
+                </c:when>
+                <c:when test="${entityAttribute.entityAttributeType.entityAttributeTypeName == 'LISTITEM' || entityAttribute.entityAttributeType.entityAttributeTypeName == 'MULTIPLELISTITEM'}">
+                    <fmt:message key="label.entityListItemSequence" />:
+                    <c:choose>
+                        <c:when test="${entityAttribute.entityListItemSequence.sequenceName != null}">
+                            <c:out value="${entityAttribute.entityListItemSequence.sequenceName}" />
+                        </c:when>
+                        <c:otherwise>
+                            <i><fmt:message key="phrase.notSet" /></i>
+                        </c:otherwise>
+                    </c:choose>
+                    <br />
+                </c:when>
+                <c:when test="${entityAttribute.entityAttributeType.entityAttributeTypeName == 'WORKFLOW'}">
+                    <fmt:message key="label.workflow" />: <c:out value="${entityAttribute.workflow.workflowName}" /><br />
+                </c:when>
+            </c:choose>
+            <c:if test="${entityAttribute.entityAttributeType.entityAttributeTypeName == 'INTEGER' || entityAttribute.entityAttributeType.entityAttributeTypeName == 'LONG'}">
+                <fmt:message key="label.unitOfMeasureKindName" />:
+                <c:choose>
+                    <c:when test="${entityAttribute.unitOfMeasureType.unitOfMeasureKind.unitOfMeasureKindName != null}">
+                        <c:out value="${entityAttribute.unitOfMeasureType.unitOfMeasureKind.unitOfMeasureKindName}" />
+                    </c:when>
+                    <c:otherwise>
+                        <i><fmt:message key="phrase.notSet" /></i>
+                    </c:otherwise>
+                </c:choose>
+                <br />
+                <fmt:message key="label.unitOfMeasureTypeName" />:
+                <c:choose>
+                    <c:when test="${entityAttribute.unitOfMeasureType.unitOfMeasureTypeName != null}">
+                        <c:out value="${entityAttribute.unitOfMeasureType.unitOfMeasureTypeName}" />
+                    </c:when>
+                    <c:otherwise>
+                        <i><fmt:message key="phrase.notSet" /></i>
+                    </c:otherwise>
+                </c:choose>
+                <br />
+            </c:if>
             <fmt:message key="label.sortOrder" />: ${entityAttribute.sortOrder}<br />
             <br />
             <c:if test="${entityAttribute.entityAttributeType.entityAttributeTypeName == 'LISTITEM' || entityAttribute.entityAttributeType.entityAttributeTypeName == 'MULTIPLELISTITEM'}">

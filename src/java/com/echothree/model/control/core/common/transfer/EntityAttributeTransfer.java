@@ -18,6 +18,7 @@ package com.echothree.model.control.core.common.transfer;
 
 import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeTransfer;
+import com.echothree.model.control.workflow.common.transfer.WorkflowTransfer;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.common.transfer.ListWrapper;
 
@@ -43,6 +44,7 @@ public class EntityAttributeTransfer
     private Long lowerRangeLongValue;
     private UnitOfMeasureTypeTransfer unitOfMeasureType;
     private SequenceTransfer entityListItemSequence;
+    private WorkflowTransfer workflow;
 
     private EntityBooleanDefaultTransfer entityBooleanDefault;
     private EntityBooleanAttributeTransfer entityBooleanAttribute;
@@ -704,6 +706,14 @@ public class EntityAttributeTransfer
      */
     public void setEntityMultipleListItemAttributes(ListWrapper<EntityMultipleListItemAttributeTransfer> entityMultipleListItemAttributes) {
         this.entityMultipleListItemAttributes = entityMultipleListItemAttributes;
+    }
+
+    public WorkflowTransfer getWorkflow() {
+        return workflow;
+    }
+
+    public void setWorkflow(WorkflowTransfer workflow) {
+        this.workflow = workflow;
     }
 
     public Long getEntityListItemsCount() {
