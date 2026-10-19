@@ -754,7 +754,7 @@ public class PaymentMethodControl
             var requestNameOnCard = paymentMethodCreditCardValue.getRequestNameOnCard();
             var reqireNameOnCard = paymentMethodCreditCardValue.getRequireNameOnCard();
             var checkCardNumber = paymentMethodCreditCardValue.getCheckCardNumber();
-            var requestExpirationDate = paymentMethodCreditCardValue.getRequireExpirationDate();
+            var requestExpirationDate = paymentMethodCreditCardValue.getRequestExpirationDate();
             var requireExpirationDate = paymentMethodCreditCardValue.getRequireExpirationDate();
             var checkExpirationDate = paymentMethodCreditCardValue.getCheckExpirationDate();
             var requestSecurityCode = paymentMethodCreditCardValue.getRequestSecurityCode();

@@ -269,6 +269,14 @@ import com.echothree.control.user.search.common.form.GetItemResultsFacetForm;
 import com.echothree.control.user.search.common.form.GetItemResultsForm;
 import com.echothree.control.user.search.common.form.SearchItemsForm;
 import com.echothree.control.user.selector.common.edit.SelectorEdit;
+import com.echothree.control.user.period.common.edit.PeriodKindEdit;
+import com.echothree.control.user.period.common.form.CreatePeriodKindForm;
+import com.echothree.control.user.period.common.form.DeletePeriodKindForm;
+import com.echothree.control.user.period.common.spec.PeriodKindSpec;
+import com.echothree.control.user.period.common.edit.PeriodTypeEdit;
+import com.echothree.control.user.period.common.form.CreatePeriodTypeForm;
+import com.echothree.control.user.period.common.form.DeletePeriodTypeForm;
+import com.echothree.control.user.period.common.spec.PeriodTypeSpec;
 import com.echothree.control.user.selector.common.edit.SelectorKindEdit;
 import com.echothree.control.user.selector.common.edit.SelectorNodeEdit;
 import com.echothree.control.user.selector.common.edit.SelectorTypeEdit;
@@ -749,6 +757,20 @@ public class BasePersona {
     public CreatePartyPaymentMethodForm createPartyPaymentMethodForm;
 
     public String lastPartyPaymentMethodName;
+
+    // Period
+    public CreatePeriodKindForm createPeriodKindForm;
+    public DeletePeriodKindForm deletePeriodKindForm;
+    public PeriodKindSpec periodKindSpec;
+    public PeriodKindEdit periodKindEdit;
+
+    public CreatePeriodTypeForm createPeriodTypeForm;
+    public DeletePeriodTypeForm deletePeriodTypeForm;
+    public PeriodTypeSpec periodTypeSpec;
+    public PeriodTypeEdit periodTypeEdit;
+
+    public String lastPeriodKindName;
+    public String lastPeriodTypeName;
 
     // Purchase
     public CreatePurchaseOrderForm createPurchaseOrderForm;
