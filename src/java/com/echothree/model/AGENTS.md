@@ -24,5 +24,5 @@
 
 ### GraphQL Conventions
 
-- GraphQL query parameters must match the corresponding Command's complete parameter set
+- GraphQL query parameters must match the corresponding Command's complete parameter set except `EntityRef`, which must never be exposed as a GraphQL query argument or mutation input field. Map `Uuid` to `id` with `@GraphQLID`.
 - Apply `@GraphQLNonNull` exactly when the Command field definition marks the parameter as required

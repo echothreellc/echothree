@@ -389,6 +389,8 @@ import com.echothree.control.user.payment.server.command.GetPaymentProcessorsCom
 import com.echothree.control.user.period.common.PeriodUtil;
 import com.echothree.control.user.period.server.command.GetPeriodKindCommand;
 import com.echothree.control.user.period.server.command.GetPeriodKindsCommand;
+import com.echothree.control.user.period.server.command.GetPeriodTypeCommand;
+import com.echothree.control.user.period.server.command.GetPeriodTypesCommand;
 import com.echothree.control.user.queue.common.QueueUtil;
 import com.echothree.control.user.queue.server.command.GetQueueTypeCommand;
 import com.echothree.control.user.queue.server.command.GetQueueTypesCommand;
@@ -735,6 +737,7 @@ import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeCo
 import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeCodeTypeObject;
 import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeObject;
 import com.echothree.model.control.period.server.graphql.PeriodKindObject;
+import com.echothree.model.control.period.server.graphql.PeriodTypeObject;
 import com.echothree.model.control.queue.server.graphql.QueueTypeObject;
 import com.echothree.model.control.returnpolicy.server.graphql.ReturnKindObject;
 import com.echothree.model.control.returnpolicy.server.graphql.ReturnPolicyObject;
@@ -1158,7 +1161,9 @@ import com.echothree.model.data.payment.server.entity.PaymentProcessorType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCode;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeType;
 import com.echothree.model.data.period.common.PeriodKindConstants;
+import com.echothree.model.data.period.common.PeriodTypeConstants;
 import com.echothree.model.data.period.server.entity.PeriodKind;
+import com.echothree.model.data.period.server.entity.PeriodType;
 import com.echothree.model.data.queue.common.QueueTypeConstants;
 import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.returnpolicy.common.ReturnKindConstants;
@@ -5317,15 +5322,13 @@ public interface GraphQlQueries {
     @GraphQLField
     @GraphQLName("entityInstance")
     static EntityInstanceObject entityInstance(final DataFetchingEnvironment env,
-            @GraphQLName("id") @GraphQLID final String id,
-            @GraphQLName("entityRef") final String entityRef) {
+            @GraphQLName("id") @GraphQLID @GraphQLNonNull final String id) {
         EntityInstance entityInstance;
 
         try {
             var commandForm = CoreUtil.getHome().getGetEntityInstanceForm();
 
             commandForm.setUuid(id);
-            commandForm.setEntityRef(entityRef);
 
             entityInstance = CDI.current().select(GetEntityInstanceCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
         } catch (NamingException ex) {
@@ -15611,6 +15614,64 @@ public interface GraphQlQueries {
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, periodKinds);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("periodType")
+    static PeriodTypeObject periodType(final DataFetchingEnvironment env,
+            @GraphQLName("periodKindName") final String periodKindName,
+            @GraphQLName("periodTypeName") final String periodTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        PeriodType periodType;
+
+        try {
+            var commandForm = PeriodUtil.getHome().getGetPeriodTypeForm();
+
+            commandForm.setPeriodKindName(periodKindName);
+            commandForm.setPeriodTypeName(periodTypeName);
+            commandForm.setUuid(id);
+
+            periodType = CDI.current().select(GetPeriodTypeCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return periodType == null ? null : new PeriodTypeObject(periodType);
+    }
+
+    @GraphQLField
+    @GraphQLName("periodTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<PeriodTypeObject> periodTypes(final DataFetchingEnvironment env,
+            @GraphQLName("periodKindName") @GraphQLNonNull final String periodKindName) {
+        CountingPaginatedData<PeriodTypeObject> data;
+
+        try {
+            var commandForm = PeriodUtil.getHome().getGetPeriodTypesForm();
+            var command = CDI.current().select(GetPeriodTypesCommand.class).get();
+
+            commandForm.setPeriodKindName(periodKindName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, PeriodTypeConstants.COMPONENT_VENDOR_NAME, PeriodTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var periodTypes = entities.stream()
+                            .map(PeriodTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, periodTypes);
                 }
             }
         } catch (NamingException ex) {

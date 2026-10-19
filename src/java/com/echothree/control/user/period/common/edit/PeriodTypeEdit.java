@@ -25,7 +25,7 @@ public interface PeriodTypeEdit
     void setPeriodTypeName(String periodTypeName);
     
     String getParentPeriodTypeName();
-    void setParentPeriodType(String parentPeriodType);
+    void setParentPeriodTypeName(String parentPeriodTypeName);
     
     String getIsDefault();
     void setIsDefault(String isDefault);

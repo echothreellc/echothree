@@ -21,11 +21,11 @@ import com.echothree.control.user.period.common.result.PeriodResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.period.server.control.PeriodControl;
+import com.echothree.model.control.period.server.logic.PeriodTypeLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.period.server.entity.PeriodType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
@@ -50,40 +50,34 @@ public class GetPeriodTypeCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.PeriodType.name(), SecurityRoles.Review.name())
                 ))
         ));
-        
+
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("PeriodKindName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("PeriodTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("PeriodKindName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("PeriodTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
 
     @Inject
     PeriodControl periodControl;
+
+    @Inject
+    PeriodTypeLogic periodTypeLogic;
     
     /** Creates a new instance of GetPeriodTypeCommand */
     public GetPeriodTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
     protected PeriodType getEntity() {
-        PeriodType periodType = null;
-        var periodKindName = form.getPeriodKindName();
-        var periodKind = periodControl.getPeriodKindByName(periodKindName);
-        
-        if(periodKind != null) {
-            var periodTypeName = form.getPeriodTypeName();
-            periodType = periodControl.getPeriodTypeByName(periodKind, periodTypeName);
-            
-            if(periodType != null) {
-                sendEvent(periodType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-            } else {
-                addExecutionError(ExecutionErrors.UnknownPeriodTypeName.name(), periodKindName, periodTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownPeriodKindName.name(), periodKindName);
+        var periodType = periodTypeLogic.getPeriodTypeByUniversalSpec(this, form, true);
+
+        if(periodType != null) {
+            sendEvent(periodType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
-        
+
         return periodType;
     }
 
