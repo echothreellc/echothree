@@ -54,7 +54,11 @@
                         <p class="executionErrors"><c:out value="${errorMessage}" /></p><br />
                     </et:executionErrors>
                     <html:form action="/Core/EntityAttribute/Edit" method="POST" focus="entityAttributeName">
-                        <table>
+                        <table class="entityAttributeForm">
+                            <colgroup>
+                                <col class="entityAttributeFormLabel" />
+                                <col />
+                            </colgroup>
                             <tr>
                                 <td align=right><fmt:message key="label.entityAttributeName" />:</td>
                                 <td>

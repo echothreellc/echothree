@@ -323,3 +323,21 @@ span.pagelinks {
         border-top: none;
         margin-bottom: -5px;
 }
+
+/* Keep entity attribute controls aligned as type-specific fields change. */
+table.entityAttributeForm {
+    table-layout: fixed;
+    width: 640px;
+    max-width: 100%;
+}
+
+table.entityAttributeForm col.entityAttributeFormLabel {
+    width: 180px;
+}
+
+table.entityAttributeForm input,
+table.entityAttributeForm select,
+table.entityAttributeForm textarea {
+    box-sizing: border-box;
+    max-width: 100%;
+}
