@@ -16,6 +16,8 @@
 
 package com.echothree.model.control.period.server.graphql;
 
+import com.echothree.control.user.period.server.command.GetFiscalPeriodCommand;
+import com.echothree.control.user.period.server.command.GetFiscalPeriodsCommand;
 import com.echothree.control.user.period.server.command.GetPeriodKindCommand;
 import com.echothree.control.user.period.server.command.GetPeriodKindsCommand;
 import com.echothree.control.user.period.server.command.GetPeriodTypeCommand;
@@ -39,6 +41,14 @@ public interface PeriodSecurityUtils {
 
     static boolean getHasPeriodTypesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPeriodTypesCommand.class);
+    }
+
+    static boolean getHasFiscalPeriodAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFiscalPeriodCommand.class);
+    }
+
+    static boolean getHasFiscalPeriodsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFiscalPeriodsCommand.class);
     }
 
 }

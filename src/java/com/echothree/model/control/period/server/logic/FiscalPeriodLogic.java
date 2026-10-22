@@ -16,13 +16,21 @@
 
 package com.echothree.model.control.period.server.logic;
 
+import com.echothree.control.user.period.common.spec.FiscalPeriodUniversalSpec;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.period.common.PeriodConstants;
+import com.echothree.model.control.period.common.exception.InvalidPeriodKindNameException;
 import com.echothree.model.control.period.server.control.PeriodControl;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.period.server.entity.Period;
 import com.echothree.model.data.period.server.entity.PeriodKind;
+import com.echothree.model.data.period.server.entity.PeriodType;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import java.time.ZoneId;
@@ -33,13 +41,20 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 @ApplicationScoped
-public class FiscalPeriodLogic {
+public class FiscalPeriodLogic
+        extends BaseLogic {
 
     @Inject
     PartyControl partyControl;
 
     @Inject
     PeriodControl periodControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    PeriodKindLogic periodKindLogic;
 
     @Inject
     PeriodLogic periodLogic;
@@ -211,4 +226,41 @@ public class FiscalPeriodLogic {
         return getFiscalPeriodByName(eea, periodName, EntityPermission.READ_WRITE);
     }
     
+    public PeriodKind getFiscalPeriodKind(final ExecutionErrorAccumulator eea) {
+        return periodKindLogic.getPeriodKindByName(eea, PeriodConstants.PeriodKind_FISCAL);
+    }
+
+    public Period getFiscalPeriodByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final FiscalPeriodUniversalSpec spec, final EntityPermission entityPermission) {
+        var periodKind = getFiscalPeriodKind(eea);
+        Period period = null;
+
+        if(!hasExecutionErrors(eea)) {
+            var periodName = spec.getPeriodName();
+            var entitySpecCount = entityInstanceLogic.countPossibleEntitySpecs(spec);
+
+            if(entitySpecCount == 0 && periodName != null) {
+                if(!hasExecutionErrors(eea)) {
+                    period = periodLogic.getPeriodByName(eea, periodKind, periodName, entityPermission);
+                }
+            } else if(entitySpecCount == 1 && periodName == null) {
+                var instance = entityInstanceLogic.getEntityInstance(eea, spec, ComponentVendors.ECHO_THREE.name(), EntityTypes.Period.name());
+
+                if(!hasExecutionErrors(eea)) {
+                    period = periodControl.getPeriodByEntityInstance(instance, entityPermission);
+                    var actualPeriodKind = period.getLastDetail().getPeriodKind();
+
+                    if(!actualPeriodKind.equals(getFiscalPeriodKind(eea))) {
+                        handleExecutionError(InvalidPeriodKindNameException.class, eea, ExecutionErrors.InvalidPeriodKindName.name(), periodKind.getLastDetail().getPeriodKindName());
+                        period = null;
+                    }
+                }
+            } else {
+                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+            }
+        }
+
+        return period;
+    }
+
 }

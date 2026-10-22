@@ -17,7 +17,7 @@
 package com.echothree.control.user.period.common.spec;
 
 public interface PeriodSpec
-        extends PeriodTypeSpec {
+        extends PeriodKindSpec {
     
     String getPeriodName();
     void setPeriodName(String periodName);

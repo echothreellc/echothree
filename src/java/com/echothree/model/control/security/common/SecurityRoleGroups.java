@@ -283,6 +283,7 @@ public enum SecurityRoleGroups {
     PaymentProcessorTypeCodeType,
     PaymentMethod,
     PaymentMethodType,
+    Period,
     PeriodKind,
     PeriodType,
     PicklistAliasType,

@@ -17,6 +17,8 @@
 package com.echothree.model.control.period.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.period.server.control.PeriodControl;
 import com.echothree.model.control.user.server.control.UserControl;
@@ -29,6 +31,7 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("period type object")
@@ -113,6 +116,16 @@ public class PeriodTypeObject
         var userControl = Session.getModelController(UserControl.class);
 
         return periodControl.getBestPeriodTypeDescription(periodType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+    }
+
+    @GraphQLField
+    @GraphQLDescription("periods")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<PeriodInterface> getPeriods(final DataFetchingEnvironment env,
+            @GraphQLName("parentPeriodName") final String parentPeriodName) {
+        return PeriodObject.getPeriods(env, getPeriodTypeDetail().getPeriodKind().getLastDetail().getPeriodKindName(),
+                parentPeriodName, getPeriodTypeName());
     }
 
 }

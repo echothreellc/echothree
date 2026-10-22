@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.period.common.transfer;
 
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.util.common.transfer.BaseTransfer;
 
 public class PeriodTransfer
@@ -31,11 +30,10 @@ public class PeriodTransfer
     private Long unformattedEndTime;
     private String endTime;
     private String description;
-    private WorkflowEntityStatusTransfer status;
     
     /** Creates a new instance of PeriodTransfer */
-    public PeriodTransfer(PeriodKindTransfer periodKind, String periodName, PeriodTransfer parentPeriod, PeriodTypeTransfer periodType, Long unformattedStartTime,
-            String startTime, Long unformattedEndTime, String endTime, String description, WorkflowEntityStatusTransfer status) {
+    public PeriodTransfer(PeriodKindTransfer periodKind, String periodName, PeriodTransfer parentPeriod, PeriodTypeTransfer periodType,
+            Long unformattedStartTime, String startTime, Long unformattedEndTime, String endTime, String description) {
         this.periodKind = periodKind;
         this.periodName = periodName;
         this.periodType = periodType;
@@ -45,7 +43,6 @@ public class PeriodTransfer
         this.unformattedEndTime = unformattedEndTime;
         this.endTime = endTime;
         this.description = description;
-        this.status = status;
     }
 
     /**
@@ -190,22 +187,6 @@ public class PeriodTransfer
      */
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    /**
-     * Returns the status.
-     * @return the status
-     */
-    public WorkflowEntityStatusTransfer getStatus() {
-        return status;
-    }
-
-    /**
-     * Sets the status.
-     * @param status the status to set
-     */
-    public void setStatus(WorkflowEntityStatusTransfer status) {
-        this.status = status;
     }
 
 }

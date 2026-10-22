@@ -387,6 +387,8 @@ import com.echothree.control.user.payment.server.command.GetPaymentProcessorType
 import com.echothree.control.user.payment.server.command.GetPaymentProcessorTypesCommand;
 import com.echothree.control.user.payment.server.command.GetPaymentProcessorsCommand;
 import com.echothree.control.user.period.common.PeriodUtil;
+import com.echothree.control.user.period.server.command.GetFiscalPeriodCommand;
+import com.echothree.control.user.period.server.command.GetFiscalPeriodsCommand;
 import com.echothree.control.user.period.server.command.GetPeriodKindCommand;
 import com.echothree.control.user.period.server.command.GetPeriodKindsCommand;
 import com.echothree.control.user.period.server.command.GetPeriodTypeCommand;
@@ -736,6 +738,7 @@ import com.echothree.model.control.payment.server.graphql.PaymentProcessorTransa
 import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeCodeObject;
 import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeCodeTypeObject;
 import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeObject;
+import com.echothree.model.control.period.server.graphql.FiscalPeriodObject;
 import com.echothree.model.control.period.server.graphql.PeriodKindObject;
 import com.echothree.model.control.period.server.graphql.PeriodTypeObject;
 import com.echothree.model.control.queue.server.graphql.QueueTypeObject;
@@ -1160,6 +1163,7 @@ import com.echothree.model.data.payment.server.entity.PaymentProcessorTransactio
 import com.echothree.model.data.payment.server.entity.PaymentProcessorType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCode;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeType;
+import com.echothree.model.data.period.common.PeriodConstants;
 import com.echothree.model.data.period.common.PeriodKindConstants;
 import com.echothree.model.data.period.common.PeriodTypeConstants;
 import com.echothree.model.data.period.server.entity.PeriodKind;
@@ -15675,6 +15679,62 @@ public interface GraphQlQueries {
                 }
             }
         } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("fiscalPeriod")
+    static FiscalPeriodObject fiscalPeriod(final DataFetchingEnvironment env,
+            @GraphQLName("periodName") final String periodName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        try {
+            var form = PeriodUtil.getHome().getGetFiscalPeriodForm();
+
+            form.setPeriodName(periodName);
+            form.setUuid(id);
+
+            var period = CDI.current().select(GetFiscalPeriodCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), form);
+
+            return period == null ? null : new FiscalPeriodObject(period);
+        } catch(NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @GraphQLField
+    @GraphQLName("fiscalPeriods")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<FiscalPeriodObject> fiscalPeriods(final DataFetchingEnvironment env,
+            @GraphQLName("parentPeriodName") final String parentPeriodName,
+            @GraphQLName("periodTypeName") final String periodTypeName) {
+        CountingPaginatedData<FiscalPeriodObject> data = null;
+
+        try {
+            var form = PeriodUtil.getHome().getGetFiscalPeriodsForm();
+            var command = CDI.current().select(GetFiscalPeriodsCommand.class).get();
+
+            form.setParentPeriodName(parentPeriodName);
+            form.setPeriodTypeName(periodTypeName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), form);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, PeriodConstants.COMPONENT_VENDOR_NAME,
+                        PeriodConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), form);
+
+                    var fiscalPeriodObjects = entities.stream().map(FiscalPeriodObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    return new CountedObjects<>(objectLimiter, fiscalPeriodObjects);
+                }
+            }
+        } catch(NamingException ex) {
             throw new RuntimeException(ex);
         }
 

@@ -17,17 +17,24 @@
 package com.echothree.model.control.period.server.logic;
 
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.control.period.common.exception.UnknownPeriodNameException;
 import com.echothree.model.control.period.server.control.PeriodControl;
+import com.echothree.model.control.period.server.control.PeriodControl.PeriodSelection;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.period.server.entity.Period;
 import com.echothree.model.data.period.server.entity.PeriodKind;
 import com.echothree.model.data.period.server.entity.PeriodType;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.server.control.BaseLogic;
+import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 @ApplicationScoped
-public class PeriodLogic {
+public class PeriodLogic
+        extends BaseLogic {
 
     @Inject
     EntityInstanceControl entityInstanceControl;
@@ -37,6 +44,9 @@ public class PeriodLogic {
 
     @Inject
     WorkflowControl workflowControl;
+
+    @Inject
+    PeriodTypeLogic periodTypeLogic;
 
     protected PeriodLogic() {
         super();
@@ -60,5 +70,37 @@ public class PeriodLogic {
         
         return period;
     }
-    
+
+    public Period getPeriodByName(final ExecutionErrorAccumulator eea, final PeriodKind periodKind,
+            final String periodName, final EntityPermission entityPermission) {
+        var period = periodControl.getPeriodByName(periodKind, periodName, entityPermission);
+
+        if(period == null) {
+            handleExecutionError(UnknownPeriodNameException.class, eea, ExecutionErrors.UnknownPeriodName.name(),
+                    periodKind.getLastDetail().getPeriodKindName(), periodName);
+        }
+
+        return period;
+    }
+
+    public Period getPeriodByName(final ExecutionErrorAccumulator eea, final PeriodKind periodKind, final String periodName) {
+        return getPeriodByName(eea, periodKind, periodName, EntityPermission.READ_ONLY);
+    }
+
+    public PeriodSelection getPeriodSelection(final ExecutionErrorAccumulator executionErrorAccumulator, final PeriodKind periodKind,
+            final String parentPeriodName, final String periodTypeName) {
+        Period parentPeriod = null;
+        PeriodType periodType = null;
+
+        if(!hasExecutionErrors(executionErrorAccumulator) && parentPeriodName != null) {
+            parentPeriod = getPeriodByName(executionErrorAccumulator, periodKind, parentPeriodName);
+        }
+
+        if(!hasExecutionErrors(executionErrorAccumulator) && periodTypeName != null) {
+            periodType = periodTypeLogic.getPeriodTypeByName(executionErrorAccumulator, periodKind, periodTypeName);
+        }
+
+        return hasExecutionErrors(executionErrorAccumulator) ? null : new PeriodSelection(periodKind, parentPeriod, periodType);
+    }
+
 }

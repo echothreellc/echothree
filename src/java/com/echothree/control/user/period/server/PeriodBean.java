@@ -165,7 +165,21 @@ public class PeriodBean
     public CommandResult<VoidResult> deletePeriodTypeDescription(UserVisitPK userVisitPK, DeletePeriodTypeDescriptionForm form) {
         return CDI.current().select(DeletePeriodTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
-    
+
+    // -------------------------------------------------------------------------
+    //   Periods
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult<GetPeriodDescriptionsResult> getPeriodDescriptions(UserVisitPK userVisitPK, GetPeriodDescriptionsForm form) {
+        return CDI.current().select(GetPeriodDescriptionsCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetPeriodDescriptionResult> getPeriodDescription(UserVisitPK userVisitPK, GetPeriodDescriptionForm form) {
+        return CDI.current().select(GetPeriodDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
     // -------------------------------------------------------------------------
     //   Fiscal Periods
     // -------------------------------------------------------------------------
@@ -174,7 +188,17 @@ public class PeriodBean
     public CommandResult<CreateFiscalYearResult> createFiscalYear(UserVisitPK userVisitPK, CreateFiscalYearForm form) {
         return CDI.current().select(CreateFiscalYearCommand.class).get().run(userVisitPK, form);
     }
-    
+
+    @Override
+    public CommandResult<GetFiscalPeriodResult> getFiscalPeriod(UserVisitPK userVisitPK, GetFiscalPeriodForm form) {
+        return CDI.current().select(GetFiscalPeriodCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetFiscalPeriodsResult> getFiscalPeriods(UserVisitPK userVisitPK, GetFiscalPeriodsForm form) {
+        return CDI.current().select(GetFiscalPeriodsCommand.class).get().run(userVisitPK, form);
+    }
+
     @Override
     public CommandResult<GetFiscalPeriodStatusChoicesResult> getFiscalPeriodStatusChoices(UserVisitPK userVisitPK, GetFiscalPeriodStatusChoicesForm form) {
         return CDI.current().select(GetFiscalPeriodStatusChoicesCommand.class).get().run(userVisitPK, form);

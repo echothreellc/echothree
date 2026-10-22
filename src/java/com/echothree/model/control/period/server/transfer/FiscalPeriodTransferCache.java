@@ -16,20 +16,18 @@
 
 package com.echothree.model.control.period.server.transfer;
 
-import javax.inject.Inject;
 import com.echothree.model.control.accounting.common.workflow.FiscalPeriodStatusConstants;
-import com.echothree.model.control.period.common.PeriodConstants;
-import com.echothree.model.control.period.common.transfer.PeriodTransfer;
+import com.echothree.model.control.period.common.transfer.FiscalPeriodTransfer;
 import com.echothree.model.control.period.server.control.PeriodControl;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.period.server.entity.Period;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
-public class PeriodTransferCache
-        extends BasePeriodTransferCache<Period, PeriodTransfer> {
+public class FiscalPeriodTransferCache
+        extends BasePeriodTransferCache<Period, FiscalPeriodTransfer> {
 
     @Inject
     PeriodControl periodControl;
@@ -37,14 +35,14 @@ public class PeriodTransferCache
     @Inject
     WorkflowControl workflowControl;
     
-    /** Creates a new instance of PeriodTransferCache */
-    protected PeriodTransferCache() {
+    /** Creates a new instance of FiscalPeriodTransferCache */
+    protected FiscalPeriodTransferCache() {
         super();
         
         setIncludeEntityInstance(true);
     }
     
-    public PeriodTransfer getPeriodTransfer(UserVisit userVisit, Period period) {
+    public FiscalPeriodTransfer getFiscalPeriodTransfer(UserVisit userVisit, Period period) {
         var periodTransfer = get(period);
         
         if(periodTransfer == null) {
@@ -60,17 +58,12 @@ public class PeriodTransferCache
             var unformattedEndTime = periodDetail.getEndTime();
             var endTime = formatTypicalDateTime(userVisit, unformattedEndTime);
             var description = periodControl.getBestPeriodDescription(period, getLanguage(userVisit));
-            WorkflowEntityStatusTransfer status = null;
-
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(period.getPrimaryKey());
-            var periodKindName = periodTypeTransfer.getPeriodKind().getPeriodKindName();
-            if(periodKindName.equals(PeriodConstants.PeriodKind_FISCAL)) {
-                status = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
-                        FiscalPeriodStatusConstants.Workflow_FISCAL_PERIOD_STATUS, entityInstance);
-            }
-            
-            periodTransfer = new PeriodTransfer(periodKindTransfer, periodName, parentPeriodTransfer, periodTypeTransfer, unformattedStartTime, startTime, unformattedEndTime,
-                    endTime, description, status);
+            var fiscalPeriodStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+                    FiscalPeriodStatusConstants.Workflow_FISCAL_PERIOD_STATUS, entityInstance);
+
+            periodTransfer = new FiscalPeriodTransfer(periodKindTransfer, periodName, parentPeriodTransfer,
+                    periodTypeTransfer, unformattedStartTime, startTime, unformattedEndTime, endTime, description, fiscalPeriodStatus);
             put(userVisit, period, periodTransfer);
         }
         
