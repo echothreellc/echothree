@@ -21,22 +21,25 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.period.common.choice.FiscalPeriodStatusChoicesBean;
 import com.echothree.model.control.period.common.choice.PeriodKindChoicesBean;
 import com.echothree.model.control.period.common.choice.PeriodTypeChoicesBean;
+import com.echothree.model.control.period.common.PeriodConstants;
+import com.echothree.model.control.period.common.transfer.FiscalPeriodTransfer;
 import com.echothree.model.control.period.common.transfer.PeriodDescriptionTransfer;
 import com.echothree.model.control.period.common.transfer.PeriodKindDescriptionTransfer;
 import com.echothree.model.control.period.common.transfer.PeriodKindTransfer;
 import com.echothree.model.control.period.common.transfer.PeriodTransfer;
 import com.echothree.model.control.period.common.transfer.PeriodTypeDescriptionTransfer;
 import com.echothree.model.control.period.common.transfer.PeriodTypeTransfer;
+import com.echothree.model.control.period.server.transfer.FiscalPeriodTransferCache;
 import com.echothree.model.control.period.server.transfer.PeriodDescriptionTransferCache;
 import com.echothree.model.control.period.server.transfer.PeriodKindDescriptionTransferCache;
 import com.echothree.model.control.period.server.transfer.PeriodKindTransferCache;
-import com.echothree.model.control.period.server.transfer.PeriodTransferCache;
 import com.echothree.model.control.period.server.transfer.PeriodTypeDescriptionTransferCache;
 import com.echothree.model.control.period.server.transfer.PeriodTypeTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.period.common.pk.PeriodKindPK;
+import com.echothree.model.data.period.common.pk.PeriodPK;
 import com.echothree.model.data.period.common.pk.PeriodTypePK;
 import com.echothree.model.data.period.server.entity.Period;
 import com.echothree.model.data.period.server.entity.PeriodDescription;
@@ -61,7 +64,23 @@ import com.echothree.model.data.period.server.value.PeriodTypeDescriptionValue;
 import com.echothree.model.data.period.server.value.PeriodTypeDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
+import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
+import com.echothree.util.server.persistence.Session;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import javax.inject.Inject;
+import org.jooq.Condition;
 import static com.echothree.model.jooq.server.keys.period.PeriodForeignKeys.PERIODS_ACTIVE_DETAIL_FK;
+import static com.echothree.model.jooq.server.keys.period.PeriodForeignKeys.PERIODS_LAST_DETAIL_FK;
 import static com.echothree.model.jooq.server.keys.period.PeriodForeignKeys.PERIOD_DESCRIPTIONS_LANGUAGE_FK;
 import static com.echothree.model.jooq.server.keys.period.PeriodForeignKeys.PERIOD_DETAILS_PERIOD_KIND_FK;
 import static com.echothree.model.jooq.server.keys.period.PeriodForeignKeys.PERIOD_KINDS_ACTIVE_DETAIL_FK;
@@ -79,20 +98,6 @@ import static com.echothree.model.jooq.server.tables.period.PeriodTypeDescriptio
 import static com.echothree.model.jooq.server.tables.period.PeriodTypeDetails.PeriodTypeDetails;
 import static com.echothree.model.jooq.server.tables.period.PeriodTypes.PeriodTypes;
 import static com.echothree.model.jooq.server.tables.period.Periods.Periods;
-import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.common.persistence.BasePK;
-import com.echothree.util.server.cdi.CommandScope;
-import com.echothree.util.server.control.BaseModelControl;
-import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import javax.inject.Inject;
 
 @CommandScope
 public class PeriodControl
@@ -109,13 +114,13 @@ public class PeriodControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PeriodKindDetailFactory periodKindDetailFactory;
+    PeriodKindDetailFactory periodKindDetailFactory;
 
     @Inject
-    private PeriodKindFactory periodKindFactory;
+    PeriodKindFactory periodKindFactory;
 
     @Inject
-    private PeriodKindTransferCache periodKindTransferCache;
+    PeriodKindTransferCache periodKindTransferCache;
 
     public PeriodKind createPeriodKind(String periodKindName, WorkflowEntrance workflowEntrance, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultPeriodKind = getDefaultPeriodKind();
@@ -381,10 +386,10 @@ public class PeriodControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    private PeriodKindDescriptionFactory periodKindDescriptionFactory;
+    PeriodKindDescriptionFactory periodKindDescriptionFactory;
 
     @Inject
-    private PeriodKindDescriptionTransferCache periodKindDescriptionTransferCache;
+    PeriodKindDescriptionTransferCache periodKindDescriptionTransferCache;
 
     public PeriodKindDescription createPeriodKindDescription(PeriodKind periodKind, Language language, String description,
             BasePK createdBy) {
@@ -528,13 +533,13 @@ public class PeriodControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PeriodTypeDetailFactory periodTypeDetailFactory;
+    PeriodTypeDetailFactory periodTypeDetailFactory;
 
     @Inject
-    private PeriodTypeFactory periodTypeFactory;
+    PeriodTypeFactory periodTypeFactory;
 
     @Inject
-    private PeriodTypeTransferCache periodTypeTransferCache;
+    PeriodTypeTransferCache periodTypeTransferCache;
 
     public PeriodType createPeriodType(PeriodKind periodKind, String periodTypeName, PeriodType parentPeriodType, WorkflowEntrance workflowEntrance, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
@@ -837,10 +842,10 @@ public class PeriodControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    private PeriodTypeDescriptionFactory periodTypeDescriptionFactory;
+    PeriodTypeDescriptionFactory periodTypeDescriptionFactory;
 
     @Inject
-    private PeriodTypeDescriptionTransferCache periodTypeDescriptionTransferCache;
+    PeriodTypeDescriptionTransferCache periodTypeDescriptionTransferCache;
 
     public PeriodTypeDescription createPeriodTypeDescription(PeriodType periodType, Language language, String description,
             BasePK createdBy) {
@@ -983,31 +988,88 @@ public class PeriodControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    protected PeriodDetailFactory periodDetailFactory;
+    PeriodDetailFactory periodDetailFactory;
 
     @Inject
-    private PeriodFactory periodFactory;
-
-    @Inject
-    private PeriodTransferCache periodTransferCache;
+    PeriodFactory periodFactory;
 
     public Period createPeriod(PeriodKind periodKind, String periodName, Period parentPeriod, PeriodType periodType, Long startTime, Long endTime, BasePK createdBy) {
         var period = periodFactory.create();
         var periodDetail = periodDetailFactory.create(period, periodKind, periodName, parentPeriod, periodType, startTime,
                 endTime, session.getStartTime(), Session.MAX_TIME);
-        
+
         // Convert to R/W
         period = periodFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 period.getPrimaryKey());
         period.setActiveDetail(periodDetail);
         period.setLastDetail(periodDetail);
         period.store();
-        
+
         sendEvent(period.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
-        
+
         return period;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Period */
+    public Period getPeriodByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PeriodPK(entityInstance.getEntityUniqueId());
+
+        return periodFactory.getEntityFromPK(entityPermission, pk);
+    }
+
+    public Period getPeriodByEntityInstance(EntityInstance entityInstance) {
+        return getPeriodByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Period getPeriodByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPeriodByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public record PeriodSelection(PeriodKind periodKind, Period parentPeriod, PeriodType periodType) { }
+
+    private Condition getPeriodFilters(PeriodSelection periodSelection) {
+        var condition = PeriodDetails.PERIOD_KIND.eq(periodSelection.periodKind().getPrimaryKey())
+                .and(PeriodDetails.THRU_TIME.eq(Session.MAX_TIME));
+
+        if(periodSelection.parentPeriod() != null) {
+            condition = condition.and(PeriodDetails.PARENT_PERIOD.eq(periodSelection.parentPeriod().getPrimaryKey()));
+        }
+
+        if(periodSelection.periodType() != null) {
+            condition = condition.and(PeriodDetails.PERIOD_TYPE.eq(periodSelection.periodType().getPrimaryKey()));
+        }
+
+        return condition;
+    }
+
+    public long countPeriods(PeriodSelection periodSelection) {
+        return session.getDslContext()
+                .selectCount()
+                .from(Periods)
+                .join(PeriodDetails).onKey(PERIODS_LAST_DETAIL_FK)
+                .where(getPeriodFilters(periodSelection))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
+    }
+
+    public List<Period> getPeriods(PeriodSelection periodSelection) {
+        var parentPeriods = Periods.as("parentPeriods");
+        var parentPeriodDetails = PeriodDetails.as("parentPeriodDetails");
+        var query = session.getDslContext()
+                .select(Periods.fields())
+                .from(Periods)
+                .join(PeriodDetails).onKey(PERIODS_LAST_DETAIL_FK)
+                .leftJoin(PeriodTypes).on(PeriodDetails.PERIOD_TYPE.eq(PeriodTypes.PERIOD_TYPE))
+                .leftJoin(PeriodTypeDetails).on(PeriodTypes.LAST_DETAIL.eq(PeriodTypeDetails.PERIOD_TYPE_DETAIL))
+                .leftJoin(parentPeriods).on(PeriodDetails.PARENT_PERIOD.eq(parentPeriods.PERIOD))
+                .leftJoin(parentPeriodDetails).on(parentPeriods.LAST_DETAIL.eq(parentPeriodDetails.PERIOD_DETAIL))
+                .where(getPeriodFilters(periodSelection))
+                .orderBy(PeriodTypeDetails.SORT_ORDER, PeriodTypeDetails.PERIOD_TYPE_NAME,
+                        parentPeriodDetails.PERIOD_NAME, PeriodDetails.START_TIME, PeriodDetails.PERIOD_NAME);
+
+        return periodFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, session.applyLimit(query, PeriodFactory.class));
+    }
+
     private List<Period> getContainingPeriodsUsingNames(String periodKindName, Long time, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(Periods.fields())
@@ -1152,18 +1214,11 @@ public class PeriodControl
     }
     
     public PeriodTransfer getPeriodTransfer(UserVisit userVisit, Period period) {
-        return periodTransferCache.getPeriodTransfer(userVisit, period);
-    }
-    
-    public List<PeriodTransfer> getPeriodTransfersByPeriodType(UserVisit userVisit, PeriodType periodType) {
-        var periods = getPeriods(periodType);
-        List<PeriodTransfer> periodTransfers = new ArrayList<>(periods.size());
-        
-        periods.forEach((period) ->
-                periodTransfers.add(periodTransferCache.getPeriodTransfer(userVisit, period))
-        );
-        
-        return periodTransfers;
+        return switch(period.getLastDetail().getPeriodKind().getLastDetail().getPeriodKindName()) {
+            case PeriodConstants.PeriodKind_FISCAL -> getFiscalPeriodTransfer(userVisit, period);
+            default -> throw new UnsupportedOperationException("Unsupported period kind: "
+                    + period.getLastDetail().getPeriodKind().getLastDetail().getPeriodKindName());
+        };
     }
     
     public void updatePeriodFromValue(PeriodDetailValue periodDetailValue, BasePK updatedBy) {
@@ -1221,16 +1276,37 @@ public class PeriodControl
                 deletePeriod(period, deletedBy)
         );
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Fiscal Periods
+    // --------------------------------------------------------------------------------
+
+    @Inject
+    FiscalPeriodTransferCache fiscalPeriodTransferCache;
+
+    public FiscalPeriodTransfer getFiscalPeriodTransfer(UserVisit userVisit, Period period) {
+        return fiscalPeriodTransferCache.getFiscalPeriodTransfer(userVisit, period);
+    }
+
+    public List<FiscalPeriodTransfer> getFiscalPeriodTransfers(UserVisit userVisit, Collection<Period> periods) {
+        var transfers = new ArrayList<FiscalPeriodTransfer>(periods.size());
+
+        for(var period : periods) {
+            transfers.add(getFiscalPeriodTransfer(userVisit, period));
+        }
+
+        return transfers;
+    }
+
     // --------------------------------------------------------------------------------
     //   Period Descriptions
     // --------------------------------------------------------------------------------
 
     @Inject
-    private PeriodDescriptionFactory periodDescriptionFactory;
+    PeriodDescriptionFactory periodDescriptionFactory;
 
     @Inject
-    private PeriodDescriptionTransferCache periodDescriptionTransferCache;
+    PeriodDescriptionTransferCache periodDescriptionTransferCache;
 
     public PeriodDescription createPeriodDescription(Period period, Language language, String description,
             BasePK createdBy) {
@@ -1241,7 +1317,16 @@ public class PeriodControl
         
         return periodDescription;
     }
-    
+
+    public Long countPeriodDescriptionsByPeriod(Period period) {
+        return session.getDslContext()
+                .selectCount()
+                .from(PeriodDescriptions)
+                .where(PeriodDescriptions.PERIOD.eq(period.getPrimaryKey()), PeriodDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
+    }
+
     private PeriodDescription getPeriodDescription(Period period, Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PeriodDescriptions.fields())
@@ -1323,16 +1408,15 @@ public class PeriodControl
     public PeriodDescriptionTransfer getPeriodDescriptionTransfer(UserVisit userVisit, PeriodDescription periodDescription) {
         return periodDescriptionTransferCache.getPeriodDescriptionTransfer(userVisit, periodDescription);
     }
-    
+
+    public List<PeriodDescriptionTransfer> getPeriodDescriptionTransfers(UserVisit userVisit, Collection<PeriodDescription> descriptions) {
+        return descriptions.stream()
+                .map(description -> getPeriodDescriptionTransfer(userVisit, description))
+                .toList();
+    }
+
     public List<PeriodDescriptionTransfer> getPeriodDescriptionTransfersByPeriod(UserVisit userVisit, Period period) {
-        var periodDescriptions = getPeriodDescriptionsByPeriod(period);
-        List<PeriodDescriptionTransfer> periodDescriptionTransfers = new ArrayList<>(periodDescriptions.size());
-        
-        periodDescriptions.forEach((periodDescription) -> {
-            periodDescriptionTransfers.add(periodDescriptionTransferCache.getPeriodDescriptionTransfer(userVisit, periodDescription));
-        });
-        
-        return periodDescriptionTransfers;
+        return getPeriodDescriptionTransfers(userVisit, getPeriodDescriptionsByPeriod(period));
     }
     
     public void updatePeriodDescriptionFromValue(PeriodDescriptionValue periodDescriptionValue, BasePK updatedBy) {

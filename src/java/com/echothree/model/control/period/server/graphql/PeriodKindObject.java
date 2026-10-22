@@ -126,4 +126,14 @@ public class PeriodKindObject
         }
     }
 
+    @GraphQLField
+    @GraphQLDescription("periods")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<PeriodInterface> getPeriods(final DataFetchingEnvironment env,
+            @GraphQLName("parentPeriodName") final String parentPeriodName,
+            @GraphQLName("periodTypeName") final String periodTypeName) {
+        return PeriodObject.getPeriods(env, getPeriodKindName(), parentPeriodName, periodTypeName);
+    }
+
 }

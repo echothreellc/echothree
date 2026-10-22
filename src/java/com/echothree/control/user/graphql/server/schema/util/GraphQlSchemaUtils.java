@@ -20,8 +20,12 @@ import com.echothree.control.user.graphql.server.schema.GraphQlMutations;
 import com.echothree.control.user.graphql.server.schema.GraphQlQueries;
 import com.echothree.model.control.graphql.server.graphql.count.RelayWithCounting;
 import graphql.annotations.AnnotationsSchemaCreator;
+import graphql.annotations.annotationTypes.GraphQLUnion;
 import graphql.annotations.processor.GraphQLAnnotations;
 import graphql.schema.GraphQLSchema;
+import graphql.schema.GraphQLUnionType;
+import io.github.classgraph.ClassGraph;
+import java.util.List;
 
 public class GraphQlSchemaUtils {
     
@@ -40,21 +44,53 @@ public class GraphQlSchemaUtils {
         return GraphQlSchemaUtilsHolder.instance;
     }
     
-    private void buildSchema() {
-        readOnlySchema = AnnotationsSchemaCreator.newAnnotationsSchema()
-                .setAnnotationsProcessor(new GraphQLAnnotations())
-                .setRelay(new RelayWithCounting())
-                .query(GraphQlQueries.class)
-                .setAlwaysPrettify(true)
-                .build();
+    private GraphQLAnnotations createAnnotationsProcessor(List<Class<?>> unionTypes) {
+        var annotations = new GraphQLAnnotations();
 
-        schema = AnnotationsSchemaCreator.newAnnotationsSchema()
-                .setAnnotationsProcessor(new GraphQLAnnotations())
+        annotations.setRelay(new RelayWithCounting());
+        annotations.getObjectHandler().getTypeRetriever().getGraphQLFieldRetriever().setAlwaysPrettify(true);
+
+        // Build unions before query roots so recursive member fields resolve to type references.
+        // The annotations library's UnionBuilder requires concrete possible types when the union completes.
+        for(var unionType : unionTypes) {
+            annotations.getObjectHandler().getGraphQLType(unionType, annotations.getContainer());
+        }
+
+        return annotations;
+    }
+
+    private GraphQLSchema buildSchema(boolean readOnly, List<Class<?>> unionTypes) {
+        var annotations = createAnnotationsProcessor(unionTypes);
+        var schemaBuilder = GraphQLSchema.newSchema();
+
+        annotations.getTypeRegistry().values().stream()
+                .filter(GraphQLUnionType.class::isInstance)
+                .forEach(schemaBuilder::additionalType);
+
+        var builder = AnnotationsSchemaCreator.newAnnotationsSchema()
+                .setAnnotationsProcessor(annotations)
+                .setGraphQLSchemaBuilder(schemaBuilder)
                 .setRelay(new RelayWithCounting())
                 .query(GraphQlQueries.class)
-                .mutation(GraphQlMutations.class)
-                .setAlwaysPrettify(true)
-                .build();
+                .setAlwaysPrettify(true);
+
+        if(!readOnly) {
+            builder.mutation(GraphQlMutations.class);
+        }
+
+        return builder.build();
+    }
+
+    private void buildSchema() {
+        try(var scan = new ClassGraph()
+                .acceptPackages("com.echothree.model.control")
+                .enableAnnotationInfo()
+                .scan()) {
+            var unionTypes = scan.getClassesWithAnnotation(GraphQLUnion.class.getName()).loadClasses();
+
+            readOnlySchema = buildSchema(true, unionTypes);
+            schema = buildSchema(false, unionTypes);
+        }
     }
 
     public GraphQLSchema getReadOnlySchema() {

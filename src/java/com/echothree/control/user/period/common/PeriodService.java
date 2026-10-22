@@ -90,13 +90,25 @@ public interface PeriodService
     CommandResult<EditPeriodTypeDescriptionResult> editPeriodTypeDescription(UserVisitPK userVisitPK, EditPeriodTypeDescriptionForm form);
     
     CommandResult<VoidResult> deletePeriodTypeDescription(UserVisitPK userVisitPK, DeletePeriodTypeDescriptionForm form);
-    
+
+    // -------------------------------------------------------------------------
+    //   Periods
+    // -------------------------------------------------------------------------
+
+    CommandResult<GetPeriodDescriptionsResult> getPeriodDescriptions(UserVisitPK userVisitPK, GetPeriodDescriptionsForm form);
+
+    CommandResult<GetPeriodDescriptionResult> getPeriodDescription(UserVisitPK userVisitPK, GetPeriodDescriptionForm form);
+
     // -------------------------------------------------------------------------
     //   Fiscal Periods
     // -------------------------------------------------------------------------
     
     CommandResult<CreateFiscalYearResult> createFiscalYear(UserVisitPK userVisitPK, CreateFiscalYearForm form);
-    
+
+    CommandResult<GetFiscalPeriodResult> getFiscalPeriod(UserVisitPK userVisitPK, GetFiscalPeriodForm form);
+
+    CommandResult<GetFiscalPeriodsResult> getFiscalPeriods(UserVisitPK userVisitPK, GetFiscalPeriodsForm form);
+
     CommandResult<GetFiscalPeriodStatusChoicesResult> getFiscalPeriodStatusChoices(UserVisitPK userVisitPK, GetFiscalPeriodStatusChoicesForm form);
     
     CommandResult<VoidResult> setFiscalPeriodStatus(UserVisitPK userVisitPK, SetFiscalPeriodStatusForm form);
