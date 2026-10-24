@@ -96,7 +96,7 @@ public class CreateSequenceCommand
                     sortOrder, description, getPreferredLanguage(), getPartyPK());
         }
 
-        if(sequence != null && !hasExecutionErrors()) {
+        if(sequence != null) {
             result.setSequenceName(sequence.getLastDetail().getSequenceName());
             result.setEntityRef(sequence.getPrimaryKey().getEntityRef());
         }

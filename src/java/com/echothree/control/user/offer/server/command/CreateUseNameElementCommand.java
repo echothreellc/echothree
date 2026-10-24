@@ -80,7 +80,7 @@ public class CreateUseNameElementCommand
                 useNameElementName, offset, length, validationPattern, getPreferredLanguage(), description,
                 getPartyPK());
 
-        if(useNameElement != null && !hasExecutionErrors()) {
+        if(useNameElement != null) {
             result.setUseNameElementName(useNameElement.getLastDetail().getUseNameElementName());
             result.setEntityRef(useNameElement.getPrimaryKey().getEntityRef());
         }

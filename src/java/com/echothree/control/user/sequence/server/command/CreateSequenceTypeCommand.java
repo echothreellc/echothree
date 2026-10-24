@@ -126,7 +126,7 @@ public class CreateSequenceTypeCommand
             addExecutionError(ExecutionErrors.DuplicateSequenceTypeName.name(), sequenceTypeName);
         }
 
-        if(sequenceType != null && !hasExecutionErrors()) {
+        if(sequenceType != null) {
             result.setSequenceTypeName(sequenceType.getLastDetail().getSequenceTypeName());
             result.setEntityRef(sequenceType.getPrimaryKey().getEntityRef());
         }

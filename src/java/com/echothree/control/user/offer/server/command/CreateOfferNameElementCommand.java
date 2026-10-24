@@ -80,7 +80,7 @@ public class CreateOfferNameElementCommand
                 offerNameElementName, offset, length, validationPattern, getPreferredLanguage(), description,
                 getPartyPK());
 
-        if(offerNameElement != null && !hasExecutionErrors()) {
+        if(offerNameElement != null) {
             result.setOfferNameElementName(offerNameElement.getLastDetail().getOfferNameElementName());
             result.setEntityRef(offerNameElement.getPrimaryKey().getEntityRef());
         }

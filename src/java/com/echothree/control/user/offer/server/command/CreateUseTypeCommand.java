@@ -77,7 +77,7 @@ public class CreateUseTypeCommand
         var useType = useTypeLogic.createUseType(this,
                 useTypeName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
 
-        if(useType != null && !hasExecutionErrors()) {
+        if(useType != null) {
             result.setUseTypeName(useType.getLastDetail().getUseTypeName());
             result.setEntityRef(useType.getPrimaryKey().getEntityRef());
         }
