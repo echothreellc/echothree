@@ -23,20 +23,24 @@ import com.echothree.model.control.core.server.logic.LinkCardinalityLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.core.server.entity.LinkCardinality;
+import com.echothree.model.data.core.server.entity.LinkCardinalityDescription;
+import com.echothree.model.data.core.server.factory.LinkCardinalityDescriptionFactory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import java.util.Collection;
 import java.util.List;
-import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetLinkCardinalityDescriptionsCommand
-        extends BaseSimpleCommand<GetLinkCardinalityDescriptionsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<LinkCardinalityDescription, GetLinkCardinalityDescriptionsForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -62,17 +66,39 @@ public class GetLinkCardinalityDescriptionsCommand
 
     /** Creates a new instance of GetLinkCardinalityDescriptionsCommand */
     public GetLinkCardinalityDescriptionsCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
+
+    private LinkCardinality linkCardinality;
+
+    @Override
+    protected void handleForm() {
+        linkCardinality = linkCardinalityLogic.getLinkCardinalityByName(this, form.getLinkCardinalityName());
     }
 
     @Override
-    protected BaseResult execute() {
-        var result = CoreResultFactory.getGetLinkCardinalityDescriptionsResult();
-        var linkCardinality = linkCardinalityLogic.getLinkCardinalityByName(this, form.getLinkCardinalityName());
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : linkCardinalityControl.countLinkCardinalityDescriptionsByLinkCardinality(linkCardinality);
+    }
 
-        if(!hasExecutionErrors()) {
-            result.setLinkCardinality(linkCardinalityControl.getLinkCardinalityTransfer(getUserVisit(), linkCardinality));
-            result.setLinkCardinalityDescriptions(linkCardinalityControl.getLinkCardinalityDescriptionTransfersByLinkCardinality(getUserVisit(), linkCardinality));
+    @Override
+    protected Collection<LinkCardinalityDescription> getEntities() {
+        return hasExecutionErrors() ? null : linkCardinalityControl.getLinkCardinalityDescriptionsByLinkCardinality(linkCardinality);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<LinkCardinalityDescription> linkCardinalityDescriptions) {
+        var result = CoreResultFactory.getGetLinkCardinalityDescriptionsResult();
+
+        if(linkCardinalityDescriptions != null) {
+            var userVisit = getUserVisit();
+
+            result.setLinkCardinality(linkCardinalityControl.getLinkCardinalityTransfer(userVisit, linkCardinality));
+            if(session.hasLimit(LinkCardinalityDescriptionFactory.class)) {
+                result.setLinkCardinalityDescriptionCount(getTotalEntities());
+            }
+
+            result.setLinkCardinalityDescriptions(linkCardinalityControl.getLinkCardinalityDescriptionTransfers(userVisit, linkCardinalityDescriptions));
         }
 
         return result;

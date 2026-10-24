@@ -18,8 +18,8 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.edit.CoreEditFactory;
 import com.echothree.control.user.core.common.edit.LinkCardinalityDescriptionEdit;
-import com.echothree.control.user.core.common.result.EditLinkCardinalityDescriptionResult;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.control.user.core.common.result.EditLinkCardinalityDescriptionResult;
 import com.echothree.control.user.core.common.spec.LinkCardinalityDescriptionSpec;
 import com.echothree.model.control.core.server.control.LinkCardinalityControl;
 import com.echothree.model.control.core.server.logic.LinkCardinalityLogic;
@@ -37,8 +37,8 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
-import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditLinkCardinalityDescriptionCommand

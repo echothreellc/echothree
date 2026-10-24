@@ -84,7 +84,7 @@ public class CreateEntityAttributeGroupCommand
                     entityAttributeGroupName, isDefault, sortOrder, description, description == null ? null : getPreferredLanguage(),
                     getPartyPK());
 
-            if(!hasExecutionErrors()) {
+            if(entityAttributeGroup != null) {
                 var entityTypeDetail = entityType.getLastDetail();
                 var basePK = entityAttributeGroup.getPrimaryKey();
 

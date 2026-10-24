@@ -77,7 +77,7 @@ public class CreatePaymentProcessorResultCodeCommand
         var paymentProcessorResultCode = paymentProcessorResultCodeLogic.createPaymentProcessorResultCode(this,
                 paymentProcessorResultCodeName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
 
-        if(paymentProcessorResultCode != null && !hasExecutionErrors()) {
+        if(paymentProcessorResultCode != null) {
             result.setPaymentProcessorResultCodeName(paymentProcessorResultCode.getLastDetail().getPaymentProcessorResultCodeName());
             result.setEntityRef(paymentProcessorResultCode.getPrimaryKey().getEntityRef());
         }

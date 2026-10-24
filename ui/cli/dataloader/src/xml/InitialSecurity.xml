@@ -6116,6 +6116,30 @@
                 <securityRoleDescription languageIsoName="en" description="Link Directionality Description" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="LinkType" parentSecurityRoleGroupName="CoreComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Link Type" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Link Type Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Link Type Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Link Type Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Link Type List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Link Type Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Link Type Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Translation" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Link Type Translation" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="BatchComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Batch Component" />
         </securityRoleGroup>
@@ -10078,6 +10102,13 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="LinkDirectionality" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LinkDirectionality" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LinkDirectionality" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LinkType" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LinkType" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LinkType" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LinkType" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LinkType" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LinkType" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LinkType" securityRoleName="Translation" />
             <partySecurityRoleTemplateRole securityRoleGroupName="BatchType" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="BatchType" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="BatchType" securityRoleName="Delete" />

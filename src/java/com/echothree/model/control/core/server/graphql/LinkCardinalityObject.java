@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.core.server.graphql;
 
+import com.echothree.model.control.core.server.control.LinkCardinalityControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
-import com.echothree.model.control.core.server.control.LinkCardinalityControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.core.server.entity.LinkCardinality;
 import com.echothree.model.data.core.server.entity.LinkCardinalityDetail;

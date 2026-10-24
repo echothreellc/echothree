@@ -30,4 +30,7 @@ public interface GetLinkDirectionalityDescriptionsResult
     List<LinkDirectionalityDescriptionTransfer> getLinkDirectionalityDescriptions();
     void setLinkDirectionalityDescriptions(List<LinkDirectionalityDescriptionTransfer> linkDirectionalityDescriptions);
 
+    Long getLinkDirectionalityDescriptionCount();
+    void setLinkDirectionalityDescriptionCount(Long linkDirectionalityDescriptionCount);
+
 }

@@ -76,7 +76,7 @@ public class CreateInventoryConditionCommand
         var inventoryCondition = inventoryConditionLogic.createInventoryCondition(this,
                 inventoryConditionName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
 
-        if(inventoryCondition != null && !hasExecutionErrors()) {
+        if(inventoryCondition != null) {
             result.setInventoryConditionName(inventoryCondition.getLastDetail().getInventoryConditionName());
             result.setEntityRef(inventoryCondition.getPrimaryKey().getEntityRef());
         }

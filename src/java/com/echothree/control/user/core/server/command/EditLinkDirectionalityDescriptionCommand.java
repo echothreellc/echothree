@@ -18,8 +18,8 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.edit.CoreEditFactory;
 import com.echothree.control.user.core.common.edit.LinkDirectionalityDescriptionEdit;
-import com.echothree.control.user.core.common.result.EditLinkDirectionalityDescriptionResult;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.control.user.core.common.result.EditLinkDirectionalityDescriptionResult;
 import com.echothree.control.user.core.common.spec.LinkDirectionalityDescriptionSpec;
 import com.echothree.model.control.core.server.control.LinkDirectionalityControl;
 import com.echothree.model.control.core.server.logic.LinkDirectionalityLogic;
@@ -37,8 +37,8 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
-import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditLinkDirectionalityDescriptionCommand

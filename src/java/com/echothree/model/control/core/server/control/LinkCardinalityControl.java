@@ -22,8 +22,8 @@ import com.echothree.model.control.core.common.transfer.LinkCardinalityDescripti
 import com.echothree.model.control.core.common.transfer.LinkCardinalityTransfer;
 import com.echothree.model.control.core.server.transfer.LinkCardinalityDescriptionTransferCache;
 import com.echothree.model.control.core.server.transfer.LinkCardinalityTransferCache;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.common.pk.LinkCardinalityPK;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.LinkCardinality;
 import com.echothree.model.data.core.server.entity.LinkCardinalityDescription;
 import com.echothree.model.data.core.server.factory.LinkCardinalityDescriptionFactory;
@@ -33,11 +33,6 @@ import com.echothree.model.data.core.server.value.LinkCardinalityDescriptionValu
 import com.echothree.model.data.core.server.value.LinkCardinalityDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.LINK_CARDINALITIES_ACTIVE_DETAIL_FK;
-import static com.echothree.model.jooq.server.tables.core.LinkCardinalityDescriptions.LinkCardinalityDescriptions;
-import static com.echothree.model.jooq.server.tables.core.LinkCardinalityDetails.LinkCardinalityDetails;
-import static com.echothree.model.jooq.server.tables.core.LinkCardinalities.LinkCardinalities;
-import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
@@ -48,16 +43,21 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import javax.inject.Inject;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.LINK_CARDINALITIES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.core.LinkCardinalities.LinkCardinalities;
+import static com.echothree.model.jooq.server.tables.core.LinkCardinalityDescriptions.LinkCardinalityDescriptions;
+import static com.echothree.model.jooq.server.tables.core.LinkCardinalityDetails.LinkCardinalityDetails;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 
 @CommandScope
 public class LinkCardinalityControl
         extends BaseModelControl {
 
     @Inject
-    LinkCardinalityTransferCache linkCardinalityTransferCache;
+    LinkCardinalityDescriptionTransferCache linkCardinalityDescriptionTransferCache;
 
     @Inject
-    LinkCardinalityDescriptionTransferCache linkCardinalityDescriptionTransferCache;
+    LinkCardinalityTransferCache linkCardinalityTransferCache;
 
     /**
      * Creates a new instance of LinkCardinalityControl
@@ -132,7 +132,8 @@ public class LinkCardinalityControl
         return session.getDslContext()
                 .selectCount()
                 .from(LinkCardinalities)
-                .join(LinkCardinalityDetails).onKey(LINK_CARDINALITIES_ACTIVE_DETAIL_FK)
+                .join(LinkCardinalityDetails).onKey(LINK_CARDINALITIES_LAST_DETAIL_FK)
+                .where(LinkCardinalities.ACTIVE_DETAIL.isNotNull())
                 .fetchOptional(0, Long.class)
                 .orElse(0L);
     }
@@ -142,8 +143,9 @@ public class LinkCardinalityControl
         var baseQuery = session.getDslContext()
                 .select(LinkCardinalities.fields())
                 .from(LinkCardinalities)
-                .join(LinkCardinalityDetails).onKey(LINK_CARDINALITIES_ACTIVE_DETAIL_FK)
-                .where(LinkCardinalityDetails.LINK_CARDINALITY_NAME.eq(linkCardinalityName));
+                .join(LinkCardinalityDetails).onKey(LINK_CARDINALITIES_LAST_DETAIL_FK)
+                .where(LinkCardinalities.ACTIVE_DETAIL.isNotNull())
+                .and(LinkCardinalityDetails.LINK_CARDINALITY_NAME.eq(linkCardinalityName));
 
         var query = switch(entityPermission) {
             case READ_ONLY -> baseQuery;
@@ -173,8 +175,9 @@ public class LinkCardinalityControl
         var baseQuery = session.getDslContext()
                 .select(LinkCardinalities.fields())
                 .from(LinkCardinalities)
-                .join(LinkCardinalityDetails).onKey(LINK_CARDINALITIES_ACTIVE_DETAIL_FK)
-                .where(LinkCardinalityDetails.IS_DEFAULT.eq(true));
+                .join(LinkCardinalityDetails).onKey(LINK_CARDINALITIES_LAST_DETAIL_FK)
+                .where(LinkCardinalities.ACTIVE_DETAIL.isNotNull())
+                .and(LinkCardinalityDetails.IS_DEFAULT.eq(true));
 
         var query = switch(entityPermission) {
             case READ_ONLY -> baseQuery;
@@ -200,7 +203,8 @@ public class LinkCardinalityControl
         var baseQuery = session.getDslContext()
                 .select(LinkCardinalities.fields())
                 .from(LinkCardinalities)
-                .join(LinkCardinalityDetails).onKey(LINK_CARDINALITIES_ACTIVE_DETAIL_FK);
+                .join(LinkCardinalityDetails).onKey(LINK_CARDINALITIES_LAST_DETAIL_FK)
+                .where(LinkCardinalities.ACTIVE_DETAIL.isNotNull());
 
         var query = switch(entityPermission) {
             case READ_ONLY -> session.applyLimit(baseQuery
@@ -440,6 +444,16 @@ public class LinkCardinalityControl
         return getLinkCardinalityDescriptionsByLinkCardinality(linkCardinality, EntityPermission.READ_WRITE);
     }
 
+    public long countLinkCardinalityDescriptionsByLinkCardinality(LinkCardinality linkCardinality) {
+        return session.getDslContext()
+                .selectCount()
+                .from(LinkCardinalityDescriptions)
+                .where(LinkCardinalityDescriptions.LINK_CARDINALITY.eq(linkCardinality.getPrimaryKey()),
+                        LinkCardinalityDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
+    }
+
     public String getBestLinkCardinalityDescription(LinkCardinality linkCardinality, Language language) {
         String description;
         var linkCardinalityDescription = getLinkCardinalityDescription(linkCardinality, language);
@@ -461,8 +475,8 @@ public class LinkCardinalityControl
         return linkCardinalityDescriptionTransferCache.getTransfer(userVisit, linkCardinalityDescription);
     }
 
-    public List<LinkCardinalityDescriptionTransfer> getLinkCardinalityDescriptionTransfersByLinkCardinality(UserVisit userVisit, LinkCardinality linkCardinality) {
-        var linkCardinalityDescriptions = getLinkCardinalityDescriptionsByLinkCardinality(linkCardinality);
+    public List<LinkCardinalityDescriptionTransfer> getLinkCardinalityDescriptionTransfers(UserVisit userVisit,
+            Collection<LinkCardinalityDescription> linkCardinalityDescriptions) {
         List<LinkCardinalityDescriptionTransfer> linkCardinalityDescriptionTransfers = new ArrayList<>(linkCardinalityDescriptions.size());
 
         linkCardinalityDescriptions.forEach((linkCardinalityDescription) ->
@@ -470,6 +484,10 @@ public class LinkCardinalityControl
         );
 
         return linkCardinalityDescriptionTransfers;
+    }
+
+    public List<LinkCardinalityDescriptionTransfer> getLinkCardinalityDescriptionTransfersByLinkCardinality(UserVisit userVisit, LinkCardinality linkCardinality) {
+        return getLinkCardinalityDescriptionTransfers(userVisit, getLinkCardinalityDescriptionsByLinkCardinality(linkCardinality));
     }
 
     public void updateLinkCardinalityDescriptionFromValue(LinkCardinalityDescriptionValue linkCardinalityDescriptionValue, BasePK updatedBy) {

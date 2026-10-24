@@ -93,7 +93,7 @@ public class CreateWorkflowEntranceCommand
                     workflowControl.createWorkflowEntranceDescription(workflowEntrance, getPreferredLanguage(), description, partyPK);
                 }
             } else {
-                addExecutionError(ExecutionErrors.DuplicateWorkflowEntrance.name());
+                addExecutionError(ExecutionErrors.DuplicateWorkflowEntranceName.name(), workflowName, workflowEntranceName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownWorkflowName.name(), workflowName);

@@ -26,12 +26,14 @@ import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.offer.server.logic.OfferItemLogic;
 import com.echothree.model.control.offer.server.logic.OfferItemPriceLogic;
+import com.echothree.model.control.offer.server.logic.OfferLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.offer.server.entity.OfferItem;
 import com.echothree.model.data.offer.server.entity.OfferItemPrice;
 import com.echothree.util.common.form.BaseForm;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -89,6 +91,9 @@ public class EditOfferItemPriceCommand
     @Inject
     OfferItemPriceLogic offerItemPriceLogic;
 
+    @Inject
+    OfferLogic offerLogic;
+
     /** Creates a new instance of EditOfferItemPriceCommand */
     public EditOfferItemPriceCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
@@ -113,7 +118,18 @@ public class EditOfferItemPriceCommand
 
     @Override
     public OfferItemPrice getEntity(EditOfferItemPriceResult result) {
-        return offerItemPriceLogic.getOfferItemPriceBySpec(this, spec, editModeToEntityPermission(editMode));
+        OfferItemPrice offerItemPrice = null;
+        var offer = offerLogic.getOfferByName(this, spec.getOfferName());
+
+        if(!hasExecutionErrors()) {
+            if(editMode != EditMode.ABANDON && offer.getLastDetail().getOfferItemPriceFilter() != null) {
+                addExecutionError(ExecutionErrors.CannotManuallyEditOfferItemPriceWhenOfferItemPriceFilterSet.name(), spec.getOfferName());
+            } else {
+                offerItemPrice = offerItemPriceLogic.getOfferItemPriceBySpec(this, spec, editModeToEntityPermission(editMode));
+            }
+        }
+
+        return offerItemPrice;
     }
 
     @Override
@@ -124,15 +140,6 @@ public class EditOfferItemPriceCommand
     @Override
     public void fillInResult(EditOfferItemPriceResult result, OfferItemPrice offerItemPrice) {
         result.setOfferItemPrice(offerItemControl.getOfferItemPriceTransfer(getUserVisit(), offerItemPrice));
-    }
-
-    @Override
-    public void canEdit(OfferItemPrice offerItemPrice) {
-        var offerDetail = offerItemPrice.getOfferItem().getOffer().getLastDetail();
-
-        if(offerDetail.getOfferItemPriceFilter() != null) {
-            addExecutionError(ExecutionErrors.CannotManuallyEditOfferItemPriceWhenOfferItemPriceFilterSet.name(), offerDetail.getOfferName());
-        }
     }
 
     private String getItemPriceTypeName(OfferItemPrice offerItemPrice) {

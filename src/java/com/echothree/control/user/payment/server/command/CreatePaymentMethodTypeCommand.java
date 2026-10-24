@@ -77,7 +77,7 @@ public class CreatePaymentMethodTypeCommand
         var paymentMethodType = paymentMethodTypeLogic.createPaymentMethodType(this,
                 paymentMethodTypeName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
 
-        if(paymentMethodType != null && !hasExecutionErrors()) {
+        if(paymentMethodType != null) {
             result.setPaymentMethodTypeName(paymentMethodType.getLastDetail().getPaymentMethodTypeName());
             result.setEntityRef(paymentMethodType.getPrimaryKey().getEntityRef());
         }

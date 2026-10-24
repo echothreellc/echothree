@@ -77,7 +77,7 @@ public class CreatePaymentProcessorActionTypeCommand
         var paymentProcessorActionType = paymentProcessorActionTypeLogic.createPaymentProcessorActionType(this,
                 paymentProcessorActionTypeName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
 
-        if(paymentProcessorActionType != null && !hasExecutionErrors()) {
+        if(paymentProcessorActionType != null) {
             result.setPaymentProcessorActionTypeName(paymentProcessorActionType.getLastDetail().getPaymentProcessorActionTypeName());
             result.setEntityRef(paymentProcessorActionType.getPrimaryKey().getEntityRef());
         }

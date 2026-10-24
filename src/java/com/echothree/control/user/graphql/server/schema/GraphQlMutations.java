@@ -18142,4 +18142,258 @@ public interface GraphQlMutations {
         return mutationResultObject;
     }
 
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createLinkType(final DataFetchingEnvironment env,
+            @GraphQLName("linkTypeName") @GraphQLNonNull final String linkTypeName,
+            @GraphQLName("parentLinkTypeName") final String parentLinkTypeName,
+            @GraphQLName("sourceComponentVendorName") @GraphQLNonNull final String sourceComponentVendorName,
+            @GraphQLName("sourceEntityTypeName") @GraphQLNonNull final String sourceEntityTypeName,
+            @GraphQLName("targetComponentVendorName") @GraphQLNonNull final String targetComponentVendorName,
+            @GraphQLName("targetEntityTypeName") @GraphQLNonNull final String targetEntityTypeName,
+            @GraphQLName("linkCardinalityName") @GraphQLNonNull final String linkCardinalityName,
+            @GraphQLName("linkDirectionalityName") @GraphQLNonNull final String linkDirectionalityName,
+            @GraphQLName("isTransitive") @GraphQLNonNull final String isTransitive,
+            @GraphQLName("inverseLinkTypeName") final String inverseLinkTypeName,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description,
+            @GraphQLName("guidanceMimeTypeName") final String guidanceMimeTypeName,
+            @GraphQLName("guidance") final String guidance) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getCreateLinkTypeForm();
+
+            commandForm.setLinkTypeName(linkTypeName);
+            commandForm.setParentLinkTypeName(parentLinkTypeName);
+            commandForm.setSourceComponentVendorName(sourceComponentVendorName);
+            commandForm.setSourceEntityTypeName(sourceEntityTypeName);
+            commandForm.setTargetComponentVendorName(targetComponentVendorName);
+            commandForm.setTargetEntityTypeName(targetEntityTypeName);
+            commandForm.setLinkCardinalityName(linkCardinalityName);
+            commandForm.setLinkDirectionalityName(linkDirectionalityName);
+            commandForm.setIsTransitive(isTransitive);
+            commandForm.setInverseLinkTypeName(inverseLinkTypeName);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+            commandForm.setGuidanceMimeTypeName(guidanceMimeTypeName);
+            commandForm.setGuidance(guidance);
+
+            var commandResult = CoreUtil.getHome().createLinkType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject editLinkType(final DataFetchingEnvironment env,
+            @GraphQLName("originalLinkTypeName") final String originalLinkTypeName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("linkTypeName") final String linkTypeName,
+            @GraphQLName("parentLinkTypeName") final String parentLinkTypeName,
+            @GraphQLName("sourceComponentVendorName") final String sourceComponentVendorName,
+            @GraphQLName("sourceEntityTypeName") final String sourceEntityTypeName,
+            @GraphQLName("targetComponentVendorName") final String targetComponentVendorName,
+            @GraphQLName("targetEntityTypeName") final String targetEntityTypeName,
+            @GraphQLName("linkCardinalityName") final String linkCardinalityName,
+            @GraphQLName("linkDirectionalityName") final String linkDirectionalityName,
+            @GraphQLName("isTransitive") final String isTransitive,
+            @GraphQLName("inverseLinkTypeName") final String inverseLinkTypeName,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description,
+            @GraphQLName("guidanceMimeTypeName") final String guidanceMimeTypeName,
+            @GraphQLName("guidance") final String guidance) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = CoreUtil.getHome().getLinkTypeUniversalSpec();
+
+            spec.setLinkTypeName(originalLinkTypeName);
+            spec.setUuid(id);
+
+            var commandForm = CoreUtil.getHome().getEditLinkTypeForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = CoreUtil.getHome().editLinkType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getLinkType().getEntityInstance());
+
+                if(arguments.containsKey("linkTypeName"))
+                    edit.setLinkTypeName(linkTypeName);
+                if(arguments.containsKey("parentLinkTypeName"))
+                    edit.setParentLinkTypeName(parentLinkTypeName);
+                if(arguments.containsKey("sourceComponentVendorName"))
+                    edit.setSourceComponentVendorName(sourceComponentVendorName);
+                if(arguments.containsKey("sourceEntityTypeName"))
+                    edit.setSourceEntityTypeName(sourceEntityTypeName);
+                if(arguments.containsKey("targetComponentVendorName"))
+                    edit.setTargetComponentVendorName(targetComponentVendorName);
+                if(arguments.containsKey("targetEntityTypeName"))
+                    edit.setTargetEntityTypeName(targetEntityTypeName);
+                if(arguments.containsKey("linkCardinalityName"))
+                    edit.setLinkCardinalityName(linkCardinalityName);
+                if(arguments.containsKey("linkDirectionalityName"))
+                    edit.setLinkDirectionalityName(linkDirectionalityName);
+                if(arguments.containsKey("isTransitive"))
+                    edit.setIsTransitive(isTransitive);
+                if(arguments.containsKey("inverseLinkTypeName"))
+                    edit.setInverseLinkTypeName(inverseLinkTypeName);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+                if(arguments.containsKey("guidanceMimeTypeName"))
+                    edit.setGuidanceMimeTypeName(guidanceMimeTypeName);
+                if(arguments.containsKey("guidance"))
+                    edit.setGuidance(guidance);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = CoreUtil.getHome().editLinkType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteLinkType(final DataFetchingEnvironment env,
+            @GraphQLName("linkTypeName") final String linkTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getDeleteLinkTypeForm();
+
+            commandForm.setLinkTypeName(linkTypeName);
+            commandForm.setUuid(id);
+
+            mutationResultObject.setCommandResult(CoreUtil.getHome().deleteLinkType(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject createLinkTypeTranslation(final DataFetchingEnvironment env,
+            @GraphQLName("linkTypeName") @GraphQLNonNull final String linkTypeName,
+            @GraphQLName("languageIsoName") @GraphQLNonNull final String languageIsoName,
+            @GraphQLName("description") @GraphQLNonNull final String description,
+            @GraphQLName("guidanceMimeTypeName") final String guidanceMimeTypeName,
+            @GraphQLName("guidance") final String guidance) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getCreateLinkTypeTranslationForm();
+
+            commandForm.setLinkTypeName(linkTypeName);
+            commandForm.setLanguageIsoName(languageIsoName);
+            commandForm.setDescription(description);
+            commandForm.setGuidanceMimeTypeName(guidanceMimeTypeName);
+            commandForm.setGuidance(guidance);
+
+            mutationResultObject.setCommandResult(CoreUtil.getHome().createLinkTypeTranslation(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject editLinkTypeTranslation(final DataFetchingEnvironment env,
+            @GraphQLName("linkTypeName") @GraphQLNonNull final String linkTypeName,
+            @GraphQLName("languageIsoName") @GraphQLNonNull final String languageIsoName,
+            @GraphQLName("description") final String description,
+            @GraphQLName("guidanceMimeTypeName") final String guidanceMimeTypeName,
+            @GraphQLName("guidance") final String guidance) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var spec = CoreUtil.getHome().getLinkTypeTranslationSpec();
+
+            spec.setLinkTypeName(linkTypeName);
+            spec.setLanguageIsoName(languageIsoName);
+
+            var commandForm = CoreUtil.getHome().getEditLinkTypeTranslationForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = CoreUtil.getHome().editLinkTypeTranslation(BaseGraphQl.getUserVisitPK(env), commandForm);
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+                if(arguments.containsKey("guidanceMimeTypeName"))
+                    edit.setGuidanceMimeTypeName(guidanceMimeTypeName);
+                if(arguments.containsKey("guidance"))
+                    edit.setGuidance(guidance);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = CoreUtil.getHome().editLinkTypeTranslation(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteLinkTypeTranslation(final DataFetchingEnvironment env,
+            @GraphQLName("linkTypeName") @GraphQLNonNull final String linkTypeName,
+            @GraphQLName("languageIsoName") @GraphQLNonNull final String languageIsoName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getDeleteLinkTypeTranslationForm();
+
+            commandForm.setLinkTypeName(linkTypeName);
+            commandForm.setLanguageIsoName(languageIsoName);
+
+            mutationResultObject.setCommandResult(CoreUtil.getHome().deleteLinkTypeTranslation(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
 }

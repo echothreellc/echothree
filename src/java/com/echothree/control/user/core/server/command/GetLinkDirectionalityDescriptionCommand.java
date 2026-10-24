@@ -24,21 +24,22 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.core.server.entity.LinkDirectionalityDescription;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
-import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetLinkDirectionalityDescriptionCommand
-        extends BaseSimpleCommand<GetLinkDirectionalityDescriptionForm> {
+        extends BaseSingleEntityCommand<LinkDirectionalityDescription, GetLinkDirectionalityDescriptionForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -72,8 +73,8 @@ public class GetLinkDirectionalityDescriptionCommand
     }
 
     @Override
-    protected BaseResult execute() {
-        var result = CoreResultFactory.getGetLinkDirectionalityDescriptionResult();
+    protected LinkDirectionalityDescription getEntity() {
+        LinkDirectionalityDescription linkDirectionalityDescription = null;
         var linkDirectionalityName = form.getLinkDirectionalityName();
         var linkDirectionality = linkDirectionalityLogic.getLinkDirectionalityByName(this, linkDirectionalityName);
 
@@ -82,14 +83,23 @@ public class GetLinkDirectionalityDescriptionCommand
             var language = languageLogic.getLanguageByName(this, languageIsoName);
 
             if(!hasExecutionErrors()) {
-                var linkDirectionalityDescription = linkDirectionalityControl.getLinkDirectionalityDescription(linkDirectionality, language);
+                linkDirectionalityDescription = linkDirectionalityControl.getLinkDirectionalityDescription(linkDirectionality, language);
 
-                if(linkDirectionalityDescription != null) {
-                    result.setLinkDirectionalityDescription(linkDirectionalityControl.getLinkDirectionalityDescriptionTransfer(getUserVisit(), linkDirectionalityDescription));
-                } else {
+                if(linkDirectionalityDescription == null) {
                     addExecutionError(ExecutionErrors.UnknownLinkDirectionalityDescription.name(), linkDirectionalityName, languageIsoName);
                 }
             }
+        }
+
+        return linkDirectionalityDescription;
+    }
+
+    @Override
+    protected BaseResult getResult(LinkDirectionalityDescription linkDirectionalityDescription) {
+        var result = CoreResultFactory.getGetLinkDirectionalityDescriptionResult();
+
+        if(linkDirectionalityDescription != null) {
+            result.setLinkDirectionalityDescription(linkDirectionalityControl.getLinkDirectionalityDescriptionTransfer(getUserVisit(), linkDirectionalityDescription));
         }
 
         return result;

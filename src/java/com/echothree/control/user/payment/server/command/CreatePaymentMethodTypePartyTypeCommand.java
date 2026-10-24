@@ -82,7 +82,7 @@ public class CreatePaymentMethodTypePartyTypeCommand
                 paymentMethodTypeName, partyTypeName, partyPaymentMethodWorkflowName, contactMechanismWorkflowName,
                 isDefault, sortOrder, getPartyPK());
 
-        if(paymentMethodTypePartyType != null && !hasExecutionErrors()) {
+        if(paymentMethodTypePartyType != null) {
             result.setPaymentMethodTypeName(paymentMethodTypePartyType.getLastDetail().getPaymentMethodType().getLastDetail().getPaymentMethodTypeName());
             result.setPartyTypeName(paymentMethodTypePartyType.getLastDetail().getPartyType().getPartyTypeName());
             result.setEntityRef(paymentMethodTypePartyType.getPrimaryKey().getEntityRef());

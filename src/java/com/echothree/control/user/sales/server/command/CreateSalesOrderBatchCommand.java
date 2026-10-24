@@ -94,7 +94,7 @@ public class CreateSalesOrderBatchCommand
 
                 var batch = salesOrderBatchLogic.createBatch(this, currency, paymentMethod, count, amount, getPartyPK());
 
-                if(!hasExecutionErrors()) {
+                if(batch != null) {
                     result.setBatchName(batch.getLastDetail().getBatchName());
                 }
             } else {

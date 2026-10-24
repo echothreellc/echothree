@@ -87,7 +87,7 @@ public class CreatePrinterGroupJobCommand
         var printerGroupJob = printerGroupJobLogic.createPrinterGroupJob(this, printerGroup, copies, priority, mimeType,
                 getPreferredLanguage(), description, blob, clob, getPartyPK());
 
-        if(!hasExecutionErrors()) {
+        if(printerGroupJob != null) {
             result.setEntityRef(printerGroupJob.getPrimaryKey().getEntityRef());
             result.setPrinterGroupJobName(printerGroupJob.getLastDetail().getPrinterGroupJobName());
         }

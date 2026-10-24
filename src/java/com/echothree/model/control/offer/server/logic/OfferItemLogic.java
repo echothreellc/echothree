@@ -214,6 +214,21 @@ public class OfferItemLogic
         offerItemControl.deleteOfferItem(offerItem, deletedBy);
     }
 
+    public void deleteOfferItem(final ExecutionErrorAccumulator eea, final Offer offer, final Item item, final BasePK deletedBy) {
+        var offerDetail = offer.getLastDetail();
+
+        if(offerDetail.getOfferItemSelector() == null) {
+            var offerItem = getOfferItemForUpdate(eea, offer, item);
+
+            if(!hasExecutionErrors(eea)) {
+                deleteOfferItem(offerItem, deletedBy);
+            }
+        } else {
+            handleExecutionError(CannotManuallyDeleteOfferItemWhenOfferItemSelectorSetException.class, eea,
+                    ExecutionErrors.CannotManuallyDeleteOfferItemWhenOfferItemSelectorSet.name(), offerDetail.getOfferName());
+        }
+    }
+
     public void deleteOfferItem(final ExecutionErrorAccumulator eea, final OfferItem offerItem, final BasePK deletedBy) {
         final var offerDetail = offerItem.getOffer().getLastDetail();
 

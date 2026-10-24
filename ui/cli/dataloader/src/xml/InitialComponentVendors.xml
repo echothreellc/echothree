@@ -169,6 +169,12 @@
             <entityType entityTypeName="LinkDirectionalityDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Link Directionality Description" />
             </entityType>
+            <entityType entityTypeName="LinkType" keepAllHistory="false" isExtensible="true" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Link Type" />
+            </entityType>
+            <entityType entityTypeName="LinkTypeTranslation" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Link Type Translation" />
+            </entityType>
             <entityType entityTypeName="EntityBooleanDefault" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Boolean Default" />
             </entityType>

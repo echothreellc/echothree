@@ -77,7 +77,7 @@ public class CreateFreeOnBoardCommand
         var freeOnBoard = freeOnBoardLogic.createFreeOnBoard(this,
                 freeOnBoardName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
 
-        if(freeOnBoard != null && !hasExecutionErrors()) {
+        if(freeOnBoard != null) {
             result.setFreeOnBoardName(freeOnBoard.getLastDetail().getFreeOnBoardName());
             result.setEntityRef(freeOnBoard.getPrimaryKey().getEntityRef());
         }

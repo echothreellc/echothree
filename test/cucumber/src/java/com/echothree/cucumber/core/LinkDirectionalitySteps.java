@@ -21,9 +21,22 @@ import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
+import io.cucumber.datatable.DataTable;
+import com.echothree.model.control.core.common.transfer.LinkDirectionalityTransfer;
+import com.echothree.model.control.core.common.transfer.LinkDirectionalityDescriptionTransfer;
+import com.echothree.util.common.transfer.Limit;
+import com.echothree.model.data.core.common.LinkDirectionalityDescriptionConstants;
+import java.util.Map;
+import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class LinkDirectionalitySteps implements En {
+
+    private LinkDirectionalityTransfer retrievedLinkDirectionality;
+    private LinkDirectionalityDescriptionTransfer retrievedDescription;
+    private List<LinkDirectionalityDescriptionTransfer> retrievedDescriptions;
+    private Long retrievedDescriptionCount;
+    private String originalDefaultName;
 
     public LinkDirectionalitySteps() {
         When("^the user begins entering a new link directionality$",
@@ -111,6 +124,8 @@ public class LinkDirectionalitySteps implements En {
 
                     if(!executionResult.getHasErrors()) {
                         persona.linkDirectionalityEdit = result.getEdit();
+                    } else {
+                        persona.linkDirectionalitySpec = null;
                     }
                 });
 
@@ -230,6 +245,220 @@ public class LinkDirectionalitySteps implements En {
                     }
                 });
 
+        And("the user enters these link directionality values:", (DataTable values) -> {
+            var persona = CurrentPersona.persona;
+            var edit = persona.createLinkDirectionalityForm == null ? persona.linkDirectionalityEdit : persona.createLinkDirectionalityForm;
+
+            assertThat(edit).isNotNull();
+            values.asMap(String.class, String.class).forEach(edit::set);
+        });
+
+        And("the user clears the link directionality field {string}", (String fieldName) -> {
+            var persona = CurrentPersona.persona;
+            var edit = persona.createLinkDirectionalityForm == null ? persona.linkDirectionalityEdit : persona.createLinkDirectionalityForm;
+
+            assertThat(edit).isNotNull();
+            edit.set(fieldName, null);
+        });
+
+        Then("the link directionality field {string} validation error {string} should occur", (String fieldName, String error) -> {
+            var commandResult = LastCommandResult.commandResult;
+
+            assertThat(commandResult.hasValidationErrors()).isTrue();
+            assertThat(commandResult.getValidationResult().getValidationMessages().containsKey(fieldName, error)).isTrue();
+        });
+
+        And("the user specifies the link directionality with:", (DataTable values) -> {
+            var persona = CurrentPersona.persona;
+
+            assertThat(persona.linkDirectionalitySpec).isNotNull();
+            values.asMap(String.class, String.class).forEach(persona.linkDirectionalitySpec::set);
+        });
+
+        When("the user retrieves the link directionality with:", (DataTable values) -> {
+            var commandForm = CoreUtil.getHome().getGetLinkDirectionalityForm();
+
+            values.asMap(String.class, String.class).forEach(commandForm::set);
+
+            var commandResult = CoreUtil.getHome().getLinkDirectionality(CurrentPersona.persona.userVisitPK, commandForm);
+            LastCommandResult.commandResult = commandResult;
+
+            retrievedLinkDirectionality = commandResult.hasErrors() ? null : commandResult.getExecutionResult().getResult().getLinkDirectionality();
+        });
+
+        When("the user retrieves the last link directionality by entity reference", () -> {
+            var persona = CurrentPersona.persona;
+            var commandForm = CoreUtil.getHome().getGetLinkDirectionalityForm();
+
+            assertThat(persona.lastEntityRef).isNotNull();
+
+            commandForm.setEntityRef(persona.lastEntityRef);
+
+            var commandResult = CoreUtil.getHome().getLinkDirectionality(persona.userVisitPK, commandForm);
+            LastCommandResult.commandResult = commandResult;
+
+            retrievedLinkDirectionality = commandResult.hasErrors() ? null : commandResult.getExecutionResult().getResult().getLinkDirectionality();
+        });
+
+        Then("the retrieved link directionality has these values:", (DataTable values) -> {
+            assertThat(retrievedLinkDirectionality).isNotNull();
+
+            for(var entry : values.asMap(String.class, String.class).entrySet()) {
+                var actual = switch(entry.getKey()) {
+                    case "LinkDirectionalityName" -> retrievedLinkDirectionality.getLinkDirectionalityName();
+                    case "IsDefault" -> retrievedLinkDirectionality.getIsDefault().toString();
+                    case "SortOrder" -> retrievedLinkDirectionality.getSortOrder().toString();
+                    case "Description" -> retrievedLinkDirectionality.getDescription();
+                    default -> throw new IllegalArgumentException(entry.getKey());
+                };
+
+                assertThat(actual).as(entry.getKey()).isEqualTo(entry.getValue());
+            }
+        });
+
+        When("the user deletes the link directionality with:", (DataTable values) -> {
+            var commandForm = CoreUtil.getHome().getDeleteLinkDirectionalityForm();
+
+            values.asMap(String.class, String.class).forEach(commandForm::set);
+            LastCommandResult.commandResult = CoreUtil.getHome().deleteLinkDirectionality(CurrentPersona.persona.userVisitPK, commandForm);
+        });
+
+        When("the user sets the default link directionality with:", (DataTable values) -> {
+            var commandForm = CoreUtil.getHome().getSetDefaultLinkDirectionalityForm();
+
+            values.asMap(String.class, String.class).forEach(commandForm::set);
+            LastCommandResult.commandResult = CoreUtil.getHome().setDefaultLinkDirectionality(CurrentPersona.persona.userVisitPK, commandForm);
+        });
+
+        Given("the user remembers the default link directionality", () -> {
+            var commandForm = CoreUtil.getHome().getGetLinkDirectionalityForm();
+            var commandResult = CoreUtil.getHome().getLinkDirectionality(CurrentPersona.persona.userVisitPK, commandForm);
+
+            assertThat(commandResult.hasErrors()).isFalse();
+            originalDefaultName = commandResult.getExecutionResult().getResult().getLinkDirectionality().getLinkDirectionalityName();
+        });
+
+        When("the user restores the original default link directionality", () -> restoreDefault());
+        After(() -> {
+            if(originalDefaultName != null) {
+                restoreDefault();
+            }
+        });
+
+        When("the user abandons editing link directionality {string}", (String entityName) -> {
+            var persona = CurrentPersona.persona;
+            var commandForm = CoreUtil.getHome().getEditLinkDirectionalityForm();
+            var spec = CoreUtil.getHome().getLinkDirectionalityUniversalSpec();
+
+            spec.setLinkDirectionalityName(entityName);
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.ABANDON);
+
+            LastCommandResult.commandResult = CoreUtil.getHome().editLinkDirectionality(persona.userVisitPK, commandForm);
+
+            persona.linkDirectionalitySpec = null;
+            persona.linkDirectionalityEdit = null;
+        });
+
+        When("^the user (creates|retrieves|deletes) a link directionality description with:$", (String operation, DataTable values) -> {
+            var persona = CurrentPersona.persona;
+            var fields = values.asMap(String.class, String.class);
+
+            switch(operation) {
+                case "creates" -> {
+                    var commandForm = CoreUtil.getHome().getCreateLinkDirectionalityDescriptionForm();
+                    fields.forEach(commandForm::set);
+                    LastCommandResult.commandResult = CoreUtil.getHome().createLinkDirectionalityDescription(persona.userVisitPK, commandForm);
+                }
+                case "retrieves" -> {
+                    var commandForm = CoreUtil.getHome().getGetLinkDirectionalityDescriptionForm();
+                    fields.forEach(commandForm::set);
+                    var commandResult = CoreUtil.getHome().getLinkDirectionalityDescription(persona.userVisitPK, commandForm);
+                    LastCommandResult.commandResult = commandResult;
+                    retrievedDescription = commandResult.hasErrors() ? null : commandResult.getExecutionResult().getResult().getLinkDirectionalityDescription();
+                }
+                case "deletes" -> {
+                    var commandForm = CoreUtil.getHome().getDeleteLinkDirectionalityDescriptionForm();
+                    fields.forEach(commandForm::set);
+                    LastCommandResult.commandResult = CoreUtil.getHome().deleteLinkDirectionalityDescription(persona.userVisitPK, commandForm);
+                }
+                default -> throw new IllegalArgumentException(operation);
+            }
+        });
+
+        Then("the retrieved link directionality description is {string}", (String description) -> {
+            assertThat(retrievedDescription).isNotNull();
+            assertThat(retrievedDescription.getDescription()).isEqualTo(description);
+        });
+
+        When("the user edits the link directionality description with:", (DataTable values) -> {
+            var fields = values.asMap(String.class, String.class);
+            var persona = CurrentPersona.persona;
+            var spec = CoreUtil.getHome().getLinkDirectionalityDescriptionSpec();
+            var commandForm = CoreUtil.getHome().getEditLinkDirectionalityDescriptionForm();
+
+            spec.setLinkDirectionalityName(fields.get("LinkDirectionalityName"));
+            spec.setLanguageIsoName(fields.get("LanguageIsoName"));
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = CoreUtil.getHome().editLinkDirectionalityDescription(persona.userVisitPK, commandForm);
+            LastCommandResult.commandResult = commandResult;
+
+            if(!commandResult.hasErrors()) {
+                var edit = commandResult.getExecutionResult().getResult().getEdit();
+
+                edit.setDescription(fields.get("Description"));
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = CoreUtil.getHome().editLinkDirectionalityDescription(persona.userVisitPK, commandForm);
+                LastCommandResult.commandResult = commandResult;
+
+                if(commandResult.hasErrors()) {
+                    commandForm.setEditMode(EditMode.ABANDON);
+                    var abandonResult = CoreUtil.getHome().editLinkDirectionalityDescription(persona.userVisitPK, commandForm);
+                    assertThat(abandonResult.hasErrors()).isFalse();
+                }
+            }
+        });
+
+        When("the user lists descriptions for link directionality {string} with limit {string}", (String entityName, String limit) -> {
+            var commandForm = CoreUtil.getHome().getGetLinkDirectionalityDescriptionsForm();
+
+            commandForm.setLinkDirectionalityName(entityName);
+            commandForm.setLimits(Map.of(LinkDirectionalityDescriptionConstants.ENTITY_TYPE_NAME, new Limit(limit)));
+
+            var commandResult = CoreUtil.getHome().getLinkDirectionalityDescriptions(CurrentPersona.persona.userVisitPK, commandForm);
+            LastCommandResult.commandResult = commandResult;
+
+            retrievedDescriptions = commandResult.hasErrors() ? null : commandResult.getExecutionResult().getResult().getLinkDirectionalityDescriptions();
+            retrievedDescriptionCount = commandResult.hasErrors() ? null : commandResult.getExecutionResult().getResult().getLinkDirectionalityDescriptionCount();
+        });
+
+        Then("the link directionality description page has {int} entries out of {long}", (Integer count, Long total) -> {
+            assertThat(retrievedDescriptions).hasSize(count);
+            assertThat(retrievedDescriptionCount).isEqualTo(total);
+        });
+
+    }
+
+    private void restoreDefault() throws javax.naming.NamingException {
+        var commandForm = CoreUtil.getHome().getSetDefaultLinkDirectionalityForm();
+
+        assertThat(originalDefaultName).isNotNull();
+
+        commandForm.setLinkDirectionalityName(originalDefaultName);
+
+        var commandResult = CoreUtil.getHome().setDefaultLinkDirectionality(CurrentPersona.persona.userVisitPK, commandForm);
+        LastCommandResult.commandResult = commandResult;
+
+        assertThat(commandResult.hasErrors()).isFalse();
+
+        originalDefaultName = null;
     }
 
 }

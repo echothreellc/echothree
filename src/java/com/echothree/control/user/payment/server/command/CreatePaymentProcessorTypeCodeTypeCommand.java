@@ -80,7 +80,7 @@ public class CreatePaymentProcessorTypeCodeTypeCommand
                 paymentProcessorTypeName, paymentProcessorTypeCodeTypeName, isDefault, sortOrder, getPreferredLanguage(),
                 description, getPartyPK());
 
-        if(paymentProcessorTypeCodeType != null && !hasExecutionErrors()) {
+        if(paymentProcessorTypeCodeType != null) {
             result.setPaymentProcessorTypeCodeTypeName(paymentProcessorTypeCodeType.getLastDetail().getPaymentProcessorTypeCodeTypeName());
             result.setEntityRef(paymentProcessorTypeCodeType.getPrimaryKey().getEntityRef());
         }

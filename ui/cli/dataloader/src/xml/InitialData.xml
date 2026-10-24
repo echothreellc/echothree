@@ -59,6 +59,7 @@
         <file name="/InitialWorkEfforts.xml" />
         <file name="/InitialLinkCardinalities.xml" />
         <file name="/InitialLinkDirectionalities.xml" />
+        <file name="/InitialLinkTypes.xml" />
     </includes>
     <generateBaseKeys />
     <includes>

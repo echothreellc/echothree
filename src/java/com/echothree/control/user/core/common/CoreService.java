@@ -1356,6 +1356,36 @@ public interface CoreService
     CommandResult<VoidResult> deleteLinkDirectionalityDescription(UserVisitPK userVisitPK, DeleteLinkDirectionalityDescriptionForm form);
 
     // -------------------------------------------------------------------------
+    //   Link Types
+    // -------------------------------------------------------------------------
+
+    CommandResult<CreateLinkTypeResult> createLinkType(UserVisitPK userVisitPK, CreateLinkTypeForm form);
+
+    CommandResult<GetLinkTypesResult> getLinkTypes(UserVisitPK userVisitPK, GetLinkTypesForm form);
+
+    CommandResult<GetLinkTypeResult> getLinkType(UserVisitPK userVisitPK, GetLinkTypeForm form);
+
+    CommandResult<GetLinkTypeChoicesResult> getLinkTypeChoices(UserVisitPK userVisitPK, GetLinkTypeChoicesForm form);
+
+    CommandResult<EditLinkTypeResult> editLinkType(UserVisitPK userVisitPK, EditLinkTypeForm form);
+
+    CommandResult<VoidResult> deleteLinkType(UserVisitPK userVisitPK, DeleteLinkTypeForm form);
+
+    // -------------------------------------------------------------------------
+    //   Link Type Translations
+    // -------------------------------------------------------------------------
+
+    CommandResult<VoidResult> createLinkTypeTranslation(UserVisitPK userVisitPK, CreateLinkTypeTranslationForm form);
+
+    CommandResult<GetLinkTypeTranslationResult> getLinkTypeTranslation(UserVisitPK userVisitPK, GetLinkTypeTranslationForm form);
+
+    CommandResult<GetLinkTypeTranslationsResult> getLinkTypeTranslations(UserVisitPK userVisitPK, GetLinkTypeTranslationsForm form);
+
+    CommandResult<EditLinkTypeTranslationResult> editLinkTypeTranslation(UserVisitPK userVisitPK, EditLinkTypeTranslationForm form);
+
+    CommandResult<VoidResult> deleteLinkTypeTranslation(UserVisitPK userVisitPK, DeleteLinkTypeTranslationForm form);
+
+    // -------------------------------------------------------------------------
     //   Utilities
     // -------------------------------------------------------------------------
 

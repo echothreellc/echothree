@@ -22,8 +22,8 @@ import com.echothree.model.control.core.common.transfer.LinkDirectionalityDescri
 import com.echothree.model.control.core.common.transfer.LinkDirectionalityTransfer;
 import com.echothree.model.control.core.server.transfer.LinkDirectionalityDescriptionTransferCache;
 import com.echothree.model.control.core.server.transfer.LinkDirectionalityTransferCache;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.common.pk.LinkDirectionalityPK;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.LinkDirectionality;
 import com.echothree.model.data.core.server.entity.LinkDirectionalityDescription;
 import com.echothree.model.data.core.server.factory.LinkDirectionalityDescriptionFactory;
@@ -33,11 +33,6 @@ import com.echothree.model.data.core.server.value.LinkDirectionalityDescriptionV
 import com.echothree.model.data.core.server.value.LinkDirectionalityDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.LINK_DIRECTIONALITIES_ACTIVE_DETAIL_FK;
-import static com.echothree.model.jooq.server.tables.core.LinkDirectionalityDescriptions.LinkDirectionalityDescriptions;
-import static com.echothree.model.jooq.server.tables.core.LinkDirectionalityDetails.LinkDirectionalityDetails;
-import static com.echothree.model.jooq.server.tables.core.LinkDirectionalities.LinkDirectionalities;
-import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
@@ -48,16 +43,21 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import javax.inject.Inject;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.LINK_DIRECTIONALITIES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.core.LinkDirectionalities.LinkDirectionalities;
+import static com.echothree.model.jooq.server.tables.core.LinkDirectionalityDescriptions.LinkDirectionalityDescriptions;
+import static com.echothree.model.jooq.server.tables.core.LinkDirectionalityDetails.LinkDirectionalityDetails;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 
 @CommandScope
 public class LinkDirectionalityControl
         extends BaseModelControl {
 
     @Inject
-    LinkDirectionalityTransferCache linkDirectionalityTransferCache;
+    LinkDirectionalityDescriptionTransferCache linkDirectionalityDescriptionTransferCache;
 
     @Inject
-    LinkDirectionalityDescriptionTransferCache linkDirectionalityDescriptionTransferCache;
+    LinkDirectionalityTransferCache linkDirectionalityTransferCache;
 
     /**
      * Creates a new instance of LinkDirectionalityControl
@@ -132,7 +132,8 @@ public class LinkDirectionalityControl
         return session.getDslContext()
                 .selectCount()
                 .from(LinkDirectionalities)
-                .join(LinkDirectionalityDetails).onKey(LINK_DIRECTIONALITIES_ACTIVE_DETAIL_FK)
+                .join(LinkDirectionalityDetails).onKey(LINK_DIRECTIONALITIES_LAST_DETAIL_FK)
+                .where(LinkDirectionalities.ACTIVE_DETAIL.isNotNull())
                 .fetchOptional(0, Long.class)
                 .orElse(0L);
     }
@@ -142,8 +143,9 @@ public class LinkDirectionalityControl
         var baseQuery = session.getDslContext()
                 .select(LinkDirectionalities.fields())
                 .from(LinkDirectionalities)
-                .join(LinkDirectionalityDetails).onKey(LINK_DIRECTIONALITIES_ACTIVE_DETAIL_FK)
-                .where(LinkDirectionalityDetails.LINK_DIRECTIONALITY_NAME.eq(linkDirectionalityName));
+                .join(LinkDirectionalityDetails).onKey(LINK_DIRECTIONALITIES_LAST_DETAIL_FK)
+                .where(LinkDirectionalities.ACTIVE_DETAIL.isNotNull())
+                .and(LinkDirectionalityDetails.LINK_DIRECTIONALITY_NAME.eq(linkDirectionalityName));
 
         var query = switch(entityPermission) {
             case READ_ONLY -> baseQuery;
@@ -173,8 +175,9 @@ public class LinkDirectionalityControl
         var baseQuery = session.getDslContext()
                 .select(LinkDirectionalities.fields())
                 .from(LinkDirectionalities)
-                .join(LinkDirectionalityDetails).onKey(LINK_DIRECTIONALITIES_ACTIVE_DETAIL_FK)
-                .where(LinkDirectionalityDetails.IS_DEFAULT.eq(true));
+                .join(LinkDirectionalityDetails).onKey(LINK_DIRECTIONALITIES_LAST_DETAIL_FK)
+                .where(LinkDirectionalities.ACTIVE_DETAIL.isNotNull())
+                .and(LinkDirectionalityDetails.IS_DEFAULT.eq(true));
 
         var query = switch(entityPermission) {
             case READ_ONLY -> baseQuery;
@@ -200,7 +203,8 @@ public class LinkDirectionalityControl
         var baseQuery = session.getDslContext()
                 .select(LinkDirectionalities.fields())
                 .from(LinkDirectionalities)
-                .join(LinkDirectionalityDetails).onKey(LINK_DIRECTIONALITIES_ACTIVE_DETAIL_FK);
+                .join(LinkDirectionalityDetails).onKey(LINK_DIRECTIONALITIES_LAST_DETAIL_FK)
+                .where(LinkDirectionalities.ACTIVE_DETAIL.isNotNull());
 
         var query = switch(entityPermission) {
             case READ_ONLY -> session.applyLimit(baseQuery
@@ -440,6 +444,16 @@ public class LinkDirectionalityControl
         return getLinkDirectionalityDescriptionsByLinkDirectionality(linkDirectionality, EntityPermission.READ_WRITE);
     }
 
+    public long countLinkDirectionalityDescriptionsByLinkDirectionality(LinkDirectionality linkDirectionality) {
+        return session.getDslContext()
+                .selectCount()
+                .from(LinkDirectionalityDescriptions)
+                .where(LinkDirectionalityDescriptions.LINK_DIRECTIONALITY.eq(linkDirectionality.getPrimaryKey()),
+                        LinkDirectionalityDescriptions.THRU_TIME.eq(Session.MAX_TIME))
+                .fetchOptional(0, Long.class)
+                .orElse(0L);
+    }
+
     public String getBestLinkDirectionalityDescription(LinkDirectionality linkDirectionality, Language language) {
         String description;
         var linkDirectionalityDescription = getLinkDirectionalityDescription(linkDirectionality, language);
@@ -461,8 +475,8 @@ public class LinkDirectionalityControl
         return linkDirectionalityDescriptionTransferCache.getTransfer(userVisit, linkDirectionalityDescription);
     }
 
-    public List<LinkDirectionalityDescriptionTransfer> getLinkDirectionalityDescriptionTransfersByLinkDirectionality(UserVisit userVisit, LinkDirectionality linkDirectionality) {
-        var linkDirectionalityDescriptions = getLinkDirectionalityDescriptionsByLinkDirectionality(linkDirectionality);
+    public List<LinkDirectionalityDescriptionTransfer> getLinkDirectionalityDescriptionTransfers(UserVisit userVisit,
+            Collection<LinkDirectionalityDescription> linkDirectionalityDescriptions) {
         List<LinkDirectionalityDescriptionTransfer> linkDirectionalityDescriptionTransfers = new ArrayList<>(linkDirectionalityDescriptions.size());
 
         linkDirectionalityDescriptions.forEach((linkDirectionalityDescription) ->
@@ -470,6 +484,10 @@ public class LinkDirectionalityControl
         );
 
         return linkDirectionalityDescriptionTransfers;
+    }
+
+    public List<LinkDirectionalityDescriptionTransfer> getLinkDirectionalityDescriptionTransfersByLinkDirectionality(UserVisit userVisit, LinkDirectionality linkDirectionality) {
+        return getLinkDirectionalityDescriptionTransfers(userVisit, getLinkDirectionalityDescriptionsByLinkDirectionality(linkDirectionality));
     }
 
     public void updateLinkDirectionalityDescriptionFromValue(LinkDirectionalityDescriptionValue linkDirectionalityDescriptionValue, BasePK updatedBy) {

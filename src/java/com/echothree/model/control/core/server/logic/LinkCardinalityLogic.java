@@ -19,12 +19,13 @@ package com.echothree.model.control.core.server.logic;
 import com.echothree.control.user.core.common.spec.LinkCardinalityUniversalSpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
-import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
-import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.core.common.exception.CannotDeleteLinkCardinalityInUseException;
 import com.echothree.model.control.core.common.exception.DuplicateLinkCardinalityNameException;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.common.exception.UnknownDefaultLinkCardinalityException;
 import com.echothree.model.control.core.common.exception.UnknownLinkCardinalityNameException;
 import com.echothree.model.control.core.server.control.LinkCardinalityControl;
+import com.echothree.model.control.core.server.control.LinkTypeControl;
 import com.echothree.model.data.core.server.entity.LinkCardinality;
 import com.echothree.model.data.core.server.value.LinkCardinalityDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
@@ -38,10 +39,13 @@ import javax.inject.Inject;
 
 @ApplicationScoped
 public class LinkCardinalityLogic
-    extends BaseLogic {
+        extends BaseLogic {
 
     @Inject
     LinkCardinalityControl linkCardinalityControl;
+
+    @Inject
+    LinkTypeControl linkTypeControl;
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
@@ -89,10 +93,10 @@ public class LinkCardinalityLogic
     }
 
     public LinkCardinality getLinkCardinalityByUniversalSpec(final ExecutionErrorAccumulator eea,
-            final LinkCardinalityUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
+            final LinkCardinalityUniversalSpec linkCardinalityUniversalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         LinkCardinality linkCardinality = null;
-        var linkCardinalityName = universalSpec.getLinkCardinalityName();
-        var parameterCount = (linkCardinalityName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
+        var linkCardinalityName = linkCardinalityUniversalSpec.getLinkCardinalityName();
+        var parameterCount = (linkCardinalityName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(linkCardinalityUniversalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -108,10 +112,10 @@ public class LinkCardinalityLogic
             }
             case 1 -> {
                 if(linkCardinalityName == null) {
-                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, linkCardinalityUniversalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.LinkCardinality.name());
 
-                    if(eea == null || !eea.hasExecutionErrors()) {
+                    if(!hasExecutionErrors(eea)) {
                         linkCardinality = linkCardinalityControl.getLinkCardinalityByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
@@ -126,13 +130,13 @@ public class LinkCardinalityLogic
     }
 
     public LinkCardinality getLinkCardinalityByUniversalSpec(final ExecutionErrorAccumulator eea,
-            final LinkCardinalityUniversalSpec universalSpec, boolean allowDefault) {
-        return getLinkCardinalityByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_ONLY);
+            final LinkCardinalityUniversalSpec linkCardinalityUniversalSpec, boolean allowDefault) {
+        return getLinkCardinalityByUniversalSpec(eea, linkCardinalityUniversalSpec, allowDefault, EntityPermission.READ_ONLY);
     }
 
     public LinkCardinality getLinkCardinalityByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
-            final LinkCardinalityUniversalSpec universalSpec, boolean allowDefault) {
-        return getLinkCardinalityByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
+            final LinkCardinalityUniversalSpec linkCardinalityUniversalSpec, boolean allowDefault) {
+        return getLinkCardinalityByUniversalSpec(eea, linkCardinalityUniversalSpec, allowDefault, EntityPermission.READ_WRITE);
     }
 
     public void updateLinkCardinalityFromValue(final LinkCardinalityDetailValue linkCardinalityDetailValue,
@@ -142,7 +146,11 @@ public class LinkCardinalityLogic
 
     public void deleteLinkCardinality(final ExecutionErrorAccumulator eea, final LinkCardinality linkCardinality,
             final BasePK deletedBy) {
-        linkCardinalityControl.deleteLinkCardinality(linkCardinality, deletedBy);
+        if(linkTypeControl.countLinkTypes(linkTypeControl.getLinkTypeFilter(null, null, null, linkCardinality, null, null)) != 0) {
+            handleExecutionError(CannotDeleteLinkCardinalityInUseException.class, eea, ExecutionErrors.CannotDeleteLinkCardinalityInUse.name(), linkCardinality.getLastDetail().getLinkCardinalityName());
+        } else {
+            linkCardinalityControl.deleteLinkCardinality(linkCardinality, deletedBy);
+        }
     }
 
 }

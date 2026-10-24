@@ -77,7 +77,7 @@ public class CreateContentPageLayoutCommand
         var contentPageLayout = contentPageLayoutLogic.createContentPageLayout(this,
                 contentPageLayoutName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
 
-        if(contentPageLayout != null && !hasExecutionErrors()) {
+        if(contentPageLayout != null) {
             result.setContentPageLayoutName(contentPageLayout.getLastDetail().getContentPageLayoutName());
             result.setEntityRef(contentPageLayout.getPrimaryKey().getEntityRef());
         }

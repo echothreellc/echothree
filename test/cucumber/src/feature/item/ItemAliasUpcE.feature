@@ -199,7 +199,7 @@ Feature: Employee UPC-E item alias
     And the user sets the item alias's item to the last item added
     And the user sets the item alias's unit of measure type to "EACH"
     And the user sets the item alias's item alias type to "UPC_E"
-    And the user sets the item alias's alias to "04210005"
+    And the user sets the item alias's alias to "24210005"
     And the user adds the new item alias
     Then the execution error IncorrectUpcENumberSystem should occur
     When the user begins entering a new item alias

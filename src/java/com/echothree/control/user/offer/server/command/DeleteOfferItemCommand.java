@@ -77,11 +77,7 @@ public class DeleteOfferItemCommand
         var item = itemLogic.getItemByName(this, form.getItemName());
 
         if(!hasExecutionErrors()) {
-            var offerItem = offerItemLogic.getOfferItemForUpdate(this, offer, item);
-
-            if(!hasExecutionErrors()) {
-                offerItemLogic.deleteOfferItem(this, offerItem, getPartyPK());
-            }
+            offerItemLogic.deleteOfferItem(this, offer, item, getPartyPK());
         }
 
         return null;

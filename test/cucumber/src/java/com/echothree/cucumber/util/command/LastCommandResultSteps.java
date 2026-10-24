@@ -128,7 +128,19 @@ public class LastCommandResultSteps implements En {
 
             var executionResult = commandResult.getExecutionResult();
             var executionErrors = executionResult.getExecutionErrors();
-            executionErrors.containsKey(Messages.EXECUTION_ERROR, executionError);
+            var expectedErrorPresent = executionErrors.containsKey(Messages.EXECUTION_ERROR, executionError);
+
+            if(!expectedErrorPresent) {
+                var messages = executionErrors.get();
+
+                while(messages.hasNext()) {
+                    var message = messages.next();
+
+                    scenario.log(message.getKey() + ": " + message.getMessage());
+                }
+            }
+
+            assertThat(expectedErrorPresent).as("Expected execution error %s", executionError).isTrue();
         });
     }
 

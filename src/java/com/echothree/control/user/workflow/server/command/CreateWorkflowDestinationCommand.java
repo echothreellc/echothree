@@ -98,10 +98,10 @@ public class CreateWorkflowDestinationCommand
                         workflowControl.createWorkflowDestinationDescription(workflowDestination, getPreferredLanguage(), description, partyPK);
                     }
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownWorkflowDestinationName.name(), workflowDestinationName);
+                    addExecutionError(ExecutionErrors.DuplicateWorkflowDestinationName.name(), workflowName, workflowStepName, workflowDestinationName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownWorkflowStepName.name(), workflowStepName);
+                addExecutionError(ExecutionErrors.UnknownWorkflowStepName.name(), workflowName, workflowStepName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownWorkflowName.name(), workflowName);

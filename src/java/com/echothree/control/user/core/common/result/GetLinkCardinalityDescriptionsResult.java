@@ -30,4 +30,7 @@ public interface GetLinkCardinalityDescriptionsResult
     List<LinkCardinalityDescriptionTransfer> getLinkCardinalityDescriptions();
     void setLinkCardinalityDescriptions(List<LinkCardinalityDescriptionTransfer> linkCardinalityDescriptions);
 
+    Long getLinkCardinalityDescriptionCount();
+    void setLinkCardinalityDescriptionCount(Long linkCardinalityDescriptionCount);
+
 }

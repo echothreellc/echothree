@@ -26,7 +26,11 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import com.echothree.model.data.core.server.entity.LinkDirectionality;
+import com.echothree.model.data.core.server.entity.LinkDirectionalityDescription;
+import com.echothree.model.data.core.server.factory.LinkDirectionalityDescriptionFactory;
+import java.util.Collection;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -36,7 +40,7 @@ import javax.enterprise.context.Dependent;
 
 @Dependent
 public class GetLinkDirectionalityDescriptionsCommand
-        extends BaseSimpleCommand<GetLinkDirectionalityDescriptionsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<LinkDirectionalityDescription, GetLinkDirectionalityDescriptionsForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -62,17 +66,40 @@ public class GetLinkDirectionalityDescriptionsCommand
 
     /** Creates a new instance of GetLinkDirectionalityDescriptionsCommand */
     public GetLinkDirectionalityDescriptionsCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
+
+    private LinkDirectionality linkDirectionality;
+
+    @Override
+    protected void handleForm() {
+        linkDirectionality = linkDirectionalityLogic.getLinkDirectionalityByName(this, form.getLinkDirectionalityName());
     }
 
     @Override
-    protected BaseResult execute() {
-        var result = CoreResultFactory.getGetLinkDirectionalityDescriptionsResult();
-        var linkDirectionality = linkDirectionalityLogic.getLinkDirectionalityByName(this, form.getLinkDirectionalityName());
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : linkDirectionalityControl.countLinkDirectionalityDescriptionsByLinkDirectionality(linkDirectionality);
+    }
 
-        if(!hasExecutionErrors()) {
-            result.setLinkDirectionality(linkDirectionalityControl.getLinkDirectionalityTransfer(getUserVisit(), linkDirectionality));
-            result.setLinkDirectionalityDescriptions(linkDirectionalityControl.getLinkDirectionalityDescriptionTransfersByLinkDirectionality(getUserVisit(), linkDirectionality));
+    @Override
+    protected Collection<LinkDirectionalityDescription> getEntities() {
+        return hasExecutionErrors() ? null : linkDirectionalityControl.getLinkDirectionalityDescriptionsByLinkDirectionality(linkDirectionality);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<LinkDirectionalityDescription> linkDirectionalityDescriptions) {
+        var result = CoreResultFactory.getGetLinkDirectionalityDescriptionsResult();
+
+        if(linkDirectionalityDescriptions != null) {
+            var userVisit = getUserVisit();
+
+            result.setLinkDirectionality(linkDirectionalityControl.getLinkDirectionalityTransfer(userVisit, linkDirectionality));
+
+            if(session.hasLimit(LinkDirectionalityDescriptionFactory.class)) {
+                result.setLinkDirectionalityDescriptionCount(getTotalEntities());
+            }
+
+            result.setLinkDirectionalityDescriptions(linkDirectionalityControl.getLinkDirectionalityDescriptionTransfers(userVisit, linkDirectionalityDescriptions));
         }
 
         return result;

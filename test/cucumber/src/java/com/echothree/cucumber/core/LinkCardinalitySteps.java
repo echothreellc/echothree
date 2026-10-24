@@ -21,9 +21,22 @@ import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.util.common.command.EditMode;
 import io.cucumber.java8.En;
+import io.cucumber.datatable.DataTable;
+import com.echothree.model.control.core.common.transfer.LinkCardinalityTransfer;
+import com.echothree.model.control.core.common.transfer.LinkCardinalityDescriptionTransfer;
+import com.echothree.util.common.transfer.Limit;
+import com.echothree.model.data.core.common.LinkCardinalityDescriptionConstants;
+import java.util.Map;
+import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class LinkCardinalitySteps implements En {
+
+    private LinkCardinalityTransfer retrievedLinkCardinality;
+    private LinkCardinalityDescriptionTransfer retrievedDescription;
+    private List<LinkCardinalityDescriptionTransfer> retrievedDescriptions;
+    private Long retrievedDescriptionCount;
+    private String originalDefaultName;
 
     public LinkCardinalitySteps() {
         When("^the user begins entering a new link cardinality$",
@@ -111,6 +124,8 @@ public class LinkCardinalitySteps implements En {
 
                     if(!executionResult.getHasErrors()) {
                         persona.linkCardinalityEdit = result.getEdit();
+                    } else {
+                        persona.linkCardinalitySpec = null;
                     }
                 });
 
@@ -230,6 +245,220 @@ public class LinkCardinalitySteps implements En {
                     }
                 });
 
+        And("the user enters these link cardinality values:", (DataTable values) -> {
+            var persona = CurrentPersona.persona;
+            var edit = persona.createLinkCardinalityForm == null ? persona.linkCardinalityEdit : persona.createLinkCardinalityForm;
+
+            assertThat(edit).isNotNull();
+            values.asMap(String.class, String.class).forEach(edit::set);
+        });
+
+        And("the user clears the link cardinality field {string}", (String fieldName) -> {
+            var persona = CurrentPersona.persona;
+            var edit = persona.createLinkCardinalityForm == null ? persona.linkCardinalityEdit : persona.createLinkCardinalityForm;
+
+            assertThat(edit).isNotNull();
+            edit.set(fieldName, null);
+        });
+
+        Then("the link cardinality field {string} validation error {string} should occur", (String fieldName, String error) -> {
+            var commandResult = LastCommandResult.commandResult;
+
+            assertThat(commandResult.hasValidationErrors()).isTrue();
+            assertThat(commandResult.getValidationResult().getValidationMessages().containsKey(fieldName, error)).isTrue();
+        });
+
+        And("the user specifies the link cardinality with:", (DataTable values) -> {
+            var persona = CurrentPersona.persona;
+
+            assertThat(persona.linkCardinalitySpec).isNotNull();
+            values.asMap(String.class, String.class).forEach(persona.linkCardinalitySpec::set);
+        });
+
+        When("the user retrieves the link cardinality with:", (DataTable values) -> {
+            var commandForm = CoreUtil.getHome().getGetLinkCardinalityForm();
+
+            values.asMap(String.class, String.class).forEach(commandForm::set);
+
+            var commandResult = CoreUtil.getHome().getLinkCardinality(CurrentPersona.persona.userVisitPK, commandForm);
+            LastCommandResult.commandResult = commandResult;
+
+            retrievedLinkCardinality = commandResult.hasErrors() ? null : commandResult.getExecutionResult().getResult().getLinkCardinality();
+        });
+
+        When("the user retrieves the last link cardinality by entity reference", () -> {
+            var persona = CurrentPersona.persona;
+            var commandForm = CoreUtil.getHome().getGetLinkCardinalityForm();
+
+            assertThat(persona.lastEntityRef).isNotNull();
+
+            commandForm.setEntityRef(persona.lastEntityRef);
+
+            var commandResult = CoreUtil.getHome().getLinkCardinality(persona.userVisitPK, commandForm);
+            LastCommandResult.commandResult = commandResult;
+
+            retrievedLinkCardinality = commandResult.hasErrors() ? null : commandResult.getExecutionResult().getResult().getLinkCardinality();
+        });
+
+        Then("the retrieved link cardinality has these values:", (DataTable values) -> {
+            assertThat(retrievedLinkCardinality).isNotNull();
+
+            for(var entry : values.asMap(String.class, String.class).entrySet()) {
+                var actual = switch(entry.getKey()) {
+                    case "LinkCardinalityName" -> retrievedLinkCardinality.getLinkCardinalityName();
+                    case "IsDefault" -> retrievedLinkCardinality.getIsDefault().toString();
+                    case "SortOrder" -> retrievedLinkCardinality.getSortOrder().toString();
+                    case "Description" -> retrievedLinkCardinality.getDescription();
+                    default -> throw new IllegalArgumentException(entry.getKey());
+                };
+
+                assertThat(actual).as(entry.getKey()).isEqualTo(entry.getValue());
+            }
+        });
+
+        When("the user deletes the link cardinality with:", (DataTable values) -> {
+            var commandForm = CoreUtil.getHome().getDeleteLinkCardinalityForm();
+
+            values.asMap(String.class, String.class).forEach(commandForm::set);
+            LastCommandResult.commandResult = CoreUtil.getHome().deleteLinkCardinality(CurrentPersona.persona.userVisitPK, commandForm);
+        });
+
+        When("the user sets the default link cardinality with:", (DataTable values) -> {
+            var commandForm = CoreUtil.getHome().getSetDefaultLinkCardinalityForm();
+
+            values.asMap(String.class, String.class).forEach(commandForm::set);
+            LastCommandResult.commandResult = CoreUtil.getHome().setDefaultLinkCardinality(CurrentPersona.persona.userVisitPK, commandForm);
+        });
+
+        Given("the user remembers the default link cardinality", () -> {
+            var commandForm = CoreUtil.getHome().getGetLinkCardinalityForm();
+            var commandResult = CoreUtil.getHome().getLinkCardinality(CurrentPersona.persona.userVisitPK, commandForm);
+
+            assertThat(commandResult.hasErrors()).isFalse();
+            originalDefaultName = commandResult.getExecutionResult().getResult().getLinkCardinality().getLinkCardinalityName();
+        });
+
+        When("the user restores the original default link cardinality", () -> restoreDefault());
+        After(() -> {
+            if(originalDefaultName != null) {
+                restoreDefault();
+            }
+        });
+
+        When("the user abandons editing link cardinality {string}", (String entityName) -> {
+            var persona = CurrentPersona.persona;
+            var commandForm = CoreUtil.getHome().getEditLinkCardinalityForm();
+            var spec = CoreUtil.getHome().getLinkCardinalityUniversalSpec();
+
+            spec.setLinkCardinalityName(entityName);
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.ABANDON);
+
+            LastCommandResult.commandResult = CoreUtil.getHome().editLinkCardinality(persona.userVisitPK, commandForm);
+
+            persona.linkCardinalitySpec = null;
+            persona.linkCardinalityEdit = null;
+        });
+
+        When("^the user (creates|retrieves|deletes) a link cardinality description with:$", (String operation, DataTable values) -> {
+            var persona = CurrentPersona.persona;
+            var fields = values.asMap(String.class, String.class);
+
+            switch(operation) {
+                case "creates" -> {
+                    var commandForm = CoreUtil.getHome().getCreateLinkCardinalityDescriptionForm();
+                    fields.forEach(commandForm::set);
+                    LastCommandResult.commandResult = CoreUtil.getHome().createLinkCardinalityDescription(persona.userVisitPK, commandForm);
+                }
+                case "retrieves" -> {
+                    var commandForm = CoreUtil.getHome().getGetLinkCardinalityDescriptionForm();
+                    fields.forEach(commandForm::set);
+                    var commandResult = CoreUtil.getHome().getLinkCardinalityDescription(persona.userVisitPK, commandForm);
+                    LastCommandResult.commandResult = commandResult;
+                    retrievedDescription = commandResult.hasErrors() ? null : commandResult.getExecutionResult().getResult().getLinkCardinalityDescription();
+                }
+                case "deletes" -> {
+                    var commandForm = CoreUtil.getHome().getDeleteLinkCardinalityDescriptionForm();
+                    fields.forEach(commandForm::set);
+                    LastCommandResult.commandResult = CoreUtil.getHome().deleteLinkCardinalityDescription(persona.userVisitPK, commandForm);
+                }
+                default -> throw new IllegalArgumentException(operation);
+            }
+        });
+
+        Then("the retrieved link cardinality description is {string}", (String description) -> {
+            assertThat(retrievedDescription).isNotNull();
+            assertThat(retrievedDescription.getDescription()).isEqualTo(description);
+        });
+
+        When("the user edits the link cardinality description with:", (DataTable values) -> {
+            var fields = values.asMap(String.class, String.class);
+            var persona = CurrentPersona.persona;
+            var spec = CoreUtil.getHome().getLinkCardinalityDescriptionSpec();
+            var commandForm = CoreUtil.getHome().getEditLinkCardinalityDescriptionForm();
+
+            spec.setLinkCardinalityName(fields.get("LinkCardinalityName"));
+            spec.setLanguageIsoName(fields.get("LanguageIsoName"));
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = CoreUtil.getHome().editLinkCardinalityDescription(persona.userVisitPK, commandForm);
+            LastCommandResult.commandResult = commandResult;
+
+            if(!commandResult.hasErrors()) {
+                var edit = commandResult.getExecutionResult().getResult().getEdit();
+                edit.setDescription(fields.get("Description"));
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = CoreUtil.getHome().editLinkCardinalityDescription(persona.userVisitPK, commandForm);
+                LastCommandResult.commandResult = commandResult;
+
+                if(commandResult.hasErrors()) {
+                    commandForm.setEditMode(EditMode.ABANDON);
+
+                    var abandonResult = CoreUtil.getHome().editLinkCardinalityDescription(persona.userVisitPK, commandForm);
+                    assertThat(abandonResult.hasErrors()).isFalse();
+                }
+            }
+        });
+
+        When("the user lists descriptions for link cardinality {string} with limit {string}", (String entityName, String limit) -> {
+            var commandForm = CoreUtil.getHome().getGetLinkCardinalityDescriptionsForm();
+
+            commandForm.setLinkCardinalityName(entityName);
+            commandForm.setLimits(Map.of(LinkCardinalityDescriptionConstants.ENTITY_TYPE_NAME, new Limit(limit)));
+
+            var commandResult = CoreUtil.getHome().getLinkCardinalityDescriptions(CurrentPersona.persona.userVisitPK, commandForm);
+            LastCommandResult.commandResult = commandResult;
+
+            retrievedDescriptions = commandResult.hasErrors() ? null : commandResult.getExecutionResult().getResult().getLinkCardinalityDescriptions();
+            retrievedDescriptionCount = commandResult.hasErrors() ? null : commandResult.getExecutionResult().getResult().getLinkCardinalityDescriptionCount();
+        });
+
+        Then("the link cardinality description page has {int} entries out of {long}", (Integer count, Long total) -> {
+            assertThat(retrievedDescriptions).hasSize(count);
+            assertThat(retrievedDescriptionCount).isEqualTo(total);
+        });
+
+    }
+
+    private void restoreDefault()
+            throws javax.naming.NamingException {
+        var commandForm = CoreUtil.getHome().getSetDefaultLinkCardinalityForm();
+
+        assertThat(originalDefaultName).isNotNull();
+
+        commandForm.setLinkCardinalityName(originalDefaultName);
+
+        var commandResult = CoreUtil.getHome().setDefaultLinkCardinality(CurrentPersona.persona.userVisitPK, commandForm);
+        LastCommandResult.commandResult = commandResult;
+
+        assertThat(commandResult.hasErrors()).isFalse();
+
+        originalDefaultName = null;
     }
 
 }

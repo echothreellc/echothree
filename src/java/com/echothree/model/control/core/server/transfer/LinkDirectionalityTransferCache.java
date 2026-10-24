@@ -16,12 +16,12 @@
 
 package com.echothree.model.control.core.server.transfer;
 
-import javax.inject.Inject;
 import com.echothree.model.control.core.common.transfer.LinkDirectionalityTransfer;
 import com.echothree.model.control.core.server.control.LinkDirectionalityControl;
 import com.echothree.model.data.core.server.entity.LinkDirectionality;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class LinkDirectionalityTransferCache
