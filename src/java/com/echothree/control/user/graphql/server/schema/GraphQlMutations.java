@@ -16,6 +16,7 @@
 
 package com.echothree.control.user.graphql.server.schema;
 
+
 import com.echothree.control.user.accounting.common.AccountingUtil;
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.campaign.common.CampaignUtil;
@@ -17918,6 +17919,114 @@ public interface GraphQlMutations {
             }
 
             mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createLinkCardinality(final DataFetchingEnvironment env,
+            @GraphQLName("linkCardinalityName") @GraphQLNonNull final String linkCardinalityName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getCreateLinkCardinalityForm();
+
+            commandForm.setLinkCardinalityName(linkCardinalityName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = CoreUtil.getHome().createLinkCardinality(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject editLinkCardinality(final DataFetchingEnvironment env,
+            @GraphQLName("originalLinkCardinalityName") final String originalLinkCardinalityName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("linkCardinalityName") final String linkCardinalityName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = CoreUtil.getHome().getLinkCardinalityUniversalSpec();
+
+            spec.setLinkCardinalityName(originalLinkCardinalityName);
+            spec.setUuid(id);
+
+            var commandForm = CoreUtil.getHome().getEditLinkCardinalityForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = CoreUtil.getHome().editLinkCardinality(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getLinkCardinality().getEntityInstance());
+
+                if(arguments.containsKey("linkCardinalityName"))
+                    edit.setLinkCardinalityName(linkCardinalityName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = CoreUtil.getHome().editLinkCardinality(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteLinkCardinality(final DataFetchingEnvironment env,
+            @GraphQLName("linkCardinalityName") final String linkCardinalityName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getDeleteLinkCardinalityForm();
+
+            commandForm.setLinkCardinalityName(linkCardinalityName);
+            commandForm.setUuid(id);
+
+            mutationResultObject.setCommandResult(CoreUtil.getHome().deleteLinkCardinality(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }

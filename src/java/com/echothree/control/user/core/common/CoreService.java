@@ -1292,6 +1292,39 @@ public interface CoreService
     CommandResult<VoidResult> deleteEntityAppearance(UserVisitPK userVisitPK, DeleteEntityAppearanceForm form);
     
     // -------------------------------------------------------------------------
+    //   Link Cardinalities
+    // -------------------------------------------------------------------------
+
+    CommandResult<CreateLinkCardinalityResult> createLinkCardinality(UserVisitPK userVisitPK, CreateLinkCardinalityForm form);
+
+    CommandResult<GetLinkCardinalitiesResult> getLinkCardinalities(UserVisitPK userVisitPK, GetLinkCardinalitiesForm form);
+
+    CommandResult<GetLinkCardinalityResult> getLinkCardinality(UserVisitPK userVisitPK, GetLinkCardinalityForm form);
+
+    CommandResult<GetLinkCardinalityChoicesResult> getLinkCardinalityChoices(UserVisitPK userVisitPK, GetLinkCardinalityChoicesForm form);
+
+    CommandResult<VoidResult> setDefaultLinkCardinality(UserVisitPK userVisitPK, SetDefaultLinkCardinalityForm form);
+
+    CommandResult<EditLinkCardinalityResult> editLinkCardinality(UserVisitPK userVisitPK, EditLinkCardinalityForm form);
+
+    CommandResult<VoidResult> deleteLinkCardinality(UserVisitPK userVisitPK, DeleteLinkCardinalityForm form);
+
+    // -------------------------------------------------------------------------
+    //   Link Cardinality Descriptions
+    // -------------------------------------------------------------------------
+
+    CommandResult<VoidResult> createLinkCardinalityDescription(UserVisitPK userVisitPK, CreateLinkCardinalityDescriptionForm form);
+
+    CommandResult<GetLinkCardinalityDescriptionResult> getLinkCardinalityDescription(UserVisitPK userVisitPK, GetLinkCardinalityDescriptionForm form);
+
+    CommandResult<GetLinkCardinalityDescriptionsResult> getLinkCardinalityDescriptions(UserVisitPK userVisitPK, GetLinkCardinalityDescriptionsForm form);
+
+    CommandResult<EditLinkCardinalityDescriptionResult> editLinkCardinalityDescription(UserVisitPK userVisitPK, EditLinkCardinalityDescriptionForm form);
+
+    CommandResult<VoidResult> deleteLinkCardinalityDescription(UserVisitPK userVisitPK, DeleteLinkCardinalityDescriptionForm form);
+
+
+    // -------------------------------------------------------------------------
     //   Utilities
     // -------------------------------------------------------------------------
 

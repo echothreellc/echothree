@@ -40,6 +40,8 @@ import com.echothree.control.user.core.server.command.GetEntityLongRangesCommand
 import com.echothree.control.user.core.server.command.GetEntityTypeCommand;
 import com.echothree.control.user.core.server.command.GetEntityTypesCommand;
 import com.echothree.control.user.core.server.command.GetEventsCommand;
+import com.echothree.control.user.core.server.command.GetLinkCardinalitiesCommand;
+import com.echothree.control.user.core.server.command.GetLinkCardinalityCommand;
 import com.echothree.control.user.core.server.command.GetMimeTypeCommand;
 import com.echothree.control.user.core.server.command.GetMimeTypeFileExtensionCommand;
 import com.echothree.control.user.core.server.command.GetMimeTypeFileExtensionsCommand;
@@ -178,6 +180,14 @@ public interface CoreSecurityUtils {
 
     static boolean getHasMimeTypeUsagesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetMimeTypeUsagesCommand.class);
+    }
+
+    static boolean getHasLinkCardinalityAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetLinkCardinalityCommand.class);
+    }
+
+    static boolean getHasLinkCardinalitiesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetLinkCardinalitiesCommand.class);
     }
 
 }

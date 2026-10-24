@@ -157,6 +157,12 @@
             <entityType entityTypeName="EntityLongRangeDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Long Range Description" />
             </entityType>
+            <entityType entityTypeName="LinkCardinality" keepAllHistory="false" isExtensible="true" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Link Cardinality" />
+            </entityType>
+            <entityType entityTypeName="LinkCardinalityDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Link Cardinality Description" />
+            </entityType>
             <entityType entityTypeName="EntityBooleanDefault" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Boolean Default" />
             </entityType>
