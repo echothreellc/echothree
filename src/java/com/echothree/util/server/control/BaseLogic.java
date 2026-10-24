@@ -113,7 +113,7 @@ public abstract class BaseLogic {
             sma.addSecurityMessage(message);
         }
     }
-    
+
     // This is only safe to use if all function are using handleError. If eea is null in that case, an Exception will be thrown, and this
     // code will never be needed. Otherwise, eea will be checked and the value of hasExecutionErrors() returned.
     public boolean hasExecutionErrors(final ExecutionErrorAccumulator eea) {
@@ -124,6 +124,10 @@ public abstract class BaseLogic {
         }
         
         return hasExecutionErrors;
+    }
+
+    public boolean hasErrors(ExecutionErrorAccumulator eea) {
+        return eea != null && eea.hasExecutionErrors();
     }
 
 }

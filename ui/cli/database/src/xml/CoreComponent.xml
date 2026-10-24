@@ -3738,6 +3738,112 @@
                         </index>
                     </indexes>
                 </table>
+                <table namePlural="LinkTypes" nameSingular="LinkType" columnPrefix="lnktyp">
+                    <columns>
+                        <column name="LinkTypeId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="LinkTypeDetails" destinationColumn="LinkTypeDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="LinkTypeDetails" destinationColumn="LinkTypeDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LinkTypeId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="LinkTypeDetails" nameSingular="LinkTypeDetail" columnPrefix="lnktypdt">
+                    <columns>
+                        <column name="LinkTypeDetailId" type="EID" nullAllowed="false" />
+                        <column name="LinkTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="LinkTypes" destinationColumn="LinkTypeId" />
+                        <column name="LinkTypeName" type="Name" nullAllowed="false" />
+                        <column name="ParentLinkTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="LinkTypes" destinationColumn="LinkTypeId" />
+                        <column name="SourceEntityTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityTypes" destinationColumn="EntityTypeId" />
+                        <column name="TargetEntityTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityTypes" destinationColumn="EntityTypeId" />
+                        <column name="LinkCardinalityId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="LinkCardinalities" destinationColumn="LinkCardinalityId" />
+                        <column name="LinkDirectionalityId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="LinkDirectionalities" destinationColumn="LinkDirectionalityId" />
+                        <column name="IsTransitive" type="Boolean" nullAllowed="false" />
+                        <column name="InverseLinkTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="LinkTypes" destinationColumn="LinkTypeId" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LinkTypeDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="LinkTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="LinkTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ParentLinkTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="SourceEntityTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
+                            <indexColumn name="TargetEntityTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index6">
+                            <indexColumn name="LinkCardinalityId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index7">
+                            <indexColumn name="LinkDirectionalityId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index8">
+                            <indexColumn name="InverseLinkTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="LinkTypeTranslations" nameSingular="LinkTypeTranslation" columnPrefix="lnktyptr">
+                    <columns>
+                        <column name="LinkTypeTranslationId" type="EID" nullAllowed="false" />
+                        <column name="LinkTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="LinkTypes" destinationColumn="LinkTypeId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="GuidanceMimeTypeId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="MimeTypes" destinationColumn="MimeTypeId" />
+                        <column name="Guidance" type="CLOB" nullAllowed="true" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LinkTypeTranslationId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="LinkTypeId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LinkTypeId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="GuidanceMimeTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
             </tables>
         </component>
     </components>

@@ -19,9 +19,10 @@ package com.echothree.model.control.core.server.logic;
 import com.echothree.control.user.core.common.spec.LinkCardinalityUniversalSpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
-import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
-import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.core.common.exception.CannotDeleteLinkCardinalityInUseException;
 import com.echothree.model.control.core.common.exception.DuplicateLinkCardinalityNameException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.common.exception.UnknownDefaultLinkCardinalityException;
 import com.echothree.model.control.core.common.exception.UnknownLinkCardinalityNameException;
 import com.echothree.model.control.core.server.control.LinkCardinalityControl;
@@ -30,6 +31,7 @@ import com.echothree.model.data.core.server.value.LinkCardinalityDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.model.control.core.server.control.LinkTypeControl;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -42,6 +44,9 @@ public class LinkCardinalityLogic
 
     @Inject
     LinkCardinalityControl linkCardinalityControl;
+
+    @Inject
+    LinkTypeControl linkTypeControl;
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
@@ -142,7 +147,11 @@ public class LinkCardinalityLogic
 
     public void deleteLinkCardinality(final ExecutionErrorAccumulator eea, final LinkCardinality linkCardinality,
             final BasePK deletedBy) {
-        linkCardinalityControl.deleteLinkCardinality(linkCardinality, deletedBy);
+        if(linkTypeControl.countLinkTypes(linkTypeControl.getLinkTypeFilter(null, null, null, linkCardinality, null, null)) != 0) {
+            handleExecutionError(CannotDeleteLinkCardinalityInUseException.class, eea, ExecutionErrors.CannotDeleteLinkCardinalityInUse.name(), linkCardinality.getLastDetail().getLinkCardinalityName());
+        } else {
+            linkCardinalityControl.deleteLinkCardinality(linkCardinality, deletedBy);
+        }
     }
 
 }

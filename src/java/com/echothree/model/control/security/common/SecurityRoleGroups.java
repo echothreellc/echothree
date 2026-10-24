@@ -224,6 +224,7 @@ public enum SecurityRoleGroups {
     LicenseType,
     LinkCardinality,
     LinkDirectionality,
+    LinkType,
     Location,
     LocationCapacity,
     LocationNameElement,

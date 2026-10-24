@@ -2733,6 +2733,69 @@ public class CoreBean
     }
 
     // -------------------------------------------------------------------------
+    //   Link Types
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult<CreateLinkTypeResult> createLinkType(UserVisitPK userVisitPK, CreateLinkTypeForm form) {
+        return CDI.current().select(CreateLinkTypeCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetLinkTypesResult> getLinkTypes(UserVisitPK userVisitPK, GetLinkTypesForm form) {
+        return CDI.current().select(GetLinkTypesCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetLinkTypeResult> getLinkType(UserVisitPK userVisitPK, GetLinkTypeForm form) {
+        return CDI.current().select(GetLinkTypeCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetLinkTypeChoicesResult> getLinkTypeChoices(UserVisitPK userVisitPK, GetLinkTypeChoicesForm form) {
+        return CDI.current().select(GetLinkTypeChoicesCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<EditLinkTypeResult> editLinkType(UserVisitPK userVisitPK, EditLinkTypeForm form) {
+        return CDI.current().select(EditLinkTypeCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> deleteLinkType(UserVisitPK userVisitPK, DeleteLinkTypeForm form) {
+        return CDI.current().select(DeleteLinkTypeCommand.class).get().run(userVisitPK, form);
+    }
+
+    // -------------------------------------------------------------------------
+    //   Link Type Translations
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult<VoidResult> createLinkTypeTranslation(UserVisitPK userVisitPK, CreateLinkTypeTranslationForm form) {
+        return CDI.current().select(CreateLinkTypeTranslationCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetLinkTypeTranslationResult> getLinkTypeTranslation(UserVisitPK userVisitPK, GetLinkTypeTranslationForm form) {
+        return CDI.current().select(GetLinkTypeTranslationCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetLinkTypeTranslationsResult> getLinkTypeTranslations(UserVisitPK userVisitPK, GetLinkTypeTranslationsForm form) {
+        return CDI.current().select(GetLinkTypeTranslationsCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<EditLinkTypeTranslationResult> editLinkTypeTranslation(UserVisitPK userVisitPK, EditLinkTypeTranslationForm form) {
+        return CDI.current().select(EditLinkTypeTranslationCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> deleteLinkTypeTranslation(UserVisitPK userVisitPK, DeleteLinkTypeTranslationForm form) {
+        return CDI.current().select(DeleteLinkTypeTranslationCommand.class).get().run(userVisitPK, form);
+    }
+
+    // -------------------------------------------------------------------------
     //   Utilities
     // -------------------------------------------------------------------------
 

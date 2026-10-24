@@ -19,9 +19,10 @@ package com.echothree.model.control.core.server.logic;
 import com.echothree.control.user.core.common.spec.LinkDirectionalityUniversalSpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
-import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
-import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.core.common.exception.CannotDeleteLinkDirectionalityInUseException;
 import com.echothree.model.control.core.common.exception.DuplicateLinkDirectionalityNameException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.common.exception.UnknownDefaultLinkDirectionalityException;
 import com.echothree.model.control.core.common.exception.UnknownLinkDirectionalityNameException;
 import com.echothree.model.control.core.server.control.LinkDirectionalityControl;
@@ -30,6 +31,7 @@ import com.echothree.model.data.core.server.value.LinkDirectionalityDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.model.control.core.server.control.LinkTypeControl;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -42,6 +44,9 @@ public class LinkDirectionalityLogic
 
     @Inject
     LinkDirectionalityControl linkDirectionalityControl;
+
+    @Inject
+    LinkTypeControl linkTypeControl;
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
@@ -142,7 +147,11 @@ public class LinkDirectionalityLogic
 
     public void deleteLinkDirectionality(final ExecutionErrorAccumulator eea, final LinkDirectionality linkDirectionality,
             final BasePK deletedBy) {
-        linkDirectionalityControl.deleteLinkDirectionality(linkDirectionality, deletedBy);
+        if(linkTypeControl.countLinkTypes(linkTypeControl.getLinkTypeFilter(null, null, null, null, linkDirectionality, null)) != 0) {
+            handleExecutionError(CannotDeleteLinkDirectionalityInUseException.class, eea, ExecutionErrors.CannotDeleteLinkDirectionalityInUse.name(), linkDirectionality.getLastDetail().getLinkDirectionalityName());
+        } else {
+            linkDirectionalityControl.deleteLinkDirectionality(linkDirectionality, deletedBy);
+        }
     }
 
 }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<initialData>
+    <linkTypes>
+        <linkType linkTypeName="PART_OF" sourceComponentVendorName="ECHO_THREE" sourceEntityTypeName="Item"
+                  targetComponentVendorName="ECHO_THREE" targetEntityTypeName="Item"
+                  linkCardinalityName="MANY_TO_MANY" linkDirectionalityName="DIRECTED" isTransitive="true" sortOrder="1">
+            <linkTypeTranslation languageIsoName="en" description="Part Of" guidanceMimeTypeName="text/plain"
+                                 guidance="The source item is a constituent of the target item, directly or through a chain of part relationships. This does not express ownership, substitution, or compatibility." />
+        </linkType>
+        <linkType linkTypeName="HAS_PART" sourceComponentVendorName="ECHO_THREE" sourceEntityTypeName="Item"
+                  targetComponentVendorName="ECHO_THREE" targetEntityTypeName="Item"
+                  linkCardinalityName="MANY_TO_MANY" linkDirectionalityName="DIRECTED" isTransitive="true" inverseLinkTypeName="PART_OF" sortOrder="2">
+            <linkTypeTranslation languageIsoName="en" description="Has Part" guidanceMimeTypeName="text/plain"
+                                 guidance="The source item contains the target item as a constituent, directly or indirectly. This is the inverse of Part Of." />
+        </linkType>
+        <linkType linkTypeName="DIRECT_PART_OF" parentLinkTypeName="PART_OF" sourceComponentVendorName="ECHO_THREE" sourceEntityTypeName="Item"
+                  targetComponentVendorName="ECHO_THREE" targetEntityTypeName="Item"
+                  linkCardinalityName="MANY_TO_ONE" linkDirectionalityName="DIRECTED" isTransitive="false" sortOrder="3">
+            <linkTypeTranslation languageIsoName="en" description="Direct Part Of" guidanceMimeTypeName="text/plain"
+                                 guidance="The source item is an immediate constituent of the target item. Each source item has at most one immediate parent. Do not use this relationship for ancestors." />
+        </linkType>
+        <linkType linkTypeName="DIRECT_HAS_PART" parentLinkTypeName="HAS_PART" sourceComponentVendorName="ECHO_THREE" sourceEntityTypeName="Item"
+                  targetComponentVendorName="ECHO_THREE" targetEntityTypeName="Item"
+                  linkCardinalityName="ONE_TO_MANY" linkDirectionalityName="DIRECTED" isTransitive="false" inverseLinkTypeName="DIRECT_PART_OF" sortOrder="4">
+            <linkTypeTranslation languageIsoName="en" description="Direct Has Part" guidanceMimeTypeName="text/plain"
+                                 guidance="The source item contains the target item as an immediate constituent. This is the inverse of Direct Part Of." />
+        </linkType>
+        <linkType linkTypeName="COMPATIBLE_WITH" sourceComponentVendorName="ECHO_THREE" sourceEntityTypeName="Item"
+                  targetComponentVendorName="ECHO_THREE" targetEntityTypeName="Item"
+                  linkCardinalityName="MANY_TO_MANY" linkDirectionalityName="SYMMETRIC" isTransitive="false" sortOrder="5">
+            <linkTypeTranslation languageIsoName="en" description="Compatible With" guidanceMimeTypeName="text/plain"
+                                 guidance="The two items are compatible. Direction is irrelevant, and compatibility with a common third item does not imply compatibility with each other." />
+        </linkType>
+    </linkTypes>
+</initialData>
