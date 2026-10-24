@@ -98,7 +98,7 @@ public class CreateSalesOrderCommand
                 allowSubstitutions, allowCombiningShipments, reference, freeOnBoardName, strTaxable, workflowEntranceName,
                 getParty());
 
-        if(!hasExecutionErrors()) {
+        if(order != null) {
             result.setOrderName(order.getLastDetail().getOrderName());
             result.setEntityRef(order.getPrimaryKey().getEntityRef());
         }

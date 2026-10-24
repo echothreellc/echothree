@@ -87,7 +87,7 @@ public class CreatePurchaseOrderCommand
                 termName, holdUntilComplete, allowBackorders, allowSubstitutions, allowCombiningShipments, reference,
                 freeOnBoardName, workflowEntranceName, getParty());
 
-        if(!hasExecutionErrors()) {
+        if(order != null) {
             result.setOrderName(order.getLastDetail().getOrderName());
             result.setEntityRef(order.getPrimaryKey().getEntityRef());
         }
