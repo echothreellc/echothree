@@ -418,7 +418,7 @@ public class LinkTypeSteps implements En {
             var commandForm = CoreUtil.getHome().getCreateLinkTypeTranslationForm();
 
             values.asMap(String.class, String.class).forEach(commandForm::set);
-            
+
             LastCommandResult.commandResult = CoreUtil.getHome().createLinkTypeTranslation(persona.userVisitPK, commandForm);
         });
 
