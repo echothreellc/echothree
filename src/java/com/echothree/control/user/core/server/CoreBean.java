@@ -2597,6 +2597,74 @@ public class CoreBean
     }
     
     // -------------------------------------------------------------------------
+    //   Link Cardinalities
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult<CreateLinkCardinalityResult> createLinkCardinality(UserVisitPK userVisitPK, CreateLinkCardinalityForm form) {
+        return CDI.current().select(CreateLinkCardinalityCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetLinkCardinalitiesResult> getLinkCardinalities(UserVisitPK userVisitPK, GetLinkCardinalitiesForm form) {
+        return CDI.current().select(GetLinkCardinalitiesCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetLinkCardinalityResult> getLinkCardinality(UserVisitPK userVisitPK, GetLinkCardinalityForm form) {
+        return CDI.current().select(GetLinkCardinalityCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetLinkCardinalityChoicesResult> getLinkCardinalityChoices(UserVisitPK userVisitPK, GetLinkCardinalityChoicesForm form) {
+        return CDI.current().select(GetLinkCardinalityChoicesCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> setDefaultLinkCardinality(UserVisitPK userVisitPK, SetDefaultLinkCardinalityForm form) {
+        return CDI.current().select(SetDefaultLinkCardinalityCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<EditLinkCardinalityResult> editLinkCardinality(UserVisitPK userVisitPK, EditLinkCardinalityForm form) {
+        return CDI.current().select(EditLinkCardinalityCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> deleteLinkCardinality(UserVisitPK userVisitPK, DeleteLinkCardinalityForm form) {
+        return CDI.current().select(DeleteLinkCardinalityCommand.class).get().run(userVisitPK, form);
+    }
+
+    // -------------------------------------------------------------------------
+    //   Link Cardinality Descriptions
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult<VoidResult> createLinkCardinalityDescription(UserVisitPK userVisitPK, CreateLinkCardinalityDescriptionForm form) {
+        return CDI.current().select(CreateLinkCardinalityDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetLinkCardinalityDescriptionResult> getLinkCardinalityDescription(UserVisitPK userVisitPK, GetLinkCardinalityDescriptionForm form) {
+        return CDI.current().select(GetLinkCardinalityDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetLinkCardinalityDescriptionsResult> getLinkCardinalityDescriptions(UserVisitPK userVisitPK, GetLinkCardinalityDescriptionsForm form) {
+        return CDI.current().select(GetLinkCardinalityDescriptionsCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<EditLinkCardinalityDescriptionResult> editLinkCardinalityDescription(UserVisitPK userVisitPK, EditLinkCardinalityDescriptionForm form) {
+        return CDI.current().select(EditLinkCardinalityDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> deleteLinkCardinalityDescription(UserVisitPK userVisitPK, DeleteLinkCardinalityDescriptionForm form) {
+        return CDI.current().select(DeleteLinkCardinalityDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
+    // -------------------------------------------------------------------------
     //   Utilities
     // -------------------------------------------------------------------------
 

@@ -103,6 +103,7 @@ import com.echothree.ui.cli.dataloader.util.data.handler.index.IndexTypesHandler
 import com.echothree.ui.cli.dataloader.util.data.handler.index.IndexesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.inventory.AllocationPrioritiesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.inventory.InventoryAdjustmentTypesHandler;
+import com.echothree.ui.cli.dataloader.util.data.handler.core.LinkCardinalitiesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.inventory.InventoryConditionUseTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.inventory.InventoryConditionsHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.inventory.InventoryCostingMethodsHandler;
@@ -438,6 +439,8 @@ public class InitialDataHandler
             initialDataParser.pushHandler(new InventoryConditionsHandler(initialDataParser, this));
         } else if(localName.equals("inventoryAdjustmentTypes")) {
             initialDataParser.pushHandler(new InventoryAdjustmentTypesHandler(initialDataParser, this));
+        } else if(localName.equals("linkCardinalities")) {
+            initialDataParser.pushHandler(new LinkCardinalitiesHandler(initialDataParser, this));
         } else if(localName.equals("inventoryCostingMethods")) {
             initialDataParser.pushHandler(new InventoryCostingMethodsHandler(initialDataParser, this));
         } else if(localName.equals("inventoryBucketTypes")) {

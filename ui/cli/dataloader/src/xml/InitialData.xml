@@ -57,6 +57,7 @@
         <file name="/InitialUnitOfMeasure.xml" />
         <file name="/InitialWorkflows.xml" />
         <file name="/InitialWorkEfforts.xml" />
+        <file name="/InitialLinkCardinalities.xml" />
     </includes>
     <generateBaseKeys />
     <includes>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<initialData>
+    <linkCardinalities>
+        <linkCardinality linkCardinalityName="ONE_TO_ONE" isDefault="true" sortOrder="1">
+            <linkCardinalityDescription languageIsoName="en" description="One to One" />
+        </linkCardinality>
+        <linkCardinality linkCardinalityName="ONE_TO_MANY" isDefault="false" sortOrder="2">
+            <linkCardinalityDescription languageIsoName="en" description="One to Many" />
+        </linkCardinality>
+        <linkCardinality linkCardinalityName="MANY_TO_ONE" isDefault="false" sortOrder="3">
+            <linkCardinalityDescription languageIsoName="en" description="Many to One" />
+        </linkCardinality>
+        <linkCardinality linkCardinalityName="MANY_TO_MANY" isDefault="false" sortOrder="4">
+            <linkCardinalityDescription languageIsoName="en" description="Many to Many" />
+        </linkCardinality>
+    </linkCardinalities>
+</initialData>

@@ -2468,5 +2468,10 @@ public enum ExecutionErrors {
     DuplicateInventoryBucketTypeDescription,
     UnknownInventoryBucketTypeDescription,
     UnknownDefaultInventoryBucketType,
+    DuplicateLinkCardinalityName,
+    UnknownLinkCardinalityName,
+    DuplicateLinkCardinalityDescription,
+    UnknownLinkCardinalityDescription,
+    UnknownDefaultLinkCardinality,
 
 }

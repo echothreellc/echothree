@@ -3590,6 +3590,80 @@
                         </index>
                     </indexes>
                 </table>
+                <table namePlural="LinkCardinalities" nameSingular="LinkCardinality" columnPrefix="lnkcrd">
+                    <columns>
+                        <column name="LinkCardinalityId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="LinkCardinalityDetails" destinationColumn="LinkCardinalityDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="LinkCardinalityDetails" destinationColumn="LinkCardinalityDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LinkCardinalityId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="LinkCardinalityDetails" nameSingular="LinkCardinalityDetail" columnPrefix="lnkcrddt">
+                    <columns>
+                        <column name="LinkCardinalityDetailId" type="EID" nullAllowed="false" />
+                        <column name="LinkCardinalityId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="LinkCardinalities" destinationColumn="LinkCardinalityId" />
+                        <column name="LinkCardinalityName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LinkCardinalityDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="LinkCardinalityId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="LinkCardinalityName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="LinkCardinalityDescriptions" nameSingular="LinkCardinalityDescription" columnPrefix="lnkcrdd">
+                    <columns>
+                        <column name="LinkCardinalityDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="LinkCardinalityId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="LinkCardinalities" destinationColumn="LinkCardinalityId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LinkCardinalityDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="LinkCardinalityId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LinkCardinalityId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
             </tables>
         </component>
     </components>
