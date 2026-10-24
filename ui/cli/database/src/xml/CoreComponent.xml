@@ -3664,6 +3664,80 @@
                         </index>
                     </indexes>
                 </table>
+                <table namePlural="LinkDirectionalities" nameSingular="LinkDirectionality" columnPrefix="lnkdrct">
+                    <columns>
+                        <column name="LinkDirectionalityId" type="EID" nullAllowed="false" />
+                        <column name="ActiveDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="LinkDirectionalityDetails" destinationColumn="LinkDirectionalityDetailId"/>
+                        <column name="LastDetailId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="LinkDirectionalityDetails" destinationColumn="LinkDirectionalityDetailId"/>
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LinkDirectionalityId" />
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="ActiveDetailId"/>
+                        </index>
+                        <index type="Unique">
+                            <indexColumn name="LastDetailId"/>
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="LinkDirectionalityDetails" nameSingular="LinkDirectionalityDetail" columnPrefix="lnkdrctdt">
+                    <columns>
+                        <column name="LinkDirectionalityDetailId" type="EID" nullAllowed="false" />
+                        <column name="LinkDirectionalityId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="LinkDirectionalities" destinationColumn="LinkDirectionalityId" />
+                        <column name="LinkDirectionalityName" type="Name" nullAllowed="false" />
+                        <column name="IsDefault" type="Boolean" nullAllowed="false" />
+                        <column name="SortOrder" type="Integer" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LinkDirectionalityDetailId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="LinkDirectionalityId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Unique" name="Index2">
+                            <indexColumn name="LinkDirectionalityName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="IsDefault" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
+                <table namePlural="LinkDirectionalityDescriptions" nameSingular="LinkDirectionalityDescription" columnPrefix="lnkdrctd">
+                    <columns>
+                        <column name="LinkDirectionalityDescriptionId" type="EID" nullAllowed="false" />
+                        <column name="LinkDirectionalityId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="LinkDirectionalities" destinationColumn="LinkDirectionalityId" />
+                        <column name="LanguageId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Languages" destinationColumn="LanguageId" />
+                        <column name="Description" type="Description" nullAllowed="false" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LinkDirectionalityDescriptionId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="LinkDirectionalityId" />
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LinkDirectionalityId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="LanguageId" />
+                            <indexColumn name="ThruTime"/>
+                        </index>
+                    </indexes>
+                </table>
             </tables>
         </component>
     </components>

@@ -42,6 +42,8 @@ import com.echothree.control.user.core.server.command.GetEntityTypesCommand;
 import com.echothree.control.user.core.server.command.GetEventsCommand;
 import com.echothree.control.user.core.server.command.GetLinkCardinalitiesCommand;
 import com.echothree.control.user.core.server.command.GetLinkCardinalityCommand;
+import com.echothree.control.user.core.server.command.GetLinkDirectionalitiesCommand;
+import com.echothree.control.user.core.server.command.GetLinkDirectionalityCommand;
 import com.echothree.control.user.core.server.command.GetMimeTypeCommand;
 import com.echothree.control.user.core.server.command.GetMimeTypeFileExtensionCommand;
 import com.echothree.control.user.core.server.command.GetMimeTypeFileExtensionsCommand;
@@ -188,6 +190,14 @@ public interface CoreSecurityUtils {
 
     static boolean getHasLinkCardinalitiesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetLinkCardinalitiesCommand.class);
+    }
+
+    static boolean getHasLinkDirectionalityAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetLinkDirectionalityCommand.class);
+    }
+
+    static boolean getHasLinkDirectionalitiesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetLinkDirectionalitiesCommand.class);
     }
 
 }

@@ -66,6 +66,7 @@ import com.echothree.control.user.core.common.edit.EntityAttributeGroupEdit;
 import com.echothree.control.user.core.common.edit.EntityListItemEdit;
 import com.echothree.control.user.core.common.edit.EntityTypeEdit;
 import com.echothree.control.user.core.common.edit.LinkCardinalityEdit;
+import com.echothree.control.user.core.common.edit.LinkDirectionalityEdit;
 import com.echothree.control.user.core.common.form.CreateComponentVendorForm;
 import com.echothree.control.user.core.common.form.CreateEntityAliasForm;
 import com.echothree.control.user.core.common.form.CreateEntityAliasTypeForm;
@@ -76,6 +77,7 @@ import com.echothree.control.user.core.common.form.CreateEntityInstanceForm;
 import com.echothree.control.user.core.common.form.CreateEntityListItemForm;
 import com.echothree.control.user.core.common.form.CreateEntityTypeForm;
 import com.echothree.control.user.core.common.form.CreateLinkCardinalityForm;
+import com.echothree.control.user.core.common.form.CreateLinkDirectionalityForm;
 import com.echothree.control.user.core.common.form.DeleteComponentVendorForm;
 import com.echothree.control.user.core.common.form.DeleteEntityAliasForm;
 import com.echothree.control.user.core.common.form.DeleteEntityAliasTypeForm;
@@ -86,6 +88,7 @@ import com.echothree.control.user.core.common.form.DeleteEntityInstanceForm;
 import com.echothree.control.user.core.common.form.DeleteEntityListItemForm;
 import com.echothree.control.user.core.common.form.DeleteEntityTypeForm;
 import com.echothree.control.user.core.common.form.DeleteLinkCardinalityForm;
+import com.echothree.control.user.core.common.form.DeleteLinkDirectionalityForm;
 import com.echothree.control.user.core.common.form.RemoveEntityInstanceForm;
 import com.echothree.control.user.core.common.form.SendEventForm;
 import com.echothree.control.user.core.common.spec.ComponentVendorSpec;
@@ -97,6 +100,7 @@ import com.echothree.control.user.core.common.spec.EntityAttributeUniversalSpec;
 import com.echothree.control.user.core.common.spec.EntityListItemUniversalSpec;
 import com.echothree.control.user.core.common.spec.EntityTypeSpec;
 import com.echothree.control.user.core.common.spec.LinkCardinalityUniversalSpec;
+import com.echothree.control.user.core.common.spec.LinkDirectionalityUniversalSpec;
 import com.echothree.control.user.filter.common.edit.FilterAdjustmentEdit;
 import com.echothree.control.user.filter.common.edit.FilterEdit;
 import com.echothree.control.user.filter.common.edit.FilterKindEdit;
@@ -495,6 +499,11 @@ public class BasePersona {
     public LinkCardinalityUniversalSpec linkCardinalitySpec;
     public LinkCardinalityEdit linkCardinalityEdit;
 
+    public CreateLinkDirectionalityForm createLinkDirectionalityForm;
+    public DeleteLinkDirectionalityForm deleteLinkDirectionalityForm;
+    public LinkDirectionalityUniversalSpec linkDirectionalitySpec;
+    public LinkDirectionalityEdit linkDirectionalityEdit;
+
     public String lastComponentVendorName;
     public String lastEntityTypeName;
     public String lastEntityAliasTypeName;
@@ -503,6 +512,7 @@ public class BasePersona {
     public String lastEntityListItemName;
     public String lastEntityRef;
     public String lastLinkCardinalityName;
+    public String lastLinkDirectionalityName;
 
     // Comment
     public CreateCommentTypeForm createCommentTypeForm;

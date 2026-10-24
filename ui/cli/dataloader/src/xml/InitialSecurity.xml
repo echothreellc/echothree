@@ -6092,6 +6092,30 @@
                 <securityRoleDescription languageIsoName="en" description="Link Cardinality Description" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="LinkDirectionality" parentSecurityRoleGroupName="CoreComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Link Directionality" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Link Directionality Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Link Directionality Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Link Directionality Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Link Directionality List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Link Directionality Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Link Directionality Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Link Directionality Description" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="BatchComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Batch Component" />
         </securityRoleGroup>
@@ -10047,6 +10071,13 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="LinkCardinality" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LinkCardinality" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LinkCardinality" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LinkDirectionality" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LinkDirectionality" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LinkDirectionality" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LinkDirectionality" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LinkDirectionality" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LinkDirectionality" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LinkDirectionality" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="BatchType" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="BatchType" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="BatchType" securityRoleName="Delete" />

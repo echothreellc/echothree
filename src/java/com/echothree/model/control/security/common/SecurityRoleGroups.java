@@ -223,6 +223,7 @@ public enum SecurityRoleGroups {
     LetterContactMechanismPurpose,
     LicenseType,
     LinkCardinality,
+    LinkDirectionality,
     Location,
     LocationCapacity,
     LocationNameElement,

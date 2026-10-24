@@ -58,6 +58,7 @@
         <file name="/InitialWorkflows.xml" />
         <file name="/InitialWorkEfforts.xml" />
         <file name="/InitialLinkCardinalities.xml" />
+        <file name="/InitialLinkDirectionalities.xml" />
     </includes>
     <generateBaseKeys />
     <includes>

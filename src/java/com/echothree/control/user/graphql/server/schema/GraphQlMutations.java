@@ -18034,4 +18034,112 @@ public interface GraphQlMutations {
         return mutationResultObject;
     }
 
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createLinkDirectionality(final DataFetchingEnvironment env,
+            @GraphQLName("linkDirectionalityName") @GraphQLNonNull final String linkDirectionalityName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getCreateLinkDirectionalityForm();
+
+            commandForm.setLinkDirectionalityName(linkDirectionalityName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = CoreUtil.getHome().createLinkDirectionality(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject editLinkDirectionality(final DataFetchingEnvironment env,
+            @GraphQLName("originalLinkDirectionalityName") final String originalLinkDirectionalityName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("linkDirectionalityName") final String linkDirectionalityName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = CoreUtil.getHome().getLinkDirectionalityUniversalSpec();
+
+            spec.setLinkDirectionalityName(originalLinkDirectionalityName);
+            spec.setUuid(id);
+
+            var commandForm = CoreUtil.getHome().getEditLinkDirectionalityForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = CoreUtil.getHome().editLinkDirectionality(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getLinkDirectionality().getEntityInstance());
+
+                if(arguments.containsKey("linkDirectionalityName"))
+                    edit.setLinkDirectionalityName(linkDirectionalityName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = CoreUtil.getHome().editLinkDirectionality(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteLinkDirectionality(final DataFetchingEnvironment env,
+            @GraphQLName("linkDirectionalityName") final String linkDirectionalityName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getDeleteLinkDirectionalityForm();
+
+            commandForm.setLinkDirectionalityName(linkDirectionalityName);
+            commandForm.setUuid(id);
+
+            mutationResultObject.setCommandResult(CoreUtil.getHome().deleteLinkDirectionality(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
 }
