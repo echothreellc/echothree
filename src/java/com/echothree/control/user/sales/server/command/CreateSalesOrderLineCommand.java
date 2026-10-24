@@ -112,7 +112,7 @@ public class CreateSalesOrderLineCommand
                 itemName, inventoryConditionName, cancellationPolicyName, returnPolicyName, unitOfMeasureTypeName,
                 sourceName, orderLineSequence, quantity, unitAmount, description, taxable, getParty());
 
-        if(!hasExecutionErrors()) {
+        if(orderLine != null) {
             var orderLineDetail = orderLine.getLastDetail();
 
             result.setOrderName(orderLineDetail.getOrder().getLastDetail().getOrderName());

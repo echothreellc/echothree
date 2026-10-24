@@ -92,7 +92,7 @@ public class CreatePartyDocumentCommand
         var partyDocument = documentLogic.createPartyDocument(this, party, documentType, mimeType, isDefault, sortOrder,
                 getPreferredLanguage(), description, blob, clob, getPartyPK());
 
-        if(!hasExecutionErrors()) {
+        if(partyDocument != null) {
             var document = partyDocument.getDocument();
 
             result.setEntityRef(document.getPrimaryKey().getEntityRef());
