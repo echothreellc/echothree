@@ -1323,6 +1323,37 @@ public interface CoreService
 
     CommandResult<VoidResult> deleteLinkCardinalityDescription(UserVisitPK userVisitPK, DeleteLinkCardinalityDescriptionForm form);
 
+    // -------------------------------------------------------------------------
+    //   Link Directionalities
+    // -------------------------------------------------------------------------
+
+    CommandResult<CreateLinkDirectionalityResult> createLinkDirectionality(UserVisitPK userVisitPK, CreateLinkDirectionalityForm form);
+
+    CommandResult<GetLinkDirectionalitiesResult> getLinkDirectionalities(UserVisitPK userVisitPK, GetLinkDirectionalitiesForm form);
+
+    CommandResult<GetLinkDirectionalityResult> getLinkDirectionality(UserVisitPK userVisitPK, GetLinkDirectionalityForm form);
+
+    CommandResult<GetLinkDirectionalityChoicesResult> getLinkDirectionalityChoices(UserVisitPK userVisitPK, GetLinkDirectionalityChoicesForm form);
+
+    CommandResult<VoidResult> setDefaultLinkDirectionality(UserVisitPK userVisitPK, SetDefaultLinkDirectionalityForm form);
+
+    CommandResult<EditLinkDirectionalityResult> editLinkDirectionality(UserVisitPK userVisitPK, EditLinkDirectionalityForm form);
+
+    CommandResult<VoidResult> deleteLinkDirectionality(UserVisitPK userVisitPK, DeleteLinkDirectionalityForm form);
+
+    // -------------------------------------------------------------------------
+    //   Link Directionality Descriptions
+    // -------------------------------------------------------------------------
+
+    CommandResult<VoidResult> createLinkDirectionalityDescription(UserVisitPK userVisitPK, CreateLinkDirectionalityDescriptionForm form);
+
+    CommandResult<GetLinkDirectionalityDescriptionResult> getLinkDirectionalityDescription(UserVisitPK userVisitPK, GetLinkDirectionalityDescriptionForm form);
+
+    CommandResult<GetLinkDirectionalityDescriptionsResult> getLinkDirectionalityDescriptions(UserVisitPK userVisitPK, GetLinkDirectionalityDescriptionsForm form);
+
+    CommandResult<EditLinkDirectionalityDescriptionResult> editLinkDirectionalityDescription(UserVisitPK userVisitPK, EditLinkDirectionalityDescriptionForm form);
+
+    CommandResult<VoidResult> deleteLinkDirectionalityDescription(UserVisitPK userVisitPK, DeleteLinkDirectionalityDescriptionForm form);
 
     // -------------------------------------------------------------------------
     //   Utilities

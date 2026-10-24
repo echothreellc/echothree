@@ -163,6 +163,12 @@
             <entityType entityTypeName="LinkCardinalityDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Link Cardinality Description" />
             </entityType>
+            <entityType entityTypeName="LinkDirectionality" keepAllHistory="false" isExtensible="true" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Link Directionality" />
+            </entityType>
+            <entityType entityTypeName="LinkDirectionalityDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Link Directionality Description" />
+            </entityType>
             <entityType entityTypeName="EntityBooleanDefault" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Boolean Default" />
             </entityType>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<initialData>
+    <linkDirectionalities>
+        <linkDirectionality linkDirectionalityName="DIRECTED" isDefault="true" sortOrder="1">
+            <linkDirectionalityDescription languageIsoName="en" description="Directed" />
+        </linkDirectionality>
+        <linkDirectionality linkDirectionalityName="SYMMETRIC" isDefault="false" sortOrder="2">
+            <linkDirectionalityDescription languageIsoName="en" description="Symmetric" />
+        </linkDirectionality>
+    </linkDirectionalities>
+</initialData>

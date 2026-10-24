@@ -159,6 +159,8 @@ import com.echothree.control.user.core.server.command.GetFontWeightCommand;
 import com.echothree.control.user.core.server.command.GetFontWeightsCommand;
 import com.echothree.control.user.core.server.command.GetLinkCardinalitiesCommand;
 import com.echothree.control.user.core.server.command.GetLinkCardinalityCommand;
+import com.echothree.control.user.core.server.command.GetLinkDirectionalitiesCommand;
+import com.echothree.control.user.core.server.command.GetLinkDirectionalityCommand;
 import com.echothree.control.user.core.server.command.GetMimeTypeCommand;
 import com.echothree.control.user.core.server.command.GetMimeTypeFileExtensionCommand;
 import com.echothree.control.user.core.server.command.GetMimeTypeFileExtensionsCommand;
@@ -627,6 +629,7 @@ import com.echothree.model.control.core.server.graphql.EventTypeObject;
 import com.echothree.model.control.core.server.graphql.FontStyleObject;
 import com.echothree.model.control.core.server.graphql.FontWeightObject;
 import com.echothree.model.control.core.server.graphql.LinkCardinalityObject;
+import com.echothree.model.control.core.server.graphql.LinkDirectionalityObject;
 import com.echothree.model.control.core.server.graphql.MimeTypeFileExtensionObject;
 import com.echothree.model.control.core.server.graphql.MimeTypeObject;
 import com.echothree.model.control.core.server.graphql.MimeTypeUsageTypeObject;
@@ -665,7 +668,9 @@ import com.echothree.model.control.graphql.server.graphql.count.CountingDataConn
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.data.core.common.LinkCardinalityConstants;
+import com.echothree.model.data.core.common.LinkDirectionalityConstants;
 import com.echothree.model.data.core.server.entity.LinkCardinality;
+import com.echothree.model.data.core.server.entity.LinkDirectionality;
 import static com.echothree.model.control.graphql.server.util.BaseGraphQl.getUserVisitPK;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.inventory.server.graphql.AllocationPriorityObject;
@@ -15791,6 +15796,59 @@ public interface GraphQlQueries {
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, linkCardinalities);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("linkDirectionality")
+    static LinkDirectionalityObject linkDirectionality(final DataFetchingEnvironment env,
+            @GraphQLName("linkDirectionalityName") final String linkDirectionalityName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        LinkDirectionality linkDirectionality;
+
+        try {
+            var commandForm = CoreUtil.getHome().getGetLinkDirectionalityForm();
+
+            commandForm.setLinkDirectionalityName(linkDirectionalityName);
+            commandForm.setUuid(id);
+
+            linkDirectionality = CDI.current().select(GetLinkDirectionalityCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return linkDirectionality == null ? null : new LinkDirectionalityObject(linkDirectionality);
+    }
+
+    @GraphQLField
+    @GraphQLName("linkDirectionalities")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<LinkDirectionalityObject> linkDirectionalities(final DataFetchingEnvironment env) {
+        CountingPaginatedData<LinkDirectionalityObject> data;
+
+        try {
+            var commandForm = CoreUtil.getHome().getGetLinkDirectionalitiesForm();
+            var command = CDI.current().select(GetLinkDirectionalitiesCommand.class).get();
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, LinkDirectionalityConstants.COMPONENT_VENDOR_NAME, LinkDirectionalityConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var linkDirectionalities = entities.stream()
+                            .map(LinkDirectionalityObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, linkDirectionalities);
                 }
             }
         } catch (NamingException ex) {

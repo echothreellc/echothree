@@ -2665,6 +2665,74 @@ public class CoreBean
     }
 
     // -------------------------------------------------------------------------
+    //   Link Directionalities
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult<CreateLinkDirectionalityResult> createLinkDirectionality(UserVisitPK userVisitPK, CreateLinkDirectionalityForm form) {
+        return CDI.current().select(CreateLinkDirectionalityCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetLinkDirectionalitiesResult> getLinkDirectionalities(UserVisitPK userVisitPK, GetLinkDirectionalitiesForm form) {
+        return CDI.current().select(GetLinkDirectionalitiesCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetLinkDirectionalityResult> getLinkDirectionality(UserVisitPK userVisitPK, GetLinkDirectionalityForm form) {
+        return CDI.current().select(GetLinkDirectionalityCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetLinkDirectionalityChoicesResult> getLinkDirectionalityChoices(UserVisitPK userVisitPK, GetLinkDirectionalityChoicesForm form) {
+        return CDI.current().select(GetLinkDirectionalityChoicesCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> setDefaultLinkDirectionality(UserVisitPK userVisitPK, SetDefaultLinkDirectionalityForm form) {
+        return CDI.current().select(SetDefaultLinkDirectionalityCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<EditLinkDirectionalityResult> editLinkDirectionality(UserVisitPK userVisitPK, EditLinkDirectionalityForm form) {
+        return CDI.current().select(EditLinkDirectionalityCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> deleteLinkDirectionality(UserVisitPK userVisitPK, DeleteLinkDirectionalityForm form) {
+        return CDI.current().select(DeleteLinkDirectionalityCommand.class).get().run(userVisitPK, form);
+    }
+
+    // -------------------------------------------------------------------------
+    //   Link Directionality Descriptions
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult<VoidResult> createLinkDirectionalityDescription(UserVisitPK userVisitPK, CreateLinkDirectionalityDescriptionForm form) {
+        return CDI.current().select(CreateLinkDirectionalityDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetLinkDirectionalityDescriptionResult> getLinkDirectionalityDescription(UserVisitPK userVisitPK, GetLinkDirectionalityDescriptionForm form) {
+        return CDI.current().select(GetLinkDirectionalityDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetLinkDirectionalityDescriptionsResult> getLinkDirectionalityDescriptions(UserVisitPK userVisitPK, GetLinkDirectionalityDescriptionsForm form) {
+        return CDI.current().select(GetLinkDirectionalityDescriptionsCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<EditLinkDirectionalityDescriptionResult> editLinkDirectionalityDescription(UserVisitPK userVisitPK, EditLinkDirectionalityDescriptionForm form) {
+        return CDI.current().select(EditLinkDirectionalityDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> deleteLinkDirectionalityDescription(UserVisitPK userVisitPK, DeleteLinkDirectionalityDescriptionForm form) {
+        return CDI.current().select(DeleteLinkDirectionalityDescriptionCommand.class).get().run(userVisitPK, form);
+    }
+
+    // -------------------------------------------------------------------------
     //   Utilities
     // -------------------------------------------------------------------------
 
