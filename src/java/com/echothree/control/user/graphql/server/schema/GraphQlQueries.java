@@ -15943,7 +15943,7 @@ public interface GraphQlQueries {
     static LinkTypeTranslationObject linkTypeTranslation(final DataFetchingEnvironment env,
             @GraphQLName("linkTypeName") @GraphQLNonNull final String linkTypeName,
             @GraphQLName("languageIsoName") @GraphQLNonNull final String languageIsoName) {
-        LinkTypeTranslation linkType;
+        LinkTypeTranslation linkTypeTranslation;
 
         try {
             var commandForm = CoreUtil.getHome().getGetLinkTypeTranslationForm();
@@ -15951,12 +15951,12 @@ public interface GraphQlQueries {
             commandForm.setLinkTypeName(linkTypeName);
             commandForm.setLanguageIsoName(languageIsoName);
 
-            linkType = CDI.current().select(GetLinkTypeTranslationCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+            linkTypeTranslation = CDI.current().select(GetLinkTypeTranslationCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return linkType == null ? null : new LinkTypeTranslationObject(linkType);
+        return linkTypeTranslation == null ? null : new LinkTypeTranslationObject(linkTypeTranslation);
     }
 
     @GraphQLField
@@ -15980,11 +15980,11 @@ public interface GraphQlQueries {
                 try(var objectLimiter = new ObjectLimiter(env, LinkTypeTranslationConstants.COMPONENT_VENDOR_NAME, LinkTypeTranslationConstants.ENTITY_TYPE_NAME, totalEntities)) {
                     var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                    var linkTypes = entities.stream()
+                    var linkTypeTranslations = entities.stream()
                             .map(LinkTypeTranslationObject::new)
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-                    data = new CountedObjects<>(objectLimiter, linkTypes);
+                    data = new CountedObjects<>(objectLimiter, linkTypeTranslations);
                 }
             }
         } catch (NamingException ex) {

@@ -23,19 +23,20 @@ import com.echothree.model.control.core.server.logic.LinkTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.model.data.core.server.entity.LinkType;
 import com.echothree.model.data.core.server.entity.LinkTypeTranslation;
-import java.util.Collection;
+import com.echothree.model.data.core.server.factory.LinkTypeTranslationFactory;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import java.util.Collection;
 import java.util.List;
-import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetLinkTypeTranslationsCommand
@@ -48,7 +49,7 @@ public class GetLinkTypeTranslationsCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                        new SecurityRoleDefinition(SecurityRoleGroups.LinkType.name(), SecurityRoles.Description.name())
+                        new SecurityRoleDefinition(SecurityRoleGroups.LinkType.name(), SecurityRoles.Translation.name())
                 ))
         ));
 
@@ -86,17 +87,18 @@ public class GetLinkTypeTranslationsCommand
     }
 
     @Override
-    protected BaseResult getResult(Collection<LinkTypeTranslation> translations) {
+    protected BaseResult getResult(Collection<LinkTypeTranslation> linkTypeTranslations) {
         var result = CoreResultFactory.getGetLinkTypeTranslationsResult();
 
-        if(translations != null) {
+        if(linkTypeTranslations != null) {
             var userVisit = getUserVisit();
 
             result.setLinkType(linkTypeControl.getLinkTypeTransfer(userVisit, linkType));
-            result.setLinkTypeTranslationCount(getTotalEntities());
-            result.setLinkTypeTranslations(translations.stream()
-                    .map(linkTypeTranslation -> linkTypeControl.getLinkTypeTranslationTransfer(userVisit, linkTypeTranslation))
-                    .toList());
+            if(session.hasLimit(LinkTypeTranslationFactory.class)) {
+                result.setLinkTypeTranslationCount(getTotalEntities());
+            }
+
+            result.setLinkTypeTranslations(linkTypeControl.getLinkTypeTranslationTransfers(userVisit, linkTypeTranslations));
         }
 
         return result;

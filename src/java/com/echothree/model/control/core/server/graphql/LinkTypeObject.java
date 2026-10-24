@@ -16,16 +16,15 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.core.server.control.LinkTypeControl;
-import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
-import graphql.annotations.connection.GraphQLConnection;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.core.common.LinkTypeTranslationConstants;
 import com.echothree.model.data.core.server.entity.LinkType;
 import com.echothree.model.data.core.server.entity.LinkTypeDetail;
@@ -34,7 +33,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("link type object")
 @GraphQLName("LinkType")
@@ -147,7 +149,9 @@ public class LinkTypeObject
             try(var objectLimiter = new ObjectLimiter(env, LinkTypeTranslationConstants.COMPONENT_VENDOR_NAME,
                     LinkTypeTranslationConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = linkTypeControl.getLinkTypeTranslationsByLinkType(linkType);
-                var linkTypeTranslations = entities.stream().map(LinkTypeTranslationObject::new).toList();
+                var linkTypeTranslations = entities.stream()
+                        .map(LinkTypeTranslationObject::new)
+                        .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, linkTypeTranslations);
             }

@@ -22,16 +22,16 @@ import com.echothree.model.control.core.server.logic.LinkCardinalityLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
-import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultLinkCardinalityCommand
@@ -70,12 +70,10 @@ public class SetDefaultLinkCardinalityCommand
         var linkCardinality = linkCardinalityLogic.getLinkCardinalityByUniversalSpecForUpdate(this, form, false);
 
         if(!hasExecutionErrors()) {
-            var linkCardinalityDetailValue = linkCardinalityControl
-                    .getLinkCardinalityDetailValueForUpdate(linkCardinality);
+            var linkCardinalityDetailValue = linkCardinalityControl.getLinkCardinalityDetailValueForUpdate(linkCardinality);
 
             linkCardinalityDetailValue.setIsDefault(true);
-            linkCardinalityControl.updateLinkCardinalityFromValue(
-                    linkCardinalityDetailValue, getPartyPK());
+            linkCardinalityLogic.updateLinkCardinalityFromValue(linkCardinalityDetailValue, getPartyPK());
         }
 
         return null;

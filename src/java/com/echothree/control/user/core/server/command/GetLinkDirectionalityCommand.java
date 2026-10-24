@@ -33,8 +33,8 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
-import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetLinkDirectionalityCommand
@@ -73,7 +73,7 @@ public class GetLinkDirectionalityCommand
     protected LinkDirectionality getEntity() {
         var linkDirectionality = linkDirectionalityLogic.getLinkDirectionalityByUniversalSpec(this, form, true);
 
-        if(linkDirectionality != null) {
+        if(!hasExecutionErrors()) {
             sendEvent(linkDirectionality.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 

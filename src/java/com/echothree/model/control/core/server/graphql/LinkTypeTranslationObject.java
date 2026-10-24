@@ -18,10 +18,10 @@ package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseObject;
 import com.echothree.model.data.core.server.entity.LinkTypeTranslation;
-import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLName("LinkTypeTranslation")
 public class LinkTypeTranslationObject
@@ -54,7 +54,7 @@ public class LinkTypeTranslationObject
     public MimeTypeObject getGuidanceMimeType(final DataFetchingEnvironment env) {
         if(CoreSecurityUtils.getHasMimeTypeAccess(env)) {
             var mimeType = linkTypeTranslation.getGuidanceMimeType();
-    
+
             return mimeType == null ? null : new MimeTypeObject(mimeType);
         } else {
             return null;

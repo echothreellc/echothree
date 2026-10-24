@@ -102,16 +102,16 @@ public class LinkTypeLogic
     }
 
     public LinkType getLinkTypeByUniversalSpec(ExecutionErrorAccumulator eea,
-            LinkTypeUniversalSpec universalSpec, EntityPermission entityPermission) {
+            LinkTypeUniversalSpec linkTypeUniversalSpec, EntityPermission entityPermission) {
         LinkType linkType = null;
-        var linkTypeName = universalSpec.getLinkTypeName();
-        var parameterCount = (linkTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
+        var linkTypeName = linkTypeUniversalSpec.getLinkTypeName();
+        var parameterCount = (linkTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(linkTypeUniversalSpec);
 
         if(parameterCount == 1) {
             if(linkTypeName != null) {
                 linkType = getLinkTypeByName(eea, linkTypeName, entityPermission);
             } else {
-                var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
+                var entityInstance = entityInstanceLogic.getEntityInstance(eea, linkTypeUniversalSpec,
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.LinkType.name());
 
                 if(!hasErrors(eea)) {
@@ -125,12 +125,12 @@ public class LinkTypeLogic
         return linkType;
     }
 
-    public LinkType getLinkTypeByUniversalSpec(ExecutionErrorAccumulator eea, LinkTypeUniversalSpec universalSpec) {
-        return getLinkTypeByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+    public LinkType getLinkTypeByUniversalSpec(ExecutionErrorAccumulator eea, LinkTypeUniversalSpec linkTypeUniversalSpec) {
+        return getLinkTypeByUniversalSpec(eea, linkTypeUniversalSpec, EntityPermission.READ_ONLY);
     }
 
-    public LinkType getLinkTypeByUniversalSpecForUpdate(ExecutionErrorAccumulator eea, LinkTypeUniversalSpec universalSpec) {
-        return getLinkTypeByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
+    public LinkType getLinkTypeByUniversalSpecForUpdate(ExecutionErrorAccumulator eea, LinkTypeUniversalSpec linkTypeUniversalSpec) {
+        return getLinkTypeByUniversalSpec(eea, linkTypeUniversalSpec, EntityPermission.READ_WRITE);
     }
 
     private static LinkCardinalities getCardinality(String linkCardinalityName) {
@@ -217,19 +217,19 @@ public class LinkTypeLogic
 
     public void validateDefinition(ExecutionErrorAccumulator eea, String linkTypeName,
             LinkType currentLinkType, Definition definition) {
-        var cardinality = getCardinality(definition.linkCardinality().getLastDetail().getLinkCardinalityName());
-        var directionality = getDirectionality(definition.linkDirectionality().getLastDetail().getLinkDirectionalityName());
-        var symmetric = directionality == LinkDirectionalities.SYMMETRIC;
+        var linkCardinality = getCardinality(definition.linkCardinality().getLastDetail().getLinkCardinalityName());
+        var linkDirectionality = getDirectionality(definition.linkDirectionality().getLastDetail().getLinkDirectionalityName());
+        var isSymmetric = linkDirectionality == LinkDirectionalities.SYMMETRIC;
 
         var valid = true;
 
-        if(getInverseCardinality(cardinality) == null || (directionality != LinkDirectionalities.DIRECTED && !symmetric)
-                || (symmetric && cardinality != getInverseCardinality(cardinality))) {
+        if(getInverseCardinality(linkCardinality) == null || (linkDirectionality != LinkDirectionalities.DIRECTED && !isSymmetric)
+                || (isSymmetric && linkCardinality != getInverseCardinality(linkCardinality))) {
             handleExecutionError(InvalidLinkTypeEndpointsException.class, eea, ExecutionErrors.InvalidLinkTypeEndpoints.name(), linkTypeName);
             valid = false;
         }
 
-        if(valid && (symmetric || definition.isTransitive()) && !definition.sourceEntityType().equals(definition.targetEntityType())) {
+        if(valid && (isSymmetric || definition.isTransitive()) && !definition.sourceEntityType().equals(definition.targetEntityType())) {
             handleExecutionError(InvalidLinkTypeEndpointsException.class, eea, ExecutionErrors.InvalidLinkTypeEndpoints.name(), linkTypeName);
             valid = false;
         }
@@ -242,45 +242,45 @@ public class LinkTypeLogic
                 valid = false;
             }
 
-            var parentDetail = parentLinkType.getLastDetail();
-            if(valid && (!definition.sourceEntityType().equals(parentDetail.getSourceEntityType())
-                    || !definition.targetEntityType().equals(parentDetail.getTargetEntityType())
-                    || !isCardinalityCompatible(cardinality, getCardinality(parentDetail.getLinkCardinality().getLastDetail().getLinkCardinalityName()))
-                    || (getDirectionality(parentDetail.getLinkDirectionality().getLastDetail().getLinkDirectionalityName()) == LinkDirectionalities.SYMMETRIC && !symmetric))) {
-                handleExecutionError(InvalidLinkTypeEndpointsException.class, eea, ExecutionErrors.InvalidLinkTypeEndpoints.name(), linkTypeName, parentDetail.getLinkTypeName());
+            var parentLinkTypeDetail = parentLinkType.getLastDetail();
+            if(valid && (!definition.sourceEntityType().equals(parentLinkTypeDetail.getSourceEntityType())
+                    || !definition.targetEntityType().equals(parentLinkTypeDetail.getTargetEntityType())
+                    || !isCardinalityCompatible(linkCardinality, getCardinality(parentLinkTypeDetail.getLinkCardinality().getLastDetail().getLinkCardinalityName()))
+                    || (getDirectionality(parentLinkTypeDetail.getLinkDirectionality().getLastDetail().getLinkDirectionalityName()) == LinkDirectionalities.SYMMETRIC && !isSymmetric))) {
+                handleExecutionError(InvalidLinkTypeEndpointsException.class, eea, ExecutionErrors.InvalidLinkTypeEndpoints.name(), linkTypeName, parentLinkTypeDetail.getLinkTypeName());
                 valid = false;
             }
         }
 
         var inverseLinkType = definition.inverseLinkType();
         if(valid && inverseLinkType != null) {
-            var inverseDetail = inverseLinkType.getLastDetail();
+            var inverseLinkTypeDetail = inverseLinkType.getLastDetail();
 
-            if(symmetric || inverseLinkType.equals(currentLinkType)
-                    || !definition.sourceEntityType().equals(inverseDetail.getTargetEntityType())
-                    || !definition.targetEntityType().equals(inverseDetail.getSourceEntityType())
-                    || getInverseCardinality(cardinality) != getCardinality(inverseDetail.getLinkCardinality().getLastDetail().getLinkCardinalityName())
-                    || !definition.linkDirectionality().equals(inverseDetail.getLinkDirectionality())
-                    || definition.isTransitive() != inverseDetail.getIsTransitive()
-                    || (inverseDetail.getInverseLinkType() != null && !inverseDetail.getInverseLinkType().equals(currentLinkType))) {
-                handleExecutionError(InvalidLinkTypeInverseException.class, eea, ExecutionErrors.InvalidLinkTypeInverse.name(), linkTypeName, inverseDetail.getLinkTypeName());
+            if(isSymmetric || inverseLinkType.equals(currentLinkType)
+                    || !definition.sourceEntityType().equals(inverseLinkTypeDetail.getTargetEntityType())
+                    || !definition.targetEntityType().equals(inverseLinkTypeDetail.getSourceEntityType())
+                    || getInverseCardinality(linkCardinality) != getCardinality(inverseLinkTypeDetail.getLinkCardinality().getLastDetail().getLinkCardinalityName())
+                    || !definition.linkDirectionality().equals(inverseLinkTypeDetail.getLinkDirectionality())
+                    || definition.isTransitive() != inverseLinkTypeDetail.getIsTransitive()
+                    || (inverseLinkTypeDetail.getInverseLinkType() != null && !inverseLinkTypeDetail.getInverseLinkType().equals(currentLinkType))) {
+                handleExecutionError(InvalidLinkTypeInverseException.class, eea, ExecutionErrors.InvalidLinkTypeInverse.name(), linkTypeName, inverseLinkTypeDetail.getLinkTypeName());
                 valid = false;
             }
         }
 
         if(valid && currentLinkType != null) {
-            var children = linkTypeControl.getLinkTypesForUpdate(linkTypeControl.getLinkTypeFilter(currentLinkType, null, null, null, null, null));
-            var childLinkTypeIterator = children.iterator();
+            var childLinkTypes = linkTypeControl.getLinkTypesForUpdate(linkTypeControl.getLinkTypeFilter(currentLinkType, null, null, null, null, null));
+            var childLinkTypeIterator = childLinkTypes.iterator();
 
             while(valid && childLinkTypeIterator.hasNext()) {
                 var childLinkType = childLinkTypeIterator.next();
-                var childDetail = childLinkType.getLastDetail();
-                
-                if(!definition.sourceEntityType().equals(childDetail.getSourceEntityType())
-                        || !definition.targetEntityType().equals(childDetail.getTargetEntityType())
-                        || !isCardinalityCompatible(getCardinality(childDetail.getLinkCardinality().getLastDetail().getLinkCardinalityName()), cardinality)
-                        || (symmetric && getDirectionality(childDetail.getLinkDirectionality().getLastDetail().getLinkDirectionalityName()) != LinkDirectionalities.SYMMETRIC)) {
-                    handleExecutionError(InvalidLinkTypeEndpointsException.class, eea, ExecutionErrors.InvalidLinkTypeEndpoints.name(), linkTypeName, childDetail.getLinkTypeName());
+                var childLinkTypeDetail = childLinkType.getLastDetail();
+
+                if(!definition.sourceEntityType().equals(childLinkTypeDetail.getSourceEntityType())
+                        || !definition.targetEntityType().equals(childLinkTypeDetail.getTargetEntityType())
+                        || !isCardinalityCompatible(getCardinality(childLinkTypeDetail.getLinkCardinality().getLastDetail().getLinkCardinalityName()), linkCardinality)
+                        || (isSymmetric && getDirectionality(childLinkTypeDetail.getLinkDirectionality().getLastDetail().getLinkDirectionalityName()) != LinkDirectionalities.SYMMETRIC)) {
+                    handleExecutionError(InvalidLinkTypeEndpointsException.class, eea, ExecutionErrors.InvalidLinkTypeEndpoints.name(), linkTypeName, childLinkTypeDetail.getLinkTypeName());
                     valid = false;
                 }
             }
@@ -326,37 +326,37 @@ public class LinkTypeLogic
 
     public void updateLinkType(LinkType linkType, LinkTypeEdit edit, Definition definition, BasePK updatedBy) {
         var oldInverseLinkType = linkType.getLastDetail().getInverseLinkType();
-        var value = linkTypeControl.getLinkTypeDetailValueForUpdate(linkType);
+        var linkTypeDetailValue = linkTypeControl.getLinkTypeDetailValueForUpdate(linkType);
 
-        value.setLinkTypeName(edit.getLinkTypeName());
-        value.setParentLinkTypePK(definition.parentLinkType() == null ? null : definition.parentLinkType().getPrimaryKey());
-        value.setSourceEntityTypePK(definition.sourceEntityType().getPrimaryKey());
-        value.setTargetEntityTypePK(definition.targetEntityType().getPrimaryKey());
-        value.setLinkCardinalityPK(definition.linkCardinality().getPrimaryKey());
-        value.setLinkDirectionalityPK(definition.linkDirectionality().getPrimaryKey());
-        value.setIsTransitive(definition.isTransitive());
-        value.setInverseLinkTypePK(definition.inverseLinkType() == null ? null : definition.inverseLinkType().getPrimaryKey());
-        value.setSortOrder(definition.sortOrder());
-        linkTypeControl.updateLinkTypeFromValue(value, updatedBy);
+        linkTypeDetailValue.setLinkTypeName(edit.getLinkTypeName());
+        linkTypeDetailValue.setParentLinkTypePK(definition.parentLinkType() == null ? null : definition.parentLinkType().getPrimaryKey());
+        linkTypeDetailValue.setSourceEntityTypePK(definition.sourceEntityType().getPrimaryKey());
+        linkTypeDetailValue.setTargetEntityTypePK(definition.targetEntityType().getPrimaryKey());
+        linkTypeDetailValue.setLinkCardinalityPK(definition.linkCardinality().getPrimaryKey());
+        linkTypeDetailValue.setLinkDirectionalityPK(definition.linkDirectionality().getPrimaryKey());
+        linkTypeDetailValue.setIsTransitive(definition.isTransitive());
+        linkTypeDetailValue.setInverseLinkTypePK(definition.inverseLinkType() == null ? null : definition.inverseLinkType().getPrimaryKey());
+        linkTypeDetailValue.setSortOrder(definition.sortOrder());
+        linkTypeControl.updateLinkTypeFromValue(linkTypeDetailValue, updatedBy);
 
         updateInverse(linkType, oldInverseLinkType, definition.inverseLinkType(), updatedBy);
     }
 
     private void updateInverse(LinkType linkType, LinkType oldInverseLinkType, LinkType newInverseLinkType, BasePK updatedBy) {
         if(oldInverseLinkType != null && !Objects.equals(oldInverseLinkType, newInverseLinkType)) {
-            var oldValue = linkTypeControl.getLinkTypeDetailValueForUpdate(oldInverseLinkType);
+            var oldInverseLinkTypeDetailValue = linkTypeControl.getLinkTypeDetailValueForUpdate(oldInverseLinkType);
 
-            oldValue.setInverseLinkTypePK(null);
+            oldInverseLinkTypeDetailValue.setInverseLinkTypePK(null);
 
-            linkTypeControl.updateLinkTypeFromValue(oldValue, updatedBy);
+            linkTypeControl.updateLinkTypeFromValue(oldInverseLinkTypeDetailValue, updatedBy);
         }
 
         if(newInverseLinkType != null) {
-            var newValue = linkTypeControl.getLinkTypeDetailValueForUpdate(newInverseLinkType);
+            var newInverseLinkTypeDetailValue = linkTypeControl.getLinkTypeDetailValueForUpdate(newInverseLinkType);
 
-            newValue.setInverseLinkTypePK(linkType.getPrimaryKey());
+            newInverseLinkTypeDetailValue.setInverseLinkTypePK(linkType.getPrimaryKey());
 
-            linkTypeControl.updateLinkTypeFromValue(newValue, updatedBy);
+            linkTypeControl.updateLinkTypeFromValue(newInverseLinkTypeDetailValue, updatedBy);
         }
     }
 

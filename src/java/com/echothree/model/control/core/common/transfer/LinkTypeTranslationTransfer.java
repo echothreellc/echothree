@@ -16,20 +16,21 @@
 
 package com.echothree.model.control.core.common.transfer;
 
-import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
+import com.echothree.util.common.transfer.BaseTransfer;
 
-public class LinkTypeTranslationTransfer extends BaseTransfer {
+public class LinkTypeTranslationTransfer
+        extends BaseTransfer {
 
-    private LanguageTransfer language;
     private LinkTypeTransfer linkType;
+    private LanguageTransfer language;
     private String description;
     private MimeTypeTransfer guidanceMimeType;
     private String guidance;
 
-    public LinkTypeTranslationTransfer(LanguageTransfer language, LinkTypeTransfer linkType, String description, MimeTypeTransfer guidanceMimeType, String guidance) {
-        this.language = language;
+    public LinkTypeTranslationTransfer(LinkTypeTransfer linkType, LanguageTransfer language, String description, MimeTypeTransfer guidanceMimeType, String guidance) {
         this.linkType = linkType;
+        this.language = language;
         this.description = description;
         this.guidanceMimeType = guidanceMimeType;
         this.guidance = guidance;

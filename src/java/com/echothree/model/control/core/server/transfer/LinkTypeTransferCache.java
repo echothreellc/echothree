@@ -16,16 +16,16 @@
 
 package com.echothree.model.control.core.server.transfer;
 
+import com.echothree.model.control.core.common.transfer.LinkTypeTransfer;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.core.server.control.LinkCardinalityControl;
 import com.echothree.model.control.core.server.control.LinkDirectionalityControl;
-import com.echothree.model.control.core.server.control.MimeTypeControl;
-import javax.inject.Inject;
-import com.echothree.model.control.core.common.transfer.LinkTypeTransfer;
 import com.echothree.model.control.core.server.control.LinkTypeControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.core.server.entity.LinkType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class LinkTypeTransferCache

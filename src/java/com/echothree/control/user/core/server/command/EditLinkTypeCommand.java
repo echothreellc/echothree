@@ -16,10 +16,10 @@
 
 package com.echothree.control.user.core.server.command;
 
-import com.echothree.control.user.core.common.edit.LinkTypeEdit;
 import com.echothree.control.user.core.common.edit.CoreEditFactory;
-import com.echothree.control.user.core.common.result.EditLinkTypeResult;
+import com.echothree.control.user.core.common.edit.LinkTypeEdit;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.control.user.core.common.result.EditLinkTypeResult;
 import com.echothree.control.user.core.common.spec.LinkTypeUniversalSpec;
 import com.echothree.model.control.core.server.control.LinkTypeControl;
 import com.echothree.model.control.core.server.logic.LinkTypeLogic;
@@ -36,8 +36,8 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
-import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditLinkTypeCommand
@@ -127,28 +127,28 @@ public class EditLinkTypeCommand
 
     @Override
     public void doLock(LinkTypeEdit edit, LinkType linkType) {
-        var detail = linkType.getLastDetail();
+        var linkTypeDetail = linkType.getLastDetail();
         var linkTypeTranslation = linkTypeControl.getLinkTypeTranslation(linkType, getPreferredLanguage());
-        var sourceEntityTypeDetail = detail.getSourceEntityType().getLastDetail();
-        var targetEntityTypeDetail = detail.getTargetEntityType().getLastDetail();
+        var sourceEntityTypeDetail = linkTypeDetail.getSourceEntityType().getLastDetail();
+        var targetEntityTypeDetail = linkTypeDetail.getTargetEntityType().getLastDetail();
 
-        edit.setLinkTypeName(detail.getLinkTypeName());
-        edit.setParentLinkTypeName(detail.getParentLinkType() == null ? null : detail.getParentLinkType().getLastDetail().getLinkTypeName());
+        edit.setLinkTypeName(linkTypeDetail.getLinkTypeName());
+        edit.setParentLinkTypeName(linkTypeDetail.getParentLinkType() == null ? null : linkTypeDetail.getParentLinkType().getLastDetail().getLinkTypeName());
         edit.setSourceComponentVendorName(sourceEntityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName());
         edit.setSourceEntityTypeName(sourceEntityTypeDetail.getEntityTypeName());
         edit.setTargetComponentVendorName(targetEntityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName());
         edit.setTargetEntityTypeName(targetEntityTypeDetail.getEntityTypeName());
-        edit.setLinkCardinalityName(detail.getLinkCardinality().getLastDetail().getLinkCardinalityName());
-        edit.setLinkDirectionalityName(detail.getLinkDirectionality().getLastDetail().getLinkDirectionalityName());
-        edit.setIsTransitive(detail.getIsTransitive().toString());
-        edit.setInverseLinkTypeName(detail.getInverseLinkType() == null ? null : detail.getInverseLinkType().getLastDetail().getLinkTypeName());
-        edit.setSortOrder(detail.getSortOrder().toString());
+        edit.setLinkCardinalityName(linkTypeDetail.getLinkCardinality().getLastDetail().getLinkCardinalityName());
+        edit.setLinkDirectionalityName(linkTypeDetail.getLinkDirectionality().getLastDetail().getLinkDirectionalityName());
+        edit.setIsTransitive(linkTypeDetail.getIsTransitive().toString());
+        edit.setInverseLinkTypeName(linkTypeDetail.getInverseLinkType() == null ? null : linkTypeDetail.getInverseLinkType().getLastDetail().getLinkTypeName());
+        edit.setSortOrder(linkTypeDetail.getSortOrder().toString());
 
         if(linkTypeTranslation != null) {
-            var mimeType = linkTypeTranslation.getGuidanceMimeType();
+            var guidanceMimeType = linkTypeTranslation.getGuidanceMimeType();
 
             edit.setDescription(linkTypeTranslation.getDescription());
-            edit.setGuidanceMimeTypeName(mimeType == null ? null : mimeType.getLastDetail().getMimeTypeName());
+            edit.setGuidanceMimeTypeName(guidanceMimeType == null ? null : guidanceMimeType.getLastDetail().getMimeTypeName());
             edit.setGuidance(linkTypeTranslation.getGuidance());
         }
     }
@@ -175,15 +175,17 @@ public class EditLinkTypeCommand
 
     @Override
     public void doUpdate(LinkType linkType) {
-        linkTypeLogic.updateLinkType(linkType, edit, definition, getPartyPK());
+        var partyPK = getPartyPK();
+
+        linkTypeLogic.updateLinkType(linkType, edit, definition, partyPK);
 
         var linkTypeTranslation = linkTypeControl.getLinkTypeTranslationForUpdate(linkType, getPreferredLanguage());
         if(edit.getDescription() == null) {
             if(linkTypeTranslation != null) {
-                linkTypeControl.deleteLinkTypeTranslation(linkTypeTranslation, getPartyPK());
+                linkTypeControl.deleteLinkTypeTranslation(linkTypeTranslation, partyPK);
             }
         } else if(linkTypeTranslation == null) {
-            linkTypeControl.createLinkTypeTranslation(linkType, getPreferredLanguage(), edit.getDescription(), guidanceMimeType, edit.getGuidance(), getPartyPK());
+            linkTypeControl.createLinkTypeTranslation(linkType, getPreferredLanguage(), edit.getDescription(), guidanceMimeType, edit.getGuidance(), partyPK);
         } else {
             var linkTypeTranslationValue = linkTypeControl.getLinkTypeTranslationValue(linkTypeTranslation);
 
@@ -191,7 +193,7 @@ public class EditLinkTypeCommand
             linkTypeTranslationValue.setGuidanceMimeTypePK(guidanceMimeType == null ? null : guidanceMimeType.getPrimaryKey());
             linkTypeTranslationValue.setGuidance(edit.getGuidance());
 
-            linkTypeControl.updateLinkTypeTranslationFromValue(linkTypeTranslationValue, getPartyPK());
+            linkTypeControl.updateLinkTypeTranslationFromValue(linkTypeTranslationValue, partyPK);
         }
     }
 

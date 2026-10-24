@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.core.server.graphql;
 
+import com.echothree.model.control.core.server.control.LinkDirectionalityControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
-import com.echothree.model.control.core.server.control.LinkDirectionalityControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.core.server.entity.LinkDirectionality;
 import com.echothree.model.data.core.server.entity.LinkDirectionalityDetail;

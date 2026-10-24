@@ -18,7 +18,8 @@ package com.echothree.model.control.core.common.transfer;
 
 import com.echothree.util.common.transfer.BaseTransfer;
 
-public class LinkTypeTransfer extends BaseTransfer {
+public class LinkTypeTransfer
+        extends BaseTransfer {
 
     private String linkTypeName;
     private LinkTypeTransfer parentLinkType;

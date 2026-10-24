@@ -30,8 +30,8 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
-import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateLinkTypeCommand
@@ -79,7 +79,7 @@ public class CreateLinkTypeCommand
         var result = CoreResultFactory.getCreateLinkTypeResult();
         var linkType = linkTypeLogic.createLinkType(this, form, getPreferredLanguage(), getPartyPK());
 
-        if(!hasExecutionErrors()) {
+        if(linkType != null) {
             result.setEntityRef(linkType.getPrimaryKey().getEntityRef());
             result.setLinkTypeName(linkType.getLastDetail().getLinkTypeName());
         }

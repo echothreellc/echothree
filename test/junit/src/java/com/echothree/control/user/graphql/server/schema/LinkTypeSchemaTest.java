@@ -17,6 +17,15 @@
 package com.echothree.control.user.graphql.server.schema;
 
 import com.echothree.control.user.graphql.server.schema.util.GraphQlSchemaUtils;
+import com.echothree.control.user.core.server.command.CreateLinkTypeTranslationCommand;
+import com.echothree.control.user.core.server.command.DeleteLinkTypeTranslationCommand;
+import com.echothree.control.user.core.server.command.EditLinkTypeTranslationCommand;
+import com.echothree.control.user.core.server.command.GetLinkTypeTranslationCommand;
+import com.echothree.control.user.core.server.command.GetLinkTypeTranslationsCommand;
+import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.util.server.control.CommandSecurityDefinition;
 import graphql.schema.GraphQLInputObjectType;
 import graphql.schema.GraphQLNonNull;
 import graphql.schema.GraphQLObjectType;
@@ -26,6 +35,24 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LinkTypeSchemaTest {
+
+    @Test
+    public void translationCommandsRequireTheTranslationRole() throws ReflectiveOperationException {
+        for(var commandClass : List.of(CreateLinkTypeTranslationCommand.class, EditLinkTypeTranslationCommand.class,
+                DeleteLinkTypeTranslationCommand.class, GetLinkTypeTranslationCommand.class, GetLinkTypeTranslationsCommand.class)) {
+            var field = commandClass.getDeclaredField("COMMAND_SECURITY_DEFINITION");
+            field.setAccessible(true);
+            var securityDefinition = (CommandSecurityDefinition)field.get(null);
+            var employeeDefinition = securityDefinition.getPartyTypeDefinitions().stream()
+                    .filter(partyTypeDefinition -> PartyTypes.EMPLOYEE.name().equals(partyTypeDefinition.getPartyTypeName()))
+                    .findFirst().orElseThrow();
+
+            assertEquals(1, employeeDefinition.getSecurityRoleDefinitions().size());
+            var roleDefinition = employeeDefinition.getSecurityRoleDefinitions().get(0);
+            assertEquals(SecurityRoleGroups.LinkType.name(), roleDefinition.getSecurityRoleGroupName());
+            assertEquals(SecurityRoles.Translation.name(), roleDefinition.getSecurityRoleName());
+        }
+    }
 
     @Test
     public void queriesExposeAlternativeIdentifiersAndCountedPagination() {

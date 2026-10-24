@@ -18,32 +18,25 @@ package com.echothree.model.control.core.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.common.choice.LinkTypeChoicesBean;
-import com.echothree.model.control.core.common.transfer.LinkTypeTranslationTransfer;
 import com.echothree.model.control.core.common.transfer.LinkTypeTransfer;
-import com.echothree.model.control.core.server.transfer.LinkTypeTranslationTransferCache;
+import com.echothree.model.control.core.common.transfer.LinkTypeTranslationTransfer;
 import com.echothree.model.control.core.server.transfer.LinkTypeTransferCache;
+import com.echothree.model.control.core.server.transfer.LinkTypeTranslationTransferCache;
+import com.echothree.model.data.core.common.pk.LinkTypePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.LinkCardinality;
 import com.echothree.model.data.core.server.entity.LinkDirectionality;
-import com.echothree.model.data.core.server.entity.MimeType;
-import org.jooq.Condition;
-import org.jooq.impl.DSL;
-import com.echothree.model.data.core.common.pk.LinkTypePK;
 import com.echothree.model.data.core.server.entity.LinkType;
 import com.echothree.model.data.core.server.entity.LinkTypeTranslation;
-import com.echothree.model.data.core.server.factory.LinkTypeTranslationFactory;
+import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.factory.LinkTypeDetailFactory;
 import com.echothree.model.data.core.server.factory.LinkTypeFactory;
-import com.echothree.model.data.core.server.value.LinkTypeTranslationValue;
+import com.echothree.model.data.core.server.factory.LinkTypeTranslationFactory;
 import com.echothree.model.data.core.server.value.LinkTypeDetailValue;
+import com.echothree.model.data.core.server.value.LinkTypeTranslationValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.LINK_TYPES_LAST_DETAIL_FK;
-import static com.echothree.model.jooq.server.tables.core.LinkTypeTranslations.LinkTypeTranslations;
-import static com.echothree.model.jooq.server.tables.core.LinkTypeDetails.LinkTypeDetails;
-import static com.echothree.model.jooq.server.tables.core.LinkTypes.LinkTypes;
-import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
@@ -53,6 +46,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.inject.Inject;
+import org.jooq.Condition;
+import org.jooq.impl.DSL;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.LINK_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.core.LinkTypeDetails.LinkTypeDetails;
+import static com.echothree.model.jooq.server.tables.core.LinkTypeTranslations.LinkTypeTranslations;
+import static com.echothree.model.jooq.server.tables.core.LinkTypes.LinkTypes;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 
 @CommandScope
 public class LinkTypeControl
@@ -425,8 +425,8 @@ public class LinkTypeControl
         return linkTypeTranslationTransferCache.getTransfer(userVisit, linkTypeTranslation);
     }
 
-    public List<LinkTypeTranslationTransfer> getLinkTypeTranslationTransfersByLinkType(UserVisit userVisit, LinkType linkType) {
-        var linkTypeTranslations = getLinkTypeTranslationsByLinkType(linkType);
+    public List<LinkTypeTranslationTransfer> getLinkTypeTranslationTransfers(UserVisit userVisit,
+            Collection<LinkTypeTranslation> linkTypeTranslations) {
         List<LinkTypeTranslationTransfer> linkTypeTranslationTransfers = new ArrayList<>(linkTypeTranslations.size());
 
         linkTypeTranslations.forEach((linkTypeTranslation) ->
@@ -434,6 +434,10 @@ public class LinkTypeControl
         );
 
         return linkTypeTranslationTransfers;
+    }
+
+    public List<LinkTypeTranslationTransfer> getLinkTypeTranslationTransfersByLinkType(UserVisit userVisit, LinkType linkType) {
+        return getLinkTypeTranslationTransfers(userVisit, getLinkTypeTranslationsByLinkType(linkType));
     }
 
     public void updateLinkTypeTranslationFromValue(LinkTypeTranslationValue linkTypeTranslationValue, BasePK updatedBy) {

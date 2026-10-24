@@ -20,6 +20,11 @@
      - Opening quotes must be on the line of code before the start of the block
      - Closing quotes must be on the line following the last line of the block, followed immediately by any parameters or the closing parenthesis
 
+### Logic Conventions
+
+- In Logic classes, accumulator parameters are an exception to the full-name rule: use `eea` for `ExecutionErrorAccumulator`, `ewa` for `ExecutionWarningAccumulator`, and `sma` for `SecurityMessageAccumulator`.
+- In Logic classes, report execution errors through `handleExecutionError` with the appropriate exception class rather than adding errors directly to the accumulator. This must support both accumulating errors when `eea` is supplied and throwing the matching exception when it is absent.
+
 ### Build Instructions
 
 - `ant clean`: Clean the build environment

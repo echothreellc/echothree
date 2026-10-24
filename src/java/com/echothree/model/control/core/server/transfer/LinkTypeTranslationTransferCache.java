@@ -16,13 +16,13 @@
 
 package com.echothree.model.control.core.server.transfer;
 
-import com.echothree.model.control.core.server.control.MimeTypeControl;
-import javax.inject.Inject;
 import com.echothree.model.control.core.common.transfer.LinkTypeTranslationTransfer;
 import com.echothree.model.control.core.server.control.LinkTypeControl;
+import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.core.server.entity.LinkTypeTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class LinkTypeTranslationTransferCache
@@ -47,7 +47,7 @@ public class LinkTypeTranslationTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, linkTypeTranslation.getLanguage());
             var guidanceMimeType = linkTypeTranslation.getGuidanceMimeType();
 
-            linkTypeTranslationTransfer = new LinkTypeTranslationTransfer(languageTransfer, linkTypeTransfer, linkTypeTranslation.getDescription(),
+            linkTypeTranslationTransfer = new LinkTypeTranslationTransfer(linkTypeTransfer, languageTransfer, linkTypeTranslation.getDescription(),
                     guidanceMimeType == null ? null : mimeTypeControl.getMimeTypeTransfer(userVisit, guidanceMimeType), linkTypeTranslation.getGuidance());
             put(userVisit, linkTypeTranslation, linkTypeTranslationTransfer);
         }

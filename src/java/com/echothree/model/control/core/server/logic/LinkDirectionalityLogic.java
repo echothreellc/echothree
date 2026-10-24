@@ -21,17 +21,16 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.CannotDeleteLinkDirectionalityInUseException;
 import com.echothree.model.control.core.common.exception.DuplicateLinkDirectionalityNameException;
-import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.common.exception.UnknownDefaultLinkDirectionalityException;
 import com.echothree.model.control.core.common.exception.UnknownLinkDirectionalityNameException;
 import com.echothree.model.control.core.server.control.LinkDirectionalityControl;
+import com.echothree.model.control.core.server.control.LinkTypeControl;
 import com.echothree.model.data.core.server.entity.LinkDirectionality;
 import com.echothree.model.data.core.server.value.LinkDirectionalityDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
-import com.echothree.model.control.core.server.control.LinkTypeControl;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -40,7 +39,7 @@ import javax.inject.Inject;
 
 @ApplicationScoped
 public class LinkDirectionalityLogic
-    extends BaseLogic {
+        extends BaseLogic {
 
     @Inject
     LinkDirectionalityControl linkDirectionalityControl;
@@ -94,10 +93,10 @@ public class LinkDirectionalityLogic
     }
 
     public LinkDirectionality getLinkDirectionalityByUniversalSpec(final ExecutionErrorAccumulator eea,
-            final LinkDirectionalityUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
+            final LinkDirectionalityUniversalSpec linkDirectionalityUniversalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         LinkDirectionality linkDirectionality = null;
-        var linkDirectionalityName = universalSpec.getLinkDirectionalityName();
-        var parameterCount = (linkDirectionalityName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
+        var linkDirectionalityName = linkDirectionalityUniversalSpec.getLinkDirectionalityName();
+        var parameterCount = (linkDirectionalityName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(linkDirectionalityUniversalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -113,10 +112,10 @@ public class LinkDirectionalityLogic
             }
             case 1 -> {
                 if(linkDirectionalityName == null) {
-                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, linkDirectionalityUniversalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.LinkDirectionality.name());
 
-                    if(eea == null || !eea.hasExecutionErrors()) {
+                    if(!hasExecutionErrors(eea)) {
                         linkDirectionality = linkDirectionalityControl.getLinkDirectionalityByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
@@ -131,13 +130,13 @@ public class LinkDirectionalityLogic
     }
 
     public LinkDirectionality getLinkDirectionalityByUniversalSpec(final ExecutionErrorAccumulator eea,
-            final LinkDirectionalityUniversalSpec universalSpec, boolean allowDefault) {
-        return getLinkDirectionalityByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_ONLY);
+            final LinkDirectionalityUniversalSpec linkDirectionalityUniversalSpec, boolean allowDefault) {
+        return getLinkDirectionalityByUniversalSpec(eea, linkDirectionalityUniversalSpec, allowDefault, EntityPermission.READ_ONLY);
     }
 
     public LinkDirectionality getLinkDirectionalityByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
-            final LinkDirectionalityUniversalSpec universalSpec, boolean allowDefault) {
-        return getLinkDirectionalityByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
+            final LinkDirectionalityUniversalSpec linkDirectionalityUniversalSpec, boolean allowDefault) {
+        return getLinkDirectionalityByUniversalSpec(eea, linkDirectionalityUniversalSpec, allowDefault, EntityPermission.READ_WRITE);
     }
 
     public void updateLinkDirectionalityFromValue(final LinkDirectionalityDetailValue linkDirectionalityDetailValue,

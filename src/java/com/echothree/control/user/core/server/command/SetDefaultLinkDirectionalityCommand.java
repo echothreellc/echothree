@@ -22,16 +22,16 @@ import com.echothree.model.control.core.server.logic.LinkDirectionalityLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
-import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetDefaultLinkDirectionalityCommand
@@ -70,12 +70,10 @@ public class SetDefaultLinkDirectionalityCommand
         var linkDirectionality = linkDirectionalityLogic.getLinkDirectionalityByUniversalSpecForUpdate(this, form, false);
 
         if(!hasExecutionErrors()) {
-            var linkDirectionalityDetailValue = linkDirectionalityControl
-                    .getLinkDirectionalityDetailValueForUpdate(linkDirectionality);
+            var linkDirectionalityDetailValue = linkDirectionalityControl.getLinkDirectionalityDetailValueForUpdate(linkDirectionality);
 
             linkDirectionalityDetailValue.setIsDefault(true);
-            linkDirectionalityControl.updateLinkDirectionalityFromValue(
-                    linkDirectionalityDetailValue, getPartyPK());
+            linkDirectionalityLogic.updateLinkDirectionalityFromValue(linkDirectionalityDetailValue, getPartyPK());
         }
 
         return null;

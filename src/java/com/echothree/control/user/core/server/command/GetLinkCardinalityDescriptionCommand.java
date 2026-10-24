@@ -24,21 +24,22 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.core.server.entity.LinkCardinalityDescription;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
-import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetLinkCardinalityDescriptionCommand
-        extends BaseSimpleCommand<GetLinkCardinalityDescriptionForm> {
+        extends BaseSingleEntityCommand<LinkCardinalityDescription, GetLinkCardinalityDescriptionForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -72,8 +73,8 @@ public class GetLinkCardinalityDescriptionCommand
     }
 
     @Override
-    protected BaseResult execute() {
-        var result = CoreResultFactory.getGetLinkCardinalityDescriptionResult();
+    protected LinkCardinalityDescription getEntity() {
+        LinkCardinalityDescription linkCardinalityDescription = null;
         var linkCardinalityName = form.getLinkCardinalityName();
         var linkCardinality = linkCardinalityLogic.getLinkCardinalityByName(this, linkCardinalityName);
 
@@ -82,14 +83,23 @@ public class GetLinkCardinalityDescriptionCommand
             var language = languageLogic.getLanguageByName(this, languageIsoName);
 
             if(!hasExecutionErrors()) {
-                var linkCardinalityDescription = linkCardinalityControl.getLinkCardinalityDescription(linkCardinality, language);
+                linkCardinalityDescription = linkCardinalityControl.getLinkCardinalityDescription(linkCardinality, language);
 
-                if(linkCardinalityDescription != null) {
-                    result.setLinkCardinalityDescription(linkCardinalityControl.getLinkCardinalityDescriptionTransfer(getUserVisit(), linkCardinalityDescription));
-                } else {
+                if(linkCardinalityDescription == null) {
                     addExecutionError(ExecutionErrors.UnknownLinkCardinalityDescription.name(), linkCardinalityName, languageIsoName);
                 }
             }
+        }
+
+        return linkCardinalityDescription;
+    }
+
+    @Override
+    protected BaseResult getResult(LinkCardinalityDescription linkCardinalityDescription) {
+        var result = CoreResultFactory.getGetLinkCardinalityDescriptionResult();
+
+        if(linkCardinalityDescription != null) {
+            result.setLinkCardinalityDescription(linkCardinalityControl.getLinkCardinalityDescriptionTransfer(getUserVisit(), linkCardinalityDescription));
         }
 
         return result;
