@@ -123,7 +123,7 @@ Feature: Employee GTIN-14 item alias
     And the user sets the item alias's item to the last item added
     And the user sets the item alias's unit of measure type to "EACH"
     And the user sets the item alias's item alias type to "GTIN_14"
-    And the user sets the item alias's alias to "0001234560001"
+    And the user sets the item alias's alias to "00012345600A12"
     And the user adds the new item alias
     Then the execution error IncorrectGtin14Character should occur
     When the user sets the status of the last item added to ACTIVE_TO_DISCONTINUED
@@ -161,7 +161,7 @@ Feature: Employee GTIN-14 item alias
     And the user sets the item alias's item to the last item added
     And the user sets the item alias's unit of measure type to "EACH"
     And the user sets the item alias's item alias type to "GTIN_14"
-    And the user sets the item alias's alias to "00012345600A12"
+    And the user sets the item alias's alias to "0001234560001"
     And the user adds the new item alias
     Then the execution error IncorrectGtin14Length should occur
     When the user sets the status of the last item added to ACTIVE_TO_DISCONTINUED

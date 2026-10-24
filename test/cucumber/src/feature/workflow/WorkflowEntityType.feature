@@ -43,4 +43,4 @@ Feature: Employee workflow entity type
     And the user sets the workflow entity type's component vendor to "ECHO_THREE"
     And the user sets the workflow entity type's entity type to "Party"
     And the user adds the new workflow entity type
-    Then the execution error DuplicateWorkflowEntityTypeName should occur
+    Then the execution error DuplicateWorkflowEntityType should occur
