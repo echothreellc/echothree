@@ -25,6 +25,7 @@ import com.echothree.model.control.graphql.server.graphql.count.CountingPaginate
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.core.common.LinkTypeConstants;
 import com.echothree.model.data.core.common.LinkTypeTranslationConstants;
 import com.echothree.model.data.core.server.entity.LinkType;
 import com.echothree.model.data.core.server.entity.LinkTypeDetail;
@@ -154,6 +155,30 @@ public class LinkTypeObject
                         .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, linkTypeTranslations);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("child link types")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<LinkTypeObject> getChildLinkTypes(final DataFetchingEnvironment env) {
+        if(CoreSecurityUtils.getHasLinkTypesAccess(env)) {
+            var linkTypeControl = Session.getModelController(LinkTypeControl.class);
+            var condition = linkTypeControl.getLinkTypeFilter(linkType, null, null, null, null, null);
+            var totalCount = linkTypeControl.countLinkTypes(condition);
+
+            try(var objectLimiter = new ObjectLimiter(env, LinkTypeConstants.COMPONENT_VENDOR_NAME,
+                    LinkTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = linkTypeControl.getLinkTypes(condition);
+                var childLinkTypes = entities.stream()
+                        .map(LinkTypeObject::new)
+                        .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, childLinkTypes);
             }
         } else {
             return Connections.emptyConnection();
