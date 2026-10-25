@@ -67,7 +67,7 @@ public class BaseTransferUtils {
                 var nextDependsOnEntityRef = entityInstance.getEntityRef();
 
                 if(nextDependsOnEntityRef != null) {
-                    if(entityRefExclusions != null && nextDependsOnEntityRef != null && entityRefExclusions.contains(nextDependsOnEntityRef)) {
+                    if(entityRefExclusions != null && entityRefExclusions.contains(nextDependsOnEntityRef)) {
                         if(BaseTransferUtilsDebugFlags.LogGetEntityRefs) {
                             log.info(StringUtils.getInstance().getIndent(4, indentCount) + "Excluding " + nextDependsOnEntityRef);
                         }
