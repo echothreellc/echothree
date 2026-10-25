@@ -204,7 +204,7 @@ public class SelectorTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the selector type's sort order to \"([^\"]*)\"$",
+        And("the user sets the selector type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createSelectorTypeForm = persona.createSelectorTypeForm;
@@ -219,7 +219,7 @@ public class SelectorTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the selector type's description to \"([^\"]*)\"$",
+        And("the user sets the selector type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createSelectorTypeForm = persona.createSelectorTypeForm;

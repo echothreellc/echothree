@@ -133,7 +133,7 @@ public class ContentCollectionSteps implements En {
                     persona.contentCollectionEdit = null;
                 });
 
-        When("^the user sets the content collection's content collection name to \"([^\"]*)\"$",
+        When("the user sets the content collection's content collection name to {string}",
                 (String contentCollectionName) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCollectionForm = persona.createContentCollectionForm;
@@ -152,7 +152,7 @@ public class ContentCollectionSteps implements En {
                     }
                 });
 
-        When("^the user sets the content collection's new content collection name to \"([^\"]*)\"$",
+        When("the user sets the content collection's new content collection name to {string}",
                 (String contentCollectionName) -> {
                     var persona = CurrentPersona.persona;
                     var contentCollectionEdit = persona.contentCollectionEdit;
@@ -162,7 +162,7 @@ public class ContentCollectionSteps implements En {
                     contentCollectionEdit.setContentCollectionName(contentCollectionName);
                 });
 
-        When("^the user sets the content collection's default offer name to \"([^\"]*)\"$",
+        When("the user sets the content collection's default offer name to {string}",
                 (String defaultOfferName) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCollectionForm = persona.createContentCollectionForm;
@@ -184,7 +184,7 @@ public class ContentCollectionSteps implements En {
                     Objects.requireNonNullElse(createContentCollectionForm, contentCollectionEdit).setDefaultOfferName(persona.lastOfferName);
                 });
 
-        When("^the user sets the content collection's default use name to \"([^\"]*)\"$",
+        When("the user sets the content collection's default use name to {string}",
                 (String defaultUseName) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCollectionForm = persona.createContentCollectionForm;
@@ -206,7 +206,7 @@ public class ContentCollectionSteps implements En {
                     Objects.requireNonNullElse(createContentCollectionForm, contentCollectionEdit).setDefaultUseName(persona.lastUseName);
                 });
 
-        When("^the user sets the content collection's default source name to \"([^\"]*)\"$",
+        When("the user sets the content collection's default source name to {string}",
                 (String defaultSourceName) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCollectionForm = persona.createContentCollectionForm;
@@ -228,7 +228,7 @@ public class ContentCollectionSteps implements En {
                     Objects.requireNonNullElse(createContentCollectionForm, contentCollectionEdit).setDefaultSourceName(persona.lastSourceName);
                 });
 
-        When("^the user sets the content collection's description to \"([^\"]*)\"$",
+        When("the user sets the content collection's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCollectionForm = persona.createContentCollectionForm;

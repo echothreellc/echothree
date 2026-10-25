@@ -184,7 +184,7 @@ public class AllocationPrioritySteps implements En {
                     allocationPriorityEdit.setAllocationPriorityName(allocationPriorityName);
                 });
 
-        And("^the user sets the allocation priority's priority to \"([^\"]*)\"$",
+        And("the user sets the allocation priority's priority to {string}",
                 (String priority) -> {
                     var persona = CurrentPersona.persona;
                     var createAllocationPriorityForm = persona.createAllocationPriorityForm;
@@ -215,7 +215,7 @@ public class AllocationPrioritySteps implements En {
                     }
                 });
 
-        And("^the user sets the allocation priority's sort order to \"([^\"]*)\"$",
+        And("the user sets the allocation priority's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createAllocationPriorityForm = persona.createAllocationPriorityForm;
@@ -230,7 +230,7 @@ public class AllocationPrioritySteps implements En {
                     }
                 });
 
-        And("^the user sets the allocation priority's description to \"([^\"]*)\"$",
+        And("the user sets the allocation priority's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createAllocationPriorityForm = persona.createAllocationPriorityForm;

@@ -44,7 +44,7 @@ public class CustomerLoginSteps implements En {
                     persona.customerLoginForm = AuthenticationUtil.getHome().getCustomerLoginForm();
                 });
 
-        And("^the customer sets the username to \"([^\"]*)\"$",
+        And("the customer sets the username to {string}",
                 (String username) -> {
                     var persona = CurrentPersona.persona;
 
@@ -53,7 +53,7 @@ public class CustomerLoginSteps implements En {
                     persona.customerLoginForm.setUsername(username);
                 });
 
-        And("^the customer sets the password to \"([^\"]*)\"$",
+        And("the customer sets the password to {string}",
                 (String password) -> {
                     var persona = CurrentPersona.persona;
 
@@ -62,7 +62,7 @@ public class CustomerLoginSteps implements En {
                     persona.customerLoginForm.setPassword(password);
                 });
 
-        And("^the customer sets the remote IPv4 address to \"([^\"]*)\"$",
+        And("the customer sets the remote IPv4 address to {string}",
                 (String remoteInet4Address) -> {
                     var persona = CurrentPersona.persona;
 

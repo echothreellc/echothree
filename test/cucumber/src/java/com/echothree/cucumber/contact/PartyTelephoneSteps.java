@@ -166,7 +166,7 @@ public class PartyTelephoneSteps implements En {
                     }
                 });
 
-        When("^the user sets the telephone number's description to \"([^\"]*)\"$",
+        When("the user sets the telephone number's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createContactTelephoneForm = persona.createContactTelephoneForm;
@@ -181,7 +181,7 @@ public class PartyTelephoneSteps implements En {
                     }
                 });
 
-        When("^the user sets the telephone number's country to \"([^\"]*)\"$",
+        When("the user sets the telephone number's country to {string}",
                 (String countryName) -> {
                     var persona = CurrentPersona.persona;
                     var createContactTelephoneForm = persona.createContactTelephoneForm;
@@ -196,7 +196,7 @@ public class PartyTelephoneSteps implements En {
                     }
                 });
 
-        When("^the user sets the telephone number's area code to \"([^\"]*)\"$",
+        When("the user sets the telephone number's area code to {string}",
                 (String areaCode) -> {
                     var persona = CurrentPersona.persona;
                     var createContactTelephoneForm = persona.createContactTelephoneForm;
@@ -211,7 +211,7 @@ public class PartyTelephoneSteps implements En {
                     }
                 });
 
-        When("^the user sets the telephone number's number to \"([^\"]*)\"$",
+        When("the user sets the telephone number's number to {string}",
                 (String telephoneNumber) -> {
                     var persona = CurrentPersona.persona;
                     var createContactTelephoneForm = persona.createContactTelephoneForm;
@@ -226,7 +226,7 @@ public class PartyTelephoneSteps implements En {
                     }
                 });
 
-        When("^the user sets the telephone number's extension to \"([^\"]*)\"$",
+        When("the user sets the telephone number's extension to {string}",
                 (String telephoneExtension) -> {
                     var persona = CurrentPersona.persona;
                     var createContactTelephoneForm = persona.createContactTelephoneForm;

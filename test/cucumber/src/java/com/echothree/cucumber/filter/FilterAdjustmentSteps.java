@@ -188,7 +188,7 @@ public class FilterAdjustmentSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter adjustment's new filter adjustment name to \"([^\"]*)\"$",
+        When("the user sets the filter adjustment's new filter adjustment name to {string}",
                 (String filterAdjustmentName) -> {
                     var persona = CurrentPersona.persona;
                     var filterAdjustmentEdit = persona.filterAdjustmentEdit;
@@ -239,7 +239,7 @@ public class FilterAdjustmentSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter adjustment's sort order to \"([^\"]*)\"$",
+        When("the user sets the filter adjustment's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterAdjustmentForm = persona.createFilterAdjustmentForm;
@@ -254,7 +254,7 @@ public class FilterAdjustmentSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter adjustment's description to \"([^\"]*)\"$",
+        When("the user sets the filter adjustment's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterAdjustmentForm = persona.createFilterAdjustmentForm;

@@ -186,7 +186,7 @@ public class PurchaseOrderSteps implements En {
                     setPurchaseOrderStatusForm.setPurchaseOrderStatusChoice(purchaseOrderStatusChoice);
                 });
 
-        When("^the user sets the purchase order's term name to \"([^\"]*)\"$",
+        When("the user sets the purchase order's term name to {string}",
                 (String termName) -> {
                     var persona = CurrentPersona.persona;
                     var createPurchaseOrderForm = persona.createPurchaseOrderForm;
@@ -245,7 +245,7 @@ public class PurchaseOrderSteps implements En {
                     Objects.requireNonNullElse(createPurchaseOrderForm, purchaseOrderEdit).setAllowCombiningShipments(allowCombiningShipments);
                 });
 
-        When("^the user sets the purchase order's reference to \"([^\"]*)\"$",
+        When("the user sets the purchase order's reference to {string}",
                 (String reference) -> {
                     var persona = CurrentPersona.persona;
                     var createPurchaseOrderForm = persona.createPurchaseOrderForm;
@@ -256,7 +256,7 @@ public class PurchaseOrderSteps implements En {
                     Objects.requireNonNullElse(createPurchaseOrderForm, purchaseOrderEdit).setReference(reference);
                 });
 
-        When("^the user sets the purchase order's free on board name to \"([^\"]*)\"$",
+        When("the user sets the purchase order's free on board name to {string}",
                 (String freeOnBoardName) -> {
                     var persona = CurrentPersona.persona;
                     var createPurchaseOrderForm = persona.createPurchaseOrderForm;

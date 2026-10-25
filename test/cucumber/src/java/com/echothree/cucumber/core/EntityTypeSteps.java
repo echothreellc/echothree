@@ -184,7 +184,7 @@ public class EntityTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity type's lock timeout to \"([^\"]*)\"$",
+        When("the user sets the entity type's lock timeout to {string}",
                 (String lockTimeout) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityTypeForm = persona.createEntityTypeForm;
@@ -199,7 +199,7 @@ public class EntityTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity type's lock timeout unit of measure type name to \"([^\"]*)\"$",
+        When("the user sets the entity type's lock timeout unit of measure type name to {string}",
                 (String lockTimeoutUnitOfMeasureTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityTypeForm = persona.createEntityTypeForm;
@@ -230,7 +230,7 @@ public class EntityTypeSteps implements En {
                     }
                 });
         
-        When("^the user sets the entity type's sort order to \"([^\"]*)\"$",
+        When("the user sets the entity type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityTypeForm = persona.createEntityTypeForm;
@@ -245,7 +245,7 @@ public class EntityTypeSteps implements En {
                     }
                 });
         
-        When("^the user sets the entity type's description to \"([^\"]*)\"$",
+        When("the user sets the entity type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityTypeForm = persona.createEntityTypeForm;

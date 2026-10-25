@@ -187,7 +187,7 @@ public class WarehouseSteps
                     warehouseEdit.setWarehouseName(warehouseName);
                 });
 
-        And("^the user sets the warehouse's warehouse type name to \"([^\"]*)\"$",
+        And("the user sets the warehouse's warehouse type name to {string}",
                 (String warehouseType) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -218,7 +218,7 @@ public class WarehouseSteps
                     }
                 });
 
-        And("^the user sets the warehouse's sort order to \"([^\"]*)\"$",
+        And("the user sets the warehouse's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -293,7 +293,7 @@ public class WarehouseSteps
                     }
                 });
 
-        And("^the user sets the warehouse's name to \"([^\"]*)\"$",
+        And("the user sets the warehouse's name to {string}",
                 (String name) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -308,7 +308,7 @@ public class WarehouseSteps
                     }
                 });
 
-        And("^the user sets the warehouse's preferred language to \"([^\"]*)\"$",
+        And("the user sets the warehouse's preferred language to {string}",
                 (String preferredLanguageIsoName) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -323,7 +323,7 @@ public class WarehouseSteps
                     }
                 });
 
-        And("^the user sets the warehouse's preferred currency to \"([^\"]*)\"$",
+        And("the user sets the warehouse's preferred currency to {string}",
                 (String preferredCurrencyIsoName) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -338,7 +338,7 @@ public class WarehouseSteps
                     }
                 });
 
-        And("^the user sets the warehouse's preferred time zone to \"([^\"]*)\"$",
+        And("the user sets the warehouse's preferred time zone to {string}",
                 (String preferredJavaTimeZoneName) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -353,7 +353,7 @@ public class WarehouseSteps
                     }
                 });
 
-        And("^the user sets the warehouse's preferred date time format to \"([^\"]*)\"$",
+        And("the user sets the warehouse's preferred date time format to {string}",
                 (String preferredDateTimeFormatName) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;

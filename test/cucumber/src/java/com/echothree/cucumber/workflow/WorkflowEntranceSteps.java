@@ -136,7 +136,7 @@ public class WorkflowEntranceSteps implements En {
                     persona.workflowEntranceEdit = null;
                 });
 
-        When("^the user sets the workflow entrance's workflow name to \"([^\"]*)\"$",
+        When("the user sets the workflow entrance's workflow name to {string}",
                 (String workflowName) -> {
                     var persona = CurrentPersona.persona;
                     var createWorkflowEntranceForm = persona.createWorkflowEntranceForm;
@@ -161,7 +161,7 @@ public class WorkflowEntranceSteps implements En {
                     Objects.requireNonNullElseGet(createWorkflowEntranceForm, () -> Objects.requireNonNullElse(deleteWorkflowEntranceForm, workflowEntranceSpec)).setWorkflowName(lastWorkflowName);
                 });
 
-        When("^the user sets the workflow entrance's name to \"([^\"]*)\"$",
+        When("the user sets the workflow entrance's name to {string}",
                 (String workflowEntranceName) -> {
                     var persona = CurrentPersona.persona;
                     var createWorkflowEntranceForm = persona.createWorkflowEntranceForm;
@@ -197,7 +197,7 @@ public class WorkflowEntranceSteps implements En {
                     Objects.requireNonNullElse(createWorkflowEntranceForm, workflowEntranceEdit).setIsDefault(isDefault);
                 });
 
-        When("^the user sets the workflow entrance's sort order to \"([^\"]*)\"$",
+        When("the user sets the workflow entrance's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createWorkflowEntranceForm = persona.createWorkflowEntranceForm;
@@ -208,7 +208,7 @@ public class WorkflowEntranceSteps implements En {
                     Objects.requireNonNullElse(createWorkflowEntranceForm, workflowEntranceEdit).setSortOrder(sortOrder);
                 });
 
-        When("^the user sets the workflow entrance's description to \"([^\"]*)\"$",
+        When("the user sets the workflow entrance's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createWorkflowEntranceForm = persona.createWorkflowEntranceForm;

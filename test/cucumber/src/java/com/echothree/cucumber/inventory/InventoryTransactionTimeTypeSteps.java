@@ -240,7 +240,7 @@ public class InventoryTransactionTimeTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction time type's sort order to \"([^\"]*)\"$",
+        And("the user sets the inventory transaction time type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionTimeTypeForm = persona.createInventoryTransactionTimeTypeForm;
@@ -255,7 +255,7 @@ public class InventoryTransactionTimeTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction time type's description to \"([^\"]*)\"$",
+        And("the user sets the inventory transaction time type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionTimeTypeForm = persona.createInventoryTransactionTimeTypeForm;

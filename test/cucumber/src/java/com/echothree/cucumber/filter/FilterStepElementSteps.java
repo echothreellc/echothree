@@ -242,7 +242,7 @@ public class FilterStepElementSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter step element's new filter step element name to \"([^\"]*)\"$",
+        When("the user sets the filter step element's new filter step element name to {string}",
                 (String filterStepElementName) -> {
                     var persona = CurrentPersona.persona;
                     var filterStepElementEdit = persona.filterStepElementEdit;
@@ -252,7 +252,7 @@ public class FilterStepElementSteps implements En {
                     filterStepElementEdit.setFilterStepElementName(filterStepElementName);
                 });
 
-        When("^the user sets the filter step element's filter item selector name to \"([^\"]*)\"$",
+        When("the user sets the filter step element's filter item selector name to {string}",
                 (String filterItemSelectorName) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterStepElementForm = persona.createFilterStepElementForm;
@@ -267,7 +267,7 @@ public class FilterStepElementSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter step element's filter adjustment name to \"([^\"]*)\"$",
+        When("the user sets the filter step element's filter adjustment name to {string}",
                 (String filterAdjustmentName) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterStepElementForm = persona.createFilterStepElementForm;
@@ -282,7 +282,7 @@ public class FilterStepElementSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter step element's description to \"([^\"]*)\"$",
+        When("the user sets the filter step element's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterStepElementForm = persona.createFilterStepElementForm;

@@ -200,7 +200,7 @@ public class InventoryConditionSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory condition's sort order to \"([^\"]*)\"$",
+        And("the user sets the inventory condition's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryConditionForm = persona.createInventoryConditionForm;
@@ -215,7 +215,7 @@ public class InventoryConditionSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory condition's description to \"([^\"]*)\"$",
+        And("the user sets the inventory condition's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryConditionForm = persona.createInventoryConditionForm;

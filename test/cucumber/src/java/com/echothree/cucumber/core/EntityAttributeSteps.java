@@ -178,7 +178,7 @@ public class EntityAttributeSteps implements En {
                     createEntityAttributeForm.setEntityAttributeTypeName(entityAttributeTypeName);
                 });
 
-        When("^the user sets the entity attribute's sort order to \"([^\"]*)\"$",
+        When("the user sets the entity attribute's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
@@ -193,7 +193,7 @@ public class EntityAttributeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity attribute's upper integer range to \"([^\"]*)\"$",
+        When("the user sets the entity attribute's upper integer range to {string}",
                 (String upperRangeIntegerValue) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
@@ -208,7 +208,7 @@ public class EntityAttributeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity attribute's upper integer limit to \"([^\"]*)\"$",
+        When("the user sets the entity attribute's upper integer limit to {string}",
                 (String upperLimitIntegerValue) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
@@ -223,7 +223,7 @@ public class EntityAttributeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity attribute's lower integer limit to \"([^\"]*)\"$",
+        When("the user sets the entity attribute's lower integer limit to {string}",
                 (String lowerLimitIntegerValue) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
@@ -238,7 +238,7 @@ public class EntityAttributeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity attribute's lower integer range to \"([^\"]*)\"$",
+        When("the user sets the entity attribute's lower integer range to {string}",
                 (String lowerRangeIntegerValue) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
@@ -253,7 +253,7 @@ public class EntityAttributeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity attribute's upper long range to \"([^\"]*)\"$",
+        When("the user sets the entity attribute's upper long range to {string}",
                 (String upperRangeLongValue) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
@@ -268,7 +268,7 @@ public class EntityAttributeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity attribute's upper long limit to \"([^\"]*)\"$",
+        When("the user sets the entity attribute's upper long limit to {string}",
                 (String upperLimitLongValue) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
@@ -283,7 +283,7 @@ public class EntityAttributeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity attribute's lower long limit to \"([^\"]*)\"$",
+        When("the user sets the entity attribute's lower long limit to {string}",
                 (String lowerLimitLongValue) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
@@ -298,7 +298,7 @@ public class EntityAttributeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity attribute's lower long range to \"([^\"]*)\"$",
+        When("the user sets the entity attribute's lower long range to {string}",
                 (String lowerRangeLongValue) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
@@ -313,7 +313,7 @@ public class EntityAttributeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity attribute's validation pattern to \"([^\"]*)\"$",
+        When("the user sets the entity attribute's validation pattern to {string}",
                 (String validationPattern) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
@@ -358,7 +358,7 @@ public class EntityAttributeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity attribute's entity list item sequence to \"([^\"]*)\"$",
+        When("the user sets the entity attribute's entity list item sequence to {string}",
                 (String entityListItemSequenceName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
@@ -373,7 +373,7 @@ public class EntityAttributeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity attribute's workflow to \"([^\"]*)\"$",
+        When("the user sets the entity attribute's workflow to {string}",
                 (String workflowName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
@@ -388,7 +388,7 @@ public class EntityAttributeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity attribute's description to \"([^\"]*)\"$",
+        When("the user sets the entity attribute's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;

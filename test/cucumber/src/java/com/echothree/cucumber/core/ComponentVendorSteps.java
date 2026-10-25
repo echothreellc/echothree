@@ -170,7 +170,7 @@ public class ComponentVendorSteps implements En {
                     }
                 });
 
-        When("^the user sets the component vendor's description to \"([^\"]*)\"$",
+        When("the user sets the component vendor's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createComponentVendorForm = persona.createComponentVendorForm;

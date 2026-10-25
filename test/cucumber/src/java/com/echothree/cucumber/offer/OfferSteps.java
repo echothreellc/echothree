@@ -139,7 +139,7 @@ public class OfferSteps implements En {
                 });
 
 
-        When("^the user sets the offer's offer name to \"([^\"]*)\"$",
+        When("the user sets the offer's offer name to {string}",
                 (String offerName) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferForm = persona.createOfferForm;
@@ -155,7 +155,7 @@ public class OfferSteps implements En {
                     }
                 });
 
-        When("^the user sets the offer's new offer name to \"([^\"]*)\"$",
+        When("the user sets the offer's new offer name to {string}",
                 (String offerName) -> {
                     var persona = CurrentPersona.persona;
                     var offerEdit = persona.offerEdit;
@@ -165,7 +165,7 @@ public class OfferSteps implements En {
                     offerEdit.setOfferName(offerName);
                 });
 
-        When("^the user sets the offer's company name to \"([^\"]*)\"$",
+        When("the user sets the offer's company name to {string}",
                 (String partyCompanyName) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferForm = persona.createOfferForm;
@@ -175,7 +175,7 @@ public class OfferSteps implements En {
                     createOfferForm.setCompanyName(partyCompanyName);
                 });
 
-        When("^the user sets the offer's division name to \"([^\"]*)\"$",
+        When("the user sets the offer's division name to {string}",
                 (String partyDivisionName) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferForm = persona.createOfferForm;
@@ -185,7 +185,7 @@ public class OfferSteps implements En {
                     createOfferForm.setDivisionName(partyDivisionName);
                 });
 
-        When("^the user sets the offer's department name to \"([^\"]*)\"$",
+        When("the user sets the offer's department name to {string}",
                 (String partyDepartmentName) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferForm = persona.createOfferForm;
@@ -195,7 +195,7 @@ public class OfferSteps implements En {
                     createOfferForm.setDepartmentName(partyDepartmentName);
                 });
 
-        When("^the user sets the offer's sales order sequence name to \"([^\"]*)\"$",
+        When("the user sets the offer's sales order sequence name to {string}",
                 (String salesOrderSequenceName) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferForm = persona.createOfferForm;
@@ -206,7 +206,7 @@ public class OfferSteps implements En {
                     Objects.requireNonNullElse(createOfferForm, offerEdit).setSalesOrderSequenceName(salesOrderSequenceName);
                 });
 
-        When("^the user sets the offer's offer item selector name to \"([^\"]*)\"$",
+        When("the user sets the offer's offer item selector name to {string}",
                 (String offerItemSelectorName) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferForm = persona.createOfferForm;
@@ -217,7 +217,7 @@ public class OfferSteps implements En {
                     Objects.requireNonNullElse(createOfferForm, offerEdit).setOfferItemSelectorName(offerItemSelectorName);
                 });
 
-        When("^the user sets the offer's offer item price filter name to \"([^\"]*)\"$",
+        When("the user sets the offer's offer item price filter name to {string}",
                 (String offerItemPriceFilterName) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferForm = persona.createOfferForm;
@@ -240,7 +240,7 @@ public class OfferSteps implements En {
                     Objects.requireNonNullElse(createOfferForm, offerEdit).setIsDefault(isDefault);
                 });
 
-        When("^the user sets the offer's sort order to \"([^\"]*)\"$",
+        When("the user sets the offer's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferForm = persona.createOfferForm;
@@ -251,7 +251,7 @@ public class OfferSteps implements En {
                     Objects.requireNonNullElse(createOfferForm, offerEdit).setSortOrder(sortOrder);
                 });
 
-        When("^the user sets the offer's description to \"([^\"]*)\"$",
+        When("the user sets the offer's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferForm = persona.createOfferForm;

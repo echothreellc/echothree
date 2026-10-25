@@ -215,7 +215,7 @@ public class LinkDirectionalitySteps implements En {
                     }
                 });
 
-        And("^the user sets the link directionality's sort order to \"([^\"]*)\"$",
+        And("the user sets the link directionality's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createLinkDirectionalityForm = persona.createLinkDirectionalityForm;
@@ -230,7 +230,7 @@ public class LinkDirectionalitySteps implements En {
                     }
                 });
 
-        And("^the user sets the link directionality's description to \"([^\"]*)\"$",
+        And("the user sets the link directionality's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createLinkDirectionalityForm = persona.createLinkDirectionalityForm;

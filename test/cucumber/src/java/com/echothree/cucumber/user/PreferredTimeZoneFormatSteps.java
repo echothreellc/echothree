@@ -25,7 +25,7 @@ import io.cucumber.java8.En;
 public class PreferredTimeZoneFormatSteps implements En {
 
     public PreferredTimeZoneFormatSteps() {
-        When("^the user sets their preferred time zone to \"([^\"]*)\"$",
+        When("the user sets their preferred time zone to {string}",
                 (String javaTimeZoneName) -> {
                     UserService userService = UserUtil.getHome();
                     var userVisitPreferredTimeZoneForm = userService.getSetUserVisitPreferredTimeZoneForm();

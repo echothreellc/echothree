@@ -170,7 +170,7 @@ public class ItemAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item alias type's validation pattern to \"([^\"]*)\"$",
+        When("the user sets the item alias type's validation pattern to {string}",
                 (String validationPattern) -> {
                     var persona = CurrentPersona.persona;
                     var createItemAliasTypeForm = persona.createItemAliasTypeForm;
@@ -185,7 +185,7 @@ public class ItemAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item alias type's checksum type to \"([^\"]*)\"$",
+        When("the user sets the item alias type's checksum type to {string}",
                 (String itemAliasChecksumTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemAliasTypeForm = persona.createItemAliasTypeForm;
@@ -232,7 +232,7 @@ public class ItemAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item alias type's sort order to \"([^\"]*)\"$",
+        When("the user sets the item alias type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createItemAliasTypeForm = persona.createItemAliasTypeForm;
@@ -247,7 +247,7 @@ public class ItemAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item alias type's description to \"([^\"]*)\"$",
+        When("the user sets the item alias type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createItemAliasTypeForm = persona.createItemAliasTypeForm;

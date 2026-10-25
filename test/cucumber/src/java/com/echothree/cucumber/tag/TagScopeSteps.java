@@ -139,7 +139,7 @@ public class TagScopeSteps implements En {
                 });
 
 
-        When("^the user sets the tag scope's tag scope name to \"([^\"]*)\"$",
+        When("the user sets the tag scope's tag scope name to {string}",
                 (String tagScopeName) -> {
                     var persona = CurrentPersona.persona;
                     var createTagScopeForm = persona.createTagScopeForm;
@@ -171,7 +171,7 @@ public class TagScopeSteps implements En {
                     }
                 });
 
-        When("^the user sets the tag scope's new tag scope name to \"([^\"]*)\"$",
+        When("the user sets the tag scope's new tag scope name to {string}",
                 (String tagScopeName) -> {
                     var persona = CurrentPersona.persona;
                     var tagScopeEdit = persona.tagScopeEdit;
@@ -193,7 +193,7 @@ public class TagScopeSteps implements En {
                     Objects.requireNonNullElse(createTagScopeForm, tagScopeEdit).setIsDefault(isDefault);
                 });
 
-        When("^the user sets the tag scope's sort order to \"([^\"]*)\"$",
+        When("the user sets the tag scope's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createTagScopeForm = persona.createTagScopeForm;
@@ -204,7 +204,7 @@ public class TagScopeSteps implements En {
                     Objects.requireNonNullElse(createTagScopeForm, tagScopeEdit).setSortOrder(sortOrder);
                 });
 
-        When("^the user sets the tag scope's description to \"([^\"]*)\"$",
+        When("the user sets the tag scope's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createTagScopeForm = persona.createTagScopeForm;

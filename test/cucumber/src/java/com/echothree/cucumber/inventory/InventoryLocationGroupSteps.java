@@ -287,7 +287,7 @@ public class InventoryLocationGroupSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory location group's sort order to \"([^\"]*)\"$",
+        And("the user sets the inventory location group's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryLocationGroupForm = persona.createInventoryLocationGroupForm;
@@ -302,7 +302,7 @@ public class InventoryLocationGroupSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory location group's description to \"([^\"]*)\"$",
+        And("the user sets the inventory location group's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryLocationGroupForm = persona.createInventoryLocationGroupForm;

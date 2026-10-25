@@ -186,7 +186,7 @@ public class ItemVolumeTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item volume type's sort order to \"([^\"]*)\"$",
+        When("the user sets the item volume type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createItemVolumeTypeForm = persona.createItemVolumeTypeForm;
@@ -201,7 +201,7 @@ public class ItemVolumeTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item volume type's description to \"([^\"]*)\"$",
+        When("the user sets the item volume type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createItemVolumeTypeForm = persona.createItemVolumeTypeForm;

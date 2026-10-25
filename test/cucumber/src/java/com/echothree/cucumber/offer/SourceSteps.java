@@ -138,7 +138,7 @@ public class SourceSteps implements En {
                     persona.sourceEdit = null;
                 });
 
-        When("^the user sets the source's offer name to \"([^\"]*)\"$",
+        When("the user sets the source's offer name to {string}",
                 (String offerName) -> {
                     var persona = CurrentPersona.persona;
                     var createSourceForm = persona.createSourceForm;
@@ -158,7 +158,7 @@ public class SourceSteps implements En {
                     createSourceForm.setOfferName(persona.lastOfferName);
                 });
 
-        When("^the user sets the source's use name to \"([^\"]*)\"$",
+        When("the user sets the source's use name to {string}",
                 (String useName) -> {
                     var persona = CurrentPersona.persona;
                     var createSourceForm = persona.createSourceForm;
@@ -178,7 +178,7 @@ public class SourceSteps implements En {
                     createSourceForm.setUseName(persona.lastUseName);
                 });
 
-        When("^the user sets the source's source name to \"([^\"]*)\"$",
+        When("the user sets the source's source name to {string}",
                 (String sourceName) -> {
                     var persona = CurrentPersona.persona;
                     var createSourceForm = persona.createSourceForm;
@@ -219,7 +219,7 @@ public class SourceSteps implements En {
                     Objects.requireNonNullElse(createSourceForm, sourceEdit).setIsDefault(isDefault);
                 });
 
-        When("^the user sets the source's sort order to \"([^\"]*)\"$",
+        When("the user sets the source's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createSourceForm = persona.createSourceForm;

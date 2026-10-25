@@ -186,7 +186,7 @@ public class ItemImageTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item image type's sort order to \"([^\"]*)\"$",
+        When("the user sets the item image type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createItemImageTypeForm = persona.createItemImageTypeForm;
@@ -201,7 +201,7 @@ public class ItemImageTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item image type's description to \"([^\"]*)\"$",
+        When("the user sets the item image type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createItemImageTypeForm = persona.createItemImageTypeForm;

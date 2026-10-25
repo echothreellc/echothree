@@ -131,7 +131,7 @@ public class OfferUseSteps implements En {
                     persona.offerUseEdit = null;
                 });
 
-        When("^the user sets the offer use's offer name to \"([^\"]*)\"$",
+        When("the user sets the offer use's offer name to {string}",
                 (String offerName) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferUseForm = persona.createOfferUseForm;
@@ -163,7 +163,7 @@ public class OfferUseSteps implements En {
                     } else Objects.requireNonNullElse(deleteOfferUseForm, offerUseSpec).setOfferName(persona.lastOfferName);
                 });
 
-        When("^the user sets the offer use's use name to \"([^\"]*)\"$",
+        When("the user sets the offer use's use name to {string}",
                 (String useName) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferUseForm = persona.createOfferUseForm;
@@ -197,7 +197,7 @@ public class OfferUseSteps implements En {
                     }
                 });
 
-        When("^the user sets the offer use's sales order sequence name to \"([^\"]*)\"$",
+        When("the user sets the offer use's sales order sequence name to {string}",
                 (String salesOrderSequenceName) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferUseForm = persona.createOfferUseForm;

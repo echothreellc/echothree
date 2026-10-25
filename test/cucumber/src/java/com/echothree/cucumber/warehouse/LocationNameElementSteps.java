@@ -260,7 +260,7 @@ public class LocationNameElementSteps implements En {
                     locationNameElementEdit.setLocationNameElementName(locationNameElementName);
                 });
 
-        And("^the user sets the location name element's offset to \"([^\"]*)\"$",
+        And("the user sets the location name element's offset to {string}",
                 (String offset) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationNameElementForm = persona.createLocationNameElementForm;
@@ -275,7 +275,7 @@ public class LocationNameElementSteps implements En {
                     }
                 });
 
-        And("^the user sets the location name element's length to \"([^\"]*)\"$",
+        And("the user sets the location name element's length to {string}",
                 (String length) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationNameElementForm = persona.createLocationNameElementForm;
@@ -290,7 +290,7 @@ public class LocationNameElementSteps implements En {
                     }
                 });
 
-        And("^the user sets the location name element's validation pattern to \"([^\"]*)\"$",
+        And("the user sets the location name element's validation pattern to {string}",
                 (String validationPattern) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationNameElementForm = persona.createLocationNameElementForm;
@@ -305,7 +305,7 @@ public class LocationNameElementSteps implements En {
                     }
                 });
 
-        And("^the user sets the location name element's description to \"([^\"]*)\"$",
+        And("the user sets the location name element's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationNameElementForm = persona.createLocationNameElementForm;

@@ -215,7 +215,7 @@ public class LinkCardinalitySteps implements En {
                     }
                 });
 
-        And("^the user sets the link cardinality's sort order to \"([^\"]*)\"$",
+        And("the user sets the link cardinality's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createLinkCardinalityForm = persona.createLinkCardinalityForm;
@@ -230,7 +230,7 @@ public class LinkCardinalitySteps implements En {
                     }
                 });
 
-        And("^the user sets the link cardinality's description to \"([^\"]*)\"$",
+        And("the user sets the link cardinality's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createLinkCardinalityForm = persona.createLinkCardinalityForm;

@@ -196,7 +196,7 @@ public class MessageTypeSteps implements En {
                     createMessageTypeForm.setMimeTypeUsageTypeName(mimeTypeUsageTypeName);
                 });
 
-        When("^the user sets the message type's sort order to \"([^\"]*)\"$",
+        When("the user sets the message type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createMessageTypeForm = persona.createMessageTypeForm;
@@ -211,7 +211,7 @@ public class MessageTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the message type's description to \"([^\"]*)\"$",
+        When("the user sets the message type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createMessageTypeForm = persona.createMessageTypeForm;

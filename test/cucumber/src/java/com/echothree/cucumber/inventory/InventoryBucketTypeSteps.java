@@ -202,7 +202,7 @@ public class InventoryBucketTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory bucket type's sort order to \"([^\"]*)\"$",
+        And("the user sets the inventory bucket type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryBucketTypeForm = persona.createInventoryBucketTypeForm;
@@ -217,7 +217,7 @@ public class InventoryBucketTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory bucket type's description to \"([^\"]*)\"$",
+        And("the user sets the inventory bucket type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryBucketTypeForm = persona.createInventoryBucketTypeForm;

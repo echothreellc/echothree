@@ -170,7 +170,7 @@ public class WarehouseTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the warehouse type's priority to \"([^\"]*)\"$",
+        When("the user sets the warehouse type's priority to {string}",
                 (String priority) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseTypeForm = persona.createWarehouseTypeForm;
@@ -201,7 +201,7 @@ public class WarehouseTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the warehouse type's sort order to \"([^\"]*)\"$",
+        When("the user sets the warehouse type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseTypeForm = persona.createWarehouseTypeForm;
@@ -216,7 +216,7 @@ public class WarehouseTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the warehouse type's description to \"([^\"]*)\"$",
+        When("the user sets the warehouse type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseTypeForm = persona.createWarehouseTypeForm;

@@ -44,7 +44,7 @@ public class EmployeeLoginSteps implements En {
                     persona.employeeLoginForm = AuthenticationUtil.getHome().getEmployeeLoginForm();
                 });
 
-        And("^the employee sets the username to \"([^\"]*)\"$",
+        And("the employee sets the username to {string}",
                 (String username) -> {
                     var persona = CurrentPersona.persona;
 
@@ -53,7 +53,7 @@ public class EmployeeLoginSteps implements En {
                     persona.employeeLoginForm.setUsername(username);
                 });
 
-        And("^the employee sets the password to \"([^\"]*)\"$",
+        And("the employee sets the password to {string}",
                 (String password) -> {
                     var persona = CurrentPersona.persona;
 
@@ -62,7 +62,7 @@ public class EmployeeLoginSteps implements En {
                     persona.employeeLoginForm.setPassword(password);
                 });
 
-        And("^the employee sets the company to \"([^\"]*)\"$",
+        And("the employee sets the company to {string}",
                 (String company) -> {
                     var persona = CurrentPersona.persona;
 
@@ -71,7 +71,7 @@ public class EmployeeLoginSteps implements En {
                     persona.employeeLoginForm.setCompanyName(company);
                 });
 
-        And("^the employee sets the remote IPv4 address to \"([^\"]*)\"$",
+        And("the employee sets the remote IPv4 address to {string}",
                 (String remoteInet4Address) -> {
                     var persona = CurrentPersona.persona;
 

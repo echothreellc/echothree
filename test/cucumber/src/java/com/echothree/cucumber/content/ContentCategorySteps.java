@@ -133,7 +133,7 @@ public class ContentCategorySteps implements En {
                     persona.contentCategoryEdit = null;
                 });
 
-        When("^the user sets the content category's content collection name to \"([^\"]*)\"$",
+        When("the user sets the content category's content collection name to {string}",
                 (String contentCollectionName) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCategoryForm = persona.createContentCategoryForm;
@@ -152,7 +152,7 @@ public class ContentCategorySteps implements En {
                     }
                 });
 
-        When("^the user sets the content category's content catalog name to \"([^\"]*)\"$",
+        When("the user sets the content category's content catalog name to {string}",
                 (String contentCatalogName) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCategoryForm = persona.createContentCategoryForm;
@@ -171,7 +171,7 @@ public class ContentCategorySteps implements En {
                     }
                 });
 
-        When("^the user sets the content category's content category name to \"([^\"]*)\"$",
+        When("the user sets the content category's content category name to {string}",
                 (String contentCategoryName) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCategoryForm = persona.createContentCategoryForm;
@@ -190,7 +190,7 @@ public class ContentCategorySteps implements En {
                     }
                 });
 
-        When("^the user sets the content category's new content category name to \"([^\"]*)\"$",
+        When("the user sets the content category's new content category name to {string}",
                 (String contentCategoryName) -> {
                     var persona = CurrentPersona.persona;
                     var contentCategoryEdit = persona.contentCategoryEdit;
@@ -200,7 +200,7 @@ public class ContentCategorySteps implements En {
                     contentCategoryEdit.setContentCategoryName(contentCategoryName);
                 });
 
-        When("^the user sets the content category's parent content category name to \"([^\"]*)\"$",
+        When("the user sets the content category's parent content category name to {string}",
                 (String parentContentCategoryName) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCategoryForm = persona.createContentCategoryForm;
@@ -211,7 +211,7 @@ public class ContentCategorySteps implements En {
                     Objects.requireNonNullElse(createContentCategoryForm, contentCategoryEdit).setParentContentCategoryName(parentContentCategoryName);
                 });
 
-        When("^the user sets the content category's default offer name to \"([^\"]*)\"$",
+        When("the user sets the content category's default offer name to {string}",
                 (String defaultOfferName) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCategoryForm = persona.createContentCategoryForm;
@@ -233,7 +233,7 @@ public class ContentCategorySteps implements En {
                     Objects.requireNonNullElse(createContentCategoryForm, contentCategoryEdit).setDefaultOfferName(persona.lastOfferName);
                 });
 
-        When("^the user sets the content category's default use name to \"([^\"]*)\"$",
+        When("the user sets the content category's default use name to {string}",
                 (String defaultUseName) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCategoryForm = persona.createContentCategoryForm;
@@ -255,7 +255,7 @@ public class ContentCategorySteps implements En {
                     Objects.requireNonNullElse(createContentCategoryForm, contentCategoryEdit).setDefaultUseName(persona.lastUseName);
                 });
 
-        When("^the user sets the content category's default source name to \"([^\"]*)\"$",
+        When("the user sets the content category's default source name to {string}",
                 (String defaultSourceName) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCategoryForm = persona.createContentCategoryForm;
@@ -293,7 +293,7 @@ public class ContentCategorySteps implements En {
                     }
                 });
 
-        When("^the user sets the content category's sort order to \"([^\"]*)\"$",
+        When("the user sets the content category's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCategoryForm = persona.createContentCategoryForm;
@@ -308,7 +308,7 @@ public class ContentCategorySteps implements En {
                     }
                 });
 
-        When("^the user sets the content category's description to \"([^\"]*)\"$",
+        When("the user sets the content category's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCategoryForm = persona.createContentCategoryForm;

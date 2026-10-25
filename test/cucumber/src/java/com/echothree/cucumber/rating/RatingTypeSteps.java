@@ -201,7 +201,7 @@ public class RatingTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the rating type's sort order to \"([^\"]*)\"$",
+        When("the user sets the rating type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createRatingTypeForm = persona.createRatingTypeForm;
@@ -216,7 +216,7 @@ public class RatingTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the rating type's description to \"([^\"]*)\"$",
+        When("the user sets the rating type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createRatingTypeForm = persona.createRatingTypeForm;

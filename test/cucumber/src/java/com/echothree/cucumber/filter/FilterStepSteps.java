@@ -224,7 +224,7 @@ public class FilterStepSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter step's new filter step name to \"([^\"]*)\"$",
+        When("the user sets the filter step's new filter step name to {string}",
                 (String filterStepName) -> {
                     var persona = CurrentPersona.persona;
                     var filterStepEdit = persona.filterStepEdit;
@@ -234,7 +234,7 @@ public class FilterStepSteps implements En {
                     filterStepEdit.setFilterStepName(filterStepName);
                 });
 
-        When("^the user sets the filter step's filter item selector name to \"([^\"]*)\"$",
+        When("the user sets the filter step's filter item selector name to {string}",
                 (String filterItemSelectorName) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterStepForm = persona.createFilterStepForm;
@@ -249,7 +249,7 @@ public class FilterStepSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter step's description to \"([^\"]*)\"$",
+        When("the user sets the filter step's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterStepForm = persona.createFilterStepForm;

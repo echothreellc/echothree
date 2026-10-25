@@ -138,7 +138,7 @@ public class TagSteps implements En {
                     persona.tagEdit = null;
                 });
 
-        When("^the user sets the tag's tag scope name to \"([^\"]*)\"$",
+        When("the user sets the tag's tag scope name to {string}",
                 (String tagScopeName) -> {
                     var persona = CurrentPersona.persona;
                     var createTagForm = persona.createTagForm;
@@ -170,7 +170,7 @@ public class TagSteps implements En {
                     }
                 });
         
-        When("^the user sets the tag's tag name to \"([^\"]*)\"$",
+        When("the user sets the tag's tag name to {string}",
                 (String tagName) -> {
                     var persona = CurrentPersona.persona;
                     var createTagForm = persona.createTagForm;
@@ -202,7 +202,7 @@ public class TagSteps implements En {
                     }
                 });
 
-        When("^the user sets the tag's new tag name to \"([^\"]*)\"$",
+        When("the user sets the tag's new tag name to {string}",
                 (String tagName) -> {
                     var persona = CurrentPersona.persona;
                     var tagEdit = persona.tagEdit;

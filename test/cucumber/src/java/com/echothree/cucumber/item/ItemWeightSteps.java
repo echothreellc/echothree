@@ -130,7 +130,7 @@ public class ItemWeightSteps implements En {
                     persona.itemWeightEdit = null;
                 });
 
-        When("^the user sets the item weight's item to \"([^\"]*)\"$",
+        When("the user sets the item weight's item to {string}",
                 (String itemName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemWeightForm = persona.createItemWeightForm;
@@ -168,7 +168,7 @@ public class ItemWeightSteps implements En {
                     }
                 });
 
-        When("^the user sets the item weight's unit of measure type to \"([^\"]*)\"$",
+        When("the user sets the item weight's unit of measure type to {string}",
                 (String unitOfMeasureTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemWeightForm = persona.createItemWeightForm;
@@ -206,7 +206,7 @@ public class ItemWeightSteps implements En {
                     }
                 });
 
-        When("^the user sets the item weight's item weight type to \"([^\"]*)\"$",
+        When("the user sets the item weight's item weight type to {string}",
                 (String itemWeightTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemWeightForm = persona.createItemWeightForm;
@@ -244,7 +244,7 @@ public class ItemWeightSteps implements En {
                     }
                 });
 
-        When("^the user sets the item weight's weight unit of measure type to \"([^\"]*)\"$",
+        When("the user sets the item weight's weight unit of measure type to {string}",
                 (String weightUnitOfMeasureTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemWeightForm = persona.createItemWeightForm;
@@ -259,7 +259,7 @@ public class ItemWeightSteps implements En {
                     }
                 });
 
-        When("^the user sets the item weight's weight to \"([^\"]*)\"$",
+        When("the user sets the item weight's weight to {string}",
                 (String weight) -> {
                     var persona = CurrentPersona.persona;
                     var createItemWeightForm = persona.createItemWeightForm;

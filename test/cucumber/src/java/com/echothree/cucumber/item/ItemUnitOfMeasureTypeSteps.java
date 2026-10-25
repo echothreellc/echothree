@@ -206,7 +206,7 @@ public class ItemUnitOfMeasureTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item unit of measure type's sort order to \"([^\"]*)\"$",
+        When("the user sets the item unit of measure type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createItemUnitOfMeasureTypeForm = persona.createItemUnitOfMeasureTypeForm;

@@ -279,7 +279,7 @@ public class InventoryDispositionAdjustmentSteps implements En {
                     else edit.setInventoryBucketTypeName(name);
                 });
 
-        And("^the user sets the inventory disposition adjustment's sort order to \"([^\"]*)\"$",
+        And("the user sets the inventory disposition adjustment's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryDispositionAdjustmentForm = persona.createInventoryDispositionAdjustmentForm;
@@ -294,7 +294,7 @@ public class InventoryDispositionAdjustmentSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory disposition adjustment's description to \"([^\"]*)\"$",
+        And("the user sets the inventory disposition adjustment's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryDispositionAdjustmentForm = persona.createInventoryDispositionAdjustmentForm;

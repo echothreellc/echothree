@@ -190,7 +190,7 @@ public class LinkTypeSteps implements En {
                     linkTypeEdit.setLinkTypeName(linkTypeName);
                 });
 
-        And("^the user sets the link type's sort order to \"([^\"]*)\"$",
+        And("the user sets the link type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createLinkTypeForm = persona.createLinkTypeForm;
@@ -205,7 +205,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the link type's description to \"([^\"]*)\"$",
+        And("the user sets the link type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createLinkTypeForm = persona.createLinkTypeForm;
@@ -220,7 +220,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the link type's source component vendor name to \"([^\"]*)\"$",
+        And("the user sets the link type's source component vendor name to {string}",
                 (String value) -> {
                     var persona = CurrentPersona.persona;
                     if(persona.createLinkTypeForm != null) {
@@ -231,7 +231,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the link type's source entity type name to \"([^\"]*)\"$",
+        And("the user sets the link type's source entity type name to {string}",
                 (String value) -> {
                     var persona = CurrentPersona.persona;
                     if(persona.createLinkTypeForm != null) {
@@ -242,7 +242,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the link type's target component vendor name to \"([^\"]*)\"$",
+        And("the user sets the link type's target component vendor name to {string}",
                 (String value) -> {
                     var persona = CurrentPersona.persona;
                     if(persona.createLinkTypeForm != null) {
@@ -253,7 +253,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the link type's target entity type name to \"([^\"]*)\"$",
+        And("the user sets the link type's target entity type name to {string}",
                 (String value) -> {
                     var persona = CurrentPersona.persona;
                     if(persona.createLinkTypeForm != null) {
@@ -264,7 +264,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the link type's link cardinality name to \"([^\"]*)\"$",
+        And("the user sets the link type's link cardinality name to {string}",
                 (String value) -> {
                     var persona = CurrentPersona.persona;
                     if(persona.createLinkTypeForm != null) {
@@ -275,7 +275,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the link type's link directionality name to \"([^\"]*)\"$",
+        And("the user sets the link type's link directionality name to {string}",
                 (String value) -> {
                     var persona = CurrentPersona.persona;
                     if(persona.createLinkTypeForm != null) {
@@ -286,7 +286,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the link type's is transitive to \"([^\"]*)\"$",
+        And("the user sets the link type's is transitive to {string}",
                 (String value) -> {
                     var persona = CurrentPersona.persona;
                     if(persona.createLinkTypeForm != null) {
@@ -297,7 +297,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the link type's parent link type name to \"([^\"]*)\"$",
+        And("the user sets the link type's parent link type name to {string}",
                 (String value) -> {
                     var persona = CurrentPersona.persona;
                     if(persona.createLinkTypeForm != null) {
@@ -308,7 +308,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the link type's inverse link type name to \"([^\"]*)\"$",
+        And("the user sets the link type's inverse link type name to {string}",
                 (String value) -> {
                     var persona = CurrentPersona.persona;
                     if(persona.createLinkTypeForm != null) {
@@ -319,7 +319,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the link type's guidance MIME type name to \"([^\"]*)\"$",
+        And("the user sets the link type's guidance MIME type name to {string}",
                 (String value) -> {
                     var persona = CurrentPersona.persona;
                     if(persona.createLinkTypeForm != null) {
@@ -330,7 +330,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the link type's guidance to \"([^\"]*)\"$",
+        And("the user sets the link type's guidance to {string}",
                 (String value) -> {
                     var persona = CurrentPersona.persona;
                     if(persona.createLinkTypeForm != null) {

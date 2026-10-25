@@ -132,7 +132,7 @@ public class EntityAliasTypeSteps implements En {
                     persona.entityAliasTypeEdit = null;
                 });
         
-        When("^the user sets the entity alias type's component vendor to \"([^\"]*)\"$",
+        When("the user sets the entity alias type's component vendor to {string}",
                 (String componentVendorName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAliasTypeForm = persona.createEntityAliasTypeForm;
@@ -166,7 +166,7 @@ public class EntityAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity alias type's entity type to \"([^\"]*)\"$",
+        When("the user sets the entity alias type's entity type to {string}",
                 (String entityTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAliasTypeForm = persona.createEntityAliasTypeForm;
@@ -200,7 +200,7 @@ public class EntityAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity alias type's name to \"([^\"]*)\"$",
+        When("the user sets the entity alias type's name to {string}",
                 (String entityAliasTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAliasTypeForm = persona.createEntityAliasTypeForm;
@@ -234,7 +234,7 @@ public class EntityAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity alias type's validation pattern to \"([^\"]*)\"$",
+        When("the user sets the entity alias type's validation pattern to {string}",
                 (String validationPattern) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAliasTypeForm = persona.createEntityAliasTypeForm;
@@ -265,7 +265,7 @@ public class EntityAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity alias type's sort order to \"([^\"]*)\"$",
+        When("the user sets the entity alias type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAliasTypeForm = persona.createEntityAliasTypeForm;
@@ -280,7 +280,7 @@ public class EntityAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity alias type's description to \"([^\"]*)\"$",
+        When("the user sets the entity alias type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAliasTypeForm = persona.createEntityAliasTypeForm;

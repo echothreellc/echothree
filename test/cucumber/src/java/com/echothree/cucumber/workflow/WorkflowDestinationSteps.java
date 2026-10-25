@@ -136,7 +136,7 @@ public class WorkflowDestinationSteps implements En {
                     persona.workflowDestinationEdit = null;
                 });
 
-        When("^the user sets the workflow destination's workflow name to \"([^\"]*)\"$",
+        When("the user sets the workflow destination's workflow name to {string}",
                 (String workflowName) -> {
                     var persona = CurrentPersona.persona;
                     var createWorkflowDestinationForm = persona.createWorkflowDestinationForm;
@@ -161,7 +161,7 @@ public class WorkflowDestinationSteps implements En {
                     Objects.requireNonNullElseGet(createWorkflowDestinationForm, () -> Objects.requireNonNullElse(deleteWorkflowDestinationForm, workflowDestinationSpec)).setWorkflowName(lastWorkflowName);
                 });
 
-        When("^the user sets the workflow destination's workflow step name to \"([^\"]*)\"$",
+        When("the user sets the workflow destination's workflow step name to {string}",
                 (String workflowStepName) -> {
                     var persona = CurrentPersona.persona;
                     var createWorkflowDestinationForm = persona.createWorkflowDestinationForm;
@@ -186,7 +186,7 @@ public class WorkflowDestinationSteps implements En {
                     Objects.requireNonNullElseGet(createWorkflowDestinationForm, () -> Objects.requireNonNullElse(deleteWorkflowDestinationForm, workflowDestinationSpec)).setWorkflowStepName(lastWorkflowStepName);
                 });
 
-        When("^the user sets the workflow destination's name to \"([^\"]*)\"$",
+        When("the user sets the workflow destination's name to {string}",
                 (String workflowDestinationName) -> {
                     var persona = CurrentPersona.persona;
                     var createWorkflowDestinationForm = persona.createWorkflowDestinationForm;
@@ -222,7 +222,7 @@ public class WorkflowDestinationSteps implements En {
                     Objects.requireNonNullElse(createWorkflowDestinationForm, workflowDestinationEdit).setIsDefault(isDefault);
                 });
 
-        When("^the user sets the workflow destination's sort order to \"([^\"]*)\"$",
+        When("the user sets the workflow destination's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createWorkflowDestinationForm = persona.createWorkflowDestinationForm;
@@ -233,7 +233,7 @@ public class WorkflowDestinationSteps implements En {
                     Objects.requireNonNullElse(createWorkflowDestinationForm, workflowDestinationEdit).setSortOrder(sortOrder);
                 });
 
-        When("^the user sets the workflow destination's description to \"([^\"]*)\"$",
+        When("the user sets the workflow destination's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createWorkflowDestinationForm = persona.createWorkflowDestinationForm;

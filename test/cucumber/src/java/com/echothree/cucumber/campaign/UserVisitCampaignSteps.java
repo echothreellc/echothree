@@ -47,7 +47,7 @@ public class UserVisitCampaignSteps implements En {
                     persona.createUserVisitCampaignForm = null;
                 });
 
-        When("^the user sets the user visit campaign's campaign value to \"([^\"]*)\"$",
+        When("the user sets the user visit campaign's campaign value to {string}",
                 (String campaignValue) -> {
                     var persona = CurrentPersona.persona;
                     var createUserVisitCampaignForm = persona.createUserVisitCampaignForm;
@@ -57,7 +57,7 @@ public class UserVisitCampaignSteps implements En {
                     createUserVisitCampaignForm.setCampaignValue(campaignValue);
                 });
 
-        When("^the user sets the user visit campaign's campaign source value to \"([^\"]*)\"$",
+        When("the user sets the user visit campaign's campaign source value to {string}",
                 (String campaignSourceValue) -> {
                     var persona = CurrentPersona.persona;
                     var createUserVisitCampaignForm = persona.createUserVisitCampaignForm;
@@ -67,7 +67,7 @@ public class UserVisitCampaignSteps implements En {
                     createUserVisitCampaignForm.setCampaignSourceValue(campaignSourceValue);
                 });
 
-        When("^the user sets the user visit campaign's campaign medium value to \"([^\"]*)\"$",
+        When("the user sets the user visit campaign's campaign medium value to {string}",
                 (String campaignMediumValue) -> {
                     var persona = CurrentPersona.persona;
                     var createUserVisitCampaignForm = persona.createUserVisitCampaignForm;
@@ -77,7 +77,7 @@ public class UserVisitCampaignSteps implements En {
                     createUserVisitCampaignForm.setCampaignMediumValue(campaignMediumValue);
                 });
 
-        When("^the user sets the user visit campaign's campaign term value to \"([^\"]*)\"$",
+        When("the user sets the user visit campaign's campaign term value to {string}",
                 (String campaignTermValue) -> {
                     var persona = CurrentPersona.persona;
                     var createUserVisitCampaignForm = persona.createUserVisitCampaignForm;
@@ -87,7 +87,7 @@ public class UserVisitCampaignSteps implements En {
                     createUserVisitCampaignForm.setCampaignTermValue(campaignTermValue);
                 });
 
-        When("^the user sets the user visit campaign's campaign content value to \"([^\"]*)\"$",
+        When("the user sets the user visit campaign's campaign content value to {string}",
                 (String CampaignContentValue) -> {
                     var persona = CurrentPersona.persona;
                     var createUserVisitCampaignForm = persona.createUserVisitCampaignForm;

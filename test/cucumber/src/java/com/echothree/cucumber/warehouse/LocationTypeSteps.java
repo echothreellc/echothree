@@ -238,7 +238,7 @@ public class LocationTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the location type's sort order to \"([^\"]*)\"$",
+        And("the user sets the location type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationTypeForm = persona.createLocationTypeForm;
@@ -253,7 +253,7 @@ public class LocationTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the location type's description to \"([^\"]*)\"$",
+        And("the user sets the location type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationTypeForm = persona.createLocationTypeForm;

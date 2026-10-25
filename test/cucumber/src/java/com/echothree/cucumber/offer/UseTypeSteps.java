@@ -140,7 +140,7 @@ public class UseTypeSteps implements En {
                 });
 
 
-        When("^the user sets the use type's use type name to \"([^\"]*)\"$",
+        When("the user sets the use type's use type name to {string}",
                 (String useTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createUseTypeForm = persona.createUseTypeForm;
@@ -158,7 +158,7 @@ public class UseTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the use type's new use type name to \"([^\"]*)\"$",
+        When("the user sets the use type's new use type name to {string}",
                 (String useTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var useTypeEdit = persona.useTypeEdit;
@@ -184,7 +184,7 @@ public class UseTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the use type's sort order to \"([^\"]*)\"$",
+        When("the user sets the use type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createUseTypeForm = persona.createUseTypeForm;
@@ -199,7 +199,7 @@ public class UseTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the use type's description to \"([^\"]*)\"$",
+        When("the user sets the use type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createUseTypeForm = persona.createUseTypeForm;

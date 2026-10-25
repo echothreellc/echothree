@@ -186,7 +186,7 @@ public class ItemWeightTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item weight type's sort order to \"([^\"]*)\"$",
+        When("the user sets the item weight type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createItemWeightTypeForm = persona.createItemWeightTypeForm;
@@ -201,7 +201,7 @@ public class ItemWeightTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item weight type's description to \"([^\"]*)\"$",
+        When("the user sets the item weight type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createItemWeightTypeForm = persona.createItemWeightTypeForm;

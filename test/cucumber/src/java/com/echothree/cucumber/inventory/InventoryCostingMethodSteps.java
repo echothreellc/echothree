@@ -202,7 +202,7 @@ public class InventoryCostingMethodSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory costing method's sort order to \"([^\"]*)\"$",
+        And("the user sets the inventory costing method's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryCostingMethodForm = persona.createInventoryCostingMethodForm;
@@ -217,7 +217,7 @@ public class InventoryCostingMethodSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory costing method's description to \"([^\"]*)\"$",
+        And("the user sets the inventory costing method's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryCostingMethodForm = persona.createInventoryCostingMethodForm;

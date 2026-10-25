@@ -127,7 +127,7 @@ public class EntityAliasSteps implements En {
                     persona.entityAliasEdit = null;
                 });
 
-        When("^the user sets the entity alias's entity to \"([^\"]*)\"$",
+        When("the user sets the entity alias's entity to {string}",
                 (String setEntityRef) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAliasForm = persona.createEntityAliasForm;
@@ -164,7 +164,7 @@ public class EntityAliasSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity alias's entity alias type to \"([^\"]*)\"$",
+        When("the user sets the entity alias's entity alias type to {string}",
                 (String entityAliasTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAliasForm = persona.createEntityAliasForm;
@@ -201,7 +201,7 @@ public class EntityAliasSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity alias's alias to \"([^\"]*)\"$",
+        When("the user sets the entity alias's alias to {string}",
                 (String alias) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAliasForm = persona.createEntityAliasForm;

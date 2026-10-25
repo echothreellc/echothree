@@ -200,7 +200,7 @@ public class InventoryAdjustmentTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory adjustment type's sort order to \"([^\"]*)\"$",
+        And("the user sets the inventory adjustment type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryAdjustmentTypeForm = persona.createInventoryAdjustmentTypeForm;
@@ -215,7 +215,7 @@ public class InventoryAdjustmentTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory adjustment type's description to \"([^\"]*)\"$",
+        And("the user sets the inventory adjustment type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryAdjustmentTypeForm = persona.createInventoryAdjustmentTypeForm;

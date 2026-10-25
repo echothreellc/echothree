@@ -25,7 +25,7 @@ import io.cucumber.java8.En;
 public class PreferredLanguageSteps implements En {
 
     public PreferredLanguageSteps() {
-        When("^the user sets their preferred language to \"([^\"]*)\"$",
+        When("the user sets their preferred language to {string}",
                 (String languageIsoName) -> {
                     UserService userService = UserUtil.getHome();
                     var userVisitPreferredLanguageForm = userService.getSetUserVisitPreferredLanguageForm();

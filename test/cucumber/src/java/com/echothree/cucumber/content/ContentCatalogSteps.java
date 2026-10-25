@@ -133,7 +133,7 @@ public class ContentCatalogSteps implements En {
                     persona.contentCatalogEdit = null;
                 });
 
-        When("^the user sets the content catalog's content collection name to \"([^\"]*)\"$",
+        When("the user sets the content catalog's content collection name to {string}",
                 (String contentCollectionName) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCatalogForm = persona.createContentCatalogForm;
@@ -152,7 +152,7 @@ public class ContentCatalogSteps implements En {
                     }
                 });
 
-        When("^the user sets the content catalog's content catalog name to \"([^\"]*)\"$",
+        When("the user sets the content catalog's content catalog name to {string}",
                 (String contentCatalogName) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCatalogForm = persona.createContentCatalogForm;
@@ -171,7 +171,7 @@ public class ContentCatalogSteps implements En {
                     }
                 });
 
-        When("^the user sets the content catalog's new content catalog name to \"([^\"]*)\"$",
+        When("the user sets the content catalog's new content catalog name to {string}",
                 (String contentCatalogName) -> {
                     var persona = CurrentPersona.persona;
                     var contentCatalogEdit = persona.contentCatalogEdit;
@@ -181,7 +181,7 @@ public class ContentCatalogSteps implements En {
                     contentCatalogEdit.setContentCatalogName(contentCatalogName);
                 });
 
-        When("^the user sets the content catalog's default offer name to \"([^\"]*)\"$",
+        When("the user sets the content catalog's default offer name to {string}",
                 (String defaultOfferName) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCatalogForm = persona.createContentCatalogForm;
@@ -203,7 +203,7 @@ public class ContentCatalogSteps implements En {
                     Objects.requireNonNullElse(createContentCatalogForm, contentCatalogEdit).setDefaultOfferName(persona.lastOfferName);
                 });
 
-        When("^the user sets the content catalog's default use name to \"([^\"]*)\"$",
+        When("the user sets the content catalog's default use name to {string}",
                 (String defaultUseName) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCatalogForm = persona.createContentCatalogForm;
@@ -225,7 +225,7 @@ public class ContentCatalogSteps implements En {
                     Objects.requireNonNullElse(createContentCatalogForm, contentCatalogEdit).setDefaultUseName(persona.lastUseName);
                 });
 
-        When("^the user sets the content catalog's default source name to \"([^\"]*)\"$",
+        When("the user sets the content catalog's default source name to {string}",
                 (String defaultSourceName) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCatalogForm = persona.createContentCatalogForm;
@@ -263,7 +263,7 @@ public class ContentCatalogSteps implements En {
                     }
                 });
 
-        When("^the user sets the content catalog's sort order to \"([^\"]*)\"$",
+        When("the user sets the content catalog's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCatalogForm = persona.createContentCatalogForm;
@@ -278,7 +278,7 @@ public class ContentCatalogSteps implements En {
                     }
                 });
 
-        When("^the user sets the content catalog's description to \"([^\"]*)\"$",
+        When("the user sets the content catalog's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCatalogForm = persona.createContentCatalogForm;

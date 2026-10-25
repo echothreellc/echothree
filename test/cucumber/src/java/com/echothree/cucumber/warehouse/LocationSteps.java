@@ -271,7 +271,7 @@ public class LocationSteps implements En {
                     setLocationStatusForm.setLocationStatusChoice(locationStatusChoice);
                 });
 
-        And("^the user sets the location's location type name to \"([^\"]*)\"$",
+        And("the user sets the location's location type name to {string}",
                 (String locationType) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationForm = persona.createLocationForm;
@@ -286,7 +286,7 @@ public class LocationSteps implements En {
                     }
                 });
 
-        And("^the user sets the location's location use type name to \"([^\"]*)\"$",
+        And("the user sets the location's location use type name to {string}",
                 (String locationUseType) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationForm = persona.createLocationForm;
@@ -301,7 +301,7 @@ public class LocationSteps implements En {
                     }
                 });
 
-        And("^the user sets the location's velocity to \"([^\"]*)\"$",
+        And("the user sets the location's velocity to {string}",
                 (String velocity) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationForm = persona.createLocationForm;
@@ -316,7 +316,7 @@ public class LocationSteps implements En {
                     }
                 });
 
-        And("^the user sets the location's inventory location group name to \"([^\"]*)\"$",
+        And("the user sets the location's inventory location group name to {string}",
                 (String velocity) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationForm = persona.createLocationForm;
@@ -331,7 +331,7 @@ public class LocationSteps implements En {
                     }
                 });
 
-        And("^the user sets the location's description to \"([^\"]*)\"$",
+        And("the user sets the location's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationForm = persona.createLocationForm;

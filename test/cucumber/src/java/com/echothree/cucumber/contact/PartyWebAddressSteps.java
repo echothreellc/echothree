@@ -150,7 +150,7 @@ public class PartyWebAddressSteps implements En {
                     partyContactMechanismSpec.setContactMechanismName(persona.lastWebAddressContactMechanismName);
                 });
 
-        When("^the user sets the web address's description to \"([^\"]*)\"$",
+        When("the user sets the web address's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createContactWebAddressForm = persona.createContactWebAddressForm;
@@ -165,7 +165,7 @@ public class PartyWebAddressSteps implements En {
                     }
                 });
 
-        When("^the user sets the web address's url to \"([^\"]*)\"$",
+        When("the user sets the web address's url to {string}",
                 (String url) -> {
                     var persona = CurrentPersona.persona;
                     var createContactWebAddressForm = persona.createContactWebAddressForm;

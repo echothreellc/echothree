@@ -38,7 +38,7 @@ public class CustomerSteps implements En {
                 });
 
 
-        When("^the user sets the new customer's first name to \"([^\"]*)\"$",
+        When("the user sets the new customer's first name to {string}",
                 (String firstName) -> {
                     var persona = CurrentPersona.persona;
 
@@ -47,7 +47,7 @@ public class CustomerSteps implements En {
                     persona.createCustomerWithLoginForm.setFirstName(firstName);
                 });
 
-        When("^the user sets the new customer's last name to \"([^\"]*)\"$",
+        When("the user sets the new customer's last name to {string}",
                 (String lastName) -> {
                     var persona = CurrentPersona.persona;
 
@@ -56,7 +56,7 @@ public class CustomerSteps implements En {
                     persona.createCustomerWithLoginForm.setLastName(lastName);
                 });
 
-        When("^the user sets the new customer's email address to \"([^\"]*)\"$",
+        When("the user sets the new customer's email address to {string}",
                 (String emailAddress) -> {
                     var persona = CurrentPersona.persona;
 
@@ -74,7 +74,7 @@ public class CustomerSteps implements En {
                     persona.createCustomerWithLoginForm.setAllowSolicitation(Boolean.valueOf(allowSolicitation.equals("does")).toString());
                 });
 
-        When("^the user sets the new customer's username to \"([^\"]*)\"$",
+        When("the user sets the new customer's username to {string}",
                 (String username) -> {
                     var persona = CurrentPersona.persona;
 
@@ -83,7 +83,7 @@ public class CustomerSteps implements En {
                     persona.createCustomerWithLoginForm.setUsername(username);
                 });
 
-        When("^the user sets the new customer's first password to \"([^\"]*)\"$",
+        When("the user sets the new customer's first password to {string}",
                 (String password1) -> {
                     var persona = CurrentPersona.persona;
 
@@ -92,7 +92,7 @@ public class CustomerSteps implements En {
                     persona.createCustomerWithLoginForm.setPassword1(password1);
                 });
 
-        When("^the user sets the new customer's second password to \"([^\"]*)\"$",
+        When("the user sets the new customer's second password to {string}",
                 (String password2) -> {
                     var persona = CurrentPersona.persona;
 
@@ -110,7 +110,7 @@ public class CustomerSteps implements En {
                     persona.createCustomerWithLoginForm.setRecoveryQuestionName(recoveryQuestionName);
                 });
 
-        When("^the user sets the new customer's answer to \"([^\"]*)\"$",
+        When("the user sets the new customer's answer to {string}",
                 (String answer) -> {
                     var persona = CurrentPersona.persona;
 

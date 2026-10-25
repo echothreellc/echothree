@@ -240,7 +240,7 @@ public class InventoryDispositionSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory disposition's sort order to \"([^\"]*)\"$",
+        And("the user sets the inventory disposition's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryDispositionForm = persona.createInventoryDispositionForm;
@@ -255,7 +255,7 @@ public class InventoryDispositionSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory disposition's description to \"([^\"]*)\"$",
+        And("the user sets the inventory disposition's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryDispositionForm = persona.createInventoryDispositionForm;

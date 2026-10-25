@@ -240,7 +240,7 @@ public class InventoryTransactionRoleTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction role type's sort order to \"([^\"]*)\"$",
+        And("the user sets the inventory transaction role type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionRoleTypeForm = persona.createInventoryTransactionRoleTypeForm;
@@ -255,7 +255,7 @@ public class InventoryTransactionRoleTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction role type's description to \"([^\"]*)\"$",
+        And("the user sets the inventory transaction role type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionRoleTypeForm = persona.createInventoryTransactionRoleTypeForm;

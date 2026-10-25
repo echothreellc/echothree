@@ -130,7 +130,7 @@ public class ItemVolumeSteps implements En {
                     persona.itemVolumeEdit = null;
                 });
 
-        When("^the user sets the item volume's item to \"([^\"]*)\"$",
+        When("the user sets the item volume's item to {string}",
                 (String itemName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemVolumeForm = persona.createItemVolumeForm;
@@ -168,7 +168,7 @@ public class ItemVolumeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item volume's unit of measure type to \"([^\"]*)\"$",
+        When("the user sets the item volume's unit of measure type to {string}",
                 (String unitOfMeasureTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemVolumeForm = persona.createItemVolumeForm;
@@ -206,7 +206,7 @@ public class ItemVolumeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item volume's item volume type to \"([^\"]*)\"$",
+        When("the user sets the item volume's item volume type to {string}",
                 (String itemVolumeTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemVolumeForm = persona.createItemVolumeForm;
@@ -244,7 +244,7 @@ public class ItemVolumeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item volume's height unit of measure type to \"([^\"]*)\"$",
+        When("the user sets the item volume's height unit of measure type to {string}",
                 (String volumeUnitOfMeasureTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemVolumeForm = persona.createItemVolumeForm;
@@ -259,7 +259,7 @@ public class ItemVolumeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item volume's height to \"([^\"]*)\"$",
+        When("the user sets the item volume's height to {string}",
                 (String height) -> {
                     var persona = CurrentPersona.persona;
                     var createItemVolumeForm = persona.createItemVolumeForm;
@@ -274,7 +274,7 @@ public class ItemVolumeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item volume's width unit of measure type to \"([^\"]*)\"$",
+        When("the user sets the item volume's width unit of measure type to {string}",
                 (String volumeUnitOfMeasureTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemVolumeForm = persona.createItemVolumeForm;
@@ -289,7 +289,7 @@ public class ItemVolumeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item volume's width to \"([^\"]*)\"$",
+        When("the user sets the item volume's width to {string}",
                 (String width) -> {
                     var persona = CurrentPersona.persona;
                     var createItemVolumeForm = persona.createItemVolumeForm;
@@ -304,7 +304,7 @@ public class ItemVolumeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item volume's depth unit of measure type to \"([^\"]*)\"$",
+        When("the user sets the item volume's depth unit of measure type to {string}",
                 (String volumeUnitOfMeasureTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemVolumeForm = persona.createItemVolumeForm;
@@ -319,7 +319,7 @@ public class ItemVolumeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item volume's depth to \"([^\"]*)\"$",
+        When("the user sets the item volume's depth to {string}",
                 (String depth) -> {
                     var persona = CurrentPersona.persona;
                     var createItemVolumeForm = persona.createItemVolumeForm;

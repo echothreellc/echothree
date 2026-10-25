@@ -186,7 +186,7 @@ public class PeriodKindSteps implements En {
                     }
                 });
 
-        And("^the user sets the period kind's sort order to \"([^\"]*)\"$",
+        And("the user sets the period kind's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createPeriodKindForm = persona.createPeriodKindForm;
@@ -201,7 +201,7 @@ public class PeriodKindSteps implements En {
                     }
                 });
 
-        And("^the user sets the period kind's description to \"([^\"]*)\"$",
+        And("the user sets the period kind's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createPeriodKindForm = persona.createPeriodKindForm;

@@ -140,7 +140,7 @@ public class UseSteps implements En {
                 });
 
 
-        When("^the user sets the use's use name to \"([^\"]*)\"$",
+        When("the user sets the use's use name to {string}",
                 (String useName) -> {
                     var persona = CurrentPersona.persona;
                     var createUseForm = persona.createUseForm;
@@ -158,7 +158,7 @@ public class UseSteps implements En {
                     }
                 });
 
-        When("^the user sets the use's new use name to \"([^\"]*)\"$",
+        When("the user sets the use's new use name to {string}",
                 (String useName) -> {
                     var persona = CurrentPersona.persona;
                     var useEdit = persona.useEdit;
@@ -168,7 +168,7 @@ public class UseSteps implements En {
                     useEdit.setUseName(useName);
                 });
 
-        When("^the user sets the use's use type name to \"([^\"]*)\"$",
+        When("the user sets the use's use type name to {string}",
                 (String useTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createUseForm = persona.createUseForm;
@@ -214,7 +214,7 @@ public class UseSteps implements En {
                     }
                 });
 
-        When("^the user sets the use's sort order to \"([^\"]*)\"$",
+        When("the user sets the use's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createUseForm = persona.createUseForm;
@@ -229,7 +229,7 @@ public class UseSteps implements En {
                     }
                 });
 
-        When("^the user sets the use's description to \"([^\"]*)\"$",
+        When("the user sets the use's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createUseForm = persona.createUseForm;

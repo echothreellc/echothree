@@ -222,7 +222,7 @@ public class PartyAliasSteps implements En {
                     }
                 });
 
-        When("^the user sets the party alias's alias to \"([^\"]*)\"$",
+        When("the user sets the party alias's alias to {string}",
                 (String alias) -> {
                     var persona = CurrentPersona.persona;
                     var createPartyAliasForm = persona.createPartyAliasForm;

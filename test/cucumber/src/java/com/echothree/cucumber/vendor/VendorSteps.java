@@ -317,7 +317,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user sets the vendor's first name to \"([^\"]*)\"$",
+        When("the user sets the vendor's first name to {string}",
                 (String firstName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
@@ -332,7 +332,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user sets the vendor's middle name to \"([^\"]*)\"$",
+        When("the user sets the vendor's middle name to {string}",
                 (String middleName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
@@ -347,7 +347,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user sets the vendor's last name to \"([^\"]*)\"$",
+        When("the user sets the vendor's last name to {string}",
                 (String lastName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
@@ -362,7 +362,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user sets the vendor's name to \"([^\"]*)\"$",
+        When("the user sets the vendor's name to {string}",
                 (String name) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
@@ -377,7 +377,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user sets the vendor's preferred language to \"([^\"]*)\"$",
+        When("the user sets the vendor's preferred language to {string}",
                 (String preferredLanguageIsoName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
@@ -392,7 +392,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user sets the vendor's preferred currency to \"([^\"]*)\"$",
+        When("the user sets the vendor's preferred currency to {string}",
                 (String preferredCurrencyIsoName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
@@ -407,7 +407,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user sets the vendor's preferred time zone to \"([^\"]*)\"$",
+        When("the user sets the vendor's preferred time zone to {string}",
                 (String preferredJavaTimeZoneName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
@@ -422,7 +422,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user sets the vendor's preferred date time format to \"([^\"]*)\"$",
+        When("the user sets the vendor's preferred date time format to {string}",
                 (String preferredDateTimeFormatName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
@@ -437,7 +437,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user sets the vendor email address to \"([^\"]*)\"$",
+        When("the user sets the vendor email address to {string}",
                 (String emailAddress) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
@@ -524,7 +524,7 @@ public class VendorSteps
                     createVendorForm.setHoldUntilComplete(holdUntilComplete);
                 });
 
-        When("^the user sets the vendor's reference validation pattern to \"([^\"]*)\"$",
+        When("the user sets the vendor's reference validation pattern to {string}",
                 (String referenceValidationPattern) -> {
                     var persona = CurrentPersona.persona;
                     var vendorEdit = persona.vendorEdit;

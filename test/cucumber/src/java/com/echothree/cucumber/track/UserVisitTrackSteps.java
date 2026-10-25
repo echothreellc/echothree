@@ -47,7 +47,7 @@ public class UserVisitTrackSteps implements En {
                     persona.createUserVisitTrackForm = null;
                 });
 
-        When("^the user sets the user visit track's track value to \"([^\"]*)\"$",
+        When("the user sets the user visit track's track value to {string}",
                 (String trackValue) -> {
                     var persona = CurrentPersona.persona;
                     var createUserVisitTrackForm = persona.createUserVisitTrackForm;

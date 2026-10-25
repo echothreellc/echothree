@@ -206,7 +206,7 @@ public class FilterSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter's new filter name to \"([^\"]*)\"$",
+        When("the user sets the filter's new filter name to {string}",
                 (String filterName) -> {
                     var persona = CurrentPersona.persona;
                     var filterEdit = persona.filterEdit;
@@ -216,7 +216,7 @@ public class FilterSteps implements En {
                     filterEdit.setFilterName(filterName);
                 });
 
-        When("^the user sets the filter's initial filter adjustment name to \"([^\"]*)\"$",
+        When("the user sets the filter's initial filter adjustment name to {string}",
                 (String initialFilterAdjustmentName) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterForm = persona.createFilterForm;
@@ -231,7 +231,7 @@ public class FilterSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter's filter item selector name to \"([^\"]*)\"$",
+        When("the user sets the filter's filter item selector name to {string}",
                 (String filterItemSelectorName) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterForm = persona.createFilterForm;
@@ -262,7 +262,7 @@ public class FilterSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter's sort order to \"([^\"]*)\"$",
+        When("the user sets the filter's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterForm = persona.createFilterForm;
@@ -277,7 +277,7 @@ public class FilterSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter's description to \"([^\"]*)\"$",
+        When("the user sets the filter's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterForm = persona.createFilterForm;

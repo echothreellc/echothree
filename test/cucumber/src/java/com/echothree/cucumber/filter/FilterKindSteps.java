@@ -170,7 +170,7 @@ public class FilterKindSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter kind's new filter kind name to \"([^\"]*)\"$",
+        When("the user sets the filter kind's new filter kind name to {string}",
                 (String filterKindName) -> {
                     var persona = CurrentPersona.persona;
                     var filterKindEdit = persona.filterKindEdit;
@@ -196,7 +196,7 @@ public class FilterKindSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter kind's sort order to \"([^\"]*)\"$",
+        When("the user sets the filter kind's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterKindForm = persona.createFilterKindForm;
@@ -211,7 +211,7 @@ public class FilterKindSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter kind's description to \"([^\"]*)\"$",
+        When("the user sets the filter kind's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterKindForm = persona.createFilterKindForm;

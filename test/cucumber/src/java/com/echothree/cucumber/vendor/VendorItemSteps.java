@@ -261,7 +261,7 @@ public class VendorItemSteps implements En {
                     setVendorItemStatusForm.setVendorItemStatusChoice(vendorItemStatusChoice);
                 });
 
-        When("^the user sets the vendor item's description to \"([^\"]*)\"$",
+        When("the user sets the vendor item's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorItemForm = persona.createVendorItemForm;
@@ -276,7 +276,7 @@ public class VendorItemSteps implements En {
                     }
                 });
 
-        When("^the user sets the vendor item's priority to \"([^\"]*)\"$",
+        When("the user sets the vendor item's priority to {string}",
                 (String priority) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorItemForm = persona.createVendorItemForm;

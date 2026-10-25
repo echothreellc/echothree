@@ -70,7 +70,7 @@ public class TagScopeEntityTypeSteps implements En {
                     persona.deleteTagScopeEntityTypeForm = null;
                 });
 
-        When("^the user sets the tag scope entity type's tag scope name to \"([^\"]*)\"$",
+        When("the user sets the tag scope entity type's tag scope name to {string}",
                 (String offerName) -> {
                     var persona = CurrentPersona.persona;
                     var createTagScopeEntityTypeForm = persona.createTagScopeEntityTypeForm;
@@ -92,7 +92,7 @@ public class TagScopeEntityTypeSteps implements En {
                     Objects.requireNonNullElse(createTagScopeEntityTypeForm, deleteTagScopeEntityTypeForm).setTagScopeName(persona.lastTagScopeName);
                 });
 
-        When("^the user sets the tag scope entity type's component vendor name to \"([^\"]*)\"$",
+        When("the user sets the tag scope entity type's component vendor name to {string}",
                 (String componentVendorName) -> {
                     var persona = CurrentPersona.persona;
                     var createTagScopeEntityTypeForm = persona.createTagScopeEntityTypeForm;
@@ -114,7 +114,7 @@ public class TagScopeEntityTypeSteps implements En {
                     Objects.requireNonNullElse(createTagScopeEntityTypeForm, deleteTagScopeEntityTypeForm).setComponentVendorName(persona.lastComponentVendorName);
                 });
 
-        When("^the user sets the tag scope entity type's entity type name to \"([^\"]*)\"$",
+        When("the user sets the tag scope entity type's entity type name to {string}",
                 (String componentVendorName) -> {
                     var persona = CurrentPersona.persona;
                     var createTagScopeEntityTypeForm = persona.createTagScopeEntityTypeForm;

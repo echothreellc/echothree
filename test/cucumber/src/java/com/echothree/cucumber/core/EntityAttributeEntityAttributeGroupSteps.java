@@ -238,7 +238,7 @@ public class EntityAttributeEntityAttributeGroupSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity attribute entity attribute group's sort order to \"([^\"]*)\"$",
+        When("the user sets the entity attribute entity attribute group's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeEntityAttributeGroupForm = persona.createEntityAttributeEntityAttributeGroupForm;

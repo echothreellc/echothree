@@ -188,7 +188,7 @@ public class PartyAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the party alias type's validation pattern to \"([^\"]*)\"$",
+        When("the user sets the party alias type's validation pattern to {string}",
                 (String validationPattern) -> {
                     var persona = CurrentPersona.persona;
                     var createPartyAliasTypeForm = persona.createPartyAliasTypeForm;
@@ -219,7 +219,7 @@ public class PartyAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the party alias type's sort order to \"([^\"]*)\"$",
+        When("the user sets the party alias type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createPartyAliasTypeForm = persona.createPartyAliasTypeForm;
@@ -234,7 +234,7 @@ public class PartyAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the party alias type's description to \"([^\"]*)\"$",
+        When("the user sets the party alias type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createPartyAliasTypeForm = persona.createPartyAliasTypeForm;

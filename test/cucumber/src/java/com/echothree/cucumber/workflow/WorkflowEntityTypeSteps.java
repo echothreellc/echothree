@@ -72,7 +72,7 @@ public class WorkflowEntityTypeSteps implements En {
                     persona.deleteWorkflowEntityTypeForm = null;
                 });
 
-        When("^the user sets the workflow entity type's workflow name to \"([^\"]*)\"$",
+        When("the user sets the workflow entity type's workflow name to {string}",
                 (String workflowName) -> {
                     var persona = CurrentPersona.persona;
                     var createWorkflowEntityTypeForm = persona.createWorkflowEntityTypeForm;
@@ -95,7 +95,7 @@ public class WorkflowEntityTypeSteps implements En {
                     Objects.requireNonNullElse(createWorkflowEntityTypeForm, deleteWorkflowEntityTypeForm).setWorkflowName(lastWorkflowName);
                 });
 
-        When("^the user sets the workflow entity type's component vendor to \"([^\"]*)\"$",
+        When("the user sets the workflow entity type's component vendor to {string}",
                 (String componentVendorName) -> {
                     var persona = CurrentPersona.persona;
                     var createWorkflowEntityTypeForm = persona.createWorkflowEntityTypeForm;
@@ -106,7 +106,7 @@ public class WorkflowEntityTypeSteps implements En {
                     Objects.requireNonNullElse(createWorkflowEntityTypeForm, deleteWorkflowEntityTypeForm).setComponentVendorName(componentVendorName);
                 });
 
-        When("^the user sets the workflow entity type's entity type to \"([^\"]*)\"$",
+        When("the user sets the workflow entity type's entity type to {string}",
                 (String entityTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createWorkflowEntityTypeForm = persona.createWorkflowEntityTypeForm;

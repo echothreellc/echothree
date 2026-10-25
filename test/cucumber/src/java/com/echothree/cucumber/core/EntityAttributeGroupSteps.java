@@ -245,7 +245,7 @@ public class EntityAttributeGroupSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity attribute group's sort order to \"([^\"]*)\"$",
+        When("the user sets the entity attribute group's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeGroupForm = persona.createEntityAttributeGroupForm;
@@ -260,7 +260,7 @@ public class EntityAttributeGroupSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity attribute group's description to \"([^\"]*)\"$",
+        When("the user sets the entity attribute group's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeGroupForm = persona.createEntityAttributeGroupForm;

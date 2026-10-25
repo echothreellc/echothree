@@ -136,7 +136,7 @@ public class WorkflowStepSteps implements En {
                     persona.workflowStepEdit = null;
                 });
 
-        When("^the user sets the workflow step's workflow name to \"([^\"]*)\"$",
+        When("the user sets the workflow step's workflow name to {string}",
                 (String workflowName) -> {
                     var persona = CurrentPersona.persona;
                     var createWorkflowStepForm = persona.createWorkflowStepForm;
@@ -161,7 +161,7 @@ public class WorkflowStepSteps implements En {
                     Objects.requireNonNullElseGet(createWorkflowStepForm, () -> Objects.requireNonNullElse(deleteWorkflowStepForm, workflowStepSpec)).setWorkflowName(lastWorkflowName);
                 });
 
-        When("^the user sets the workflow step's name to \"([^\"]*)\"$",
+        When("the user sets the workflow step's name to {string}",
                 (String workflowStepName) -> {
                     var persona = CurrentPersona.persona;
                     var createWorkflowStepForm = persona.createWorkflowStepForm;
@@ -185,7 +185,7 @@ public class WorkflowStepSteps implements En {
                     Objects.requireNonNullElse(deleteWorkflowStepForm, workflowStepSpec).setWorkflowStepName(lastWorkflowStepName);
                 });
 
-        When("^the user sets the workflow step's type to \"([^\"]*)\"$",
+        When("the user sets the workflow step's type to {string}",
                 (String workflowStepType) -> {
                     var persona = CurrentPersona.persona;
                     var createWorkflowStepForm = persona.createWorkflowStepForm;
@@ -208,7 +208,7 @@ public class WorkflowStepSteps implements En {
                     Objects.requireNonNullElse(createWorkflowStepForm, workflowStepEdit).setIsDefault(isDefault);
                 });
 
-        When("^the user sets the workflow step's sort order to \"([^\"]*)\"$",
+        When("the user sets the workflow step's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createWorkflowStepForm = persona.createWorkflowStepForm;
@@ -219,7 +219,7 @@ public class WorkflowStepSteps implements En {
                     Objects.requireNonNullElse(createWorkflowStepForm, workflowStepEdit).setSortOrder(sortOrder);
                 });
 
-        When("^the user sets the workflow step's description to \"([^\"]*)\"$",
+        When("the user sets the workflow step's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createWorkflowStepForm = persona.createWorkflowStepForm;

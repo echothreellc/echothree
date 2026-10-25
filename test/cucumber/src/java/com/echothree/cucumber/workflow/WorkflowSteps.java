@@ -136,7 +136,7 @@ public class WorkflowSteps implements En {
                     persona.workflowEdit = null;
                 });
         
-        When("^the user sets the workflow's name to \"([^\"]*)\"$",
+        When("the user sets the workflow's name to {string}",
                 (String workflowName) -> {
                     var persona = CurrentPersona.persona;
                     var createWorkflowForm = persona.createWorkflowForm;
@@ -160,7 +160,7 @@ public class WorkflowSteps implements En {
                     Objects.requireNonNullElse(deleteWorkflowForm, workflowUniversalSpec).setWorkflowName(lastWorkflowName);
                 });
 
-        When("^the user sets the workflow's selector kind to \"([^\"]*)\"$",
+        When("the user sets the workflow's selector kind to {string}",
                 (String selectorKindName) -> {
                     var persona = CurrentPersona.persona;
                     var createWorkflowForm = persona.createWorkflowForm;
@@ -171,7 +171,7 @@ public class WorkflowSteps implements En {
                     Objects.requireNonNullElse(createWorkflowForm, workflowEdit).setSelectorKindName(selectorKindName);
                 });
 
-        When("^the user sets the workflow's selector type to \"([^\"]*)\"$",
+        When("the user sets the workflow's selector type to {string}",
                 (String selectorTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createWorkflowForm = persona.createWorkflowForm;
@@ -182,7 +182,7 @@ public class WorkflowSteps implements En {
                     Objects.requireNonNullElse(createWorkflowForm, workflowEdit).setSelectorTypeName(selectorTypeName);
                 });
 
-        When("^the user sets the workflow's security role group to \"([^\"]*)\"$",
+        When("the user sets the workflow's security role group to {string}",
                 (String securityRoleGroupName) -> {
                     var persona = CurrentPersona.persona;
                     var createWorkflowForm = persona.createWorkflowForm;
@@ -193,7 +193,7 @@ public class WorkflowSteps implements En {
                     Objects.requireNonNullElse(createWorkflowForm, workflowEdit).setSecurityRoleGroupName(securityRoleGroupName);
                 });
 
-        When("^the user sets the workflow's sort order to \"([^\"]*)\"$",
+        When("the user sets the workflow's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createWorkflowForm = persona.createWorkflowForm;
@@ -204,7 +204,7 @@ public class WorkflowSteps implements En {
                     Objects.requireNonNullElse(createWorkflowForm, workflowEdit).setSortOrder(sortOrder);
                 });
 
-        When("^the user sets the workflow's description to \"([^\"]*)\"$",
+        When("the user sets the workflow's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createWorkflowForm = persona.createWorkflowForm;

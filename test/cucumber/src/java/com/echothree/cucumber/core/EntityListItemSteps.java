@@ -260,7 +260,7 @@ public class EntityListItemSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity list item's sort order to \"([^\"]*)\"$",
+        When("the user sets the entity list item's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityListItemForm = persona.createEntityListItemForm;
@@ -275,7 +275,7 @@ public class EntityListItemSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity list item's description to \"([^\"]*)\"$",
+        When("the user sets the entity list item's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityListItemForm = persona.createEntityListItemForm;

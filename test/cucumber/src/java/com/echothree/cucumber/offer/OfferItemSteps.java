@@ -70,7 +70,7 @@ public class OfferItemSteps implements En {
                     persona.deleteOfferItemForm = null;
                 });
 
-        When("^the user sets the offer item's offer name to \"([^\"]*)\"$",
+        When("the user sets the offer item's offer name to {string}",
                 (String offerName) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferItemForm = persona.createOfferItemForm;
@@ -92,7 +92,7 @@ public class OfferItemSteps implements En {
                     Objects.requireNonNullElse(createOfferItemForm, deleteOfferItemForm).setOfferName(persona.lastOfferName);
                 });
 
-        When("^the user sets the offer item's item name to \"([^\"]*)\"$",
+        When("the user sets the offer item's item name to {string}",
                 (String itemName) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferItemForm = persona.createOfferItemForm;

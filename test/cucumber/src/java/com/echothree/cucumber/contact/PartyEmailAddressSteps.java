@@ -166,7 +166,7 @@ public class PartyEmailAddressSteps implements En {
                     }
                 });
 
-        When("^the user sets the email address's description to \"([^\"]*)\"$",
+        When("the user sets the email address's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createContactEmailAddressForm = persona.createContactEmailAddressForm;
@@ -181,7 +181,7 @@ public class PartyEmailAddressSteps implements En {
                     }
                 });
 
-        When("^the user sets the email address's email address to \"([^\"]*)\"$",
+        When("the user sets the email address's email address to {string}",
                 (String emailAddress) -> {
                     var persona = CurrentPersona.persona;
                     var createContactEmailAddressForm = persona.createContactEmailAddressForm;

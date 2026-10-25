@@ -55,7 +55,7 @@ public class PartyPaymentMethodSteps implements En {
                     persona.createPartyPaymentMethodForm.setPaymentMethodName(paymentMethodName);
                 });
 
-        When("^the user sets the payment method's description to \"([^\"]*)\"$",
+        When("the user sets the payment method's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
 
@@ -82,7 +82,7 @@ public class PartyPaymentMethodSteps implements En {
                     persona.createPartyPaymentMethodForm.setIsDefault(Boolean.valueOf(isDefault.equals("be")).toString());
                 });
 
-        When("^the user sets the payment method's sort order to \"([^\"]*)\"$",
+        When("the user sets the payment method's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
 
@@ -91,7 +91,7 @@ public class PartyPaymentMethodSteps implements En {
                     persona.createPartyPaymentMethodForm.setSortOrder(sortOrder);
                 });
 
-        When("^the user sets the payment method's number to \"([^\"]*)\"$",
+        When("the user sets the payment method's number to {string}",
                 (String number) -> {
                     var persona = CurrentPersona.persona;
 
@@ -100,7 +100,7 @@ public class PartyPaymentMethodSteps implements En {
                     persona.createPartyPaymentMethodForm.setNumber(number);
                 });
 
-        When("^the user sets the payment method's security code to \"([^\"]*)\"$",
+        When("the user sets the payment method's security code to {string}",
                 (String securityCode) -> {
                     var persona = CurrentPersona.persona;
 
@@ -109,7 +109,7 @@ public class PartyPaymentMethodSteps implements En {
                     persona.createPartyPaymentMethodForm.setSecurityCode(securityCode);
                 });
 
-        When("^the user sets the payment method's expiration month to \"([^\"]*)\"$",
+        When("the user sets the payment method's expiration month to {string}",
                 (String expirationMonth) -> {
                     var persona = CurrentPersona.persona;
 
@@ -118,7 +118,7 @@ public class PartyPaymentMethodSteps implements En {
                     persona.createPartyPaymentMethodForm.setExpirationMonth(expirationMonth);
                 });
 
-        When("^the user sets the payment method's expiration year to \"([^\"]*)\"$",
+        When("the user sets the payment method's expiration year to {string}",
                 (String expirationYear) -> {
                     var persona = CurrentPersona.persona;
 
@@ -127,7 +127,7 @@ public class PartyPaymentMethodSteps implements En {
                     persona.createPartyPaymentMethodForm.setExpirationYear(expirationYear);
                 });
 
-        When("^the user sets the payment method's first name to \"([^\"]*)\"$",
+        When("the user sets the payment method's first name to {string}",
                 (String firstName) -> {
                     var persona = CurrentPersona.persona;
 
@@ -136,7 +136,7 @@ public class PartyPaymentMethodSteps implements En {
                     persona.createPartyPaymentMethodForm.setFirstName(firstName);
                 });
 
-        When("^the user sets the payment method's last name to \"([^\"]*)\"$",
+        When("the user sets the payment method's last name to {string}",
                 (String lastName) -> {
                     var persona = CurrentPersona.persona;
 

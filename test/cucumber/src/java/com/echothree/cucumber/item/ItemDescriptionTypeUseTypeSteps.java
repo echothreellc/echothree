@@ -186,7 +186,7 @@ public class ItemDescriptionTypeUseTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item description type use type's sort order to \"([^\"]*)\"$",
+        When("the user sets the item description type use type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createItemDescriptionTypeUseTypeForm = persona.createItemDescriptionTypeUseTypeForm;
@@ -201,7 +201,7 @@ public class ItemDescriptionTypeUseTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item description type use type's description to \"([^\"]*)\"$",
+        When("the user sets the item description type use type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createItemDescriptionTypeUseTypeForm = persona.createItemDescriptionTypeUseTypeForm;

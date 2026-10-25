@@ -231,7 +231,7 @@ public class CommentTypeSteps implements En {
                     createCommentTypeForm.setMimeTypeUsageTypeName(mimeTypeUsageTypeName);
                 });
 
-        When("^the user sets the comment type's sort order to \"([^\"]*)\"$",
+        When("the user sets the comment type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createCommentTypeForm = persona.createCommentTypeForm;
@@ -246,7 +246,7 @@ public class CommentTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the comment type's description to \"([^\"]*)\"$",
+        When("the user sets the comment type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createCommentTypeForm = persona.createCommentTypeForm;

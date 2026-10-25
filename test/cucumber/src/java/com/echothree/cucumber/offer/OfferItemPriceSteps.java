@@ -131,7 +131,7 @@ public class OfferItemPriceSteps implements En {
                     persona.offerItemPriceEdit = null;
                 });
 
-        When("^the user sets the offer item price's offer name to \"([^\"]*)\"$",
+        When("the user sets the offer item price's offer name to {string}",
                 (String offerName) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferItemPriceForm = persona.createOfferItemPriceForm;
@@ -169,7 +169,7 @@ public class OfferItemPriceSteps implements En {
                     }
                 });
 
-        When("^the user sets the offer item price's item name to \"([^\"]*)\"$",
+        When("the user sets the offer item price's item name to {string}",
                 (String itemName) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferItemPriceForm = persona.createOfferItemPriceForm;
@@ -207,7 +207,7 @@ public class OfferItemPriceSteps implements En {
                     }
                 });
 
-        When("^the user sets the offer item price's inventory condition to \"([^\"]*)\"$",
+        When("the user sets the offer item price's inventory condition to {string}",
                 (String inventoryConditionName) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferItemPriceForm = persona.createOfferItemPriceForm;
@@ -225,7 +225,7 @@ public class OfferItemPriceSteps implements En {
                     }
                 });
 
-        When("^the user sets the offer item price's unit of measure type to \"([^\"]*)\"$",
+        When("the user sets the offer item price's unit of measure type to {string}",
                 (String unitOfMeasureTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferItemPriceForm = persona.createOfferItemPriceForm;
@@ -243,7 +243,7 @@ public class OfferItemPriceSteps implements En {
                     }
                 });
 
-        When("^the user sets the offer item price's currency to \"([^\"]*)\"$",
+        When("the user sets the offer item price's currency to {string}",
                 (String currencyIsoName) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferItemPriceForm = persona.createOfferItemPriceForm;
@@ -261,7 +261,7 @@ public class OfferItemPriceSteps implements En {
                     }
                 });
 
-        When("^the user sets the offer item price's unit price to \"([^\"]*)\"$",
+        When("the user sets the offer item price's unit price to {string}",
                 (String unitPrice) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferItemPriceForm = persona.createOfferItemPriceForm;
@@ -276,7 +276,7 @@ public class OfferItemPriceSteps implements En {
                     }
                 });
 
-        When("^the user sets the offer item price's minimum unit price to \"([^\"]*)\"$",
+        When("the user sets the offer item price's minimum unit price to {string}",
                 (String minimumUnitPrice) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferItemPriceForm = persona.createOfferItemPriceForm;
@@ -291,7 +291,7 @@ public class OfferItemPriceSteps implements En {
                     }
                 });
 
-        When("^the user sets the offer item price's maximum unit price to \"([^\"]*)\"$",
+        When("the user sets the offer item price's maximum unit price to {string}",
                 (String maximumUnitPrice) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferItemPriceForm = persona.createOfferItemPriceForm;
@@ -306,7 +306,7 @@ public class OfferItemPriceSteps implements En {
                     }
                 });
 
-        When("^the user sets the offer item price's unit price increment to \"([^\"]*)\"$",
+        When("the user sets the offer item price's unit price increment to {string}",
                 (String unitPriceIncrement) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferItemPriceForm = persona.createOfferItemPriceForm;
