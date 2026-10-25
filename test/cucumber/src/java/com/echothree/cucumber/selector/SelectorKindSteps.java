@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SelectorKindSteps implements En {
 
     public SelectorKindSteps() {
-        When("^the user begins entering a new selector kind$",
+        When("the user begins entering a new selector kind",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class SelectorKindSteps implements En {
                     persona.createSelectorKindForm = SelectorUtil.getHome().getCreateSelectorKindForm();
                 });
 
-        And("^the user adds the new selector kind$",
+        And("the user adds the new selector kind",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createSelectorKindForm = persona.createSelectorKindForm;
@@ -58,7 +58,7 @@ public class SelectorKindSteps implements En {
                     persona.createSelectorKindForm = null;
                 });
 
-        When("^the user begins deleting a selector kind$",
+        When("the user begins deleting a selector kind",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -69,7 +69,7 @@ public class SelectorKindSteps implements En {
                     persona.deleteSelectorKindForm = SelectorUtil.getHome().getDeleteSelectorKindForm();
                 });
 
-        And("^the user deletes the selector kind$",
+        And("the user deletes the selector kind",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteSelectorKindForm = persona.deleteSelectorKindForm;
@@ -81,7 +81,7 @@ public class SelectorKindSteps implements En {
                     persona.deleteSelectorKindForm = null;
                 });
 
-        When("^the user begins specifying a selector kind to edit$",
+        When("the user begins specifying a selector kind to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -92,7 +92,7 @@ public class SelectorKindSteps implements En {
                     persona.selectorKindSpec = SelectorUtil.getHome().getSelectorKindSpec();
                 });
 
-        When("^the user begins editing the selector kind$",
+        When("the user begins editing the selector kind",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.selectorKindSpec;
@@ -115,7 +115,7 @@ public class SelectorKindSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the selector kind$",
+        And("the user finishes editing the selector kind",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.selectorKindSpec;
@@ -136,7 +136,7 @@ public class SelectorKindSteps implements En {
                     persona.selectorKindEdit = null;
                 });
         
-        And("^the user sets the selector kind's name to ([a-zA-Z0-9-_]*)$",
+        And("the user sets the selector kind's name to {string}",
                 (String selectorKindName) -> {
                     var persona = CurrentPersona.persona;
                     var createSelectorKindForm = persona.createSelectorKindForm;
@@ -154,7 +154,7 @@ public class SelectorKindSteps implements En {
                     }
                 });
 
-        And("^the user sets the selector kind's name to the last selector kind added$",
+        And("the user sets the selector kind's name to the last selector kind added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastSelectorKindName = persona.lastSelectorKindName;
@@ -170,8 +170,10 @@ public class SelectorKindSteps implements En {
                     }
                 });
 
-        And("^the user sets the selector kind to (be|not be) the default$",
+        And("the user sets the selector kind to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createSelectorKindForm = persona.createSelectorKindForm;
                     var selectorKindEdit = persona.selectorKindEdit;
@@ -186,7 +188,7 @@ public class SelectorKindSteps implements En {
                     }
                 });
 
-        And("^the user sets the selector kind's sort order to \"([^\"]*)\"$",
+        And("the user sets the selector kind's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createSelectorKindForm = persona.createSelectorKindForm;
@@ -201,7 +203,7 @@ public class SelectorKindSteps implements En {
                     }
                 });
 
-        And("^the user sets the selector kind's description to \"([^\"]*)\"$",
+        And("the user sets the selector kind's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createSelectorKindForm = persona.createSelectorKindForm;

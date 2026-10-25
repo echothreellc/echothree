@@ -26,14 +26,14 @@ import javax.naming.NamingException;
 public class SalesOrderBatchSteps implements En {
 
     public SalesOrderBatchSteps() {
-        When("^the user adds a new sales order batch with the currency ([^\"]*) and payment method ([^\"]*)$",
+        When("the user adds a new sales order batch with the currency {string} and payment method {string}",
                 (String currencyIsoName, String paymentMethodName) -> {
                     var persona = CurrentPersona.persona;
 
                     createSalesOrderBatch(persona, currencyIsoName, paymentMethodName, null, null);
                 });
 
-        When("^the user deletes the last sales order batch added$",
+        When("the user deletes the last sales order batch added",
                 () -> {
                     var persona = CurrentPersona.persona;
 

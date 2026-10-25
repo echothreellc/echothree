@@ -27,7 +27,7 @@ import javax.naming.NamingException;
 public class UserLoginSteps implements En {
 
     public UserLoginSteps() {
-        When("^the user deletes the user login added by the anonymous user ([^\"]*)$",
+        When("the user deletes the user login added by the anonymous user {string}",
                 (String anonymous) -> {
                     var persona = CurrentPersona.persona;
                     var anonymousPersona = AnonymousPersonas.getPersona(anonymous);

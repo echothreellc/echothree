@@ -39,7 +39,7 @@ public class LinkCardinalitySteps implements En {
     private String originalDefaultName;
 
     public LinkCardinalitySteps() {
-        When("^the user begins entering a new link cardinality$",
+        When("the user begins entering a new link cardinality",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -50,7 +50,7 @@ public class LinkCardinalitySteps implements En {
                     persona.createLinkCardinalityForm = CoreUtil.getHome().getCreateLinkCardinalityForm();
                 });
 
-        And("^the user adds the new link cardinality",
+        And("the user adds the new link cardinality",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createLinkCardinalityForm = persona.createLinkCardinalityForm;
@@ -70,7 +70,7 @@ public class LinkCardinalitySteps implements En {
                     persona.createLinkCardinalityForm = null;
                 });
 
-        When("^the user begins deleting a link cardinality$",
+        When("the user begins deleting a link cardinality",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -81,7 +81,7 @@ public class LinkCardinalitySteps implements En {
                     persona.deleteLinkCardinalityForm = CoreUtil.getHome().getDeleteLinkCardinalityForm();
                 });
 
-        And("^the user deletes the link cardinality",
+        And("the user deletes the link cardinality",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteLinkCardinalityForm = persona.deleteLinkCardinalityForm;
@@ -93,7 +93,7 @@ public class LinkCardinalitySteps implements En {
                     persona.deleteLinkCardinalityForm = null;
                 });
 
-        When("^the user begins specifying a link cardinality to edit$",
+        When("the user begins specifying a link cardinality to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -104,7 +104,7 @@ public class LinkCardinalitySteps implements En {
                     persona.linkCardinalitySpec = CoreUtil.getHome().getLinkCardinalityUniversalSpec();
                 });
 
-        When("^the user begins editing the link cardinality$",
+        When("the user begins editing the link cardinality",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.linkCardinalitySpec;
@@ -129,7 +129,7 @@ public class LinkCardinalitySteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the link cardinality",
+        And("the user finishes editing the link cardinality",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.linkCardinalitySpec;
@@ -151,7 +151,7 @@ public class LinkCardinalitySteps implements En {
                     persona.linkCardinalityEdit = null;
                 });
 
-        And("^the user sets the link cardinality's link cardinality name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the link cardinality's link cardinality name to {string}",
                 (String linkCardinalityName) -> {
                     var persona = CurrentPersona.persona;
                     var createLinkCardinalityForm = persona.createLinkCardinalityForm;
@@ -170,7 +170,7 @@ public class LinkCardinalitySteps implements En {
                     }
                 });
 
-        And("^the user sets the link cardinality's link cardinality name to the last link cardinality added$",
+        And("the user sets the link cardinality's link cardinality name to the last link cardinality added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createLinkCardinalityForm = persona.createLinkCardinalityForm;
@@ -189,7 +189,7 @@ public class LinkCardinalitySteps implements En {
                     }
                 });
 
-        And("^the user sets the link cardinality's new link cardinality name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the link cardinality's new link cardinality name to {string}",
                 (String linkCardinalityName) -> {
                     var persona = CurrentPersona.persona;
                     var linkCardinalityEdit = persona.linkCardinalityEdit;
@@ -199,8 +199,10 @@ public class LinkCardinalitySteps implements En {
                     linkCardinalityEdit.setLinkCardinalityName(linkCardinalityName);
                 });
 
-        And("^the user sets the link cardinality to (be|not be) the default$",
+        And("the user sets the link cardinality to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createLinkCardinalityForm = persona.createLinkCardinalityForm;
                     var linkCardinalityEdit = persona.linkCardinalityEdit;
@@ -215,7 +217,7 @@ public class LinkCardinalitySteps implements En {
                     }
                 });
 
-        And("^the user sets the link cardinality's sort order to \"([^\"]*)\"$",
+        And("the user sets the link cardinality's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createLinkCardinalityForm = persona.createLinkCardinalityForm;
@@ -230,7 +232,7 @@ public class LinkCardinalitySteps implements En {
                     }
                 });
 
-        And("^the user sets the link cardinality's description to \"([^\"]*)\"$",
+        And("the user sets the link cardinality's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createLinkCardinalityForm = persona.createLinkCardinalityForm;
@@ -361,7 +363,9 @@ public class LinkCardinalitySteps implements En {
             persona.linkCardinalityEdit = null;
         });
 
-        When("^the user (creates|retrieves|deletes) a link cardinality description with:$", (String operation, DataTable values) -> {
+        When("the user {string} a link cardinality description with:", (String operation, DataTable values) -> {
+            assertThat(operation).isIn("creates", "retrieves", "deletes");
+
             var persona = CurrentPersona.persona;
             var fields = values.asMap(String.class, String.class);
 

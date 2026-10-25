@@ -25,7 +25,7 @@ import io.cucumber.java8.En;
 public class PreferredCurrencySteps implements En {
 
     public PreferredCurrencySteps() {
-        When("^the user sets their preferred currency to \"([^\"]*)\"$",
+        When("the user sets their preferred currency to {string}",
                 (String currencyIsoName) -> {
                     UserService userService = UserUtil.getHome();
                     var userVisitPreferredCurrencyForm = userService.getSetUserVisitPreferredCurrencyForm();

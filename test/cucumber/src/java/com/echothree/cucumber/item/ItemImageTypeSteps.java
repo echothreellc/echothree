@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ItemImageTypeSteps implements En {
 
     public ItemImageTypeSteps() {
-        When("^the user begins entering a new item image type$",
+        When("the user begins entering a new item image type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class ItemImageTypeSteps implements En {
                     persona.createItemImageTypeForm = ItemUtil.getHome().getCreateItemImageTypeForm();
                 });
 
-        When("^the user adds the new item image type$",
+        When("the user adds the new item image type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createItemImageTypeForm = persona.createItemImageTypeForm;
@@ -58,7 +58,7 @@ public class ItemImageTypeSteps implements En {
                     persona.createItemImageTypeForm = null;
                 });
 
-        When("^the user begins deleting a item image type$",
+        When("the user begins deleting a item image type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -69,7 +69,7 @@ public class ItemImageTypeSteps implements En {
                     persona.deleteItemImageTypeForm = ItemUtil.getHome().getDeleteItemImageTypeForm();
                 });
 
-        When("^the user deletes the item image type$",
+        When("the user deletes the item image type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteItemImageTypeForm = persona.deleteItemImageTypeForm;
@@ -81,7 +81,7 @@ public class ItemImageTypeSteps implements En {
                     persona.deleteItemImageTypeForm = null;
                 });
 
-        When("^the user begins specifying a item image type to edit$",
+        When("the user begins specifying a item image type to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -92,7 +92,7 @@ public class ItemImageTypeSteps implements En {
                     persona.itemImageTypeSpec = ItemUtil.getHome().getItemImageTypeUniversalSpec();
                 });
 
-        When("^the user begins editing the item image type$",
+        When("the user begins editing the item image type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.itemImageTypeSpec;
@@ -115,7 +115,7 @@ public class ItemImageTypeSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the item image type$",
+        When("the user finishes editing the item image type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.itemImageTypeSpec;
@@ -136,7 +136,7 @@ public class ItemImageTypeSteps implements En {
                     persona.itemImageTypeEdit = null;
                 });
         
-        When("^the user sets the item image type's name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the item image type's name to {string}",
                 (String itemImageTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemImageTypeForm = persona.createItemImageTypeForm;
@@ -154,7 +154,7 @@ public class ItemImageTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item image type's name to the last item image type added$",
+        When("the user sets the item image type's name to the last item image type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastItemImageTypeName = persona.lastItemImageTypeName;
@@ -170,8 +170,10 @@ public class ItemImageTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item image type to (be|not be) the default$",
+        When("the user sets the item image type to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createItemImageTypeForm = persona.createItemImageTypeForm;
                     var itemImageTypeEdit = persona.itemImageTypeEdit;
@@ -186,7 +188,7 @@ public class ItemImageTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item image type's sort order to \"([^\"]*)\"$",
+        When("the user sets the item image type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createItemImageTypeForm = persona.createItemImageTypeForm;
@@ -201,7 +203,7 @@ public class ItemImageTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item image type's description to \"([^\"]*)\"$",
+        When("the user sets the item image type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createItemImageTypeForm = persona.createItemImageTypeForm;

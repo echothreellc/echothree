@@ -30,7 +30,7 @@ public class LinkTypeSteps implements En {
     private LinkTypeTransfer retrievedLinkType;
 
     public LinkTypeSteps() {
-        When("^the user begins entering a new link type$",
+        When("the user begins entering a new link type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -41,7 +41,7 @@ public class LinkTypeSteps implements En {
                     persona.createLinkTypeForm = CoreUtil.getHome().getCreateLinkTypeForm();
                 });
 
-        And("^the user adds the new link type",
+        And("the user adds the new link type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createLinkTypeForm = persona.createLinkTypeForm;
@@ -61,7 +61,7 @@ public class LinkTypeSteps implements En {
                     persona.createLinkTypeForm = null;
                 });
 
-        When("^the user begins deleting a link type$",
+        When("the user begins deleting a link type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -72,7 +72,7 @@ public class LinkTypeSteps implements En {
                     persona.deleteLinkTypeForm = CoreUtil.getHome().getDeleteLinkTypeForm();
                 });
 
-        And("^the user deletes the link type",
+        And("the user deletes the link type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteLinkTypeForm = persona.deleteLinkTypeForm;
@@ -84,7 +84,7 @@ public class LinkTypeSteps implements En {
                     persona.deleteLinkTypeForm = null;
                 });
 
-        When("^the user begins specifying a link type to edit$",
+        When("the user begins specifying a link type to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -95,7 +95,7 @@ public class LinkTypeSteps implements En {
                     persona.linkTypeSpec = CoreUtil.getHome().getLinkTypeUniversalSpec();
                 });
 
-        When("^the user begins editing the link type$",
+        When("the user begins editing the link type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.linkTypeSpec;
@@ -120,7 +120,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the link type",
+        And("the user finishes editing the link type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.linkTypeSpec;
@@ -142,7 +142,7 @@ public class LinkTypeSteps implements En {
                     persona.linkTypeEdit = null;
                 });
 
-        And("^the user sets the link type's link type name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the link type's link type name to {string}",
                 (String linkTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createLinkTypeForm = persona.createLinkTypeForm;
@@ -161,7 +161,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the link type's link type name to the last link type added$",
+        And("the user sets the link type's link type name to the last link type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createLinkTypeForm = persona.createLinkTypeForm;
@@ -180,7 +180,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the link type's new link type name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the link type's new link type name to {string}",
                 (String linkTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var linkTypeEdit = persona.linkTypeEdit;
@@ -190,7 +190,7 @@ public class LinkTypeSteps implements En {
                     linkTypeEdit.setLinkTypeName(linkTypeName);
                 });
 
-        And("^the user sets the link type's sort order to \"([^\"]*)\"$",
+        And("the user sets the link type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createLinkTypeForm = persona.createLinkTypeForm;
@@ -205,7 +205,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the link type's description to \"([^\"]*)\"$",
+        And("the user sets the link type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createLinkTypeForm = persona.createLinkTypeForm;
@@ -220,7 +220,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the link type's source component vendor name to \"([^\"]*)\"$",
+        And("the user sets the link type's source component vendor name to {string}",
                 (String value) -> {
                     var persona = CurrentPersona.persona;
                     if(persona.createLinkTypeForm != null) {
@@ -231,7 +231,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the link type's source entity type name to \"([^\"]*)\"$",
+        And("the user sets the link type's source entity type name to {string}",
                 (String value) -> {
                     var persona = CurrentPersona.persona;
                     if(persona.createLinkTypeForm != null) {
@@ -242,7 +242,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the link type's target component vendor name to \"([^\"]*)\"$",
+        And("the user sets the link type's target component vendor name to {string}",
                 (String value) -> {
                     var persona = CurrentPersona.persona;
                     if(persona.createLinkTypeForm != null) {
@@ -253,7 +253,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the link type's target entity type name to \"([^\"]*)\"$",
+        And("the user sets the link type's target entity type name to {string}",
                 (String value) -> {
                     var persona = CurrentPersona.persona;
                     if(persona.createLinkTypeForm != null) {
@@ -264,7 +264,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the link type's link cardinality name to \"([^\"]*)\"$",
+        And("the user sets the link type's link cardinality name to {string}",
                 (String value) -> {
                     var persona = CurrentPersona.persona;
                     if(persona.createLinkTypeForm != null) {
@@ -275,7 +275,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the link type's link directionality name to \"([^\"]*)\"$",
+        And("the user sets the link type's link directionality name to {string}",
                 (String value) -> {
                     var persona = CurrentPersona.persona;
                     if(persona.createLinkTypeForm != null) {
@@ -286,7 +286,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the link type's is transitive to \"([^\"]*)\"$",
+        And("the user sets the link type's is transitive to {string}",
                 (String value) -> {
                     var persona = CurrentPersona.persona;
                     if(persona.createLinkTypeForm != null) {
@@ -297,7 +297,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the link type's parent link type name to \"([^\"]*)\"$",
+        And("the user sets the link type's parent link type name to {string}",
                 (String value) -> {
                     var persona = CurrentPersona.persona;
                     if(persona.createLinkTypeForm != null) {
@@ -308,7 +308,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the link type's inverse link type name to \"([^\"]*)\"$",
+        And("the user sets the link type's inverse link type name to {string}",
                 (String value) -> {
                     var persona = CurrentPersona.persona;
                     if(persona.createLinkTypeForm != null) {
@@ -319,7 +319,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the link type's guidance MIME type name to \"([^\"]*)\"$",
+        And("the user sets the link type's guidance MIME type name to {string}",
                 (String value) -> {
                     var persona = CurrentPersona.persona;
                     if(persona.createLinkTypeForm != null) {
@@ -330,7 +330,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the link type's guidance to \"([^\"]*)\"$",
+        And("the user sets the link type's guidance to {string}",
                 (String value) -> {
                     var persona = CurrentPersona.persona;
                     if(persona.createLinkTypeForm != null) {

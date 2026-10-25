@@ -28,7 +28,7 @@ public class LastCommandResultSteps implements En {
     public LastCommandResultSteps() {
         Before((Scenario scenario) -> this.scenario = scenario);
 
-        Then("^no error should occur$", () -> {
+        Then("no error should occur", () -> {
             var commandResult = LastCommandResult.commandResult;
 
             assertThat(commandResult).isNotNull();
@@ -71,56 +71,56 @@ public class LastCommandResultSteps implements En {
             assertThat(commandResult.hasErrors()).isFalse();
         });
 
-        Then("^an error should occur$", () -> {
+        Then("an error should occur", () -> {
             var commandResult = LastCommandResult.commandResult;
 
             assertThat(commandResult).isNotNull();
             assertThat(commandResult.hasErrors()).isTrue();
         });
 
-        Then("^no validation error should occur$", () -> {
+        Then("no validation error should occur", () -> {
             var commandResult = LastCommandResult.commandResult;
 
             assertThat(commandResult).isNotNull();
             assertThat(commandResult.hasValidationErrors()).isFalse();
         });
 
-        Then("^a validation error should occur$", () -> {
+        Then("a validation error should occur", () -> {
             var commandResult = LastCommandResult.commandResult;
 
             assertThat(commandResult).isNotNull();
             assertThat(commandResult.hasValidationErrors()).isTrue();
         });
 
-        Then("^no execution warning should occur$", () -> {
+        Then("no execution warning should occur", () -> {
             var commandResult = LastCommandResult.commandResult;
 
             assertThat(commandResult).isNotNull();
             assertThat(commandResult.hasExecutionWarnings()).isFalse();
         });
 
-        Then("^an execution warning should occur$", () -> {
+        Then("an execution warning should occur", () -> {
             var commandResult = LastCommandResult.commandResult;
 
             assertThat(commandResult).isNotNull();
             assertThat(commandResult.hasExecutionWarnings()).isTrue();
         });
 
-        Then("^no execution error should occur$", () -> {
+        Then("no execution error should occur", () -> {
             var commandResult = LastCommandResult.commandResult;
 
             assertThat(commandResult).isNotNull();
             assertThat(commandResult.hasExecutionErrors()).isFalse();
         });
 
-        Then("^an execution error should occur$", () -> {
+        Then("an execution error should occur", () -> {
             var commandResult = LastCommandResult.commandResult;
 
             assertThat(commandResult).isNotNull();
             assertThat(commandResult.hasExecutionErrors()).isTrue();
         });
 
-        Then("^the execution error ([a-zA-Z0-9-_]*) should occur$", (String executionError) -> {
+        Then("the execution error {string} should occur", (String executionError) -> {
             var commandResult = LastCommandResult.commandResult;
 
             assertThat(commandResult).isNotNull();

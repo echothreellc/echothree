@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class LocationNameElementSteps implements En {
 
     public LocationNameElementSteps() {
-        When("^the user begins entering a new location name element$",
+        When("the user begins entering a new location name element",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class LocationNameElementSteps implements En {
                     persona.createLocationNameElementForm = WarehouseUtil.getHome().getCreateLocationNameElementForm();
                 });
 
-        And("^the user adds the new location name element$",
+        And("the user adds the new location name element",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createLocationNameElementForm = persona.createLocationNameElementForm;
@@ -57,7 +57,7 @@ public class LocationNameElementSteps implements En {
                     persona.createLocationNameElementForm = null;
                 });
 
-        When("^the user begins deleting a location name element$",
+        When("the user begins deleting a location name element",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -68,7 +68,7 @@ public class LocationNameElementSteps implements En {
                     persona.deleteLocationNameElementForm = WarehouseUtil.getHome().getDeleteLocationNameElementForm();
                 });
 
-        And("^the user deletes the location name element$",
+        And("the user deletes the location name element",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteLocationNameElementForm = persona.deleteLocationNameElementForm;
@@ -80,7 +80,7 @@ public class LocationNameElementSteps implements En {
                     persona.deleteLocationNameElementForm = null;
                 });
 
-        When("^the user begins specifying a location name element to edit$",
+        When("the user begins specifying a location name element to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -91,7 +91,7 @@ public class LocationNameElementSteps implements En {
                     persona.locationNameElementSpec = WarehouseUtil.getHome().getLocationNameElementSpec();
                 });
 
-        When("^the user begins editing the location name element$",
+        When("the user begins editing the location name element",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.locationNameElementSpec;
@@ -114,7 +114,7 @@ public class LocationNameElementSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the location name element$",
+        And("the user finishes editing the location name element",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.locationNameElementSpec;
@@ -136,7 +136,7 @@ public class LocationNameElementSteps implements En {
                     persona.locationNameElementEdit = null;
                 });
 
-        And("^the user sets the location name element's warehouse name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the location name element's warehouse name to {string}",
                 (String warehouseName) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationNameElementForm = persona.createLocationNameElementForm;
@@ -155,7 +155,7 @@ public class LocationNameElementSteps implements En {
                     }
                 });
 
-        And("^the user sets the location name element's warehouse name to the last warehouse added$",
+        And("the user sets the location name element's warehouse name to the last warehouse added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createLocationNameElementForm = persona.createLocationNameElementForm;
@@ -174,7 +174,7 @@ public class LocationNameElementSteps implements En {
                     }
                 });
 
-        And("^the user sets the location name element's location type name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the location name element's location type name to {string}",
                 (String locationTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationNameElementForm = persona.createLocationNameElementForm;
@@ -193,7 +193,7 @@ public class LocationNameElementSteps implements En {
                     }
                 });
 
-        And("^the user sets the location name element's location type name to the last location type added$",
+        And("the user sets the location name element's location type name to the last location type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createLocationNameElementForm = persona.createLocationNameElementForm;
@@ -212,7 +212,7 @@ public class LocationNameElementSteps implements En {
                     }
                 });
 
-        And("^the user sets the location name element's location name element name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the location name element's location name element name to {string}",
                 (String locationNameElementName) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationNameElementForm = persona.createLocationNameElementForm;
@@ -231,7 +231,7 @@ public class LocationNameElementSteps implements En {
                     }
                 });
 
-        And("^the user sets the location name element's location name element name to the last location name element added$",
+        And("the user sets the location name element's location name element name to the last location name element added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createLocationNameElementForm = persona.createLocationNameElementForm;
@@ -250,7 +250,7 @@ public class LocationNameElementSteps implements En {
                     }
                 });
 
-        And("^the user sets the location name element's new location name element name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the location name element's new location name element name to {string}",
                 (String locationNameElementName) -> {
                     var persona = CurrentPersona.persona;
                     var locationNameElementEdit = persona.locationNameElementEdit;
@@ -260,7 +260,7 @@ public class LocationNameElementSteps implements En {
                     locationNameElementEdit.setLocationNameElementName(locationNameElementName);
                 });
 
-        And("^the user sets the location name element's offset to \"([^\"]*)\"$",
+        And("the user sets the location name element's offset to {string}",
                 (String offset) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationNameElementForm = persona.createLocationNameElementForm;
@@ -275,7 +275,7 @@ public class LocationNameElementSteps implements En {
                     }
                 });
 
-        And("^the user sets the location name element's length to \"([^\"]*)\"$",
+        And("the user sets the location name element's length to {string}",
                 (String length) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationNameElementForm = persona.createLocationNameElementForm;
@@ -290,7 +290,7 @@ public class LocationNameElementSteps implements En {
                     }
                 });
 
-        And("^the user sets the location name element's validation pattern to \"([^\"]*)\"$",
+        And("the user sets the location name element's validation pattern to {string}",
                 (String validationPattern) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationNameElementForm = persona.createLocationNameElementForm;
@@ -305,7 +305,7 @@ public class LocationNameElementSteps implements En {
                     }
                 });
 
-        And("^the user sets the location name element's description to \"([^\"]*)\"$",
+        And("the user sets the location name element's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationNameElementForm = persona.createLocationNameElementForm;

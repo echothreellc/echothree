@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class InventoryCostingMethodSteps implements En {
 
     public InventoryCostingMethodSteps() {
-        When("^the user begins entering a new inventory costing method$",
+        When("the user begins entering a new inventory costing method",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -39,7 +39,7 @@ public class InventoryCostingMethodSteps implements En {
                     persona.createInventoryCostingMethodForm = InventoryUtil.getHome().getCreateInventoryCostingMethodForm();
                 });
 
-        And("^the user adds the new inventory costing method",
+        And("the user adds the new inventory costing method",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryCostingMethodForm = persona.createInventoryCostingMethodForm;
@@ -59,7 +59,7 @@ public class InventoryCostingMethodSteps implements En {
                     persona.createInventoryCostingMethodForm = null;
                 });
 
-        When("^the user begins deleting an inventory costing method$",
+        When("the user begins deleting an inventory costing method",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -70,7 +70,7 @@ public class InventoryCostingMethodSteps implements En {
                     persona.deleteInventoryCostingMethodForm = InventoryUtil.getHome().getDeleteInventoryCostingMethodForm();
                 });
 
-        And("^the user deletes the inventory costing method",
+        And("the user deletes the inventory costing method",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteInventoryCostingMethodForm = persona.deleteInventoryCostingMethodForm;
@@ -82,7 +82,7 @@ public class InventoryCostingMethodSteps implements En {
                     persona.deleteInventoryCostingMethodForm = null;
                 });
 
-        When("^the user begins specifying an inventory costing method to edit$",
+        When("the user begins specifying an inventory costing method to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -93,7 +93,7 @@ public class InventoryCostingMethodSteps implements En {
                     persona.inventoryCostingMethodSpec = InventoryUtil.getHome().getInventoryCostingMethodUniversalSpec();
                 });
 
-        When("^the user begins editing the inventory costing method$",
+        When("the user begins editing the inventory costing method",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryCostingMethodSpec;
@@ -116,7 +116,7 @@ public class InventoryCostingMethodSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the inventory costing method",
+        And("the user finishes editing the inventory costing method",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryCostingMethodSpec;
@@ -138,7 +138,7 @@ public class InventoryCostingMethodSteps implements En {
                     persona.inventoryCostingMethodEdit = null;
                 });
 
-        And("^the user sets the inventory costing method's inventory costing method name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory costing method's inventory costing method name to {string}",
                 (String inventoryCostingMethodName) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryCostingMethodForm = persona.createInventoryCostingMethodForm;
@@ -157,7 +157,7 @@ public class InventoryCostingMethodSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory costing method's inventory costing method name to the last inventory costing method added$",
+        And("the user sets the inventory costing method's inventory costing method name to the last inventory costing method added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryCostingMethodForm = persona.createInventoryCostingMethodForm;
@@ -176,7 +176,7 @@ public class InventoryCostingMethodSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory costing method's new inventory costing method name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory costing method's new inventory costing method name to {string}",
                 (String inventoryCostingMethodName) -> {
                     var persona = CurrentPersona.persona;
                     var inventoryCostingMethodEdit = persona.inventoryCostingMethodEdit;
@@ -186,8 +186,10 @@ public class InventoryCostingMethodSteps implements En {
                     inventoryCostingMethodEdit.setInventoryCostingMethodName(inventoryCostingMethodName);
                 });
 
-        And("^the user sets the inventory costing method to (be|not be) the default$",
+        And("the user sets the inventory costing method to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createInventoryCostingMethodForm = persona.createInventoryCostingMethodForm;
                     var inventoryCostingMethodEdit = persona.inventoryCostingMethodEdit;
@@ -202,7 +204,7 @@ public class InventoryCostingMethodSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory costing method's sort order to \"([^\"]*)\"$",
+        And("the user sets the inventory costing method's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryCostingMethodForm = persona.createInventoryCostingMethodForm;
@@ -217,7 +219,7 @@ public class InventoryCostingMethodSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory costing method's description to \"([^\"]*)\"$",
+        And("the user sets the inventory costing method's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryCostingMethodForm = persona.createInventoryCostingMethodForm;

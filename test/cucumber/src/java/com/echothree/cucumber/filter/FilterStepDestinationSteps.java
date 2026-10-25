@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class FilterStepDestinationSteps implements En {
 
     public FilterStepDestinationSteps() {
-        When("^the user begins entering a new filter step destination$",
+        When("the user begins entering a new filter step destination",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -35,7 +35,7 @@ public class FilterStepDestinationSteps implements En {
                     persona.createFilterStepDestinationForm = FilterUtil.getHome().getCreateFilterStepDestinationForm();
                 });
 
-        When("^the user adds the new filter step destination$",
+        When("the user adds the new filter step destination",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createFilterStepDestinationForm = persona.createFilterStepDestinationForm;
@@ -51,7 +51,7 @@ public class FilterStepDestinationSteps implements En {
                     persona.createFilterStepDestinationForm = null;
                 });
 
-        When("^the user begins deleting a filter step destination$",
+        When("the user begins deleting a filter step destination",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -61,7 +61,7 @@ public class FilterStepDestinationSteps implements En {
                     persona.deleteFilterStepDestinationForm = FilterUtil.getHome().getDeleteFilterStepDestinationForm();
                 });
 
-        When("^the user deletes the filter step destination$",
+        When("the user deletes the filter step destination",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteFilterStepDestinationForm = persona.deleteFilterStepDestinationForm;
@@ -73,7 +73,7 @@ public class FilterStepDestinationSteps implements En {
                     persona.deleteFilterStepDestinationForm = null;
                 });
 
-        When("^the user sets the filter step destination's filter kind name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the filter step destination's filter kind name to {string}",
                 (String filterKindName) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterStepDestinationForm = persona.createFilterStepDestinationForm;
@@ -88,7 +88,7 @@ public class FilterStepDestinationSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter step destination's filter type name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the filter step destination's filter type name to {string}",
                 (String filterTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterStepDestinationForm = persona.createFilterStepDestinationForm;
@@ -103,7 +103,7 @@ public class FilterStepDestinationSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter step destination's filter name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the filter step destination's filter name to {string}",
                 (String filterName) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterStepDestinationForm = persona.createFilterStepDestinationForm;
@@ -118,7 +118,7 @@ public class FilterStepDestinationSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter step destination's from filter step name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the filter step destination's from filter step name to {string}",
                 (String fromFilterStepName) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterStepDestinationForm = persona.createFilterStepDestinationForm;
@@ -133,7 +133,7 @@ public class FilterStepDestinationSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter step destination's to filter step name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the filter step destination's to filter step name to {string}",
                 (String toFilterStepName) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterStepDestinationForm = persona.createFilterStepDestinationForm;

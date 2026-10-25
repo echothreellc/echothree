@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class InventoryDispositionAdjustmentSteps implements En {
 
     public InventoryDispositionAdjustmentSteps() {
-        When("^the user begins entering a new inventory disposition adjustment$",
+        When("the user begins entering a new inventory disposition adjustment",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -39,7 +39,7 @@ public class InventoryDispositionAdjustmentSteps implements En {
                     persona.createInventoryDispositionAdjustmentForm = InventoryUtil.getHome().getCreateInventoryDispositionAdjustmentForm();
                 });
 
-        And("^the user adds the new inventory disposition adjustment$",
+        And("the user adds the new inventory disposition adjustment",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryDispositionAdjustmentForm = persona.createInventoryDispositionAdjustmentForm;
@@ -61,7 +61,7 @@ public class InventoryDispositionAdjustmentSteps implements En {
                     persona.createInventoryDispositionAdjustmentForm = null;
                 });
 
-        When("^the user begins deleting an inventory disposition adjustment$",
+        When("the user begins deleting an inventory disposition adjustment",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -72,7 +72,7 @@ public class InventoryDispositionAdjustmentSteps implements En {
                     persona.deleteInventoryDispositionAdjustmentForm = InventoryUtil.getHome().getDeleteInventoryDispositionAdjustmentForm();
                 });
 
-        And("^the user deletes the inventory disposition adjustment$",
+        And("the user deletes the inventory disposition adjustment",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteInventoryDispositionAdjustmentForm = persona.deleteInventoryDispositionAdjustmentForm;
@@ -85,7 +85,7 @@ public class InventoryDispositionAdjustmentSteps implements En {
                     persona.deleteInventoryDispositionAdjustmentForm = null;
                 });
 
-        When("^the user begins specifying an inventory disposition adjustment to edit$",
+        When("the user begins specifying an inventory disposition adjustment to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -96,7 +96,7 @@ public class InventoryDispositionAdjustmentSteps implements En {
                     persona.inventoryDispositionAdjustmentSpec = InventoryUtil.getHome().getInventoryDispositionAdjustmentUniversalSpec();
                 });
 
-        When("^the user begins editing the inventory disposition adjustment$",
+        When("the user begins editing the inventory disposition adjustment",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryDispositionAdjustmentSpec;
@@ -119,7 +119,7 @@ public class InventoryDispositionAdjustmentSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the inventory disposition adjustment",
+        And("the user finishes editing the inventory disposition adjustment",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryDispositionAdjustmentSpec;
@@ -141,7 +141,7 @@ public class InventoryDispositionAdjustmentSteps implements En {
                     persona.inventoryDispositionAdjustmentEdit = null;
                 });
 
-        And("^the user sets the inventory disposition adjustment's inventory disposition adjustment name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory disposition adjustment's inventory disposition adjustment name to {string}",
                 (String inventoryDispositionAdjustmentName) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryDispositionAdjustmentForm = persona.createInventoryDispositionAdjustmentForm;
@@ -160,7 +160,7 @@ public class InventoryDispositionAdjustmentSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory disposition adjustment's inventory transaction type name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory disposition adjustment's inventory transaction type name to {string}",
                 (String inventoryTransactionTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createForm = persona.createInventoryDispositionAdjustmentForm;
@@ -178,8 +178,7 @@ public class InventoryDispositionAdjustmentSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory disposition adjustment's inventory disposition adjustment name "
-                + "to the last inventory disposition adjustment added$",
+        And("the user sets the inventory disposition adjustment's inventory disposition adjustment name to the last inventory disposition adjustment added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryDispositionAdjustmentForm = persona.createInventoryDispositionAdjustmentForm;
@@ -198,7 +197,7 @@ public class InventoryDispositionAdjustmentSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory disposition adjustment's entity ref to the last inventory disposition adjustment added$",
+        And("the user sets the inventory disposition adjustment's entity ref to the last inventory disposition adjustment added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteInventoryDispositionAdjustmentForm = persona.deleteInventoryDispositionAdjustmentForm;
@@ -214,7 +213,7 @@ public class InventoryDispositionAdjustmentSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory disposition adjustment's new inventory disposition adjustment name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory disposition adjustment's new inventory disposition adjustment name to {string}",
                 (String inventoryDispositionAdjustmentName) -> {
                     var persona = CurrentPersona.persona;
                     var inventoryDispositionAdjustmentEdit = persona.inventoryDispositionAdjustmentEdit;
@@ -224,8 +223,10 @@ public class InventoryDispositionAdjustmentSteps implements En {
                     inventoryDispositionAdjustmentEdit.setInventoryDispositionAdjustmentName(inventoryDispositionAdjustmentName);
                 });
 
-        And("^the user sets the inventory disposition adjustment to (be|not be) the default$",
+        And("the user sets the inventory disposition adjustment to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createInventoryDispositionAdjustmentForm = persona.createInventoryDispositionAdjustmentForm;
                     var inventoryDispositionAdjustmentEdit = persona.inventoryDispositionAdjustmentEdit;
@@ -240,7 +241,7 @@ public class InventoryDispositionAdjustmentSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory disposition adjustment's inventory disposition name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory disposition adjustment's inventory disposition name to {string}",
                 (String inventoryDispositionName) -> {
             var persona = CurrentPersona.persona;
                     var createInventoryDispositionAdjustmentForm = persona.createInventoryDispositionAdjustmentForm;
@@ -259,7 +260,7 @@ public class InventoryDispositionAdjustmentSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory disposition adjustment's inventory adjustment type name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory disposition adjustment's inventory adjustment type name to {string}",
                 (String name) -> {
                     var persona = CurrentPersona.persona;
                     var createForm = persona.createInventoryDispositionAdjustmentForm;
@@ -269,7 +270,7 @@ public class InventoryDispositionAdjustmentSteps implements En {
                     else edit.setInventoryAdjustmentTypeName(name);
                 });
 
-        And("^the user sets the inventory disposition adjustment's inventory bucket type name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory disposition adjustment's inventory bucket type name to {string}",
                 (String name) -> {
                     var persona = CurrentPersona.persona;
                     var createForm = persona.createInventoryDispositionAdjustmentForm;
@@ -279,7 +280,7 @@ public class InventoryDispositionAdjustmentSteps implements En {
                     else edit.setInventoryBucketTypeName(name);
                 });
 
-        And("^the user sets the inventory disposition adjustment's sort order to \"([^\"]*)\"$",
+        And("the user sets the inventory disposition adjustment's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryDispositionAdjustmentForm = persona.createInventoryDispositionAdjustmentForm;
@@ -294,7 +295,7 @@ public class InventoryDispositionAdjustmentSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory disposition adjustment's description to \"([^\"]*)\"$",
+        And("the user sets the inventory disposition adjustment's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryDispositionAdjustmentForm = persona.createInventoryDispositionAdjustmentForm;

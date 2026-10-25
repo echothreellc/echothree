@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ItemAliasSteps implements En {
 
     public ItemAliasSteps() {
-        When("^the user begins entering a new item alias$",
+        When("the user begins entering a new item alias",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -38,7 +38,7 @@ public class ItemAliasSteps implements En {
                     persona.createItemAliasForm = ItemUtil.getHome().getCreateItemAliasForm();
                 });
 
-        When("^the user adds the new item alias$",
+        When("the user adds the new item alias",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createItemAliasForm = persona.createItemAliasForm;
@@ -55,7 +55,7 @@ public class ItemAliasSteps implements En {
                     persona.createItemAliasForm = null;
                 });
 
-        When("^the user begins deleting an item alias$",
+        When("the user begins deleting an item alias",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -66,7 +66,7 @@ public class ItemAliasSteps implements En {
                     persona.deleteItemAliasForm = ItemUtil.getHome().getDeleteItemAliasForm();
                 });
 
-        When("^the user deletes the item alias$",
+        When("the user deletes the item alias",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteItemAliasForm = persona.deleteItemAliasForm;
@@ -78,7 +78,7 @@ public class ItemAliasSteps implements En {
                     persona.deleteItemAliasForm = null;
                 });
 
-        When("^the user begins specifying an item alias to edit$",
+        When("the user begins specifying an item alias to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -89,7 +89,7 @@ public class ItemAliasSteps implements En {
                     persona.itemAliasSpec = ItemUtil.getHome().getItemAliasSpec();
                 });
 
-        When("^the user begins editing the item alias$",
+        When("the user begins editing the item alias",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.itemAliasSpec;
@@ -112,7 +112,7 @@ public class ItemAliasSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the item alias$",
+        When("the user finishes editing the item alias",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.itemAliasSpec;
@@ -132,7 +132,7 @@ public class ItemAliasSteps implements En {
                     persona.itemAliasEdit = null;
                 });
 
-        When("^the user sets the item alias's item to \"([^\"]*)\"$",
+        When("the user sets the item alias's item to {string}",
                 (String itemName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemAliasForm = persona.createItemAliasForm;
@@ -142,7 +142,7 @@ public class ItemAliasSteps implements En {
                     createItemAliasForm.setItemName(itemName);
                 });
 
-        When("^the user sets the item alias's item to the last item added$",
+        When("the user sets the item alias's item to the last item added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createItemAliasForm = persona.createItemAliasForm;
@@ -154,7 +154,7 @@ public class ItemAliasSteps implements En {
                     createItemAliasForm.setItemName(lastItemName);
                 });
 
-        When("^the user sets the item alias's unit of measure type to \"([^\"]*)\"$",
+        When("the user sets the item alias's unit of measure type to {string}",
                 (String unitOfMeasureTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemAliasForm = persona.createItemAliasForm;
@@ -165,7 +165,7 @@ public class ItemAliasSteps implements En {
                     Objects.requireNonNullElse(createItemAliasForm, itemAliasEdit).setUnitOfMeasureTypeName(unitOfMeasureTypeName);
                 });
 
-        When("^the user sets the item alias's unit of measure type to the last unit of measure type added$",
+        When("the user sets the item alias's unit of measure type to the last unit of measure type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastUnitOfMeasureTypeName = persona.lastUnitOfMeasureTypeName;
@@ -176,7 +176,7 @@ public class ItemAliasSteps implements En {
                     itemAliasEdit.setUnitOfMeasureTypeName(lastUnitOfMeasureTypeName);
                 });
 
-        When("^the user sets the item alias's item alias type to \"([^\"]*)\"$",
+        When("the user sets the item alias's item alias type to {string}",
                 (String itemAliasTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemAliasForm = persona.createItemAliasForm;
@@ -187,7 +187,7 @@ public class ItemAliasSteps implements En {
                     Objects.requireNonNullElse(createItemAliasForm, itemAliasEdit).setItemAliasTypeName(itemAliasTypeName);
                 });
 
-        When("^the user sets the item alias's item alias type to the last item alias type added$",
+        When("the user sets the item alias's item alias type to the last item alias type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastItemAliasTypeName = persona.lastItemAliasTypeName;
@@ -198,7 +198,7 @@ public class ItemAliasSteps implements En {
                     itemAliasEdit.setItemAliasTypeName(lastItemAliasTypeName);
                 });
 
-        When("^the user sets the item alias's alias to \"([^\"]*)\"$",
+        When("the user sets the item alias's alias to {string}",
                 (String alias) -> {
                     var persona = CurrentPersona.persona;
                     var createItemAliasForm = persona.createItemAliasForm;
@@ -210,7 +210,7 @@ public class ItemAliasSteps implements En {
                     Objects.requireNonNullElseGet(createItemAliasForm, () -> Objects.requireNonNullElse(deleteItemAliasForm, itemAliasSpec)).setAlias(alias);
                 });
 
-        When("^the user sets the item alias's alias to the last alias added$",
+        When("the user sets the item alias's alias to the last alias added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastItemAliasName = persona.lastAlias;

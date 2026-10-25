@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class EntityAliasTypeSteps implements En {
 
     public EntityAliasTypeSteps() {
-        When("^the user begins entering a new entity alias type$",
+        When("the user begins entering a new entity alias type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class EntityAliasTypeSteps implements En {
                     persona.createEntityAliasTypeForm = CoreUtil.getHome().getCreateEntityAliasTypeForm();
                 });
 
-        When("^the user adds the new entity alias type$",
+        When("the user adds the new entity alias type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAliasTypeForm = persona.createEntityAliasTypeForm;
@@ -54,7 +54,7 @@ public class EntityAliasTypeSteps implements En {
                     persona.createEntityAliasTypeForm = null;
                 });
 
-        When("^the user begins deleting an entity alias type$",
+        When("the user begins deleting an entity alias type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -65,7 +65,7 @@ public class EntityAliasTypeSteps implements En {
                     persona.deleteEntityAliasTypeForm = CoreUtil.getHome().getDeleteEntityAliasTypeForm();
                 });
 
-        When("^the user deletes the entity alias type$",
+        When("the user deletes the entity alias type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteEntityAliasTypeForm = persona.deleteEntityAliasTypeForm;
@@ -77,7 +77,7 @@ public class EntityAliasTypeSteps implements En {
                     persona.deleteEntityAliasTypeForm = null;
                 });
 
-        When("^the user begins specifying an entity alias type to edit$",
+        When("the user begins specifying an entity alias type to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -88,7 +88,7 @@ public class EntityAliasTypeSteps implements En {
                     persona.entityAliasTypeUniversalSpec = CoreUtil.getHome().getEntityAliasTypeUniversalSpec();
                 });
 
-        When("^the user begins editing the entity alias type$",
+        When("the user begins editing the entity alias type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.entityAliasTypeUniversalSpec;
@@ -111,7 +111,7 @@ public class EntityAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the entity alias type$",
+        When("the user finishes editing the entity alias type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.entityAliasTypeUniversalSpec;
@@ -132,7 +132,7 @@ public class EntityAliasTypeSteps implements En {
                     persona.entityAliasTypeEdit = null;
                 });
         
-        When("^the user sets the entity alias type's component vendor to \"([^\"]*)\"$",
+        When("the user sets the entity alias type's component vendor to {string}",
                 (String componentVendorName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAliasTypeForm = persona.createEntityAliasTypeForm;
@@ -150,7 +150,7 @@ public class EntityAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity alias type's component vendor to the last component vendor added$",
+        When("the user sets the entity alias type's component vendor to the last component vendor added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastComponentVendorName = persona.lastComponentVendorName;
@@ -166,7 +166,7 @@ public class EntityAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity alias type's entity type to \"([^\"]*)\"$",
+        When("the user sets the entity alias type's entity type to {string}",
                 (String entityTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAliasTypeForm = persona.createEntityAliasTypeForm;
@@ -184,7 +184,7 @@ public class EntityAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity alias type's entity type to the last entity type added$",
+        When("the user sets the entity alias type's entity type to the last entity type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastEntityTypeName = persona.lastEntityTypeName;
@@ -200,7 +200,7 @@ public class EntityAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity alias type's name to \"([^\"]*)\"$",
+        When("the user sets the entity alias type's name to {string}",
                 (String entityAliasTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAliasTypeForm = persona.createEntityAliasTypeForm;
@@ -218,7 +218,7 @@ public class EntityAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity alias type's name to the last entity alias type added$",
+        When("the user sets the entity alias type's name to the last entity alias type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastEntityAliasTypeName = persona.lastEntityAliasTypeName;
@@ -234,7 +234,7 @@ public class EntityAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity alias type's validation pattern to \"([^\"]*)\"$",
+        When("the user sets the entity alias type's validation pattern to {string}",
                 (String validationPattern) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAliasTypeForm = persona.createEntityAliasTypeForm;
@@ -249,8 +249,10 @@ public class EntityAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity alias type to (be|not be) the default$",
+        When("the user sets the entity alias type to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createEntityAliasTypeForm = persona.createEntityAliasTypeForm;
                     var entityAliasTypeEdit = persona.entityAliasTypeEdit;
@@ -265,7 +267,7 @@ public class EntityAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity alias type's sort order to \"([^\"]*)\"$",
+        When("the user sets the entity alias type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAliasTypeForm = persona.createEntityAliasTypeForm;
@@ -280,7 +282,7 @@ public class EntityAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity alias type's description to \"([^\"]*)\"$",
+        When("the user sets the entity alias type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAliasTypeForm = persona.createEntityAliasTypeForm;

@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class FilterSteps implements En {
 
     public FilterSteps() {
-        When("^the user begins entering a new filter$",
+        When("the user begins entering a new filter",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class FilterSteps implements En {
                     persona.createFilterForm = FilterUtil.getHome().getCreateFilterForm();
                 });
 
-        When("^the user adds the new filter$",
+        When("the user adds the new filter",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createFilterForm = persona.createFilterForm;
@@ -58,7 +58,7 @@ public class FilterSteps implements En {
                     persona.createFilterForm = null;
                 });
 
-        When("^the user begins deleting a filter$",
+        When("the user begins deleting a filter",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -69,7 +69,7 @@ public class FilterSteps implements En {
                     persona.deleteFilterForm = FilterUtil.getHome().getDeleteFilterForm();
                 });
 
-        When("^the user deletes the filter$",
+        When("the user deletes the filter",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteFilterForm = persona.deleteFilterForm;
@@ -81,7 +81,7 @@ public class FilterSteps implements En {
                     persona.deleteFilterForm = null;
                 });
 
-        When("^the user begins specifying a filter to edit$",
+        When("the user begins specifying a filter to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -92,7 +92,7 @@ public class FilterSteps implements En {
                     persona.filterSpec = FilterUtil.getHome().getFilterSpec();
                 });
 
-        When("^the user begins editing the filter$",
+        When("the user begins editing the filter",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.filterSpec;
@@ -115,7 +115,7 @@ public class FilterSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the filter$",
+        When("the user finishes editing the filter",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.filterSpec;
@@ -136,7 +136,7 @@ public class FilterSteps implements En {
                     persona.filterEdit = null;
                 });
 
-        When("^the user sets the filter's filter kind name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the filter's filter kind name to {string}",
                 (String filterKindName) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterForm = persona.createFilterForm;
@@ -154,7 +154,7 @@ public class FilterSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter's filter type name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the filter's filter type name to {string}",
                 (String filterTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterForm = persona.createFilterForm;
@@ -172,7 +172,7 @@ public class FilterSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter's name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the filter's name to {string}",
                 (String filterName) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterForm = persona.createFilterForm;
@@ -190,7 +190,7 @@ public class FilterSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter's name to the last filter added$",
+        When("the user sets the filter's name to the last filter added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastFilterName = persona.lastFilterName;
@@ -206,7 +206,7 @@ public class FilterSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter's new filter name to \"([^\"]*)\"$",
+        When("the user sets the filter's new filter name to {string}",
                 (String filterName) -> {
                     var persona = CurrentPersona.persona;
                     var filterEdit = persona.filterEdit;
@@ -216,7 +216,7 @@ public class FilterSteps implements En {
                     filterEdit.setFilterName(filterName);
                 });
 
-        When("^the user sets the filter's initial filter adjustment name to \"([^\"]*)\"$",
+        When("the user sets the filter's initial filter adjustment name to {string}",
                 (String initialFilterAdjustmentName) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterForm = persona.createFilterForm;
@@ -231,7 +231,7 @@ public class FilterSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter's filter item selector name to \"([^\"]*)\"$",
+        When("the user sets the filter's filter item selector name to {string}",
                 (String filterItemSelectorName) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterForm = persona.createFilterForm;
@@ -246,8 +246,10 @@ public class FilterSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter to (be|not be) the default$",
+        When("the user sets the filter to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createFilterForm = persona.createFilterForm;
                     var filterEdit = persona.filterEdit;
@@ -262,7 +264,7 @@ public class FilterSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter's sort order to \"([^\"]*)\"$",
+        When("the user sets the filter's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterForm = persona.createFilterForm;
@@ -277,7 +279,7 @@ public class FilterSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter's description to \"([^\"]*)\"$",
+        When("the user sets the filter's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterForm = persona.createFilterForm;

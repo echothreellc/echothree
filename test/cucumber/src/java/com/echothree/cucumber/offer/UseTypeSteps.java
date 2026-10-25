@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UseTypeSteps implements En {
 
     public UseTypeSteps() {
-        When("^the user begins entering a new use type$",
+        When("the user begins entering a new use type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class UseTypeSteps implements En {
                     persona.createUseTypeForm = OfferUtil.getHome().getCreateUseTypeForm();
                 });
 
-        When("^the user adds the new use type$",
+        When("the user adds the new use type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -61,7 +61,7 @@ public class UseTypeSteps implements En {
                     persona.createUseTypeForm = null;
                 });
 
-        When("^the user begins deleting an use type$",
+        When("the user begins deleting an use type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -72,7 +72,7 @@ public class UseTypeSteps implements En {
                     persona.deleteUseTypeForm = OfferUtil.getHome().getDeleteUseTypeForm();
                 });
 
-        When("^the user deletes the use type$",
+        When("the user deletes the use type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteUseTypeForm = persona.deleteUseTypeForm;
@@ -84,7 +84,7 @@ public class UseTypeSteps implements En {
                     persona.deleteUseTypeForm = null;
                 });
 
-        When("^the user begins specifying an use type to edit$",
+        When("the user begins specifying an use type to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -95,7 +95,7 @@ public class UseTypeSteps implements En {
                     persona.useTypeSpec = OfferUtil.getHome().getUseTypeUniversalSpec();
                 });
 
-        When("^the user begins editing the use type$",
+        When("the user begins editing the use type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.useTypeSpec;
@@ -118,7 +118,7 @@ public class UseTypeSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the use type$",
+        When("the user finishes editing the use type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.useTypeSpec;
@@ -140,7 +140,7 @@ public class UseTypeSteps implements En {
                 });
 
 
-        When("^the user sets the use type's use type name to \"([^\"]*)\"$",
+        When("the user sets the use type's use type name to {string}",
                 (String useTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createUseTypeForm = persona.createUseTypeForm;
@@ -158,7 +158,7 @@ public class UseTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the use type's new use type name to \"([^\"]*)\"$",
+        When("the user sets the use type's new use type name to {string}",
                 (String useTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var useTypeEdit = persona.useTypeEdit;
@@ -168,8 +168,10 @@ public class UseTypeSteps implements En {
                     useTypeEdit.setUseTypeName(useTypeName);
                 });
 
-        When("^the user sets the use type to (be|not be) the default$",
+        When("the user sets the use type to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createUseTypeForm = persona.createUseTypeForm;
                     var useTypeEdit = persona.useTypeEdit;
@@ -184,7 +186,7 @@ public class UseTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the use type's sort order to \"([^\"]*)\"$",
+        When("the user sets the use type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createUseTypeForm = persona.createUseTypeForm;
@@ -199,7 +201,7 @@ public class UseTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the use type's description to \"([^\"]*)\"$",
+        When("the user sets the use type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createUseTypeForm = persona.createUseTypeForm;

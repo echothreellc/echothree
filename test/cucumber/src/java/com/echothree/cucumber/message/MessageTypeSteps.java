@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MessageTypeSteps implements En {
 
     public MessageTypeSteps() {
-        When("^the user begins entering a new message type$",
+        When("the user begins entering a new message type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class MessageTypeSteps implements En {
                     persona.createMessageTypeForm = MessageUtil.getHome().getCreateMessageTypeForm();
                 });
 
-        When("^the user adds the new message type$",
+        When("the user adds the new message type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createMessageTypeForm = persona.createMessageTypeForm;
@@ -54,7 +54,7 @@ public class MessageTypeSteps implements En {
                     persona.createMessageTypeForm = null;
                 });
 
-        When("^the user begins deleting a message type$",
+        When("the user begins deleting a message type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -65,7 +65,7 @@ public class MessageTypeSteps implements En {
                     persona.deleteMessageTypeForm = MessageUtil.getHome().getDeleteMessageTypeForm();
                 });
 
-        When("^the user deletes the message type$",
+        When("the user deletes the message type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteMessageTypeForm = persona.deleteMessageTypeForm;
@@ -77,7 +77,7 @@ public class MessageTypeSteps implements En {
                     persona.deleteMessageTypeForm = null;
                 });
 
-        When("^the user begins specifying a message type to edit$",
+        When("the user begins specifying a message type to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -88,7 +88,7 @@ public class MessageTypeSteps implements En {
                     persona.messageTypeSpec = MessageUtil.getHome().getMessageTypeSpec();
                 });
 
-        When("^the user begins editing the message type$",
+        When("the user begins editing the message type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.messageTypeSpec;
@@ -111,7 +111,7 @@ public class MessageTypeSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the message type$",
+        When("the user finishes editing the message type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.messageTypeSpec;
@@ -132,7 +132,7 @@ public class MessageTypeSteps implements En {
                     persona.messageTypeEdit = null;
                 });
         
-        When("^the user sets the message type's component vendor to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the message type's component vendor to {string}",
                 (String componentVendorName) -> {
                     var persona = CurrentPersona.persona;
                     var createMessageTypeForm = persona.createMessageTypeForm;
@@ -150,7 +150,7 @@ public class MessageTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the message type's entity type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the message type's entity type to {string}",
                 (String entityTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createMessageTypeForm = persona.createMessageTypeForm;
@@ -168,7 +168,7 @@ public class MessageTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the message type's message type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the message type's message type to {string}",
                 (String messageTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createMessageTypeForm = persona.createMessageTypeForm;
@@ -186,7 +186,7 @@ public class MessageTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the message type's mime type usage type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the message type's mime type usage type to {string}",
                 (String mimeTypeUsageTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createMessageTypeForm = persona.createMessageTypeForm;
@@ -196,7 +196,7 @@ public class MessageTypeSteps implements En {
                     createMessageTypeForm.setMimeTypeUsageTypeName(mimeTypeUsageTypeName);
                 });
 
-        When("^the user sets the message type's sort order to \"([^\"]*)\"$",
+        When("the user sets the message type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createMessageTypeForm = persona.createMessageTypeForm;
@@ -211,7 +211,7 @@ public class MessageTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the message type's description to \"([^\"]*)\"$",
+        When("the user sets the message type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createMessageTypeForm = persona.createMessageTypeForm;
@@ -226,7 +226,7 @@ public class MessageTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the message type's name to the last message type added$",
+        When("the user sets the message type's name to the last message type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastMessageTypeName = persona.lastMessageTypeName;

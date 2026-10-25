@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class InventoryConditionSteps implements En {
 
     public InventoryConditionSteps() {
-        When("^the user begins entering a new inventory condition$",
+        When("the user begins entering a new inventory condition",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class InventoryConditionSteps implements En {
                     persona.createInventoryConditionForm = InventoryUtil.getHome().getCreateInventoryConditionForm();
                 });
 
-        And("^the user adds the new inventory condition",
+        And("the user adds the new inventory condition",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryConditionForm = persona.createInventoryConditionForm;
@@ -57,7 +57,7 @@ public class InventoryConditionSteps implements En {
                     persona.createInventoryConditionForm = null;
                 });
 
-        When("^the user begins deleting an inventory condition$",
+        When("the user begins deleting an inventory condition",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -68,7 +68,7 @@ public class InventoryConditionSteps implements En {
                     persona.deleteInventoryConditionForm = InventoryUtil.getHome().getDeleteInventoryConditionForm();
                 });
 
-        And("^the user deletes the inventory condition",
+        And("the user deletes the inventory condition",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteInventoryConditionForm = persona.deleteInventoryConditionForm;
@@ -80,7 +80,7 @@ public class InventoryConditionSteps implements En {
                     persona.deleteInventoryConditionForm = null;
                 });
 
-        When("^the user begins specifying an inventory condition to edit$",
+        When("the user begins specifying an inventory condition to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -91,7 +91,7 @@ public class InventoryConditionSteps implements En {
                     persona.inventoryConditionSpec = InventoryUtil.getHome().getInventoryConditionUniversalSpec();
                 });
 
-        When("^the user begins editing the inventory condition$",
+        When("the user begins editing the inventory condition",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryConditionSpec;
@@ -114,7 +114,7 @@ public class InventoryConditionSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the inventory condition",
+        And("the user finishes editing the inventory condition",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryConditionSpec;
@@ -136,7 +136,7 @@ public class InventoryConditionSteps implements En {
                     persona.inventoryConditionEdit = null;
                 });
 
-        And("^the user sets the inventory condition's inventory condition name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory condition's inventory condition name to {string}",
                 (String inventoryConditionName) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryConditionForm = persona.createInventoryConditionForm;
@@ -155,7 +155,7 @@ public class InventoryConditionSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory condition's inventory condition name to the last inventory condition added$",
+        And("the user sets the inventory condition's inventory condition name to the last inventory condition added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryConditionForm = persona.createInventoryConditionForm;
@@ -174,7 +174,7 @@ public class InventoryConditionSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory condition's new inventory condition name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory condition's new inventory condition name to {string}",
                 (String inventoryConditionName) -> {
                     var persona = CurrentPersona.persona;
                     var inventoryConditionEdit = persona.inventoryConditionEdit;
@@ -184,8 +184,10 @@ public class InventoryConditionSteps implements En {
                     inventoryConditionEdit.setInventoryConditionName(inventoryConditionName);
                 });
 
-        And("^the user sets the inventory condition to (be|not be) the default$",
+        And("the user sets the inventory condition to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createInventoryConditionForm = persona.createInventoryConditionForm;
                     var inventoryConditionEdit = persona.inventoryConditionEdit;
@@ -200,7 +202,7 @@ public class InventoryConditionSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory condition's sort order to \"([^\"]*)\"$",
+        And("the user sets the inventory condition's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryConditionForm = persona.createInventoryConditionForm;
@@ -215,7 +217,7 @@ public class InventoryConditionSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory condition's description to \"([^\"]*)\"$",
+        And("the user sets the inventory condition's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryConditionForm = persona.createInventoryConditionForm;

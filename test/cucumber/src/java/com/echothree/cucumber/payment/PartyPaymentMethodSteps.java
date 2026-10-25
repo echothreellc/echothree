@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PartyPaymentMethodSteps implements En {
 
     public PartyPaymentMethodSteps() {
-        When("^the user deletes the last payment method added$",
+        When("the user deletes the last payment method added",
                 () -> {
                     var paymentService = PaymentUtil.getHome();
                     var deletePartyPaymentMethodForm = paymentService.getDeletePartyPaymentMethodForm();
@@ -37,7 +37,7 @@ public class PartyPaymentMethodSteps implements En {
                     LastCommandResult.commandResult = paymentService.deletePartyPaymentMethod(persona.userVisitPK, deletePartyPaymentMethodForm);
                 });
 
-        When("^the user begins entering a new payment method$",
+        When("the user begins entering a new payment method",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -46,7 +46,7 @@ public class PartyPaymentMethodSteps implements En {
                     persona.createPartyPaymentMethodForm = PaymentUtil.getHome().getCreatePartyPaymentMethodForm();
                 });
 
-        When("^the user sets the payment method to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the payment method to {string}",
                 (String paymentMethodName) -> {
                     var persona = CurrentPersona.persona;
 
@@ -55,7 +55,7 @@ public class PartyPaymentMethodSteps implements En {
                     persona.createPartyPaymentMethodForm.setPaymentMethodName(paymentMethodName);
                 });
 
-        When("^the user sets the payment method's description to \"([^\"]*)\"$",
+        When("the user sets the payment method's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
 
@@ -64,8 +64,10 @@ public class PartyPaymentMethodSteps implements En {
                     persona.createPartyPaymentMethodForm.setDescription(description);
                 });
 
-        When("^the user sets the payment method to (be|not be) deleted when unused$",
+        When("the user sets the payment method to {string} deleted when unused",
                 (String deleteWhenUnused) -> {
+                    assertThat(deleteWhenUnused).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
 
                     assertThat(persona.createPartyPaymentMethodForm).isNotNull();
@@ -73,8 +75,10 @@ public class PartyPaymentMethodSteps implements En {
                     persona.createPartyPaymentMethodForm.setDeleteWhenUnused(Boolean.valueOf(deleteWhenUnused.equals("be")).toString());
                 });
 
-        When("^the user sets the payment method to (be|not be) the default$",
+        When("the user sets the payment method to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
 
                     assertThat(persona.createPartyPaymentMethodForm).isNotNull();
@@ -82,7 +86,7 @@ public class PartyPaymentMethodSteps implements En {
                     persona.createPartyPaymentMethodForm.setIsDefault(Boolean.valueOf(isDefault.equals("be")).toString());
                 });
 
-        When("^the user sets the payment method's sort order to \"([^\"]*)\"$",
+        When("the user sets the payment method's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
 
@@ -91,7 +95,7 @@ public class PartyPaymentMethodSteps implements En {
                     persona.createPartyPaymentMethodForm.setSortOrder(sortOrder);
                 });
 
-        When("^the user sets the payment method's number to \"([^\"]*)\"$",
+        When("the user sets the payment method's number to {string}",
                 (String number) -> {
                     var persona = CurrentPersona.persona;
 
@@ -100,7 +104,7 @@ public class PartyPaymentMethodSteps implements En {
                     persona.createPartyPaymentMethodForm.setNumber(number);
                 });
 
-        When("^the user sets the payment method's security code to \"([^\"]*)\"$",
+        When("the user sets the payment method's security code to {string}",
                 (String securityCode) -> {
                     var persona = CurrentPersona.persona;
 
@@ -109,7 +113,7 @@ public class PartyPaymentMethodSteps implements En {
                     persona.createPartyPaymentMethodForm.setSecurityCode(securityCode);
                 });
 
-        When("^the user sets the payment method's expiration month to \"([^\"]*)\"$",
+        When("the user sets the payment method's expiration month to {string}",
                 (String expirationMonth) -> {
                     var persona = CurrentPersona.persona;
 
@@ -118,7 +122,7 @@ public class PartyPaymentMethodSteps implements En {
                     persona.createPartyPaymentMethodForm.setExpirationMonth(expirationMonth);
                 });
 
-        When("^the user sets the payment method's expiration year to \"([^\"]*)\"$",
+        When("the user sets the payment method's expiration year to {string}",
                 (String expirationYear) -> {
                     var persona = CurrentPersona.persona;
 
@@ -127,7 +131,7 @@ public class PartyPaymentMethodSteps implements En {
                     persona.createPartyPaymentMethodForm.setExpirationYear(expirationYear);
                 });
 
-        When("^the user sets the payment method's first name to \"([^\"]*)\"$",
+        When("the user sets the payment method's first name to {string}",
                 (String firstName) -> {
                     var persona = CurrentPersona.persona;
 
@@ -136,7 +140,7 @@ public class PartyPaymentMethodSteps implements En {
                     persona.createPartyPaymentMethodForm.setFirstName(firstName);
                 });
 
-        When("^the user sets the payment method's last name to \"([^\"]*)\"$",
+        When("the user sets the payment method's last name to {string}",
                 (String lastName) -> {
                     var persona = CurrentPersona.persona;
 
@@ -145,7 +149,7 @@ public class PartyPaymentMethodSteps implements En {
                     persona.createPartyPaymentMethodForm.setLastName(lastName);
                 });
 
-        When("^the user sets the payment method's billing contact to the last postal address added$",
+        When("the user sets the payment method's billing contact to the last postal address added",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -154,7 +158,7 @@ public class PartyPaymentMethodSteps implements En {
                     persona.createPartyPaymentMethodForm.setBillingContactMechanismName(persona.lastPostalAddressContactMechanismName);
                 });
 
-        When("^the user adds the new payment method$",
+        When("the user adds the new payment method",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createPartyPaymentMethodForm = persona.createPartyPaymentMethodForm;
@@ -171,7 +175,7 @@ public class PartyPaymentMethodSteps implements En {
                     persona.createPartyPaymentMethodForm = null;
                 });
 
-        When("^the user begins editing the last payment method added$",
+        When("the user begins editing the last payment method added",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -198,7 +202,7 @@ public class PartyPaymentMethodSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the payment method$",
+        When("the user finishes editing the payment method",
                 () -> {
                     var persona = CurrentPersona.persona;
 

@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ItemWeightSteps implements En {
 
     public ItemWeightSteps() {
-        When("^the user begins entering a new item weight$",
+        When("the user begins entering a new item weight",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class ItemWeightSteps implements En {
                     persona.createItemWeightForm = ItemUtil.getHome().getCreateItemWeightForm();
                 });
 
-        When("^the user adds the new item weight$",
+        When("the user adds the new item weight",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createItemWeightForm = persona.createItemWeightForm;
@@ -53,7 +53,7 @@ public class ItemWeightSteps implements En {
                     persona.createItemWeightForm = null;
                 });
 
-        When("^the user begins deleting an item weight$",
+        When("the user begins deleting an item weight",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -64,7 +64,7 @@ public class ItemWeightSteps implements En {
                     persona.deleteItemWeightForm = ItemUtil.getHome().getDeleteItemWeightForm();
                 });
 
-        When("^the user deletes the item weight$",
+        When("the user deletes the item weight",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteItemWeightForm = persona.deleteItemWeightForm;
@@ -76,7 +76,7 @@ public class ItemWeightSteps implements En {
                     persona.deleteItemWeightForm = null;
                 });
 
-        When("^the user begins specifying an item weight to edit$",
+        When("the user begins specifying an item weight to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -87,7 +87,7 @@ public class ItemWeightSteps implements En {
                     persona.itemWeightSpec = ItemUtil.getHome().getItemWeightSpec();
                 });
 
-        When("^the user begins editing the item weight$",
+        When("the user begins editing the item weight",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.itemWeightSpec;
@@ -110,7 +110,7 @@ public class ItemWeightSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the item weight$",
+        When("the user finishes editing the item weight",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.itemWeightSpec;
@@ -130,7 +130,7 @@ public class ItemWeightSteps implements En {
                     persona.itemWeightEdit = null;
                 });
 
-        When("^the user sets the item weight's item to \"([^\"]*)\"$",
+        When("the user sets the item weight's item to {string}",
                 (String itemName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemWeightForm = persona.createItemWeightForm;
@@ -148,7 +148,7 @@ public class ItemWeightSteps implements En {
                     }
                 });
 
-        When("^the user sets the item weight's item to the last item added$",
+        When("the user sets the item weight's item to the last item added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastItemName = persona.lastItemName;
@@ -168,7 +168,7 @@ public class ItemWeightSteps implements En {
                     }
                 });
 
-        When("^the user sets the item weight's unit of measure type to \"([^\"]*)\"$",
+        When("the user sets the item weight's unit of measure type to {string}",
                 (String unitOfMeasureTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemWeightForm = persona.createItemWeightForm;
@@ -186,7 +186,7 @@ public class ItemWeightSteps implements En {
                     }
                 });
 
-        When("^the user sets the item weight's unit of measure type to the last unit of measure type added$",
+        When("the user sets the item weight's unit of measure type to the last unit of measure type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastUnitOfMeasureTypeName = persona.lastUnitOfMeasureTypeName;
@@ -206,7 +206,7 @@ public class ItemWeightSteps implements En {
                     }
                 });
 
-        When("^the user sets the item weight's item weight type to \"([^\"]*)\"$",
+        When("the user sets the item weight's item weight type to {string}",
                 (String itemWeightTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemWeightForm = persona.createItemWeightForm;
@@ -224,7 +224,7 @@ public class ItemWeightSteps implements En {
                     }
                 });
 
-        When("^the user sets the item weight's item weight type to the last item weight type added$",
+        When("the user sets the item weight's item weight type to the last item weight type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastItemWeightTypeName = persona.lastItemWeightTypeName;
@@ -244,7 +244,7 @@ public class ItemWeightSteps implements En {
                     }
                 });
 
-        When("^the user sets the item weight's weight unit of measure type to \"([^\"]*)\"$",
+        When("the user sets the item weight's weight unit of measure type to {string}",
                 (String weightUnitOfMeasureTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemWeightForm = persona.createItemWeightForm;
@@ -259,7 +259,7 @@ public class ItemWeightSteps implements En {
                     }
                 });
 
-        When("^the user sets the item weight's weight to \"([^\"]*)\"$",
+        When("the user sets the item weight's weight to {string}",
                 (String weight) -> {
                     var persona = CurrentPersona.persona;
                     var createItemWeightForm = persona.createItemWeightForm;

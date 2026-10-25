@@ -26,14 +26,14 @@ import javax.naming.NamingException;
 public class SalesOrderLineSteps implements En {
 
     public SalesOrderLineSteps() {
-        When("^the user adds ([^\"]*) ([^\"]*) to the sales order$",
+        When("the user adds {string} {string} to the sales order",
                 (String quantity, String itemName) -> {
                     var persona = CurrentPersona.persona;
 
                     createSalesOrderLine(persona, persona.lastSalesOrderName, null, itemName, null, null, quantity, null, null, null, null, null, null);
                 });
 
-        When("^the user adds ([^\"]*) ([^\"]*) to a new sales order$",
+        When("the user adds {string} {string} to a new sales order",
                 (String quantity, String itemName) -> {
                     var persona = CurrentPersona.persona;
 

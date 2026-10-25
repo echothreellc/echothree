@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class OfferItemPriceSteps implements En {
 
     public OfferItemPriceSteps() {
-        When("^the user begins entering a new offer item price$",
+        When("the user begins entering a new offer item price",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class OfferItemPriceSteps implements En {
                     persona.createOfferItemPriceForm = OfferUtil.getHome().getCreateOfferItemPriceForm();
                 });
 
-        When("^the user adds the new offer item price$",
+        When("the user adds the new offer item price",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -53,7 +53,7 @@ public class OfferItemPriceSteps implements En {
                     persona.createOfferItemPriceForm = null;
                 });
 
-        When("^the user begins deleting an offer item price$",
+        When("the user begins deleting an offer item price",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -64,7 +64,7 @@ public class OfferItemPriceSteps implements En {
                     persona.deleteOfferItemPriceForm = OfferUtil.getHome().getDeleteOfferItemPriceForm();
                 });
 
-        When("^the user deletes the offer item price$",
+        When("the user deletes the offer item price",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteOfferItemPriceForm = persona.deleteOfferItemPriceForm;
@@ -76,7 +76,7 @@ public class OfferItemPriceSteps implements En {
                     persona.deleteOfferItemPriceForm = null;
                 });
 
-        When("^the user begins specifying an offer item price to edit$",
+        When("the user begins specifying an offer item price to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -87,7 +87,7 @@ public class OfferItemPriceSteps implements En {
                     persona.offerItemPriceSpec = OfferUtil.getHome().getOfferItemPriceSpec();
                 });
 
-        When("^the user begins editing the offer item price$",
+        When("the user begins editing the offer item price",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.offerItemPriceSpec;
@@ -110,7 +110,7 @@ public class OfferItemPriceSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the offer item price$",
+        When("the user finishes editing the offer item price",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.offerItemPriceSpec;
@@ -131,7 +131,7 @@ public class OfferItemPriceSteps implements En {
                     persona.offerItemPriceEdit = null;
                 });
 
-        When("^the user sets the offer item price's offer name to \"([^\"]*)\"$",
+        When("the user sets the offer item price's offer name to {string}",
                 (String offerName) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferItemPriceForm = persona.createOfferItemPriceForm;
@@ -149,7 +149,7 @@ public class OfferItemPriceSteps implements En {
                     }
                 });
 
-        When("^the user sets the offer item price's offer name to the last offer added$",
+        When("the user sets the offer item price's offer name to the last offer added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createOfferItemPriceForm = persona.createOfferItemPriceForm;
@@ -169,7 +169,7 @@ public class OfferItemPriceSteps implements En {
                     }
                 });
 
-        When("^the user sets the offer item price's item name to \"([^\"]*)\"$",
+        When("the user sets the offer item price's item name to {string}",
                 (String itemName) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferItemPriceForm = persona.createOfferItemPriceForm;
@@ -187,7 +187,7 @@ public class OfferItemPriceSteps implements En {
                     }
                 });
 
-        When("^the user sets the offer item price's item name to the last item added$",
+        When("the user sets the offer item price's item name to the last item added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createOfferItemPriceForm = persona.createOfferItemPriceForm;
@@ -207,7 +207,7 @@ public class OfferItemPriceSteps implements En {
                     }
                 });
 
-        When("^the user sets the offer item price's inventory condition to \"([^\"]*)\"$",
+        When("the user sets the offer item price's inventory condition to {string}",
                 (String inventoryConditionName) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferItemPriceForm = persona.createOfferItemPriceForm;
@@ -225,7 +225,7 @@ public class OfferItemPriceSteps implements En {
                     }
                 });
 
-        When("^the user sets the offer item price's unit of measure type to \"([^\"]*)\"$",
+        When("the user sets the offer item price's unit of measure type to {string}",
                 (String unitOfMeasureTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferItemPriceForm = persona.createOfferItemPriceForm;
@@ -243,7 +243,7 @@ public class OfferItemPriceSteps implements En {
                     }
                 });
 
-        When("^the user sets the offer item price's currency to \"([^\"]*)\"$",
+        When("the user sets the offer item price's currency to {string}",
                 (String currencyIsoName) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferItemPriceForm = persona.createOfferItemPriceForm;
@@ -261,7 +261,7 @@ public class OfferItemPriceSteps implements En {
                     }
                 });
 
-        When("^the user sets the offer item price's unit price to \"([^\"]*)\"$",
+        When("the user sets the offer item price's unit price to {string}",
                 (String unitPrice) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferItemPriceForm = persona.createOfferItemPriceForm;
@@ -276,7 +276,7 @@ public class OfferItemPriceSteps implements En {
                     }
                 });
 
-        When("^the user sets the offer item price's minimum unit price to \"([^\"]*)\"$",
+        When("the user sets the offer item price's minimum unit price to {string}",
                 (String minimumUnitPrice) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferItemPriceForm = persona.createOfferItemPriceForm;
@@ -291,7 +291,7 @@ public class OfferItemPriceSteps implements En {
                     }
                 });
 
-        When("^the user sets the offer item price's maximum unit price to \"([^\"]*)\"$",
+        When("the user sets the offer item price's maximum unit price to {string}",
                 (String maximumUnitPrice) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferItemPriceForm = persona.createOfferItemPriceForm;
@@ -306,7 +306,7 @@ public class OfferItemPriceSteps implements En {
                     }
                 });
 
-        When("^the user sets the offer item price's unit price increment to \"([^\"]*)\"$",
+        When("the user sets the offer item price's unit price increment to {string}",
                 (String unitPriceIncrement) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferItemPriceForm = persona.createOfferItemPriceForm;

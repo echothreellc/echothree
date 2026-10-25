@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ItemUnitOfMeasureTypeSteps implements En {
 
     public ItemUnitOfMeasureTypeSteps() {
-        When("^the user begins entering a new item unit of measure type$",
+        When("the user begins entering a new item unit of measure type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class ItemUnitOfMeasureTypeSteps implements En {
                     persona.createItemUnitOfMeasureTypeForm = ItemUtil.getHome().getCreateItemUnitOfMeasureTypeForm();
                 });
 
-        When("^the user adds the new item unit of measure type$",
+        When("the user adds the new item unit of measure type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -55,7 +55,7 @@ public class ItemUnitOfMeasureTypeSteps implements En {
                     persona.createItemUnitOfMeasureTypeForm = null;
                 });
 
-        When("^the user begins deleting an item unit of measure type$",
+        When("the user begins deleting an item unit of measure type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -66,7 +66,7 @@ public class ItemUnitOfMeasureTypeSteps implements En {
                     persona.deleteItemUnitOfMeasureTypeForm = ItemUtil.getHome().getDeleteItemUnitOfMeasureTypeForm();
                 });
 
-        When("^the user deletes the item unit of measure type$",
+        When("the user deletes the item unit of measure type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteItemUnitOfMeasureTypeForm = persona.deleteItemUnitOfMeasureTypeForm;
@@ -78,7 +78,7 @@ public class ItemUnitOfMeasureTypeSteps implements En {
                     persona.deleteItemUnitOfMeasureTypeForm = null;
                 });
 
-        When("^the user begins specifying an item unit of measure type to edit$",
+        When("the user begins specifying an item unit of measure type to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -89,7 +89,7 @@ public class ItemUnitOfMeasureTypeSteps implements En {
                     persona.itemUnitOfMeasureTypeSpec = ItemUtil.getHome().getItemUnitOfMeasureTypeSpec();
                 });
 
-        When("^the user begins editing the item unit of measure type$",
+        When("the user begins editing the item unit of measure type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.itemUnitOfMeasureTypeSpec;
@@ -112,7 +112,7 @@ public class ItemUnitOfMeasureTypeSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the item unit of measure type$",
+        When("the user finishes editing the item unit of measure type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.itemUnitOfMeasureTypeSpec;
@@ -134,7 +134,7 @@ public class ItemUnitOfMeasureTypeSteps implements En {
                 });
 
 
-        When("^the user sets the item unit of measure type's item to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the item unit of measure type's item to {string}",
                 (String itemName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemUnitOfMeasureTypeForm = persona.createItemUnitOfMeasureTypeForm;
@@ -152,7 +152,7 @@ public class ItemUnitOfMeasureTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item unit of measure type's item to the last item added$",
+        When("the user sets the item unit of measure type's item to the last item added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createItemUnitOfMeasureTypeForm = persona.createItemUnitOfMeasureTypeForm;
@@ -172,7 +172,7 @@ public class ItemUnitOfMeasureTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item unit of measure type's unit of measure type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the item unit of measure type's unit of measure type to {string}",
                 (String unitOfMeasureTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemUnitOfMeasureTypeForm = persona.createItemUnitOfMeasureTypeForm;
@@ -190,8 +190,10 @@ public class ItemUnitOfMeasureTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item unit of measure type to (be|not be) the default$",
+        When("the user sets the item unit of measure type to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createItemUnitOfMeasureTypeForm = persona.createItemUnitOfMeasureTypeForm;
                     var itemUnitOfMeasureTypeEdit = persona.itemUnitOfMeasureTypeEdit;
@@ -206,7 +208,7 @@ public class ItemUnitOfMeasureTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item unit of measure type's sort order to \"([^\"]*)\"$",
+        When("the user sets the item unit of measure type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createItemUnitOfMeasureTypeForm = persona.createItemUnitOfMeasureTypeForm;

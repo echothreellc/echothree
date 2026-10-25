@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class InventoryTransactionRoleTypeSteps implements En {
 
     public InventoryTransactionRoleTypeSteps() {
-        When("^the user begins entering a new inventory transaction role type$",
+        When("the user begins entering a new inventory transaction role type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -39,7 +39,7 @@ public class InventoryTransactionRoleTypeSteps implements En {
                     persona.createInventoryTransactionRoleTypeForm = InventoryUtil.getHome().getCreateInventoryTransactionRoleTypeForm();
                 });
 
-        And("^the user adds the new inventory transaction role type",
+        And("the user adds the new inventory transaction role type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionRoleTypeForm = persona.createInventoryTransactionRoleTypeForm;
@@ -61,7 +61,7 @@ public class InventoryTransactionRoleTypeSteps implements En {
                     persona.createInventoryTransactionRoleTypeForm = null;
                 });
 
-        When("^the user begins deleting an inventory transaction role type$",
+        When("the user begins deleting an inventory transaction role type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -72,7 +72,7 @@ public class InventoryTransactionRoleTypeSteps implements En {
                     persona.deleteInventoryTransactionRoleTypeForm = InventoryUtil.getHome().getDeleteInventoryTransactionRoleTypeForm();
                 });
 
-        And("^the user deletes the inventory transaction role type",
+        And("the user deletes the inventory transaction role type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteInventoryTransactionRoleTypeForm = persona.deleteInventoryTransactionRoleTypeForm;
@@ -85,7 +85,7 @@ public class InventoryTransactionRoleTypeSteps implements En {
                     persona.deleteInventoryTransactionRoleTypeForm = null;
                 });
 
-        When("^the user begins specifying an inventory transaction role type to edit$",
+        When("the user begins specifying an inventory transaction role type to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -96,7 +96,7 @@ public class InventoryTransactionRoleTypeSteps implements En {
                     persona.inventoryTransactionRoleTypeSpec = InventoryUtil.getHome().getInventoryTransactionRoleTypeUniversalSpec();
                 });
 
-        When("^the user begins editing the inventory transaction role type$",
+        When("the user begins editing the inventory transaction role type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryTransactionRoleTypeSpec;
@@ -119,7 +119,7 @@ public class InventoryTransactionRoleTypeSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the inventory transaction role type",
+        And("the user finishes editing the inventory transaction role type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryTransactionRoleTypeSpec;
@@ -141,7 +141,7 @@ public class InventoryTransactionRoleTypeSteps implements En {
                     persona.inventoryTransactionRoleTypeEdit = null;
                 });
 
-        And("^the user sets the inventory transaction role type's inventory transaction role type name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory transaction role type's inventory transaction role type name to {string}",
                 (String inventoryTransactionRoleTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionRoleTypeForm = persona.createInventoryTransactionRoleTypeForm;
@@ -160,7 +160,7 @@ public class InventoryTransactionRoleTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction role type's inventory transaction type name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory transaction role type's inventory transaction type name to {string}",
                 (String inventoryTransactionTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createForm = persona.createInventoryTransactionRoleTypeForm;
@@ -178,8 +178,7 @@ public class InventoryTransactionRoleTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction role type's inventory transaction role type name "
-                + "to the last inventory transaction role type added$",
+        And("the user sets the inventory transaction role type's inventory transaction role type name to the last inventory transaction role type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionRoleTypeForm = persona.createInventoryTransactionRoleTypeForm;
@@ -198,7 +197,7 @@ public class InventoryTransactionRoleTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction role type's entity ref to the last inventory transaction role type added$",
+        And("the user sets the inventory transaction role type's entity ref to the last inventory transaction role type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteInventoryTransactionRoleTypeForm = persona.deleteInventoryTransactionRoleTypeForm;
@@ -214,7 +213,7 @@ public class InventoryTransactionRoleTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction role type's new inventory transaction role type name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory transaction role type's new inventory transaction role type name to {string}",
                 (String inventoryTransactionRoleTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var inventoryTransactionRoleTypeEdit = persona.inventoryTransactionRoleTypeEdit;
@@ -224,8 +223,10 @@ public class InventoryTransactionRoleTypeSteps implements En {
                     inventoryTransactionRoleTypeEdit.setInventoryTransactionRoleTypeName(inventoryTransactionRoleTypeName);
                 });
 
-        And("^the user sets the inventory transaction role type to (be|not be) the default$",
+        And("the user sets the inventory transaction role type to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionRoleTypeForm = persona.createInventoryTransactionRoleTypeForm;
                     var inventoryTransactionRoleTypeEdit = persona.inventoryTransactionRoleTypeEdit;
@@ -240,7 +241,7 @@ public class InventoryTransactionRoleTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction role type's sort order to \"([^\"]*)\"$",
+        And("the user sets the inventory transaction role type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionRoleTypeForm = persona.createInventoryTransactionRoleTypeForm;
@@ -255,7 +256,7 @@ public class InventoryTransactionRoleTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction role type's description to \"([^\"]*)\"$",
+        And("the user sets the inventory transaction role type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionRoleTypeForm = persona.createInventoryTransactionRoleTypeForm;

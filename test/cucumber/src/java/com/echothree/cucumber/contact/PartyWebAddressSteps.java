@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PartyWebAddressSteps implements En {
 
     public PartyWebAddressSteps() {
-        When("^the user begins entering a new web address$",
+        When("the user begins entering a new web address",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class PartyWebAddressSteps implements En {
                     persona.createContactWebAddressForm = ContactUtil.getHome().getCreateContactWebAddressForm();
                 });
 
-        When("^the user adds the new web address$",
+        When("the user adds the new web address",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createContactWebAddressForm = persona.createContactWebAddressForm;
@@ -53,7 +53,7 @@ public class PartyWebAddressSteps implements En {
                     persona.createContactWebAddressForm = null;
                 });
 
-        When("^the user deletes the last web address added$",
+        When("the user deletes the last web address added",
                 () -> {
                     var contactService = ContactUtil.getHome();
                     var deleteContactWebAddressForm = contactService.getDeleteContactMechanismForm();
@@ -68,7 +68,7 @@ public class PartyWebAddressSteps implements En {
                     LastCommandResult.commandResult = contactService.deleteContactMechanism(persona.userVisitPK, deleteContactWebAddressForm);
                 });
 
-        When("^the user begins specifying a web address to edit$",
+        When("the user begins specifying a web address to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -79,7 +79,7 @@ public class PartyWebAddressSteps implements En {
                     persona.partyContactMechanismSpec = ContactUtil.getHome().getPartyContactMechanismSpec();
                 });
 
-        When("^the user begins editing the web address$",
+        When("the user begins editing the web address",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.partyContactMechanismSpec;
@@ -102,7 +102,7 @@ public class PartyWebAddressSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the web address$",
+        When("the user finishes editing the web address",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.partyContactMechanismSpec;
@@ -124,7 +124,7 @@ public class PartyWebAddressSteps implements En {
                     persona.contactWebAddressEdit = null;
                 });
 
-        When("^the user sets the web address's party to the last party added$",
+        When("the user sets the web address's party to the last party added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var partyContactMechanismSpec = persona.partyContactMechanismSpec;
@@ -140,7 +140,7 @@ public class PartyWebAddressSteps implements En {
                     }
                 });
 
-        When("^the user sets the web address's contact mechanism to the last web address added$",
+        When("the user sets the web address's contact mechanism to the last web address added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var partyContactMechanismSpec = persona.partyContactMechanismSpec;
@@ -150,7 +150,7 @@ public class PartyWebAddressSteps implements En {
                     partyContactMechanismSpec.setContactMechanismName(persona.lastWebAddressContactMechanismName);
                 });
 
-        When("^the user sets the web address's description to \"([^\"]*)\"$",
+        When("the user sets the web address's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createContactWebAddressForm = persona.createContactWebAddressForm;
@@ -165,7 +165,7 @@ public class PartyWebAddressSteps implements En {
                     }
                 });
 
-        When("^the user sets the web address's url to \"([^\"]*)\"$",
+        When("the user sets the web address's url to {string}",
                 (String url) -> {
                     var persona = CurrentPersona.persona;
                     var createContactWebAddressForm = persona.createContactWebAddressForm;

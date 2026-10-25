@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TagSteps implements En {
 
     public TagSteps() {
-        When("^the user begins entering a new tag$",
+        When("the user begins entering a new tag",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -38,7 +38,7 @@ public class TagSteps implements En {
                     persona.createTagForm = TagUtil.getHome().getCreateTagForm();
                 });
 
-        When("^the user adds the new tag$",
+        When("the user adds the new tag",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -61,7 +61,7 @@ public class TagSteps implements En {
                     persona.createTagForm = null;
                 });
 
-        When("^the user begins deleting a tag$",
+        When("the user begins deleting a tag",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -72,7 +72,7 @@ public class TagSteps implements En {
                     persona.deleteTagForm = TagUtil.getHome().getDeleteTagForm();
                 });
 
-        When("^the user deletes the tag$",
+        When("the user deletes the tag",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteTagForm = persona.deleteTagForm;
@@ -84,7 +84,7 @@ public class TagSteps implements En {
                     persona.deleteTagForm = null;
                 });
 
-        When("^the user begins specifying a tag to edit$",
+        When("the user begins specifying a tag to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -95,7 +95,7 @@ public class TagSteps implements En {
                     persona.tagSpec = TagUtil.getHome().getTagSpec();
                 });
 
-        When("^the user begins editing the tag$",
+        When("the user begins editing the tag",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.tagSpec;
@@ -118,7 +118,7 @@ public class TagSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the tag$",
+        When("the user finishes editing the tag",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.tagSpec;
@@ -138,7 +138,7 @@ public class TagSteps implements En {
                     persona.tagEdit = null;
                 });
 
-        When("^the user sets the tag's tag scope name to \"([^\"]*)\"$",
+        When("the user sets the tag's tag scope name to {string}",
                 (String tagScopeName) -> {
                     var persona = CurrentPersona.persona;
                     var createTagForm = persona.createTagForm;
@@ -154,7 +154,7 @@ public class TagSteps implements En {
                     }
                 });
 
-        When("^the user sets the tag's tag scope name to the last tag scope added$",
+        When("the user sets the tag's tag scope name to the last tag scope added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createTagForm = persona.createTagForm;
@@ -170,7 +170,7 @@ public class TagSteps implements En {
                     }
                 });
         
-        When("^the user sets the tag's tag name to \"([^\"]*)\"$",
+        When("the user sets the tag's tag name to {string}",
                 (String tagName) -> {
                     var persona = CurrentPersona.persona;
                     var createTagForm = persona.createTagForm;
@@ -186,7 +186,7 @@ public class TagSteps implements En {
                     }
                 });
 
-        When("^the user sets the tag's tag name to the last tag added$",
+        When("the user sets the tag's tag name to the last tag added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createTagForm = persona.createTagForm;
@@ -202,7 +202,7 @@ public class TagSteps implements En {
                     }
                 });
 
-        When("^the user sets the tag's new tag name to \"([^\"]*)\"$",
+        When("the user sets the tag's new tag name to {string}",
                 (String tagName) -> {
                     var persona = CurrentPersona.persona;
                     var tagEdit = persona.tagEdit;

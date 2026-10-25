@@ -2,7 +2,7 @@ Feature: Employee link cardinality
   An employee wants to add, edit, and delete a link cardinality
 
   Background:
-    Given the employee Test begins using the application
+    Given the employee "Test" begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,10 +12,10 @@ Feature: Employee link cardinality
     Then no error should occur
 
   Scenario: Existing employee adds a link cardinality, edits it, and then deletes it
-    Given the employee Test begins using the application
+    Given the employee "Test" begins using the application
     When the user begins entering a new link cardinality
     And the user sets the link cardinality's link cardinality name to "CucumberLinkCardinality"
-    And the user sets the link cardinality to not be the default
+    And the user sets the link cardinality to "not be" the default
     And the user sets the link cardinality's sort order to "10"
     And the user sets the link cardinality's description to "Cucumber Link Cardinality"
     And the user adds the new link cardinality
@@ -83,7 +83,7 @@ Feature: Employee link cardinality
       | SortOrder | 99 |
       | Description | Must not replace original |
     And the user adds the new link cardinality
-    Then the execution error DuplicateLinkCardinalityName should occur
+    Then the execution error "DuplicateLinkCardinalityName" should occur
     When the user retrieves the link cardinality with:
       | LinkCardinalityName | CucumberLinkCardinalityDuplicate |
     Then no error should occur
@@ -119,7 +119,7 @@ Feature: Employee link cardinality
     Then no error should occur
     And the user sets the link cardinality's new link cardinality name to "CucumberLinkCardinalityFirst"
     And the user finishes editing the link cardinality
-    Then the execution error DuplicateLinkCardinalityName should occur
+    Then the execution error "DuplicateLinkCardinalityName" should occur
     When the user abandons editing link cardinality "CucumberLinkCardinalitySecond"
     Then no error should occur
     When the user retrieves the link cardinality with:
@@ -179,7 +179,7 @@ Feature: Employee link cardinality
   Scenario Outline: LinkCardinality unknown names are rejected by each identifying command
     When the user <operation> the link cardinality with:
       | LinkCardinalityName | CucumberLinkCardinalityMissing |
-    Then the execution error UnknownLinkCardinalityName should occur
+    Then the execution error "UnknownLinkCardinalityName" should occur
 
     Examples:
       | operation |
@@ -189,20 +189,20 @@ Feature: Employee link cardinality
   Scenario: LinkCardinality cannot make an unknown record the default
     When the user sets the default link cardinality with:
       | LinkCardinalityName | CucumberLinkCardinalityMissing |
-    Then the execution error UnknownLinkCardinalityName should occur
+    Then the execution error "UnknownLinkCardinalityName" should occur
 
   Scenario: LinkCardinality cannot lock an unknown record for editing
     When the user begins specifying a link cardinality to edit
     And the user specifies the link cardinality with:
       | LinkCardinalityName | CucumberLinkCardinalityMissing |
     And the user begins editing the link cardinality
-    Then the execution error UnknownLinkCardinalityName should occur
+    Then the execution error "UnknownLinkCardinalityName" should occur
 
   Scenario Outline: LinkCardinality alternative identifiers cannot be combined
     When the user <operation> the link cardinality with:
       | LinkCardinalityName | MANY_TO_MANY |
       | Uuid | 00000000-0000-0000-0000-000000000001 |
-    Then the execution error InvalidParameterCount should occur
+    Then the execution error "InvalidParameterCount" should occur
 
     Examples:
       | operation |
@@ -213,12 +213,12 @@ Feature: Employee link cardinality
     When the user sets the default link cardinality with:
       | LinkCardinalityName | MANY_TO_MANY |
       | Uuid | 00000000-0000-0000-0000-000000000001 |
-    Then the execution error InvalidParameterCount should occur
+    Then the execution error "InvalidParameterCount" should occur
 
   Scenario Outline: LinkCardinality destructive commands require an identifier
     When the user <operation> the link cardinality with:
       | LinkCardinalityName |  |
-    Then the execution error InvalidParameterCount should occur
+    Then the execution error "InvalidParameterCount" should occur
 
     Examples:
       | operation |
@@ -227,7 +227,7 @@ Feature: Employee link cardinality
   Scenario: LinkCardinality set default requires an identifier
     When the user sets the default link cardinality with:
       | LinkCardinalityName |  |
-    Then the execution error InvalidParameterCount should occur
+    Then the execution error "InvalidParameterCount" should occur
 
   Scenario: LinkCardinality retrieval supports entity references and deletion removes name lookups
     When the user begins entering a new link cardinality
@@ -247,7 +247,7 @@ Feature: Employee link cardinality
     Then no error should occur
     When the user retrieves the link cardinality with:
       | LinkCardinalityName | CucumberLinkCardinalityReference |
-    Then the execution error UnknownLinkCardinalityName should occur
+    Then the execution error "UnknownLinkCardinalityName" should occur
 
   Scenario: LinkCardinality default switching preserves exactly one default
     Given the user remembers the default link cardinality
@@ -298,7 +298,7 @@ Feature: Employee link cardinality
       | LinkCardinalityName | CucumberLinkCardinalityDefaultB |
     And the user begins editing the link cardinality
     Then no error should occur
-    And the user sets the link cardinality to not be the default
+    And the user sets the link cardinality to "not be" the default
     And the user finishes editing the link cardinality
     Then no error should occur
     When the user retrieves the link cardinality with:
@@ -324,11 +324,11 @@ Feature: Employee link cardinality
       | Description | Original description |
     And the user adds the new link cardinality
     Then no error should occur
-    When the user creates a link cardinality description with:
+    When the user "creates" a link cardinality description with:
       | LinkCardinalityName | <owner> |
       | LanguageIsoName | <language> |
       | Description | Description test |
-    Then the execution error <error> should occur
+    Then the execution error "<error>" should occur
     When the user deletes the link cardinality with:
       | LinkCardinalityName | CucumberLinkCardinalityOwner |
     Then no error should occur
@@ -347,7 +347,7 @@ Feature: Employee link cardinality
       | Description | Original description |
     And the user adds the new link cardinality
     Then no error should occur
-    When the user creates a link cardinality description with:
+    When the user "creates" a link cardinality description with:
       | LinkCardinalityName | <owner> |
       | LanguageIsoName | <language> |
       | Description | <description> |
@@ -371,10 +371,10 @@ Feature: Employee link cardinality
       | Description | Original description |
     And the user adds the new link cardinality
     Then no error should occur
-    When the user <operation> a link cardinality description with:
+    When the user "<operation>" a link cardinality description with:
       | LinkCardinalityName | CucumberLinkCardinalityNoDesc |
       | LanguageIsoName | fr |
-    Then the execution error UnknownLinkCardinalityDescription should occur
+    Then the execution error "UnknownLinkCardinalityDescription" should occur
     When the user deletes the link cardinality with:
       | LinkCardinalityName | CucumberLinkCardinalityNoDesc |
     Then no error should occur
@@ -397,7 +397,7 @@ Feature: Employee link cardinality
       | LinkCardinalityName | CucumberLinkCardinalityNoEditDesc |
       | LanguageIsoName | fr |
       | Description | Changed |
-    Then the execution error UnknownLinkCardinalityDescription should occur
+    Then the execution error "UnknownLinkCardinalityDescription" should occur
     When the user deletes the link cardinality with:
       | LinkCardinalityName | CucumberLinkCardinalityNoEditDesc |
     Then no error should occur
@@ -411,17 +411,17 @@ Feature: Employee link cardinality
       | Description | Original description |
     And the user adds the new link cardinality
     Then no error should occur
-    When the user creates a link cardinality description with:
+    When the user "creates" a link cardinality description with:
       | LinkCardinalityName | CucumberLinkCardinalityLocalized |
       | LanguageIsoName | en |
       | Description | Duplicate text |
-    Then the execution error DuplicateLinkCardinalityDescription should occur
-    When the user retrieves a link cardinality description with:
+    Then the execution error "DuplicateLinkCardinalityDescription" should occur
+    When the user "retrieves" a link cardinality description with:
       | LinkCardinalityName | CucumberLinkCardinalityLocalized |
       | LanguageIsoName | en |
     Then no error should occur
     And the retrieved link cardinality description is "Original description"
-    When the user creates a link cardinality description with:
+    When the user "creates" a link cardinality description with:
       | LinkCardinalityName | CucumberLinkCardinalityLocalized |
       | LanguageIsoName | fr |
       | Description | French description |
@@ -431,7 +431,7 @@ Feature: Employee link cardinality
       | LanguageIsoName | fr |
       | Description |  |
     Then the link cardinality field "Description" validation error "RequiredField" should occur
-    When the user retrieves a link cardinality description with:
+    When the user "retrieves" a link cardinality description with:
       | LinkCardinalityName | CucumberLinkCardinalityLocalized |
       | LanguageIsoName | fr |
     Then no error should occur
@@ -441,12 +441,12 @@ Feature: Employee link cardinality
       | LanguageIsoName | fr |
       | Description | Edited French description |
     Then no error should occur
-    When the user retrieves a link cardinality description with:
+    When the user "retrieves" a link cardinality description with:
       | LinkCardinalityName | CucumberLinkCardinalityLocalized |
       | LanguageIsoName | fr |
     Then no error should occur
     And the retrieved link cardinality description is "Edited French description"
-    When the user retrieves a link cardinality description with:
+    When the user "retrieves" a link cardinality description with:
       | LinkCardinalityName | CucumberLinkCardinalityLocalized |
       | LanguageIsoName | en |
     Then no error should occur
@@ -474,7 +474,7 @@ Feature: Employee link cardinality
     Then no error should occur
     When the user deletes the link cardinality with:
       | LinkCardinalityName | MANY_TO_MANY |
-    Then the execution error CannotDeleteLinkCardinalityInUse should occur
+    Then the execution error "CannotDeleteLinkCardinalityInUse" should occur
     When the user retrieves the link cardinality with:
       | LinkCardinalityName | MANY_TO_MANY |
     Then no error should occur

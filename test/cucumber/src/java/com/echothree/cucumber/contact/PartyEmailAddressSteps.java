@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PartyEmailAddressSteps implements En {
 
     public PartyEmailAddressSteps() {
-        When("^the user begins entering a new email address$",
+        When("the user begins entering a new email address",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class PartyEmailAddressSteps implements En {
                     persona.createContactEmailAddressForm = ContactUtil.getHome().getCreateContactEmailAddressForm();
                 });
 
-        When("^the user adds the new email address$",
+        When("the user adds the new email address",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createContactEmailAddressForm = persona.createContactEmailAddressForm;
@@ -53,7 +53,7 @@ public class PartyEmailAddressSteps implements En {
                     persona.createContactEmailAddressForm = null;
                 });
 
-        When("^the user deletes the last email address added$",
+        When("the user deletes the last email address added",
                 () -> {
                     var contactService = ContactUtil.getHome();
                     var deleteContactEmailAddressForm = contactService.getDeleteContactMechanismForm();
@@ -68,7 +68,7 @@ public class PartyEmailAddressSteps implements En {
                     LastCommandResult.commandResult = contactService.deleteContactMechanism(persona.userVisitPK, deleteContactEmailAddressForm);
                 });
 
-        When("^the user begins specifying an email address to edit$",
+        When("the user begins specifying an email address to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -79,7 +79,7 @@ public class PartyEmailAddressSteps implements En {
                     persona.partyContactMechanismSpec = ContactUtil.getHome().getPartyContactMechanismSpec();
                 });
 
-        When("^the user begins editing the email address$",
+        When("the user begins editing the email address",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.partyContactMechanismSpec;
@@ -102,7 +102,7 @@ public class PartyEmailAddressSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the email address$",
+        When("the user finishes editing the email address",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.partyContactMechanismSpec;
@@ -124,7 +124,7 @@ public class PartyEmailAddressSteps implements En {
                     persona.contactEmailAddressEdit = null;
                 });
 
-        When("^the user sets the email address's party to the last party added$",
+        When("the user sets the email address's party to the last party added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var partyContactMechanismSpec = persona.partyContactMechanismSpec;
@@ -140,7 +140,7 @@ public class PartyEmailAddressSteps implements En {
                     }
                 });
 
-        When("^the user sets the email address's contact mechanism to the last email address added$",
+        When("the user sets the email address's contact mechanism to the last email address added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var partyContactMechanismSpec = persona.partyContactMechanismSpec;
@@ -150,8 +150,10 @@ public class PartyEmailAddressSteps implements En {
                     partyContactMechanismSpec.setContactMechanismName(persona.lastEmailAddressContactMechanismName);
                 });
 
-        When("^the user (does|does not) allow solicitations to the email address$",
+        When("the user {string} allow solicitations to the email address",
                 (String allowSolicitation) -> {
+                    assertThat(allowSolicitation).isIn("does", "does not");
+
                     var persona = CurrentPersona.persona;
                     var createContactEmailAddressForm = persona.createContactEmailAddressForm;
                     var edit = persona.contactEmailAddressEdit;
@@ -166,7 +168,7 @@ public class PartyEmailAddressSteps implements En {
                     }
                 });
 
-        When("^the user sets the email address's description to \"([^\"]*)\"$",
+        When("the user sets the email address's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createContactEmailAddressForm = persona.createContactEmailAddressForm;
@@ -181,7 +183,7 @@ public class PartyEmailAddressSteps implements En {
                     }
                 });
 
-        When("^the user sets the email address's email address to \"([^\"]*)\"$",
+        When("the user sets the email address's email address to {string}",
                 (String emailAddress) -> {
                     var persona = CurrentPersona.persona;
                     var createContactEmailAddressForm = persona.createContactEmailAddressForm;

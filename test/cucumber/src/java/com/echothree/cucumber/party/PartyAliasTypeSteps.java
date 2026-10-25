@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PartyAliasTypeSteps implements En {
 
     public PartyAliasTypeSteps() {
-        When("^the user begins entering a new party alias type$",
+        When("the user begins entering a new party alias type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class PartyAliasTypeSteps implements En {
                     persona.createPartyAliasTypeForm = PartyUtil.getHome().getCreatePartyAliasTypeForm();
                 });
 
-        When("^the user adds the new party alias type$",
+        When("the user adds the new party alias type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createPartyAliasTypeForm = persona.createPartyAliasTypeForm;
@@ -58,7 +58,7 @@ public class PartyAliasTypeSteps implements En {
                     persona.createPartyAliasTypeForm = null;
                 });
 
-        When("^the user begins deleting a party alias type$",
+        When("the user begins deleting a party alias type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -69,7 +69,7 @@ public class PartyAliasTypeSteps implements En {
                     persona.deletePartyAliasTypeForm = PartyUtil.getHome().getDeletePartyAliasTypeForm();
                 });
 
-        When("^the user deletes the party alias type$",
+        When("the user deletes the party alias type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deletePartyAliasTypeForm = persona.deletePartyAliasTypeForm;
@@ -81,7 +81,7 @@ public class PartyAliasTypeSteps implements En {
                     persona.deletePartyAliasTypeForm = null;
                 });
 
-        When("^the user begins specifying a party alias type to edit$",
+        When("the user begins specifying a party alias type to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -92,7 +92,7 @@ public class PartyAliasTypeSteps implements En {
                     persona.partyAliasTypeSpec = PartyUtil.getHome().getPartyAliasTypeUniversalSpec();
                 });
 
-        When("^the user begins editing the party alias type$",
+        When("the user begins editing the party alias type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.partyAliasTypeSpec;
@@ -115,7 +115,7 @@ public class PartyAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the party alias type$",
+        When("the user finishes editing the party alias type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.partyAliasTypeSpec;
@@ -136,7 +136,7 @@ public class PartyAliasTypeSteps implements En {
                     persona.partyAliasTypeEdit = null;
                 });
 
-        When("^the user sets the party alias type's party type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the party alias type's party type to {string}",
                 (String partyTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createPartyAliasTypeForm = persona.createPartyAliasTypeForm;
@@ -154,7 +154,7 @@ public class PartyAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the party alias type's name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the party alias type's name to {string}",
                 (String partyAliasTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createPartyAliasTypeForm = persona.createPartyAliasTypeForm;
@@ -172,7 +172,7 @@ public class PartyAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the party alias type's name to the last party alias type added$",
+        When("the user sets the party alias type's name to the last party alias type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastPartyAliasTypeName = persona.lastPartyAliasTypeName;
@@ -188,7 +188,7 @@ public class PartyAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the party alias type's validation pattern to \"([^\"]*)\"$",
+        When("the user sets the party alias type's validation pattern to {string}",
                 (String validationPattern) -> {
                     var persona = CurrentPersona.persona;
                     var createPartyAliasTypeForm = persona.createPartyAliasTypeForm;
@@ -203,8 +203,10 @@ public class PartyAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the party alias type to (be|not be) the default$",
+        When("the user sets the party alias type to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createPartyAliasTypeForm = persona.createPartyAliasTypeForm;
                     var partyAliasTypeEdit = persona.partyAliasTypeEdit;
@@ -219,7 +221,7 @@ public class PartyAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the party alias type's sort order to \"([^\"]*)\"$",
+        When("the user sets the party alias type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createPartyAliasTypeForm = persona.createPartyAliasTypeForm;
@@ -234,7 +236,7 @@ public class PartyAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the party alias type's description to \"([^\"]*)\"$",
+        When("the user sets the party alias type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createPartyAliasTypeForm = persona.createPartyAliasTypeForm;

@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class InventoryTransactionTypeSteps implements En {
 
     public InventoryTransactionTypeSteps() {
-        When("^the user begins entering a new inventory transaction type$",
+        When("the user begins entering a new inventory transaction type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class InventoryTransactionTypeSteps implements En {
                     persona.createInventoryTransactionTypeForm = InventoryUtil.getHome().getCreateInventoryTransactionTypeForm();
                 });
 
-        And("^the user adds the new inventory transaction type",
+        And("the user adds the new inventory transaction type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionTypeForm = persona.createInventoryTransactionTypeForm;
@@ -58,7 +58,7 @@ public class InventoryTransactionTypeSteps implements En {
                     persona.createInventoryTransactionTypeForm = null;
                 });
 
-        When("^the user begins deleting an inventory transaction type$",
+        When("the user begins deleting an inventory transaction type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -69,7 +69,7 @@ public class InventoryTransactionTypeSteps implements En {
                     persona.deleteInventoryTransactionTypeForm = InventoryUtil.getHome().getDeleteInventoryTransactionTypeForm();
                 });
 
-        And("^the user deletes the inventory transaction type",
+        And("the user deletes the inventory transaction type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteInventoryTransactionTypeForm = persona.deleteInventoryTransactionTypeForm;
@@ -82,7 +82,7 @@ public class InventoryTransactionTypeSteps implements En {
                     persona.deleteInventoryTransactionTypeForm = null;
                 });
 
-        When("^the user begins specifying an inventory transaction type to edit$",
+        When("the user begins specifying an inventory transaction type to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -93,7 +93,7 @@ public class InventoryTransactionTypeSteps implements En {
                     persona.inventoryTransactionTypeSpec = InventoryUtil.getHome().getInventoryTransactionTypeUniversalSpec();
                 });
 
-        When("^the user begins editing the inventory transaction type$",
+        When("the user begins editing the inventory transaction type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryTransactionTypeSpec;
@@ -116,7 +116,7 @@ public class InventoryTransactionTypeSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the inventory transaction type",
+        And("the user finishes editing the inventory transaction type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryTransactionTypeSpec;
@@ -138,7 +138,7 @@ public class InventoryTransactionTypeSteps implements En {
                     persona.inventoryTransactionTypeEdit = null;
                 });
 
-        And("^the user abandons editing the last inventory transaction type added$",
+        And("the user abandons editing the last inventory transaction type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = InventoryUtil.getHome().getInventoryTransactionTypeUniversalSpec();
@@ -151,7 +151,7 @@ public class InventoryTransactionTypeSteps implements En {
                     LastCommandResult.commandResult = InventoryUtil.getHome().editInventoryTransactionType(persona.userVisitPK, commandForm);
                 });
 
-        And("^the user sets the inventory transaction type's inventory transaction type name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory transaction type's inventory transaction type name to {string}",
                 (String inventoryTransactionTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionTypeForm = persona.createInventoryTransactionTypeForm;
@@ -170,7 +170,7 @@ public class InventoryTransactionTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction type's inventory transaction type name to the last inventory transaction type added$",
+        And("the user sets the inventory transaction type's inventory transaction type name to the last inventory transaction type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionTypeForm = persona.createInventoryTransactionTypeForm;
@@ -189,7 +189,7 @@ public class InventoryTransactionTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction type's entity ref to the last inventory transaction added$",
+        And("the user sets the inventory transaction type's entity ref to the last inventory transaction added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteInventoryTransactionTypeForm = persona.deleteInventoryTransactionTypeForm;
@@ -205,7 +205,7 @@ public class InventoryTransactionTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction type's new inventory transaction type name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory transaction type's new inventory transaction type name to {string}",
                 (String inventoryTransactionTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var inventoryTransactionTypeEdit = persona.inventoryTransactionTypeEdit;
@@ -215,7 +215,7 @@ public class InventoryTransactionTypeSteps implements En {
                     inventoryTransactionTypeEdit.setInventoryTransactionTypeName(inventoryTransactionTypeName);
                 });
 
-        And("^the user sets the inventory transaction type's inventory transfer transaction workflow name to \"([^\"]*)\"$",
+        And("the user sets the inventory transaction type's inventory transfer transaction workflow name to {string}",
                 (String workflowName) -> {
                     var persona = CurrentPersona.persona;
                     var createForm = persona.createInventoryTransactionTypeForm;
@@ -230,7 +230,7 @@ public class InventoryTransactionTypeSteps implements En {
                     }
                 });
 
-        Then("^the inventory transaction type's inventory transfer transaction workflow name should be \"([^\"]*)\"$",
+        Then("the inventory transaction type's inventory transfer transaction workflow name should be {string}",
                 (String workflowName) -> {
                     var persona = CurrentPersona.persona;
                     var form = InventoryUtil.getHome().getGetInventoryTransactionTypeForm();
@@ -252,7 +252,7 @@ public class InventoryTransactionTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction type's inventory transfer transaction workflow entrance name to \"([^\"]*)\"$",
+        And("the user sets the inventory transaction type's inventory transfer transaction workflow entrance name to {string}",
                 (String workflowEntranceName) -> {
                     var persona = CurrentPersona.persona;
                     var createForm = persona.createInventoryTransactionTypeForm;
@@ -267,7 +267,7 @@ public class InventoryTransactionTypeSteps implements En {
                     }
                 });
 
-        Then("^the inventory transaction type's inventory transfer transaction workflow entrance name should be \"([^\"]*)\"$",
+        Then("the inventory transaction type's inventory transfer transaction workflow entrance name should be {string}",
                 (String workflowEntranceName) -> {
                     var persona = CurrentPersona.persona;
                     var form = InventoryUtil.getHome().getGetInventoryTransactionTypeForm();
@@ -288,7 +288,7 @@ public class InventoryTransactionTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction type's inventory transaction workflow name to \"([^\"]*)\"$",
+        And("the user sets the inventory transaction type's inventory transaction workflow name to {string}",
                 (String workflowName) -> {
                     var persona = CurrentPersona.persona;
                     var createForm = persona.createInventoryTransactionTypeForm;
@@ -303,7 +303,7 @@ public class InventoryTransactionTypeSteps implements En {
                     }
                 });
 
-        Then("^the inventory transaction type's inventory transaction workflow name should be \"([^\"]*)\"$",
+        Then("the inventory transaction type's inventory transaction workflow name should be {string}",
                 (String workflowName) -> {
                     var persona = CurrentPersona.persona;
                     var form = InventoryUtil.getHome().getGetInventoryTransactionTypeForm();
@@ -324,7 +324,7 @@ public class InventoryTransactionTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction type's inventory transaction workflow entrance name to \"([^\"]*)\"$",
+        And("the user sets the inventory transaction type's inventory transaction workflow entrance name to {string}",
                 (String workflowEntranceName) -> {
                     var persona = CurrentPersona.persona;
                     var createForm = persona.createInventoryTransactionTypeForm;
@@ -339,7 +339,7 @@ public class InventoryTransactionTypeSteps implements En {
                     }
                 });
 
-        Then("^the inventory transaction type's inventory transaction workflow entrance name should be \"([^\"]*)\"$",
+        Then("the inventory transaction type's inventory transaction workflow entrance name should be {string}",
                 (String workflowEntranceName) -> {
                     var persona = CurrentPersona.persona;
                     var form = InventoryUtil.getHome().getGetInventoryTransactionTypeForm();
@@ -361,7 +361,7 @@ public class InventoryTransactionTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction type's inventory transfer transaction sequence type name to \"([^\"]*)\"$",
+        And("the user sets the inventory transaction type's inventory transfer transaction sequence type name to {string}",
                 (String sequenceTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createForm = persona.createInventoryTransactionTypeForm;
@@ -376,7 +376,7 @@ public class InventoryTransactionTypeSteps implements En {
                     }
                 });
 
-        Then("^the inventory transaction type's inventory transfer transaction sequence type name should be \"([^\"]*)\"$",
+        Then("the inventory transaction type's inventory transfer transaction sequence type name should be {string}",
                 (String sequenceTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var form = InventoryUtil.getHome().getGetInventoryTransactionTypeForm();
@@ -395,7 +395,7 @@ public class InventoryTransactionTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction type's inventory transaction sequence type name to \"([^\"]*)\"$",
+        And("the user sets the inventory transaction type's inventory transaction sequence type name to {string}",
                 (String sequenceTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createForm = persona.createInventoryTransactionTypeForm;
@@ -410,7 +410,7 @@ public class InventoryTransactionTypeSteps implements En {
                     }
                 });
 
-        Then("^the inventory transaction type's inventory transaction sequence type name should be \"([^\"]*)\"$",
+        Then("the inventory transaction type's inventory transaction sequence type name should be {string}",
                 (String sequenceTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var form = InventoryUtil.getHome().getGetInventoryTransactionTypeForm();
@@ -429,8 +429,10 @@ public class InventoryTransactionTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction type to (be|not be) the default$",
+        And("the user sets the inventory transaction type to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionTypeForm = persona.createInventoryTransactionTypeForm;
                     var inventoryTransactionTypeEdit = persona.inventoryTransactionTypeEdit;
@@ -445,7 +447,7 @@ public class InventoryTransactionTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction type's sort order to \"([^\"]*)\"$",
+        And("the user sets the inventory transaction type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionTypeForm = persona.createInventoryTransactionTypeForm;
@@ -460,7 +462,7 @@ public class InventoryTransactionTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction type's description to \"([^\"]*)\"$",
+        And("the user sets the inventory transaction type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionTypeForm = persona.createInventoryTransactionTypeForm;

@@ -25,7 +25,7 @@ import io.cucumber.java8.En;
 public class PreferredDateTimeFormatSteps implements En {
 
     public PreferredDateTimeFormatSteps() {
-        When("^the user sets their preferred date time format to \"([^\"]*)\"$",
+        When("the user sets their preferred date time format to {string}",
                 (String dateTimeFormatName) -> {
                     UserService userService = UserUtil.getHome();
                     var userVisitPreferredDateTimeFormatForm = userService.getSetUserVisitPreferredDateTimeFormatForm();

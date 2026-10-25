@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class InventoryTransactionReasonSteps implements En {
 
     public InventoryTransactionReasonSteps() {
-        When("^the user begins entering a new inventory transaction reason$",
+        When("the user begins entering a new inventory transaction reason",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -39,7 +39,7 @@ public class InventoryTransactionReasonSteps implements En {
                     persona.createInventoryTransactionReasonForm = InventoryUtil.getHome().getCreateInventoryTransactionReasonForm();
                 });
 
-        And("^the user adds the new inventory transaction reason",
+        And("the user adds the new inventory transaction reason",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionReasonForm = persona.createInventoryTransactionReasonForm;
@@ -61,7 +61,7 @@ public class InventoryTransactionReasonSteps implements En {
                     persona.createInventoryTransactionReasonForm = null;
                 });
 
-        When("^the user begins deleting an inventory transaction reason$",
+        When("the user begins deleting an inventory transaction reason",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -72,7 +72,7 @@ public class InventoryTransactionReasonSteps implements En {
                     persona.deleteInventoryTransactionReasonForm = InventoryUtil.getHome().getDeleteInventoryTransactionReasonForm();
                 });
 
-        And("^the user deletes the inventory transaction reason",
+        And("the user deletes the inventory transaction reason",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteInventoryTransactionReasonForm = persona.deleteInventoryTransactionReasonForm;
@@ -85,7 +85,7 @@ public class InventoryTransactionReasonSteps implements En {
                     persona.deleteInventoryTransactionReasonForm = null;
                 });
 
-        When("^the user begins specifying an inventory transaction reason to edit$",
+        When("the user begins specifying an inventory transaction reason to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -96,7 +96,7 @@ public class InventoryTransactionReasonSteps implements En {
                     persona.inventoryTransactionReasonSpec = InventoryUtil.getHome().getInventoryTransactionReasonUniversalSpec();
                 });
 
-        When("^the user begins editing the inventory transaction reason$",
+        When("the user begins editing the inventory transaction reason",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryTransactionReasonSpec;
@@ -119,7 +119,7 @@ public class InventoryTransactionReasonSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the inventory transaction reason",
+        And("the user finishes editing the inventory transaction reason",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryTransactionReasonSpec;
@@ -141,7 +141,7 @@ public class InventoryTransactionReasonSteps implements En {
                     persona.inventoryTransactionReasonEdit = null;
                 });
 
-        And("^the user sets the inventory transaction reason's inventory transaction reason name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory transaction reason's inventory transaction reason name to {string}",
                 (String inventoryTransactionReasonName) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionReasonForm = persona.createInventoryTransactionReasonForm;
@@ -160,7 +160,7 @@ public class InventoryTransactionReasonSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction reason's inventory transaction type name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory transaction reason's inventory transaction type name to {string}",
                 (String inventoryTransactionTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createForm = persona.createInventoryTransactionReasonForm;
@@ -178,8 +178,7 @@ public class InventoryTransactionReasonSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction reason's inventory transaction reason name "
-                + "to the last inventory transaction reason added$",
+        And("the user sets the inventory transaction reason's inventory transaction reason name to the last inventory transaction reason added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionReasonForm = persona.createInventoryTransactionReasonForm;
@@ -198,7 +197,7 @@ public class InventoryTransactionReasonSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction reason's entity ref to the last inventory transaction reason added$",
+        And("the user sets the inventory transaction reason's entity ref to the last inventory transaction reason added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteInventoryTransactionReasonForm = persona.deleteInventoryTransactionReasonForm;
@@ -214,7 +213,7 @@ public class InventoryTransactionReasonSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction reason's new inventory transaction reason name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory transaction reason's new inventory transaction reason name to {string}",
                 (String inventoryTransactionReasonName) -> {
                     var persona = CurrentPersona.persona;
                     var inventoryTransactionReasonEdit = persona.inventoryTransactionReasonEdit;
@@ -224,8 +223,10 @@ public class InventoryTransactionReasonSteps implements En {
                     inventoryTransactionReasonEdit.setInventoryTransactionReasonName(inventoryTransactionReasonName);
                 });
 
-        And("^the user sets the inventory transaction reason to (be|not be) the default$",
+        And("the user sets the inventory transaction reason to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionReasonForm = persona.createInventoryTransactionReasonForm;
                     var inventoryTransactionReasonEdit = persona.inventoryTransactionReasonEdit;
@@ -240,7 +241,7 @@ public class InventoryTransactionReasonSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction reason's inventory disposition name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory transaction reason's inventory disposition name to {string}",
                 (String inventoryDispositionName) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionReasonForm = persona.createInventoryTransactionReasonForm;
@@ -255,7 +256,7 @@ public class InventoryTransactionReasonSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction reason's sort order to \"([^\"]*)\"$",
+        And("the user sets the inventory transaction reason's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionReasonForm = persona.createInventoryTransactionReasonForm;
@@ -270,7 +271,7 @@ public class InventoryTransactionReasonSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction reason's description to \"([^\"]*)\"$",
+        And("the user sets the inventory transaction reason's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionReasonForm = persona.createInventoryTransactionReasonForm;

@@ -39,7 +39,7 @@ public class LinkDirectionalitySteps implements En {
     private String originalDefaultName;
 
     public LinkDirectionalitySteps() {
-        When("^the user begins entering a new link directionality$",
+        When("the user begins entering a new link directionality",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -50,7 +50,7 @@ public class LinkDirectionalitySteps implements En {
                     persona.createLinkDirectionalityForm = CoreUtil.getHome().getCreateLinkDirectionalityForm();
                 });
 
-        And("^the user adds the new link directionality",
+        And("the user adds the new link directionality",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createLinkDirectionalityForm = persona.createLinkDirectionalityForm;
@@ -70,7 +70,7 @@ public class LinkDirectionalitySteps implements En {
                     persona.createLinkDirectionalityForm = null;
                 });
 
-        When("^the user begins deleting a link directionality$",
+        When("the user begins deleting a link directionality",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -81,7 +81,7 @@ public class LinkDirectionalitySteps implements En {
                     persona.deleteLinkDirectionalityForm = CoreUtil.getHome().getDeleteLinkDirectionalityForm();
                 });
 
-        And("^the user deletes the link directionality",
+        And("the user deletes the link directionality",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteLinkDirectionalityForm = persona.deleteLinkDirectionalityForm;
@@ -93,7 +93,7 @@ public class LinkDirectionalitySteps implements En {
                     persona.deleteLinkDirectionalityForm = null;
                 });
 
-        When("^the user begins specifying a link directionality to edit$",
+        When("the user begins specifying a link directionality to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -104,7 +104,7 @@ public class LinkDirectionalitySteps implements En {
                     persona.linkDirectionalitySpec = CoreUtil.getHome().getLinkDirectionalityUniversalSpec();
                 });
 
-        When("^the user begins editing the link directionality$",
+        When("the user begins editing the link directionality",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.linkDirectionalitySpec;
@@ -129,7 +129,7 @@ public class LinkDirectionalitySteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the link directionality",
+        And("the user finishes editing the link directionality",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.linkDirectionalitySpec;
@@ -151,7 +151,7 @@ public class LinkDirectionalitySteps implements En {
                     persona.linkDirectionalityEdit = null;
                 });
 
-        And("^the user sets the link directionality's link directionality name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the link directionality's link directionality name to {string}",
                 (String linkDirectionalityName) -> {
                     var persona = CurrentPersona.persona;
                     var createLinkDirectionalityForm = persona.createLinkDirectionalityForm;
@@ -170,7 +170,7 @@ public class LinkDirectionalitySteps implements En {
                     }
                 });
 
-        And("^the user sets the link directionality's link directionality name to the last link directionality added$",
+        And("the user sets the link directionality's link directionality name to the last link directionality added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createLinkDirectionalityForm = persona.createLinkDirectionalityForm;
@@ -189,7 +189,7 @@ public class LinkDirectionalitySteps implements En {
                     }
                 });
 
-        And("^the user sets the link directionality's new link directionality name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the link directionality's new link directionality name to {string}",
                 (String linkDirectionalityName) -> {
                     var persona = CurrentPersona.persona;
                     var linkDirectionalityEdit = persona.linkDirectionalityEdit;
@@ -199,8 +199,10 @@ public class LinkDirectionalitySteps implements En {
                     linkDirectionalityEdit.setLinkDirectionalityName(linkDirectionalityName);
                 });
 
-        And("^the user sets the link directionality to (be|not be) the default$",
+        And("the user sets the link directionality to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createLinkDirectionalityForm = persona.createLinkDirectionalityForm;
                     var linkDirectionalityEdit = persona.linkDirectionalityEdit;
@@ -215,7 +217,7 @@ public class LinkDirectionalitySteps implements En {
                     }
                 });
 
-        And("^the user sets the link directionality's sort order to \"([^\"]*)\"$",
+        And("the user sets the link directionality's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createLinkDirectionalityForm = persona.createLinkDirectionalityForm;
@@ -230,7 +232,7 @@ public class LinkDirectionalitySteps implements En {
                     }
                 });
 
-        And("^the user sets the link directionality's description to \"([^\"]*)\"$",
+        And("the user sets the link directionality's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createLinkDirectionalityForm = persona.createLinkDirectionalityForm;
@@ -361,7 +363,9 @@ public class LinkDirectionalitySteps implements En {
             persona.linkDirectionalityEdit = null;
         });
 
-        When("^the user (creates|retrieves|deletes) a link directionality description with:$", (String operation, DataTable values) -> {
+        When("the user {string} a link directionality description with:", (String operation, DataTable values) -> {
+            assertThat(operation).isIn("creates", "retrieves", "deletes");
+
             var persona = CurrentPersona.persona;
             var fields = values.asMap(String.class, String.class);
 

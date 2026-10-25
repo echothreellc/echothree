@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class EntityTypeSteps implements En {
 
     public EntityTypeSteps() {
-        When("^the user begins entering a new entity type$",
+        When("the user begins entering a new entity type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class EntityTypeSteps implements En {
                     persona.createEntityTypeForm = CoreUtil.getHome().getCreateEntityTypeForm();
                 });
 
-        When("^the user adds the new entity type$",
+        When("the user adds the new entity type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createEntityTypeForm = persona.createEntityTypeForm;
@@ -54,7 +54,7 @@ public class EntityTypeSteps implements En {
                     persona.createEntityTypeForm = null;
                 });
 
-        When("^the user begins deleting an entity type$",
+        When("the user begins deleting an entity type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -65,7 +65,7 @@ public class EntityTypeSteps implements En {
                     persona.deleteEntityTypeForm = CoreUtil.getHome().getDeleteEntityTypeForm();
                 });
 
-        When("^the user deletes the entity type$",
+        When("the user deletes the entity type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteEntityTypeForm = persona.deleteEntityTypeForm;
@@ -77,7 +77,7 @@ public class EntityTypeSteps implements En {
                     persona.deleteEntityTypeForm = null;
                 });
 
-        When("^the user begins specifying an entity type to edit$",
+        When("the user begins specifying an entity type to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -88,7 +88,7 @@ public class EntityTypeSteps implements En {
                     persona.entityTypeSpec = CoreUtil.getHome().getEntityTypeUniversalSpec();
                 });
 
-        When("^the user begins editing the entity type$",
+        When("the user begins editing the entity type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.entityTypeSpec;
@@ -111,7 +111,7 @@ public class EntityTypeSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the entity type$",
+        When("the user finishes editing the entity type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.entityTypeSpec;
@@ -132,7 +132,7 @@ public class EntityTypeSteps implements En {
                     persona.entityTypeEdit = null;
                 });
         
-        When("^the user sets the entity type's component vendor to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the entity type's component vendor to {string}",
                 (String componentVendorName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityTypeForm = persona.createEntityTypeForm;
@@ -150,7 +150,7 @@ public class EntityTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity type's entity type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the entity type's entity type to {string}",
                 (String entityTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityTypeForm = persona.createEntityTypeForm;
@@ -168,8 +168,10 @@ public class EntityTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity type to (keep|not keep) all history$",
+        When("the user sets the entity type to {string} all history",
                 (String keepAllHistory) -> {
+                    assertThat(keepAllHistory).isIn("keep", "not keep");
+
                     var persona = CurrentPersona.persona;
                     var createEntityTypeForm = persona.createEntityTypeForm;
                     var entityTypeEdit = persona.entityTypeEdit;
@@ -184,7 +186,7 @@ public class EntityTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity type's lock timeout to \"([^\"]*)\"$",
+        When("the user sets the entity type's lock timeout to {string}",
                 (String lockTimeout) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityTypeForm = persona.createEntityTypeForm;
@@ -199,7 +201,7 @@ public class EntityTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity type's lock timeout unit of measure type name to \"([^\"]*)\"$",
+        When("the user sets the entity type's lock timeout unit of measure type name to {string}",
                 (String lockTimeoutUnitOfMeasureTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityTypeForm = persona.createEntityTypeForm;
@@ -214,8 +216,10 @@ public class EntityTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity type to (be|not be) extensible$",
+        When("the user sets the entity type to {string} extensible",
                 (String isExtensible) -> {
+                    assertThat(isExtensible).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createEntityTypeForm = persona.createEntityTypeForm;
                     var entityTypeEdit = persona.entityTypeEdit;
@@ -230,7 +234,7 @@ public class EntityTypeSteps implements En {
                     }
                 });
         
-        When("^the user sets the entity type's sort order to \"([^\"]*)\"$",
+        When("the user sets the entity type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityTypeForm = persona.createEntityTypeForm;
@@ -245,7 +249,7 @@ public class EntityTypeSteps implements En {
                     }
                 });
         
-        When("^the user sets the entity type's description to \"([^\"]*)\"$",
+        When("the user sets the entity type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityTypeForm = persona.createEntityTypeForm;
@@ -260,7 +264,7 @@ public class EntityTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity type's component vendor to the last component vendor added$",
+        When("the user sets the entity type's component vendor to the last component vendor added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastComponentVendorName = persona.lastComponentVendorName;
@@ -279,7 +283,7 @@ public class EntityTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity type's name to the last entity type added$",
+        When("the user sets the entity type's name to the last entity type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastEntityTypeName = persona.lastEntityTypeName;

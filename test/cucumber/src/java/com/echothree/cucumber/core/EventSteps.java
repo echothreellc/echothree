@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class EventSteps implements En {
 
     public EventSteps() {
-        When("^the user begins entering a new event$",
+        When("the user begins entering a new event",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -34,7 +34,7 @@ public class EventSteps implements En {
                     persona.sendEventForm = CoreUtil.getHome().getSendEventForm();
                 });
 
-        When("^the user sends the new event$",
+        When("the user sends the new event",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var sendEventForm = persona.sendEventForm;
@@ -46,7 +46,7 @@ public class EventSteps implements En {
                     persona.sendEventForm = null;
                 });
 
-        When("^the user sets the event's entity instance to the last entity instance added$",
+        When("the user sets the event's entity instance to the last entity instance added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var sendEventForm = persona.sendEventForm;
@@ -57,7 +57,7 @@ public class EventSteps implements En {
                     sendEventForm.setEntityRef(lastEntityRef);
                 });
 
-        When("^the user sets the event's event type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the event's event type to {string}",
                 (String eventTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var sendEventForm = persona.sendEventForm;

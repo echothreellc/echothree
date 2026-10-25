@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ContentCategoryItemSteps implements En {
 
     public ContentCategoryItemSteps() {
-        When("^the user begins entering a new content category item$",
+        When("the user begins entering a new content category item",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -38,7 +38,7 @@ public class ContentCategoryItemSteps implements En {
                     persona.createContentCategoryItemForm = ContentUtil.getHome().getCreateContentCategoryItemForm();
                 });
 
-        When("^the user adds the new content category item$",
+        When("the user adds the new content category item",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -54,7 +54,7 @@ public class ContentCategoryItemSteps implements En {
                     persona.createContentCategoryItemForm = null;
                 });
 
-        When("^the user begins deleting a content category item$",
+        When("the user begins deleting a content category item",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -65,7 +65,7 @@ public class ContentCategoryItemSteps implements En {
                     persona.deleteContentCategoryItemForm = ContentUtil.getHome().getDeleteContentCategoryItemForm();
                 });
 
-        When("^the user deletes the content category item$",
+        When("the user deletes the content category item",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteContentCategoryItemForm = persona.deleteContentCategoryItemForm;
@@ -77,7 +77,7 @@ public class ContentCategoryItemSteps implements En {
                     persona.deleteContentCategoryItemForm = null;
                 });
 
-        When("^the user begins specifying a content category item to edit$",
+        When("the user begins specifying a content category item to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -88,7 +88,7 @@ public class ContentCategoryItemSteps implements En {
                     persona.contentCategoryItemSpec = ContentUtil.getHome().getContentCategoryItemSpec();
                 });
 
-        When("^the user begins editing the content category item$",
+        When("the user begins editing the content category item",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.contentCategoryItemSpec;
@@ -111,7 +111,7 @@ public class ContentCategoryItemSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the content category item$",
+        When("the user finishes editing the content category item",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.contentCategoryItemSpec;
@@ -131,7 +131,7 @@ public class ContentCategoryItemSteps implements En {
                     persona.contentCategoryItemEdit = null;
                 });
 
-        When("^the user sets the content category item's content collection name to \"([^\"]*)\"$",
+        When("the user sets the content category item's content collection name to {string}",
                 (String contentCollectionName) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCategoryItemForm = persona.createContentCategoryItemForm;
@@ -150,7 +150,7 @@ public class ContentCategoryItemSteps implements En {
                     }
                 });
 
-        When("^the user sets the content category item's content catalog name to \"([^\"]*)\"$",
+        When("the user sets the content category item's content catalog name to {string}",
                 (String contentCatalogName) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCategoryItemForm = persona.createContentCategoryItemForm;
@@ -169,7 +169,7 @@ public class ContentCategoryItemSteps implements En {
                     }
                 });
 
-        When("^the user sets the content category item's content category name to \"([^\"]*)\"$",
+        When("the user sets the content category item's content category name to {string}",
                 (String contentCategoryName) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCategoryItemForm = persona.createContentCategoryItemForm;
@@ -188,7 +188,7 @@ public class ContentCategoryItemSteps implements En {
                     }
                 });
 
-        When("^the user sets the content category item's item name to \"([^\"]*)\"$",
+        When("the user sets the content category item's item name to {string}",
                 (String itemName) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCategoryItemForm = persona.createContentCategoryItemForm;
@@ -207,7 +207,7 @@ public class ContentCategoryItemSteps implements En {
                     }
                 });
 
-        When("^the user sets the content category item's inventory condition name to \"([^\"]*)\"$",
+        When("the user sets the content category item's inventory condition name to {string}",
                 (String inventoryConditionName) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCategoryItemForm = persona.createContentCategoryItemForm;
@@ -226,7 +226,7 @@ public class ContentCategoryItemSteps implements En {
                     }
                 });
 
-        When("^the user sets the content category item's unit of measure type name to \"([^\"]*)\"$",
+        When("the user sets the content category item's unit of measure type name to {string}",
                 (String unitOfMeasureTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCategoryItemForm = persona.createContentCategoryItemForm;
@@ -245,7 +245,7 @@ public class ContentCategoryItemSteps implements En {
                     }
                 });
 
-        When("^the user sets the content category item's currency iso name to \"([^\"]*)\"$",
+        When("the user sets the content category item's currency iso name to {string}",
                 (String currencyIsoName) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCategoryItemForm = persona.createContentCategoryItemForm;
@@ -264,8 +264,10 @@ public class ContentCategoryItemSteps implements En {
                     }
                 });
 
-        When("^the user sets the content category item to (be|not be) the default$",
+        When("the user sets the content category item to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createContentCategoryItemForm = persona.createContentCategoryItemForm;
                     var contentCategoryItemEdit = persona.contentCategoryItemEdit;
@@ -276,7 +278,7 @@ public class ContentCategoryItemSteps implements En {
                     Objects.requireNonNullElse(createContentCategoryItemForm, contentCategoryItemEdit).setIsDefault(isDefault);
                 });
 
-        When("^the user sets the content category item's sort order to \"([^\"]*)\"$",
+        When("the user sets the content category item's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCategoryItemForm = persona.createContentCategoryItemForm;

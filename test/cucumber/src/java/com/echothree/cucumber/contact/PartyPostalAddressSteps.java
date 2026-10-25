@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PartyPostalAddressSteps implements En {
 
     public PartyPostalAddressSteps() {
-        When("^the user begins entering a new postal address$",
+        When("the user begins entering a new postal address",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class PartyPostalAddressSteps implements En {
                     persona.createContactPostalAddressForm = ContactUtil.getHome().getCreateContactPostalAddressForm();
                 });
 
-        When("^the user adds the new postal address$",
+        When("the user adds the new postal address",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createContactPostalAddressForm = persona.createContactPostalAddressForm;
@@ -53,7 +53,7 @@ public class PartyPostalAddressSteps implements En {
                     persona.createContactPostalAddressForm = null;
                 });
 
-        When("^the user deletes the last postal address added$",
+        When("the user deletes the last postal address added",
                 () -> {
                     var contactService = ContactUtil.getHome();
                     var deleteContactPostalAddressForm = contactService.getDeleteContactMechanismForm();
@@ -68,7 +68,7 @@ public class PartyPostalAddressSteps implements En {
                     LastCommandResult.commandResult = contactService.deleteContactMechanism(persona.userVisitPK, deleteContactPostalAddressForm);
                 });
 
-        When("^the user begins specifying a postal address to edit$",
+        When("the user begins specifying a postal address to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -79,7 +79,7 @@ public class PartyPostalAddressSteps implements En {
                     persona.partyContactMechanismSpec = ContactUtil.getHome().getPartyContactMechanismSpec();
                 });
 
-        When("^the user begins editing the postal address$",
+        When("the user begins editing the postal address",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.partyContactMechanismSpec;
@@ -102,7 +102,7 @@ public class PartyPostalAddressSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the postal address$",
+        When("the user finishes editing the postal address",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.partyContactMechanismSpec;
@@ -124,7 +124,7 @@ public class PartyPostalAddressSteps implements En {
                     persona.contactPostalAddressEdit = null;
                 });
 
-        When("^the user sets the postal address's party to the last party added$",
+        When("the user sets the postal address's party to the last party added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var partyContactMechanismSpec = persona.partyContactMechanismSpec;
@@ -140,7 +140,7 @@ public class PartyPostalAddressSteps implements En {
                     }
                 });
 
-        When("^the user sets the postal address's contact mechanism to the last postal address added$",
+        When("the user sets the postal address's contact mechanism to the last postal address added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var partyContactMechanismSpec = persona.partyContactMechanismSpec;
@@ -150,7 +150,7 @@ public class PartyPostalAddressSteps implements En {
                     partyContactMechanismSpec.setContactMechanismName(persona.lastPostalAddressContactMechanismName);
                 });
 
-        When("^the user sets the postal address's first name to \"([^\"]*)\"$",
+        When("the user sets the postal address's first name to {string}",
                 (String firstName) -> {
                     var persona = CurrentPersona.persona;
                     var createContactPostalAddressForm = persona.createContactPostalAddressForm;
@@ -165,7 +165,7 @@ public class PartyPostalAddressSteps implements En {
                     }
                 });
 
-        When("^the user sets the postal address's last name to \"([^\"]*)\"$",
+        When("the user sets the postal address's last name to {string}",
                 (String lastName) -> {
                     var persona = CurrentPersona.persona;
                     var createContactPostalAddressForm = persona.createContactPostalAddressForm;
@@ -180,7 +180,7 @@ public class PartyPostalAddressSteps implements En {
                     }
                 });
 
-        When("^the user sets the postal address's company name to \"([^\"]*)\"$",
+        When("the user sets the postal address's company name to {string}",
                 (String companyName) -> {
                     var persona = CurrentPersona.persona;
                     var createContactPostalAddressForm = persona.createContactPostalAddressForm;
@@ -195,7 +195,7 @@ public class PartyPostalAddressSteps implements En {
                     }
                 });
 
-        When("^the user sets the postal address's line 1 to \"([^\"]*)\"$",
+        When("the user sets the postal address's line 1 to {string}",
                 (String address1) -> {
                     var persona = CurrentPersona.persona;
                     var createContactPostalAddressForm = persona.createContactPostalAddressForm;
@@ -210,7 +210,7 @@ public class PartyPostalAddressSteps implements En {
                     }
                 });
 
-        When("^the user sets the postal address's line 2 to \"([^\"]*)\"$",
+        When("the user sets the postal address's line 2 to {string}",
                 (String address2) -> {
                     var persona = CurrentPersona.persona;
                     var createContactPostalAddressForm = persona.createContactPostalAddressForm;
@@ -225,7 +225,7 @@ public class PartyPostalAddressSteps implements En {
                     }
                 });
 
-        When("^the user sets the postal address's line 3 to \"([^\"]*)\"$",
+        When("the user sets the postal address's line 3 to {string}",
                 (String address3) -> {
                     var persona = CurrentPersona.persona;
                     var createContactPostalAddressForm = persona.createContactPostalAddressForm;
@@ -240,7 +240,7 @@ public class PartyPostalAddressSteps implements En {
                     }
                 });
 
-        When("^the user sets the postal address's city to \"([^\"]*)\"$",
+        When("the user sets the postal address's city to {string}",
                 (String city) -> {
                     var persona = CurrentPersona.persona;
                     var createContactPostalAddressForm = persona.createContactPostalAddressForm;
@@ -255,7 +255,7 @@ public class PartyPostalAddressSteps implements En {
                     }
                 });
 
-        When("^the user sets the postal address's state to \"([^\"]*)\"$",
+        When("the user sets the postal address's state to {string}",
                 (String state) -> {
                     var persona = CurrentPersona.persona;
                     var createContactPostalAddressForm = persona.createContactPostalAddressForm;
@@ -270,7 +270,7 @@ public class PartyPostalAddressSteps implements En {
                     }
                 });
 
-        When("^the user sets the postal address's postal code to \"([^\"]*)\"$",
+        When("the user sets the postal address's postal code to {string}",
                 (String postalCode) -> {
                     var persona = CurrentPersona.persona;
                     var createContactPostalAddressForm = persona.createContactPostalAddressForm;
@@ -285,7 +285,7 @@ public class PartyPostalAddressSteps implements En {
                     }
                 });
 
-        When("^the user sets the postal address's country to \"([^\"]*)\"$",
+        When("the user sets the postal address's country to {string}",
                 (String country) -> {
                     var persona = CurrentPersona.persona;
                     var createContactPostalAddressForm = persona.createContactPostalAddressForm;
@@ -300,8 +300,10 @@ public class PartyPostalAddressSteps implements En {
                     }
                 });
 
-        When("^the user's postal address (is|is not) a commercial location$",
+        When("the user's postal address {string} a commercial location",
                 (String isCommercial) -> {
+                    assertThat(isCommercial).isIn("is", "is not");
+
                     var persona = CurrentPersona.persona;
                     var createContactPostalAddressForm = persona.createContactPostalAddressForm;
                     var edit = persona.contactPostalAddressEdit;
@@ -316,8 +318,10 @@ public class PartyPostalAddressSteps implements En {
                     }
                 });
 
-        When("^the user (does|does not) allow solicitations to the postal address$",
+        When("the user {string} allow solicitations to the postal address",
                 (String allowSolicitation) -> {
+                    assertThat(allowSolicitation).isIn("does", "does not");
+
                     var persona = CurrentPersona.persona;
                     var createContactPostalAddressForm = persona.createContactPostalAddressForm;
                     var edit = persona.contactPostalAddressEdit;
@@ -332,7 +336,7 @@ public class PartyPostalAddressSteps implements En {
                     }
                 });
 
-        When("^the user sets the postal address's description to \"([^\"]*)\"$",
+        When("the user sets the postal address's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createContactPostalAddressForm = persona.createContactPostalAddressForm;

@@ -27,7 +27,7 @@ public class WarehouseSteps
         implements En {
 
     public WarehouseSteps() {
-        When("^the user begins entering a new warehouse$",
+        When("the user begins entering a new warehouse",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -38,7 +38,7 @@ public class WarehouseSteps
                     persona.createWarehouseForm = WarehouseUtil.getHome().getCreateWarehouseForm();
                 });
 
-        And("^the user adds the new warehouse$",
+        And("the user adds the new warehouse",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -63,7 +63,7 @@ public class WarehouseSteps
                     persona.createWarehouseForm = null;
                 });
 
-        When("^the user begins deleting a warehouse$",
+        When("the user begins deleting a warehouse",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -74,7 +74,7 @@ public class WarehouseSteps
                     persona.deleteWarehouseForm = WarehouseUtil.getHome().getDeleteWarehouseForm();
                 });
 
-        And("^the user deletes the warehouse$",
+        And("the user deletes the warehouse",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteWarehouseForm = persona.deleteWarehouseForm;
@@ -86,7 +86,7 @@ public class WarehouseSteps
                     persona.deleteWarehouseForm = null;
                 });
 
-        When("^the user begins specifying a warehouse to edit$",
+        When("the user begins specifying a warehouse to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -97,7 +97,7 @@ public class WarehouseSteps
                     persona.warehouseUniversalSpec = WarehouseUtil.getHome().getWarehouseUniversalSpec();
                 });
 
-        When("^the user begins editing the warehouse$",
+        When("the user begins editing the warehouse",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.warehouseUniversalSpec;
@@ -120,7 +120,7 @@ public class WarehouseSteps
                     }
                 });
 
-        And("^the user finishes editing the warehouse$",
+        And("the user finishes editing the warehouse",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.warehouseUniversalSpec;
@@ -141,7 +141,7 @@ public class WarehouseSteps
                     persona.warehouseEdit = null;
                 });
 
-        And("^the user sets the warehouse's warehouse name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the warehouse's warehouse name to {string}",
                 (String warehouseName) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -159,7 +159,7 @@ public class WarehouseSteps
                     }
                 });
 
-        And("^the user sets the warehouse's warehouse name to the last warehouse added$",
+        And("the user sets the warehouse's warehouse name to the last warehouse added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -177,7 +177,7 @@ public class WarehouseSteps
                     }
                 });
 
-        And("^the user sets the warehouse's new warehouse name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the warehouse's new warehouse name to {string}",
                 (String warehouseName) -> {
                     var persona = CurrentPersona.persona;
                     var warehouseEdit = persona.warehouseEdit;
@@ -187,7 +187,7 @@ public class WarehouseSteps
                     warehouseEdit.setWarehouseName(warehouseName);
                 });
 
-        And("^the user sets the warehouse's warehouse type name to \"([^\"]*)\"$",
+        And("the user sets the warehouse's warehouse type name to {string}",
                 (String warehouseType) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -202,8 +202,10 @@ public class WarehouseSteps
                     }
                 });
 
-        And("^the user sets the warehouse to (be|not be) the default$",
+        And("the user sets the warehouse to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
                     var warehouseEdit = persona.warehouseEdit;
@@ -218,7 +220,7 @@ public class WarehouseSteps
                     }
                 });
 
-        And("^the user sets the warehouse's sort order to \"([^\"]*)\"$",
+        And("the user sets the warehouse's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -233,7 +235,7 @@ public class WarehouseSteps
                     }
                 });
 
-        And("^the user sets the warehouse's inventory move printer group name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the warehouse's inventory move printer group name to {string}",
                 (String inventoryMovePrinterGroupName) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -248,7 +250,7 @@ public class WarehouseSteps
                     }
                 });
 
-        And("^the user sets the warehouse's picklist printer group mame to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the warehouse's picklist printer group mame to {string}",
                 (String picklistPrinterGroupName) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -263,7 +265,7 @@ public class WarehouseSteps
                     }
                 });
 
-        And("^the user sets the warehouse's packing list printer group name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the warehouse's packing list printer group name to {string}",
                 (String packingListPrinterGroupName) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -278,7 +280,7 @@ public class WarehouseSteps
                     }
                 });
 
-        And("^the user sets the warehouse's shipping manifest printer group name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the warehouse's shipping manifest printer group name to {string}",
                 (String shippingManifestPrinterGroupName) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -293,7 +295,7 @@ public class WarehouseSteps
                     }
                 });
 
-        And("^the user sets the warehouse's name to \"([^\"]*)\"$",
+        And("the user sets the warehouse's name to {string}",
                 (String name) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -308,7 +310,7 @@ public class WarehouseSteps
                     }
                 });
 
-        And("^the user sets the warehouse's preferred language to \"([^\"]*)\"$",
+        And("the user sets the warehouse's preferred language to {string}",
                 (String preferredLanguageIsoName) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -323,7 +325,7 @@ public class WarehouseSteps
                     }
                 });
 
-        And("^the user sets the warehouse's preferred currency to \"([^\"]*)\"$",
+        And("the user sets the warehouse's preferred currency to {string}",
                 (String preferredCurrencyIsoName) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -338,7 +340,7 @@ public class WarehouseSteps
                     }
                 });
 
-        And("^the user sets the warehouse's preferred time zone to \"([^\"]*)\"$",
+        And("the user sets the warehouse's preferred time zone to {string}",
                 (String preferredJavaTimeZoneName) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -353,7 +355,7 @@ public class WarehouseSteps
                     }
                 });
 
-        And("^the user sets the warehouse's preferred date time format to \"([^\"]*)\"$",
+        And("the user sets the warehouse's preferred date time format to {string}",
                 (String preferredDateTimeFormatName) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;

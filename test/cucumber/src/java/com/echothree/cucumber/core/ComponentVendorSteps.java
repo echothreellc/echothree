@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ComponentVendorSteps implements En {
 
     public ComponentVendorSteps() {
-        When("^the user begins entering a new component vendor$",
+        When("the user begins entering a new component vendor",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class ComponentVendorSteps implements En {
                     persona.createComponentVendorForm = CoreUtil.getHome().getCreateComponentVendorForm();
                 });
 
-        When("^the user adds the new component vendor$",
+        When("the user adds the new component vendor",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createComponentVendorForm = persona.createComponentVendorForm;
@@ -58,7 +58,7 @@ public class ComponentVendorSteps implements En {
                     persona.createComponentVendorForm = null;
                 });
 
-        When("^the user begins deleting a component vendor$",
+        When("the user begins deleting a component vendor",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -69,7 +69,7 @@ public class ComponentVendorSteps implements En {
                     persona.deleteComponentVendorForm = CoreUtil.getHome().getDeleteComponentVendorForm();
                 });
 
-        When("^the user deletes the component vendor$",
+        When("the user deletes the component vendor",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteComponentVendorForm = persona.deleteComponentVendorForm;
@@ -81,7 +81,7 @@ public class ComponentVendorSteps implements En {
                     persona.deleteComponentVendorForm = null;
                 });
 
-        When("^the user begins specifying a component vendor to edit$",
+        When("the user begins specifying a component vendor to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -92,7 +92,7 @@ public class ComponentVendorSteps implements En {
                     persona.componentVendorSpec = CoreUtil.getHome().getComponentVendorSpec();
                 });
 
-        When("^the user begins editing the component vendor$",
+        When("the user begins editing the component vendor",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.componentVendorSpec;
@@ -115,7 +115,7 @@ public class ComponentVendorSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the component vendor$",
+        When("the user finishes editing the component vendor",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.componentVendorSpec;
@@ -136,7 +136,7 @@ public class ComponentVendorSteps implements En {
                     persona.componentVendorEdit = null;
                 });
         
-        When("^the user sets the component vendor's name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the component vendor's name to {string}",
                 (String componentVendorName) -> {
                     var persona = CurrentPersona.persona;
                     var createComponentVendorForm = persona.createComponentVendorForm;
@@ -154,7 +154,7 @@ public class ComponentVendorSteps implements En {
                     }
                 });
 
-        When("^the user sets the component vendor's name to the last component vendor added$",
+        When("the user sets the component vendor's name to the last component vendor added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastComponentVendorName = persona.lastComponentVendorName;
@@ -170,7 +170,7 @@ public class ComponentVendorSteps implements En {
                     }
                 });
 
-        When("^the user sets the component vendor's description to \"([^\"]*)\"$",
+        When("the user sets the component vendor's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createComponentVendorForm = persona.createComponentVendorForm;

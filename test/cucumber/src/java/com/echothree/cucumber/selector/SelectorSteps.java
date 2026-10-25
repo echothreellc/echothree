@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SelectorSteps implements En {
 
     public SelectorSteps() {
-        When("^the user begins entering a new selector$",
+        When("the user begins entering a new selector",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class SelectorSteps implements En {
                     persona.createSelectorForm = SelectorUtil.getHome().getCreateSelectorForm();
                 });
 
-        And("^the user adds the new selector$",
+        And("the user adds the new selector",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createSelectorForm = persona.createSelectorForm;
@@ -58,7 +58,7 @@ public class SelectorSteps implements En {
                     persona.createSelectorForm = null;
                 });
 
-        When("^the user begins deleting a selector$",
+        When("the user begins deleting a selector",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -69,7 +69,7 @@ public class SelectorSteps implements En {
                     persona.deleteSelectorForm = SelectorUtil.getHome().getDeleteSelectorForm();
                 });
 
-        And("^the user deletes the selector$",
+        And("the user deletes the selector",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteSelectorForm = persona.deleteSelectorForm;
@@ -81,7 +81,7 @@ public class SelectorSteps implements En {
                     persona.deleteSelectorForm = null;
                 });
 
-        When("^the user begins specifying a selector to edit$",
+        When("the user begins specifying a selector to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -92,7 +92,7 @@ public class SelectorSteps implements En {
                     persona.selectorSpec = SelectorUtil.getHome().getSelectorSpec();
                 });
 
-        When("^the user begins editing the selector$",
+        When("the user begins editing the selector",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.selectorSpec;
@@ -115,7 +115,7 @@ public class SelectorSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the selector$",
+        And("the user finishes editing the selector",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.selectorSpec;
@@ -136,7 +136,7 @@ public class SelectorSteps implements En {
                     persona.selectorEdit = null;
                 });
 
-        And("^the user sets the selector's selector kind name to ([a-zA-Z0-9-_]*)$",
+        And("the user sets the selector's selector kind name to {string}",
                 (String selectorKindName) -> {
                     var persona = CurrentPersona.persona;
                     var createSelectorForm = persona.createSelectorForm;
@@ -154,7 +154,7 @@ public class SelectorSteps implements En {
                     }
                 });
 
-        And("^the user sets the selector's selector type name to ([a-zA-Z0-9-_]*)$",
+        And("the user sets the selector's selector type name to {string}",
                 (String selectorTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createSelectorForm = persona.createSelectorForm;
@@ -172,7 +172,7 @@ public class SelectorSteps implements En {
                     }
                 });
 
-        And("^the user sets the selector's name to ([a-zA-Z0-9-_]*)$",
+        And("the user sets the selector's name to {string}",
                 (String selectorName) -> {
                     var persona = CurrentPersona.persona;
                     var createSelectorForm = persona.createSelectorForm;
@@ -190,7 +190,7 @@ public class SelectorSteps implements En {
                     }
                 });
 
-        And("^the user sets the selector's name to the last selector added$",
+        And("the user sets the selector's name to the last selector added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastSelectorName = persona.lastSelectorName;
@@ -206,8 +206,10 @@ public class SelectorSteps implements En {
                     }
                 });
 
-        And("^the user sets the selector to (be|not be) the default$",
+        And("the user sets the selector to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createSelectorForm = persona.createSelectorForm;
                     var selectorEdit = persona.selectorEdit;
@@ -222,7 +224,7 @@ public class SelectorSteps implements En {
                     }
                 });
 
-        And("^the user sets the selector's sort order to \"([^\"]*)\"$",
+        And("the user sets the selector's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createSelectorForm = persona.createSelectorForm;
@@ -237,7 +239,7 @@ public class SelectorSteps implements En {
                     }
                 });
 
-        And("^the user sets the selector's description to \"([^\"]*)\"$",
+        And("the user sets the selector's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createSelectorForm = persona.createSelectorForm;

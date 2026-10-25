@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class WarehouseTypeSteps implements En {
 
     public WarehouseTypeSteps() {
-        When("^the user begins entering a new warehouse type$",
+        When("the user begins entering a new warehouse type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class WarehouseTypeSteps implements En {
                     persona.createWarehouseTypeForm = WarehouseUtil.getHome().getCreateWarehouseTypeForm();
                 });
 
-        When("^the user adds the new warehouse type$",
+        When("the user adds the new warehouse type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseTypeForm = persona.createWarehouseTypeForm;
@@ -58,7 +58,7 @@ public class WarehouseTypeSteps implements En {
                     persona.createWarehouseTypeForm = null;
                 });
 
-        When("^the user begins deleting a warehouse type$",
+        When("the user begins deleting a warehouse type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -69,7 +69,7 @@ public class WarehouseTypeSteps implements En {
                     persona.deleteWarehouseTypeForm = WarehouseUtil.getHome().getDeleteWarehouseTypeForm();
                 });
 
-        When("^the user deletes the warehouse type$",
+        When("the user deletes the warehouse type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteWarehouseTypeForm = persona.deleteWarehouseTypeForm;
@@ -81,7 +81,7 @@ public class WarehouseTypeSteps implements En {
                     persona.deleteWarehouseTypeForm = null;
                 });
 
-        When("^the user begins specifying a warehouse type to edit$",
+        When("the user begins specifying a warehouse type to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -92,7 +92,7 @@ public class WarehouseTypeSteps implements En {
                     persona.warehouseTypeSpec = WarehouseUtil.getHome().getWarehouseTypeSpec();
                 });
 
-        When("^the user begins editing the warehouse type$",
+        When("the user begins editing the warehouse type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.warehouseTypeSpec;
@@ -115,7 +115,7 @@ public class WarehouseTypeSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the warehouse type$",
+        When("the user finishes editing the warehouse type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.warehouseTypeSpec;
@@ -136,7 +136,7 @@ public class WarehouseTypeSteps implements En {
                     persona.warehouseTypeEdit = null;
                 });
         
-        When("^the user sets the warehouse type's name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the warehouse type's name to {string}",
                 (String warehouseTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseTypeForm = persona.createWarehouseTypeForm;
@@ -154,7 +154,7 @@ public class WarehouseTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the warehouse type's name to the last warehouse type added$",
+        When("the user sets the warehouse type's name to the last warehouse type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastWarehouseTypeName = persona.lastWarehouseTypeName;
@@ -170,7 +170,7 @@ public class WarehouseTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the warehouse type's priority to \"([^\"]*)\"$",
+        When("the user sets the warehouse type's priority to {string}",
                 (String priority) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseTypeForm = persona.createWarehouseTypeForm;
@@ -185,8 +185,10 @@ public class WarehouseTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the warehouse type to (be|not be) the default$",
+        When("the user sets the warehouse type to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createWarehouseTypeForm = persona.createWarehouseTypeForm;
                     var warehouseTypeEdit = persona.warehouseTypeEdit;
@@ -201,7 +203,7 @@ public class WarehouseTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the warehouse type's sort order to \"([^\"]*)\"$",
+        When("the user sets the warehouse type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseTypeForm = persona.createWarehouseTypeForm;
@@ -216,7 +218,7 @@ public class WarehouseTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the warehouse type's description to \"([^\"]*)\"$",
+        When("the user sets the warehouse type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseTypeForm = persona.createWarehouseTypeForm;

@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ItemWeightTypeSteps implements En {
 
     public ItemWeightTypeSteps() {
-        When("^the user begins entering a new item weight type$",
+        When("the user begins entering a new item weight type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class ItemWeightTypeSteps implements En {
                     persona.createItemWeightTypeForm = ItemUtil.getHome().getCreateItemWeightTypeForm();
                 });
 
-        When("^the user adds the new item weight type$",
+        When("the user adds the new item weight type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createItemWeightTypeForm = persona.createItemWeightTypeForm;
@@ -58,7 +58,7 @@ public class ItemWeightTypeSteps implements En {
                     persona.createItemWeightTypeForm = null;
                 });
 
-        When("^the user begins deleting a item weight type$",
+        When("the user begins deleting a item weight type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -69,7 +69,7 @@ public class ItemWeightTypeSteps implements En {
                     persona.deleteItemWeightTypeForm = ItemUtil.getHome().getDeleteItemWeightTypeForm();
                 });
 
-        When("^the user deletes the item weight type$",
+        When("the user deletes the item weight type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteItemWeightTypeForm = persona.deleteItemWeightTypeForm;
@@ -81,7 +81,7 @@ public class ItemWeightTypeSteps implements En {
                     persona.deleteItemWeightTypeForm = null;
                 });
 
-        When("^the user begins specifying a item weight type to edit$",
+        When("the user begins specifying a item weight type to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -92,7 +92,7 @@ public class ItemWeightTypeSteps implements En {
                     persona.itemWeightTypeSpec = ItemUtil.getHome().getItemWeightTypeUniversalSpec();
                 });
 
-        When("^the user begins editing the item weight type$",
+        When("the user begins editing the item weight type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.itemWeightTypeSpec;
@@ -115,7 +115,7 @@ public class ItemWeightTypeSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the item weight type$",
+        When("the user finishes editing the item weight type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.itemWeightTypeSpec;
@@ -136,7 +136,7 @@ public class ItemWeightTypeSteps implements En {
                     persona.itemWeightTypeEdit = null;
                 });
         
-        When("^the user sets the item weight type's name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the item weight type's name to {string}",
                 (String itemWeightTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemWeightTypeForm = persona.createItemWeightTypeForm;
@@ -154,7 +154,7 @@ public class ItemWeightTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item weight type's name to the last item weight type added$",
+        When("the user sets the item weight type's name to the last item weight type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastItemWeightTypeName = persona.lastItemWeightTypeName;
@@ -170,8 +170,10 @@ public class ItemWeightTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item weight type to (be|not be) the default$",
+        When("the user sets the item weight type to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createItemWeightTypeForm = persona.createItemWeightTypeForm;
                     var itemWeightTypeEdit = persona.itemWeightTypeEdit;
@@ -186,7 +188,7 @@ public class ItemWeightTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item weight type's sort order to \"([^\"]*)\"$",
+        When("the user sets the item weight type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createItemWeightTypeForm = persona.createItemWeightTypeForm;
@@ -201,7 +203,7 @@ public class ItemWeightTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item weight type's description to \"([^\"]*)\"$",
+        When("the user sets the item weight type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createItemWeightTypeForm = persona.createItemWeightTypeForm;

@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class EntityInstanceSteps implements En {
 
     public EntityInstanceSteps() {
-        When("^the user begins entering a new entity instance$",
+        When("the user begins entering a new entity instance",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -36,7 +36,7 @@ public class EntityInstanceSteps implements En {
                     persona.createEntityInstanceForm = CoreUtil.getHome().getCreateEntityInstanceForm();
                 });
 
-        When("^the user adds the new entity instance$",
+        When("the user adds the new entity instance",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createEntityInstanceForm = persona.createEntityInstanceForm;
@@ -53,7 +53,7 @@ public class EntityInstanceSteps implements En {
                     persona.createEntityInstanceForm = null;
                 });
 
-        When("^the user begins deleting an entity instance$",
+        When("the user begins deleting an entity instance",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -64,7 +64,7 @@ public class EntityInstanceSteps implements En {
                     persona.deleteEntityInstanceForm = CoreUtil.getHome().getDeleteEntityInstanceForm();
                 });
 
-        When("^the user deletes the entity instance$",
+        When("the user deletes the entity instance",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteEntityInstanceForm = persona.deleteEntityInstanceForm;
@@ -76,7 +76,7 @@ public class EntityInstanceSteps implements En {
                     persona.deleteEntityInstanceForm = null;
                 });
 
-        When("^the user begins removing an entity instance$",
+        When("the user begins removing an entity instance",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -87,7 +87,7 @@ public class EntityInstanceSteps implements En {
                     persona.removeEntityInstanceForm = CoreUtil.getHome().getRemoveEntityInstanceForm();
                 });
 
-        When("^the user removes the entity instance$",
+        When("the user removes the entity instance",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var removeEntityInstanceForm = persona.removeEntityInstanceForm;
@@ -99,7 +99,7 @@ public class EntityInstanceSteps implements En {
                     persona.removeEntityInstanceForm = null;
                 });
 
-        When("^the user sets the entity instance's component vendor to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the entity instance's component vendor to {string}",
                 (String componentVendorName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityInstanceForm = persona.createEntityInstanceForm;
@@ -111,7 +111,7 @@ public class EntityInstanceSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity instance's component vendor to the last component vendor added$",
+        When("the user sets the entity instance's component vendor to the last component vendor added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createEntityInstanceForm = persona.createEntityInstanceForm;
@@ -122,7 +122,7 @@ public class EntityInstanceSteps implements En {
                     createEntityInstanceForm.setComponentVendorName(lastComponentVendorName);
                 });
 
-        When("^the user sets the entity instance's entity type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the entity instance's entity type to {string}",
                 (String entityTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityInstanceForm = persona.createEntityInstanceForm;
@@ -132,7 +132,7 @@ public class EntityInstanceSteps implements En {
                     createEntityInstanceForm.setEntityTypeName(entityTypeName);
                 });
 
-        When("^the user sets the entity instance's entity type to the last entity type added$",
+        When("the user sets the entity instance's entity type to the last entity type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createEntityInstanceForm = persona.createEntityInstanceForm;
@@ -143,7 +143,7 @@ public class EntityInstanceSteps implements En {
                     createEntityInstanceForm.setEntityTypeName(lastEntityTypeName);
                 });
 
-        When("^the user sets the entity instance's entity instance to the last entity instance added$",
+        When("the user sets the entity instance's entity instance to the last entity instance added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteEntityInstanceForm = persona.deleteEntityInstanceForm;

@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class OfferItemSteps implements En {
 
     public OfferItemSteps() {
-        When("^the user begins entering a new offer item$",
+        When("the user begins entering a new offer item",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -36,7 +36,7 @@ public class OfferItemSteps implements En {
                     persona.createOfferItemForm = OfferUtil.getHome().getCreateOfferItemForm();
                 });
 
-        When("^the user adds the new offer item$",
+        When("the user adds the new offer item",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createOfferItemForm = persona.createOfferItemForm;
@@ -48,7 +48,7 @@ public class OfferItemSteps implements En {
                     persona.createOfferItemForm = null;
                 });
 
-        When("^the user begins deleting an offer item$",
+        When("the user begins deleting an offer item",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -58,7 +58,7 @@ public class OfferItemSteps implements En {
                     persona.deleteOfferItemForm = OfferUtil.getHome().getDeleteOfferItemForm();
                 });
 
-        When("^the user deletes the offer item$",
+        When("the user deletes the offer item",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteOfferItemForm = persona.deleteOfferItemForm;
@@ -70,7 +70,7 @@ public class OfferItemSteps implements En {
                     persona.deleteOfferItemForm = null;
                 });
 
-        When("^the user sets the offer item's offer name to \"([^\"]*)\"$",
+        When("the user sets the offer item's offer name to {string}",
                 (String offerName) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferItemForm = persona.createOfferItemForm;
@@ -81,7 +81,7 @@ public class OfferItemSteps implements En {
                     Objects.requireNonNullElse(createOfferItemForm, deleteOfferItemForm).setOfferName(offerName);
                 });
 
-        When("^the user sets the offer item's offer name to the last offer added$",
+        When("the user sets the offer item's offer name to the last offer added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createOfferItemForm = persona.createOfferItemForm;
@@ -92,7 +92,7 @@ public class OfferItemSteps implements En {
                     Objects.requireNonNullElse(createOfferItemForm, deleteOfferItemForm).setOfferName(persona.lastOfferName);
                 });
 
-        When("^the user sets the offer item's item name to \"([^\"]*)\"$",
+        When("the user sets the offer item's item name to {string}",
                 (String itemName) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferItemForm = persona.createOfferItemForm;
@@ -103,7 +103,7 @@ public class OfferItemSteps implements En {
                     Objects.requireNonNullElse(createOfferItemForm, deleteOfferItemForm).setItemName(itemName);
                 });
 
-        When("^the user sets the offer item's item name to the last item added$",
+        When("the user sets the offer item's item name to the last item added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createOfferItemForm = persona.createOfferItemForm;

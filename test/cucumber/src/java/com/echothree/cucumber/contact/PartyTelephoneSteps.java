@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PartyTelephoneSteps implements En {
 
     public PartyTelephoneSteps() {
-        When("^the user begins entering a new telephone number$",
+        When("the user begins entering a new telephone number",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class PartyTelephoneSteps implements En {
                     persona.createContactTelephoneForm = ContactUtil.getHome().getCreateContactTelephoneForm();
                 });
 
-        When("^the user adds the new telephone number$",
+        When("the user adds the new telephone number",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createContactTelephoneForm = persona.createContactTelephoneForm;
@@ -53,7 +53,7 @@ public class PartyTelephoneSteps implements En {
                     persona.createContactTelephoneForm = null;
                 });
 
-        When("^the user deletes the last telephone number added$",
+        When("the user deletes the last telephone number added",
                 () -> {
                     var contactService = ContactUtil.getHome();
                     var deleteContactTelephoneForm = contactService.getDeleteContactMechanismForm();
@@ -68,7 +68,7 @@ public class PartyTelephoneSteps implements En {
                     LastCommandResult.commandResult = contactService.deleteContactMechanism(persona.userVisitPK, deleteContactTelephoneForm);
                 });
 
-        When("^the user begins specifying a telephone number to edit$",
+        When("the user begins specifying a telephone number to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -79,7 +79,7 @@ public class PartyTelephoneSteps implements En {
                     persona.partyContactMechanismSpec = ContactUtil.getHome().getPartyContactMechanismSpec();
                 });
 
-        When("^the user begins editing the telephone number$",
+        When("the user begins editing the telephone number",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.partyContactMechanismSpec;
@@ -102,7 +102,7 @@ public class PartyTelephoneSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the telephone number$",
+        When("the user finishes editing the telephone number",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.partyContactMechanismSpec;
@@ -124,7 +124,7 @@ public class PartyTelephoneSteps implements En {
                     persona.contactTelephoneEdit = null;
                 });
 
-        When("^the user sets the telephone number's party to the last party added$",
+        When("the user sets the telephone number's party to the last party added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var partyContactMechanismSpec = persona.partyContactMechanismSpec;
@@ -140,7 +140,7 @@ public class PartyTelephoneSteps implements En {
                     }
                 });
 
-        When("^the user sets the telephone number's contact mechanism to the last telephone number added$",
+        When("the user sets the telephone number's contact mechanism to the last telephone number added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var partyContactMechanismSpec = persona.partyContactMechanismSpec;
@@ -150,8 +150,10 @@ public class PartyTelephoneSteps implements En {
                     partyContactMechanismSpec.setContactMechanismName(persona.lastTelephoneContactMechanismName);
                 });
 
-        When("^the user (does|does not) allow solicitations to the telephone number$",
+        When("the user {string} allow solicitations to the telephone number",
                 (String allowSolicitation) -> {
+                    assertThat(allowSolicitation).isIn("does", "does not");
+
                     var persona = CurrentPersona.persona;
                     var createContactTelephoneForm = persona.createContactTelephoneForm;
                     var edit = persona.contactTelephoneEdit;
@@ -166,7 +168,7 @@ public class PartyTelephoneSteps implements En {
                     }
                 });
 
-        When("^the user sets the telephone number's description to \"([^\"]*)\"$",
+        When("the user sets the telephone number's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createContactTelephoneForm = persona.createContactTelephoneForm;
@@ -181,7 +183,7 @@ public class PartyTelephoneSteps implements En {
                     }
                 });
 
-        When("^the user sets the telephone number's country to \"([^\"]*)\"$",
+        When("the user sets the telephone number's country to {string}",
                 (String countryName) -> {
                     var persona = CurrentPersona.persona;
                     var createContactTelephoneForm = persona.createContactTelephoneForm;
@@ -196,7 +198,7 @@ public class PartyTelephoneSteps implements En {
                     }
                 });
 
-        When("^the user sets the telephone number's area code to \"([^\"]*)\"$",
+        When("the user sets the telephone number's area code to {string}",
                 (String areaCode) -> {
                     var persona = CurrentPersona.persona;
                     var createContactTelephoneForm = persona.createContactTelephoneForm;
@@ -211,7 +213,7 @@ public class PartyTelephoneSteps implements En {
                     }
                 });
 
-        When("^the user sets the telephone number's number to \"([^\"]*)\"$",
+        When("the user sets the telephone number's number to {string}",
                 (String telephoneNumber) -> {
                     var persona = CurrentPersona.persona;
                     var createContactTelephoneForm = persona.createContactTelephoneForm;
@@ -226,7 +228,7 @@ public class PartyTelephoneSteps implements En {
                     }
                 });
 
-        When("^the user sets the telephone number's extension to \"([^\"]*)\"$",
+        When("the user sets the telephone number's extension to {string}",
                 (String telephoneExtension) -> {
                     var persona = CurrentPersona.persona;
                     var createContactTelephoneForm = persona.createContactTelephoneForm;

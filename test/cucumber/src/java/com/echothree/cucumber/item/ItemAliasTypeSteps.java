@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ItemAliasTypeSteps implements En {
 
     public ItemAliasTypeSteps() {
-        When("^the user begins entering a new item alias type$",
+        When("the user begins entering a new item alias type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class ItemAliasTypeSteps implements En {
                     persona.createItemAliasTypeForm = ItemUtil.getHome().getCreateItemAliasTypeForm();
                 });
 
-        When("^the user adds the new item alias type$",
+        When("the user adds the new item alias type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createItemAliasTypeForm = persona.createItemAliasTypeForm;
@@ -58,7 +58,7 @@ public class ItemAliasTypeSteps implements En {
                     persona.createItemAliasTypeForm = null;
                 });
 
-        When("^the user begins deleting a item alias type$",
+        When("the user begins deleting a item alias type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -69,7 +69,7 @@ public class ItemAliasTypeSteps implements En {
                     persona.deleteItemAliasTypeForm = ItemUtil.getHome().getDeleteItemAliasTypeForm();
                 });
 
-        When("^the user deletes the item alias type$",
+        When("the user deletes the item alias type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteItemAliasTypeForm = persona.deleteItemAliasTypeForm;
@@ -81,7 +81,7 @@ public class ItemAliasTypeSteps implements En {
                     persona.deleteItemAliasTypeForm = null;
                 });
 
-        When("^the user begins specifying a item alias type to edit$",
+        When("the user begins specifying a item alias type to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -92,7 +92,7 @@ public class ItemAliasTypeSteps implements En {
                     persona.itemAliasTypeSpec = ItemUtil.getHome().getItemAliasTypeUniversalSpec();
                 });
 
-        When("^the user begins editing the item alias type$",
+        When("the user begins editing the item alias type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.itemAliasTypeSpec;
@@ -115,7 +115,7 @@ public class ItemAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the item alias type$",
+        When("the user finishes editing the item alias type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.itemAliasTypeSpec;
@@ -136,7 +136,7 @@ public class ItemAliasTypeSteps implements En {
                     persona.itemAliasTypeEdit = null;
                 });
         
-        When("^the user sets the item alias type's name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the item alias type's name to {string}",
                 (String itemAliasTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemAliasTypeForm = persona.createItemAliasTypeForm;
@@ -154,7 +154,7 @@ public class ItemAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item alias type's name to the last item alias type added$",
+        When("the user sets the item alias type's name to the last item alias type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastItemAliasTypeName = persona.lastItemAliasTypeName;
@@ -170,7 +170,7 @@ public class ItemAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item alias type's validation pattern to \"([^\"]*)\"$",
+        When("the user sets the item alias type's validation pattern to {string}",
                 (String validationPattern) -> {
                     var persona = CurrentPersona.persona;
                     var createItemAliasTypeForm = persona.createItemAliasTypeForm;
@@ -185,7 +185,7 @@ public class ItemAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item alias type's checksum type to \"([^\"]*)\"$",
+        When("the user sets the item alias type's checksum type to {string}",
                 (String itemAliasChecksumTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemAliasTypeForm = persona.createItemAliasTypeForm;
@@ -200,8 +200,10 @@ public class ItemAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item alias type to (allow|not allow) multiple values per item$",
+        When("the user sets the item alias type to {string} multiple values per item",
                 (String allowMultiple) -> {
+                    assertThat(allowMultiple).isIn("allow", "not allow");
+
                     var persona = CurrentPersona.persona;
                     var createItemAliasTypeForm = persona.createItemAliasTypeForm;
                     var itemAliasTypeEdit = persona.itemAliasTypeEdit;
@@ -216,8 +218,10 @@ public class ItemAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item alias type to (be|not be) the default$",
+        When("the user sets the item alias type to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createItemAliasTypeForm = persona.createItemAliasTypeForm;
                     var itemAliasTypeEdit = persona.itemAliasTypeEdit;
@@ -232,7 +236,7 @@ public class ItemAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item alias type's sort order to \"([^\"]*)\"$",
+        When("the user sets the item alias type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createItemAliasTypeForm = persona.createItemAliasTypeForm;
@@ -247,7 +251,7 @@ public class ItemAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item alias type's description to \"([^\"]*)\"$",
+        When("the user sets the item alias type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createItemAliasTypeForm = persona.createItemAliasTypeForm;

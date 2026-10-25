@@ -2,7 +2,7 @@ Feature: Employee workflow
   An employee wants to add, edit, and delete a workflow
 
   Background:
-    Given the employee Test begins using the application
+    Given the employee "Test" begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee workflow
     Then no error should occur
 
   Scenario: Existing employee adds a workflow, edits it, and then deletes it
-    Given the employee Test begins using the application
+    Given the employee "Test" begins using the application
     When the user begins entering a new workflow
     And the user sets the workflow's name to "CUCUMBER_FILTER_KIND"
     And the user sets the workflow's sort order to "1"
@@ -33,9 +33,9 @@ Feature: Employee workflow
     Then no error should occur
 
   Scenario: Existing employee adds a workflow with a duplicate name and receives an error
-    Given the employee Test begins using the application
+    Given the employee "Test" begins using the application
     When the user begins entering a new workflow
     And the user sets the workflow's name to "EMPLOYEE_STATUS"
     And the user sets the workflow's sort order to "1"
     And the user adds the new workflow
-    Then the execution error DuplicateWorkflowName should occur
+    Then the execution error "DuplicateWorkflowName" should occur

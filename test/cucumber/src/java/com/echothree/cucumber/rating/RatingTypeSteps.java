@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RatingTypeSteps implements En {
 
     public RatingTypeSteps() {
-        When("^the user begins entering a new rating type$",
+        When("the user begins entering a new rating type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class RatingTypeSteps implements En {
                     persona.createRatingTypeForm = RatingUtil.getHome().getCreateRatingTypeForm();
                 });
 
-        When("^the user adds the new rating type$",
+        When("the user adds the new rating type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createRatingTypeForm = persona.createRatingTypeForm;
@@ -54,7 +54,7 @@ public class RatingTypeSteps implements En {
                     persona.createRatingTypeForm = null;
                 });
 
-        When("^the user begins deleting a rating type$",
+        When("the user begins deleting a rating type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -65,7 +65,7 @@ public class RatingTypeSteps implements En {
                     persona.deleteRatingTypeForm = RatingUtil.getHome().getDeleteRatingTypeForm();
                 });
 
-        When("^the user deletes the rating type$",
+        When("the user deletes the rating type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteRatingTypeForm = persona.deleteRatingTypeForm;
@@ -77,7 +77,7 @@ public class RatingTypeSteps implements En {
                     persona.deleteRatingTypeForm = null;
                 });
 
-        When("^the user begins specifying a rating type to edit$",
+        When("the user begins specifying a rating type to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -88,7 +88,7 @@ public class RatingTypeSteps implements En {
                     persona.ratingTypeSpec = RatingUtil.getHome().getRatingTypeSpec();
                 });
 
-        When("^the user begins editing the rating type$",
+        When("the user begins editing the rating type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.ratingTypeSpec;
@@ -111,7 +111,7 @@ public class RatingTypeSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the rating type$",
+        When("the user finishes editing the rating type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.ratingTypeSpec;
@@ -132,7 +132,7 @@ public class RatingTypeSteps implements En {
                     persona.ratingTypeEdit = null;
                 });
         
-        When("^the user sets the rating type's component vendor to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the rating type's component vendor to {string}",
                 (String componentVendorName) -> {
                     var persona = CurrentPersona.persona;
                     var createRatingTypeForm = persona.createRatingTypeForm;
@@ -150,7 +150,7 @@ public class RatingTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the rating type's entity type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the rating type's entity type to {string}",
                 (String entityTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createRatingTypeForm = persona.createRatingTypeForm;
@@ -168,7 +168,7 @@ public class RatingTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the rating type's rating type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the rating type's rating type to {string}",
                 (String ratingTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createRatingTypeForm = persona.createRatingTypeForm;
@@ -186,7 +186,7 @@ public class RatingTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the rating type's rating sequence to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the rating type's rating sequence to {string}",
                 (String ratingSequenceName) -> {
                     var persona = CurrentPersona.persona;
                     var createRatingTypeForm = persona.createRatingTypeForm;
@@ -201,7 +201,7 @@ public class RatingTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the rating type's sort order to \"([^\"]*)\"$",
+        When("the user sets the rating type's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createRatingTypeForm = persona.createRatingTypeForm;
@@ -216,7 +216,7 @@ public class RatingTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the rating type's description to \"([^\"]*)\"$",
+        When("the user sets the rating type's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createRatingTypeForm = persona.createRatingTypeForm;
@@ -231,7 +231,7 @@ public class RatingTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the rating type's name to the last rating type added$",
+        When("the user sets the rating type's name to the last rating type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastRatingTypeName = persona.lastRatingTypeName;

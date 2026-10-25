@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ContentCatalogSteps implements En {
 
     public ContentCatalogSteps() {
-        When("^the user begins entering a new content catalog$",
+        When("the user begins entering a new content catalog",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -38,7 +38,7 @@ public class ContentCatalogSteps implements En {
                     persona.createContentCatalogForm = ContentUtil.getHome().getCreateContentCatalogForm();
                 });
 
-        When("^the user adds the new content catalog$",
+        When("the user adds the new content catalog",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -56,7 +56,7 @@ public class ContentCatalogSteps implements En {
                     persona.createContentCatalogForm = null;
                 });
 
-        When("^the user begins deleting a content catalog$",
+        When("the user begins deleting a content catalog",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -67,7 +67,7 @@ public class ContentCatalogSteps implements En {
                     persona.deleteContentCatalogForm = ContentUtil.getHome().getDeleteContentCatalogForm();
                 });
 
-        When("^the user deletes the content catalog$",
+        When("the user deletes the content catalog",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteContentCatalogForm = persona.deleteContentCatalogForm;
@@ -79,7 +79,7 @@ public class ContentCatalogSteps implements En {
                     persona.deleteContentCatalogForm = null;
                 });
 
-        When("^the user begins specifying a content catalog to edit$",
+        When("the user begins specifying a content catalog to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -90,7 +90,7 @@ public class ContentCatalogSteps implements En {
                     persona.contentCatalogSpec = ContentUtil.getHome().getContentCatalogSpec();
                 });
 
-        When("^the user begins editing the content catalog$",
+        When("the user begins editing the content catalog",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.contentCatalogSpec;
@@ -113,7 +113,7 @@ public class ContentCatalogSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the content catalog$",
+        When("the user finishes editing the content catalog",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.contentCatalogSpec;
@@ -133,7 +133,7 @@ public class ContentCatalogSteps implements En {
                     persona.contentCatalogEdit = null;
                 });
 
-        When("^the user sets the content catalog's content collection name to \"([^\"]*)\"$",
+        When("the user sets the content catalog's content collection name to {string}",
                 (String contentCollectionName) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCatalogForm = persona.createContentCatalogForm;
@@ -152,7 +152,7 @@ public class ContentCatalogSteps implements En {
                     }
                 });
 
-        When("^the user sets the content catalog's content catalog name to \"([^\"]*)\"$",
+        When("the user sets the content catalog's content catalog name to {string}",
                 (String contentCatalogName) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCatalogForm = persona.createContentCatalogForm;
@@ -171,7 +171,7 @@ public class ContentCatalogSteps implements En {
                     }
                 });
 
-        When("^the user sets the content catalog's new content catalog name to \"([^\"]*)\"$",
+        When("the user sets the content catalog's new content catalog name to {string}",
                 (String contentCatalogName) -> {
                     var persona = CurrentPersona.persona;
                     var contentCatalogEdit = persona.contentCatalogEdit;
@@ -181,7 +181,7 @@ public class ContentCatalogSteps implements En {
                     contentCatalogEdit.setContentCatalogName(contentCatalogName);
                 });
 
-        When("^the user sets the content catalog's default offer name to \"([^\"]*)\"$",
+        When("the user sets the content catalog's default offer name to {string}",
                 (String defaultOfferName) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCatalogForm = persona.createContentCatalogForm;
@@ -192,7 +192,7 @@ public class ContentCatalogSteps implements En {
                     Objects.requireNonNullElse(createContentCatalogForm, contentCatalogEdit).setDefaultOfferName(defaultOfferName);
                 });
 
-        When("^the user sets the content catalog's default offer name to the last offer added$",
+        When("the user sets the content catalog's default offer name to the last offer added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createContentCatalogForm = persona.createContentCatalogForm;
@@ -203,7 +203,7 @@ public class ContentCatalogSteps implements En {
                     Objects.requireNonNullElse(createContentCatalogForm, contentCatalogEdit).setDefaultOfferName(persona.lastOfferName);
                 });
 
-        When("^the user sets the content catalog's default use name to \"([^\"]*)\"$",
+        When("the user sets the content catalog's default use name to {string}",
                 (String defaultUseName) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCatalogForm = persona.createContentCatalogForm;
@@ -214,7 +214,7 @@ public class ContentCatalogSteps implements En {
                     Objects.requireNonNullElse(createContentCatalogForm, contentCatalogEdit).setDefaultUseName(defaultUseName);
                 });
 
-        When("^the user sets the content catalog's default use name to the last use added$",
+        When("the user sets the content catalog's default use name to the last use added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createContentCatalogForm = persona.createContentCatalogForm;
@@ -225,7 +225,7 @@ public class ContentCatalogSteps implements En {
                     Objects.requireNonNullElse(createContentCatalogForm, contentCatalogEdit).setDefaultUseName(persona.lastUseName);
                 });
 
-        When("^the user sets the content catalog's default source name to \"([^\"]*)\"$",
+        When("the user sets the content catalog's default source name to {string}",
                 (String defaultSourceName) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCatalogForm = persona.createContentCatalogForm;
@@ -236,7 +236,7 @@ public class ContentCatalogSteps implements En {
                     Objects.requireNonNullElse(createContentCatalogForm, contentCatalogEdit).setDefaultSourceName(defaultSourceName);
                 });
 
-        When("^the user sets the content catalog's default source name to the last source added$",
+        When("the user sets the content catalog's default source name to the last source added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createContentCatalogForm = persona.createContentCatalogForm;
@@ -247,8 +247,10 @@ public class ContentCatalogSteps implements En {
                     Objects.requireNonNullElse(createContentCatalogForm, contentCatalogEdit).setDefaultSourceName(persona.lastSourceName);
                 });
 
-        When("^the user sets the content catalog to (be|not be) the default$",
+        When("the user sets the content catalog to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createContentCatalogForm = persona.createContentCatalogForm;
                     var contentCatalogEdit = persona.contentCatalogEdit;
@@ -263,7 +265,7 @@ public class ContentCatalogSteps implements En {
                     }
                 });
 
-        When("^the user sets the content catalog's sort order to \"([^\"]*)\"$",
+        When("the user sets the content catalog's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCatalogForm = persona.createContentCatalogForm;
@@ -278,7 +280,7 @@ public class ContentCatalogSteps implements En {
                     }
                 });
 
-        When("^the user sets the content catalog's description to \"([^\"]*)\"$",
+        When("the user sets the content catalog's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createContentCatalogForm = persona.createContentCatalogForm;

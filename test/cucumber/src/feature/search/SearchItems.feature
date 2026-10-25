@@ -2,7 +2,7 @@ Feature: Search items
   A customer searches items
 
   Scenario: An anonymous customer searches items by item name
-    Given the customer Test begins using the application
+    Given the customer "Test" begins using the application
     When the user begins entering a new item search
     And the user sets the item search's search type to "ITEM_MAINTENANCE"
     And the user sets the item search's item name or alias to "minimal"
@@ -11,7 +11,7 @@ Feature: Search items
     And the user's search results contain "1" result
 
   Scenario: An anonymous customer searches items by item name and clears the results
-    Given the customer Test begins using the application
+    Given the customer "Test" begins using the application
     When the user begins entering a new item search
     And the user sets the item search's search type to "ITEM_MAINTENANCE"
     And the user sets the item search's item name or alias to "minimal"
@@ -24,7 +24,7 @@ Feature: Search items
     Then no error should occur
 
   Scenario: An anonymous customer searches items by item name and acts on one of the results
-    Given the customer Test begins using the application
+    Given the customer "Test" begins using the application
     When the user begins entering a new item search
     And the user sets the item search's search type to "ITEM_MAINTENANCE"
     And the user sets the item search's item name or alias to "minimal"

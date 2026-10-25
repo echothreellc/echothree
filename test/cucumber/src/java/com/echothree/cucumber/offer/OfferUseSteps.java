@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class OfferUseSteps implements En {
 
     public OfferUseSteps() {
-        When("^the user begins entering a new offer use$",
+        When("the user begins entering a new offer use",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -38,7 +38,7 @@ public class OfferUseSteps implements En {
                     persona.createOfferUseForm = OfferUtil.getHome().getCreateOfferUseForm();
                 });
 
-        When("^the user adds the new offer use$",
+        When("the user adds the new offer use",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -54,7 +54,7 @@ public class OfferUseSteps implements En {
                     persona.createOfferUseForm = null;
                 });
 
-        When("^the user begins deleting an offer use$",
+        When("the user begins deleting an offer use",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -65,7 +65,7 @@ public class OfferUseSteps implements En {
                     persona.deleteOfferUseForm = OfferUtil.getHome().getDeleteOfferUseForm();
                 });
 
-        When("^the user deletes the offer use$",
+        When("the user deletes the offer use",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteOfferUseForm = persona.deleteOfferUseForm;
@@ -77,7 +77,7 @@ public class OfferUseSteps implements En {
                     persona.deleteOfferUseForm = null;
                 });
 
-        When("^the user begins specifying an offer use to edit$",
+        When("the user begins specifying an offer use to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -88,7 +88,7 @@ public class OfferUseSteps implements En {
                     persona.offerUseSpec = OfferUtil.getHome().getOfferUseSpec();
                 });
 
-        When("^the user begins editing the offer use$",
+        When("the user begins editing the offer use",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.offerUseSpec;
@@ -111,7 +111,7 @@ public class OfferUseSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the offer use$",
+        When("the user finishes editing the offer use",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.offerUseSpec;
@@ -131,7 +131,7 @@ public class OfferUseSteps implements En {
                     persona.offerUseEdit = null;
                 });
 
-        When("^the user sets the offer use's offer name to \"([^\"]*)\"$",
+        When("the user sets the offer use's offer name to {string}",
                 (String offerName) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferUseForm = persona.createOfferUseForm;
@@ -148,7 +148,7 @@ public class OfferUseSteps implements En {
                     }
                 });
 
-        When("^the user sets the offer use's offer name to the last offer added$",
+        When("the user sets the offer use's offer name to the last offer added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createOfferUseForm = persona.createOfferUseForm;
@@ -163,7 +163,7 @@ public class OfferUseSteps implements En {
                     } else Objects.requireNonNullElse(deleteOfferUseForm, offerUseSpec).setOfferName(persona.lastOfferName);
                 });
 
-        When("^the user sets the offer use's use name to \"([^\"]*)\"$",
+        When("the user sets the offer use's use name to {string}",
                 (String useName) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferUseForm = persona.createOfferUseForm;
@@ -180,7 +180,7 @@ public class OfferUseSteps implements En {
                     }
                 });
 
-        When("^the user sets the offer use's use name to the last use added$",
+        When("the user sets the offer use's use name to the last use added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createOfferUseForm = persona.createOfferUseForm;
@@ -197,7 +197,7 @@ public class OfferUseSteps implements En {
                     }
                 });
 
-        When("^the user sets the offer use's sales order sequence name to \"([^\"]*)\"$",
+        When("the user sets the offer use's sales order sequence name to {string}",
                 (String salesOrderSequenceName) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferUseForm = persona.createOfferUseForm;

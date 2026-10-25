@@ -2,7 +2,7 @@ Feature: Employee inventory costing method
   An employee wants to add, edit, and delete an inventory costing method
 
   Background:
-    Given the employee Test begins using the application
+    Given the employee "Test" begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,10 +12,10 @@ Feature: Employee inventory costing method
     Then no error should occur
 
   Scenario: Existing employee adds an inventory costing method, edits it, changes its status, and then deletes it
-    Given the employee Test begins using the application
+    Given the employee "Test" begins using the application
     When the user begins entering a new inventory costing method
     And the user sets the inventory costing method's inventory costing method name to "CucumberInventoryCostingMethod"
-    And the user sets the inventory costing method to not be the default
+    And the user sets the inventory costing method to "not be" the default
     And the user sets the inventory costing method's sort order to "10"
     And the user sets the inventory costing method's description to "Cucumber Inventory Costing Method"
     And the user adds the new inventory costing method

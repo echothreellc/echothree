@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UseSteps implements En {
 
     public UseSteps() {
-        When("^the user begins entering a new use$",
+        When("the user begins entering a new use",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class UseSteps implements En {
                     persona.createUseForm = OfferUtil.getHome().getCreateUseForm();
                 });
 
-        When("^the user adds the new use$",
+        When("the user adds the new use",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -61,7 +61,7 @@ public class UseSteps implements En {
                     persona.createUseForm = null;
                 });
 
-        When("^the user begins deleting an use$",
+        When("the user begins deleting an use",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -72,7 +72,7 @@ public class UseSteps implements En {
                     persona.deleteUseForm = OfferUtil.getHome().getDeleteUseForm();
                 });
 
-        When("^the user deletes the use$",
+        When("the user deletes the use",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteUseForm = persona.deleteUseForm;
@@ -84,7 +84,7 @@ public class UseSteps implements En {
                     persona.deleteUseForm = null;
                 });
 
-        When("^the user begins specifying an use to edit$",
+        When("the user begins specifying an use to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -95,7 +95,7 @@ public class UseSteps implements En {
                     persona.useSpec = OfferUtil.getHome().getUseSpec();
                 });
 
-        When("^the user begins editing the use$",
+        When("the user begins editing the use",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.useSpec;
@@ -118,7 +118,7 @@ public class UseSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the use$",
+        When("the user finishes editing the use",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.useSpec;
@@ -140,7 +140,7 @@ public class UseSteps implements En {
                 });
 
 
-        When("^the user sets the use's use name to \"([^\"]*)\"$",
+        When("the user sets the use's use name to {string}",
                 (String useName) -> {
                     var persona = CurrentPersona.persona;
                     var createUseForm = persona.createUseForm;
@@ -158,7 +158,7 @@ public class UseSteps implements En {
                     }
                 });
 
-        When("^the user sets the use's new use name to \"([^\"]*)\"$",
+        When("the user sets the use's new use name to {string}",
                 (String useName) -> {
                     var persona = CurrentPersona.persona;
                     var useEdit = persona.useEdit;
@@ -168,7 +168,7 @@ public class UseSteps implements En {
                     useEdit.setUseName(useName);
                 });
 
-        When("^the user sets the use's use type name to \"([^\"]*)\"$",
+        When("the user sets the use's use type name to {string}",
                 (String useTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createUseForm = persona.createUseForm;
@@ -183,7 +183,7 @@ public class UseSteps implements En {
                     }
                 });
 
-        When("^the user sets the use's use type name to the last use type added$",
+        When("the user sets the use's use type name to the last use type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createUseForm = persona.createUseForm;
@@ -198,8 +198,10 @@ public class UseSteps implements En {
                     }
                 });
 
-        When("^the user sets the use to (be|not be) the default$",
+        When("the user sets the use to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createUseForm = persona.createUseForm;
                     var useEdit = persona.useEdit;
@@ -214,7 +216,7 @@ public class UseSteps implements En {
                     }
                 });
 
-        When("^the user sets the use's sort order to \"([^\"]*)\"$",
+        When("the user sets the use's sort order to {string}",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createUseForm = persona.createUseForm;
@@ -229,7 +231,7 @@ public class UseSteps implements En {
                     }
                 });
 
-        When("^the user sets the use's description to \"([^\"]*)\"$",
+        When("the user sets the use's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createUseForm = persona.createUseForm;

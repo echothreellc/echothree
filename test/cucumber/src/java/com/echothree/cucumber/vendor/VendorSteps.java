@@ -30,7 +30,7 @@ public class VendorSteps
         implements En {
 
     public VendorSteps() {
-        When("^the user begins entering a new vendor$",
+        When("the user begins entering a new vendor",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -40,7 +40,7 @@ public class VendorSteps
                     persona.createVendorForm = PartyUtil.getHome().getCreateVendorForm();
                 });
 
-        When("^the user adds the new vendor$",
+        When("the user adds the new vendor",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -65,14 +65,14 @@ public class VendorSteps
                     persona.createVendorForm = null;
                 });
 
-        When("^the user sets the status of the last vendor added to ([^\"]*)$",
+        When("the user sets the status of the last vendor added to {string}",
                 (String vendorStatusChoice) -> {
                     var persona = CurrentPersona.persona;
 
                     setVendorStatus(persona, persona.lastVendorName, vendorStatusChoice);
                 });
         
-        When("^the user begins specifying a vendor to edit$",
+        When("the user begins specifying a vendor to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -82,7 +82,7 @@ public class VendorSteps
                     persona.vendorUniversalSpec = VendorUtil.getHome().getVendorUniversalSpec();
                 });
 
-        When("^the user begins editing the vendor$",
+        When("the user begins editing the vendor",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.vendorUniversalSpec;
@@ -105,7 +105,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user finishes editing the vendor$",
+        When("the user finishes editing the vendor",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.vendorUniversalSpec;
@@ -126,7 +126,7 @@ public class VendorSteps
                     persona.vendorEdit = null;
                 });
 
-        When("^the user sets the vendor's vendor name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the vendor's vendor name to {string}",
                 (String vendorName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
@@ -141,7 +141,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user sets the vendor's vendor name to the last vendor added$",
+        When("the user sets the vendor's vendor name to the last vendor added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
@@ -156,7 +156,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user sets the vendor's new vendor name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the vendor's new vendor name to {string}",
                 (String vendorName) -> {
                     var persona = CurrentPersona.persona;
                     var vendorEdit = persona.vendorEdit;
@@ -166,7 +166,7 @@ public class VendorSteps
                     vendorEdit.setVendorName(vendorName);
                 });
 
-        When("^the user sets the vendor's type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the vendor's type to {string}",
                 (String vendorTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
@@ -181,7 +181,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user sets the vendor's cancellation policy to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the vendor's cancellation policy to {string}",
                 (String cancellationPolicyName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
@@ -196,7 +196,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user sets the vendor's return policy to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the vendor's return policy to {string}",
                 (String returnPolicyName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
@@ -211,7 +211,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user sets the vendor's AP GL account to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the vendor's AP GL account to {string}",
                 (String apGlAccountName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
@@ -226,7 +226,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user sets the vendor's minimum purchase order lines to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the vendor's minimum purchase order lines to {string}",
                 (String minimumPurchaseOrderLines) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
@@ -241,7 +241,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user sets the vendor's maximum purchase order lines to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the vendor's maximum purchase order lines to {string}",
                 (String maximumPurchaseOrderLines) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
@@ -256,7 +256,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user sets the vendor's minimum purchase order amount to ([^\"]*)$",
+        When("the user sets the vendor's minimum purchase order amount to {string}",
                 (String minimumPurchaseOrderAmountName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
@@ -271,7 +271,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user sets the vendor's maximum purchase order amount to ([^\"]*)$",
+        When("the user sets the vendor's maximum purchase order amount to {string}",
                 (String maximumPurchaseOrderAmountName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
@@ -286,8 +286,10 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user sets the vendor to (use|not use) use item purchasing categories$",
+        When("the user sets the vendor to {string} use item purchasing categories",
                 (String useItemPurchasingCategories) -> {
+                    assertThat(useItemPurchasingCategories).isIn("use", "not use");
+
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
                     var vendorEdit = persona.vendorEdit;
@@ -302,7 +304,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user sets the vendor's default item alias type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the vendor's default item alias type to {string}",
                 (String defaultItemAliasTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
@@ -317,7 +319,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user sets the vendor's first name to \"([^\"]*)\"$",
+        When("the user sets the vendor's first name to {string}",
                 (String firstName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
@@ -332,7 +334,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user sets the vendor's middle name to \"([^\"]*)\"$",
+        When("the user sets the vendor's middle name to {string}",
                 (String middleName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
@@ -347,7 +349,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user sets the vendor's last name to \"([^\"]*)\"$",
+        When("the user sets the vendor's last name to {string}",
                 (String lastName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
@@ -362,7 +364,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user sets the vendor's name to \"([^\"]*)\"$",
+        When("the user sets the vendor's name to {string}",
                 (String name) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
@@ -377,7 +379,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user sets the vendor's preferred language to \"([^\"]*)\"$",
+        When("the user sets the vendor's preferred language to {string}",
                 (String preferredLanguageIsoName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
@@ -392,7 +394,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user sets the vendor's preferred currency to \"([^\"]*)\"$",
+        When("the user sets the vendor's preferred currency to {string}",
                 (String preferredCurrencyIsoName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
@@ -407,7 +409,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user sets the vendor's preferred time zone to \"([^\"]*)\"$",
+        When("the user sets the vendor's preferred time zone to {string}",
                 (String preferredJavaTimeZoneName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
@@ -422,7 +424,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user sets the vendor's preferred date time format to \"([^\"]*)\"$",
+        When("the user sets the vendor's preferred date time format to {string}",
                 (String preferredDateTimeFormatName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
@@ -437,7 +439,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user sets the vendor email address to \"([^\"]*)\"$",
+        When("the user sets the vendor email address to {string}",
                 (String emailAddress) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
@@ -447,8 +449,10 @@ public class VendorSteps
                     createVendorForm.setEmailAddress(emailAddress);
                 });
 
-        When("^the user indicates the vendor (does|does not) allow solicitations to the email address$",
+        When("the user indicates the vendor {string} allow solicitations to the email address",
                 (String allowSolicitation) -> {
+                    assertThat(allowSolicitation).isIn("does", "does not");
+
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
 
@@ -458,8 +462,10 @@ public class VendorSteps
                     createVendorForm.setAllowSolicitation(allowSolicitation);
                 });
 
-        When("^the user indicates the vendor default hold until complete should be (set|not set)$",
+        When("the user indicates the vendor default hold until complete should be {string}",
                 (String holdUntilComplete) -> {
+                    assertThat(holdUntilComplete).isIn("set", "not set");
+
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
 
@@ -469,8 +475,10 @@ public class VendorSteps
                     createVendorForm.setHoldUntilComplete(holdUntilComplete);
                 });
 
-        When("^the user indicates the vendor default for allow backorders should be (set|not set)$",
+        When("the user indicates the vendor default for allow backorders should be {string}",
                 (String allowBackorders) -> {
+                    assertThat(allowBackorders).isIn("set", "not set");
+
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
 
@@ -480,8 +488,10 @@ public class VendorSteps
                     createVendorForm.setAllowBackorders(allowBackorders);
                 });
 
-        When("^the user indicates the vendor default for allow substitutions should be (set|not set)$",
+        When("the user indicates the vendor default for allow substitutions should be {string}",
                 (String allowSubstitutions) -> {
+                    assertThat(allowSubstitutions).isIn("set", "not set");
+
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
 
@@ -491,8 +501,10 @@ public class VendorSteps
                     createVendorForm.setAllowSubstitutions(allowSubstitutions);
                 });
 
-        When("^the user indicates the vendor default for allow combining shipments should be (set|not set)$",
+        When("the user indicates the vendor default for allow combining shipments should be {string}",
                 (String allowCombiningShipments) -> {
+                    assertThat(allowCombiningShipments).isIn("set", "not set");
+
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
 
@@ -502,8 +514,10 @@ public class VendorSteps
                     createVendorForm.setAllowCombiningShipments(allowCombiningShipments);
                 });
 
-        When("^the user indicates the vendor default for allow reference duplicates should be (set|not set)$",
+        When("the user indicates the vendor default for allow reference duplicates should be {string}",
                 (String allowReferenceDuplicates) -> {
+                    assertThat(allowReferenceDuplicates).isIn("set", "not set");
+
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
 
@@ -513,8 +527,10 @@ public class VendorSteps
                     createVendorForm.setAllowReferenceDuplicates(allowReferenceDuplicates);
                 });
 
-        When("^the user indicates the vendor default for hold until complete should be (set|not set)$",
+        When("the user indicates the vendor default for hold until complete should be {string}",
                 (String holdUntilComplete) -> {
+                    assertThat(holdUntilComplete).isIn("set", "not set");
+
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
 
@@ -524,7 +540,7 @@ public class VendorSteps
                     createVendorForm.setHoldUntilComplete(holdUntilComplete);
                 });
 
-        When("^the user sets the vendor's reference validation pattern to \"([^\"]*)\"$",
+        When("the user sets the vendor's reference validation pattern to {string}",
                 (String referenceValidationPattern) -> {
                     var persona = CurrentPersona.persona;
                     var vendorEdit = persona.vendorEdit;

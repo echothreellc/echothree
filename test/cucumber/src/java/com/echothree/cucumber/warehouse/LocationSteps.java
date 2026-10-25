@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class LocationSteps implements En {
 
     public LocationSteps() {
-        When("^the user begins entering a new location$",
+        When("the user begins entering a new location",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -38,7 +38,7 @@ public class LocationSteps implements En {
                     persona.createLocationForm = WarehouseUtil.getHome().getCreateLocationForm();
                 });
 
-        And("^the user adds the new location",
+        And("the user adds the new location",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createLocationForm = persona.createLocationForm;
@@ -58,7 +58,7 @@ public class LocationSteps implements En {
                     persona.createLocationForm = null;
                 });
 
-        When("^the user begins setting the status of a location$",
+        When("the user begins setting the status of a location",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -70,7 +70,7 @@ public class LocationSteps implements En {
                     persona.setLocationStatusForm = WarehouseUtil.getHome().getSetLocationStatusForm();
                 });
 
-        And("^the user sets the status of the location",
+        And("the user sets the status of the location",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var setLocationStatusForm = persona.setLocationStatusForm;
@@ -82,7 +82,7 @@ public class LocationSteps implements En {
                     persona.setLocationStatusForm = null;
                 });
 
-        When("^the user begins deleting a location$",
+        When("the user begins deleting a location",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -94,7 +94,7 @@ public class LocationSteps implements En {
                     persona.deleteLocationForm = WarehouseUtil.getHome().getDeleteLocationForm();
                 });
 
-        And("^the user deletes the location",
+        And("the user deletes the location",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteLocationForm = persona.deleteLocationForm;
@@ -106,7 +106,7 @@ public class LocationSteps implements En {
                     persona.deleteLocationForm = null;
                 });
 
-        When("^the user begins specifying a location to edit$",
+        When("the user begins specifying a location to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -118,7 +118,7 @@ public class LocationSteps implements En {
                     persona.locationSpec = WarehouseUtil.getHome().getLocationSpec();
                 });
 
-        When("^the user begins editing the location$",
+        When("the user begins editing the location",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.locationSpec;
@@ -141,7 +141,7 @@ public class LocationSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the location",
+        And("the user finishes editing the location",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.locationSpec;
@@ -163,7 +163,7 @@ public class LocationSteps implements En {
                     persona.locationEdit = null;
                 });
 
-        And("^the user sets the location's warehouse name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the location's warehouse name to {string}",
                 (String warehouseName) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationForm = persona.createLocationForm;
@@ -185,7 +185,7 @@ public class LocationSteps implements En {
                     }
                 });
 
-        And("^the user sets the location's warehouse name to the last warehouse added$",
+        And("the user sets the location's warehouse name to the last warehouse added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createLocationForm = persona.createLocationForm;
@@ -207,7 +207,7 @@ public class LocationSteps implements En {
                     }
                 });
 
-        And("^the user sets the location's location name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the location's location name to {string}",
                 (String locationName) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationForm = persona.createLocationForm;
@@ -229,7 +229,7 @@ public class LocationSteps implements En {
                     }
                 });
 
-        And("^the user sets the location's location name to the last location added$",
+        And("the user sets the location's location name to the last location added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createLocationForm = persona.createLocationForm;
@@ -251,7 +251,7 @@ public class LocationSteps implements En {
                     }
                 });
 
-        And("^the user sets the location's new location name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the location's new location name to {string}",
                 (String locationName) -> {
                     var persona = CurrentPersona.persona;
                     var locationEdit = persona.locationEdit;
@@ -261,7 +261,7 @@ public class LocationSteps implements En {
                     locationEdit.setLocationName(locationName);
                 });
 
-        And("^the user sets the location's status to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the location's status to {string}",
                 (String locationStatusChoice) -> {
                     var persona = CurrentPersona.persona;
                     var setLocationStatusForm = persona.setLocationStatusForm;
@@ -271,7 +271,7 @@ public class LocationSteps implements En {
                     setLocationStatusForm.setLocationStatusChoice(locationStatusChoice);
                 });
 
-        And("^the user sets the location's location type name to \"([^\"]*)\"$",
+        And("the user sets the location's location type name to {string}",
                 (String locationType) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationForm = persona.createLocationForm;
@@ -286,7 +286,7 @@ public class LocationSteps implements En {
                     }
                 });
 
-        And("^the user sets the location's location use type name to \"([^\"]*)\"$",
+        And("the user sets the location's location use type name to {string}",
                 (String locationUseType) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationForm = persona.createLocationForm;
@@ -301,7 +301,7 @@ public class LocationSteps implements En {
                     }
                 });
 
-        And("^the user sets the location's velocity to \"([^\"]*)\"$",
+        And("the user sets the location's velocity to {string}",
                 (String velocity) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationForm = persona.createLocationForm;
@@ -316,7 +316,7 @@ public class LocationSteps implements En {
                     }
                 });
 
-        And("^the user sets the location's inventory location group name to \"([^\"]*)\"$",
+        And("the user sets the location's inventory location group name to {string}",
                 (String velocity) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationForm = persona.createLocationForm;
@@ -331,7 +331,7 @@ public class LocationSteps implements En {
                     }
                 });
 
-        And("^the user sets the location's description to \"([^\"]*)\"$",
+        And("the user sets the location's description to {string}",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationForm = persona.createLocationForm;
