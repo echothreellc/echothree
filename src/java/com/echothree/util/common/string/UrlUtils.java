@@ -16,8 +16,8 @@
 
 package com.echothree.util.common.string;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -54,12 +54,7 @@ public class UrlUtils {
 
             for(var entry : entrySet) {
                 url.append(isFirst ? '?' : '&');
-                try {
-                    url.append(entry.getKey()).append('=').append(URLEncoder.encode(entry.getValue(), "UTF-8"));
-                } catch(UnsupportedEncodingException uee) {
-                    // If UTF-8 isn't a supported encoding, then there are severe problems.
-                    throw new RuntimeException(uee);
-                }
+                url.append(entry.getKey()).append('=').append(URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8));
                 isFirst = false;
             }
         }
