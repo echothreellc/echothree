@@ -39,7 +39,7 @@ public class InventoryTransactionReasonSteps implements En {
                     persona.createInventoryTransactionReasonForm = InventoryUtil.getHome().getCreateInventoryTransactionReasonForm();
                 });
 
-        And("^the user adds the new inventory transaction reason",
+        And("^the user adds the new inventory transaction reason$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionReasonForm = persona.createInventoryTransactionReasonForm;
@@ -72,7 +72,7 @@ public class InventoryTransactionReasonSteps implements En {
                     persona.deleteInventoryTransactionReasonForm = InventoryUtil.getHome().getDeleteInventoryTransactionReasonForm();
                 });
 
-        And("^the user deletes the inventory transaction reason",
+        And("^the user deletes the inventory transaction reason$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteInventoryTransactionReasonForm = persona.deleteInventoryTransactionReasonForm;
@@ -119,7 +119,7 @@ public class InventoryTransactionReasonSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the inventory transaction reason",
+        And("^the user finishes editing the inventory transaction reason$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryTransactionReasonSpec;

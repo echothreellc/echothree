@@ -119,7 +119,7 @@ public class InventoryDispositionAdjustmentSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the inventory disposition adjustment",
+        And("^the user finishes editing the inventory disposition adjustment$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryDispositionAdjustmentSpec;

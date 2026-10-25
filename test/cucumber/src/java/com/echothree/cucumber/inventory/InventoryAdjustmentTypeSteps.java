@@ -37,7 +37,7 @@ public class InventoryAdjustmentTypeSteps implements En {
                     persona.createInventoryAdjustmentTypeForm = InventoryUtil.getHome().getCreateInventoryAdjustmentTypeForm();
                 });
 
-        And("^the user adds the new inventory adjustment type",
+        And("^the user adds the new inventory adjustment type$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryAdjustmentTypeForm = persona.createInventoryAdjustmentTypeForm;
@@ -68,7 +68,7 @@ public class InventoryAdjustmentTypeSteps implements En {
                     persona.deleteInventoryAdjustmentTypeForm = InventoryUtil.getHome().getDeleteInventoryAdjustmentTypeForm();
                 });
 
-        And("^the user deletes the inventory adjustment type",
+        And("^the user deletes the inventory adjustment type$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteInventoryAdjustmentTypeForm = persona.deleteInventoryAdjustmentTypeForm;
@@ -114,7 +114,7 @@ public class InventoryAdjustmentTypeSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the inventory adjustment type",
+        And("^the user finishes editing the inventory adjustment type$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryAdjustmentTypeSpec;

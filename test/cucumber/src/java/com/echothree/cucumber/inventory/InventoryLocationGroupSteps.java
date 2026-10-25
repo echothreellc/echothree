@@ -38,7 +38,7 @@ public class InventoryLocationGroupSteps implements En {
                     persona.createInventoryLocationGroupForm = InventoryUtil.getHome().getCreateInventoryLocationGroupForm();
                 });
 
-        And("^the user adds the new inventory location group",
+        And("^the user adds the new inventory location group$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryLocationGroupForm = persona.createInventoryLocationGroupForm;
@@ -70,7 +70,7 @@ public class InventoryLocationGroupSteps implements En {
                     persona.setInventoryLocationGroupStatusForm = InventoryUtil.getHome().getSetInventoryLocationGroupStatusForm();
                 });
 
-        And("^the user sets the status of the inventory location group",
+        And("^the user sets the status of the inventory location group$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var setInventoryLocationGroupStatusForm = persona.setInventoryLocationGroupStatusForm;
@@ -94,7 +94,7 @@ public class InventoryLocationGroupSteps implements En {
                     persona.deleteInventoryLocationGroupForm = InventoryUtil.getHome().getDeleteInventoryLocationGroupForm();
                 });
 
-        And("^the user deletes the inventory location group",
+        And("^the user deletes the inventory location group$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteInventoryLocationGroupForm = persona.deleteInventoryLocationGroupForm;
@@ -141,7 +141,7 @@ public class InventoryLocationGroupSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the inventory location group",
+        And("^the user finishes editing the inventory location group$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryLocationGroupSpec;

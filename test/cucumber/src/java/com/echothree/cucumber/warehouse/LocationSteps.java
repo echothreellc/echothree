@@ -38,7 +38,7 @@ public class LocationSteps implements En {
                     persona.createLocationForm = WarehouseUtil.getHome().getCreateLocationForm();
                 });
 
-        And("^the user adds the new location",
+        And("^the user adds the new location$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createLocationForm = persona.createLocationForm;
@@ -70,7 +70,7 @@ public class LocationSteps implements En {
                     persona.setLocationStatusForm = WarehouseUtil.getHome().getSetLocationStatusForm();
                 });
 
-        And("^the user sets the status of the location",
+        And("^the user sets the status of the location$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var setLocationStatusForm = persona.setLocationStatusForm;
@@ -94,7 +94,7 @@ public class LocationSteps implements En {
                     persona.deleteLocationForm = WarehouseUtil.getHome().getDeleteLocationForm();
                 });
 
-        And("^the user deletes the location",
+        And("^the user deletes the location$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteLocationForm = persona.deleteLocationForm;
@@ -141,7 +141,7 @@ public class LocationSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the location",
+        And("^the user finishes editing the location$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.locationSpec;

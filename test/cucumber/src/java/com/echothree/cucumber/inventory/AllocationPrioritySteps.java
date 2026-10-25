@@ -37,7 +37,7 @@ public class AllocationPrioritySteps implements En {
                     persona.createAllocationPriorityForm = InventoryUtil.getHome().getCreateAllocationPriorityForm();
                 });
 
-        And("^the user adds the new allocation priority",
+        And("^the user adds the new allocation priority$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createAllocationPriorityForm = persona.createAllocationPriorityForm;
@@ -68,7 +68,7 @@ public class AllocationPrioritySteps implements En {
                     persona.deleteAllocationPriorityForm = InventoryUtil.getHome().getDeleteAllocationPriorityForm();
                 });
 
-        And("^the user deletes the allocation priority",
+        And("^the user deletes the allocation priority$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteAllocationPriorityForm = persona.deleteAllocationPriorityForm;
@@ -114,7 +114,7 @@ public class AllocationPrioritySteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the allocation priority",
+        And("^the user finishes editing the allocation priority$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.allocationPrioritySpec;

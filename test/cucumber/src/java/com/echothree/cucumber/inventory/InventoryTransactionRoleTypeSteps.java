@@ -39,7 +39,7 @@ public class InventoryTransactionRoleTypeSteps implements En {
                     persona.createInventoryTransactionRoleTypeForm = InventoryUtil.getHome().getCreateInventoryTransactionRoleTypeForm();
                 });
 
-        And("^the user adds the new inventory transaction role type",
+        And("^the user adds the new inventory transaction role type$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionRoleTypeForm = persona.createInventoryTransactionRoleTypeForm;
@@ -72,7 +72,7 @@ public class InventoryTransactionRoleTypeSteps implements En {
                     persona.deleteInventoryTransactionRoleTypeForm = InventoryUtil.getHome().getDeleteInventoryTransactionRoleTypeForm();
                 });
 
-        And("^the user deletes the inventory transaction role type",
+        And("^the user deletes the inventory transaction role type$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteInventoryTransactionRoleTypeForm = persona.deleteInventoryTransactionRoleTypeForm;
@@ -119,7 +119,7 @@ public class InventoryTransactionRoleTypeSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the inventory transaction role type",
+        And("^the user finishes editing the inventory transaction role type$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryTransactionRoleTypeSpec;

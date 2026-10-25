@@ -39,7 +39,7 @@ public class InventoryBucketTypeSteps implements En {
                     persona.createInventoryBucketTypeForm = InventoryUtil.getHome().getCreateInventoryBucketTypeForm();
                 });
 
-        And("^the user adds the new inventory bucket type",
+        And("^the user adds the new inventory bucket type$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryBucketTypeForm = persona.createInventoryBucketTypeForm;
@@ -70,7 +70,7 @@ public class InventoryBucketTypeSteps implements En {
                     persona.deleteInventoryBucketTypeForm = InventoryUtil.getHome().getDeleteInventoryBucketTypeForm();
                 });
 
-        And("^the user deletes the inventory bucket type",
+        And("^the user deletes the inventory bucket type$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteInventoryBucketTypeForm = persona.deleteInventoryBucketTypeForm;
@@ -116,7 +116,7 @@ public class InventoryBucketTypeSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the inventory bucket type",
+        And("^the user finishes editing the inventory bucket type$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryBucketTypeSpec;

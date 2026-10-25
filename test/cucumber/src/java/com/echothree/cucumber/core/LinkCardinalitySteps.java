@@ -50,7 +50,7 @@ public class LinkCardinalitySteps implements En {
                     persona.createLinkCardinalityForm = CoreUtil.getHome().getCreateLinkCardinalityForm();
                 });
 
-        And("^the user adds the new link cardinality",
+        And("^the user adds the new link cardinality$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createLinkCardinalityForm = persona.createLinkCardinalityForm;
@@ -129,7 +129,7 @@ public class LinkCardinalitySteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the link cardinality",
+        And("^the user finishes editing the link cardinality$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.linkCardinalitySpec;

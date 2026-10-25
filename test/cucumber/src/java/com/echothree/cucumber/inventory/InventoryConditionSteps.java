@@ -37,7 +37,7 @@ public class InventoryConditionSteps implements En {
                     persona.createInventoryConditionForm = InventoryUtil.getHome().getCreateInventoryConditionForm();
                 });
 
-        And("^the user adds the new inventory condition",
+        And("^the user adds the new inventory condition$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryConditionForm = persona.createInventoryConditionForm;
@@ -68,7 +68,7 @@ public class InventoryConditionSteps implements En {
                     persona.deleteInventoryConditionForm = InventoryUtil.getHome().getDeleteInventoryConditionForm();
                 });
 
-        And("^the user deletes the inventory condition",
+        And("^the user deletes the inventory condition$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteInventoryConditionForm = persona.deleteInventoryConditionForm;
@@ -114,7 +114,7 @@ public class InventoryConditionSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the inventory condition",
+        And("^the user finishes editing the inventory condition$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryConditionSpec;

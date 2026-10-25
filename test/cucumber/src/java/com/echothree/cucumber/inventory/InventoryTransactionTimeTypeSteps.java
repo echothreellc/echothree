@@ -39,7 +39,7 @@ public class InventoryTransactionTimeTypeSteps implements En {
                     persona.createInventoryTransactionTimeTypeForm = InventoryUtil.getHome().getCreateInventoryTransactionTimeTypeForm();
                 });
 
-        And("^the user adds the new inventory transaction time type",
+        And("^the user adds the new inventory transaction time type$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionTimeTypeForm = persona.createInventoryTransactionTimeTypeForm;
@@ -72,7 +72,7 @@ public class InventoryTransactionTimeTypeSteps implements En {
                     persona.deleteInventoryTransactionTimeTypeForm = InventoryUtil.getHome().getDeleteInventoryTransactionTimeTypeForm();
                 });
 
-        And("^the user deletes the inventory transaction time type",
+        And("^the user deletes the inventory transaction time type$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteInventoryTransactionTimeTypeForm = persona.deleteInventoryTransactionTimeTypeForm;
@@ -119,7 +119,7 @@ public class InventoryTransactionTimeTypeSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the inventory transaction time type",
+        And("^the user finishes editing the inventory transaction time type$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryTransactionTimeTypeSpec;

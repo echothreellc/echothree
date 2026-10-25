@@ -41,7 +41,7 @@ public class LinkTypeSteps implements En {
                     persona.createLinkTypeForm = CoreUtil.getHome().getCreateLinkTypeForm();
                 });
 
-        And("^the user adds the new link type",
+        And("^the user adds the new link type$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createLinkTypeForm = persona.createLinkTypeForm;
@@ -120,7 +120,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the link type",
+        And("^the user finishes editing the link type$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.linkTypeSpec;

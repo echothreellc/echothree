@@ -39,7 +39,7 @@ public class InventoryCostingMethodSteps implements En {
                     persona.createInventoryCostingMethodForm = InventoryUtil.getHome().getCreateInventoryCostingMethodForm();
                 });
 
-        And("^the user adds the new inventory costing method",
+        And("^the user adds the new inventory costing method$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryCostingMethodForm = persona.createInventoryCostingMethodForm;
@@ -70,7 +70,7 @@ public class InventoryCostingMethodSteps implements En {
                     persona.deleteInventoryCostingMethodForm = InventoryUtil.getHome().getDeleteInventoryCostingMethodForm();
                 });
 
-        And("^the user deletes the inventory costing method",
+        And("^the user deletes the inventory costing method$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteInventoryCostingMethodForm = persona.deleteInventoryCostingMethodForm;
@@ -116,7 +116,7 @@ public class InventoryCostingMethodSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the inventory costing method",
+        And("^the user finishes editing the inventory costing method$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryCostingMethodSpec;
