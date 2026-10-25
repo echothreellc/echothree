@@ -2,7 +2,7 @@ Feature: Employee link type
   An employee wants to add, edit, and delete a link type
 
   Background:
-    Given the employee Test begins using the application
+    Given the employee "Test" begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee link type
     Then no error should occur
 
   Scenario: Existing employee adds a link type, edits it, and then deletes it
-    Given the employee Test begins using the application
+    Given the employee "Test" begins using the application
     When the user begins entering a new link type
     And the user sets the link type's link type name to "CucumberLinkType"
     And the user sets the link type's source component vendor name to "ECHO_THREE"
@@ -86,7 +86,7 @@ Feature: Employee link type
     And the user enters these link type values:
       | <field> | <value> |
     And the user adds the new link type
-    Then the execution error <error> should occur
+    Then the execution error "<error>" should occur
 
     Examples:
       | field | value | error |
@@ -113,7 +113,7 @@ Feature: Employee link type
       | SortOrder | 10 |
       | Description | Original link type |
     And the user adds the new link type
-    Then the execution error InvalidLinkTypeEndpoints should occur
+    Then the execution error "InvalidLinkTypeEndpoints" should occur
 
     Examples:
       | source | target | cardinality | direction | transitive |
@@ -141,7 +141,7 @@ Feature: Employee link type
       | GuidanceMimeTypeName | <mimeType> |
       | Guidance | <guidance> |
     And the user adds the new link type
-    Then the execution error <error> should occur
+    Then the execution error "<error>" should occur
 
     Examples:
       | description | mimeType | guidance | error |
@@ -179,7 +179,7 @@ Feature: Employee link type
       | SortOrder | 10 |
       | Description | Must not replace the original |
     And the user adds the new link type
-    Then the execution error DuplicateLinkTypeName should occur
+    Then the execution error "DuplicateLinkTypeName" should occur
     When the user retrieves link type "CucumberDuplicateLinkType"
     Then no error should occur
     And the retrieved link type has these values:
@@ -218,7 +218,7 @@ Feature: Employee link type
       | Description | Original link type |
       | ParentLinkTypeName | CucumberParentLinkType |
     And the user adds the new link type
-    Then the execution error InvalidLinkTypeEndpoints should occur
+    Then the execution error "InvalidLinkTypeEndpoints" should occur
     When the user begins deleting a link type
     And the user sets the link type's link type name to "CucumberParentLinkType"
     And the user deletes the link type
@@ -259,7 +259,7 @@ Feature: Employee link type
       | Description | Original link type |
       | InverseLinkTypeName | CucumberInverseLinkType |
     And the user adds the new link type
-    Then the execution error InvalidLinkTypeInverse should occur
+    Then the execution error "InvalidLinkTypeInverse" should occur
     When the user retrieves link type "CucumberInverseLinkType"
     Then no error should occur
     And the retrieved link type has these values:
@@ -297,7 +297,7 @@ Feature: Employee link type
     And the user enters these link type values:
       | <field> | CucumberSelfLinkType |
     And the user finishes editing the link type
-    Then the execution error <error> should occur
+    Then the execution error "<error>" should occur
     When the user abandons editing link type "CucumberSelfLinkType"
     Then no error should occur
     When the user retrieves link type "CucumberSelfLinkType"
@@ -351,13 +351,13 @@ Feature: Employee link type
     Then no error should occur
     And the user sets the link type's parent link type name to "CucumberCycleChild"
     And the user finishes editing the link type
-    Then the execution error LinkTypeParentCycle should occur
+    Then the execution error "LinkTypeParentCycle" should occur
     When the user abandons editing link type "CucumberCycleParent"
     Then no error should occur
     When the user begins deleting a link type
     And the user sets the link type's link type name to "CucumberCycleParent"
     And the user deletes the link type
-    Then the execution error LinkTypeInUse should occur
+    Then the execution error "LinkTypeInUse" should occur
     When the user retrieves link type "CucumberCycleChild"
     Then no error should occur
     And the retrieved link type has these values:
@@ -408,7 +408,7 @@ Feature: Employee link type
     And the user enters these link type values:
       | <field> | <value> |
     And the user finishes editing the link type
-    Then the execution error InvalidLinkTypeEndpoints should occur
+    Then the execution error "InvalidLinkTypeEndpoints" should occur
     When the user abandons editing link type "CucumberEditParent"
     Then no error should occur
     When the user retrieves link type "CucumberEditParent"
@@ -480,7 +480,7 @@ Feature: Employee link type
       | Description | Original link type |
       | InverseLinkTypeName | CucumberInverseFirst |
     And the user adds the new link type
-    Then the execution error InvalidLinkTypeInverse should occur
+    Then the execution error "InvalidLinkTypeInverse" should occur
     When the user retrieves link type "CucumberInverseFirst"
     Then no error should occur
     And the retrieved link type has these values:
@@ -533,7 +533,7 @@ Feature: Employee link type
     Then no error should occur
     And the user sets the link type's new link type name to "CucumberRenameFirst"
     And the user finishes editing the link type
-    Then the execution error DuplicateLinkTypeName should occur
+    Then the execution error "DuplicateLinkTypeName" should occur
     When the user abandons editing link type "CucumberRenameSecond"
     Then no error should occur
     When the user retrieves link type "CucumberRenameSecond"
@@ -551,11 +551,11 @@ Feature: Employee link type
 
   Scenario: Link Type cannot retrieve or delete an unknown type
     When the user retrieves link type "CucumberMissingLinkType"
-    Then the execution error UnknownLinkTypeName should occur
+    Then the execution error "UnknownLinkTypeName" should occur
     When the user begins deleting a link type
     And the user sets the link type's link type name to "CucumberMissingLinkType"
     And the user deletes the link type
-    Then the execution error UnknownLinkTypeName should occur
+    Then the execution error "UnknownLinkTypeName" should occur
 
   Scenario Outline: Link Type translation creation rejects unknown owners and languages
     When the user begins entering a new link type
@@ -576,7 +576,7 @@ Feature: Employee link type
       | LinkTypeName | <linkType> |
       | LanguageIsoName | <language> |
       | Description | Translation test |
-    Then the execution error <error> should occur
+    Then the execution error "<error>" should occur
 
     When the user begins deleting a link type
     And the user sets the link type's link type name to "CucumberTranslationOwner"
@@ -607,7 +607,7 @@ Feature: Employee link type
       | LinkTypeName | CucumberTranslatedLinkType |
       | LanguageIsoName | en |
       | Description | Must not replace the original |
-    Then the execution error DuplicateLinkTypeTranslation should occur
+    Then the execution error "DuplicateLinkTypeTranslation" should occur
     When the user retrieves link type "CucumberTranslatedLinkType"
     Then no error should occur
     And the retrieved link type has these values:
@@ -615,7 +615,7 @@ Feature: Employee link type
     When the user deletes the "en" translation of link type "CucumberTranslatedLinkType"
     Then no error should occur
     When the user deletes the "en" translation of link type "CucumberTranslatedLinkType"
-    Then the execution error UnknownLinkTypeTranslation should occur
+    Then the execution error "UnknownLinkTypeTranslation" should occur
     When the user creates a link type translation with:
       | LinkTypeName | CucumberTranslatedLinkType |
       | LanguageIsoName | en |
@@ -652,7 +652,7 @@ Feature: Employee link type
     And the user enters these link type values:
       | <field> | <value> |
     And the user finishes editing the link type
-    Then the execution error <error> should occur
+    Then the execution error "<error>" should occur
     When the user abandons editing link type "CucumberFailedEdit"
     Then no error should occur
     When the user retrieves link type "CucumberFailedEdit"
@@ -701,9 +701,9 @@ Feature: Employee link type
       | Description | Translation guidance |
       | GuidanceMimeTypeName | <mimeType> |
       | Guidance | <guidance> |
-    Then the execution error <error> should occur
+    Then the execution error "<error>" should occur
     When the user deletes the "en" translation of link type "CucumberGuidanceTranslation"
-    Then the execution error UnknownLinkTypeTranslation should occur
+    Then the execution error "UnknownLinkTypeTranslation" should occur
     When the user begins deleting a link type
     And the user sets the link type's link type name to "CucumberGuidanceTranslation"
     And the user deletes the link type

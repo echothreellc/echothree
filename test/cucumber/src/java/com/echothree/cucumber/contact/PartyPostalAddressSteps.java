@@ -300,8 +300,10 @@ public class PartyPostalAddressSteps implements En {
                     }
                 });
 
-        When("^the user's postal address (is|is not) a commercial location$",
+        When("the user's postal address {string} a commercial location",
                 (String isCommercial) -> {
+                    assertThat(isCommercial).isIn("is", "is not");
+
                     var persona = CurrentPersona.persona;
                     var createContactPostalAddressForm = persona.createContactPostalAddressForm;
                     var edit = persona.contactPostalAddressEdit;
@@ -316,8 +318,10 @@ public class PartyPostalAddressSteps implements En {
                     }
                 });
 
-        When("^the user (does|does not) allow solicitations to the postal address$",
+        When("the user {string} allow solicitations to the postal address",
                 (String allowSolicitation) -> {
+                    assertThat(allowSolicitation).isIn("does", "does not");
+
                     var persona = CurrentPersona.persona;
                     var createContactPostalAddressForm = persona.createContactPostalAddressForm;
                     var edit = persona.contactPostalAddressEdit;

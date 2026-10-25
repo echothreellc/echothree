@@ -168,8 +168,10 @@ public class UseTypeSteps implements En {
                     useTypeEdit.setUseTypeName(useTypeName);
                 });
 
-        When("^the user sets the use type to (be|not be) the default$",
+        When("the user sets the use type to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createUseTypeForm = persona.createUseTypeForm;
                     var useTypeEdit = persona.useTypeEdit;

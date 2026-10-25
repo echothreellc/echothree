@@ -141,7 +141,7 @@ public class InventoryTransactionReasonSteps implements En {
                     persona.inventoryTransactionReasonEdit = null;
                 });
 
-        And("^the user sets the inventory transaction reason's inventory transaction reason name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory transaction reason's inventory transaction reason name to {string}",
                 (String inventoryTransactionReasonName) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionReasonForm = persona.createInventoryTransactionReasonForm;
@@ -160,7 +160,7 @@ public class InventoryTransactionReasonSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction reason's inventory transaction type name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory transaction reason's inventory transaction type name to {string}",
                 (String inventoryTransactionTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createForm = persona.createInventoryTransactionReasonForm;
@@ -214,7 +214,7 @@ public class InventoryTransactionReasonSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction reason's new inventory transaction reason name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory transaction reason's new inventory transaction reason name to {string}",
                 (String inventoryTransactionReasonName) -> {
                     var persona = CurrentPersona.persona;
                     var inventoryTransactionReasonEdit = persona.inventoryTransactionReasonEdit;
@@ -224,8 +224,10 @@ public class InventoryTransactionReasonSteps implements En {
                     inventoryTransactionReasonEdit.setInventoryTransactionReasonName(inventoryTransactionReasonName);
                 });
 
-        And("^the user sets the inventory transaction reason to (be|not be) the default$",
+        And("the user sets the inventory transaction reason to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionReasonForm = persona.createInventoryTransactionReasonForm;
                     var inventoryTransactionReasonEdit = persona.inventoryTransactionReasonEdit;
@@ -240,7 +242,7 @@ public class InventoryTransactionReasonSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction reason's inventory disposition name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory transaction reason's inventory disposition name to {string}",
                 (String inventoryDispositionName) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionReasonForm = persona.createInventoryTransactionReasonForm;

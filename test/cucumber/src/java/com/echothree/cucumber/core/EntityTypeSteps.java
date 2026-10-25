@@ -132,7 +132,7 @@ public class EntityTypeSteps implements En {
                     persona.entityTypeEdit = null;
                 });
         
-        When("^the user sets the entity type's component vendor to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the entity type's component vendor to {string}",
                 (String componentVendorName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityTypeForm = persona.createEntityTypeForm;
@@ -150,7 +150,7 @@ public class EntityTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity type's entity type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the entity type's entity type to {string}",
                 (String entityTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityTypeForm = persona.createEntityTypeForm;
@@ -168,8 +168,10 @@ public class EntityTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity type to (keep|not keep) all history$",
+        When("the user sets the entity type to {string} all history",
                 (String keepAllHistory) -> {
+                    assertThat(keepAllHistory).isIn("keep", "not keep");
+
                     var persona = CurrentPersona.persona;
                     var createEntityTypeForm = persona.createEntityTypeForm;
                     var entityTypeEdit = persona.entityTypeEdit;
@@ -214,8 +216,10 @@ public class EntityTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity type to (be|not be) extensible$",
+        When("the user sets the entity type to {string} extensible",
                 (String isExtensible) -> {
+                    assertThat(isExtensible).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createEntityTypeForm = persona.createEntityTypeForm;
                     var entityTypeEdit = persona.entityTypeEdit;

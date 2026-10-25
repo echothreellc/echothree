@@ -65,8 +65,10 @@ public class CustomerSteps implements En {
                     persona.createCustomerWithLoginForm.setEmailAddress(emailAddress);
                 });
 
-        When("^the user (does|does not) allow solicitations to the new customer$",
+        When("the user {string} allow solicitations to the new customer",
                 (String allowSolicitation) -> {
+                    assertThat(allowSolicitation).isIn("does", "does not");
+
                     var persona = CurrentPersona.persona;
 
                     assertThat(persona.createCustomerWithLoginForm).isNotNull();
@@ -101,7 +103,7 @@ public class CustomerSteps implements En {
                     persona.createCustomerWithLoginForm.setPassword2(password2);
                 });
 
-        When("^the user sets the new customer's recovery question to ([^\"]*)$",
+        When("the user sets the new customer's recovery question to {string}",
                 (String recoveryQuestionName) -> {
                     var persona = CurrentPersona.persona;
 
@@ -140,7 +142,7 @@ public class CustomerSteps implements En {
                     persona.createCustomerWithLoginForm = null;
                 });
 
-        When("^the user sets the status of the last customer added to ([^\"]*)$",
+        When("the user sets the status of the last customer added to {string}",
                 (String customerStatusChoice) -> {
                     var persona = CurrentPersona.persona;
 

@@ -141,7 +141,7 @@ public class WarehouseSteps
                     persona.warehouseEdit = null;
                 });
 
-        And("^the user sets the warehouse's warehouse name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the warehouse's warehouse name to {string}",
                 (String warehouseName) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -177,7 +177,7 @@ public class WarehouseSteps
                     }
                 });
 
-        And("^the user sets the warehouse's new warehouse name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the warehouse's new warehouse name to {string}",
                 (String warehouseName) -> {
                     var persona = CurrentPersona.persona;
                     var warehouseEdit = persona.warehouseEdit;
@@ -202,8 +202,10 @@ public class WarehouseSteps
                     }
                 });
 
-        And("^the user sets the warehouse to (be|not be) the default$",
+        And("the user sets the warehouse to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
                     var warehouseEdit = persona.warehouseEdit;
@@ -233,7 +235,7 @@ public class WarehouseSteps
                     }
                 });
 
-        And("^the user sets the warehouse's inventory move printer group name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the warehouse's inventory move printer group name to {string}",
                 (String inventoryMovePrinterGroupName) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -248,7 +250,7 @@ public class WarehouseSteps
                     }
                 });
 
-        And("^the user sets the warehouse's picklist printer group mame to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the warehouse's picklist printer group mame to {string}",
                 (String picklistPrinterGroupName) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -263,7 +265,7 @@ public class WarehouseSteps
                     }
                 });
 
-        And("^the user sets the warehouse's packing list printer group name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the warehouse's packing list printer group name to {string}",
                 (String packingListPrinterGroupName) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -278,7 +280,7 @@ public class WarehouseSteps
                     }
                 });
 
-        And("^the user sets the warehouse's shipping manifest printer group name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the warehouse's shipping manifest printer group name to {string}",
                 (String shippingManifestPrinterGroupName) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;

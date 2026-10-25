@@ -2,7 +2,7 @@ Feature: Employee warehouse
   An employee wants to add, edit, and delete a warehouse
 
   Background:
-    Given the employee Test begins using the application
+    Given the employee "Test" begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,12 +12,12 @@ Feature: Employee warehouse
     Then no error should occur
 
   Scenario: Existing employee adds a warehouse, edits it, and then deletes it
-    Given the employee Test begins using the application
+    Given the employee "Test" begins using the application
     When the user begins entering a new warehouse
     And the user sets the warehouse's warehouse name to "CucumberWarehouse"
     And the user sets the warehouse's warehouse type name to "DEFAULT"
     And the user sets the warehouse's name to "Cucumber Warehouse"
-    And the user sets the warehouse to not be the default
+    And the user sets the warehouse to "not be" the default
     And the user sets the warehouse's sort order to "10"
     And the user sets the warehouse's inventory move printer group name to "DEFAULT"
     And the user sets the warehouse's picklist printer group mame to "DEFAULT"

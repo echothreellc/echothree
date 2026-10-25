@@ -136,7 +136,7 @@ public class LocationTypeSteps implements En {
                     persona.locationTypeEdit = null;
                 });
 
-        And("^the user sets the location type's warehouse name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the location type's warehouse name to {string}",
                 (String warehouseName) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationTypeForm = persona.createLocationTypeForm;
@@ -174,7 +174,7 @@ public class LocationTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the location type's location type name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the location type's location type name to {string}",
                 (String locationTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationTypeForm = persona.createLocationTypeForm;
@@ -212,7 +212,7 @@ public class LocationTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the location type's new location type name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the location type's new location type name to {string}",
                 (String locationTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var locationTypeEdit = persona.locationTypeEdit;
@@ -222,8 +222,10 @@ public class LocationTypeSteps implements En {
                     locationTypeEdit.setLocationTypeName(locationTypeName);
                 });
 
-        And("^the user sets the location type to (be|not be) the default$",
+        And("the user sets the location type to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createLocationTypeForm = persona.createLocationTypeForm;
                     var locationTypeEdit = persona.locationTypeEdit;

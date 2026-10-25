@@ -138,7 +138,7 @@ public class InventoryBucketTypeSteps implements En {
                     persona.inventoryBucketTypeEdit = null;
                 });
 
-        And("^the user sets the inventory bucket type's inventory bucket type name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory bucket type's inventory bucket type name to {string}",
                 (String inventoryBucketTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryBucketTypeForm = persona.createInventoryBucketTypeForm;
@@ -176,7 +176,7 @@ public class InventoryBucketTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory bucket type's new inventory bucket type name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory bucket type's new inventory bucket type name to {string}",
                 (String inventoryBucketTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var inventoryBucketTypeEdit = persona.inventoryBucketTypeEdit;
@@ -186,8 +186,10 @@ public class InventoryBucketTypeSteps implements En {
                     inventoryBucketTypeEdit.setInventoryBucketTypeName(inventoryBucketTypeName);
                 });
 
-        And("^the user sets the inventory bucket type to (be|not be) the default$",
+        And("the user sets the inventory bucket type to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createInventoryBucketTypeForm = persona.createInventoryBucketTypeForm;
                     var inventoryBucketTypeEdit = persona.inventoryBucketTypeEdit;

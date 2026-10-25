@@ -99,7 +99,7 @@ public class EntityInstanceSteps implements En {
                     persona.removeEntityInstanceForm = null;
                 });
 
-        When("^the user sets the entity instance's component vendor to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the entity instance's component vendor to {string}",
                 (String componentVendorName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityInstanceForm = persona.createEntityInstanceForm;
@@ -122,7 +122,7 @@ public class EntityInstanceSteps implements En {
                     createEntityInstanceForm.setComponentVendorName(lastComponentVendorName);
                 });
 
-        When("^the user sets the entity instance's entity type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the entity instance's entity type to {string}",
                 (String entityTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityInstanceForm = persona.createEntityInstanceForm;

@@ -151,7 +151,7 @@ public class LinkCardinalitySteps implements En {
                     persona.linkCardinalityEdit = null;
                 });
 
-        And("^the user sets the link cardinality's link cardinality name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the link cardinality's link cardinality name to {string}",
                 (String linkCardinalityName) -> {
                     var persona = CurrentPersona.persona;
                     var createLinkCardinalityForm = persona.createLinkCardinalityForm;
@@ -189,7 +189,7 @@ public class LinkCardinalitySteps implements En {
                     }
                 });
 
-        And("^the user sets the link cardinality's new link cardinality name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the link cardinality's new link cardinality name to {string}",
                 (String linkCardinalityName) -> {
                     var persona = CurrentPersona.persona;
                     var linkCardinalityEdit = persona.linkCardinalityEdit;
@@ -199,8 +199,10 @@ public class LinkCardinalitySteps implements En {
                     linkCardinalityEdit.setLinkCardinalityName(linkCardinalityName);
                 });
 
-        And("^the user sets the link cardinality to (be|not be) the default$",
+        And("the user sets the link cardinality to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createLinkCardinalityForm = persona.createLinkCardinalityForm;
                     var linkCardinalityEdit = persona.linkCardinalityEdit;
@@ -361,7 +363,9 @@ public class LinkCardinalitySteps implements En {
             persona.linkCardinalityEdit = null;
         });
 
-        When("^the user (creates|retrieves|deletes) a link cardinality description with:$", (String operation, DataTable values) -> {
+        When("the user {string} a link cardinality description with:", (String operation, DataTable values) -> {
+            assertThat(operation).isIn("creates", "retrieves", "deletes");
+
             var persona = CurrentPersona.persona;
             var fields = values.asMap(String.class, String.class);
 

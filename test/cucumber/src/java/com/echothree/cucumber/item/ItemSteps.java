@@ -37,7 +37,7 @@ public class ItemSteps implements En {
                     persona.createItemForm = ItemUtil.getHome().getCreateItemForm();
                 });
 
-        When("^the user sets the item's type to ([^\"]*)$",
+        When("the user sets the item's type to {string}",
                 (String itemTypeName) -> {
                     var persona = CurrentPersona.persona;
 
@@ -46,7 +46,7 @@ public class ItemSteps implements En {
                     persona.createItemForm.setItemTypeName(itemTypeName);
                 });
 
-        When("^the user sets the item's use type to ([^\"]*)$",
+        When("the user sets the item's use type to {string}",
                 (String itemUseTypeName) -> {
                     var persona = CurrentPersona.persona;
 
@@ -55,7 +55,7 @@ public class ItemSteps implements En {
                     persona.createItemForm.setItemUseTypeName(itemUseTypeName);
                 });
 
-        When("^the user sets the item's category to ([^\"]*)$",
+        When("the user sets the item's category to {string}",
                 (String itemCategoryName) -> {
                     var persona = CurrentPersona.persona;
 
@@ -64,7 +64,7 @@ public class ItemSteps implements En {
                     persona.createItemForm.setItemCategoryName(itemCategoryName);
                 });
 
-        When("^the user sets the item's accounting category to ([^\"]*)$",
+        When("the user sets the item's accounting category to {string}",
                 (String itemAccountingCategoryName) -> {
                     var persona = CurrentPersona.persona;
 
@@ -73,7 +73,7 @@ public class ItemSteps implements En {
                     persona.createItemForm.setItemAccountingCategoryName(itemAccountingCategoryName);
                 });
 
-        When("^the user sets the item's purchasing category to ([^\"]*)$",
+        When("the user sets the item's purchasing category to {string}",
                 (String itemPurchasingCategoryName) -> {
                     var persona = CurrentPersona.persona;
 
@@ -82,7 +82,7 @@ public class ItemSteps implements En {
                     persona.createItemForm.setItemPurchasingCategoryName(itemPurchasingCategoryName);
                 });
 
-        When("^the user sets the item's company to ([^\"]*)$",
+        When("the user sets the item's company to {string}",
                 (String companyName) -> {
                     var persona = CurrentPersona.persona;
 
@@ -91,7 +91,7 @@ public class ItemSteps implements En {
                     persona.createItemForm.setCompanyName(companyName);
                 });
 
-        When("^the user sets the item's delivery type to ([^\"]*)$",
+        When("the user sets the item's delivery type to {string}",
                 (String itemDeliveryTypeName) -> {
                     var persona = CurrentPersona.persona;
 
@@ -100,7 +100,7 @@ public class ItemSteps implements En {
                     persona.createItemForm.setItemDeliveryTypeName(itemDeliveryTypeName);
                 });
 
-        When("^the user sets the item's inventory type to ([^\"]*)$",
+        When("the user sets the item's inventory type to {string}",
                 (String itemInventoryTypeName) -> {
                     var persona = CurrentPersona.persona;
 
@@ -109,8 +109,10 @@ public class ItemSteps implements En {
                     persona.createItemForm.setItemInventoryTypeName(itemInventoryTypeName);
                 });
 
-        When("^the user's item (has|does not have) serialized inventory$",
+        When("the user's item {string} serialized inventory",
                 (String inventorySerialized) -> {
+                    assertThat(inventorySerialized).isIn("has", "does not have");
+
                     var persona = CurrentPersona.persona;
 
                     assertThat(persona.createItemForm).isNotNull();
@@ -118,8 +120,10 @@ public class ItemSteps implements En {
                     persona.createItemForm.setInventorySerialized(Boolean.valueOf(inventorySerialized.equals("has")).toString());
                 });
 
-        When("^the user's item (is|is not) exempt from shipping$",
+        When("the user's item {string} exempt from shipping",
                 (String shippingChargeExempt) -> {
+                    assertThat(shippingChargeExempt).isIn("is", "is not");
+
                     var persona = CurrentPersona.persona;
 
                     assertThat(persona.createItemForm).isNotNull();
@@ -127,8 +131,10 @@ public class ItemSteps implements En {
                     persona.createItemForm.setShippingChargeExempt(Boolean.valueOf(shippingChargeExempt.equals("is")).toString());
                 });
 
-        When("^the user's item (does|does not) allow club discounts$",
+        When("the user's item {string} allow club discounts",
                 (String allowClubDiscounts) -> {
+                    assertThat(allowClubDiscounts).isIn("does", "does not");
+
                     var persona = CurrentPersona.persona;
 
                     assertThat(persona.createItemForm).isNotNull();
@@ -136,8 +142,10 @@ public class ItemSteps implements En {
                     persona.createItemForm.setAllowClubDiscounts(Boolean.valueOf(allowClubDiscounts.equals("does")).toString());
                 });
 
-        When("^the user's item (does|does not) allow coupon discounts$",
+        When("the user's item {string} allow coupon discounts",
                 (String allowCouponDiscounts) -> {
+                    assertThat(allowCouponDiscounts).isIn("does", "does not");
+
                     var persona = CurrentPersona.persona;
 
                     assertThat(persona.createItemForm).isNotNull();
@@ -145,8 +153,10 @@ public class ItemSteps implements En {
                     persona.createItemForm.setAllowCouponDiscounts(Boolean.valueOf(allowCouponDiscounts.equals("does")).toString());
                 });
 
-        When("^the user's item (does|does not) allow associate payments$",
+        When("the user's item {string} allow associate payments",
                 (String allowAssociatePayments) -> {
+                    assertThat(allowAssociatePayments).isIn("does", "does not");
+
                     var persona = CurrentPersona.persona;
 
                     assertThat(persona.createItemForm).isNotNull();
@@ -154,7 +164,7 @@ public class ItemSteps implements En {
                     persona.createItemForm.setAllowAssociatePayments(Boolean.valueOf(allowAssociatePayments.equals("does")).toString());
                 });
 
-        When("^the user sets the item's status to ([^\"]*)$",
+        When("the user sets the item's status to {string}",
                 (String itemStatus) -> {
                     var persona = CurrentPersona.persona;
 
@@ -163,7 +173,7 @@ public class ItemSteps implements En {
                     persona.createItemForm.setItemStatus(itemStatus);
                 });
 
-        When("^the user sets the item's unit of measure kind to ([^\"]*)$",
+        When("the user sets the item's unit of measure kind to {string}",
                 (String unitOfMeasureKindName) -> {
                     var persona = CurrentPersona.persona;
 
@@ -172,7 +182,7 @@ public class ItemSteps implements En {
                     persona.createItemForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
                 });
 
-        When("^the user sets the item's price type to ([^\"]*)$",
+        When("the user sets the item's price type to {string}",
                 (String itemPriceTypeName) -> {
                     var persona = CurrentPersona.persona;
 
@@ -201,7 +211,7 @@ public class ItemSteps implements En {
                     persona.createItemForm = null;
                 });
 
-        When("^the user sets the status of the last item added to ([^\"]*)$",
+        When("the user sets the status of the last item added to {string}",
                 (String itemStatusChoice) -> {
                     var persona = CurrentPersona.persona;
 

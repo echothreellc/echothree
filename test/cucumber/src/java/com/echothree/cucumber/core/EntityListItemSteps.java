@@ -136,7 +136,7 @@ public class EntityListItemSteps implements En {
                     persona.entityListItemEdit = null;
                 });
         
-        When("^the user sets the entity list item's component vendor to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the entity list item's component vendor to {string}",
                 (String componentVendorName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityListItemForm = persona.createEntityListItemForm;
@@ -154,7 +154,7 @@ public class EntityListItemSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity list item's entity type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the entity list item's entity type to {string}",
                 (String entityTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityListItemForm = persona.createEntityListItemForm;
@@ -173,7 +173,7 @@ public class EntityListItemSteps implements En {
                 });
 
 
-        When("^the user sets the entity list item's entity attribute to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the entity list item's entity attribute to {string}",
                 (String entityAttributeName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityListItemForm = persona.createEntityListItemForm;
@@ -210,7 +210,7 @@ public class EntityListItemSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity list item's name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the entity list item's name to {string}",
                 (String entityListItemName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityListItemForm = persona.createEntityListItemForm;
@@ -244,8 +244,10 @@ public class EntityListItemSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity list item to (be|not be) the default$",
+        When("the user sets the entity list item to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createEntityListItemForm = persona.createEntityListItemForm;
                     var entityListItemEdit = persona.entityListItemEdit;

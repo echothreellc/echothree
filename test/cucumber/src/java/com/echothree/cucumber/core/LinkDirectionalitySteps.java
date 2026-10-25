@@ -151,7 +151,7 @@ public class LinkDirectionalitySteps implements En {
                     persona.linkDirectionalityEdit = null;
                 });
 
-        And("^the user sets the link directionality's link directionality name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the link directionality's link directionality name to {string}",
                 (String linkDirectionalityName) -> {
                     var persona = CurrentPersona.persona;
                     var createLinkDirectionalityForm = persona.createLinkDirectionalityForm;
@@ -189,7 +189,7 @@ public class LinkDirectionalitySteps implements En {
                     }
                 });
 
-        And("^the user sets the link directionality's new link directionality name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the link directionality's new link directionality name to {string}",
                 (String linkDirectionalityName) -> {
                     var persona = CurrentPersona.persona;
                     var linkDirectionalityEdit = persona.linkDirectionalityEdit;
@@ -199,8 +199,10 @@ public class LinkDirectionalitySteps implements En {
                     linkDirectionalityEdit.setLinkDirectionalityName(linkDirectionalityName);
                 });
 
-        And("^the user sets the link directionality to (be|not be) the default$",
+        And("the user sets the link directionality to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createLinkDirectionalityForm = persona.createLinkDirectionalityForm;
                     var linkDirectionalityEdit = persona.linkDirectionalityEdit;
@@ -361,7 +363,9 @@ public class LinkDirectionalitySteps implements En {
             persona.linkDirectionalityEdit = null;
         });
 
-        When("^the user (creates|retrieves|deletes) a link directionality description with:$", (String operation, DataTable values) -> {
+        When("the user {string} a link directionality description with:", (String operation, DataTable values) -> {
+            assertThat(operation).isIn("creates", "retrieves", "deletes");
+
             var persona = CurrentPersona.persona;
             var fields = values.asMap(String.class, String.class);
 

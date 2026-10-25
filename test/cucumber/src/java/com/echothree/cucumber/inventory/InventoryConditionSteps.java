@@ -136,7 +136,7 @@ public class InventoryConditionSteps implements En {
                     persona.inventoryConditionEdit = null;
                 });
 
-        And("^the user sets the inventory condition's inventory condition name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory condition's inventory condition name to {string}",
                 (String inventoryConditionName) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryConditionForm = persona.createInventoryConditionForm;
@@ -174,7 +174,7 @@ public class InventoryConditionSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory condition's new inventory condition name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory condition's new inventory condition name to {string}",
                 (String inventoryConditionName) -> {
                     var persona = CurrentPersona.persona;
                     var inventoryConditionEdit = persona.inventoryConditionEdit;
@@ -184,8 +184,10 @@ public class InventoryConditionSteps implements En {
                     inventoryConditionEdit.setInventoryConditionName(inventoryConditionName);
                 });
 
-        And("^the user sets the inventory condition to (be|not be) the default$",
+        And("the user sets the inventory condition to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createInventoryConditionForm = persona.createInventoryConditionForm;
                     var inventoryConditionEdit = persona.inventoryConditionEdit;

@@ -181,8 +181,10 @@ public class TagScopeSteps implements En {
                     tagScopeEdit.setTagScopeName(tagScopeName);
                 });
         
-        When("^the user sets the tag scope to (be|not be) the default$",
+        When("the user sets the tag scope to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createTagScopeForm = persona.createTagScopeForm;
                     var tagScopeEdit = persona.tagScopeEdit;

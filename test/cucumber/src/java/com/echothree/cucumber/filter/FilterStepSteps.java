@@ -136,7 +136,7 @@ public class FilterStepSteps implements En {
                     persona.filterStepEdit = null;
                 });
 
-        When("^the user sets the filter step's filter kind name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the filter step's filter kind name to {string}",
                 (String filterKindName) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterStepForm = persona.createFilterStepForm;
@@ -154,7 +154,7 @@ public class FilterStepSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter step's filter type name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the filter step's filter type name to {string}",
                 (String filterTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterStepForm = persona.createFilterStepForm;
@@ -172,7 +172,7 @@ public class FilterStepSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter step's filter name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the filter step's filter name to {string}",
                 (String filterName) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterStepForm = persona.createFilterStepForm;
@@ -190,7 +190,7 @@ public class FilterStepSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter step's name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the filter step's name to {string}",
                 (String filterStepName) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterStepForm = persona.createFilterStepForm;

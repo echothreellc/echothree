@@ -136,7 +136,7 @@ public class FilterTypeSteps implements En {
                     persona.filterTypeEdit = null;
                 });
 
-        When("^the user sets the filter type's filter kind name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the filter type's filter kind name to {string}",
                 (String filterKindName) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterTypeForm = persona.createFilterTypeForm;
@@ -154,7 +154,7 @@ public class FilterTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter type's name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the filter type's name to {string}",
                 (String filterTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterTypeForm = persona.createFilterTypeForm;
@@ -198,8 +198,10 @@ public class FilterTypeSteps implements En {
                     filterTypeEdit.setFilterTypeName(filterTypeName);
                 });
 
-        When("^the user sets the filter type to (be|not be) the default$",
+        When("the user sets the filter type to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createFilterTypeForm = persona.createFilterTypeForm;
                     var filterTypeEdit = persona.filterTypeEdit;

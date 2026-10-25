@@ -228,8 +228,10 @@ public class OfferSteps implements En {
                     Objects.requireNonNullElse(createOfferForm, offerEdit).setOfferItemPriceFilterName(offerItemPriceFilterName);
                 });
 
-        When("^the user sets the offer to (be|not be) the default$",
+        When("the user sets the offer to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createOfferForm = persona.createOfferForm;
                     var offerEdit = persona.offerEdit;

@@ -132,7 +132,7 @@ public class RatingTypeSteps implements En {
                     persona.ratingTypeEdit = null;
                 });
         
-        When("^the user sets the rating type's component vendor to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the rating type's component vendor to {string}",
                 (String componentVendorName) -> {
                     var persona = CurrentPersona.persona;
                     var createRatingTypeForm = persona.createRatingTypeForm;
@@ -150,7 +150,7 @@ public class RatingTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the rating type's entity type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the rating type's entity type to {string}",
                 (String entityTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createRatingTypeForm = persona.createRatingTypeForm;
@@ -168,7 +168,7 @@ public class RatingTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the rating type's rating type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the rating type's rating type to {string}",
                 (String ratingTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createRatingTypeForm = persona.createRatingTypeForm;
@@ -186,7 +186,7 @@ public class RatingTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the rating type's rating sequence to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the rating type's rating sequence to {string}",
                 (String ratingSequenceName) -> {
                     var persona = CurrentPersona.persona;
                     var createRatingTypeForm = persona.createRatingTypeForm;

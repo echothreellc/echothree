@@ -136,7 +136,7 @@ public class FilterStepElementSteps implements En {
                     persona.filterStepElementEdit = null;
                 });
 
-        When("^the user sets the filter step element's filter kind name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the filter step element's filter kind name to {string}",
                 (String filterKindName) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterStepElementForm = persona.createFilterStepElementForm;
@@ -154,7 +154,7 @@ public class FilterStepElementSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter step element's filter type name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the filter step element's filter type name to {string}",
                 (String filterTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterStepElementForm = persona.createFilterStepElementForm;
@@ -172,7 +172,7 @@ public class FilterStepElementSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter step element's filter name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the filter step element's filter name to {string}",
                 (String filterName) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterStepElementForm = persona.createFilterStepElementForm;
@@ -190,7 +190,7 @@ public class FilterStepElementSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter step element's filter step name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the filter step element's filter step name to {string}",
                 (String filterStepName) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterStepElementForm = persona.createFilterStepElementForm;
@@ -208,7 +208,7 @@ public class FilterStepElementSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter step element's name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the filter step element's name to {string}",
                 (String filterStepElementName) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterStepElementForm = persona.createFilterStepElementForm;

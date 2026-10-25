@@ -126,7 +126,7 @@ public class VendorItemCostSteps implements En {
                     persona.vendorItemCostEdit = null;
                 });
 
-        When("^the user sets the vendor item cost's vendor name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the vendor item cost's vendor name to {string}",
                 (String vendorName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorItemCostForm = persona.createVendorItemCostForm;
@@ -162,7 +162,7 @@ public class VendorItemCostSteps implements En {
                     }
                 });
 
-        When("^the user sets the vendor item cost's vendor item name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the vendor item cost's vendor item name to {string}",
                 (String vendorItemName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorItemCostForm = persona.createVendorItemCostForm;
@@ -180,7 +180,7 @@ public class VendorItemCostSteps implements En {
                     }
                 });
 
-        When("^the user sets the vendor item cost's inventory condition name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the vendor item cost's inventory condition name to {string}",
                 (String inventoryConditionName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorItemCostForm = persona.createVendorItemCostForm;
@@ -198,7 +198,7 @@ public class VendorItemCostSteps implements En {
                     }
                 });
 
-        When("^the user sets the vendor item cost's unit of measure type name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the vendor item cost's unit of measure type name to {string}",
                 (String unitOfMeasureTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorItemCostForm = persona.createVendorItemCostForm;
@@ -216,7 +216,7 @@ public class VendorItemCostSteps implements En {
                     }
                 });
 
-        When("^the user sets the vendor item cost's unit cost to ([^\"]*)$",
+        When("the user sets the vendor item cost's unit cost to {string}",
                 (String unitCost) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorItemCostForm = persona.createVendorItemCostForm;

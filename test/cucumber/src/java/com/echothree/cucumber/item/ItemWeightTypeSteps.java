@@ -136,7 +136,7 @@ public class ItemWeightTypeSteps implements En {
                     persona.itemWeightTypeEdit = null;
                 });
         
-        When("^the user sets the item weight type's name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the item weight type's name to {string}",
                 (String itemWeightTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemWeightTypeForm = persona.createItemWeightTypeForm;
@@ -170,8 +170,10 @@ public class ItemWeightTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item weight type to (be|not be) the default$",
+        When("the user sets the item weight type to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createItemWeightTypeForm = persona.createItemWeightTypeForm;
                     var itemWeightTypeEdit = persona.itemWeightTypeEdit;

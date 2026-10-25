@@ -136,7 +136,7 @@ public class WarehouseTypeSteps implements En {
                     persona.warehouseTypeEdit = null;
                 });
         
-        When("^the user sets the warehouse type's name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the warehouse type's name to {string}",
                 (String warehouseTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseTypeForm = persona.createWarehouseTypeForm;
@@ -185,8 +185,10 @@ public class WarehouseTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the warehouse type to (be|not be) the default$",
+        When("the user sets the warehouse type to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createWarehouseTypeForm = persona.createWarehouseTypeForm;
                     var warehouseTypeEdit = persona.warehouseTypeEdit;

@@ -2,7 +2,7 @@ Feature: Employee inventory location group
   An employee wants to add, edit, and delete an inventory location group
 
   Background:
-    Given the employee Test begins using the application
+    Given the employee "Test" begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,12 +12,12 @@ Feature: Employee inventory location group
     Then no error should occur
 
   Scenario: Existing employee adds an inventory location group, edits it, changes its status, and then deletes it
-    Given the employee Test begins using the application
+    Given the employee "Test" begins using the application
     When the user begins entering a new warehouse
     And the user sets the warehouse's warehouse name to "CucumberWarehouse"
     And the user sets the warehouse's warehouse type name to "DEFAULT"
     And the user sets the warehouse's name to "Cucumber Warehouse"
-    And the user sets the warehouse to not be the default
+    And the user sets the warehouse to "not be" the default
     And the user sets the warehouse's sort order to "10"
     And the user sets the warehouse's inventory move printer group name to "DEFAULT"
     And the user sets the warehouse's picklist printer group mame to "DEFAULT"
@@ -28,7 +28,7 @@ Feature: Employee inventory location group
     When the user begins entering a new inventory location group
     And the user sets the inventory location group's warehouse name to the last warehouse added
     And the user sets the inventory location group's inventory location group name to "CucumberInventoryLocationGroup"
-    And the user sets the inventory location group to be the default
+    And the user sets the inventory location group to "be" the default
     And the user sets the inventory location group's sort order to "10"
     And the user sets the inventory location group's description to "Cucumber Inventory Location Group"
     And the user adds the new inventory location group

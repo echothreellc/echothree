@@ -136,7 +136,7 @@ public class SelectorKindSteps implements En {
                     persona.selectorKindEdit = null;
                 });
         
-        And("^the user sets the selector kind's name to ([a-zA-Z0-9-_]*)$",
+        And("the user sets the selector kind's name to {string}",
                 (String selectorKindName) -> {
                     var persona = CurrentPersona.persona;
                     var createSelectorKindForm = persona.createSelectorKindForm;
@@ -170,8 +170,10 @@ public class SelectorKindSteps implements En {
                     }
                 });
 
-        And("^the user sets the selector kind to (be|not be) the default$",
+        And("the user sets the selector kind to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createSelectorKindForm = persona.createSelectorKindForm;
                     var selectorKindEdit = persona.selectorKindEdit;

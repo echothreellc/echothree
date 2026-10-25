@@ -132,7 +132,7 @@ public class MessageTypeSteps implements En {
                     persona.messageTypeEdit = null;
                 });
         
-        When("^the user sets the message type's component vendor to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the message type's component vendor to {string}",
                 (String componentVendorName) -> {
                     var persona = CurrentPersona.persona;
                     var createMessageTypeForm = persona.createMessageTypeForm;
@@ -150,7 +150,7 @@ public class MessageTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the message type's entity type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the message type's entity type to {string}",
                 (String entityTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createMessageTypeForm = persona.createMessageTypeForm;
@@ -168,7 +168,7 @@ public class MessageTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the message type's message type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the message type's message type to {string}",
                 (String messageTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createMessageTypeForm = persona.createMessageTypeForm;
@@ -186,7 +186,7 @@ public class MessageTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the message type's mime type usage type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the message type's mime type usage type to {string}",
                 (String mimeTypeUsageTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createMessageTypeForm = persona.createMessageTypeForm;

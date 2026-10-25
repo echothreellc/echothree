@@ -128,7 +128,7 @@ public class EntityAttributeEntityAttributeGroupSteps implements En {
                     persona.entityAttributeEntityAttributeGroupEdit = null;
                 });
 
-        When("^the user sets the entity attribute entity attribute group's component vendor to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the entity attribute entity attribute group's component vendor to {string}",
                 (String componentVendorName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeEntityAttributeGroupForm = persona.createEntityAttributeEntityAttributeGroupForm;
@@ -146,7 +146,7 @@ public class EntityAttributeEntityAttributeGroupSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity attribute entity attribute group's entity type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the entity attribute entity attribute group's entity type to {string}",
                 (String entityTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeEntityAttributeGroupForm = persona.createEntityAttributeEntityAttributeGroupForm;
@@ -164,7 +164,7 @@ public class EntityAttributeEntityAttributeGroupSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity attribute entity attribute group's entity attribute to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the entity attribute entity attribute group's entity attribute to {string}",
                 (String entityAttributeEntityAttributeGroupName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeEntityAttributeGroupForm = persona.createEntityAttributeEntityAttributeGroupForm;
@@ -201,7 +201,7 @@ public class EntityAttributeEntityAttributeGroupSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity attribute entity attribute group's entity attribute group to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the entity attribute entity attribute group's entity attribute group to {string}",
                 (String entityAttributeEntityAttributeGroupName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeEntityAttributeGroupForm = persona.createEntityAttributeEntityAttributeGroupForm;

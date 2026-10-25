@@ -136,7 +136,7 @@ public class PeriodKindSteps implements En {
                     persona.periodKindEdit = null;
                 });
         
-        And("^the user sets the period kind's name to ([a-zA-Z0-9-_]*)$",
+        And("the user sets the period kind's name to {string}",
                 (String periodKindName) -> {
                     var persona = CurrentPersona.persona;
                     var createPeriodKindForm = persona.createPeriodKindForm;
@@ -170,8 +170,10 @@ public class PeriodKindSteps implements En {
                     }
                 });
 
-        And("^the user sets the period kind to (be|not be) the default$",
+        And("the user sets the period kind to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createPeriodKindForm = persona.createPeriodKindForm;
                     var periodKindEdit = persona.periodKindEdit;
@@ -216,7 +218,7 @@ public class PeriodKindSteps implements En {
                     }
                 });
 
-        And("^the user sets the period kind's workflow name to ([a-zA-Z0-9-_]*)$",
+        And("the user sets the period kind's workflow name to {string}",
                 (String value) -> {
                     var persona = CurrentPersona.persona;
                     var createPeriodKindForm = persona.createPeriodKindForm;
@@ -231,7 +233,7 @@ public class PeriodKindSteps implements En {
                     }
                 });
 
-        And("^the user sets the period kind's workflow entrance name to ([a-zA-Z0-9-_]*)$",
+        And("the user sets the period kind's workflow entrance name to {string}",
                 (String value) -> {
                     var persona = CurrentPersona.persona;
                     var createPeriodKindForm = persona.createPeriodKindForm;

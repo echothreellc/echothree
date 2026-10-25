@@ -136,7 +136,7 @@ public class ItemImageTypeSteps implements En {
                     persona.itemImageTypeEdit = null;
                 });
         
-        When("^the user sets the item image type's name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the item image type's name to {string}",
                 (String itemImageTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemImageTypeForm = persona.createItemImageTypeForm;
@@ -170,8 +170,10 @@ public class ItemImageTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item image type to (be|not be) the default$",
+        When("the user sets the item image type to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createItemImageTypeForm = persona.createItemImageTypeForm;
                     var itemImageTypeEdit = persona.itemImageTypeEdit;

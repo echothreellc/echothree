@@ -134,7 +134,7 @@ public class ItemPriceSteps implements En {
                 });
 
 
-        When("^the user sets the item price's item to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the item price's item to {string}",
                 (String itemName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemPriceForm = persona.createItemPriceForm;
@@ -172,7 +172,7 @@ public class ItemPriceSteps implements En {
                     }
                 });
 
-        When("^the user sets the item price's inventory condition to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the item price's inventory condition to {string}",
                 (String inventoryConditionName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemPriceForm = persona.createItemPriceForm;
@@ -190,7 +190,7 @@ public class ItemPriceSteps implements En {
                     }
                 });
 
-        When("^the user sets the item price's unit of measure type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the item price's unit of measure type to {string}",
                 (String unitOfMeasureTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemPriceForm = persona.createItemPriceForm;
@@ -208,7 +208,7 @@ public class ItemPriceSteps implements En {
                     }
                 });
 
-        When("^the user sets the item price's currency to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the item price's currency to {string}",
                 (String currencyIsoName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemPriceForm = persona.createItemPriceForm;
@@ -226,7 +226,7 @@ public class ItemPriceSteps implements En {
                     }
                 });
 
-        When("^the user sets the item price's unit price to ([^\"]*)$",
+        When("the user sets the item price's unit price to {string}",
                 (String unitPrice) -> {
                     var persona = CurrentPersona.persona;
                     var createItemPriceForm = persona.createItemPriceForm;
@@ -241,7 +241,7 @@ public class ItemPriceSteps implements En {
                     }
                 });
 
-        When("^the user sets the item price's minimum unit price to ([^\"]*)$",
+        When("the user sets the item price's minimum unit price to {string}",
                 (String minimumUnitPrice) -> {
                     var persona = CurrentPersona.persona;
                     var createItemPriceForm = persona.createItemPriceForm;
@@ -256,7 +256,7 @@ public class ItemPriceSteps implements En {
                     }
                 });
 
-        When("^the user sets the item price's maximum unit price to ([^\"]*)$",
+        When("the user sets the item price's maximum unit price to {string}",
                 (String maximumUnitPrice) -> {
                     var persona = CurrentPersona.persona;
                     var createItemPriceForm = persona.createItemPriceForm;
@@ -271,7 +271,7 @@ public class ItemPriceSteps implements En {
                     }
                 });
 
-        When("^the user sets the item price's unit price increment to ([^\"]*)$",
+        When("the user sets the item price's unit price increment to {string}",
                 (String unitPriceIncrement) -> {
                     var persona = CurrentPersona.persona;
                     var createItemPriceForm = persona.createItemPriceForm;

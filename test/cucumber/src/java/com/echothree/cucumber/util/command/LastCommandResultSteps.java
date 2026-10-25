@@ -120,7 +120,7 @@ public class LastCommandResultSteps implements En {
             assertThat(commandResult.hasExecutionErrors()).isTrue();
         });
 
-        Then("^the execution error ([a-zA-Z0-9-_]*) should occur$", (String executionError) -> {
+        Then("the execution error {string} should occur", (String executionError) -> {
             var commandResult = LastCommandResult.commandResult;
 
             assertThat(commandResult).isNotNull();

@@ -37,7 +37,7 @@ public class EntityAttributeGroupSteps implements En {
                     persona.createEntityAttributeGroupForm = CoreUtil.getHome().getCreateEntityAttributeGroupForm();
                 });
 
-        When("^the user sets the entity attribute group's component vendor to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the entity attribute group's component vendor to {string}",
                 (String value) -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.createEntityAttributeGroupForm != null ? persona.createEntityAttributeGroupForm
@@ -47,7 +47,7 @@ public class EntityAttributeGroupSteps implements En {
                     spec.setComponentVendorName(value);
                 });
 
-        When("^the user sets the entity attribute group's entity type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the entity attribute group's entity type to {string}",
                 (String value) -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.createEntityAttributeGroupForm != null ? persona.createEntityAttributeGroupForm
@@ -79,8 +79,10 @@ public class EntityAttributeGroupSteps implements En {
                     persona.createEntityAttributeGroupForm = null;
                 });
 
-        Then("^entity attribute group ([a-zA-Z0-9-_]*) is listed for ([a-zA-Z0-9-_]*) ([a-zA-Z0-9-_]*) and is (default|not default)$",
+        Then("entity attribute group {string} is listed for {string} {string} and is {string}",
                 (String entityAttributeGroupName, String componentVendorName, String entityTypeName, String defaultStatus) -> {
+                    assertThat(defaultStatus).isIn("default", "not default");
+
                     var form = CoreUtil.getHome().getGetEntityAttributeGroupsForm();
 
                     form.setComponentVendorName(componentVendorName);
@@ -184,7 +186,7 @@ public class EntityAttributeGroupSteps implements En {
                     persona.entityAttributeGroupEdit = null;
                 });
         
-        When("^the user sets the entity attribute group's name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the entity attribute group's name to {string}",
                 (String entityAttributeGroupName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeGroupForm = persona.createEntityAttributeGroupForm;
@@ -229,8 +231,10 @@ public class EntityAttributeGroupSteps implements En {
                     spec.setEntityRef(persona.lastEntityRef);
                 });
 
-        When("^the user sets the entity attribute group to (be|not be) the default$",
+        When("the user sets the entity attribute group to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeGroupForm = persona.createEntityAttributeGroupForm;
                     var entityAttributeGroupEdit = persona.entityAttributeGroupEdit;

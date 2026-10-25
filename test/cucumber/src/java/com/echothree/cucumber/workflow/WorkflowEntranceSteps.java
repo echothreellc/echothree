@@ -185,8 +185,10 @@ public class WorkflowEntranceSteps implements En {
                     Objects.requireNonNullElse(deleteWorkflowEntranceForm, workflowEntranceSpec).setWorkflowEntranceName(lastWorkflowEntranceName);
                 });
 
-        When("^the user sets the workflow entrance to (be|not be) the default$",
+        When("the user sets the workflow entrance to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createWorkflowEntranceForm = persona.createWorkflowEntranceForm;
                     var workflowEntranceEdit = persona.workflowEntranceEdit;

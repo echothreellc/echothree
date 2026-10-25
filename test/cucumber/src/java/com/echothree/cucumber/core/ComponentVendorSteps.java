@@ -136,7 +136,7 @@ public class ComponentVendorSteps implements En {
                     persona.componentVendorEdit = null;
                 });
         
-        When("^the user sets the component vendor's name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the component vendor's name to {string}",
                 (String componentVendorName) -> {
                     var persona = CurrentPersona.persona;
                     var createComponentVendorForm = persona.createComponentVendorForm;

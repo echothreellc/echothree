@@ -163,7 +163,7 @@ public class InventoryLocationGroupSteps implements En {
                     persona.inventoryLocationGroupEdit = null;
                 });
 
-        And("^the user sets the inventory location group's warehouse name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory location group's warehouse name to {string}",
                 (String warehouseName) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryLocationGroupForm = persona.createInventoryLocationGroupForm;
@@ -207,7 +207,7 @@ public class InventoryLocationGroupSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory location group's inventory location group name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory location group's inventory location group name to {string}",
                 (String inventoryLocationGroupName) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryLocationGroupForm = persona.createInventoryLocationGroupForm;
@@ -251,7 +251,7 @@ public class InventoryLocationGroupSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory location group's new inventory location group name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory location group's new inventory location group name to {string}",
                 (String inventoryLocationGroupName) -> {
                     var persona = CurrentPersona.persona;
                     var inventoryLocationGroupEdit = persona.inventoryLocationGroupEdit;
@@ -261,7 +261,7 @@ public class InventoryLocationGroupSteps implements En {
                     inventoryLocationGroupEdit.setInventoryLocationGroupName(inventoryLocationGroupName);
                 });
 
-        And("^the user sets the inventory location group's status to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory location group's status to {string}",
                 (String inventoryLocationGroupStatusChoice) -> {
                     var persona = CurrentPersona.persona;
                     var setInventoryLocationGroupStatusForm = persona.setInventoryLocationGroupStatusForm;
@@ -271,8 +271,10 @@ public class InventoryLocationGroupSteps implements En {
                     setInventoryLocationGroupStatusForm.setInventoryLocationGroupStatusChoice(inventoryLocationGroupStatusChoice);
                 });
 
-        And("^the user sets the inventory location group to (be|not be) the default$",
+        And("the user sets the inventory location group to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createInventoryLocationGroupForm = persona.createInventoryLocationGroupForm;
                     var inventoryLocationGroupEdit = persona.inventoryLocationGroupEdit;

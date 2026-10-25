@@ -136,7 +136,7 @@ public class LocationNameElementSteps implements En {
                     persona.locationNameElementEdit = null;
                 });
 
-        And("^the user sets the location name element's warehouse name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the location name element's warehouse name to {string}",
                 (String warehouseName) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationNameElementForm = persona.createLocationNameElementForm;
@@ -174,7 +174,7 @@ public class LocationNameElementSteps implements En {
                     }
                 });
 
-        And("^the user sets the location name element's location type name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the location name element's location type name to {string}",
                 (String locationTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationNameElementForm = persona.createLocationNameElementForm;
@@ -212,7 +212,7 @@ public class LocationNameElementSteps implements En {
                     }
                 });
 
-        And("^the user sets the location name element's location name element name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the location name element's location name element name to {string}",
                 (String locationNameElementName) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationNameElementForm = persona.createLocationNameElementForm;
@@ -250,7 +250,7 @@ public class LocationNameElementSteps implements En {
                     }
                 });
 
-        And("^the user sets the location name element's new location name element name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the location name element's new location name element name to {string}",
                 (String locationNameElementName) -> {
                     var persona = CurrentPersona.persona;
                     var locationNameElementEdit = persona.locationNameElementEdit;

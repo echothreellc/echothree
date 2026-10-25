@@ -2,7 +2,7 @@ Feature: Employee content catalog
   An employee wants to add, edit, and delete a content catalog
 
   Background:
-    Given the employee Test begins using the application
+    Given the employee "Test" begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee content catalog
     Then no error should occur
 
   Scenario: Existing employee adds a content catalog, edits it, and deletes it
-    Given the employee Test begins using the application
+    Given the employee "Test" begins using the application
     When the user begins entering a new content collection
     And the user sets the content collection's content collection name to "CucumberCollection"
     And the user sets the content collection's default source name to "TEST0001B"
@@ -24,7 +24,7 @@ Feature: Employee content catalog
     And the user sets the content catalog's content catalog name to "CucumberCatalog"
     And the user sets the content catalog's default source name to "TEST0001B"
     And the user sets the content catalog's sort order to "1"
-    And the user sets the content catalog to be the default
+    And the user sets the content catalog to "be" the default
     And the user sets the content catalog's description to "Cucumber Catalog"
     And the user adds the new content catalog
     Then no error should occur

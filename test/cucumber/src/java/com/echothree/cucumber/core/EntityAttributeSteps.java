@@ -132,7 +132,7 @@ public class EntityAttributeSteps implements En {
                     persona.entityAttributeEdit = null;
                 });
         
-        When("^the user sets the entity attribute's component vendor to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the entity attribute's component vendor to {string}",
                 (String componentVendorName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
@@ -150,7 +150,7 @@ public class EntityAttributeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity attribute's entity type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the entity attribute's entity type to {string}",
                 (String entityTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
@@ -168,7 +168,7 @@ public class EntityAttributeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity attribute's entity attribute type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the entity attribute's entity attribute type to {string}",
                 (String entityAttributeTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
@@ -328,7 +328,7 @@ public class EntityAttributeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity attribute's unit of measure kind to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the entity attribute's unit of measure kind to {string}",
                 (String unitOfMeasureKindName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
@@ -343,7 +343,7 @@ public class EntityAttributeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity attribute's unit of measure type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the entity attribute's unit of measure type to {string}",
                 (String unitOfMeasureTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
@@ -403,8 +403,10 @@ public class EntityAttributeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity attribute to (track|not track) revisions when modified$",
+        When("the user sets the entity attribute to {string} revisions when modified",
                 (String trackRevisions) -> {
+                    assertThat(trackRevisions).isIn("track", "not track");
+
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
                     var entityAttributeEdit = persona.entityAttributeEdit;
@@ -419,8 +421,10 @@ public class EntityAttributeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity attribute to (check|not check) the content web address when requested$",
+        When("the user sets the entity attribute to {string} the content web address when requested",
                 (String checkContentWebAddress) -> {
+                    assertThat(checkContentWebAddress).isIn("check", "not check");
+
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
                     var entityAttributeEdit = persona.entityAttributeEdit;

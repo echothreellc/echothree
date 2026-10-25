@@ -2,7 +2,7 @@ Feature: Employee component vendor
   An employee wants to add, edit, and delete a component vendor
 
   Background:
-    Given the employee Test begins using the application
+    Given the employee "Test" begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,9 +12,9 @@ Feature: Employee component vendor
     Then no error should occur
 
   Scenario: Existing employee adds a component vendor, edits it, and then deletes it
-    Given the employee Test begins using the application
+    Given the employee "Test" begins using the application
     When the user begins entering a new component vendor
-    And the user sets the component vendor's name to TEST_COMPONENT_VENDOR
+    And the user sets the component vendor's name to "TEST_COMPONENT_VENDOR"
     And the user sets the component vendor's description to "Test Component Vendor"
     And the user adds the new component vendor
     Then no error should occur

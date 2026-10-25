@@ -151,7 +151,7 @@ public class InventoryTransactionTypeSteps implements En {
                     LastCommandResult.commandResult = InventoryUtil.getHome().editInventoryTransactionType(persona.userVisitPK, commandForm);
                 });
 
-        And("^the user sets the inventory transaction type's inventory transaction type name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory transaction type's inventory transaction type name to {string}",
                 (String inventoryTransactionTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionTypeForm = persona.createInventoryTransactionTypeForm;
@@ -205,7 +205,7 @@ public class InventoryTransactionTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction type's new inventory transaction type name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory transaction type's new inventory transaction type name to {string}",
                 (String inventoryTransactionTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var inventoryTransactionTypeEdit = persona.inventoryTransactionTypeEdit;
@@ -429,8 +429,10 @@ public class InventoryTransactionTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction type to (be|not be) the default$",
+        And("the user sets the inventory transaction type to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionTypeForm = persona.createInventoryTransactionTypeForm;
                     var inventoryTransactionTypeEdit = persona.inventoryTransactionTypeEdit;

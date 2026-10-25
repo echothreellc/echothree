@@ -4,7 +4,7 @@ Feature: External encryption with an IV for each value
   and stores the IV returned by Encrypt with its ciphertext
 
   Background:
-    Given the employee Test begins using the application
+    Given the employee "Test" begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"

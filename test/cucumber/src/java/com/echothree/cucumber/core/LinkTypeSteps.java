@@ -142,7 +142,7 @@ public class LinkTypeSteps implements En {
                     persona.linkTypeEdit = null;
                 });
 
-        And("^the user sets the link type's link type name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the link type's link type name to {string}",
                 (String linkTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createLinkTypeForm = persona.createLinkTypeForm;
@@ -180,7 +180,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the link type's new link type name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the link type's new link type name to {string}",
                 (String linkTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var linkTypeEdit = persona.linkTypeEdit;

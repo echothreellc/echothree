@@ -132,7 +132,7 @@ public class CommentTypeSteps implements En {
                     persona.commentTypeEdit = null;
                 });
         
-        When("^the user sets the comment type's component vendor to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the comment type's component vendor to {string}",
                 (String componentVendorName) -> {
                     var persona = CurrentPersona.persona;
                     var createCommentTypeForm = persona.createCommentTypeForm;
@@ -150,7 +150,7 @@ public class CommentTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the comment type's entity type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the comment type's entity type to {string}",
                 (String entityTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createCommentTypeForm = persona.createCommentTypeForm;
@@ -168,7 +168,7 @@ public class CommentTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the comment type's comment type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the comment type's comment type to {string}",
                 (String commentTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createCommentTypeForm = persona.createCommentTypeForm;
@@ -186,7 +186,7 @@ public class CommentTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the comment type's comment sequence to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the comment type's comment sequence to {string}",
                 (String commentSequenceName) -> {
                     var persona = CurrentPersona.persona;
                     var createCommentTypeForm = persona.createCommentTypeForm;
@@ -201,7 +201,7 @@ public class CommentTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the comment type's workflow to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the comment type's workflow to {string}",
                 (String workflowName) -> {
                     var persona = CurrentPersona.persona;
                     var createCommentTypeForm = persona.createCommentTypeForm;
@@ -211,7 +211,7 @@ public class CommentTypeSteps implements En {
                     createCommentTypeForm.setWorkflowName(workflowName);
                 });
 
-        When("^the user sets the comment type's workflow entrance to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the comment type's workflow entrance to {string}",
                 (String workflowEntranceName) -> {
                     var persona = CurrentPersona.persona;
                     var createCommentTypeForm = persona.createCommentTypeForm;
@@ -221,7 +221,7 @@ public class CommentTypeSteps implements En {
                     createCommentTypeForm.setWorkflowEntranceName(workflowEntranceName);
                 });
 
-        When("^the user sets the comment type's mime type usage type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the comment type's mime type usage type to {string}",
                 (String mimeTypeUsageTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createCommentTypeForm = persona.createCommentTypeForm;

@@ -57,7 +57,7 @@ public class EventSteps implements En {
                     sendEventForm.setEntityRef(lastEntityRef);
                 });
 
-        When("^the user sets the event's event type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the event's event type to {string}",
                 (String eventTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var sendEventForm = persona.sendEventForm;

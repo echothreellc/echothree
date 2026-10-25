@@ -134,7 +134,7 @@ public class ItemUnitOfMeasureTypeSteps implements En {
                 });
 
 
-        When("^the user sets the item unit of measure type's item to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the item unit of measure type's item to {string}",
                 (String itemName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemUnitOfMeasureTypeForm = persona.createItemUnitOfMeasureTypeForm;
@@ -172,7 +172,7 @@ public class ItemUnitOfMeasureTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item unit of measure type's unit of measure type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the item unit of measure type's unit of measure type to {string}",
                 (String unitOfMeasureTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemUnitOfMeasureTypeForm = persona.createItemUnitOfMeasureTypeForm;
@@ -190,8 +190,10 @@ public class ItemUnitOfMeasureTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item unit of measure type to (be|not be) the default$",
+        When("the user sets the item unit of measure type to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createItemUnitOfMeasureTypeForm = persona.createItemUnitOfMeasureTypeForm;
                     var itemUnitOfMeasureTypeEdit = persona.itemUnitOfMeasureTypeEdit;

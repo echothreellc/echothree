@@ -210,8 +210,10 @@ public class WorkflowDestinationSteps implements En {
                     Objects.requireNonNullElse(deleteWorkflowDestinationForm, workflowDestinationSpec).setWorkflowDestinationName(lastWorkflowDestinationName);
                 });
 
-        When("^the user sets the workflow destination to (be|not be) the default$",
+        When("the user sets the workflow destination to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createWorkflowDestinationForm = persona.createWorkflowDestinationForm;
                     var workflowDestinationEdit = persona.workflowDestinationEdit;

@@ -136,7 +136,7 @@ public class ItemAliasTypeSteps implements En {
                     persona.itemAliasTypeEdit = null;
                 });
         
-        When("^the user sets the item alias type's name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the item alias type's name to {string}",
                 (String itemAliasTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemAliasTypeForm = persona.createItemAliasTypeForm;
@@ -200,8 +200,10 @@ public class ItemAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item alias type to (allow|not allow) multiple values per item$",
+        When("the user sets the item alias type to {string} multiple values per item",
                 (String allowMultiple) -> {
+                    assertThat(allowMultiple).isIn("allow", "not allow");
+
                     var persona = CurrentPersona.persona;
                     var createItemAliasTypeForm = persona.createItemAliasTypeForm;
                     var itemAliasTypeEdit = persona.itemAliasTypeEdit;
@@ -216,8 +218,10 @@ public class ItemAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item alias type to (be|not be) the default$",
+        When("the user sets the item alias type to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createItemAliasTypeForm = persona.createItemAliasTypeForm;
                     var itemAliasTypeEdit = persona.itemAliasTypeEdit;

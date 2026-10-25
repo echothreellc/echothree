@@ -136,7 +136,7 @@ public class ItemDescriptionTypeUseTypeSteps implements En {
                     persona.itemDescriptionTypeUseTypeEdit = null;
                 });
         
-        When("^the user sets the item description type use type's name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the item description type use type's name to {string}",
                 (String itemDescriptionTypeUseTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemDescriptionTypeUseTypeForm = persona.createItemDescriptionTypeUseTypeForm;
@@ -170,8 +170,10 @@ public class ItemDescriptionTypeUseTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item description type use type to (be|not be) the default$",
+        When("the user sets the item description type use type to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createItemDescriptionTypeUseTypeForm = persona.createItemDescriptionTypeUseTypeForm;
                     var itemDescriptionTypeUseTypeEdit = persona.itemDescriptionTypeUseTypeEdit;

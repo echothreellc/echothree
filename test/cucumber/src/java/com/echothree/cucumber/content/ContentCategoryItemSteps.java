@@ -264,8 +264,10 @@ public class ContentCategoryItemSteps implements En {
                     }
                 });
 
-        When("^the user sets the content category item to (be|not be) the default$",
+        When("the user sets the content category item to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createContentCategoryItemForm = persona.createContentCategoryItemForm;
                     var contentCategoryItemEdit = persona.contentCategoryItemEdit;

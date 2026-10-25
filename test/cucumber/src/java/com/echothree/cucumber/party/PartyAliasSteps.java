@@ -128,7 +128,7 @@ public class PartyAliasSteps implements En {
                     persona.partyAliasEdit = null;
                 });
 
-        When("^the user sets the party alias type's party to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the party alias type's party to {string}",
                 (String partyName) -> {
                     var persona = CurrentPersona.persona;
                     var createPartyAliasForm = persona.createPartyAliasForm;
@@ -165,7 +165,7 @@ public class PartyAliasSteps implements En {
                     }
                 });
 
-        When("^the user sets the party alias's party added by the anonymous user ([^\"]*)$",
+        When("the user sets the party alias's party added by the anonymous user {string}",
                 (String anonymous) -> {
                     var persona = CurrentPersona.persona;
                     var anonymousPersona = AnonymousPersonas.getPersona(anonymous);
@@ -185,7 +185,7 @@ public class PartyAliasSteps implements En {
                     }
                 });
 
-        When("^the user sets the party alias type's party alias type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the party alias type's party alias type to {string}",
                 (String partyAliasTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createPartyAliasForm = persona.createPartyAliasForm;

@@ -150,8 +150,10 @@ public class PartyEmailAddressSteps implements En {
                     partyContactMechanismSpec.setContactMechanismName(persona.lastEmailAddressContactMechanismName);
                 });
 
-        When("^the user (does|does not) allow solicitations to the email address$",
+        When("the user {string} allow solicitations to the email address",
                 (String allowSolicitation) -> {
+                    assertThat(allowSolicitation).isIn("does", "does not");
+
                     var persona = CurrentPersona.persona;
                     var createContactEmailAddressForm = persona.createContactEmailAddressForm;
                     var edit = persona.contactEmailAddressEdit;

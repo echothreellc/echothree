@@ -136,7 +136,7 @@ public class PeriodTypeSteps implements En {
                     persona.periodTypeEdit = null;
                 });
 
-        And("^the user sets the period type's period kind name to ([a-zA-Z0-9-_]*)$",
+        And("the user sets the period type's period kind name to {string}",
                 (String periodKindName) -> {
                     var persona = CurrentPersona.persona;
                     var createPeriodTypeForm = persona.createPeriodTypeForm;
@@ -154,7 +154,7 @@ public class PeriodTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the period type's name to ([a-zA-Z0-9-_]*)$",
+        And("the user sets the period type's name to {string}",
                 (String periodTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createPeriodTypeForm = persona.createPeriodTypeForm;
@@ -188,8 +188,10 @@ public class PeriodTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the period type to (be|not be) the default$",
+        And("the user sets the period type to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createPeriodTypeForm = persona.createPeriodTypeForm;
                     var periodTypeEdit = persona.periodTypeEdit;
@@ -234,7 +236,7 @@ public class PeriodTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the period type's parent period type name to ([a-zA-Z0-9-_]*)$",
+        And("the user sets the period type's parent period type name to {string}",
                 (String value) -> {
                     var persona = CurrentPersona.persona;
                     var createPeriodTypeForm = persona.createPeriodTypeForm;
@@ -249,7 +251,7 @@ public class PeriodTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the period type's workflow name to ([a-zA-Z0-9-_]*)$",
+        And("the user sets the period type's workflow name to {string}",
                 (String value) -> {
                     var persona = CurrentPersona.persona;
                     var createPeriodTypeForm = persona.createPeriodTypeForm;
@@ -264,7 +266,7 @@ public class PeriodTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the period type's workflow entrance name to ([a-zA-Z0-9-_]*)$",
+        And("the user sets the period type's workflow entrance name to {string}",
                 (String value) -> {
                     var persona = CurrentPersona.persona;
                     var createPeriodTypeForm = persona.createPeriodTypeForm;
@@ -279,7 +281,7 @@ public class PeriodTypeSteps implements En {
                     }
                 });
 
-        Then("^the period type's parent period type name should be ([a-zA-Z0-9-_]*)$",
+        Then("the period type's parent period type name should be {string}",
                 (String parentPeriodTypeName) -> {
                     var periodTypeEdit = CurrentPersona.persona.periodTypeEdit;
 

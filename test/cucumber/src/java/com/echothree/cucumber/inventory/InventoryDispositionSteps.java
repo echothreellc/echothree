@@ -141,7 +141,7 @@ public class InventoryDispositionSteps implements En {
                     persona.inventoryDispositionEdit = null;
                 });
 
-        And("^the user sets the inventory disposition's inventory disposition name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory disposition's inventory disposition name to {string}",
                 (String inventoryDispositionName) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryDispositionForm = persona.createInventoryDispositionForm;
@@ -160,7 +160,7 @@ public class InventoryDispositionSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory disposition's inventory transaction type name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory disposition's inventory transaction type name to {string}",
                 (String inventoryTransactionTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createForm = persona.createInventoryDispositionForm;
@@ -214,7 +214,7 @@ public class InventoryDispositionSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory disposition's new inventory disposition name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory disposition's new inventory disposition name to {string}",
                 (String inventoryDispositionName) -> {
                     var persona = CurrentPersona.persona;
                     var inventoryDispositionEdit = persona.inventoryDispositionEdit;
@@ -224,8 +224,10 @@ public class InventoryDispositionSteps implements En {
                     inventoryDispositionEdit.setInventoryDispositionName(inventoryDispositionName);
                 });
 
-        And("^the user sets the inventory disposition to (be|not be) the default$",
+        And("the user sets the inventory disposition to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createInventoryDispositionForm = persona.createInventoryDispositionForm;
                     var inventoryDispositionEdit = persona.inventoryDispositionEdit;

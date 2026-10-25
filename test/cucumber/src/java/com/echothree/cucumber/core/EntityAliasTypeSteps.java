@@ -249,8 +249,10 @@ public class EntityAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity alias type to (be|not be) the default$",
+        When("the user sets the entity alias type to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createEntityAliasTypeForm = persona.createEntityAliasTypeForm;
                     var entityAliasTypeEdit = persona.entityAliasTypeEdit;

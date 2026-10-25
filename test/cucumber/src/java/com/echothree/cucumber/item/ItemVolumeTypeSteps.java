@@ -136,7 +136,7 @@ public class ItemVolumeTypeSteps implements En {
                     persona.itemVolumeTypeEdit = null;
                 });
         
-        When("^the user sets the item volume type's name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the item volume type's name to {string}",
                 (String itemVolumeTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createItemVolumeTypeForm = persona.createItemVolumeTypeForm;
@@ -170,8 +170,10 @@ public class ItemVolumeTypeSteps implements En {
                     }
                 });
         
-        When("^the user sets the item volume type to (be|not be) the default$",
+        When("the user sets the item volume type to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createItemVolumeTypeForm = persona.createItemVolumeTypeForm;
                     var itemVolumeTypeEdit = persona.itemVolumeTypeEdit;

@@ -136,7 +136,7 @@ public class AllocationPrioritySteps implements En {
                     persona.allocationPriorityEdit = null;
                 });
 
-        And("^the user sets the allocation priority's allocation priority name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the allocation priority's allocation priority name to {string}",
                 (String allocationPriorityName) -> {
                     var persona = CurrentPersona.persona;
                     var createAllocationPriorityForm = persona.createAllocationPriorityForm;
@@ -174,7 +174,7 @@ public class AllocationPrioritySteps implements En {
                     }
                 });
 
-        And("^the user sets the allocation priority's new allocation priority name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the allocation priority's new allocation priority name to {string}",
                 (String allocationPriorityName) -> {
                     var persona = CurrentPersona.persona;
                     var allocationPriorityEdit = persona.allocationPriorityEdit;
@@ -199,8 +199,10 @@ public class AllocationPrioritySteps implements En {
                     }
                 });
 
-        And("^the user sets the allocation priority to (be|not be) the default$",
+        And("the user sets the allocation priority to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createAllocationPriorityForm = persona.createAllocationPriorityForm;
                     var allocationPriorityEdit = persona.allocationPriorityEdit;

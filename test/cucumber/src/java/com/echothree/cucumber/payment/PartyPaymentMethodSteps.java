@@ -46,7 +46,7 @@ public class PartyPaymentMethodSteps implements En {
                     persona.createPartyPaymentMethodForm = PaymentUtil.getHome().getCreatePartyPaymentMethodForm();
                 });
 
-        When("^the user sets the payment method to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the payment method to {string}",
                 (String paymentMethodName) -> {
                     var persona = CurrentPersona.persona;
 
@@ -64,8 +64,10 @@ public class PartyPaymentMethodSteps implements En {
                     persona.createPartyPaymentMethodForm.setDescription(description);
                 });
 
-        When("^the user sets the payment method to (be|not be) deleted when unused$",
+        When("the user sets the payment method to {string} deleted when unused",
                 (String deleteWhenUnused) -> {
+                    assertThat(deleteWhenUnused).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
 
                     assertThat(persona.createPartyPaymentMethodForm).isNotNull();
@@ -73,8 +75,10 @@ public class PartyPaymentMethodSteps implements En {
                     persona.createPartyPaymentMethodForm.setDeleteWhenUnused(Boolean.valueOf(deleteWhenUnused.equals("be")).toString());
                 });
 
-        When("^the user sets the payment method to (be|not be) the default$",
+        When("the user sets the payment method to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
 
                     assertThat(persona.createPartyPaymentMethodForm).isNotNull();

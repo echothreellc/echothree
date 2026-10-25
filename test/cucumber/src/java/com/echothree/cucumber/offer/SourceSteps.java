@@ -207,8 +207,10 @@ public class SourceSteps implements En {
                     } else Objects.requireNonNullElse(deleteSourceForm, sourceSpec).setSourceName(lastSourceName);
                 });
 
-        When("^the user sets the source to (be|not be) the default$",
+        When("the user sets the source to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createSourceForm = persona.createSourceForm;
                     var sourceEdit = persona.sourceEdit;

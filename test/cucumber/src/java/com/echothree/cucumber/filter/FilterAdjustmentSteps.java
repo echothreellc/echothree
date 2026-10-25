@@ -136,7 +136,7 @@ public class FilterAdjustmentSteps implements En {
                     persona.filterAdjustmentEdit = null;
                 });
 
-        When("^the user sets the filter adjustment's filter kind name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the filter adjustment's filter kind name to {string}",
                 (String filterKindName) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterAdjustmentForm = persona.createFilterAdjustmentForm;
@@ -154,7 +154,7 @@ public class FilterAdjustmentSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter adjustment's name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the filter adjustment's name to {string}",
                 (String filterAdjustmentName) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterAdjustmentForm = persona.createFilterAdjustmentForm;
@@ -198,7 +198,7 @@ public class FilterAdjustmentSteps implements En {
                     filterAdjustmentEdit.setFilterAdjustmentName(filterAdjustmentName);
                 });
 
-        When("^the user sets the filter adjustment's filter adjustment source name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the filter adjustment's filter adjustment source name to {string}",
                 (String filterAdjustmentSourceName) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterAdjustmentForm = persona.createFilterAdjustmentForm;
@@ -213,7 +213,7 @@ public class FilterAdjustmentSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter adjustment's filter adjustment type name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the filter adjustment's filter adjustment type name to {string}",
                 (String filterAdjustmentTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createFilterAdjustmentForm = persona.createFilterAdjustmentForm;
@@ -223,8 +223,10 @@ public class FilterAdjustmentSteps implements En {
                     createFilterAdjustmentForm.setFilterAdjustmentTypeName(filterAdjustmentTypeName);
                 });
 
-        When("^the user sets the filter adjustment to (be|not be) the default$",
+        When("the user sets the filter adjustment to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createFilterAdjustmentForm = persona.createFilterAdjustmentForm;
                     var filterAdjustmentEdit = persona.filterAdjustmentEdit;

@@ -26,7 +26,7 @@ import javax.naming.NamingException;
 public class SalesOrderBatchSteps implements En {
 
     public SalesOrderBatchSteps() {
-        When("^the user adds a new sales order batch with the currency ([^\"]*) and payment method ([^\"]*)$",
+        When("the user adds a new sales order batch with the currency {string} and payment method {string}",
                 (String currencyIsoName, String paymentMethodName) -> {
                     var persona = CurrentPersona.persona;
 

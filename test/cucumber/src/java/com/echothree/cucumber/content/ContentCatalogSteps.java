@@ -247,8 +247,10 @@ public class ContentCatalogSteps implements En {
                     Objects.requireNonNullElse(createContentCatalogForm, contentCatalogEdit).setDefaultSourceName(persona.lastSourceName);
                 });
 
-        When("^the user sets the content catalog to (be|not be) the default$",
+        When("the user sets the content catalog to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createContentCatalogForm = persona.createContentCatalogForm;
                     var contentCatalogEdit = persona.contentCatalogEdit;

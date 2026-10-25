@@ -136,7 +136,7 @@ public class SelectorSteps implements En {
                     persona.selectorEdit = null;
                 });
 
-        And("^the user sets the selector's selector kind name to ([a-zA-Z0-9-_]*)$",
+        And("the user sets the selector's selector kind name to {string}",
                 (String selectorKindName) -> {
                     var persona = CurrentPersona.persona;
                     var createSelectorForm = persona.createSelectorForm;
@@ -154,7 +154,7 @@ public class SelectorSteps implements En {
                     }
                 });
 
-        And("^the user sets the selector's selector type name to ([a-zA-Z0-9-_]*)$",
+        And("the user sets the selector's selector type name to {string}",
                 (String selectorTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createSelectorForm = persona.createSelectorForm;
@@ -172,7 +172,7 @@ public class SelectorSteps implements En {
                     }
                 });
 
-        And("^the user sets the selector's name to ([a-zA-Z0-9-_]*)$",
+        And("the user sets the selector's name to {string}",
                 (String selectorName) -> {
                     var persona = CurrentPersona.persona;
                     var createSelectorForm = persona.createSelectorForm;
@@ -206,8 +206,10 @@ public class SelectorSteps implements En {
                     }
                 });
 
-        And("^the user sets the selector to (be|not be) the default$",
+        And("the user sets the selector to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createSelectorForm = persona.createSelectorForm;
                     var selectorEdit = persona.selectorEdit;

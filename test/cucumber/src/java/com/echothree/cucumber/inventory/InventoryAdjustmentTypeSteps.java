@@ -136,7 +136,7 @@ public class InventoryAdjustmentTypeSteps implements En {
                     persona.inventoryAdjustmentTypeEdit = null;
                 });
 
-        And("^the user sets the inventory adjustment type's inventory adjustment type name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory adjustment type's inventory adjustment type name to {string}",
                 (String inventoryAdjustmentTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryAdjustmentTypeForm = persona.createInventoryAdjustmentTypeForm;
@@ -174,7 +174,7 @@ public class InventoryAdjustmentTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory adjustment type's new inventory adjustment type name to \"([a-zA-Z0-9-_]*)\"$",
+        And("the user sets the inventory adjustment type's new inventory adjustment type name to {string}",
                 (String inventoryAdjustmentTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var inventoryAdjustmentTypeEdit = persona.inventoryAdjustmentTypeEdit;
@@ -184,8 +184,10 @@ public class InventoryAdjustmentTypeSteps implements En {
                     inventoryAdjustmentTypeEdit.setInventoryAdjustmentTypeName(inventoryAdjustmentTypeName);
                 });
 
-        And("^the user sets the inventory adjustment type to (be|not be) the default$",
+        And("the user sets the inventory adjustment type to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createInventoryAdjustmentTypeForm = persona.createInventoryAdjustmentTypeForm;
                     var inventoryAdjustmentTypeEdit = persona.inventoryAdjustmentTypeEdit;

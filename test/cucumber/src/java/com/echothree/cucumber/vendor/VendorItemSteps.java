@@ -155,7 +155,7 @@ public class VendorItemSteps implements En {
                     persona.vendorItemEdit = null;
                 });
 
-        When("^the user sets the vendor item's item name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the vendor item's item name to {string}",
                 (String itemName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorItemForm = persona.createVendorItemForm;
@@ -175,7 +175,7 @@ public class VendorItemSteps implements En {
                     createVendorItemForm.setItemName(persona.lastItemName);
                 });
 
-        When("^the user sets the vendor item's vendor name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the vendor item's vendor name to {string}",
                 (String vendorName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorItemForm = persona.createVendorItemForm;
@@ -219,7 +219,7 @@ public class VendorItemSteps implements En {
                     }
                 });
 
-        When("^the user sets the vendor item's vendor item name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the vendor item's vendor item name to {string}",
                 (String vendorItemName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorItemForm = persona.createVendorItemForm;
@@ -241,7 +241,7 @@ public class VendorItemSteps implements En {
                     }
                 });
 
-        When("^the user sets the vendor item's new vendor item name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the vendor item's new vendor item name to {string}",
                 (String vendorItemName) -> {
                     var persona = CurrentPersona.persona;
                     var vendorItemEdit = persona.vendorItemEdit;
@@ -251,7 +251,7 @@ public class VendorItemSteps implements En {
                     vendorItemEdit.setVendorItemName(vendorItemName);
                 });
 
-        When("^the user sets the vendor item's status to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the vendor item's status to {string}",
                 (String vendorItemStatusChoice) -> {
                     var persona = CurrentPersona.persona;
                     var setVendorItemStatusForm = persona.setVendorItemStatusForm;
@@ -291,7 +291,7 @@ public class VendorItemSteps implements En {
                     }
                 });
 
-        When("^the user sets the vendor item's cancellation policy to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the vendor item's cancellation policy to {string}",
                 (String cancellationPolicyName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorItemForm = persona.createVendorItemForm;
@@ -306,7 +306,7 @@ public class VendorItemSteps implements En {
                     }
                 });
 
-        When("^the user sets the vendor item's return policy to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the vendor item's return policy to {string}",
                 (String returnPolicyName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorItemForm = persona.createVendorItemForm;

@@ -136,7 +136,7 @@ public class PartyAliasTypeSteps implements En {
                     persona.partyAliasTypeEdit = null;
                 });
 
-        When("^the user sets the party alias type's party type to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the party alias type's party type to {string}",
                 (String partyTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createPartyAliasTypeForm = persona.createPartyAliasTypeForm;
@@ -154,7 +154,7 @@ public class PartyAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the party alias type's name to ([a-zA-Z0-9-_]*)$",
+        When("the user sets the party alias type's name to {string}",
                 (String partyAliasTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createPartyAliasTypeForm = persona.createPartyAliasTypeForm;
@@ -203,8 +203,10 @@ public class PartyAliasTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the party alias type to (be|not be) the default$",
+        When("the user sets the party alias type to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createPartyAliasTypeForm = persona.createPartyAliasTypeForm;
                     var partyAliasTypeEdit = persona.partyAliasTypeEdit;

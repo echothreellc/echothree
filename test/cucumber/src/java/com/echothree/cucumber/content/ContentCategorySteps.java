@@ -277,8 +277,10 @@ public class ContentCategorySteps implements En {
                     Objects.requireNonNullElse(createContentCategoryForm, contentCategoryEdit).setDefaultSourceName(persona.lastSourceName);
                 });
 
-        When("^the user sets the content category to (be|not be) the default$",
+        When("the user sets the content category to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createContentCategoryForm = persona.createContentCategoryForm;
                     var contentCategoryEdit = persona.contentCategoryEdit;

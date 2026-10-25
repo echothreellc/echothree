@@ -198,8 +198,10 @@ public class UseSteps implements En {
                     }
                 });
 
-        When("^the user sets the use to (be|not be) the default$",
+        When("the user sets the use to {string} the default",
                 (String isDefault) -> {
+                    assertThat(isDefault).isIn("be", "not be");
+
                     var persona = CurrentPersona.persona;
                     var createUseForm = persona.createUseForm;
                     var useEdit = persona.useEdit;

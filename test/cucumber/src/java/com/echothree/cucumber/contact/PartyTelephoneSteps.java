@@ -150,8 +150,10 @@ public class PartyTelephoneSteps implements En {
                     partyContactMechanismSpec.setContactMechanismName(persona.lastTelephoneContactMechanismName);
                 });
 
-        When("^the user (does|does not) allow solicitations to the telephone number$",
+        When("the user {string} allow solicitations to the telephone number",
                 (String allowSolicitation) -> {
+                    assertThat(allowSolicitation).isIn("does", "does not");
+
                     var persona = CurrentPersona.persona;
                     var createContactTelephoneForm = persona.createContactTelephoneForm;
                     var edit = persona.contactTelephoneEdit;
