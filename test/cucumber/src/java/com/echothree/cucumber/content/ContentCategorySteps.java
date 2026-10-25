@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ContentCategorySteps implements En {
 
     public ContentCategorySteps() {
-        When("^the user begins entering a new content category$",
+        When("the user begins entering a new content category",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -38,7 +38,7 @@ public class ContentCategorySteps implements En {
                     persona.createContentCategoryForm = ContentUtil.getHome().getCreateContentCategoryForm();
                 });
 
-        When("^the user adds the new content category$",
+        When("the user adds the new content category",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -56,7 +56,7 @@ public class ContentCategorySteps implements En {
                     persona.createContentCategoryForm = null;
                 });
 
-        When("^the user begins deleting a content category$",
+        When("the user begins deleting a content category",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -67,7 +67,7 @@ public class ContentCategorySteps implements En {
                     persona.deleteContentCategoryForm = ContentUtil.getHome().getDeleteContentCategoryForm();
                 });
 
-        When("^the user deletes the content category$",
+        When("the user deletes the content category",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteContentCategoryForm = persona.deleteContentCategoryForm;
@@ -79,7 +79,7 @@ public class ContentCategorySteps implements En {
                     persona.deleteContentCategoryForm = null;
                 });
 
-        When("^the user begins specifying a content category to edit$",
+        When("the user begins specifying a content category to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -90,7 +90,7 @@ public class ContentCategorySteps implements En {
                     persona.contentCategorySpec = ContentUtil.getHome().getContentCategorySpec();
                 });
 
-        When("^the user begins editing the content category$",
+        When("the user begins editing the content category",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.contentCategorySpec;
@@ -113,7 +113,7 @@ public class ContentCategorySteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the content category$",
+        When("the user finishes editing the content category",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.contentCategorySpec;
@@ -222,7 +222,7 @@ public class ContentCategorySteps implements En {
                     Objects.requireNonNullElse(createContentCategoryForm, contentCategoryEdit).setDefaultOfferName(defaultOfferName);
                 });
 
-        When("^the user sets the content category's default offer name to the last offer added$",
+        When("the user sets the content category's default offer name to the last offer added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createContentCategoryForm = persona.createContentCategoryForm;
@@ -244,7 +244,7 @@ public class ContentCategorySteps implements En {
                     Objects.requireNonNullElse(createContentCategoryForm, contentCategoryEdit).setDefaultUseName(defaultUseName);
                 });
 
-        When("^the user sets the content category's default use name to the last use added$",
+        When("the user sets the content category's default use name to the last use added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createContentCategoryForm = persona.createContentCategoryForm;
@@ -266,7 +266,7 @@ public class ContentCategorySteps implements En {
                     Objects.requireNonNullElse(createContentCategoryForm, contentCategoryEdit).setDefaultSourceName(defaultSourceName);
                 });
 
-        When("^the user sets the content category's default source name to the last source added$",
+        When("the user sets the content category's default source name to the last source added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createContentCategoryForm = persona.createContentCategoryForm;

@@ -35,7 +35,7 @@ public class CustomerLoginSteps implements En {
                     }
                 });
 
-        When("^the user begins to log in as an customer$",
+        When("the user begins to log in as an customer",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -71,7 +71,7 @@ public class CustomerLoginSteps implements En {
                     persona.customerLoginForm.setRemoteInet4Address(remoteInet4Address);
                 });
 
-        And("^the customer logs in$",
+        And("the customer logs in",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var customerLoginForm = persona.customerLoginForm;

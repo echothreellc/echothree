@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SearchItemsSteps implements En {
 
     public SearchItemsSteps() {
-        When("^the user begins entering a new item search$",
+        When("the user begins entering a new item search",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -34,7 +34,7 @@ public class SearchItemsSteps implements En {
                     persona.searchItemsForm = SearchUtil.getHome().getSearchItemsForm();
                 });
 
-        When("^the user executes the new item search$",
+        When("the user executes the new item search",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var searchItemsForm = persona.searchItemsForm;
@@ -55,7 +55,7 @@ public class SearchItemsSteps implements En {
                     persona.searchItemsForm = null;
                 });
 
-        When("^the user begins recording an action on a result of the item search$",
+        When("the user begins recording an action on a result of the item search",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -64,7 +64,7 @@ public class SearchItemsSteps implements En {
                     persona.createItemSearchResultActionForm = SearchUtil.getHome().getCreateItemSearchResultActionForm();
                 });
 
-        When("^the user records an action on a result of the item search$",
+        When("the user records an action on a result of the item search",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createItemSearchResultActionForm = persona.createItemSearchResultActionForm;
@@ -77,7 +77,7 @@ public class SearchItemsSteps implements En {
                     persona.createItemSearchResultActionForm = null;
                 });
 
-        When("^the user begins clearing the item results$",
+        When("the user begins clearing the item results",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -86,7 +86,7 @@ public class SearchItemsSteps implements En {
                     persona.clearItemResultsForm = SearchUtil.getHome().getClearItemResultsForm();
                 });
 
-        When("^the user clears the item results$",
+        When("the user clears the item results",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var clearItemResultsForm = persona.clearItemResultsForm;

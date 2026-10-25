@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class InventoryLocationGroupSteps implements En {
 
     public InventoryLocationGroupSteps() {
-        When("^the user begins entering a new inventory location group$",
+        When("the user begins entering a new inventory location group",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -38,7 +38,7 @@ public class InventoryLocationGroupSteps implements En {
                     persona.createInventoryLocationGroupForm = InventoryUtil.getHome().getCreateInventoryLocationGroupForm();
                 });
 
-        And("^the user adds the new inventory location group$",
+        And("the user adds the new inventory location group",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryLocationGroupForm = persona.createInventoryLocationGroupForm;
@@ -58,7 +58,7 @@ public class InventoryLocationGroupSteps implements En {
                     persona.createInventoryLocationGroupForm = null;
                 });
 
-        When("^the user begins setting the status of an inventory location group$",
+        When("the user begins setting the status of an inventory location group",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -70,7 +70,7 @@ public class InventoryLocationGroupSteps implements En {
                     persona.setInventoryLocationGroupStatusForm = InventoryUtil.getHome().getSetInventoryLocationGroupStatusForm();
                 });
 
-        And("^the user sets the status of the inventory location group$",
+        And("the user sets the status of the inventory location group",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var setInventoryLocationGroupStatusForm = persona.setInventoryLocationGroupStatusForm;
@@ -82,7 +82,7 @@ public class InventoryLocationGroupSteps implements En {
                     persona.setInventoryLocationGroupStatusForm = null;
                 });
 
-        When("^the user begins deleting an inventory location group$",
+        When("the user begins deleting an inventory location group",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -94,7 +94,7 @@ public class InventoryLocationGroupSteps implements En {
                     persona.deleteInventoryLocationGroupForm = InventoryUtil.getHome().getDeleteInventoryLocationGroupForm();
                 });
 
-        And("^the user deletes the inventory location group$",
+        And("the user deletes the inventory location group",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteInventoryLocationGroupForm = persona.deleteInventoryLocationGroupForm;
@@ -106,7 +106,7 @@ public class InventoryLocationGroupSteps implements En {
                     persona.deleteInventoryLocationGroupForm = null;
                 });
 
-        When("^the user begins specifying an inventory location group to edit$",
+        When("the user begins specifying an inventory location group to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -118,7 +118,7 @@ public class InventoryLocationGroupSteps implements En {
                     persona.inventoryLocationGroupSpec = InventoryUtil.getHome().getInventoryLocationGroupSpec();
                 });
 
-        When("^the user begins editing the inventory location group$",
+        When("the user begins editing the inventory location group",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryLocationGroupSpec;
@@ -141,7 +141,7 @@ public class InventoryLocationGroupSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the inventory location group$",
+        And("the user finishes editing the inventory location group",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryLocationGroupSpec;
@@ -185,7 +185,7 @@ public class InventoryLocationGroupSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory location group's warehouse name to the last warehouse added$",
+        And("the user sets the inventory location group's warehouse name to the last warehouse added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryLocationGroupForm = persona.createInventoryLocationGroupForm;
@@ -229,7 +229,7 @@ public class InventoryLocationGroupSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory location group's inventory location group name to the last inventory location group added$",
+        And("the user sets the inventory location group's inventory location group name to the last inventory location group added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryLocationGroupForm = persona.createInventoryLocationGroupForm;

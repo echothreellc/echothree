@@ -30,7 +30,7 @@ public class LinkTypeSteps implements En {
     private LinkTypeTransfer retrievedLinkType;
 
     public LinkTypeSteps() {
-        When("^the user begins entering a new link type$",
+        When("the user begins entering a new link type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -41,7 +41,7 @@ public class LinkTypeSteps implements En {
                     persona.createLinkTypeForm = CoreUtil.getHome().getCreateLinkTypeForm();
                 });
 
-        And("^the user adds the new link type$",
+        And("the user adds the new link type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createLinkTypeForm = persona.createLinkTypeForm;
@@ -61,7 +61,7 @@ public class LinkTypeSteps implements En {
                     persona.createLinkTypeForm = null;
                 });
 
-        When("^the user begins deleting a link type$",
+        When("the user begins deleting a link type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -72,7 +72,7 @@ public class LinkTypeSteps implements En {
                     persona.deleteLinkTypeForm = CoreUtil.getHome().getDeleteLinkTypeForm();
                 });
 
-        And("^the user deletes the link type$",
+        And("the user deletes the link type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteLinkTypeForm = persona.deleteLinkTypeForm;
@@ -84,7 +84,7 @@ public class LinkTypeSteps implements En {
                     persona.deleteLinkTypeForm = null;
                 });
 
-        When("^the user begins specifying a link type to edit$",
+        When("the user begins specifying a link type to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -95,7 +95,7 @@ public class LinkTypeSteps implements En {
                     persona.linkTypeSpec = CoreUtil.getHome().getLinkTypeUniversalSpec();
                 });
 
-        When("^the user begins editing the link type$",
+        When("the user begins editing the link type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.linkTypeSpec;
@@ -120,7 +120,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the link type$",
+        And("the user finishes editing the link type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.linkTypeSpec;
@@ -161,7 +161,7 @@ public class LinkTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the link type's link type name to the last link type added$",
+        And("the user sets the link type's link type name to the last link type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createLinkTypeForm = persona.createLinkTypeForm;

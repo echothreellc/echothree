@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ContentCollectionSteps implements En {
 
     public ContentCollectionSteps() {
-        When("^the user begins entering a new content collection$",
+        When("the user begins entering a new content collection",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -38,7 +38,7 @@ public class ContentCollectionSteps implements En {
                     persona.createContentCollectionForm = ContentUtil.getHome().getCreateContentCollectionForm();
                 });
 
-        When("^the user adds the new content collection$",
+        When("the user adds the new content collection",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -56,7 +56,7 @@ public class ContentCollectionSteps implements En {
                     persona.createContentCollectionForm = null;
                 });
 
-        When("^the user begins deleting a content collection$",
+        When("the user begins deleting a content collection",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -67,7 +67,7 @@ public class ContentCollectionSteps implements En {
                     persona.deleteContentCollectionForm = ContentUtil.getHome().getDeleteContentCollectionForm();
                 });
 
-        When("^the user deletes the content collection$",
+        When("the user deletes the content collection",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteContentCollectionForm = persona.deleteContentCollectionForm;
@@ -79,7 +79,7 @@ public class ContentCollectionSteps implements En {
                     persona.deleteContentCollectionForm = null;
                 });
 
-        When("^the user begins specifying a content collection to edit$",
+        When("the user begins specifying a content collection to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -90,7 +90,7 @@ public class ContentCollectionSteps implements En {
                     persona.contentCollectionSpec = ContentUtil.getHome().getContentCollectionSpec();
                 });
 
-        When("^the user begins editing the content collection$",
+        When("the user begins editing the content collection",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.contentCollectionSpec;
@@ -113,7 +113,7 @@ public class ContentCollectionSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the content collection$",
+        When("the user finishes editing the content collection",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.contentCollectionSpec;
@@ -173,7 +173,7 @@ public class ContentCollectionSteps implements En {
                     Objects.requireNonNullElse(createContentCollectionForm, contentCollectionEdit).setDefaultOfferName(defaultOfferName);
                 });
 
-        When("^the user sets the content collection's default offer name to the last offer added$",
+        When("the user sets the content collection's default offer name to the last offer added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createContentCollectionForm = persona.createContentCollectionForm;
@@ -195,7 +195,7 @@ public class ContentCollectionSteps implements En {
                     Objects.requireNonNullElse(createContentCollectionForm, contentCollectionEdit).setDefaultUseName(defaultUseName);
                 });
 
-        When("^the user sets the content collection's default use name to the last use added$",
+        When("the user sets the content collection's default use name to the last use added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createContentCollectionForm = persona.createContentCollectionForm;
@@ -217,7 +217,7 @@ public class ContentCollectionSteps implements En {
                     Objects.requireNonNullElse(createContentCollectionForm, contentCollectionEdit).setDefaultSourceName(defaultSourceName);
                 });
 
-        When("^the user sets the content collection's default source name to the last source added$",
+        When("the user sets the content collection's default source name to the last source added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createContentCollectionForm = persona.createContentCollectionForm;

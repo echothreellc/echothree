@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PartyAliasSteps implements En {
 
     public PartyAliasSteps() {
-        When("^the user begins entering a new party alias$",
+        When("the user begins entering a new party alias",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -38,7 +38,7 @@ public class PartyAliasSteps implements En {
                     persona.createPartyAliasForm = PartyUtil.getHome().getCreatePartyAliasForm();
                 });
 
-        When("^the user adds the new party alias$",
+        When("the user adds the new party alias",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createPartyAliasForm = persona.createPartyAliasForm;
@@ -50,7 +50,7 @@ public class PartyAliasSteps implements En {
                     persona.createPartyAliasForm = null;
                 });
 
-        When("^the user begins deleting a party alias$",
+        When("the user begins deleting a party alias",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -61,7 +61,7 @@ public class PartyAliasSteps implements En {
                     persona.deletePartyAliasForm = PartyUtil.getHome().getDeletePartyAliasForm();
                 });
 
-        When("^the user deletes the party alias$",
+        When("the user deletes the party alias",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deletePartyAliasForm = persona.deletePartyAliasForm;
@@ -73,7 +73,7 @@ public class PartyAliasSteps implements En {
                     persona.deletePartyAliasForm = null;
                 });
 
-        When("^the user begins specifying a party alias to edit$",
+        When("the user begins specifying a party alias to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -84,7 +84,7 @@ public class PartyAliasSteps implements En {
                     persona.partyAliasSpec = PartyUtil.getHome().getPartyAliasSpec();
                 });
 
-        When("^the user begins editing the party alias$",
+        When("the user begins editing the party alias",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.partyAliasSpec;
@@ -107,7 +107,7 @@ public class PartyAliasSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the party alias$",
+        When("the user finishes editing the party alias",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.partyAliasSpec;
@@ -146,7 +146,7 @@ public class PartyAliasSteps implements En {
                     }
                 });
 
-        When("^the user sets the party alias's party to the last party added$",
+        When("the user sets the party alias's party to the last party added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastPartyName = persona.lastPartyName;
@@ -203,7 +203,7 @@ public class PartyAliasSteps implements En {
                     }
                 });
 
-        When("^the user sets the party alias's party alias type to the last party alias type added$",
+        When("the user sets the party alias's party alias type to the last party alias type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastPartyAliasTypeName = persona.lastPartyAliasTypeName;

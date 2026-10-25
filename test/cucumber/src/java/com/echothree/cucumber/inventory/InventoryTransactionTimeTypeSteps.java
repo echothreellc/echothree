@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class InventoryTransactionTimeTypeSteps implements En {
 
     public InventoryTransactionTimeTypeSteps() {
-        When("^the user begins entering a new inventory transaction time type$",
+        When("the user begins entering a new inventory transaction time type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -39,7 +39,7 @@ public class InventoryTransactionTimeTypeSteps implements En {
                     persona.createInventoryTransactionTimeTypeForm = InventoryUtil.getHome().getCreateInventoryTransactionTimeTypeForm();
                 });
 
-        And("^the user adds the new inventory transaction time type$",
+        And("the user adds the new inventory transaction time type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionTimeTypeForm = persona.createInventoryTransactionTimeTypeForm;
@@ -61,7 +61,7 @@ public class InventoryTransactionTimeTypeSteps implements En {
                     persona.createInventoryTransactionTimeTypeForm = null;
                 });
 
-        When("^the user begins deleting an inventory transaction time type$",
+        When("the user begins deleting an inventory transaction time type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -72,7 +72,7 @@ public class InventoryTransactionTimeTypeSteps implements En {
                     persona.deleteInventoryTransactionTimeTypeForm = InventoryUtil.getHome().getDeleteInventoryTransactionTimeTypeForm();
                 });
 
-        And("^the user deletes the inventory transaction time type$",
+        And("the user deletes the inventory transaction time type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteInventoryTransactionTimeTypeForm = persona.deleteInventoryTransactionTimeTypeForm;
@@ -85,7 +85,7 @@ public class InventoryTransactionTimeTypeSteps implements En {
                     persona.deleteInventoryTransactionTimeTypeForm = null;
                 });
 
-        When("^the user begins specifying an inventory transaction time type to edit$",
+        When("the user begins specifying an inventory transaction time type to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -96,7 +96,7 @@ public class InventoryTransactionTimeTypeSteps implements En {
                     persona.inventoryTransactionTimeTypeSpec = InventoryUtil.getHome().getInventoryTransactionTimeTypeUniversalSpec();
                 });
 
-        When("^the user begins editing the inventory transaction time type$",
+        When("the user begins editing the inventory transaction time type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryTransactionTimeTypeSpec;
@@ -119,7 +119,7 @@ public class InventoryTransactionTimeTypeSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the inventory transaction time type$",
+        And("the user finishes editing the inventory transaction time type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryTransactionTimeTypeSpec;
@@ -178,8 +178,7 @@ public class InventoryTransactionTimeTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction time type's inventory transaction time type name "
-                + "to the last inventory transaction time type added$",
+        And("the user sets the inventory transaction time type's inventory transaction time type name to the last inventory transaction time type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionTimeTypeForm = persona.createInventoryTransactionTimeTypeForm;
@@ -198,7 +197,7 @@ public class InventoryTransactionTimeTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction time type's entity ref to the last inventory transaction time type added$",
+        And("the user sets the inventory transaction time type's entity ref to the last inventory transaction time type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteInventoryTransactionTimeTypeForm = persona.deleteInventoryTransactionTimeTypeForm;

@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class InventoryBucketTypeSteps implements En {
 
     public InventoryBucketTypeSteps() {
-        When("^the user begins entering a new inventory bucket type$",
+        When("the user begins entering a new inventory bucket type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -39,7 +39,7 @@ public class InventoryBucketTypeSteps implements En {
                     persona.createInventoryBucketTypeForm = InventoryUtil.getHome().getCreateInventoryBucketTypeForm();
                 });
 
-        And("^the user adds the new inventory bucket type$",
+        And("the user adds the new inventory bucket type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryBucketTypeForm = persona.createInventoryBucketTypeForm;
@@ -59,7 +59,7 @@ public class InventoryBucketTypeSteps implements En {
                     persona.createInventoryBucketTypeForm = null;
                 });
 
-        When("^the user begins deleting an inventory bucket type$",
+        When("the user begins deleting an inventory bucket type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -70,7 +70,7 @@ public class InventoryBucketTypeSteps implements En {
                     persona.deleteInventoryBucketTypeForm = InventoryUtil.getHome().getDeleteInventoryBucketTypeForm();
                 });
 
-        And("^the user deletes the inventory bucket type$",
+        And("the user deletes the inventory bucket type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteInventoryBucketTypeForm = persona.deleteInventoryBucketTypeForm;
@@ -82,7 +82,7 @@ public class InventoryBucketTypeSteps implements En {
                     persona.deleteInventoryBucketTypeForm = null;
                 });
 
-        When("^the user begins specifying an inventory bucket type to edit$",
+        When("the user begins specifying an inventory bucket type to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -93,7 +93,7 @@ public class InventoryBucketTypeSteps implements En {
                     persona.inventoryBucketTypeSpec = InventoryUtil.getHome().getInventoryBucketTypeUniversalSpec();
                 });
 
-        When("^the user begins editing the inventory bucket type$",
+        When("the user begins editing the inventory bucket type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryBucketTypeSpec;
@@ -116,7 +116,7 @@ public class InventoryBucketTypeSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the inventory bucket type$",
+        And("the user finishes editing the inventory bucket type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryBucketTypeSpec;
@@ -157,7 +157,7 @@ public class InventoryBucketTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory bucket type's inventory bucket type name to the last inventory bucket type added$",
+        And("the user sets the inventory bucket type's inventory bucket type name to the last inventory bucket type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryBucketTypeForm = persona.createInventoryBucketTypeForm;

@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CommentTypeSteps implements En {
 
     public CommentTypeSteps() {
-        When("^the user begins entering a new comment type$",
+        When("the user begins entering a new comment type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class CommentTypeSteps implements En {
                     persona.createCommentTypeForm = CommentUtil.getHome().getCreateCommentTypeForm();
                 });
 
-        When("^the user adds the new comment type$",
+        When("the user adds the new comment type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createCommentTypeForm = persona.createCommentTypeForm;
@@ -54,7 +54,7 @@ public class CommentTypeSteps implements En {
                     persona.createCommentTypeForm = null;
                 });
 
-        When("^the user begins deleting a comment type$",
+        When("the user begins deleting a comment type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -65,7 +65,7 @@ public class CommentTypeSteps implements En {
                     persona.deleteCommentTypeForm = CommentUtil.getHome().getDeleteCommentTypeForm();
                 });
 
-        When("^the user deletes the comment type$",
+        When("the user deletes the comment type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteCommentTypeForm = persona.deleteCommentTypeForm;
@@ -77,7 +77,7 @@ public class CommentTypeSteps implements En {
                     persona.deleteCommentTypeForm = null;
                 });
 
-        When("^the user begins specifying a comment type to edit$",
+        When("the user begins specifying a comment type to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -88,7 +88,7 @@ public class CommentTypeSteps implements En {
                     persona.commentTypeSpec = CommentUtil.getHome().getCommentTypeSpec();
                 });
 
-        When("^the user begins editing the comment type$",
+        When("the user begins editing the comment type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.commentTypeSpec;
@@ -111,7 +111,7 @@ public class CommentTypeSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the comment type$",
+        When("the user finishes editing the comment type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.commentTypeSpec;
@@ -261,7 +261,7 @@ public class CommentTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the comment type's name to the last comment type added$",
+        When("the user sets the comment type's name to the last comment type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastCommentTypeName = persona.lastCommentTypeName;

@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class FilterStepDestinationSteps implements En {
 
     public FilterStepDestinationSteps() {
-        When("^the user begins entering a new filter step destination$",
+        When("the user begins entering a new filter step destination",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -35,7 +35,7 @@ public class FilterStepDestinationSteps implements En {
                     persona.createFilterStepDestinationForm = FilterUtil.getHome().getCreateFilterStepDestinationForm();
                 });
 
-        When("^the user adds the new filter step destination$",
+        When("the user adds the new filter step destination",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createFilterStepDestinationForm = persona.createFilterStepDestinationForm;
@@ -51,7 +51,7 @@ public class FilterStepDestinationSteps implements En {
                     persona.createFilterStepDestinationForm = null;
                 });
 
-        When("^the user begins deleting a filter step destination$",
+        When("the user begins deleting a filter step destination",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -61,7 +61,7 @@ public class FilterStepDestinationSteps implements En {
                     persona.deleteFilterStepDestinationForm = FilterUtil.getHome().getDeleteFilterStepDestinationForm();
                 });
 
-        When("^the user deletes the filter step destination$",
+        When("the user deletes the filter step destination",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteFilterStepDestinationForm = persona.deleteFilterStepDestinationForm;

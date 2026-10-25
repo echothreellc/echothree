@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AllocationPrioritySteps implements En {
 
     public AllocationPrioritySteps() {
-        When("^the user begins entering a new allocation priority$",
+        When("the user begins entering a new allocation priority",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class AllocationPrioritySteps implements En {
                     persona.createAllocationPriorityForm = InventoryUtil.getHome().getCreateAllocationPriorityForm();
                 });
 
-        And("^the user adds the new allocation priority$",
+        And("the user adds the new allocation priority",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createAllocationPriorityForm = persona.createAllocationPriorityForm;
@@ -57,7 +57,7 @@ public class AllocationPrioritySteps implements En {
                     persona.createAllocationPriorityForm = null;
                 });
 
-        When("^the user begins deleting an allocation priority$",
+        When("the user begins deleting an allocation priority",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -68,7 +68,7 @@ public class AllocationPrioritySteps implements En {
                     persona.deleteAllocationPriorityForm = InventoryUtil.getHome().getDeleteAllocationPriorityForm();
                 });
 
-        And("^the user deletes the allocation priority$",
+        And("the user deletes the allocation priority",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteAllocationPriorityForm = persona.deleteAllocationPriorityForm;
@@ -80,7 +80,7 @@ public class AllocationPrioritySteps implements En {
                     persona.deleteAllocationPriorityForm = null;
                 });
 
-        When("^the user begins specifying an allocation priority to edit$",
+        When("the user begins specifying an allocation priority to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -91,7 +91,7 @@ public class AllocationPrioritySteps implements En {
                     persona.allocationPrioritySpec = InventoryUtil.getHome().getAllocationPriorityUniversalSpec();
                 });
 
-        When("^the user begins editing the allocation priority$",
+        When("the user begins editing the allocation priority",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.allocationPrioritySpec;
@@ -114,7 +114,7 @@ public class AllocationPrioritySteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the allocation priority$",
+        And("the user finishes editing the allocation priority",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.allocationPrioritySpec;
@@ -155,7 +155,7 @@ public class AllocationPrioritySteps implements En {
                     }
                 });
 
-        And("^the user sets the allocation priority's allocation priority name to the last allocation priority added$",
+        And("the user sets the allocation priority's allocation priority name to the last allocation priority added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createAllocationPriorityForm = persona.createAllocationPriorityForm;

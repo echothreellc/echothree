@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PeriodTypeSteps implements En {
 
     public PeriodTypeSteps() {
-        When("^the user begins entering a new period type$",
+        When("the user begins entering a new period type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class PeriodTypeSteps implements En {
                     persona.createPeriodTypeForm = PeriodUtil.getHome().getCreatePeriodTypeForm();
                 });
 
-        And("^the user adds the new period type$",
+        And("the user adds the new period type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createPeriodTypeForm = persona.createPeriodTypeForm;
@@ -58,7 +58,7 @@ public class PeriodTypeSteps implements En {
                     persona.createPeriodTypeForm = null;
                 });
 
-        When("^the user begins deleting a period type$",
+        When("the user begins deleting a period type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -69,7 +69,7 @@ public class PeriodTypeSteps implements En {
                     persona.deletePeriodTypeForm = PeriodUtil.getHome().getDeletePeriodTypeForm();
                 });
 
-        And("^the user deletes the period type$",
+        And("the user deletes the period type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deletePeriodTypeForm = persona.deletePeriodTypeForm;
@@ -81,7 +81,7 @@ public class PeriodTypeSteps implements En {
                     persona.deletePeriodTypeForm = null;
                 });
 
-        When("^the user begins specifying a period type to edit$",
+        When("the user begins specifying a period type to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -92,7 +92,7 @@ public class PeriodTypeSteps implements En {
                     persona.periodTypeSpec = PeriodUtil.getHome().getPeriodTypeSpec();
                 });
 
-        When("^the user begins editing the period type$",
+        When("the user begins editing the period type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.periodTypeSpec;
@@ -115,7 +115,7 @@ public class PeriodTypeSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the period type$",
+        And("the user finishes editing the period type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.periodTypeSpec;
@@ -172,7 +172,7 @@ public class PeriodTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the period type's name to the last period type added$",
+        And("the user sets the period type's name to the last period type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastPeriodTypeName = persona.lastPeriodTypeName;

@@ -30,7 +30,7 @@ public class VendorSteps
         implements En {
 
     public VendorSteps() {
-        When("^the user begins entering a new vendor$",
+        When("the user begins entering a new vendor",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -40,7 +40,7 @@ public class VendorSteps
                     persona.createVendorForm = PartyUtil.getHome().getCreateVendorForm();
                 });
 
-        When("^the user adds the new vendor$",
+        When("the user adds the new vendor",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -72,7 +72,7 @@ public class VendorSteps
                     setVendorStatus(persona, persona.lastVendorName, vendorStatusChoice);
                 });
         
-        When("^the user begins specifying a vendor to edit$",
+        When("the user begins specifying a vendor to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -82,7 +82,7 @@ public class VendorSteps
                     persona.vendorUniversalSpec = VendorUtil.getHome().getVendorUniversalSpec();
                 });
 
-        When("^the user begins editing the vendor$",
+        When("the user begins editing the vendor",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.vendorUniversalSpec;
@@ -105,7 +105,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user finishes editing the vendor$",
+        When("the user finishes editing the vendor",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.vendorUniversalSpec;
@@ -141,7 +141,7 @@ public class VendorSteps
                     }
                 });
 
-        When("^the user sets the vendor's vendor name to the last vendor added$",
+        When("the user sets the vendor's vendor name to the last vendor added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;

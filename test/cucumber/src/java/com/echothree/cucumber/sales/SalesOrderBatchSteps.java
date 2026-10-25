@@ -33,7 +33,7 @@ public class SalesOrderBatchSteps implements En {
                     createSalesOrderBatch(persona, currencyIsoName, paymentMethodName, null, null);
                 });
 
-        When("^the user deletes the last sales order batch added$",
+        When("the user deletes the last sales order batch added",
                 () -> {
                     var persona = CurrentPersona.persona;
 

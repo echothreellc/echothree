@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SourceSteps implements En {
 
     public SourceSteps() {
-        When("^the user begins entering a new source$",
+        When("the user begins entering a new source",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -38,7 +38,7 @@ public class SourceSteps implements En {
                     persona.createSourceForm = OfferUtil.getHome().getCreateSourceForm();
                 });
 
-        When("^the user adds the new source$",
+        When("the user adds the new source",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -61,7 +61,7 @@ public class SourceSteps implements En {
                     persona.createSourceForm = null;
                 });
 
-        When("^the user begins deleting a source$",
+        When("the user begins deleting a source",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -72,7 +72,7 @@ public class SourceSteps implements En {
                     persona.deleteSourceForm = OfferUtil.getHome().getDeleteSourceForm();
                 });
 
-        When("^the user deletes the source$",
+        When("the user deletes the source",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteSourceForm = persona.deleteSourceForm;
@@ -84,7 +84,7 @@ public class SourceSteps implements En {
                     persona.deleteSourceForm = null;
                 });
 
-        When("^the user begins specifying a source to edit$",
+        When("the user begins specifying a source to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -95,7 +95,7 @@ public class SourceSteps implements En {
                     persona.sourceSpec = OfferUtil.getHome().getSourceSpec();
                 });
 
-        When("^the user begins editing the source$",
+        When("the user begins editing the source",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.sourceSpec;
@@ -118,7 +118,7 @@ public class SourceSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the source$",
+        When("the user finishes editing the source",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.sourceSpec;
@@ -148,7 +148,7 @@ public class SourceSteps implements En {
                     createSourceForm.setOfferName(offerName);
                 });
 
-        When("^the user sets the source's offer name to the last offer added$",
+        When("the user sets the source's offer name to the last offer added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createSourceForm = persona.createSourceForm;
@@ -168,7 +168,7 @@ public class SourceSteps implements En {
                     createSourceForm.setUseName(useName);
                 });
 
-        When("^the user sets the source's use name to the last use added$",
+        When("the user sets the source's use name to the last use added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createSourceForm = persona.createSourceForm;
@@ -192,7 +192,7 @@ public class SourceSteps implements En {
                     } else Objects.requireNonNullElse(deleteSourceForm, sourceSpec).setSourceName(sourceName);
                 });
 
-        When("^the user sets the source's source name to the last source added$",
+        When("the user sets the source's source name to the last source added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createSourceForm = persona.createSourceForm;

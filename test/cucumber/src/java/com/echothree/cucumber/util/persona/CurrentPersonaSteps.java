@@ -38,7 +38,7 @@ public class CurrentPersonaSteps implements En {
                     CurrentPersona.persona = AnonymousPersonas.getPersona(persona);
                 });
 
-        Given("^the user is not currently logged in$",
+        Given("the user is not currently logged in",
                 () -> {
                     if(CurrentPersona.persona != null) {
                         var authenticationService = AuthenticationUtil.getHome();

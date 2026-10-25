@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class WorkflowEntityTypeSteps implements En {
 
     public WorkflowEntityTypeSteps() {
-        When("^the user begins entering a new workflow entity type$",
+        When("the user begins entering a new workflow entity type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class WorkflowEntityTypeSteps implements En {
                     persona.createWorkflowEntityTypeForm = WorkflowUtil.getHome().getCreateWorkflowEntityTypeForm();
                 });
 
-        When("^the user adds the new workflow entity type$",
+        When("the user adds the new workflow entity type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createWorkflowEntityTypeForm = persona.createWorkflowEntityTypeForm;
@@ -49,7 +49,7 @@ public class WorkflowEntityTypeSteps implements En {
                     persona.createWorkflowEntityTypeForm = null;
                 });
 
-        When("^the user begins deleting a workflow entity type$",
+        When("the user begins deleting a workflow entity type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -60,7 +60,7 @@ public class WorkflowEntityTypeSteps implements En {
                     persona.deleteWorkflowEntityTypeForm = WorkflowUtil.getHome().getDeleteWorkflowEntityTypeForm();
                 });
 
-        When("^the user deletes the workflow entity type$",
+        When("the user deletes the workflow entity type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteWorkflowEntityTypeForm = persona.deleteWorkflowEntityTypeForm;
@@ -83,7 +83,7 @@ public class WorkflowEntityTypeSteps implements En {
                     Objects.requireNonNullElse(createWorkflowEntityTypeForm, deleteWorkflowEntityTypeForm).setWorkflowName(workflowName);
                 });
 
-        When("^the user sets the workflow entity type's workflow name to the last workflow added$",
+        When("the user sets the workflow entity type's workflow name to the last workflow added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastWorkflowName = persona.lastWorkflowName;

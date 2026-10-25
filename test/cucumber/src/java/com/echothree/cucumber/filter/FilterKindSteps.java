@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class FilterKindSteps implements En {
 
     public FilterKindSteps() {
-        When("^the user begins entering a new filter kind$",
+        When("the user begins entering a new filter kind",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class FilterKindSteps implements En {
                     persona.createFilterKindForm = FilterUtil.getHome().getCreateFilterKindForm();
                 });
 
-        When("^the user adds the new filter kind$",
+        When("the user adds the new filter kind",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createFilterKindForm = persona.createFilterKindForm;
@@ -58,7 +58,7 @@ public class FilterKindSteps implements En {
                     persona.createFilterKindForm = null;
                 });
 
-        When("^the user begins deleting a filter kind$",
+        When("the user begins deleting a filter kind",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -69,7 +69,7 @@ public class FilterKindSteps implements En {
                     persona.deleteFilterKindForm = FilterUtil.getHome().getDeleteFilterKindForm();
                 });
 
-        When("^the user deletes the filter kind$",
+        When("the user deletes the filter kind",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteFilterKindForm = persona.deleteFilterKindForm;
@@ -81,7 +81,7 @@ public class FilterKindSteps implements En {
                     persona.deleteFilterKindForm = null;
                 });
 
-        When("^the user begins specifying a filter kind to edit$",
+        When("the user begins specifying a filter kind to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -92,7 +92,7 @@ public class FilterKindSteps implements En {
                     persona.filterKindSpec = FilterUtil.getHome().getFilterKindSpec();
                 });
 
-        When("^the user begins editing the filter kind$",
+        When("the user begins editing the filter kind",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.filterKindSpec;
@@ -115,7 +115,7 @@ public class FilterKindSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the filter kind$",
+        When("the user finishes editing the filter kind",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.filterKindSpec;
@@ -154,7 +154,7 @@ public class FilterKindSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter kind's name to the last filter kind added$",
+        When("the user sets the filter kind's name to the last filter kind added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastFilterKindName = persona.lastFilterKindName;

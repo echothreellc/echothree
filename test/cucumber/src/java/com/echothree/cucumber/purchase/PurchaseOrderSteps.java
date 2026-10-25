@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PurchaseOrderSteps implements En {
 
     public PurchaseOrderSteps() {
-        When("^the user begins entering a new purchase order$",
+        When("the user begins entering a new purchase order",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class PurchaseOrderSteps implements En {
                     persona.createPurchaseOrderForm = PurchaseUtil.getHome().getCreatePurchaseOrderForm();
                 });
 
-        When("^the user adds the new purchase order$",
+        When("the user adds the new purchase order",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createPurchaseOrderForm = persona.createPurchaseOrderForm;
@@ -57,7 +57,7 @@ public class PurchaseOrderSteps implements En {
                     persona.createPurchaseOrderForm = null;
                 });
 
-        When("^the user begins setting the status of a purchase order$",
+        When("the user begins setting the status of a purchase order",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -68,7 +68,7 @@ public class PurchaseOrderSteps implements En {
                     persona.setPurchaseOrderStatusForm = PurchaseUtil.getHome().getSetPurchaseOrderStatusForm();
                 });
 
-        When("^the user sets the status of the purchase order$",
+        When("the user sets the status of the purchase order",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var setPurchaseOrderStatusForm = persona.setPurchaseOrderStatusForm;
@@ -80,7 +80,7 @@ public class PurchaseOrderSteps implements En {
                     persona.setPurchaseOrderStatusForm = null;
                 });
 
-        When("^the user begins specifying a purchase order to edit$",
+        When("the user begins specifying a purchase order to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -91,7 +91,7 @@ public class PurchaseOrderSteps implements En {
                     persona.purchaseOrderSpec = PurchaseUtil.getHome().getPurchaseOrderSpec();
                 });
 
-//        When("^the user begins editing the purchase order$",
+//        When("the user begins editing the purchase order",
 //                () -> {
 //                    var persona = CurrentPersona.persona;
 //                    var spec = persona.purchaseOrderSpec;
@@ -114,7 +114,7 @@ public class PurchaseOrderSteps implements En {
 //                    }
 //                });
 //
-//        When("^the user finishes editing the purchase order$",
+//        When("the user finishes editing the purchase order",
 //                () -> {
 //                    var persona = CurrentPersona.persona;
 //                    var spec = persona.purchaseOrderSpec;
@@ -146,7 +146,7 @@ public class PurchaseOrderSteps implements En {
                     createPurchaseOrderForm.setVendorName(vendorName);
                 });
 
-        When("^the user sets the purchase order's purchase order name to the last purchase order added$",
+        When("the user sets the purchase order's purchase order name to the last purchase order added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var setPurchaseOrderStatusForm = persona.setPurchaseOrderStatusForm;

@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ItemPriceSteps implements En {
 
     public ItemPriceSteps() {
-        When("^the user begins entering a new item price$",
+        When("the user begins entering a new item price",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class ItemPriceSteps implements En {
                     persona.createItemPriceForm = ItemUtil.getHome().getCreateItemPriceForm();
                 });
 
-        When("^the user adds the new item price$",
+        When("the user adds the new item price",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -55,7 +55,7 @@ public class ItemPriceSteps implements En {
                     persona.createItemPriceForm = null;
                 });
 
-        When("^the user begins deleting an item price$",
+        When("the user begins deleting an item price",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -66,7 +66,7 @@ public class ItemPriceSteps implements En {
                     persona.deleteItemPriceForm = ItemUtil.getHome().getDeleteItemPriceForm();
                 });
 
-        When("^the user deletes the item price$",
+        When("the user deletes the item price",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteItemPriceForm = persona.deleteItemPriceForm;
@@ -78,7 +78,7 @@ public class ItemPriceSteps implements En {
                     persona.deleteItemPriceForm = null;
                 });
 
-        When("^the user begins specifying an item price to edit$",
+        When("the user begins specifying an item price to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -89,7 +89,7 @@ public class ItemPriceSteps implements En {
                     persona.itemPriceSpec = ItemUtil.getHome().getItemPriceSpec();
                 });
 
-        When("^the user begins editing the item price$",
+        When("the user begins editing the item price",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.itemPriceSpec;
@@ -112,7 +112,7 @@ public class ItemPriceSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the item price$",
+        When("the user finishes editing the item price",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.itemPriceSpec;
@@ -152,7 +152,7 @@ public class ItemPriceSteps implements En {
                     }
                 });
 
-        When("^the user sets the item price's item to the last item added$",
+        When("the user sets the item price's item to the last item added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createItemPriceForm = persona.createItemPriceForm;

@@ -26,7 +26,7 @@ import javax.naming.NamingException;
 public class SalesOrderSteps implements En {
 
     public SalesOrderSteps() {
-        When("^the user adds a new sales order$",
+        When("the user adds a new sales order",
                 () -> {
                     var persona = CurrentPersona.persona;
 

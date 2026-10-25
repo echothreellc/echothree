@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ContentCategoryItemSteps implements En {
 
     public ContentCategoryItemSteps() {
-        When("^the user begins entering a new content category item$",
+        When("the user begins entering a new content category item",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -38,7 +38,7 @@ public class ContentCategoryItemSteps implements En {
                     persona.createContentCategoryItemForm = ContentUtil.getHome().getCreateContentCategoryItemForm();
                 });
 
-        When("^the user adds the new content category item$",
+        When("the user adds the new content category item",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -54,7 +54,7 @@ public class ContentCategoryItemSteps implements En {
                     persona.createContentCategoryItemForm = null;
                 });
 
-        When("^the user begins deleting a content category item$",
+        When("the user begins deleting a content category item",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -65,7 +65,7 @@ public class ContentCategoryItemSteps implements En {
                     persona.deleteContentCategoryItemForm = ContentUtil.getHome().getDeleteContentCategoryItemForm();
                 });
 
-        When("^the user deletes the content category item$",
+        When("the user deletes the content category item",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteContentCategoryItemForm = persona.deleteContentCategoryItemForm;
@@ -77,7 +77,7 @@ public class ContentCategoryItemSteps implements En {
                     persona.deleteContentCategoryItemForm = null;
                 });
 
-        When("^the user begins specifying a content category item to edit$",
+        When("the user begins specifying a content category item to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -88,7 +88,7 @@ public class ContentCategoryItemSteps implements En {
                     persona.contentCategoryItemSpec = ContentUtil.getHome().getContentCategoryItemSpec();
                 });
 
-        When("^the user begins editing the content category item$",
+        When("the user begins editing the content category item",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.contentCategoryItemSpec;
@@ -111,7 +111,7 @@ public class ContentCategoryItemSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the content category item$",
+        When("the user finishes editing the content category item",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.contentCategoryItemSpec;

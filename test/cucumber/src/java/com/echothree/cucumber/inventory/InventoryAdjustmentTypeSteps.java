@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class InventoryAdjustmentTypeSteps implements En {
 
     public InventoryAdjustmentTypeSteps() {
-        When("^the user begins entering a new inventory adjustment type$",
+        When("the user begins entering a new inventory adjustment type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class InventoryAdjustmentTypeSteps implements En {
                     persona.createInventoryAdjustmentTypeForm = InventoryUtil.getHome().getCreateInventoryAdjustmentTypeForm();
                 });
 
-        And("^the user adds the new inventory adjustment type$",
+        And("the user adds the new inventory adjustment type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryAdjustmentTypeForm = persona.createInventoryAdjustmentTypeForm;
@@ -57,7 +57,7 @@ public class InventoryAdjustmentTypeSteps implements En {
                     persona.createInventoryAdjustmentTypeForm = null;
                 });
 
-        When("^the user begins deleting an inventory adjustment type$",
+        When("the user begins deleting an inventory adjustment type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -68,7 +68,7 @@ public class InventoryAdjustmentTypeSteps implements En {
                     persona.deleteInventoryAdjustmentTypeForm = InventoryUtil.getHome().getDeleteInventoryAdjustmentTypeForm();
                 });
 
-        And("^the user deletes the inventory adjustment type$",
+        And("the user deletes the inventory adjustment type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteInventoryAdjustmentTypeForm = persona.deleteInventoryAdjustmentTypeForm;
@@ -80,7 +80,7 @@ public class InventoryAdjustmentTypeSteps implements En {
                     persona.deleteInventoryAdjustmentTypeForm = null;
                 });
 
-        When("^the user begins specifying an inventory adjustment type to edit$",
+        When("the user begins specifying an inventory adjustment type to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -91,7 +91,7 @@ public class InventoryAdjustmentTypeSteps implements En {
                     persona.inventoryAdjustmentTypeSpec = InventoryUtil.getHome().getInventoryAdjustmentTypeUniversalSpec();
                 });
 
-        When("^the user begins editing the inventory adjustment type$",
+        When("the user begins editing the inventory adjustment type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryAdjustmentTypeSpec;
@@ -114,7 +114,7 @@ public class InventoryAdjustmentTypeSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the inventory adjustment type$",
+        And("the user finishes editing the inventory adjustment type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryAdjustmentTypeSpec;
@@ -155,7 +155,7 @@ public class InventoryAdjustmentTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory adjustment type's inventory adjustment type name to the last inventory adjustment type added$",
+        And("the user sets the inventory adjustment type's inventory adjustment type name to the last inventory adjustment type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryAdjustmentTypeForm = persona.createInventoryAdjustmentTypeForm;

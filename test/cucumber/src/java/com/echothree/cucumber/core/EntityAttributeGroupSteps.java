@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class EntityAttributeGroupSteps implements En {
 
     public EntityAttributeGroupSteps() {
-        When("^the user begins entering a new entity attribute group$",
+        When("the user begins entering a new entity attribute group",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -57,7 +57,7 @@ public class EntityAttributeGroupSteps implements En {
                     spec.setEntityTypeName(value);
                 });
 
-        When("^the user adds the new entity attribute group$",
+        When("the user adds the new entity attribute group",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeGroupForm = persona.createEntityAttributeGroupForm;
@@ -108,7 +108,7 @@ public class EntityAttributeGroupSteps implements En {
                     }
                 });
 
-        When("^the user begins deleting an entity attribute group$",
+        When("the user begins deleting an entity attribute group",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -119,7 +119,7 @@ public class EntityAttributeGroupSteps implements En {
                     persona.deleteEntityAttributeGroupForm = CoreUtil.getHome().getDeleteEntityAttributeGroupForm();
                 });
 
-        When("^the user deletes the entity attribute group$",
+        When("the user deletes the entity attribute group",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteEntityAttributeGroupForm = persona.deleteEntityAttributeGroupForm;
@@ -131,7 +131,7 @@ public class EntityAttributeGroupSteps implements En {
                     persona.deleteEntityAttributeGroupForm = null;
                 });
 
-        When("^the user begins specifying an entity attribute group to edit$",
+        When("the user begins specifying an entity attribute group to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -142,7 +142,7 @@ public class EntityAttributeGroupSteps implements En {
                     persona.entityAttributeGroupSpec = CoreUtil.getHome().getEntityAttributeGroupUniversalSpec();
                 });
 
-        When("^the user begins editing the entity attribute group$",
+        When("the user begins editing the entity attribute group",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.entityAttributeGroupSpec;
@@ -165,7 +165,7 @@ public class EntityAttributeGroupSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the entity attribute group$",
+        When("the user finishes editing the entity attribute group",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.entityAttributeGroupSpec;
@@ -204,7 +204,7 @@ public class EntityAttributeGroupSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity attribute group's name to the last entity attribute group added$",
+        When("the user sets the entity attribute group's name to the last entity attribute group added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastEntityAttributeGroupName = persona.lastEntityAttributeGroupName;
@@ -220,7 +220,7 @@ public class EntityAttributeGroupSteps implements En {
                     }
                 });
 
-        When("^the user identifies the last entity attribute group by entity reference$",
+        When("the user identifies the last entity attribute group by entity reference",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.deleteEntityAttributeGroupForm != null ? persona.deleteEntityAttributeGroupForm : persona.entityAttributeGroupSpec;

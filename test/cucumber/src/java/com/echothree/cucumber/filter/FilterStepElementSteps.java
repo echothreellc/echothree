@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class FilterStepElementSteps implements En {
 
     public FilterStepElementSteps() {
-        When("^the user begins entering a new filter step element$",
+        When("the user begins entering a new filter step element",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class FilterStepElementSteps implements En {
                     persona.createFilterStepElementForm = FilterUtil.getHome().getCreateFilterStepElementForm();
                 });
 
-        When("^the user adds the new filter step element$",
+        When("the user adds the new filter step element",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createFilterStepElementForm = persona.createFilterStepElementForm;
@@ -58,7 +58,7 @@ public class FilterStepElementSteps implements En {
                     persona.createFilterStepElementForm = null;
                 });
 
-        When("^the user begins deleting a filter step element$",
+        When("the user begins deleting a filter step element",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -69,7 +69,7 @@ public class FilterStepElementSteps implements En {
                     persona.deleteFilterStepElementForm = FilterUtil.getHome().getDeleteFilterStepElementForm();
                 });
 
-        When("^the user deletes the filter step element$",
+        When("the user deletes the filter step element",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteFilterStepElementForm = persona.deleteFilterStepElementForm;
@@ -81,7 +81,7 @@ public class FilterStepElementSteps implements En {
                     persona.deleteFilterStepElementForm = null;
                 });
 
-        When("^the user begins specifying a filter step element to edit$",
+        When("the user begins specifying a filter step element to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -92,7 +92,7 @@ public class FilterStepElementSteps implements En {
                     persona.filterStepElementSpec = FilterUtil.getHome().getFilterStepElementSpec();
                 });
 
-        When("^the user begins editing the filter step element$",
+        When("the user begins editing the filter step element",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.filterStepElementSpec;
@@ -115,7 +115,7 @@ public class FilterStepElementSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the filter step element$",
+        When("the user finishes editing the filter step element",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.filterStepElementSpec;
@@ -226,7 +226,7 @@ public class FilterStepElementSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter step element's name to the last filter step element added$",
+        When("the user sets the filter step element's name to the last filter step element added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastFilterStepElementName = persona.lastFilterStepElementName;

@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BaseEncryptionKeysSteps implements En {
 
     public BaseEncryptionKeysSteps() {
-        When("^the user loads the existing base encryption keys$",
+        When("the user loads the existing base encryption keys",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -33,7 +33,7 @@ public class BaseEncryptionKeysSteps implements En {
                     BaseKeysHelper.getInstance().handleLoadBaseKeys(persona.userVisitPK);
                 });
 
-        When("^the user changes the base encryption keys$",
+        When("the user changes the base encryption keys",
                 () -> {
                     var persona = CurrentPersona.persona;
 

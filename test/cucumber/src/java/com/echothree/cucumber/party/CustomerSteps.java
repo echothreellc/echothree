@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CustomerSteps implements En {
 
     public CustomerSteps() {
-        When("^the user begins adding a new customer$",
+        When("the user begins adding a new customer",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -121,7 +121,7 @@ public class CustomerSteps implements En {
                     persona.createCustomerWithLoginForm.setAnswer(answer);
                 });
 
-        When("^the user adds the new customer$",
+        When("the user adds the new customer",
                 () -> {
                     var persona = CurrentPersona.persona;
 

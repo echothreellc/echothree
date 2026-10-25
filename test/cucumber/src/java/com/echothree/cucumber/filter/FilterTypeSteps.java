@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class FilterTypeSteps implements En {
 
     public FilterTypeSteps() {
-        When("^the user begins entering a new filter type$",
+        When("the user begins entering a new filter type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class FilterTypeSteps implements En {
                     persona.createFilterTypeForm = FilterUtil.getHome().getCreateFilterTypeForm();
                 });
 
-        When("^the user adds the new filter type$",
+        When("the user adds the new filter type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createFilterTypeForm = persona.createFilterTypeForm;
@@ -58,7 +58,7 @@ public class FilterTypeSteps implements En {
                     persona.createFilterTypeForm = null;
                 });
 
-        When("^the user begins deleting a filter type$",
+        When("the user begins deleting a filter type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -69,7 +69,7 @@ public class FilterTypeSteps implements En {
                     persona.deleteFilterTypeForm = FilterUtil.getHome().getDeleteFilterTypeForm();
                 });
 
-        When("^the user deletes the filter type$",
+        When("the user deletes the filter type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteFilterTypeForm = persona.deleteFilterTypeForm;
@@ -81,7 +81,7 @@ public class FilterTypeSteps implements En {
                     persona.deleteFilterTypeForm = null;
                 });
 
-        When("^the user begins specifying a filter type to edit$",
+        When("the user begins specifying a filter type to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -92,7 +92,7 @@ public class FilterTypeSteps implements En {
                     persona.filterTypeSpec = FilterUtil.getHome().getFilterTypeSpec();
                 });
 
-        When("^the user begins editing the filter type$",
+        When("the user begins editing the filter type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.filterTypeSpec;
@@ -115,7 +115,7 @@ public class FilterTypeSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the filter type$",
+        When("the user finishes editing the filter type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.filterTypeSpec;
@@ -172,7 +172,7 @@ public class FilterTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter type's name to the last filter type added$",
+        When("the user sets the filter type's name to the last filter type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastFilterTypeName = persona.lastFilterTypeName;

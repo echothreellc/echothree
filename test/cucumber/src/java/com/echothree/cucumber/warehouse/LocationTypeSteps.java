@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class LocationTypeSteps implements En {
 
     public LocationTypeSteps() {
-        When("^the user begins entering a new location type$",
+        When("the user begins entering a new location type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class LocationTypeSteps implements En {
                     persona.createLocationTypeForm = WarehouseUtil.getHome().getCreateLocationTypeForm();
                 });
 
-        And("^the user adds the new location type$",
+        And("the user adds the new location type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createLocationTypeForm = persona.createLocationTypeForm;
@@ -57,7 +57,7 @@ public class LocationTypeSteps implements En {
                     persona.createLocationTypeForm = null;
                 });
 
-        When("^the user begins deleting a location type$",
+        When("the user begins deleting a location type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -68,7 +68,7 @@ public class LocationTypeSteps implements En {
                     persona.deleteLocationTypeForm = WarehouseUtil.getHome().getDeleteLocationTypeForm();
                 });
 
-        And("^the user deletes the location type$",
+        And("the user deletes the location type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteLocationTypeForm = persona.deleteLocationTypeForm;
@@ -80,7 +80,7 @@ public class LocationTypeSteps implements En {
                     persona.deleteLocationTypeForm = null;
                 });
 
-        When("^the user begins specifying a location type to edit$",
+        When("the user begins specifying a location type to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -91,7 +91,7 @@ public class LocationTypeSteps implements En {
                     persona.locationTypeSpec = WarehouseUtil.getHome().getLocationTypeSpec();
                 });
 
-        When("^the user begins editing the location type$",
+        When("the user begins editing the location type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.locationTypeSpec;
@@ -114,7 +114,7 @@ public class LocationTypeSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the location type$",
+        And("the user finishes editing the location type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.locationTypeSpec;
@@ -155,7 +155,7 @@ public class LocationTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the location type's warehouse name to the last warehouse added$",
+        And("the user sets the location type's warehouse name to the last warehouse added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createLocationTypeForm = persona.createLocationTypeForm;
@@ -193,7 +193,7 @@ public class LocationTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the location type's location type name to the last location type added$",
+        And("the user sets the location type's location type name to the last location type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createLocationTypeForm = persona.createLocationTypeForm;

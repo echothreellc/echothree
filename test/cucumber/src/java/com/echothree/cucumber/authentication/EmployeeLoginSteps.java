@@ -35,7 +35,7 @@ public class EmployeeLoginSteps implements En {
                     }
                 });
 
-        When("^the user begins to log in as an employee$",
+        When("the user begins to log in as an employee",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -80,7 +80,7 @@ public class EmployeeLoginSteps implements En {
                     persona.employeeLoginForm.setRemoteInet4Address(remoteInet4Address);
                 });
 
-        And("^the employee logs in$",
+        And("the employee logs in",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var employeeLoginForm = persona.employeeLoginForm;

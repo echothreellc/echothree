@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class VendorItemCostSteps implements En {
 
     public VendorItemCostSteps() {
-        When("^the user begins entering a new vendor item cost$",
+        When("the user begins entering a new vendor item cost",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class VendorItemCostSteps implements En {
                     persona.createVendorItemCostForm = VendorUtil.getHome().getCreateVendorItemCostForm();
                 });
 
-        When("^the user adds the new vendor item cost$",
+        When("the user adds the new vendor item cost",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createVendorItemCostForm = persona.createVendorItemCostForm;
@@ -49,7 +49,7 @@ public class VendorItemCostSteps implements En {
                     persona.createVendorItemCostForm = null;
                 });
 
-        When("^the user begins deleting a vendor item cost$",
+        When("the user begins deleting a vendor item cost",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -60,7 +60,7 @@ public class VendorItemCostSteps implements En {
                     persona.deleteVendorItemCostForm = VendorUtil.getHome().getDeleteVendorItemCostForm();
                 });
 
-        When("^the user deletes the vendor item cost$",
+        When("the user deletes the vendor item cost",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteVendorItemCostForm = persona.deleteVendorItemCostForm;
@@ -72,7 +72,7 @@ public class VendorItemCostSteps implements En {
                     persona.deleteVendorItemCostForm = null;
                 });
 
-        When("^the user begins specifying a vendor item cost to edit$",
+        When("the user begins specifying a vendor item cost to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -83,7 +83,7 @@ public class VendorItemCostSteps implements En {
                     persona.vendorItemCostSpec = VendorUtil.getHome().getVendorItemCostSpec();
                 });
 
-        When("^the user begins editing the vendor item cost$",
+        When("the user begins editing the vendor item cost",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.vendorItemCostSpec;
@@ -106,7 +106,7 @@ public class VendorItemCostSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the vendor item cost$",
+        When("the user finishes editing the vendor item cost",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.vendorItemCostSpec;
@@ -144,7 +144,7 @@ public class VendorItemCostSteps implements En {
                     }
                 });
 
-        When("^the user sets the vendor item cost's vendor name to the last vendor added$",
+        When("the user sets the vendor item cost's vendor name to the last vendor added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createVendorItemCostForm = persona.createVendorItemCostForm;

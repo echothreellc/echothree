@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ItemSteps implements En {
 
     public ItemSteps() {
-        When("^the user begins entering a new item$",
+        When("the user begins entering a new item",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -191,7 +191,7 @@ public class ItemSteps implements En {
                     persona.createItemForm.setItemPriceTypeName(itemPriceTypeName);
                 });
 
-        When("^the user adds the new item$",
+        When("the user adds the new item",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -218,7 +218,7 @@ public class ItemSteps implements En {
                     setItemStatus(persona, persona.lastItemName, itemStatusChoice);
                 });
 
-        When("^the user begins editing the last item added$",
+        When("the user begins editing the last item added",
                 () -> {
                     var spec = ItemUtil.getHome().getItemSpec();
                     var persona = CurrentPersona.persona;
@@ -242,7 +242,7 @@ public class ItemSteps implements En {
                     persona.createItemForm.set(result.getEdit().get());
                 });
 
-        When("^the user finishes editing the item$",
+        When("the user finishes editing the item",
                 () -> {
                     var spec = ItemUtil.getHome().getItemSpec();
                     var persona = CurrentPersona.persona;

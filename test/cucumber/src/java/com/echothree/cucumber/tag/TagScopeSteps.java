@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TagScopeSteps implements En {
 
     public TagScopeSteps() {
-        When("^the user begins entering a new tag scope$",
+        When("the user begins entering a new tag scope",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -38,7 +38,7 @@ public class TagScopeSteps implements En {
                     persona.createTagScopeForm = TagUtil.getHome().getCreateTagScopeForm();
                 });
 
-        When("^the user adds the new tag scope$",
+        When("the user adds the new tag scope",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -61,7 +61,7 @@ public class TagScopeSteps implements En {
                     persona.createTagScopeForm = null;
                 });
 
-        When("^the user begins deleting a tag scope$",
+        When("the user begins deleting a tag scope",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -72,7 +72,7 @@ public class TagScopeSteps implements En {
                     persona.deleteTagScopeForm = TagUtil.getHome().getDeleteTagScopeForm();
                 });
 
-        When("^the user deletes the tag scope$",
+        When("the user deletes the tag scope",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteTagScopeForm = persona.deleteTagScopeForm;
@@ -84,7 +84,7 @@ public class TagScopeSteps implements En {
                     persona.deleteTagScopeForm = null;
                 });
 
-        When("^the user begins specifying a tag scope to edit$",
+        When("the user begins specifying a tag scope to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -95,7 +95,7 @@ public class TagScopeSteps implements En {
                     persona.tagScopeSpec = TagUtil.getHome().getTagScopeSpec();
                 });
 
-        When("^the user begins editing the tag scope$",
+        When("the user begins editing the tag scope",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.tagScopeSpec;
@@ -118,7 +118,7 @@ public class TagScopeSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the tag scope$",
+        When("the user finishes editing the tag scope",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.tagScopeSpec;
@@ -155,7 +155,7 @@ public class TagScopeSteps implements En {
                     }
                 });
 
-        When("^the user sets the tag scope's tag scope name to the last tag scope added$",
+        When("the user sets the tag scope's tag scope name to the last tag scope added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createTagScopeForm = persona.createTagScopeForm;

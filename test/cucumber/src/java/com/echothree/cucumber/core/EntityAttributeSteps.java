@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class EntityAttributeSteps implements En {
 
     public EntityAttributeSteps() {
-        When("^the user begins entering a new entity attribute$",
+        When("the user begins entering a new entity attribute",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class EntityAttributeSteps implements En {
                     persona.createEntityAttributeForm = CoreUtil.getHome().getCreateEntityAttributeForm();
                 });
 
-        When("^the user adds the new entity attribute$",
+        When("the user adds the new entity attribute",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
@@ -54,7 +54,7 @@ public class EntityAttributeSteps implements En {
                     persona.createEntityAttributeForm = null;
                 });
 
-        When("^the user begins deleting an entity attribute$",
+        When("the user begins deleting an entity attribute",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -65,7 +65,7 @@ public class EntityAttributeSteps implements En {
                     persona.deleteEntityAttributeForm = CoreUtil.getHome().getDeleteEntityAttributeForm();
                 });
 
-        When("^the user deletes the entity attribute$",
+        When("the user deletes the entity attribute",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteEntityAttributeForm = persona.deleteEntityAttributeForm;
@@ -77,7 +77,7 @@ public class EntityAttributeSteps implements En {
                     persona.deleteEntityAttributeForm = null;
                 });
 
-        When("^the user begins specifying an entity attribute to edit$",
+        When("the user begins specifying an entity attribute to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -88,7 +88,7 @@ public class EntityAttributeSteps implements En {
                     persona.entityAttributeUniversalSpec = CoreUtil.getHome().getEntityAttributeUniversalSpec();
                 });
 
-        When("^the user begins editing the entity attribute$",
+        When("the user begins editing the entity attribute",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.entityAttributeUniversalSpec;
@@ -111,7 +111,7 @@ public class EntityAttributeSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the entity attribute$",
+        When("the user finishes editing the entity attribute",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.entityAttributeUniversalSpec;
@@ -439,7 +439,7 @@ public class EntityAttributeSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity attribute's name to the last entity attribute added$",
+        When("the user sets the entity attribute's name to the last entity attribute added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastEntityAttributeName = persona.lastEntityAttributeName;

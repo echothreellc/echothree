@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UserVisitCampaignSteps implements En {
 
     public UserVisitCampaignSteps() {
-        When("^the user begins entering a new user visit campaign$",
+        When("the user begins entering a new user visit campaign",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -34,7 +34,7 @@ public class UserVisitCampaignSteps implements En {
                     persona.createUserVisitCampaignForm = CampaignUtil.getHome().getCreateUserVisitCampaignForm();
                 });
 
-        When("^the user adds the new user visit campaign$",
+        When("the user adds the new user visit campaign",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createUserVisitCampaignForm = persona.createUserVisitCampaignForm;

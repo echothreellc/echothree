@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class WorkflowSteps implements En {
 
     public WorkflowSteps() {
-        When("^the user begins entering a new workflow$",
+        When("the user begins entering a new workflow",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -38,7 +38,7 @@ public class WorkflowSteps implements En {
                     persona.createWorkflowForm = WorkflowUtil.getHome().getCreateWorkflowForm();
                 });
 
-        When("^the user adds the new workflow$",
+        When("the user adds the new workflow",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createWorkflowForm = persona.createWorkflowForm;
@@ -59,7 +59,7 @@ public class WorkflowSteps implements En {
                     persona.createWorkflowForm = null;
                 });
 
-        When("^the user begins deleting a workflow$",
+        When("the user begins deleting a workflow",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -70,7 +70,7 @@ public class WorkflowSteps implements En {
                     persona.deleteWorkflowForm = WorkflowUtil.getHome().getDeleteWorkflowForm();
                 });
 
-        When("^the user deletes the workflow$",
+        When("the user deletes the workflow",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteWorkflowForm = persona.deleteWorkflowForm;
@@ -82,7 +82,7 @@ public class WorkflowSteps implements En {
                     persona.deleteWorkflowForm = null;
                 });
 
-        When("^the user begins specifying a workflow to edit$",
+        When("the user begins specifying a workflow to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -93,7 +93,7 @@ public class WorkflowSteps implements En {
                     persona.workflowUniversalSpec = WorkflowUtil.getHome().getWorkflowUniversalSpec();
                 });
 
-        When("^the user begins editing the workflow$",
+        When("the user begins editing the workflow",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.workflowUniversalSpec;
@@ -116,7 +116,7 @@ public class WorkflowSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the workflow$",
+        When("the user finishes editing the workflow",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.workflowUniversalSpec;
@@ -148,7 +148,7 @@ public class WorkflowSteps implements En {
                     Objects.requireNonNullElseGet(createWorkflowForm, () -> Objects.requireNonNullElse(deleteWorkflowForm, workflowUniversalSpec)).setWorkflowName(workflowName);
                 });
 
-        When("^the user sets the workflow's name to the last workflow added$",
+        When("the user sets the workflow's name to the last workflow added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastWorkflowName = persona.lastWorkflowName;

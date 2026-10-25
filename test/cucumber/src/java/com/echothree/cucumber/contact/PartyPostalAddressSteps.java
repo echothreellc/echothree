@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PartyPostalAddressSteps implements En {
 
     public PartyPostalAddressSteps() {
-        When("^the user begins entering a new postal address$",
+        When("the user begins entering a new postal address",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class PartyPostalAddressSteps implements En {
                     persona.createContactPostalAddressForm = ContactUtil.getHome().getCreateContactPostalAddressForm();
                 });
 
-        When("^the user adds the new postal address$",
+        When("the user adds the new postal address",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createContactPostalAddressForm = persona.createContactPostalAddressForm;
@@ -53,7 +53,7 @@ public class PartyPostalAddressSteps implements En {
                     persona.createContactPostalAddressForm = null;
                 });
 
-        When("^the user deletes the last postal address added$",
+        When("the user deletes the last postal address added",
                 () -> {
                     var contactService = ContactUtil.getHome();
                     var deleteContactPostalAddressForm = contactService.getDeleteContactMechanismForm();
@@ -68,7 +68,7 @@ public class PartyPostalAddressSteps implements En {
                     LastCommandResult.commandResult = contactService.deleteContactMechanism(persona.userVisitPK, deleteContactPostalAddressForm);
                 });
 
-        When("^the user begins specifying a postal address to edit$",
+        When("the user begins specifying a postal address to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -79,7 +79,7 @@ public class PartyPostalAddressSteps implements En {
                     persona.partyContactMechanismSpec = ContactUtil.getHome().getPartyContactMechanismSpec();
                 });
 
-        When("^the user begins editing the postal address$",
+        When("the user begins editing the postal address",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.partyContactMechanismSpec;
@@ -102,7 +102,7 @@ public class PartyPostalAddressSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the postal address$",
+        When("the user finishes editing the postal address",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.partyContactMechanismSpec;
@@ -124,7 +124,7 @@ public class PartyPostalAddressSteps implements En {
                     persona.contactPostalAddressEdit = null;
                 });
 
-        When("^the user sets the postal address's party to the last party added$",
+        When("the user sets the postal address's party to the last party added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var partyContactMechanismSpec = persona.partyContactMechanismSpec;
@@ -140,7 +140,7 @@ public class PartyPostalAddressSteps implements En {
                     }
                 });
 
-        When("^the user sets the postal address's contact mechanism to the last postal address added$",
+        When("the user sets the postal address's contact mechanism to the last postal address added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var partyContactMechanismSpec = persona.partyContactMechanismSpec;

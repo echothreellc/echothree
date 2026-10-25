@@ -27,7 +27,7 @@ public class WarehouseSteps
         implements En {
 
     public WarehouseSteps() {
-        When("^the user begins entering a new warehouse$",
+        When("the user begins entering a new warehouse",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -38,7 +38,7 @@ public class WarehouseSteps
                     persona.createWarehouseForm = WarehouseUtil.getHome().getCreateWarehouseForm();
                 });
 
-        And("^the user adds the new warehouse$",
+        And("the user adds the new warehouse",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -63,7 +63,7 @@ public class WarehouseSteps
                     persona.createWarehouseForm = null;
                 });
 
-        When("^the user begins deleting a warehouse$",
+        When("the user begins deleting a warehouse",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -74,7 +74,7 @@ public class WarehouseSteps
                     persona.deleteWarehouseForm = WarehouseUtil.getHome().getDeleteWarehouseForm();
                 });
 
-        And("^the user deletes the warehouse$",
+        And("the user deletes the warehouse",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteWarehouseForm = persona.deleteWarehouseForm;
@@ -86,7 +86,7 @@ public class WarehouseSteps
                     persona.deleteWarehouseForm = null;
                 });
 
-        When("^the user begins specifying a warehouse to edit$",
+        When("the user begins specifying a warehouse to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -97,7 +97,7 @@ public class WarehouseSteps
                     persona.warehouseUniversalSpec = WarehouseUtil.getHome().getWarehouseUniversalSpec();
                 });
 
-        When("^the user begins editing the warehouse$",
+        When("the user begins editing the warehouse",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.warehouseUniversalSpec;
@@ -120,7 +120,7 @@ public class WarehouseSteps
                     }
                 });
 
-        And("^the user finishes editing the warehouse$",
+        And("the user finishes editing the warehouse",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.warehouseUniversalSpec;
@@ -159,7 +159,7 @@ public class WarehouseSteps
                     }
                 });
 
-        And("^the user sets the warehouse's warehouse name to the last warehouse added$",
+        And("the user sets the warehouse's warehouse name to the last warehouse added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;

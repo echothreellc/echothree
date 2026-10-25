@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UserVisitTrackSteps implements En {
 
     public UserVisitTrackSteps() {
-        When("^the user begins entering a new user visit track$",
+        When("the user begins entering a new user visit track",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -34,7 +34,7 @@ public class UserVisitTrackSteps implements En {
                     persona.createUserVisitTrackForm = TrackUtil.getHome().getCreateUserVisitTrackForm();
                 });
 
-        When("^the user adds the new user visit track$",
+        When("the user adds the new user visit track",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createUserVisitTrackForm = persona.createUserVisitTrackForm;

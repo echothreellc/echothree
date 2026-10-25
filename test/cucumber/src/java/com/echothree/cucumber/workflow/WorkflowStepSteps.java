@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class WorkflowStepSteps implements En {
 
     public WorkflowStepSteps() {
-        When("^the user begins entering a new workflow step$",
+        When("the user begins entering a new workflow step",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -38,7 +38,7 @@ public class WorkflowStepSteps implements En {
                     persona.createWorkflowStepForm = WorkflowUtil.getHome().getCreateWorkflowStepForm();
                 });
 
-        When("^the user adds the new workflow step$",
+        When("the user adds the new workflow step",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createWorkflowStepForm = persona.createWorkflowStepForm;
@@ -59,7 +59,7 @@ public class WorkflowStepSteps implements En {
                     persona.createWorkflowStepForm = null;
                 });
 
-        When("^the user begins deleting a workflow step$",
+        When("the user begins deleting a workflow step",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -70,7 +70,7 @@ public class WorkflowStepSteps implements En {
                     persona.deleteWorkflowStepForm = WorkflowUtil.getHome().getDeleteWorkflowStepForm();
                 });
 
-        When("^the user deletes the workflow step$",
+        When("the user deletes the workflow step",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteWorkflowStepForm = persona.deleteWorkflowStepForm;
@@ -82,7 +82,7 @@ public class WorkflowStepSteps implements En {
                     persona.deleteWorkflowStepForm = null;
                 });
 
-        When("^the user begins specifying a workflow step to edit$",
+        When("the user begins specifying a workflow step to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -93,7 +93,7 @@ public class WorkflowStepSteps implements En {
                     persona.workflowStepUniversalSpec = WorkflowUtil.getHome().getWorkflowStepUniversalSpec();
                 });
 
-        When("^the user begins editing the workflow step$",
+        When("the user begins editing the workflow step",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.workflowStepUniversalSpec;
@@ -116,7 +116,7 @@ public class WorkflowStepSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the workflow step$",
+        When("the user finishes editing the workflow step",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.workflowStepUniversalSpec;
@@ -148,7 +148,7 @@ public class WorkflowStepSteps implements En {
                     Objects.requireNonNullElseGet(createWorkflowStepForm, () -> Objects.requireNonNullElse(deleteWorkflowStepForm, workflowStepSpec)).setWorkflowName(workflowName);
                 });
 
-        When("^the user sets the workflow step's workflow name to the last workflow added$",
+        When("the user sets the workflow step's workflow name to the last workflow added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastWorkflowName = persona.lastWorkflowName;
@@ -173,7 +173,7 @@ public class WorkflowStepSteps implements En {
                     Objects.requireNonNullElseGet(createWorkflowStepForm, () -> Objects.requireNonNullElse(deleteWorkflowStepForm, workflowStepSpec)).setWorkflowStepName(workflowStepName);
                 });
 
-        When("^the user sets the workflow step's name to the last workflow step added$",
+        When("the user sets the workflow step's name to the last workflow step added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastWorkflowStepName = persona.lastWorkflowStepName;

@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class FilterAdjustmentSteps implements En {
 
     public FilterAdjustmentSteps() {
-        When("^the user begins entering a new filter adjustment$",
+        When("the user begins entering a new filter adjustment",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class FilterAdjustmentSteps implements En {
                     persona.createFilterAdjustmentForm = FilterUtil.getHome().getCreateFilterAdjustmentForm();
                 });
 
-        When("^the user adds the new filter adjustment$",
+        When("the user adds the new filter adjustment",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createFilterAdjustmentForm = persona.createFilterAdjustmentForm;
@@ -58,7 +58,7 @@ public class FilterAdjustmentSteps implements En {
                     persona.createFilterAdjustmentForm = null;
                 });
 
-        When("^the user begins deleting a filter adjustment$",
+        When("the user begins deleting a filter adjustment",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -69,7 +69,7 @@ public class FilterAdjustmentSteps implements En {
                     persona.deleteFilterAdjustmentForm = FilterUtil.getHome().getDeleteFilterAdjustmentForm();
                 });
 
-        When("^the user deletes the filter adjustment$",
+        When("the user deletes the filter adjustment",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteFilterAdjustmentForm = persona.deleteFilterAdjustmentForm;
@@ -81,7 +81,7 @@ public class FilterAdjustmentSteps implements En {
                     persona.deleteFilterAdjustmentForm = null;
                 });
 
-        When("^the user begins specifying a filter adjustment to edit$",
+        When("the user begins specifying a filter adjustment to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -92,7 +92,7 @@ public class FilterAdjustmentSteps implements En {
                     persona.filterAdjustmentSpec = FilterUtil.getHome().getFilterAdjustmentSpec();
                 });
 
-        When("^the user begins editing the filter adjustment$",
+        When("the user begins editing the filter adjustment",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.filterAdjustmentSpec;
@@ -115,7 +115,7 @@ public class FilterAdjustmentSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the filter adjustment$",
+        When("the user finishes editing the filter adjustment",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.filterAdjustmentSpec;
@@ -172,7 +172,7 @@ public class FilterAdjustmentSteps implements En {
                     }
                 });
 
-        When("^the user sets the filter adjustment's name to the last filter adjustment added$",
+        When("the user sets the filter adjustment's name to the last filter adjustment added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastFilterAdjustmentName = persona.lastFilterAdjustmentName;

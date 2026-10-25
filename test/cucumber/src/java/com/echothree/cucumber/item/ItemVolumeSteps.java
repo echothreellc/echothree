@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ItemVolumeSteps implements En {
 
     public ItemVolumeSteps() {
-        When("^the user begins entering a new item volume$",
+        When("the user begins entering a new item volume",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class ItemVolumeSteps implements En {
                     persona.createItemVolumeForm = ItemUtil.getHome().getCreateItemVolumeForm();
                 });
 
-        When("^the user adds the new item volume$",
+        When("the user adds the new item volume",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createItemVolumeForm = persona.createItemVolumeForm;
@@ -53,7 +53,7 @@ public class ItemVolumeSteps implements En {
                     persona.createItemVolumeForm = null;
                 });
 
-        When("^the user begins deleting an item volume$",
+        When("the user begins deleting an item volume",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -64,7 +64,7 @@ public class ItemVolumeSteps implements En {
                     persona.deleteItemVolumeForm = ItemUtil.getHome().getDeleteItemVolumeForm();
                 });
 
-        When("^the user deletes the item volume$",
+        When("the user deletes the item volume",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteItemVolumeForm = persona.deleteItemVolumeForm;
@@ -76,7 +76,7 @@ public class ItemVolumeSteps implements En {
                     persona.deleteItemVolumeForm = null;
                 });
 
-        When("^the user begins specifying an item volume to edit$",
+        When("the user begins specifying an item volume to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -87,7 +87,7 @@ public class ItemVolumeSteps implements En {
                     persona.itemVolumeSpec = ItemUtil.getHome().getItemVolumeSpec();
                 });
 
-        When("^the user begins editing the item volume$",
+        When("the user begins editing the item volume",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.itemVolumeSpec;
@@ -110,7 +110,7 @@ public class ItemVolumeSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the item volume$",
+        When("the user finishes editing the item volume",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.itemVolumeSpec;
@@ -148,7 +148,7 @@ public class ItemVolumeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item volume's item to the last item added$",
+        When("the user sets the item volume's item to the last item added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastItemName = persona.lastItemName;
@@ -186,7 +186,7 @@ public class ItemVolumeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item volume's unit of measure type to the last unit of measure type added$",
+        When("the user sets the item volume's unit of measure type to the last unit of measure type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastUnitOfMeasureTypeName = persona.lastUnitOfMeasureTypeName;
@@ -224,7 +224,7 @@ public class ItemVolumeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item volume's item volume type to the last item volume type added$",
+        When("the user sets the item volume's item volume type to the last item volume type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastItemVolumeTypeName = persona.lastItemVolumeTypeName;

@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class EntityAliasSteps implements En {
 
     public EntityAliasSteps() {
-        When("^the user begins entering a new entity alias$",
+        When("the user begins entering a new entity alias",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class EntityAliasSteps implements En {
                     persona.createEntityAliasForm = CoreUtil.getHome().getCreateEntityAliasForm();
                 });
 
-        When("^the user adds the new entity alias$",
+        When("the user adds the new entity alias",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAliasForm = persona.createEntityAliasForm;
@@ -49,7 +49,7 @@ public class EntityAliasSteps implements En {
                     persona.createEntityAliasForm = null;
                 });
 
-        When("^the user begins deleting an entity alias$",
+        When("the user begins deleting an entity alias",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -60,7 +60,7 @@ public class EntityAliasSteps implements En {
                     persona.deleteEntityAliasForm = CoreUtil.getHome().getDeleteEntityAliasForm();
                 });
 
-        When("^the user deletes the entity alias$",
+        When("the user deletes the entity alias",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteEntityAliasForm = persona.deleteEntityAliasForm;
@@ -72,7 +72,7 @@ public class EntityAliasSteps implements En {
                     persona.deleteEntityAliasForm = null;
                 });
 
-        When("^the user begins specifying an entity alias to edit$",
+        When("the user begins specifying an entity alias to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -83,7 +83,7 @@ public class EntityAliasSteps implements En {
                     persona.entityAliasSpec = CoreUtil.getHome().getEntityAliasSpec();
                 });
 
-        When("^the user begins editing the entity alias$",
+        When("the user begins editing the entity alias",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.entityAliasSpec;
@@ -106,7 +106,7 @@ public class EntityAliasSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the entity alias$",
+        When("the user finishes editing the entity alias",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.entityAliasSpec;
@@ -145,7 +145,7 @@ public class EntityAliasSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity alias's entity to the last entity added$",
+        When("the user sets the entity alias's entity to the last entity added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastEntityRef = persona.lastEntityRef;
@@ -182,7 +182,7 @@ public class EntityAliasSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity alias's entity alias type to the last entity alias type added$",
+        When("the user sets the entity alias's entity alias type to the last entity alias type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastEntityAliasTypeName = persona.lastEntityAliasTypeName;

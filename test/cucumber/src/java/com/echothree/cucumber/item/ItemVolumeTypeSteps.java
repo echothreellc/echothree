@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ItemVolumeTypeSteps implements En {
 
     public ItemVolumeTypeSteps() {
-        When("^the user begins entering a new item volume type$",
+        When("the user begins entering a new item volume type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class ItemVolumeTypeSteps implements En {
                     persona.createItemVolumeTypeForm = ItemUtil.getHome().getCreateItemVolumeTypeForm();
                 });
 
-        When("^the user adds the new item volume type$",
+        When("the user adds the new item volume type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createItemVolumeTypeForm = persona.createItemVolumeTypeForm;
@@ -58,7 +58,7 @@ public class ItemVolumeTypeSteps implements En {
                     persona.createItemVolumeTypeForm = null;
                 });
 
-        When("^the user begins deleting a item volume type$",
+        When("the user begins deleting a item volume type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -69,7 +69,7 @@ public class ItemVolumeTypeSteps implements En {
                     persona.deleteItemVolumeTypeForm = ItemUtil.getHome().getDeleteItemVolumeTypeForm();
                 });
 
-        When("^the user deletes the item volume type$",
+        When("the user deletes the item volume type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteItemVolumeTypeForm = persona.deleteItemVolumeTypeForm;
@@ -81,7 +81,7 @@ public class ItemVolumeTypeSteps implements En {
                     persona.deleteItemVolumeTypeForm = null;
                 });
 
-        When("^the user begins specifying a item volume type to edit$",
+        When("the user begins specifying a item volume type to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -92,7 +92,7 @@ public class ItemVolumeTypeSteps implements En {
                     persona.itemVolumeTypeSpec = ItemUtil.getHome().getItemVolumeTypeUniversalSpec();
                 });
 
-        When("^the user begins editing the item volume type$",
+        When("the user begins editing the item volume type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.itemVolumeTypeSpec;
@@ -115,7 +115,7 @@ public class ItemVolumeTypeSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the item volume type$",
+        When("the user finishes editing the item volume type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.itemVolumeTypeSpec;
@@ -154,7 +154,7 @@ public class ItemVolumeTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the item volume type's name to the last item volume type added$",
+        When("the user sets the item volume type's name to the last item volume type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastItemVolumeTypeName = persona.lastItemVolumeTypeName;

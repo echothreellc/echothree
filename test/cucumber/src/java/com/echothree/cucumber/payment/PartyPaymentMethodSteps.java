@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PartyPaymentMethodSteps implements En {
 
     public PartyPaymentMethodSteps() {
-        When("^the user deletes the last payment method added$",
+        When("the user deletes the last payment method added",
                 () -> {
                     var paymentService = PaymentUtil.getHome();
                     var deletePartyPaymentMethodForm = paymentService.getDeletePartyPaymentMethodForm();
@@ -37,7 +37,7 @@ public class PartyPaymentMethodSteps implements En {
                     LastCommandResult.commandResult = paymentService.deletePartyPaymentMethod(persona.userVisitPK, deletePartyPaymentMethodForm);
                 });
 
-        When("^the user begins entering a new payment method$",
+        When("the user begins entering a new payment method",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -149,7 +149,7 @@ public class PartyPaymentMethodSteps implements En {
                     persona.createPartyPaymentMethodForm.setLastName(lastName);
                 });
 
-        When("^the user sets the payment method's billing contact to the last postal address added$",
+        When("the user sets the payment method's billing contact to the last postal address added",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -158,7 +158,7 @@ public class PartyPaymentMethodSteps implements En {
                     persona.createPartyPaymentMethodForm.setBillingContactMechanismName(persona.lastPostalAddressContactMechanismName);
                 });
 
-        When("^the user adds the new payment method$",
+        When("the user adds the new payment method",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createPartyPaymentMethodForm = persona.createPartyPaymentMethodForm;
@@ -175,7 +175,7 @@ public class PartyPaymentMethodSteps implements En {
                     persona.createPartyPaymentMethodForm = null;
                 });
 
-        When("^the user begins editing the last payment method added$",
+        When("the user begins editing the last payment method added",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -202,7 +202,7 @@ public class PartyPaymentMethodSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the payment method$",
+        When("the user finishes editing the payment method",
                 () -> {
                     var persona = CurrentPersona.persona;
 

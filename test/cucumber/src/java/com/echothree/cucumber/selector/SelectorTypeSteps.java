@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SelectorTypeSteps implements En {
 
     public SelectorTypeSteps() {
-        When("^the user begins entering a new selector type$",
+        When("the user begins entering a new selector type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class SelectorTypeSteps implements En {
                     persona.createSelectorTypeForm = SelectorUtil.getHome().getCreateSelectorTypeForm();
                 });
 
-        And("^the user adds the new selector type$",
+        And("the user adds the new selector type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createSelectorTypeForm = persona.createSelectorTypeForm;
@@ -58,7 +58,7 @@ public class SelectorTypeSteps implements En {
                     persona.createSelectorTypeForm = null;
                 });
 
-        When("^the user begins deleting a selector type$",
+        When("the user begins deleting a selector type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -69,7 +69,7 @@ public class SelectorTypeSteps implements En {
                     persona.deleteSelectorTypeForm = SelectorUtil.getHome().getDeleteSelectorTypeForm();
                 });
 
-        And("^the user deletes the selector type$",
+        And("the user deletes the selector type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteSelectorTypeForm = persona.deleteSelectorTypeForm;
@@ -81,7 +81,7 @@ public class SelectorTypeSteps implements En {
                     persona.deleteSelectorTypeForm = null;
                 });
 
-        When("^the user begins specifying a selector type to edit$",
+        When("the user begins specifying a selector type to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -92,7 +92,7 @@ public class SelectorTypeSteps implements En {
                     persona.selectorTypeSpec = SelectorUtil.getHome().getSelectorTypeSpec();
                 });
 
-        When("^the user begins editing the selector type$",
+        When("the user begins editing the selector type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.selectorTypeSpec;
@@ -115,7 +115,7 @@ public class SelectorTypeSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the selector type$",
+        And("the user finishes editing the selector type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.selectorTypeSpec;
@@ -172,7 +172,7 @@ public class SelectorTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the selector type's name to the last selector type added$",
+        And("the user sets the selector type's name to the last selector type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastSelectorTypeName = persona.lastSelectorTypeName;

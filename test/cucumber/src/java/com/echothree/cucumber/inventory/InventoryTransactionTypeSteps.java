@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class InventoryTransactionTypeSteps implements En {
 
     public InventoryTransactionTypeSteps() {
-        When("^the user begins entering a new inventory transaction type$",
+        When("the user begins entering a new inventory transaction type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class InventoryTransactionTypeSteps implements En {
                     persona.createInventoryTransactionTypeForm = InventoryUtil.getHome().getCreateInventoryTransactionTypeForm();
                 });
 
-        And("^the user adds the new inventory transaction type$",
+        And("the user adds the new inventory transaction type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionTypeForm = persona.createInventoryTransactionTypeForm;
@@ -58,7 +58,7 @@ public class InventoryTransactionTypeSteps implements En {
                     persona.createInventoryTransactionTypeForm = null;
                 });
 
-        When("^the user begins deleting an inventory transaction type$",
+        When("the user begins deleting an inventory transaction type",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -69,7 +69,7 @@ public class InventoryTransactionTypeSteps implements En {
                     persona.deleteInventoryTransactionTypeForm = InventoryUtil.getHome().getDeleteInventoryTransactionTypeForm();
                 });
 
-        And("^the user deletes the inventory transaction type$",
+        And("the user deletes the inventory transaction type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteInventoryTransactionTypeForm = persona.deleteInventoryTransactionTypeForm;
@@ -82,7 +82,7 @@ public class InventoryTransactionTypeSteps implements En {
                     persona.deleteInventoryTransactionTypeForm = null;
                 });
 
-        When("^the user begins specifying an inventory transaction type to edit$",
+        When("the user begins specifying an inventory transaction type to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -93,7 +93,7 @@ public class InventoryTransactionTypeSteps implements En {
                     persona.inventoryTransactionTypeSpec = InventoryUtil.getHome().getInventoryTransactionTypeUniversalSpec();
                 });
 
-        When("^the user begins editing the inventory transaction type$",
+        When("the user begins editing the inventory transaction type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryTransactionTypeSpec;
@@ -116,7 +116,7 @@ public class InventoryTransactionTypeSteps implements En {
                     }
                 });
 
-        And("^the user finishes editing the inventory transaction type$",
+        And("the user finishes editing the inventory transaction type",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryTransactionTypeSpec;
@@ -138,7 +138,7 @@ public class InventoryTransactionTypeSteps implements En {
                     persona.inventoryTransactionTypeEdit = null;
                 });
 
-        And("^the user abandons editing the last inventory transaction type added$",
+        And("the user abandons editing the last inventory transaction type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = InventoryUtil.getHome().getInventoryTransactionTypeUniversalSpec();
@@ -170,7 +170,7 @@ public class InventoryTransactionTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction type's inventory transaction type name to the last inventory transaction type added$",
+        And("the user sets the inventory transaction type's inventory transaction type name to the last inventory transaction type added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createInventoryTransactionTypeForm = persona.createInventoryTransactionTypeForm;
@@ -189,7 +189,7 @@ public class InventoryTransactionTypeSteps implements En {
                     }
                 });
 
-        And("^the user sets the inventory transaction type's entity ref to the last inventory transaction added$",
+        And("the user sets the inventory transaction type's entity ref to the last inventory transaction added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteInventoryTransactionTypeForm = persona.deleteInventoryTransactionTypeForm;

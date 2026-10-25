@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class EntityAttributeEntityAttributeGroupSteps implements En {
 
     public EntityAttributeEntityAttributeGroupSteps() {
-        When("^the user begins entering a new entity attribute entity attribute group$",
+        When("the user begins entering a new entity attribute entity attribute group",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -37,7 +37,7 @@ public class EntityAttributeEntityAttributeGroupSteps implements En {
                     persona.createEntityAttributeEntityAttributeGroupForm = CoreUtil.getHome().getCreateEntityAttributeEntityAttributeGroupForm();
                 });
 
-        When("^the user adds the new entity attribute entity attribute group$",
+        When("the user adds the new entity attribute entity attribute group",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeEntityAttributeGroupForm = persona.createEntityAttributeEntityAttributeGroupForm;
@@ -50,7 +50,7 @@ public class EntityAttributeEntityAttributeGroupSteps implements En {
                     persona.createEntityAttributeEntityAttributeGroupForm = null;
                 });
 
-        When("^the user begins deleting an entity attribute entity attribute group$",
+        When("the user begins deleting an entity attribute entity attribute group",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -61,7 +61,7 @@ public class EntityAttributeEntityAttributeGroupSteps implements En {
                     persona.deleteEntityAttributeEntityAttributeGroupForm = CoreUtil.getHome().getDeleteEntityAttributeEntityAttributeGroupForm();
                 });
 
-        When("^the user deletes the entity attribute entity attribute group$",
+        When("the user deletes the entity attribute entity attribute group",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteEntityAttributeEntityAttributeGroupForm = persona.deleteEntityAttributeEntityAttributeGroupForm;
@@ -73,7 +73,7 @@ public class EntityAttributeEntityAttributeGroupSteps implements En {
                     persona.deleteEntityAttributeEntityAttributeGroupForm = null;
                 });
 
-        When("^the user begins specifying an entity attribute entity attribute group to edit$",
+        When("the user begins specifying an entity attribute entity attribute group to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -84,7 +84,7 @@ public class EntityAttributeEntityAttributeGroupSteps implements En {
                     persona.entityAttributeEntityAttributeGroupSpec = CoreUtil.getHome().getEntityAttributeEntityAttributeGroupSpec();
                 });
 
-        When("^the user begins editing the entity attribute entity attribute group$",
+        When("the user begins editing the entity attribute entity attribute group",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.entityAttributeEntityAttributeGroupSpec;
@@ -107,7 +107,7 @@ public class EntityAttributeEntityAttributeGroupSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the entity attribute entity attribute group$",
+        When("the user finishes editing the entity attribute entity attribute group",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.entityAttributeEntityAttributeGroupSpec;
@@ -182,7 +182,7 @@ public class EntityAttributeEntityAttributeGroupSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity attribute entity attribute group's entity attribute to the last entity attribute added$",
+        When("the user sets the entity attribute entity attribute group's entity attribute to the last entity attribute added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastEntityAttributeEntityAttributeGroupName = persona.lastEntityAttributeName;
@@ -219,7 +219,7 @@ public class EntityAttributeEntityAttributeGroupSteps implements En {
                     }
                 });
 
-        When("^the user sets the entity attribute entity attribute group's entity attribute group to the last entity attribute group added$",
+        When("the user sets the entity attribute entity attribute group's entity attribute group to the last entity attribute group added",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var lastEntityAttributeGroupName = persona.lastEntityAttributeGroupName;

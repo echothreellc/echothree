@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class OfferSteps implements En {
 
     public OfferSteps() {
-        When("^the user begins entering a new offer$",
+        When("the user begins entering a new offer",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -38,7 +38,7 @@ public class OfferSteps implements En {
                     persona.createOfferForm = OfferUtil.getHome().getCreateOfferForm();
                 });
 
-        When("^the user adds the new offer$",
+        When("the user adds the new offer",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -61,7 +61,7 @@ public class OfferSteps implements En {
                     persona.createOfferForm = null;
                 });
 
-        When("^the user begins deleting an offer$",
+        When("the user begins deleting an offer",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -72,7 +72,7 @@ public class OfferSteps implements En {
                     persona.deleteOfferForm = OfferUtil.getHome().getDeleteOfferForm();
                 });
 
-        When("^the user deletes the offer$",
+        When("the user deletes the offer",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteOfferForm = persona.deleteOfferForm;
@@ -84,7 +84,7 @@ public class OfferSteps implements En {
                     persona.deleteOfferForm = null;
                 });
 
-        When("^the user begins specifying an offer to edit$",
+        When("the user begins specifying an offer to edit",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -95,7 +95,7 @@ public class OfferSteps implements En {
                     persona.offerSpec = OfferUtil.getHome().getOfferSpec();
                 });
 
-        When("^the user begins editing the offer$",
+        When("the user begins editing the offer",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.offerSpec;
@@ -118,7 +118,7 @@ public class OfferSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the offer$",
+        When("the user finishes editing the offer",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.offerSpec;
