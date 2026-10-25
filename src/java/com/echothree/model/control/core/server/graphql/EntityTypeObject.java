@@ -189,7 +189,7 @@ public class EntityTypeObject
     @GraphQLDescription("link types with this entity type as their source")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public CountingPaginatedData<LinkTypeObject> getLinkTypesWithSourceEntityType(final DataFetchingEnvironment env) {
+    public CountingPaginatedData<LinkTypeObject> getLinkTypesWithSource(final DataFetchingEnvironment env) {
         if(CoreSecurityUtils.getHasLinkTypesAccess(env)) {
             var linkTypeControl = Session.getModelController(LinkTypeControl.class);
             var condition = linkTypeControl.getLinkTypeFilter(null, entityType, null, null, null, null);
@@ -213,7 +213,7 @@ public class EntityTypeObject
     @GraphQLDescription("link types with this entity type as their target")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public CountingPaginatedData<LinkTypeObject> getLinkTypesWithTargetEntityType(final DataFetchingEnvironment env) {
+    public CountingPaginatedData<LinkTypeObject> getLinkTypesWithTarget(final DataFetchingEnvironment env) {
         if(CoreSecurityUtils.getHasLinkTypesAccess(env)) {
             var linkTypeControl = Session.getModelController(LinkTypeControl.class);
             var condition = linkTypeControl.getLinkTypeFilter(null, null, entityType, null, null, null);
