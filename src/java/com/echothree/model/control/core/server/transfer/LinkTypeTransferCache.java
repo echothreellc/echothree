@@ -97,7 +97,8 @@ public class LinkTypeTransferCache
                     null,
                     linkTypeTranslation == null ? null : linkTypeTranslation.getGuidance());
 
-            // Cache before resolving LinkType relationships, which may refer back to this transfer.
+            // Related transfers can include their own Links back to this LinkType.
+            // Cache before resolving any of them, including endpoint types and Guidance's MimeType.
             if(contextual) {
                 contextualTransfers.put(context, linkTypeTransfer);
 

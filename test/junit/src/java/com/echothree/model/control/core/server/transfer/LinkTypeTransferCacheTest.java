@@ -22,6 +22,10 @@ import com.echothree.model.control.core.server.graphql.LinkObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.GraphQlExecutionContext;
 import com.echothree.util.common.form.BaseForm;
+import com.echothree.util.common.transfer.BaseTransfer;
+import com.echothree.util.common.transfer.ListWrapper;
+import com.echothree.util.common.transfer.MapWrapper;
+import com.echothree.model.data.party.common.pk.LanguagePK;
 import com.echothree.util.server.control.GraphQlSecurityCommand;
 import graphql.GraphQLContext;
 import graphql.schema.DataFetchingEnvironment;
@@ -411,6 +415,172 @@ public class LinkTypeTransferCacheTest {
         } finally {
             cdi.restore();
         }
+    }
+
+    private enum RelatedField {
+        SOURCE_ENTITY_TYPE, TARGET_ENTITY_TYPE, CARDINALITY, DIRECTIONALITY, GUIDANCE_MIME_TYPE
+    }
+
+    private static class RelatedOwnLinkCache extends LinkTransferCache {
+        @SuppressWarnings("UnnecessaryAssignment") // Supply CDI dependencies without a container.
+        RelatedOwnLinkCache(LinkTypeTransferCache rootCache, EntityInstance sourceContext, EntityInstance targetContext) {
+            linkTypeControl = new LinkTypeControl() {
+                @Override
+                public LinkTypeTransfer getLinkTypeTransfer(UserVisit userVisit, LinkType linkType) {
+                    return rootCache.getTransfer(userVisit, linkType, sourceContext, targetContext);
+                }
+            };
+            entityInstanceControl = new EntityInstanceControl() {
+                @Override
+                public EntityInstanceTransfer getEntityInstanceTransfer(UserVisit userVisit, EntityInstance entityInstance,
+                        boolean includeEntityAppearance, boolean includeEntityVisit, boolean includeNames, boolean includeUuid) {
+                    return new EntityInstanceTransfer(null, entityInstance.getEntityUniqueId(), null, null, null, null);
+                }
+            };
+        }
+    }
+
+    private static class IndirectRecursionCache extends TestCache {
+        final LinkTransferCache ownLinkCache;
+        final Link ownLink;
+        boolean resolvingOwnLinks;
+        int ownLinksResolved;
+
+        @SuppressWarnings("UnnecessaryAssignment") // Supply CDI dependencies without a container.
+        IndirectRecursionCache(RelatedField relatedField, LinkType rootLinkType,
+                EntityInstance sourceContext, EntityInstance targetContext) {
+            var sourceEntityType = new EntityType(new EntityTypeValue(new EntityTypePK(1L), null, null), EntityPermission.READ_ONLY);
+            var endpoint = new EntityInstance(new EntityInstanceValue(new EntityInstancePK(10L), sourceEntityType.getPrimaryKey(), 10L, null), EntityPermission.READ_ONLY);
+            ownLink = link(100L, rootLinkType, endpoint, endpoint);
+            ownLinkCache = new RelatedOwnLinkCache(this, sourceContext, targetContext);
+            entityTypeControl = new EntityTypeControl() {
+                int calls;
+                @Override
+                public EntityTypeTransfer getEntityTypeTransfer(UserVisit userVisit, EntityType entityType) {
+                    var source = calls++ == 0;
+                    var transfer = new EntityTypeTransfer(null, source ? "SOURCE" : "TARGET", true, null, null, false, 0, null);
+                    if((source && relatedField == RelatedField.SOURCE_ENTITY_TYPE)
+                            || (!source && relatedField == RelatedField.TARGET_ENTITY_TYPE)) {
+                        includeOwnLinks(transfer);
+                    }
+                    return transfer;
+                }
+            };
+            linkCardinalityControl = new LinkCardinalityControl() {
+                @Override
+                public LinkCardinalityTransfer getLinkCardinalityTransfer(UserVisit userVisit, LinkCardinality linkCardinality) {
+                    var transfer = new LinkCardinalityTransfer("ONE_TO_ONE", true, 0, null);
+                    if(relatedField == RelatedField.CARDINALITY) {
+                        includeOwnLinks(transfer);
+                    }
+                    return transfer;
+                }
+            };
+            linkDirectionalityControl = new LinkDirectionalityControl() {
+                @Override
+                public LinkDirectionalityTransfer getLinkDirectionalityTransfer(UserVisit userVisit, LinkDirectionality linkDirectionality) {
+                    var transfer = new LinkDirectionalityTransfer("DIRECTED", true, 0, null);
+                    if(relatedField == RelatedField.DIRECTIONALITY) {
+                        includeOwnLinks(transfer);
+                    }
+                    return transfer;
+                }
+            };
+            mimeTypeControl = new MimeTypeControl() {
+                @Override
+                public MimeTypeTransfer getMimeTypeTransfer(UserVisit userVisit, MimeType mimeType) {
+                    var transfer = new MimeTypeTransfer("text/plain", null, true, 0, null);
+                    if(relatedField == RelatedField.GUIDANCE_MIME_TYPE) {
+                        includeOwnLinks(transfer);
+                    }
+                    return transfer;
+                }
+            };
+            linkTypeControl = new LinkTypeControl() {
+                @Override
+                public LinkTypeTranslation getBestLinkTypeTranslation(LinkType linkType, Language language) {
+                    var mimeType = new MimeType(new MimeTypeValue(new MimeTypePK(1L), null, null), EntityPermission.READ_ONLY);
+                    return new LinkTypeTranslation(new LinkTypeTranslationValue(new LinkTypeTranslationPK(1L), linkType.getPrimaryKey(),
+                            new LanguagePK(1L), "Test", mimeType.getPrimaryKey(), "Guidance", 0L, Long.MAX_VALUE), EntityPermission.READ_ONLY) {
+                        @Override public MimeType getGuidanceMimeType() { return mimeType; }
+                    };
+                }
+            };
+        }
+
+        private void includeOwnLinks(BaseTransfer relatedTransfer) {
+            // Fail quickly if construction re-enters before the root has been cached.
+            assertFalse(resolvingOwnLinks, "Related object's Links recursively reconstructed the root LinkType");
+            resolvingOwnLinks = true;
+            try {
+                var ownLinkType = new LinkTypeTransfer("OWN_LINKS", null, null, null, null, null, false, null, 0, null, null, null);
+                ownLinkType.setLinks(new ListWrapper<>(List.of(ownLinkCache.getTransfer(null, ownLink))));
+                var linkTypes = new MapWrapper<LinkTypeTransfer>();
+                linkTypes.put("OWN_LINKS", ownLinkType);
+                relatedTransfer.setSourceLinkTypes(linkTypes);
+                ownLinksResolved++;
+            } finally {
+                resolvingOwnLinks = false;
+            }
+        }
+    }
+
+    private void verifyIndirectRecursion(RelatedField relatedField) throws ReflectiveOperationException {
+        var session = session();
+        session.setOptions(Set.of(CoreOptions.LinkTypeIncludeLinks));
+        var cdi = new TestCdi(session);
+        try {
+            var entityInstance = new EntityInstance(new EntityInstanceValue(new EntityInstancePK(10L), new EntityTypePK(1L), 10L, null), EntityPermission.READ_ONLY);
+            for(var scope : List.of(new LinkScope(null, null), new LinkScope(entityInstance, null), new LinkScope(null, entityInstance))) {
+                var rootLinkType = new MemoryLinkType(1L);
+                var cache = new IndirectRecursionCache(relatedField, rootLinkType, scope.sourceEntityInstance(), scope.targetEntityInstance());
+                var transfer = cache.getTransfer(null, rootLinkType, scope.sourceEntityInstance(), scope.targetEntityInstance());
+                BaseTransfer relatedTransfer = switch(relatedField) {
+                    case SOURCE_ENTITY_TYPE -> transfer.getSourceEntityType();
+                    case TARGET_ENTITY_TYPE -> transfer.getTargetEntityType();
+                    case CARDINALITY -> transfer.getLinkCardinality();
+                    case DIRECTIONALITY -> transfer.getLinkDirectionality();
+                    case GUIDANCE_MIME_TYPE -> transfer.getGuidanceMimeType();
+                };
+                var backReference = relatedTransfer.getSourceLinkTypes().getMap().get("OWN_LINKS").getLinks().getList().getFirst();
+                assertSame(transfer, backReference.getLinkType(), relatedField + ": " + scope);
+                assertSame(backReference, cache.ownLinkCache.getTransfer(null, cache.ownLink));
+                assertSame(transfer, cache.getTransfer(null, rootLinkType, scope.sourceEntityInstance(), scope.targetEntityInstance()));
+                assertEquals(1, cache.ownLinksResolved);
+                assertNotNull(transfer.getSourceEntityType());
+                assertNotNull(transfer.getTargetEntityType());
+                assertNotNull(transfer.getLinkCardinality());
+                assertNotNull(transfer.getLinkDirectionality());
+                assertNotNull(transfer.getGuidanceMimeType());
+            }
+        } finally {
+            cdi.restore();
+        }
+    }
+
+    @Test
+    public void sourceEntityTypeOwnLinksReuseTheCachedRoot() throws ReflectiveOperationException {
+        verifyIndirectRecursion(RelatedField.SOURCE_ENTITY_TYPE);
+    }
+
+    @Test
+    public void targetEntityTypeOwnLinksReuseTheCachedRoot() throws ReflectiveOperationException {
+        verifyIndirectRecursion(RelatedField.TARGET_ENTITY_TYPE);
+    }
+
+    @Test
+    public void cardinalityOwnLinksReuseTheCachedRoot() throws ReflectiveOperationException {
+        verifyIndirectRecursion(RelatedField.CARDINALITY);
+    }
+
+    @Test
+    public void directionalityOwnLinksReuseTheCachedRoot() throws ReflectiveOperationException {
+        verifyIndirectRecursion(RelatedField.DIRECTIONALITY);
+    }
+
+    @Test
+    public void guidanceMimeTypeOwnLinksReuseTheCachedRoot() throws ReflectiveOperationException {
+        verifyIndirectRecursion(RelatedField.GUIDANCE_MIME_TYPE);
     }
 
 }
