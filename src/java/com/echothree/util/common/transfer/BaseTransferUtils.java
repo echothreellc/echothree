@@ -59,8 +59,8 @@ public class BaseTransferUtils {
         }
         visitedObjects.add(dependsOn);
         
-        if(dependsOn instanceof BaseTransfer) {
-            var entityInstance = ((BaseTransfer)dependsOn).getEntityInstance();
+        if(dependsOn instanceof BaseTransfer baseTransfer) {
+            var entityInstance = baseTransfer.getEntityInstance();
             var includeMethods = true;
             
             if(entityInstance != null) {
@@ -128,8 +128,7 @@ public class BaseTransferUtils {
                     }
                 }
             }
-        } else if(dependsOn instanceof BaseWrapper) {
-            var baseWrapper = (BaseWrapper<?>)dependsOn;
+        } else if(dependsOn instanceof BaseWrapper<?> baseWrapper) {
             
             if(baseWrapper != null) {
                 if(BaseTransferUtilsDebugFlags.LogGetEntityRefs) {
