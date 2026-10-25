@@ -48,7 +48,7 @@ public class ProcessQueuedEventsCommand
 
     @Override
     protected BaseResult execute() {
-        var remainingTime = 50 * 1000; // 50 seconds
+        var remainingTime = 50L * 1000; // 50 seconds
         var queuedEvents = eventControl.getQueuedEventsForUpdate();
 
         for(var queuedEvent : queuedEvents) {
