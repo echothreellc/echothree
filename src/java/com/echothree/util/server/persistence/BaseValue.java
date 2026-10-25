@@ -65,8 +65,8 @@ public abstract class BaseValue<PK extends BasePK> {
         if(o == null) {
             isNull = true;
         } else {
-            if(o instanceof String) {
-                if(((String)o).length() == 0)
+            if(o instanceof String string) {
+                if(string.length() == 0)
                     isNull = true;
             }
         }
