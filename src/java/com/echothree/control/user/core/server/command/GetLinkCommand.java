@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetLinkForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.LinkControl;
 import com.echothree.model.control.core.server.logic.LinkLogic;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -78,10 +77,6 @@ public class GetLinkCommand
 
         if(!hasExecutionErrors()) {
             link = linkLogic.getLink(this, definition.linkType(), definition.sourceEntityInstance(), definition.targetEntityInstance());
-
-            if(!hasExecutionErrors()) {
-                sendEvent(link.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-            }
         }
 
         return link;
