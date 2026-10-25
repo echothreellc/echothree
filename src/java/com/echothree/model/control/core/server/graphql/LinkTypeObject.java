@@ -202,7 +202,7 @@ public class LinkTypeObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<LinkObject> getLinks(final DataFetchingEnvironment env) {
-        if(CoreSecurityUtils.getHasLinkTypesAccess(env)) {
+        if(CoreSecurityUtils.getHasLinksAccess(env)) {
             var linkControl = Session.getModelController(LinkControl.class);
             var condition = linkControl.getLinkFilter(linkType, sourceEntityInstance, targetEntityInstance);
             var totalCount = linkControl.countLinks(condition);

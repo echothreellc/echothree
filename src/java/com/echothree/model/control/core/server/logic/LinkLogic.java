@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.core.server.logic;
 
+import com.echothree.control.user.core.common.spec.LinkSpec;
 import com.echothree.model.control.core.common.LinkCardinalities;
 import com.echothree.model.control.core.common.LinkDirectionalities;
 import com.echothree.model.control.core.common.exception.DuplicateLinkException;
@@ -47,10 +48,37 @@ public class LinkLogic
     LinkControl linkControl;
 
     @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
     LinkTypeLogic linkTypeLogic;
 
     protected LinkLogic() {
         super();
+    }
+
+    public record Definition(LinkType linkType, EntityInstance sourceEntityInstance, EntityInstance targetEntityInstance) {
+    }
+
+    public Definition getDefinition(ExecutionErrorAccumulator eea, LinkSpec spec, boolean allowPartial) {
+        Definition definition = null;
+        var linkType = allowPartial && spec.getLinkTypeName() == null ? null : linkTypeLogic.getLinkTypeByName(eea, spec.getLinkTypeName());
+
+        if(!hasExecutionErrors(eea)) {
+            var sourceEntityInstance = allowPartial && spec.getSourceEntityRef() == null && spec.getSourceUuid() == null ? null
+                    : entityInstanceLogic.getEntityInstance(eea, spec.getSourceEntityRef(), spec.getSourceUuid(), null);
+
+            if(!hasExecutionErrors(eea)) {
+                var targetEntityInstance = allowPartial && spec.getTargetEntityRef() == null && spec.getTargetUuid() == null ? null
+                        : entityInstanceLogic.getEntityInstance(eea, spec.getTargetEntityRef(), spec.getTargetUuid(), null);
+
+                if(!hasExecutionErrors(eea)) {
+                    definition = new Definition(linkType, sourceEntityInstance, targetEntityInstance);
+                }
+            }
+        }
+
+        return definition;
     }
 
     public Link createLink(ExecutionErrorAccumulator eea, String linkTypeName, EntityInstance sourceEntityInstance,

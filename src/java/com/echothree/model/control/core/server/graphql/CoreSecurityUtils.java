@@ -42,9 +42,11 @@ import com.echothree.control.user.core.server.command.GetEntityTypesCommand;
 import com.echothree.control.user.core.server.command.GetEventsCommand;
 import com.echothree.control.user.core.server.command.GetLinkCardinalitiesCommand;
 import com.echothree.control.user.core.server.command.GetLinkCardinalityCommand;
+import com.echothree.control.user.core.server.command.GetLinkCommand;
 import com.echothree.control.user.core.server.command.GetLinkDirectionalitiesCommand;
 import com.echothree.control.user.core.server.command.GetLinkDirectionalityCommand;
 import com.echothree.control.user.core.server.command.GetLinkTypeCommand;
+import com.echothree.control.user.core.server.command.GetLinksCommand;
 import com.echothree.control.user.core.server.command.GetLinkTypeTranslationCommand;
 import com.echothree.control.user.core.server.command.GetLinkTypeTranslationsCommand;
 import com.echothree.control.user.core.server.command.GetLinkTypesCommand;
@@ -202,6 +204,14 @@ public interface CoreSecurityUtils {
 
     static boolean getHasLinkDirectionalitiesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetLinkDirectionalitiesCommand.class);
+    }
+
+    static boolean getHasLinkAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetLinkCommand.class);
+    }
+
+    static boolean getHasLinksAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetLinksCommand.class);
     }
 
     static boolean getHasLinkTypeAccess(final DataFetchingEnvironment env) {

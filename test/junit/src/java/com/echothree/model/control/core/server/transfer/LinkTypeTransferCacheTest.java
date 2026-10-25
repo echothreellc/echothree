@@ -513,10 +513,11 @@ public class LinkTypeTransferCacheTest {
             assertFalse(resolvingOwnLinks, "Related object's Links recursively reconstructed the root LinkType");
             resolvingOwnLinks = true;
             try {
-                var ownLinkType = new LinkTypeTransfer("OWN_LINKS", null, null, null, null, null, false, null, 0, null, null, null);
+                var linkTypeName = ownLink.getLinkType().getLastDetail().getLinkTypeName();
+                var ownLinkType = new LinkTypeTransfer(linkTypeName, null, null, null, null, null, false, null, 0, null, null, null);
                 ownLinkType.setLinks(new ListWrapper<>(List.of(ownLinkCache.getTransfer(null, ownLink))));
                 var linkTypes = new MapWrapper<LinkTypeTransfer>();
-                linkTypes.put("OWN_LINKS", ownLinkType);
+                linkTypes.put(linkTypeName, ownLinkType);
                 relatedTransfer.setSourceLinkTypes(linkTypes);
                 ownLinksResolved++;
             } finally {
@@ -542,7 +543,7 @@ public class LinkTypeTransferCacheTest {
                     case DIRECTIONALITY -> transfer.getLinkDirectionality();
                     case GUIDANCE_MIME_TYPE -> transfer.getGuidanceMimeType();
                 };
-                var backReference = relatedTransfer.getSourceLinkTypes().getMap().get("OWN_LINKS").getLinks().getList().getFirst();
+                var backReference = relatedTransfer.getSourceLinkTypes().getMap().get(rootLinkType.getLastDetail().getLinkTypeName()).getLinks().getList().getFirst();
                 assertSame(transfer, backReference.getLinkType(), relatedField + ": " + scope);
                 assertSame(backReference, cache.ownLinkCache.getTransfer(null, cache.ownLink));
                 assertSame(transfer, cache.getTransfer(null, rootLinkType, scope.sourceEntityInstance(), scope.targetEntityInstance()));

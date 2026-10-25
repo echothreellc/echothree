@@ -16,6 +16,11 @@
 
 package com.echothree.model.control.core.server.logic;
 
+import com.echothree.control.user.core.common.form.CoreFormFactory;
+import com.echothree.model.control.core.common.exception.UnknownLinkTypeNameException;
+import com.echothree.model.control.core.common.exception.UnknownEntityRefException;
+import com.echothree.model.control.core.common.exception.UnknownUuidException;
+import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.model.control.core.common.LinkCardinalities;
 import com.echothree.model.control.core.common.LinkDirectionalities;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
@@ -405,6 +410,167 @@ public class LinkLogicTest {
             assertTrue(errors.getExecutionErrors().containsKey(Messages.EXECUTION_ERROR, ExecutionErrors.InvalidLinkTypeEndpoints.name()));
             assertEquals(0, linkControl.creates);
             assertTrue(linkControl.locks.isEmpty());
+        }
+    }
+
+    private static class DefinitionLogic extends LinkLogic {
+        final List<String> resolutions = new ArrayList<>();
+        final EntityInstance sourceEntityInstance = entityInstance(10L, SOURCE_ENTITY_TYPE_PK);
+        final EntityInstance targetEntityInstance = entityInstance(11L, TARGET_ENTITY_TYPE_PK);
+
+        @SuppressWarnings("UnnecessaryAssignment") // Supply CDI dependencies without a container.
+        DefinitionLogic() {
+            linkTypeLogic = new LinkTypeLogic() {
+                @Override
+                public LinkType getLinkTypeByName(ExecutionErrorAccumulator eea, String linkTypeName) {
+                    LinkType linkType = null;
+                    if("MISSING".equals(linkTypeName)) {
+                        handleExecutionError(UnknownLinkTypeNameException.class, eea, ExecutionErrors.UnknownLinkTypeName.name(), linkTypeName);
+                    } else {
+                        linkType = linkType();
+                    }
+                    return linkType;
+                }
+            };
+            entityInstanceLogic = new EntityInstanceLogic() {
+                @Override
+                public EntityInstance getEntityInstanceByEntityRef(ExecutionErrorAccumulator eea, String entityRef) {
+                    resolutions.add(entityRef);
+                    EntityInstance entityInstance = switch(entityRef) {
+                        case "ECHO_THREE.Item.10" -> sourceEntityInstance;
+                        case "ECHO_THREE.Party.11" -> targetEntityInstance;
+                        default -> null;
+                    };
+                    if(entityInstance == null) {
+                        handleExecutionError(UnknownEntityRefException.class, eea, ExecutionErrors.UnknownEntityRef.name(), entityRef);
+                    }
+                    return entityInstance;
+                }
+
+                @Override
+                public EntityInstance getEntityInstanceByUuid(ExecutionErrorAccumulator eea, String uuid) {
+                    resolutions.add(uuid);
+                    EntityInstance entityInstance = switch(uuid) {
+                        case "00000000-0000-0000-0000-000000000010" -> sourceEntityInstance;
+                        case "00000000-0000-0000-0000-000000000011" -> targetEntityInstance;
+                        default -> null;
+                    };
+                    if(entityInstance == null) {
+                        handleExecutionError(UnknownUuidException.class, eea, ExecutionErrors.UnknownUuid.name(), uuid);
+                    }
+                    return entityInstance;
+                }
+            };
+        }
+    }
+
+    @Test
+    public void commandDefinitionsAcceptAllEntityRefAndUuidCombinations() {
+        for(var sourceUsesUuid : List.of(false, true)) {
+            for(var targetUsesUuid : List.of(false, true)) {
+                var logic = new DefinitionLogic();
+                var form = CoreFormFactory.getCreateLinkForm();
+                form.setLinkTypeName("TEST");
+                if(sourceUsesUuid) {
+                    form.setSourceUuid("00000000-0000-0000-0000-000000000010");
+                } else {
+                    form.setSourceEntityRef("ECHO_THREE.Item.10");
+                }
+                if(targetUsesUuid) {
+                    form.setTargetUuid("00000000-0000-0000-0000-000000000011");
+                } else {
+                    form.setTargetEntityRef("ECHO_THREE.Party.11");
+                }
+                var errors = new DummyExecutionErrorAccumulator();
+                var definition = logic.getDefinition(errors, form, false);
+                assertFalse(errors.hasExecutionErrors());
+                assertSame(logic.sourceEntityInstance, definition.sourceEntityInstance());
+                assertSame(logic.targetEntityInstance, definition.targetEntityInstance());
+                assertEquals(2, logic.resolutions.size());
+            }
+        }
+    }
+
+    @Test
+    public void commandDefinitionsRequireExactlyOneIdentifierForEachEndpoint() {
+        for(var sourceInvalid : List.of(false, true)) {
+            for(var bothIdentifiers : List.of(false, true)) {
+                var logic = new DefinitionLogic();
+                var form = CoreFormFactory.getGetLinkForm();
+                form.setLinkTypeName("TEST");
+                if(sourceInvalid) {
+                    form.setTargetEntityRef("ECHO_THREE.Party.11");
+                    if(bothIdentifiers) {
+                        form.setSourceEntityRef("ECHO_THREE.Item.10");
+                        form.setSourceUuid("00000000-0000-0000-0000-000000000010");
+                    }
+                } else {
+                    form.setSourceEntityRef("ECHO_THREE.Item.10");
+                    if(bothIdentifiers) {
+                        form.setTargetEntityRef("ECHO_THREE.Party.11");
+                        form.setTargetUuid("00000000-0000-0000-0000-000000000011");
+                    }
+                }
+                var errors = new DummyExecutionErrorAccumulator();
+                assertNull(logic.getDefinition(errors, form, false));
+                assertTrue(errors.getExecutionErrors().containsKey(Messages.EXECUTION_ERROR, ExecutionErrors.InvalidParameterCount.name()));
+            }
+        }
+    }
+
+    @Test
+    public void listDefinitionsSupportEveryCombinationOfOptionalFilters() {
+        for(var includeType : List.of(false, true)) {
+            for(var includeSource : List.of(false, true)) {
+                for(var includeTarget : List.of(false, true)) {
+                    var logic = new DefinitionLogic();
+                    var form = CoreFormFactory.getGetLinksForm();
+                    if(includeType) form.setLinkTypeName("TEST");
+                    if(includeSource) form.setSourceUuid("00000000-0000-0000-0000-000000000010");
+                    if(includeTarget) form.setTargetEntityRef("ECHO_THREE.Party.11");
+                    var errors = new DummyExecutionErrorAccumulator();
+                    var definition = logic.getDefinition(errors, form, true);
+                    assertFalse(errors.hasExecutionErrors());
+                    assertEquals(includeType, definition.linkType() != null);
+                    assertEquals(includeSource, definition.sourceEntityInstance() != null);
+                    assertEquals(includeTarget, definition.targetEntityInstance() != null);
+                }
+            }
+        }
+    }
+
+    @Test
+    public void unknownCommandIdentifiersStopDependentResolution() {
+        var logic = new DefinitionLogic();
+        var form = CoreFormFactory.getDeleteLinkForm();
+        form.setLinkTypeName("MISSING");
+        form.setSourceEntityRef("ECHO_THREE.Item.10");
+        form.setTargetEntityRef("ECHO_THREE.Party.11");
+        var errors = new DummyExecutionErrorAccumulator();
+        assertNull(logic.getDefinition(errors, form, false));
+        assertTrue(logic.resolutions.isEmpty());
+        form.setLinkTypeName("TEST");
+        form.setSourceEntityRef("MISSING");
+        errors = new DummyExecutionErrorAccumulator();
+        assertNull(logic.getDefinition(errors, form, false));
+        assertEquals(List.of("MISSING"), logic.resolutions);
+        assertTrue(errors.getExecutionErrors().containsKey(Messages.EXECUTION_ERROR, ExecutionErrors.UnknownEntityRef.name()));
+    }
+
+    @Test
+    public void listDefinitionsRejectAmbiguousEndpointIdentifiers() {
+        for(var source : List.of(false, true)) {
+            var form = CoreFormFactory.getGetLinksForm();
+            if(source) {
+                form.setSourceEntityRef("ECHO_THREE.Item.10");
+                form.setSourceUuid("00000000-0000-0000-0000-000000000010");
+            } else {
+                form.setTargetEntityRef("ECHO_THREE.Party.11");
+                form.setTargetUuid("00000000-0000-0000-0000-000000000011");
+            }
+            var errors = new DummyExecutionErrorAccumulator();
+            assertNull(new DefinitionLogic().getDefinition(errors, form, true));
+            assertTrue(errors.getExecutionErrors().containsKey(Messages.EXECUTION_ERROR, ExecutionErrors.InvalidParameterCount.name()));
         }
     }
 

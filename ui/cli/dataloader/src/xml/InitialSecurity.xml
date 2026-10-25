@@ -6140,6 +6140,21 @@
                 <securityRoleDescription languageIsoName="en" description="Link Type Translation" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="Link" parentSecurityRoleGroupName="CoreComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Link" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Link Create" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Link Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Link List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Link Review" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="BatchComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Batch Component" />
         </securityRoleGroup>
@@ -10109,6 +10124,10 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="LinkType" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LinkType" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LinkType" securityRoleName="Translation" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Link" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Link" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Link" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Link" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="BatchType" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="BatchType" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="BatchType" securityRoleName="Delete" />

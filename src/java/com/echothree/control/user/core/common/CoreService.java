@@ -1386,6 +1386,18 @@ public interface CoreService
     CommandResult<VoidResult> deleteLinkTypeTranslation(UserVisitPK userVisitPK, DeleteLinkTypeTranslationForm form);
 
     // -------------------------------------------------------------------------
+    //   Links
+    // -------------------------------------------------------------------------
+
+    CommandResult<CreateLinkResult> createLink(UserVisitPK userVisitPK, CreateLinkForm form);
+
+    CommandResult<GetLinkResult> getLink(UserVisitPK userVisitPK, GetLinkForm form);
+
+    CommandResult<GetLinksResult> getLinks(UserVisitPK userVisitPK, GetLinksForm form);
+
+    CommandResult<VoidResult> deleteLink(UserVisitPK userVisitPK, DeleteLinkForm form);
+
+    // -------------------------------------------------------------------------
     //   Utilities
     // -------------------------------------------------------------------------
 
