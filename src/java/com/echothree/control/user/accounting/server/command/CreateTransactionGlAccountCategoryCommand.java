@@ -93,7 +93,7 @@ public class CreateTransactionGlAccountCategoryCommand
                     var glAccount = glAccountName == null? null: accountingControl.getGlAccountByName(glAccountName);
 
                     if(glAccountName == null || glAccount != null) {
-                        if(glAccountCategory == null || glAccount == null? true: glAccountCategory.equals(glAccount.getLastDetail().getGlAccountCategory())) {
+                        if(glAccountCategory == null || glAccount == null || glAccountCategory.equals(glAccount.getLastDetail().getGlAccountCategory())) {
                             var sortOrder = Integer.valueOf(form.getSortOrder());
                             var description = form.getDescription();
                             var partyPK = getPartyPK();
