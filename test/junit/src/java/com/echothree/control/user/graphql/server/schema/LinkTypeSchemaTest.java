@@ -129,4 +129,42 @@ public class LinkTypeSchemaTest {
         assertNotNull(mutation.getFieldDefinition("deleteLinkTypeTranslation"));
     }
 
+    @Test
+    public void entityInstancesExposeScopedSourceAndTargetLinkTypes() {
+        for(var schema : List.of(GraphQlSchemaUtils.getInstance().getSchema(), GraphQlSchemaUtils.getInstance().getReadOnlySchema())) {
+            var entityInstance = schema.getObjectType("EntityInstance");
+            for(var role : List.of("source", "target")) {
+                var singular = entityInstance.getFieldDefinition(role + "LinkType");
+                assertNotNull(singular);
+                assertEquals("LinkType", GraphQLTypeUtil.unwrapAll(singular.getType()).getName());
+                assertEquals(2, singular.getArguments().size());
+                assertNotNull(singular.getArgument("linkTypeName"));
+                assertEquals("ID", GraphQLTypeUtil.unwrapAll(singular.getArgument("id").getType()).getName());
+
+                var plural = entityInstance.getFieldDefinition(role + "LinkTypes");
+                assertNotNull(plural.getArgument("first"));
+                assertNotNull(plural.getArgument("after"));
+                var connection = (GraphQLObjectType)GraphQLTypeUtil.unwrapAll(plural.getType());
+                assertNotNull(connection.getFieldDefinition("totalCount"));
+                assertNotNull(connection.getFieldDefinition("edges"));
+            }
+
+            var links = schema.getObjectType("LinkType").getFieldDefinition("links");
+            assertNotNull(links.getArgument("first"));
+            assertNotNull(links.getArgument("after"));
+            var connection = (GraphQLObjectType)GraphQLTypeUtil.unwrapAll(links.getType());
+            assertNotNull(connection.getFieldDefinition("totalCount"));
+            assertNotNull(connection.getFieldDefinition("edges"));
+
+            var link = schema.getObjectType("Link");
+            for(var field : List.of("linkType", "sourceEntityInstance", "targetEntityInstance")) {
+                assertNotNull(link.getFieldDefinition(field));
+                assertFalse(link.getFieldDefinition(field).getType() instanceof GraphQLNonNull);
+            }
+            assertEquals("LinkType", GraphQLTypeUtil.unwrapAll(link.getFieldDefinition("linkType").getType()).getName());
+            assertEquals("EntityInstance", GraphQLTypeUtil.unwrapAll(link.getFieldDefinition("sourceEntityInstance").getType()).getName());
+            assertEquals("EntityInstance", GraphQLTypeUtil.unwrapAll(link.getFieldDefinition("targetEntityInstance").getType()).getName());
+        }
+    }
+
 }

@@ -17,7 +17,7 @@
 package com.echothree.model.control.core.common;
 
 public interface CoreOptions {
-    
+
     String EntityBlobAttributeIncludeBlob = "EntityBlobAttributeIncludeBlob";
     String EntityBlobAttributeIncludeETag = "EntityBlobAttributeIncludeETag";
     
@@ -46,6 +46,8 @@ public interface CoreOptions {
     String EntityInstanceIncludeEntityAliases = "EntityInstanceIncludeEntityAliases";
     String EntityInstanceIncludeEntityAttributeGroups = "EntityInstanceIncludeEntityAttributeGroups";
     String EntityInstanceIncludeTagScopes = "EntityInstanceIncludeTagScopes";
+    String EntityInstanceIncludeSourceLinkTypes = "EntityInstanceIncludeSourceLinkTypes";
+    String EntityInstanceIncludeTargetLinkTypes = "EntityInstanceIncludeTargetLinkTypes";
 
     String EntityListItemIncludeEntityAttributeGroups = "EntityListItemIncludeEntityAttributeGroups";
     String EntityListItemIncludeTagScopes = "EntityListItemIncludeTagScopes";
@@ -79,5 +81,7 @@ public interface CoreOptions {
     String EntityVisitIncludeVisitedTime = "EntityVisitIncludeVisitedTime";
 
     String EntityAliasTypeIncludeAlias = "EntityAliasTypeIncludeAlias";
+
+    String LinkTypeIncludeLinks = "LinkTypeIncludeLinks";
 
 }

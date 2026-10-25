@@ -17,30 +17,37 @@
 package com.echothree.model.control.core.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.core.common.transfer.LinkTransfer;
+import com.echothree.model.control.core.server.transfer.LinkTransferCache;
 import com.echothree.model.data.core.common.pk.LinkPK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.Link;
 import com.echothree.model.data.core.server.entity.LinkType;
 import com.echothree.model.data.core.server.factory.LinkFactory;
-import com.echothree.util.common.persistence.BasePK;
-import com.echothree.util.server.cdi.CommandScope;
-import com.echothree.util.server.control.BaseModelControl;
-import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
-import java.util.Collection;
-import java.util.List;
-import javax.inject.Inject;
-import org.jooq.Condition;
-import org.jooq.impl.DSL;
+import com.echothree.model.data.user.server.entity.UserVisit;
 import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.LINK_TYPES_LAST_DETAIL_FK;
 import static com.echothree.model.jooq.server.tables.core.EntityInstances.EntityInstances;
 import static com.echothree.model.jooq.server.tables.core.LinkTypeDetails.LinkTypeDetails;
 import static com.echothree.model.jooq.server.tables.core.LinkTypes.LinkTypes;
 import static com.echothree.model.jooq.server.tables.core.Links.Links;
+import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
+import com.echothree.util.server.control.BaseModelControl;
+import com.echothree.util.server.persistence.EntityPermission;
+import com.echothree.util.server.persistence.Session;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import javax.inject.Inject;
+import org.jooq.Condition;
+import org.jooq.impl.DSL;
 
 @CommandScope
 public class LinkControl
         extends BaseModelControl {
+
+    @Inject
+    LinkTransferCache linkTransferCache;
 
     /**
      * Creates a new instance of LinkControl
@@ -175,6 +182,23 @@ public class LinkControl
 
     public List<Link> getLinksForUpdate(Condition condition) {
         return getLinks(condition, EntityPermission.READ_WRITE);
+    }
+
+    public LinkTransfer getLinkTransfer(UserVisit userVisit, Link link) {
+        return linkTransferCache.getTransfer(userVisit, link);
+    }
+
+    public List<LinkTransfer> getLinkTransfers(UserVisit userVisit, Collection<Link> links) {
+        var linkTransfers = new ArrayList<LinkTransfer>(links.size());
+
+        links.forEach(link -> linkTransfers.add(getLinkTransfer(userVisit, link)));
+
+        return linkTransfers;
+    }
+
+    public List<LinkTransfer> getLinkTransfers(UserVisit userVisit, LinkType linkType,
+            EntityInstance sourceEntityInstance, EntityInstance targetEntityInstance) {
+        return getLinkTransfers(userVisit, getLinks(getLinkFilter(linkType, sourceEntityInstance, targetEntityInstance)));
     }
 
     public void deleteLink(Link link, BasePK deletedBy) {

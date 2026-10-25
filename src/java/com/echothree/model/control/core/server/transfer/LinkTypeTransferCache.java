@@ -16,14 +16,21 @@
 
 package com.echothree.model.control.core.server.transfer;
 
+import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.LinkTypeTransfer;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.core.server.control.LinkCardinalityControl;
 import com.echothree.model.control.core.server.control.LinkDirectionalityControl;
-import com.echothree.model.control.core.server.control.LinkTypeControl;
+import com.echothree.model.control.core.server.control.LinkControl;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
+import com.echothree.model.data.core.common.pk.EntityInstancePK;
+import com.echothree.model.data.core.common.pk.LinkTypePK;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.LinkType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.transfer.ListWrapper;
+import java.util.HashMap;
+import java.util.Map;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
@@ -38,23 +45,42 @@ public class LinkTypeTransferCache
     LinkCardinalityControl linkCardinalityControl;
 
     @Inject
+    LinkControl linkControl;
+
+    @Inject
     LinkDirectionalityControl linkDirectionalityControl;
 
     @Inject
-    LinkTypeControl linkTypeControl;
-
-    @Inject
     MimeTypeControl mimeTypeControl;
+
+    private record Context(LinkTypePK linkTypePK, EntityInstancePK sourceEntityInstancePK, EntityInstancePK targetEntityInstancePK) {
+    }
+
+    private final Map<Context, LinkTypeTransfer> contextualTransfers = new HashMap<>();
+    boolean includeLinks;
 
     /** Creates a new instance of LinkTypeTransferCache */
     protected LinkTypeTransferCache() {
         super();
 
+        var options = session.getOptions();
+        if(options != null) {
+            includeLinks = options.contains(CoreOptions.LinkTypeIncludeLinks);
+        }
+
         setIncludeEntityInstance(true);
     }
 
     public LinkTypeTransfer getTransfer(UserVisit userVisit, LinkType linkType) {
-        var linkTypeTransfer = get(linkType);
+        return getTransfer(userVisit, linkType, null, null);
+    }
+
+    public LinkTypeTransfer getTransfer(UserVisit userVisit, LinkType linkType,
+            EntityInstance sourceEntityInstance, EntityInstance targetEntityInstance) {
+        var contextual = sourceEntityInstance != null || targetEntityInstance != null;
+        var context = new Context(linkType.getPrimaryKey(), sourceEntityInstance == null ? null : sourceEntityInstance.getPrimaryKey(),
+                targetEntityInstance == null ? null : targetEntityInstance.getPrimaryKey());
+        var linkTypeTransfer = contextual ? contextualTransfers.get(context) : get(linkType);
 
         if(linkTypeTransfer == null) {
             var linkTypeDetail = linkType.getLastDetail();
@@ -65,20 +91,34 @@ public class LinkTypeTransferCache
             var guidanceMimeType = linkTypeTranslation == null ? null : linkTypeTranslation.getGuidanceMimeType();
 
             linkTypeTransfer = new LinkTypeTransfer(linkTypeName,
-                    null,
-                    entityTypeControl.getEntityTypeTransfer(userVisit, linkTypeDetail.getSourceEntityType()),
-                    entityTypeControl.getEntityTypeTransfer(userVisit, linkTypeDetail.getTargetEntityType()),
-                    linkCardinalityControl.getLinkCardinalityTransfer(userVisit, linkTypeDetail.getLinkCardinality()),
-                    linkDirectionalityControl.getLinkDirectionalityTransfer(userVisit, linkTypeDetail.getLinkDirectionality()),
+                    null, null, null, null, null,
                     linkTypeDetail.getIsTransitive(), null,
                     linkTypeDetail.getSortOrder(), linkTypeTranslation == null ? linkTypeName : linkTypeTranslation.getDescription(),
-                    guidanceMimeType == null ? null : mimeTypeControl.getMimeTypeTransfer(userVisit, guidanceMimeType),
+                    null,
                     linkTypeTranslation == null ? null : linkTypeTranslation.getGuidance());
-            // Cache before resolving LinkType relationships, which may refer back to this transfer.
-            put(userVisit, linkType, linkTypeTransfer);
 
+            // Cache before resolving LinkType relationships, which may refer back to this transfer.
+            if(contextual) {
+                contextualTransfers.put(context, linkTypeTransfer);
+
+                if(getIncludeEntityInstance()) {
+                    setupEntityInstance(userVisit, linkType, null, linkTypeTransfer);
+                }
+            } else {
+                put(userVisit, linkType, linkTypeTransfer);
+            }
+
+            linkTypeTransfer.setSourceEntityType(entityTypeControl.getEntityTypeTransfer(userVisit, linkTypeDetail.getSourceEntityType()));
+            linkTypeTransfer.setTargetEntityType(entityTypeControl.getEntityTypeTransfer(userVisit, linkTypeDetail.getTargetEntityType()));
+            linkTypeTransfer.setLinkCardinality(linkCardinalityControl.getLinkCardinalityTransfer(userVisit, linkTypeDetail.getLinkCardinality()));
+            linkTypeTransfer.setLinkDirectionality(linkDirectionalityControl.getLinkDirectionalityTransfer(userVisit, linkTypeDetail.getLinkDirectionality()));
+            linkTypeTransfer.setGuidanceMimeType(guidanceMimeType == null ? null : mimeTypeControl.getMimeTypeTransfer(userVisit, guidanceMimeType));
             linkTypeTransfer.setParentLinkType(parentLinkType == null ? null : linkTypeControl.getLinkTypeTransfer(userVisit, parentLinkType));
             linkTypeTransfer.setInverseLinkType(inverseLinkType == null ? null : linkTypeControl.getLinkTypeTransfer(userVisit, inverseLinkType));
+
+            if(includeLinks) {
+                linkTypeTransfer.setLinks(new ListWrapper<>(linkControl.getLinkTransfers(userVisit, linkType, sourceEntityInstance, targetEntityInstance)));
+            }
         }
 
         return linkTypeTransfer;

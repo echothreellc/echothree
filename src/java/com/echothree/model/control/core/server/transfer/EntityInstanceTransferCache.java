@@ -25,6 +25,7 @@ import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
+import com.echothree.util.common.transfer.BaseOptions;
 import com.echothree.util.server.persistence.EntityDescriptionUtils;
 import com.echothree.util.server.persistence.EntityNamesUtils;
 import javax.enterprise.context.RequestScoped;
@@ -72,6 +73,10 @@ public class EntityInstanceTransferCache
             setIncludeEntityAliases(options.contains(CoreOptions.EntityInstanceIncludeEntityAliases));
             setIncludeEntityAttributeGroups(options.contains(CoreOptions.EntityInstanceIncludeEntityAttributeGroups));
             setIncludeTagScopes(options.contains(CoreOptions.EntityInstanceIncludeTagScopes));
+            setIncludeSourceLinkTypes(options.contains(CoreOptions.EntityInstanceIncludeSourceLinkTypes)
+                    || options.contains(BaseOptions.BaseIncludeSourceLinkTypes));
+            setIncludeTargetLinkTypes(options.contains(CoreOptions.EntityInstanceIncludeTargetLinkTypes)
+                    || options.contains(BaseOptions.BaseIncludeTargetLinkTypes));
         }
 
         transferProperties = session.getTransferProperties();
