@@ -16,6 +16,20 @@
 
 package com.echothree.control.user.core.server.command;
 
+import com.echothree.control.user.core.common.result.GetLinksResult;
+import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
+import com.echothree.model.control.core.common.transfer.LinkTypeTransfer;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.control.core.server.control.LinkTypeControl;
+import com.echothree.model.data.core.common.pk.EntityTypePK;
+import com.echothree.model.data.core.server.value.EntityInstanceValue;
+import com.echothree.model.data.core.server.value.LinkTypeValue;
+import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.persistence.valuecache.NullValueCacheImpl;
+import com.echothree.util.server.persistence.valuecache.ValueCacheProvider;
+import com.echothree.util.server.persistence.valuecache.ValueCacheProviderImpl;
+import java.util.Collection;
+import org.junit.jupiter.api.parallel.ResourceLock;
 import com.echothree.control.user.core.common.CoreService;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
 import com.echothree.control.user.core.common.result.CreateLinkResult;
@@ -57,6 +71,7 @@ import javax.xml.xpath.XPathFactory;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+@ResourceLock("ValueCacheProvider")
 public class LinkCommandTest {
 
     @Test
@@ -197,6 +212,132 @@ public class LinkCommandTest {
         var result = (CreateLinkResult)command.execute();
         assertTrue(command.hasExecutionErrors());
         assertNull(result.getLink());
+        assertEquals(0, command.userVisitLookups);
+    }
+
+    private static class TestGetCommand extends GetLinkCommand {
+        TestGetCommand() {
+            form = CoreFormFactory.getGetLinkForm();
+        }
+
+        @Override
+        public PartyPK getPartyPK() {
+            throw new AssertionError("A Description-style Link lookup must not send an EntityInstance READ event");
+        }
+    }
+
+    @Test
+    @SuppressWarnings("UnnecessaryAssignment") // Supply CDI dependencies without a container.
+    public void getReturnsLinkWithoutRequiringItsOwnEntityInstance() {
+        var command = new TestGetCommand();
+        var link = new Link(new LinkValue(new LinkPK(1L), new LinkTypePK(2L), new EntityInstancePK(3L),
+                new EntityInstancePK(4L), 0L, Long.MAX_VALUE), EntityPermission.READ_ONLY);
+        command.linkLogic = new LinkLogic() {
+            @Override
+            public Definition getDefinition(ExecutionErrorAccumulator eea, LinkSpec spec, boolean allowPartial) {
+                assertFalse(allowPartial);
+                return new Definition(null, null, null);
+            }
+
+            @Override
+            public Link getLink(ExecutionErrorAccumulator eea, LinkType linkType, EntityInstance sourceEntityInstance,
+                    EntityInstance targetEntityInstance) {
+                return link;
+            }
+        };
+
+        assertSame(link, command.getEntity());
+        assertFalse(command.hasExecutionErrors());
+    }
+
+    private static class TestListCommand extends GetLinksCommand {
+        int userVisitLookups;
+
+        TestListCommand() throws ReflectiveOperationException {
+            var holder = Class.forName(ValueCacheProviderImpl.class.getName() + "$ValueCacheProviderHolder");
+            var field = holder.getDeclaredField("instance");
+            field.setAccessible(true);
+            var previous = field.get(null);
+            try {
+                field.set(null, (ValueCacheProvider)NullValueCacheImpl::new);
+                session = new Session();
+            } finally {
+                field.set(null, previous);
+            }
+            form = CoreFormFactory.getGetLinksForm();
+        }
+
+        @Override
+        public UserVisit getUserVisit() {
+            userVisitLookups++;
+            return null;
+        }
+    }
+
+    @Test
+    @SuppressWarnings("UnnecessaryAssignment") // Supply CDI dependencies without a container.
+    public void listsReturnTransfersForEachSpecifiedFilterEvenWhenNoLinksMatch() throws ReflectiveOperationException {
+        var linkType = new LinkType(new LinkTypeValue(new LinkTypePK(1L), null, null), EntityPermission.READ_ONLY);
+        var source = new EntityInstance(new EntityInstanceValue(new EntityInstancePK(2L), new EntityTypePK(1L), 2L, null), EntityPermission.READ_ONLY);
+        var target = new EntityInstance(new EntityInstanceValue(new EntityInstancePK(3L), new EntityTypePK(1L), 3L, null), EntityPermission.READ_ONLY);
+        var linkTypeTransfer = new LinkTypeTransfer("TEST", null, null, null, null, null, false, null, 0, null, null, null);
+        var sourceTransfer = new EntityInstanceTransfer(null, 2L, null, null, null, null);
+        var targetTransfer = new EntityInstanceTransfer(null, 3L, null, null, null, null);
+
+        for(var includeType : List.of(false, true)) {
+            for(var includeSource : List.of(false, true)) {
+                for(var includeTarget : List.of(false, true)) {
+                    var command = new TestListCommand();
+                    command.linkLogic = new LinkLogic() {
+                        @Override
+                        public Definition getDefinition(ExecutionErrorAccumulator eea, LinkSpec spec, boolean allowPartial) {
+                            assertTrue(allowPartial);
+                            return new Definition(includeType ? linkType : null, includeSource ? source : null, includeTarget ? target : null);
+                        }
+                    };
+                    command.linkTypeControl = new LinkTypeControl() {
+                        @Override
+                        public LinkTypeTransfer getLinkTypeTransfer(UserVisit userVisit, LinkType entity) {
+                            assertTrue(includeType);
+                            assertSame(linkType, entity);
+                            return linkTypeTransfer;
+                        }
+                    };
+                    command.entityInstanceControl = new EntityInstanceControl() {
+                        @Override
+                        public EntityInstanceTransfer getEntityInstanceTransfer(UserVisit userVisit, EntityInstance entity,
+                                boolean includeAppearance, boolean includeVisit, boolean includeNames, boolean includeUuid) {
+                            assertTrue(entity.equals(source) ? includeSource : includeTarget);
+                            return entity.equals(source) ? sourceTransfer : targetTransfer;
+                        }
+                    };
+                    command.linkControl = new LinkControl() {
+                        @Override
+                        public List<LinkTransfer> getLinkTransfers(UserVisit userVisit, Collection<Link> links) {
+                            assertTrue(links.isEmpty());
+                            return List.of();
+                        }
+                    };
+                    command.handleForm();
+                    var result = (GetLinksResult)command.getResult(List.of());
+                    assertSame(includeType ? linkTypeTransfer : null, result.getLinkType());
+                    assertSame(includeSource ? sourceTransfer : null, result.getSourceEntityInstance());
+                    assertSame(includeTarget ? targetTransfer : null, result.getTargetEntityInstance());
+                    assertTrue(result.getLinks().isEmpty());
+                    assertEquals(1, command.userVisitLookups);
+                }
+            }
+        }
+    }
+
+    @Test
+    public void failedListsDoNotPopulateFilterTransfers() throws ReflectiveOperationException {
+        var command = new TestListCommand();
+        var result = (GetLinksResult)command.getResult(null);
+        assertNull(result.getLinkType());
+        assertNull(result.getSourceEntityInstance());
+        assertNull(result.getTargetEntityInstance());
+        assertNull(result.getLinks());
         assertEquals(0, command.userVisitLookups);
     }
 
