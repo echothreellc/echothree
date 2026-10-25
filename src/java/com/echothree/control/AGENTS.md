@@ -26,3 +26,9 @@
 - Generated code is located in the `generated/` directory
 - Use the generated factories via Beans or Services to instantiate these objects (e.g., `ContactBean.getGetContactMechanismsForm()`, `ContactService.getGetContactMechanismsResult()`)
 - Always run `ant compile` after adding or modifying these interfaces to ensure the factories are up to date
+
+### GraphQL Conventions
+
+- GraphQL query parameters must match the corresponding Command's complete parameter set except `EntityRef`, which must never be exposed as a GraphQL query argument or mutation input field. Map `Uuid` to `id` with `@GraphQLID`.
+- Apply `@GraphQLNonNull` when the Command field definition marks the parameter as required.
+- Exception for alternative identifiers: when a Command requires an identifier but permits alternatives, and GraphQL exposes only one of those alternatives, mark the remaining GraphQL identifier `@GraphQLNonNull` even if its individual Command field is optional. For example, `sourceId` and `targetId` are required for `link`, `createLink`, and `deleteLink` because GraphQL omits their EntityRef alternatives. Identifiers used as optional list filters remain nullable.
