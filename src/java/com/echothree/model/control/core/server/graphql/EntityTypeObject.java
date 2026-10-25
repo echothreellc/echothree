@@ -186,10 +186,10 @@ public class EntityTypeObject
     }
 
     @GraphQLField
-    @GraphQLDescription("source link types")
+    @GraphQLDescription("link types with this entity type as their source")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public CountingPaginatedData<LinkTypeObject> getSourceLinkTypes(final DataFetchingEnvironment env) {
+    public CountingPaginatedData<LinkTypeObject> getLinkTypesWithSource(final DataFetchingEnvironment env) {
         if(CoreSecurityUtils.getHasLinkTypesAccess(env)) {
             var linkTypeControl = Session.getModelController(LinkTypeControl.class);
             var condition = linkTypeControl.getLinkTypeFilter(null, entityType, null, null, null, null);
@@ -198,11 +198,11 @@ public class EntityTypeObject
             try(var objectLimiter = new ObjectLimiter(env, LinkTypeConstants.COMPONENT_VENDOR_NAME,
                     LinkTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = linkTypeControl.getLinkTypes(condition);
-                var sourceLinkTypes = entities.stream()
+                var linkTypes = entities.stream()
                         .map(LinkTypeObject::new)
                         .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-                return new CountedObjects<>(objectLimiter, sourceLinkTypes);
+                return new CountedObjects<>(objectLimiter, linkTypes);
             }
         } else {
             return Connections.emptyConnection();
@@ -210,10 +210,10 @@ public class EntityTypeObject
     }
 
     @GraphQLField
-    @GraphQLDescription("target link types")
+    @GraphQLDescription("link types with this entity type as their target")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public CountingPaginatedData<LinkTypeObject> getTargetLinkTypes(final DataFetchingEnvironment env) {
+    public CountingPaginatedData<LinkTypeObject> getLinkTypesWithTarget(final DataFetchingEnvironment env) {
         if(CoreSecurityUtils.getHasLinkTypesAccess(env)) {
             var linkTypeControl = Session.getModelController(LinkTypeControl.class);
             var condition = linkTypeControl.getLinkTypeFilter(null, null, entityType, null, null, null);
@@ -222,11 +222,11 @@ public class EntityTypeObject
             try(var objectLimiter = new ObjectLimiter(env, LinkTypeConstants.COMPONENT_VENDOR_NAME,
                     LinkTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = linkTypeControl.getLinkTypes(condition);
-                var targetLinkTypes = entities.stream()
+                var linkTypes = entities.stream()
                         .map(LinkTypeObject::new)
                         .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-                return new CountedObjects<>(objectLimiter, targetLinkTypes);
+                return new CountedObjects<>(objectLimiter, linkTypes);
             }
         } else {
             return Connections.emptyConnection();

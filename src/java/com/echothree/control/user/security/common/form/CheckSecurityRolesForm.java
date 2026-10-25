@@ -22,12 +22,14 @@ public interface CheckSecurityRolesForm
         extends BaseForm {
     
     /**
+     * Returns the security roles to check.
      *
      * @return A colon separated list of one or more pairs of SecurityRoleGroupNames, a period,
      * and a SecurityRoleName
      */
     String getSecurityRoles();
     /**
+     * Sets the security roles to check.
      *
      * @param securityRoles A colon separated list of one or more pairs of SecurityRoleGroupNames,
      * a period, and a SecurityRoleName

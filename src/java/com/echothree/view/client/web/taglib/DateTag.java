@@ -63,6 +63,7 @@ public class DateTag
      * @throws JspException if a JSP exception has occurred
      */
     @Override
+    @SuppressWarnings("JavaUtilDate") // Legacy JSP consumers require Date; use InstantTag for java.time values.
     public int doStartTag()
             throws JspException {
         pageContext.setAttribute(var, value == null ? new Date() : new Date(value), scope);

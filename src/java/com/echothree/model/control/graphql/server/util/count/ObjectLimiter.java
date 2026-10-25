@@ -29,7 +29,6 @@ public class ObjectLimiter
     private static final String PARAMETER_LAST = "last";
     private static final String PARAMETER_BEFORE = "before";
 
-    private final DataFetchingEnvironment env;
     private final String componentVendorName;
     private final String entityTypeName;
     private final long totalCount;
@@ -61,7 +60,6 @@ public class ObjectLimiter
 
     public ObjectLimiter(final DataFetchingEnvironment env, final String componentVendorName, final String entityTypeName,
             final long totalCount) {
-        this.env = env;
         this.componentVendorName = componentVendorName;
         this.entityTypeName = entityTypeName;
         this.totalCount = totalCount;

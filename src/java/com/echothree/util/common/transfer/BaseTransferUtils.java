@@ -59,15 +59,15 @@ public class BaseTransferUtils {
         }
         visitedObjects.add(dependsOn);
         
-        if(dependsOn instanceof BaseTransfer) {
-            var entityInstance = ((BaseTransfer)dependsOn).getEntityInstance();
+        if(dependsOn instanceof BaseTransfer baseTransfer) {
+            var entityInstance = baseTransfer.getEntityInstance();
             var includeMethods = true;
             
             if(entityInstance != null) {
                 var nextDependsOnEntityRef = entityInstance.getEntityRef();
 
                 if(nextDependsOnEntityRef != null) {
-                    if(entityRefExclusions != null && nextDependsOnEntityRef != null && entityRefExclusions.contains(nextDependsOnEntityRef)) {
+                    if(entityRefExclusions != null && entityRefExclusions.contains(nextDependsOnEntityRef)) {
                         if(BaseTransferUtilsDebugFlags.LogGetEntityRefs) {
                             log.info(StringUtils.getInstance().getIndent(4, indentCount) + "Excluding " + nextDependsOnEntityRef);
                         }
@@ -128,8 +128,7 @@ public class BaseTransferUtils {
                     }
                 }
             }
-        } else if(dependsOn instanceof BaseWrapper) {
-            var baseWrapper = (BaseWrapper<?>)dependsOn;
+        } else if(dependsOn instanceof BaseWrapper<?> baseWrapper) {
             
             if(baseWrapper != null) {
                 if(BaseTransferUtilsDebugFlags.LogGetEntityRefs) {
