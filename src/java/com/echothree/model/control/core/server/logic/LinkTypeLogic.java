@@ -133,7 +133,7 @@ public class LinkTypeLogic
         return getLinkTypeByUniversalSpec(eea, linkTypeUniversalSpec, EntityPermission.READ_WRITE);
     }
 
-    private static LinkCardinalities getCardinality(String linkCardinalityName) {
+    static LinkCardinalities getCardinality(String linkCardinalityName) {
         LinkCardinalities linkCardinality = null;
 
         if(linkCardinalityName != null) {
@@ -147,7 +147,7 @@ public class LinkTypeLogic
         return linkCardinality;
     }
 
-    private static LinkDirectionalities getDirectionality(String linkDirectionalityName) {
+    static LinkDirectionalities getDirectionality(String linkDirectionalityName) {
         LinkDirectionalities linkDirectionality = null;
 
         if(linkDirectionalityName != null) {

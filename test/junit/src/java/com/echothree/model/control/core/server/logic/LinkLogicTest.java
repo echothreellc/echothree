@@ -16,27 +16,46 @@
 
 package com.echothree.model.control.core.server.logic;
 
+import com.echothree.model.control.core.common.LinkCardinalities;
+import com.echothree.model.control.core.common.LinkDirectionalities;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.control.LinkControl;
 import com.echothree.model.data.core.common.pk.EntityInstancePK;
 import com.echothree.model.data.core.common.pk.EntityTypePK;
 import com.echothree.model.data.core.common.pk.LinkCardinalityPK;
 import com.echothree.model.data.core.common.pk.LinkDirectionalityPK;
+import com.echothree.model.data.core.common.pk.LinkCardinalityDetailPK;
+import com.echothree.model.data.core.common.pk.LinkDirectionalityDetailPK;
 import com.echothree.model.data.core.common.pk.LinkPK;
 import com.echothree.model.data.core.common.pk.LinkTypeDetailPK;
 import com.echothree.model.data.core.common.pk.LinkTypePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.core.server.entity.LinkCardinality;
+import com.echothree.model.data.core.server.entity.LinkCardinalityDetail;
+import com.echothree.model.data.core.server.entity.LinkDirectionality;
+import com.echothree.model.data.core.server.entity.LinkDirectionalityDetail;
 import com.echothree.model.data.core.server.entity.Link;
 import com.echothree.model.data.core.server.entity.LinkType;
 import com.echothree.model.data.core.server.entity.LinkTypeDetail;
 import com.echothree.model.data.core.server.value.EntityInstanceValue;
 import com.echothree.model.data.core.server.value.LinkTypeDetailValue;
 import com.echothree.model.data.core.server.value.LinkTypeValue;
+import com.echothree.model.data.core.server.value.LinkCardinalityValue;
+import com.echothree.model.data.core.server.value.LinkCardinalityDetailValue;
+import com.echothree.model.data.core.server.value.LinkDirectionalityValue;
+import com.echothree.model.data.core.server.value.LinkDirectionalityDetailValue;
 import com.echothree.model.data.core.server.value.LinkValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.message.Messages;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.DummyExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
+import java.util.ArrayList;
+import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Predicate;
+import org.jooq.Condition;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -51,11 +70,46 @@ public class LinkLogicTest {
     }
 
     private static LinkType linkType() {
-        var linkTypePK = new LinkTypePK(3L);
+        return linkType(3L, LinkCardinalities.MANY_TO_MANY.name(), LinkDirectionalities.DIRECTED.name());
+    }
+
+    private static LinkType linkType(long identifier, String cardinalityName, String directionalityName) {
+        return linkType(identifier, cardinalityName, directionalityName, LinkDirectionalities.SYMMETRIC.name().equals(directionalityName));
+    }
+
+    private static LinkType linkType(long identifier, String cardinalityName, String directionalityName, boolean sameEndpointTypes) {
+        var linkTypePK = new LinkTypePK(identifier);
+        var linkCardinalityPK = new LinkCardinalityPK(6L);
+        var linkCardinalityDetail = new LinkCardinalityDetail(new LinkCardinalityDetailValue(new LinkCardinalityDetailPK(8L),
+                linkCardinalityPK, cardinalityName, false, 0, 0L, Long.MAX_VALUE), EntityPermission.READ_ONLY);
+        var linkCardinality = new LinkCardinality(new LinkCardinalityValue(linkCardinalityPK, null, null), EntityPermission.READ_ONLY) {
+            @Override
+            public LinkCardinalityDetail getLastDetail() {
+                return linkCardinalityDetail;
+            }
+        };
+        var linkDirectionalityPK = new LinkDirectionalityPK(7L);
+        var linkDirectionalityDetail = new LinkDirectionalityDetail(new LinkDirectionalityDetailValue(new LinkDirectionalityDetailPK(9L),
+                linkDirectionalityPK, directionalityName, false, 0, 0L, Long.MAX_VALUE), EntityPermission.READ_ONLY);
+        var linkDirectionality = new LinkDirectionality(new LinkDirectionalityValue(linkDirectionalityPK, null, null), EntityPermission.READ_ONLY) {
+            @Override
+            public LinkDirectionalityDetail getLastDetail() {
+                return linkDirectionalityDetail;
+            }
+        };
+        var targetEntityTypePK = sameEndpointTypes ? SOURCE_ENTITY_TYPE_PK : TARGET_ENTITY_TYPE_PK;
         var linkTypeDetail = new LinkTypeDetail(new LinkTypeDetailValue(new LinkTypeDetailPK(4L), linkTypePK,
-                "TEST", null, SOURCE_ENTITY_TYPE_PK, TARGET_ENTITY_TYPE_PK, new LinkCardinalityPK(6L),
-                new LinkDirectionalityPK(7L), false, null, 0, 0L, Long.MAX_VALUE),
-                EntityPermission.READ_ONLY);
+                "TEST_" + identifier, null, SOURCE_ENTITY_TYPE_PK, targetEntityTypePK, linkCardinalityPK,
+                linkDirectionalityPK, false, null, 0, 0L, Long.MAX_VALUE), EntityPermission.READ_ONLY) {
+            @Override
+            public LinkCardinality getLinkCardinality() {
+                return linkCardinality;
+            }
+            @Override
+            public LinkDirectionality getLinkDirectionality() {
+                return linkDirectionality;
+            }
+        };
 
         return new LinkType(new LinkTypeValue(linkTypePK, null, null), EntityPermission.READ_ONLY) {
             @Override
@@ -67,6 +121,9 @@ public class LinkLogicTest {
 
     private static class MemoryControl extends LinkControl {
         Link link;
+        final List<Link> links = new ArrayList<>();
+        final List<EntityInstancePK> locks = new ArrayList<>();
+        final Map<Condition, Predicate<Link>> filters = new IdentityHashMap<>();
         EntityPermission entityPermission;
         int creates;
         int deletes;
@@ -75,29 +132,54 @@ public class LinkLogicTest {
         public Link getLink(LinkType linkType, EntityInstance sourceEntityInstance,
                 EntityInstance targetEntityInstance, EntityPermission entityPermission) {
             this.entityPermission = entityPermission;
-            return link;
+            return links.stream().filter(existingLink -> existingLink.getLinkTypePK().equals(linkType.getPrimaryKey())
+                    && existingLink.getSourceEntityInstancePK().equals(sourceEntityInstance.getPrimaryKey())
+                    && existingLink.getTargetEntityInstancePK().equals(targetEntityInstance.getPrimaryKey())).findFirst().orElse(null);
+        }
+
+        @Override
+        public Condition getLinkFilter(LinkType linkType, EntityInstance sourceEntityInstance, EntityInstance targetEntityInstance) {
+            var condition = super.getLinkFilter(linkType, sourceEntityInstance, targetEntityInstance);
+            filters.put(condition, existingLink -> (linkType == null || existingLink.getLinkTypePK().equals(linkType.getPrimaryKey()))
+                    && (sourceEntityInstance == null || existingLink.getSourceEntityInstancePK().equals(sourceEntityInstance.getPrimaryKey()))
+                    && (targetEntityInstance == null || existingLink.getTargetEntityInstancePK().equals(targetEntityInstance.getPrimaryKey())));
+            return condition;
+        }
+
+        @Override
+        public List<Link> getLinksForUpdate(Condition condition) {
+            return links.stream().filter(filters.get(condition)).toList();
         }
 
         @Override
         public Link createLink(LinkType linkType, EntityInstance sourceEntityInstance,
                 EntityInstance targetEntityInstance, BasePK createdBy) {
             creates++;
-            link = new Link(new LinkValue(new LinkPK(5L), linkType.getPrimaryKey(), sourceEntityInstance.getPrimaryKey(),
+            link = new Link(new LinkValue(new LinkPK((long)creates + 5L), linkType.getPrimaryKey(), sourceEntityInstance.getPrimaryKey(),
                     targetEntityInstance.getPrimaryKey(), 0L, Long.MAX_VALUE), EntityPermission.READ_WRITE);
+            links.add(link);
             return link;
         }
 
         @Override
         public void deleteLink(Link link, BasePK deletedBy) {
             deletes++;
+            links.remove(link);
             this.link = null;
         }
     }
 
     @SuppressWarnings("UnnecessaryAssignment") // Supply CDI dependencies without a container.
-    private static LinkLogic logic(MemoryControl linkControl) {
+    private static LinkLogic logic(MemoryControl memoryLinkControl) {
         var linkLogic = new LinkLogic();
-        linkLogic.linkControl = linkControl;
+        linkLogic.linkControl = memoryLinkControl;
+        linkLogic.entityInstanceControl = new EntityInstanceControl() {
+            @Override
+            public EntityInstance getEntityInstanceByPKForUpdate(EntityInstancePK entityInstancePK) {
+                memoryLinkControl.locks.add(entityInstancePK);
+                return null;
+            }
+        };
         return linkLogic;
     }
 
@@ -170,6 +252,160 @@ public class LinkLogicTest {
         assertEquals(EntityPermission.READ_WRITE, linkControl.entityPermission);
         assertEquals(1, linkControl.deletes);
         assertNull(linkControl.link);
+    }
+
+    @Test
+    public void directedCardinalityRestrictsTheCorrectEndpoint() {
+        for(var cardinality : LinkCardinalities.values()) {
+            for(var reuseSource : List.of(true, false)) {
+                var linkControl = new MemoryControl();
+                var linkLogic = logic(linkControl);
+                var linkType = linkType(3L, cardinality.name(), LinkDirectionalities.DIRECTED.name());
+                var sourceEntityInstance = entityInstance(10L, SOURCE_ENTITY_TYPE_PK);
+                var targetEntityInstance = entityInstance(11L, TARGET_ENTITY_TYPE_PK);
+                linkLogic.createLink(null, linkType, sourceEntityInstance, targetEntityInstance, null);
+                var errors = new DummyExecutionErrorAccumulator();
+                var secondLink = linkLogic.createLink(errors, linkType,
+                        reuseSource ? sourceEntityInstance : entityInstance(12L, SOURCE_ENTITY_TYPE_PK),
+                        reuseSource ? entityInstance(13L, TARGET_ENTITY_TYPE_PK) : targetEntityInstance, null);
+                var rejected = cardinality == LinkCardinalities.ONE_TO_ONE
+                        || (reuseSource ? cardinality == LinkCardinalities.MANY_TO_ONE : cardinality == LinkCardinalities.ONE_TO_MANY);
+
+                assertEquals(rejected, errors.hasExecutionErrors(), cardinality + ": reuseSource=" + reuseSource);
+                assertEquals(rejected ? 1 : 2, linkControl.creates);
+                if(rejected) {
+                    assertNull(secondLink);
+                    assertTrue(errors.getExecutionErrors().containsKey(Messages.EXECUTION_ERROR,
+                            ExecutionErrors.LinkCardinalityViolation.name()));
+                } else {
+                    assertNotNull(secondLink);
+                }
+            }
+        }
+    }
+
+    @Test
+    public void symmetricLinksHaveOneRowAndSupportReverseLookupAndDeletion() {
+        var linkControl = new MemoryControl();
+        var linkLogic = logic(linkControl);
+        var linkType = linkType(3L, LinkCardinalities.MANY_TO_MANY.name(), LinkDirectionalities.SYMMETRIC.name());
+        var firstEntityInstance = entityInstance(10L, SOURCE_ENTITY_TYPE_PK);
+        var secondEntityInstance = entityInstance(11L, SOURCE_ENTITY_TYPE_PK);
+        var link = linkLogic.createLink(null, linkType, firstEntityInstance, secondEntityInstance, null);
+
+        assertSame(link, linkLogic.getLink(null, linkType, secondEntityInstance, firstEntityInstance));
+        var errors = new DummyExecutionErrorAccumulator();
+        assertSame(link, linkLogic.createLink(errors, linkType, secondEntityInstance, firstEntityInstance, null));
+        assertTrue(errors.getExecutionErrors().containsKey(Messages.EXECUTION_ERROR, ExecutionErrors.DuplicateLink.name()));
+        assertEquals(1, linkControl.links.size());
+        linkLogic.deleteLink(null, linkType, secondEntityInstance, firstEntityInstance, null);
+        assertEquals(EntityPermission.READ_WRITE, linkControl.entityPermission);
+        assertTrue(linkControl.links.isEmpty());
+        assertNotNull(linkLogic.createLink(null, linkType, secondEntityInstance, firstEntityInstance, null));
+    }
+
+    @Test
+    public void symmetricOneToOneChecksBothRolesAtBothEndpoints() {
+        for(var firstIdentifier : List.of(10L, 11L, 12L)) {
+            for(var secondIdentifier : List.of(10L, 11L, 12L)) {
+                if(firstIdentifier == 12L || secondIdentifier == 12L) {
+                    var linkControl = new MemoryControl();
+                    var linkLogic = logic(linkControl);
+                    var linkType = linkType(3L, LinkCardinalities.ONE_TO_ONE.name(), LinkDirectionalities.SYMMETRIC.name());
+                    linkLogic.createLink(null, linkType, entityInstance(10L, SOURCE_ENTITY_TYPE_PK),
+                            entityInstance(11L, SOURCE_ENTITY_TYPE_PK), null);
+                    var errors = new DummyExecutionErrorAccumulator();
+                    var link = linkLogic.createLink(errors, linkType, entityInstance(firstIdentifier, SOURCE_ENTITY_TYPE_PK),
+                            entityInstance(secondIdentifier, SOURCE_ENTITY_TYPE_PK), null);
+
+                    assertEquals(firstIdentifier != 12L || secondIdentifier != 12L, errors.hasExecutionErrors());
+                    assertEquals(errors.hasExecutionErrors(), link == null);
+                }
+            }
+        }
+    }
+
+    @Test
+    public void symmetricManyToManyAllowsMultiplePartnersInEitherRole() {
+        var linkControl = new MemoryControl();
+        var linkLogic = logic(linkControl);
+        var linkType = linkType(3L, LinkCardinalities.MANY_TO_MANY.name(), LinkDirectionalities.SYMMETRIC.name());
+        var firstEntityInstance = entityInstance(10L, SOURCE_ENTITY_TYPE_PK);
+        var secondEntityInstance = entityInstance(11L, SOURCE_ENTITY_TYPE_PK);
+        var thirdEntityInstance = entityInstance(12L, SOURCE_ENTITY_TYPE_PK);
+
+        assertNotNull(linkLogic.createLink(null, linkType, firstEntityInstance, secondEntityInstance, null));
+        assertNotNull(linkLogic.createLink(null, linkType, thirdEntityInstance, firstEntityInstance, null));
+        assertNotNull(linkLogic.createLink(null, linkType, secondEntityInstance, thirdEntityInstance, null));
+        assertEquals(3, linkControl.links.size());
+    }
+
+    @Test
+    public void directedLinksDoNotResolveOrDeleteInReverseAndMayCoexist() {
+        var linkControl = new MemoryControl();
+        var linkLogic = logic(linkControl);
+        var linkType = linkType(3L, LinkCardinalities.MANY_TO_MANY.name(), LinkDirectionalities.DIRECTED.name(), true);
+        var firstEntityInstance = entityInstance(10L, SOURCE_ENTITY_TYPE_PK);
+        var secondEntityInstance = entityInstance(11L, SOURCE_ENTITY_TYPE_PK);
+        var firstLink = linkLogic.createLink(null, linkType, firstEntityInstance, secondEntityInstance, null);
+        var errors = new DummyExecutionErrorAccumulator();
+
+        assertNull(linkLogic.getLink(errors, linkType, secondEntityInstance, firstEntityInstance));
+        assertTrue(errors.getExecutionErrors().containsKey(Messages.EXECUTION_ERROR, ExecutionErrors.UnknownLink.name()));
+        linkLogic.deleteLink(new DummyExecutionErrorAccumulator(), linkType, secondEntityInstance, firstEntityInstance, null);
+        assertEquals(0, linkControl.deletes);
+        var reverseLink = linkLogic.createLink(null, linkType, secondEntityInstance, firstEntityInstance, null);
+        assertNotEquals(firstLink, reverseLink);
+        assertEquals(2, linkControl.links.size());
+    }
+
+    @Test
+    public void cardinalityIsPerLinkTypeAndDeletionFreesTheEndpoint() {
+        var linkControl = new MemoryControl();
+        var linkLogic = logic(linkControl);
+        var firstLinkType = linkType(3L, LinkCardinalities.ONE_TO_ONE.name(), LinkDirectionalities.DIRECTED.name());
+        var secondLinkType = linkType(4L, LinkCardinalities.ONE_TO_ONE.name(), LinkDirectionalities.DIRECTED.name());
+        var sourceEntityInstance = entityInstance(10L, SOURCE_ENTITY_TYPE_PK);
+        var targetEntityInstance = entityInstance(11L, TARGET_ENTITY_TYPE_PK);
+        var otherTargetEntityInstance = entityInstance(12L, TARGET_ENTITY_TYPE_PK);
+
+        linkLogic.createLink(null, firstLinkType, sourceEntityInstance, targetEntityInstance, null);
+        assertNotNull(linkLogic.createLink(null, secondLinkType, sourceEntityInstance, otherTargetEntityInstance, null));
+        linkLogic.deleteLink(null, firstLinkType, sourceEntityInstance, targetEntityInstance, null);
+        assertNotNull(linkLogic.createLink(null, firstLinkType, sourceEntityInstance, otherTargetEntityInstance, null));
+    }
+
+    @Test
+    public void locksEndpointsInStableOrderAndLocksSelfLinksOnce() {
+        var linkControl = new MemoryControl();
+        var linkLogic = logic(linkControl);
+        var linkType = linkType(3L, LinkCardinalities.MANY_TO_MANY.name(), LinkDirectionalities.SYMMETRIC.name());
+        var firstEntityInstance = entityInstance(10L, SOURCE_ENTITY_TYPE_PK);
+        var secondEntityInstance = entityInstance(11L, SOURCE_ENTITY_TYPE_PK);
+
+        linkLogic.createLink(null, linkType, secondEntityInstance, firstEntityInstance, null);
+        assertEquals(List.of(firstEntityInstance.getPrimaryKey(), secondEntityInstance.getPrimaryKey()), linkControl.locks);
+        linkControl.locks.clear();
+        linkLogic.createLink(null, linkType, firstEntityInstance, firstEntityInstance, null);
+        assertEquals(List.of(firstEntityInstance.getPrimaryKey()), linkControl.locks);
+    }
+
+    @Test
+    public void rejectsUnknownMetadataAndAsymmetricCardinalityForSymmetricLinks() {
+        for(var names : List.of(List.of("UNKNOWN", "DIRECTED"), List.of("ONE_TO_ONE", "UNKNOWN"),
+                List.of("ONE_TO_MANY", "SYMMETRIC"), List.of("MANY_TO_ONE", "SYMMETRIC"))) {
+            var linkControl = new MemoryControl();
+            var linkLogic = logic(linkControl);
+            var linkType = linkType(3L, names.get(0), names.get(1));
+            var sourceEntityInstance = entityInstance(10L, SOURCE_ENTITY_TYPE_PK);
+            var targetEntityInstance = entityInstance(11L, linkType.getLastDetail().getTargetEntityTypePK());
+            var errors = new DummyExecutionErrorAccumulator();
+
+            assertNull(linkLogic.createLink(errors, linkType, sourceEntityInstance, targetEntityInstance, null));
+            assertTrue(errors.getExecutionErrors().containsKey(Messages.EXECUTION_ERROR, ExecutionErrors.InvalidLinkTypeEndpoints.name()));
+            assertEquals(0, linkControl.creates);
+            assertTrue(linkControl.locks.isEmpty());
+        }
     }
 
 }

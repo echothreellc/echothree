@@ -468,8 +468,16 @@ public class EntityInstanceControl
         return getEntityInstanceByEntityRef(entityRef, EntityPermission.READ_WRITE);
     }
 
+    public EntityInstance getEntityInstanceByPK(EntityInstancePK entityInstancePK, EntityPermission entityPermission) {
+        return entityInstanceFactory.getEntityFromPK(entityPermission, entityInstancePK);
+    }
+
     public EntityInstance getEntityInstanceByPK(EntityInstancePK entityInstancePK) {
-        return entityInstanceFactory.getEntityFromPK(EntityPermission.READ_ONLY, entityInstancePK);
+        return getEntityInstanceByPK(entityInstancePK, EntityPermission.READ_ONLY);
+    }
+
+    public EntityInstance getEntityInstanceByPKForUpdate(EntityInstancePK entityInstancePK) {
+        return getEntityInstanceByPK(entityInstancePK, EntityPermission.READ_WRITE);
     }
 
     /** This function is a little odd. It doesn't actually delete the Entity Instance, rather, it cleans up all the

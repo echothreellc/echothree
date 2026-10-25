@@ -2478,6 +2478,7 @@ public enum ExecutionErrors {
     DuplicateLinkDirectionalityDescription,
     UnknownLinkDirectionalityDescription,
     UnknownDefaultLinkDirectionality,
+    LinkCardinalityViolation,
     DuplicateLink,
     UnknownLink,
     InvalidLinkEndpoints,
