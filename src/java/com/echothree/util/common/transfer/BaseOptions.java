@@ -21,5 +21,7 @@ public interface BaseOptions {
     String BaseIncludeEntityAliases         = "BaseIncludeEntityAliases";
     String BaseIncludeEntityAttributeGroups = "BaseIncludeEntityAttributeGroups";
     String BaseIncludeTagScopes             = "BaseIncludeTagScopes";
-    
+    String BaseIncludeSourceLinkTypes       = "BaseIncludeSourceLinkTypes";
+    String BaseIncludeTargetLinkTypes       = "BaseIncludeTargetLinkTypes";
+
 }

@@ -20,16 +20,19 @@ import com.echothree.control.user.core.common.form.CoreFormFactory;
 import com.echothree.control.user.core.server.command.GetEntityAliasTypeCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeGroupCommand;
+import com.echothree.control.user.core.server.command.GetLinkTypeCommand;
 import com.echothree.control.user.tag.common.form.TagFormFactory;
 import com.echothree.control.user.tag.server.command.GetTagScopeCommand;
 import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.control.core.server.control.LinkTypeControl;
 import com.echothree.model.control.core.server.graphql.CoreSecurityUtils;
 import com.echothree.model.control.core.server.graphql.EntityAliasTypeObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeGroupObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeObject;
 import com.echothree.model.control.core.server.graphql.EntityInstanceObject;
+import com.echothree.model.control.core.server.graphql.LinkTypeObject;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
@@ -42,6 +45,7 @@ import com.echothree.model.control.tag.server.graphql.TagSecurityUtils;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusObject;
 import com.echothree.model.data.core.common.EntityAliasTypeConstants;
 import com.echothree.model.data.core.common.EntityAttributeGroupConstants;
+import com.echothree.model.data.core.common.LinkTypeConstants;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.tag.common.TagScopeConstants;
 import com.echothree.util.common.persistence.BasePK;
@@ -284,6 +288,84 @@ public abstract class BaseEntityInstanceObject
         } else {
             return null;
         }
+    }
+
+    private CountingPaginatedData<LinkTypeObject> getLinkTypes(final DataFetchingEnvironment env, boolean asSource) {
+        var entityInstance = getEntityInstanceByBasePK();
+
+        if(entityInstance != null && CoreSecurityUtils.getHasLinkTypesAccess(env)) {
+            var linkTypeControl = Session.getModelController(LinkTypeControl.class);
+            var entityType = entityInstance.getEntityType();
+            var condition = linkTypeControl.getLinkTypeFilter(null, asSource ? entityType : null, asSource ? null : entityType, null, null, null);
+            var totalCount = linkTypeControl.countLinkTypes(condition);
+
+            try(var objectLimiter = new ObjectLimiter(env, LinkTypeConstants.COMPONENT_VENDOR_NAME, LinkTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = linkTypeControl.getLinkTypes(condition);
+                var linkTypes = new ArrayList<LinkTypeObject>(entities.size());
+
+                entities.forEach(entity -> linkTypes.add(new LinkTypeObject(entity, asSource ? entityInstance : null, asSource ? null : entityInstance)));
+
+                return new CountedObjects<>(objectLimiter, linkTypes);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    private LinkTypeObject getLinkType(final DataFetchingEnvironment env, String linkTypeName, String id, boolean asSource) {
+        LinkTypeObject linkTypeObject = null;
+        var entityInstance = getEntityInstanceByBasePK();
+
+        if(entityInstance != null) {
+            var commandForm = CoreFormFactory.getGetLinkTypeForm();
+            commandForm.setLinkTypeName(linkTypeName);
+            commandForm.setUuid(id);
+
+            var linkType = CDI.current().select(GetLinkTypeCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+
+            if(linkType != null) {
+                var linkTypeDetail = linkType.getLastDetail();
+                var entityTypePK = asSource ? linkTypeDetail.getSourceEntityTypePK() : linkTypeDetail.getTargetEntityTypePK();
+
+                if(entityInstance.getEntityTypePK().equals(entityTypePK)) {
+                    linkTypeObject = new LinkTypeObject(linkType, asSource ? entityInstance : null, asSource ? null : entityInstance);
+                }
+            }
+        }
+
+        return linkTypeObject;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("source link types")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<LinkTypeObject> getSourceLinkTypes(final DataFetchingEnvironment env) {
+        return getLinkTypes(env, true);
+    }
+
+    @GraphQLField
+    @GraphQLDescription("source link type")
+    public LinkTypeObject getSourceLinkType(final DataFetchingEnvironment env,
+            @GraphQLName("linkTypeName") final String linkTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        return getLinkType(env, linkTypeName, id, true);
+    }
+
+    @GraphQLField
+    @GraphQLDescription("target link types")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<LinkTypeObject> getTargetLinkTypes(final DataFetchingEnvironment env) {
+        return getLinkTypes(env, false);
+    }
+
+    @GraphQLField
+    @GraphQLDescription("target link type")
+    public LinkTypeObject getTargetLinkType(final DataFetchingEnvironment env,
+            @GraphQLName("linkTypeName") final String linkTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        return getLinkType(env, linkTypeName, id, false);
     }
 
 }

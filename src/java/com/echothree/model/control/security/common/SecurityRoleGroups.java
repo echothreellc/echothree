@@ -222,6 +222,7 @@ public enum SecurityRoleGroups {
     LetterSource,
     LetterContactMechanismPurpose,
     LicenseType,
+    Link,
     LinkCardinality,
     LinkDirectionality,
     LinkType,

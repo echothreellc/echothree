@@ -89,6 +89,9 @@ public class EntityInstanceControl
     protected EntityTypeControl entityTypeControl;
 
     @Inject
+    protected LinkControl linkControl;
+
+    @Inject
     protected MessageControl messageControl;
 
     @Inject
@@ -465,8 +468,16 @@ public class EntityInstanceControl
         return getEntityInstanceByEntityRef(entityRef, EntityPermission.READ_WRITE);
     }
 
+    public EntityInstance getEntityInstanceByPK(EntityInstancePK entityInstancePK, EntityPermission entityPermission) {
+        return entityInstanceFactory.getEntityFromPK(entityPermission, entityInstancePK);
+    }
+
     public EntityInstance getEntityInstanceByPK(EntityInstancePK entityInstancePK) {
-        return entityInstanceFactory.getEntityFromPK(EntityPermission.READ_ONLY, entityInstancePK);
+        return getEntityInstanceByPK(entityInstancePK, EntityPermission.READ_ONLY);
+    }
+
+    public EntityInstance getEntityInstanceByPKForUpdate(EntityInstancePK entityInstancePK) {
+        return getEntityInstanceByPK(entityInstancePK, EntityPermission.READ_WRITE);
     }
 
     /** This function is a little odd. It doesn't actually delete the Entity Instance, rather, it cleans up all the
@@ -478,6 +489,8 @@ public class EntityInstanceControl
         associateControl.deleteAssociateReferralsByTargetEntityInstance(entityInstance, deletedBy);
         batchControl.deleteBatchEntitiesByEntityInstance(entityInstance, deletedBy);
         commentControl.deleteCommentsByEntityInstance(entityInstance, deletedBy);
+        linkControl.deleteLinksBySourceEntityInstance(entityInstance, deletedBy);
+        linkControl.deleteLinksByTargetEntityInstance(entityInstance, deletedBy);
         messageControl.deleteEntityMessagesByEntityInstance(entityInstance, deletedBy);
         ratingControl.deleteRatingsByEntityInstance(entityInstance, deletedBy);
         searchControl.removeSearchResultsByEntityInstance(entityInstance);

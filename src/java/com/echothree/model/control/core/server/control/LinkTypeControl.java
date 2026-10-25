@@ -37,6 +37,11 @@ import com.echothree.model.data.core.server.value.LinkTypeDetailValue;
 import com.echothree.model.data.core.server.value.LinkTypeTranslationValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.LINK_TYPES_LAST_DETAIL_FK;
+import static com.echothree.model.jooq.server.tables.core.LinkTypeDetails.LinkTypeDetails;
+import static com.echothree.model.jooq.server.tables.core.LinkTypeTranslations.LinkTypeTranslations;
+import static com.echothree.model.jooq.server.tables.core.LinkTypes.LinkTypes;
+import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
@@ -48,15 +53,13 @@ import java.util.List;
 import javax.inject.Inject;
 import org.jooq.Condition;
 import org.jooq.impl.DSL;
-import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.LINK_TYPES_LAST_DETAIL_FK;
-import static com.echothree.model.jooq.server.tables.core.LinkTypeDetails.LinkTypeDetails;
-import static com.echothree.model.jooq.server.tables.core.LinkTypeTranslations.LinkTypeTranslations;
-import static com.echothree.model.jooq.server.tables.core.LinkTypes.LinkTypes;
-import static com.echothree.model.jooq.server.tables.party.Languages.Languages;
 
 @CommandScope
 public class LinkTypeControl
         extends BaseModelControl {
+
+    @Inject
+    LinkControl linkControl;
 
     @Inject
     LinkTypeTransferCache linkTypeTransferCache;
@@ -251,6 +254,32 @@ public class LinkTypeControl
         return getLinkTypeTransfers(userVisit, getLinkTypes());
     }
 
+    public LinkTypeTransfer getLinkTypeTransfer(UserVisit userVisit, LinkType linkType,
+            EntityInstance sourceEntityInstance, EntityInstance targetEntityInstance) {
+        return linkTypeTransferCache.getTransfer(userVisit, linkType, sourceEntityInstance, targetEntityInstance);
+    }
+
+    public List<LinkTypeTransfer> getLinkTypeTransfers(UserVisit userVisit, Collection<LinkType> linkTypes,
+            EntityInstance sourceEntityInstance, EntityInstance targetEntityInstance) {
+        var linkTypeTransfers = new ArrayList<LinkTypeTransfer>(linkTypes.size());
+
+        linkTypes.forEach(linkType -> linkTypeTransfers.add(getLinkTypeTransfer(userVisit, linkType, sourceEntityInstance, targetEntityInstance)));
+
+        return linkTypeTransfers;
+    }
+
+    public List<LinkTypeTransfer> getLinkTypeTransfersBySourceEntityInstance(UserVisit userVisit, EntityInstance entityInstance) {
+        var condition = getLinkTypeFilter(null, entityInstance.getEntityType(), null, null, null, null);
+
+        return getLinkTypeTransfers(userVisit, getLinkTypes(condition), entityInstance, null);
+    }
+
+    public List<LinkTypeTransfer> getLinkTypeTransfersByTargetEntityInstance(UserVisit userVisit, EntityInstance entityInstance) {
+        var condition = getLinkTypeFilter(null, null, entityInstance.getEntityType(), null, null, null);
+
+        return getLinkTypeTransfers(userVisit, getLinkTypes(condition), null, entityInstance);
+    }
+
     public LinkTypeChoicesBean getLinkTypeChoices(String defaultLinkTypeChoice,
             Language language, boolean allowNullChoice) {
         var linkTypes = getLinkTypes();
@@ -307,6 +336,7 @@ public class LinkTypeControl
     }
 
     public void deleteLinkType(LinkType linkType, BasePK deletedBy) {
+        linkControl.deleteLinksByLinkType(linkType, deletedBy);
         deleteLinkTypeTranslationsByLinkType(linkType, deletedBy);
 
         var linkTypeDetail = linkType.getLastDetailForUpdate();

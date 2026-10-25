@@ -20,10 +20,12 @@ import com.echothree.model.control.comment.common.transfer.CommentListWrapper;
 import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.core.common.transfer.EntityAliasTransfer;
 import com.echothree.model.control.core.common.transfer.EntityAttributeGroupTransfer;
+import com.echothree.model.control.core.common.transfer.LinkTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.control.core.server.control.LinkTypeControl;
 import com.echothree.model.control.rating.common.transfer.RatingListWrapper;
 import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.control.tag.common.transfer.TagScopeTransfer;
@@ -79,6 +81,9 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     protected EntityInstanceControl entityInstanceControl;
 
     @Inject
+    protected LinkTypeControl linkTypeControl;
+
+    @Inject
     protected RatingControl ratingControl;
 
     @Inject
@@ -107,6 +112,8 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     boolean includeEntityAliases;
     boolean includeEntityAttributeGroups;
     boolean includeTagScopes;
+    boolean includeSourceLinkTypes;
+    boolean includeTargetLinkTypes;
     
     /** Creates a new instance of BaseTransferCache */
     protected BaseTransferCache() {
@@ -118,6 +125,8 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
             includeEntityAliases = options.contains(BaseOptions.BaseIncludeEntityAliases);
             includeEntityAttributeGroups = options.contains(BaseOptions.BaseIncludeEntityAttributeGroups);
             includeTagScopes = options.contains(BaseOptions.BaseIncludeTagScopes);
+            includeSourceLinkTypes = options.contains(BaseOptions.BaseIncludeSourceLinkTypes);
+            includeTargetLinkTypes = options.contains(BaseOptions.BaseIncludeTargetLinkTypes);
         }
     }
     
@@ -289,6 +298,29 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         transfer.setTagScopes(mapWrapper);
     }
 
+    protected void setIncludeSourceLinkTypes(boolean includeSourceLinkTypes) {
+        this.includeSourceLinkTypes = includeSourceLinkTypes;
+    }
+
+    protected void setIncludeTargetLinkTypes(boolean includeTargetLinkTypes) {
+        this.includeTargetLinkTypes = includeTargetLinkTypes;
+    }
+
+    protected void setupLinkTypes(UserVisit userVisit, EntityInstance entityInstance, V transfer, boolean asSource) {
+        var linkTypeTransfers = asSource ? linkTypeControl.getLinkTypeTransfersBySourceEntityInstance(userVisit, entityInstance)
+                : linkTypeControl.getLinkTypeTransfersByTargetEntityInstance(userVisit, entityInstance);
+        var mapWrapper = new MapWrapper<LinkTypeTransfer>(linkTypeTransfers.size());
+
+        linkTypeTransfers.forEach(linkTypeTransfer ->
+                mapWrapper.put(linkTypeTransfer.getLinkTypeName(), linkTypeTransfer)
+        );
+
+        if(asSource) {
+            transfer.setSourceLinkTypes(mapWrapper);
+        } else {
+            transfer.setTargetLinkTypes(mapWrapper);
+        }
+    }
 
     /**
      * Returns the includeEntityInstance.
@@ -381,7 +413,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
             transfer.setEntityInstance(entityInstanceControl.getEntityInstanceTransfer(userVisit, entityInstance, includeEntityAppearance,
                     includeEntityVisit, includeNames, includeUuid));
 
-            if(includeEntityAliases || includeEntityAttributeGroups || includeTagScopes) {
+            if(includeEntityAliases || includeEntityAttributeGroups || includeTagScopes || includeSourceLinkTypes || includeTargetLinkTypes) {
                 if(includeEntityAliases) {
                     setupEntityAliases(userVisit, entityInstance, transfer);
                 }
@@ -392,6 +424,14 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
 
                 if(includeTagScopes) {
                     setupTagScopes(userVisit, entityInstance, transfer);
+                }
+
+                if(includeSourceLinkTypes) {
+                    setupLinkTypes(userVisit, entityInstance, transfer, true);
+                }
+
+                if(includeTargetLinkTypes) {
+                    setupLinkTypes(userVisit, entityInstance, transfer, false);
                 }
             }
         }

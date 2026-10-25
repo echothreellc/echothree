@@ -17,7 +17,6 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.LinkTypeTranslationTransfer;
-import com.echothree.model.control.core.server.control.LinkTypeControl;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.core.server.entity.LinkTypeTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -27,9 +26,6 @@ import javax.inject.Inject;
 @RequestScoped
 public class LinkTypeTranslationTransferCache
         extends BaseCoreDescriptionTransferCache<LinkTypeTranslation, LinkTypeTranslationTransfer> {
-
-    @Inject
-    LinkTypeControl linkTypeControl;
 
     @Inject
     MimeTypeControl mimeTypeControl;

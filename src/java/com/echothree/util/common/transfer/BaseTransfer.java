@@ -20,6 +20,7 @@ import com.echothree.model.control.comment.common.transfer.CommentListWrapper;
 import com.echothree.model.control.core.common.transfer.EntityAliasTransfer;
 import com.echothree.model.control.core.common.transfer.EntityAttributeGroupTransfer;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
+import com.echothree.model.control.core.common.transfer.LinkTypeTransfer;
 import com.echothree.model.control.rating.common.transfer.RatingListWrapper;
 import com.echothree.model.control.tag.common.transfer.TagScopeTransfer;
 import com.echothree.model.control.workeffort.common.transfer.WorkEffortTransfer;
@@ -32,6 +33,8 @@ public class BaseTransfer
     private MapWrapper<EntityAliasTransfer> entityAliases;
     private MapWrapper<EntityAttributeGroupTransfer> entityAttributeGroups;
     private MapWrapper<TagScopeTransfer> tagScopes;
+    private MapWrapper<LinkTypeTransfer> sourceLinkTypes;
+    private MapWrapper<LinkTypeTransfer> targetLinkTypes;
     private MapWrapper<CommentListWrapper> comments;
     private MapWrapper<RatingListWrapper> ratings;
     private MapWrapper<WorkEffortTransfer> ownedWorkEfforts;
@@ -67,7 +70,23 @@ public class BaseTransfer
     public void setTagScopes(MapWrapper<TagScopeTransfer> tagScopes) {
         this.tagScopes = tagScopes;
     }
-    
+
+    public MapWrapper<LinkTypeTransfer> getSourceLinkTypes() {
+        return sourceLinkTypes;
+    }
+
+    public void setSourceLinkTypes(MapWrapper<LinkTypeTransfer> sourceLinkTypes) {
+        this.sourceLinkTypes = sourceLinkTypes;
+    }
+
+    public MapWrapper<LinkTypeTransfer> getTargetLinkTypes() {
+        return targetLinkTypes;
+    }
+
+    public void setTargetLinkTypes(MapWrapper<LinkTypeTransfer> targetLinkTypes) {
+        this.targetLinkTypes = targetLinkTypes;
+    }
+
     public MapWrapper<CommentListWrapper> getComments() {
         return comments;
     }

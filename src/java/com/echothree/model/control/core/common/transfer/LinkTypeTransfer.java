@@ -17,6 +17,7 @@
 package com.echothree.model.control.core.common.transfer;
 
 import com.echothree.util.common.transfer.BaseTransfer;
+import com.echothree.util.common.transfer.ListWrapper;
 
 public class LinkTypeTransfer
         extends BaseTransfer {
@@ -34,7 +35,12 @@ public class LinkTypeTransfer
     private MimeTypeTransfer guidanceMimeType;
     private String guidance;
 
-    public LinkTypeTransfer(String linkTypeName, LinkTypeTransfer parentLinkType, EntityTypeTransfer sourceEntityType, EntityTypeTransfer targetEntityType, LinkCardinalityTransfer linkCardinality, LinkDirectionalityTransfer linkDirectionality, Boolean isTransitive, LinkTypeTransfer inverseLinkType, Integer sortOrder, String description, MimeTypeTransfer guidanceMimeType, String guidance) {
+    private ListWrapper<LinkTransfer> links;
+
+    public LinkTypeTransfer(String linkTypeName, LinkTypeTransfer parentLinkType, EntityTypeTransfer sourceEntityType,
+            EntityTypeTransfer targetEntityType, LinkCardinalityTransfer linkCardinality, LinkDirectionalityTransfer linkDirectionality,
+            Boolean isTransitive, LinkTypeTransfer inverseLinkType, Integer sortOrder, String description,
+            MimeTypeTransfer guidanceMimeType, String guidance) {
         this.linkTypeName = linkTypeName;
         this.parentLinkType = parentLinkType;
         this.sourceEntityType = sourceEntityType;
@@ -143,6 +149,14 @@ public class LinkTypeTransfer
 
     public void setGuidance(String guidance) {
         this.guidance = guidance;
+    }
+
+    public ListWrapper<LinkTransfer> getLinks() {
+        return links;
+    }
+
+    public void setLinks(ListWrapper<LinkTransfer> links) {
+        this.links = links;
     }
 
 }

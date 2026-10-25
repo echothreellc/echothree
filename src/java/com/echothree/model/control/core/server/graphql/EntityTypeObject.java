@@ -19,6 +19,7 @@ package com.echothree.model.control.core.server.graphql;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
+import com.echothree.model.control.core.server.control.LinkTypeControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
@@ -32,6 +33,7 @@ import com.echothree.model.control.tag.server.graphql.TagSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.core.common.EntityAttributeConstants;
 import com.echothree.model.data.core.common.EntityInstanceConstants;
+import com.echothree.model.data.core.common.LinkTypeConstants;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.EntityTypeDetail;
 import com.echothree.model.data.tag.common.TagScopeEntityTypeConstants;
@@ -177,6 +179,54 @@ public class EntityTypeObject
                 var entityTypes = entities.stream().map(TagScopeEntityTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, entityTypes);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("source link types")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<LinkTypeObject> getSourceLinkTypes(final DataFetchingEnvironment env) {
+        if(CoreSecurityUtils.getHasLinkTypesAccess(env)) {
+            var linkTypeControl = Session.getModelController(LinkTypeControl.class);
+            var condition = linkTypeControl.getLinkTypeFilter(null, entityType, null, null, null, null);
+            var totalCount = linkTypeControl.countLinkTypes(condition);
+
+            try(var objectLimiter = new ObjectLimiter(env, LinkTypeConstants.COMPONENT_VENDOR_NAME,
+                    LinkTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = linkTypeControl.getLinkTypes(condition);
+                var sourceLinkTypes = entities.stream()
+                        .map(LinkTypeObject::new)
+                        .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, sourceLinkTypes);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("target link types")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<LinkTypeObject> getTargetLinkTypes(final DataFetchingEnvironment env) {
+        if(CoreSecurityUtils.getHasLinkTypesAccess(env)) {
+            var linkTypeControl = Session.getModelController(LinkTypeControl.class);
+            var condition = linkTypeControl.getLinkTypeFilter(null, null, entityType, null, null, null);
+            var totalCount = linkTypeControl.countLinkTypes(condition);
+
+            try(var objectLimiter = new ObjectLimiter(env, LinkTypeConstants.COMPONENT_VENDOR_NAME,
+                    LinkTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = linkTypeControl.getLinkTypes(condition);
+                var targetLinkTypes = entities.stream()
+                        .map(LinkTypeObject::new)
+                        .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, targetLinkTypes);
             }
         } else {
             return Connections.emptyConnection();

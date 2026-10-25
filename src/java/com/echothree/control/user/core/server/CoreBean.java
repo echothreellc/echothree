@@ -2796,6 +2796,30 @@ public class CoreBean
     }
 
     // -------------------------------------------------------------------------
+    //   Links
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult<CreateLinkResult> createLink(UserVisitPK userVisitPK, CreateLinkForm form) {
+        return CDI.current().select(CreateLinkCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetLinkResult> getLink(UserVisitPK userVisitPK, GetLinkForm form) {
+        return CDI.current().select(GetLinkCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<GetLinksResult> getLinks(UserVisitPK userVisitPK, GetLinksForm form) {
+        return CDI.current().select(GetLinksCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult<VoidResult> deleteLink(UserVisitPK userVisitPK, DeleteLinkForm form) {
+        return CDI.current().select(DeleteLinkCommand.class).get().run(userVisitPK, form);
+    }
+
+    // -------------------------------------------------------------------------
     //   Utilities
     // -------------------------------------------------------------------------
 

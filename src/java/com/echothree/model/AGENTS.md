@@ -21,8 +21,3 @@
 - Expose Control lookup overloads that accept `EntityPermission` when Commands need to select read-only or read-write behavior via `editModeToEntityPermission(editMode)`; keep convenience read-only and for-update methods delegating to that overload
 - Follow entity-specific event ownership requirements
   - For `PartyBucket`, send `TOUCH` events against the associated `Item`; do not make `PartyBucket` the primary event entity
-
-### GraphQL Conventions
-
-- GraphQL query parameters must match the corresponding Command's complete parameter set except `EntityRef`, which must never be exposed as a GraphQL query argument or mutation input field. Map `Uuid` to `id` with `@GraphQLID`.
-- Apply `@GraphQLNonNull` exactly when the Command field definition marks the parameter as required
