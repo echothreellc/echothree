@@ -59,6 +59,9 @@ public class LinkTypeControl
         extends BaseModelControl {
 
     @Inject
+    LinkControl linkControl;
+
+    @Inject
     LinkTypeTransferCache linkTypeTransferCache;
 
     @Inject
@@ -307,6 +310,7 @@ public class LinkTypeControl
     }
 
     public void deleteLinkType(LinkType linkType, BasePK deletedBy) {
+        linkControl.deleteLinksByLinkType(linkType, deletedBy);
         deleteLinkTypeTranslationsByLinkType(linkType, deletedBy);
 
         var linkTypeDetail = linkType.getLastDetailForUpdate();

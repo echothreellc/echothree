@@ -89,6 +89,9 @@ public class EntityInstanceControl
     protected EntityTypeControl entityTypeControl;
 
     @Inject
+    protected LinkControl linkControl;
+
+    @Inject
     protected MessageControl messageControl;
 
     @Inject
@@ -478,6 +481,8 @@ public class EntityInstanceControl
         associateControl.deleteAssociateReferralsByTargetEntityInstance(entityInstance, deletedBy);
         batchControl.deleteBatchEntitiesByEntityInstance(entityInstance, deletedBy);
         commentControl.deleteCommentsByEntityInstance(entityInstance, deletedBy);
+        linkControl.deleteLinksBySourceEntityInstance(entityInstance, deletedBy);
+        linkControl.deleteLinksByTargetEntityInstance(entityInstance, deletedBy);
         messageControl.deleteEntityMessagesByEntityInstance(entityInstance, deletedBy);
         ratingControl.deleteRatingsByEntityInstance(entityInstance, deletedBy);
         searchControl.removeSearchResultsByEntityInstance(entityInstance);
