@@ -81,7 +81,7 @@ public class LinkDirectionalitySteps implements En {
                     persona.deleteLinkDirectionalityForm = CoreUtil.getHome().getDeleteLinkDirectionalityForm();
                 });
 
-        And("^the user deletes the link directionality",
+        And("^the user deletes the link directionality$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteLinkDirectionalityForm = persona.deleteLinkDirectionalityForm;

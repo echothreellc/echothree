@@ -81,7 +81,7 @@ public class LinkCardinalitySteps implements En {
                     persona.deleteLinkCardinalityForm = CoreUtil.getHome().getDeleteLinkCardinalityForm();
                 });
 
-        And("^the user deletes the link cardinality",
+        And("^the user deletes the link cardinality$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteLinkCardinalityForm = persona.deleteLinkCardinalityForm;

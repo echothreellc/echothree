@@ -72,7 +72,7 @@ public class LinkTypeSteps implements En {
                     persona.deleteLinkTypeForm = CoreUtil.getHome().getDeleteLinkTypeForm();
                 });
 
-        And("^the user deletes the link type",
+        And("^the user deletes the link type$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteLinkTypeForm = persona.deleteLinkTypeForm;
