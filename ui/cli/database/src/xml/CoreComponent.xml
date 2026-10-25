@@ -3844,6 +3844,39 @@
                         </index>
                     </indexes>
                 </table>
+                <table namePlural="Links" nameSingular="Link" columnPrefix="lnk">
+                    <columns>
+                        <column name="LinkId" type="EID" nullAllowed="false" />
+                        <column name="LinkTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="LinkTypes" destinationColumn="LinkTypeId" />
+                        <column name="SourceEntityInstanceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityInstances" destinationColumn="EntityInstanceId" />
+                        <column name="TargetEntityInstanceId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="EntityInstances" destinationColumn="EntityInstanceId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="LinkId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="LinkTypeId" />
+                            <indexColumn name="SourceEntityInstanceId" />
+                            <indexColumn name="TargetEntityInstanceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="LinkTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="SourceEntityInstanceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
+                            <indexColumn name="TargetEntityInstanceId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
             </tables>
         </component>
     </components>
