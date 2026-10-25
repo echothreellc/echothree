@@ -18144,6 +18144,52 @@ public interface GraphQlMutations {
 
     @GraphQLField
     @GraphQLRelayMutation
+    static MutationResultObject createLink(final DataFetchingEnvironment env,
+            @GraphQLName("linkTypeName") @GraphQLNonNull final String linkTypeName,
+            @GraphQLName("sourceId") @GraphQLNonNull @GraphQLID final String sourceId,
+            @GraphQLName("targetId") @GraphQLNonNull @GraphQLID final String targetId) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getCreateLinkForm();
+
+            commandForm.setLinkTypeName(linkTypeName);
+            commandForm.setSourceUuid(sourceId);
+            commandForm.setTargetUuid(targetId);
+
+            mutationResultObject.setCommandResult(CoreUtil.getHome().createLink(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteLink(final DataFetchingEnvironment env,
+            @GraphQLName("linkTypeName") @GraphQLNonNull final String linkTypeName,
+            @GraphQLName("sourceId") @GraphQLNonNull @GraphQLID final String sourceId,
+            @GraphQLName("targetId") @GraphQLNonNull @GraphQLID final String targetId) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getDeleteLinkForm();
+
+            commandForm.setLinkTypeName(linkTypeName);
+            commandForm.setSourceUuid(sourceId);
+            commandForm.setTargetUuid(targetId);
+
+            mutationResultObject.setCommandResult(CoreUtil.getHome().deleteLink(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
     static MutationResultWithIdObject createLinkType(final DataFetchingEnvironment env,
             @GraphQLName("linkTypeName") @GraphQLNonNull final String linkTypeName,
             @GraphQLName("parentLinkTypeName") final String parentLinkTypeName,
