@@ -18,7 +18,9 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetLinksForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.control.LinkControl;
+import com.echothree.model.control.core.server.control.LinkTypeControl;
 import com.echothree.model.control.core.server.logic.LinkLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -63,7 +65,13 @@ public class GetLinksCommand
     }
 
     @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
     LinkControl linkControl;
+
+    @Inject
+    LinkTypeControl linkTypeControl;
 
     @Inject
     LinkLogic linkLogic;
@@ -74,10 +82,11 @@ public class GetLinksCommand
     }
 
     private Condition condition;
+    private LinkLogic.Definition definition;
 
     @Override
     protected void handleForm() {
-        var definition = linkLogic.getDefinition(this, form, true);
+        definition = linkLogic.getDefinition(this, form, true);
 
         if(!hasExecutionErrors()) {
             condition = linkControl.getLinkFilter(definition.linkType(), definition.sourceEntityInstance(), definition.targetEntityInstance());
@@ -99,11 +108,27 @@ public class GetLinksCommand
         var result = CoreResultFactory.getGetLinksResult();
 
         if(entities != null) {
+            var userVisit = getUserVisit();
+
+            if(definition.linkType() != null) {
+                result.setLinkType(linkTypeControl.getLinkTypeTransfer(userVisit, definition.linkType()));
+            }
+
+            if(definition.sourceEntityInstance() != null) {
+                result.setSourceEntityInstance(entityInstanceControl.getEntityInstanceTransfer(userVisit,
+                        definition.sourceEntityInstance(), false, false, false, false));
+            }
+
+            if(definition.targetEntityInstance() != null) {
+                result.setTargetEntityInstance(entityInstanceControl.getEntityInstanceTransfer(userVisit,
+                        definition.targetEntityInstance(), false, false, false, false));
+            }
+
             if(session.hasLimit(LinkFactory.class)) {
                 result.setLinkCount(getTotalEntities());
             }
 
-            result.setLinks(linkControl.getLinkTransfers(getUserVisit(), entities));
+            result.setLinks(linkControl.getLinkTransfers(userVisit, entities));
         }
 
         return result;

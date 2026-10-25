@@ -16,12 +16,23 @@
 
 package com.echothree.control.user.core.common.result;
 
+import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.common.transfer.LinkTransfer;
+import com.echothree.model.control.core.common.transfer.LinkTypeTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 
 public interface GetLinksResult
         extends BaseResult {
+
+    LinkTypeTransfer getLinkType();
+    void setLinkType(LinkTypeTransfer linkType);
+
+    EntityInstanceTransfer getSourceEntityInstance();
+    void setSourceEntityInstance(EntityInstanceTransfer sourceEntityInstance);
+
+    EntityInstanceTransfer getTargetEntityInstance();
+    void setTargetEntityInstance(EntityInstanceTransfer targetEntityInstance);
 
     Long getLinkCount();
     void setLinkCount(Long linkCount);
