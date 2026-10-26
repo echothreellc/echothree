@@ -43,8 +43,8 @@
         <dependency org="io.cloudevents" name="cloudevents-core" rev="5.0.0" conf="sources->sources" />
         <dependency org="io.cloudevents" name="cloudevents-json-jackson" rev="5.0.0" conf="sources->sources" />
         <dependency org="io.cloudevents" name="cloudevents-kafka" rev="5.0.0" conf="sources->sources" />
-        <dependency org="io.cucumber" name="cucumber-java8" rev="7.33.0" conf="sources->sources" />
-        <dependency org="io.cucumber" name="cucumber-junit" rev="7.33.0" conf="sources->sources" />
+        <dependency org="io.cucumber" name="cucumber-java8" rev="8.0.4" conf="sources->sources" />
+        <dependency org="io.cucumber" name="cucumber-junit" rev="8.0.4" conf="sources->sources" />
         <dependency org="io.github.classgraph" name="classgraph" rev="4.8.186" conf="sources->sources" />
         <dependency org="io.github.graphql-java" name="graphql-java-annotations" rev="21.5" conf="sources->sources" />
         <dependency org="io.r2dbc" name="r2dbc-spi" rev="1.0.0.RELEASE" conf="sources->sources" />
@@ -143,8 +143,8 @@
         <dependency org="io.cloudevents" name="cloudevents-core" rev="5.0.0" conf="javadoc->javadoc" />
         <dependency org="io.cloudevents" name="cloudevents-json-jackson" rev="5.0.0" conf="javadoc->javadoc" />
         <dependency org="io.cloudevents" name="cloudevents-kafka" rev="5.0.0" conf="javadoc->javadoc" />
-        <dependency org="io.cucumber" name="cucumber-java8" rev="7.33.0" conf="javadoc->javadoc" />
-        <dependency org="io.cucumber" name="cucumber-junit" rev="7.33.0" conf="javadoc->javadoc" />
+        <dependency org="io.cucumber" name="cucumber-java8" rev="8.0.4" conf="javadoc->javadoc" />
+        <dependency org="io.cucumber" name="cucumber-junit" rev="8.0.4" conf="javadoc->javadoc" />
         <dependency org="io.github.classgraph" name="classgraph" rev="4.8.186" conf="javadoc->javadoc" />
         <dependency org="io.github.graphql-java" name="graphql-java-annotations" rev="21.5" conf="javadoc->javadoc" />
         <dependency org="io.r2dbc" name="r2dbc-spi" rev="1.0.0.RELEASE" conf="javadoc->javadoc" />
@@ -244,8 +244,8 @@
         <dependency org="io.cloudevents" name="cloudevents-core" rev="5.0.0" conf="binaries->default" />
         <dependency org="io.cloudevents" name="cloudevents-json-jackson" rev="5.0.0" conf="binaries->default" />
         <dependency org="io.cloudevents" name="cloudevents-kafka" rev="5.0.0" conf="binaries->default" />
-        <dependency org="io.cucumber" name="cucumber-java8" rev="7.33.0" conf="binaries->default" />
-        <dependency org="io.cucumber" name="cucumber-junit" rev="7.33.0" conf="binaries->default" />
+        <dependency org="io.cucumber" name="cucumber-java8" rev="8.0.4" conf="binaries->default" />
+        <dependency org="io.cucumber" name="cucumber-junit" rev="8.0.4" conf="binaries->default" />
         <dependency org="io.github.classgraph" name="classgraph" rev="4.8.186" conf="binaries->default" />
         <dependency org="io.github.graphql-java" name="graphql-java-annotations" rev="21.5" conf="binaries->default" />
         <dependency org="io.r2dbc" name="r2dbc-spi" rev="1.0.0.RELEASE" conf="binaries->default" />
