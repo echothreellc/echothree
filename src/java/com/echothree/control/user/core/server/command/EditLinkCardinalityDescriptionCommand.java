@@ -95,18 +95,15 @@ public class EditLinkCardinalityDescriptionCommand
         LinkCardinalityDescription linkCardinalityDescription = null;
         var linkCardinalityName = spec.getLinkCardinalityName();
         var linkCardinality = linkCardinalityLogic.getLinkCardinalityByName(this, linkCardinalityName);
+        var languageIsoName = spec.getLanguageIsoName();
+        var language = languageLogic.getLanguageByName(this, languageIsoName);
 
         if(!hasExecutionErrors()) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = languageLogic.getLanguageByName(this, languageIsoName);
+            linkCardinalityDescription = linkCardinalityControl.getLinkCardinalityDescription(linkCardinality, language,
+                    editModeToEntityPermission(editMode));
 
-            if(!hasExecutionErrors()) {
-                linkCardinalityDescription = linkCardinalityControl.getLinkCardinalityDescription(linkCardinality, language,
-                        editModeToEntityPermission(editMode));
-
-                if(linkCardinalityDescription == null) {
-                    addExecutionError(ExecutionErrors.UnknownLinkCardinalityDescription.name(), linkCardinalityName, languageIsoName);
-                }
+            if(linkCardinalityDescription == null) {
+                addExecutionError(ExecutionErrors.UnknownLinkCardinalityDescription.name(), linkCardinalityName, languageIsoName);
             }
         }
 

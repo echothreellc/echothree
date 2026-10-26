@@ -77,17 +77,14 @@ public class GetLinkDirectionalityDescriptionCommand
         LinkDirectionalityDescription linkDirectionalityDescription = null;
         var linkDirectionalityName = form.getLinkDirectionalityName();
         var linkDirectionality = linkDirectionalityLogic.getLinkDirectionalityByName(this, linkDirectionalityName);
+        var languageIsoName = form.getLanguageIsoName();
+        var language = languageLogic.getLanguageByName(this, languageIsoName);
 
         if(!hasExecutionErrors()) {
-            var languageIsoName = form.getLanguageIsoName();
-            var language = languageLogic.getLanguageByName(this, languageIsoName);
+            linkDirectionalityDescription = linkDirectionalityControl.getLinkDirectionalityDescription(linkDirectionality, language);
 
-            if(!hasExecutionErrors()) {
-                linkDirectionalityDescription = linkDirectionalityControl.getLinkDirectionalityDescription(linkDirectionality, language);
-
-                if(linkDirectionalityDescription == null) {
-                    addExecutionError(ExecutionErrors.UnknownLinkDirectionalityDescription.name(), linkDirectionalityName, languageIsoName);
-                }
+            if(linkDirectionalityDescription == null) {
+                addExecutionError(ExecutionErrors.UnknownLinkDirectionalityDescription.name(), linkDirectionalityName, languageIsoName);
             }
         }
 

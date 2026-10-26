@@ -75,21 +75,18 @@ public class CreateLinkDirectionalityDescriptionCommand
     protected BaseResult execute() {
         var linkDirectionalityName = form.getLinkDirectionalityName();
         var linkDirectionality = linkDirectionalityLogic.getLinkDirectionalityByName(this, linkDirectionalityName);
+        var languageIsoName = form.getLanguageIsoName();
+        var language = languageLogic.getLanguageByName(this, languageIsoName);
 
         if(!hasExecutionErrors()) {
-            var languageIsoName = form.getLanguageIsoName();
-            var language = languageLogic.getLanguageByName(this, languageIsoName);
+            var linkDirectionalityDescription = linkDirectionalityControl.getLinkDirectionalityDescription(linkDirectionality, language);
 
-            if(!hasExecutionErrors()) {
-                var linkDirectionalityDescription = linkDirectionalityControl.getLinkDirectionalityDescription(linkDirectionality, language);
+            if(linkDirectionalityDescription == null) {
+                var description = form.getDescription();
 
-                if(linkDirectionalityDescription == null) {
-                    var description = form.getDescription();
-
-                    linkDirectionalityControl.createLinkDirectionalityDescription(linkDirectionality, language, description, getPartyPK());
-                } else {
-                    addExecutionError(ExecutionErrors.DuplicateLinkDirectionalityDescription.name(), linkDirectionalityName, languageIsoName);
-                }
+                linkDirectionalityControl.createLinkDirectionalityDescription(linkDirectionality, language, description, getPartyPK());
+            } else {
+                addExecutionError(ExecutionErrors.DuplicateLinkDirectionalityDescription.name(), linkDirectionalityName, languageIsoName);
             }
         }
 

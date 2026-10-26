@@ -8,7 +8,7 @@
   - Extend BaseAbstractEditCommand
   - Use `editModeToEntityPermission(editMode)` with a permission-aware Logic or Control lookup instead of branching between read-only and for-update lookup methods.
   - For description edits, use the description as the edited entity and its owning entity as the lock entity.
-- Prefer Logic-class `ByName` methods when available. After a Logic lookup, guard dependent work with `!hasExecutionErrors()`; after a direct Control lookup, test the returned entity for `null`.
+- Prefer Logic-class `ByName` methods when available. Group independent `ByName` lookups together, with one `!hasExecutionErrors()` check before dependent work. After a direct Control lookup, test the returned entity for `null`.
 - Create-result population is an exception to the execution-error guard: results may be populated whenever the returned entity is non-null, even if there are execution errors. Guard result population with an entity null check rather than `!hasExecutionErrors()`.
 - Unknown-entity execution errors must include all names in the entity's complete unique key, ordered from parent names to the entity name. Unknown-description errors must additionally include `LanguageIsoName` last.
 - Format all static `CommandSecurityDefinition` and `List<FieldDefinition>` assignments consistently:

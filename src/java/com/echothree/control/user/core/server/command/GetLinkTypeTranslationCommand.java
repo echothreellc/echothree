@@ -76,16 +76,13 @@ public class GetLinkTypeTranslationCommand
     protected LinkTypeTranslation getEntity() {
         LinkTypeTranslation linkTypeTranslation = null;
         var linkType = linkTypeLogic.getLinkTypeByName(this, form.getLinkTypeName());
+        var language = languageLogic.getLanguageByName(this, form.getLanguageIsoName());
 
         if(!hasExecutionErrors()) {
-            var language = languageLogic.getLanguageByName(this, form.getLanguageIsoName());
+            linkTypeTranslation = linkTypeControl.getLinkTypeTranslation(linkType, language);
 
-            if(!hasExecutionErrors()) {
-                linkTypeTranslation = linkTypeControl.getLinkTypeTranslation(linkType, language);
-
-                if(linkTypeTranslation == null) {
-                    addExecutionError(ExecutionErrors.UnknownLinkTypeTranslation.name(), form.getLinkTypeName(), form.getLanguageIsoName());
-                }
+            if(linkTypeTranslation == null) {
+                addExecutionError(ExecutionErrors.UnknownLinkTypeTranslation.name(), form.getLinkTypeName(), form.getLanguageIsoName());
             }
         }
 

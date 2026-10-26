@@ -77,25 +77,22 @@ public class CreateLinkTypeTranslationCommand
     protected BaseResult execute() {
         var linkTypeName = form.getLinkTypeName();
         var linkType = linkTypeLogic.getLinkTypeByName(this, linkTypeName);
+        var languageIsoName = form.getLanguageIsoName();
+        var language = languageLogic.getLanguageByName(this, languageIsoName);
 
         if(!hasExecutionErrors()) {
-            var languageIsoName = form.getLanguageIsoName();
-            var language = languageLogic.getLanguageByName(this, languageIsoName);
+            var linkTypeTranslation = linkTypeControl.getLinkTypeTranslation(linkType, language);
 
-            if(!hasExecutionErrors()) {
-                var linkTypeTranslation = linkTypeControl.getLinkTypeTranslation(linkType, language);
+            if(linkTypeTranslation == null) {
+                var description = form.getDescription();
 
-                if(linkTypeTranslation == null) {
-                    var description = form.getDescription();
+                var guidanceMimeType = linkTypeLogic.checkGuidance(this, form);
 
-                    var guidanceMimeType = linkTypeLogic.checkGuidance(this, form);
-
-                    if(!hasExecutionErrors()) {
-                        linkTypeControl.createLinkTypeTranslation(linkType, language, description, guidanceMimeType, form.getGuidance(), getPartyPK());
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.DuplicateLinkTypeTranslation.name(), linkTypeName, languageIsoName);
+                if(!hasExecutionErrors()) {
+                    linkTypeControl.createLinkTypeTranslation(linkType, language, description, guidanceMimeType, form.getGuidance(), getPartyPK());
                 }
+            } else {
+                addExecutionError(ExecutionErrors.DuplicateLinkTypeTranslation.name(), linkTypeName, languageIsoName);
             }
         }
 
