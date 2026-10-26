@@ -2,7 +2,7 @@ Feature: Employee entity attribute
   An employee wants to add, edit, and delete an entity attribute entity attribute group group
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee entity attribute
     Then no error should occur
 
   Scenario: Existing employee adds an entity attribute entity attribute group and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to "ECHO_THREE"
     And the user sets the entity attribute's entity type to "Item"
@@ -49,7 +49,7 @@ Feature: Employee entity attribute
     And the user sets the entity attribute entity attribute group's entity attribute group to the last entity attribute group added
     And the user sets the entity attribute entity attribute group's sort order to "1"
     And the user adds the new entity attribute entity attribute group
-    Then the execution error "UnknownEntityAttributeGroupName" should occur
+    Then the execution error UnknownEntityAttributeGroupName should occur
     When the user begins deleting an entity type
     And the user sets the entity type's component vendor to "ECHO_THREE"
     And the user sets the entity type's entity type to "TestOtherGroupOwner"

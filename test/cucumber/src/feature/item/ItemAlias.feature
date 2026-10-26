@@ -2,7 +2,7 @@ Feature: Employee item alias
   An employee wants to add, edit, and delete an item alias
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee item alias
     Then no error should occur
 
   Scenario: Existing employee adds an item, then an item alias, edits it, and deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new item
     And the user sets the item's type to "REGULAR"
     And the user sets the item's use type to "REGULAR"

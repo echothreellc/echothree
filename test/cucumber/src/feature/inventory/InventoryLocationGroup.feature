@@ -2,7 +2,7 @@ Feature: Employee inventory location group
   An employee wants to add, edit, and delete an inventory location group
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee inventory location group
     Then no error should occur
 
   Scenario: Existing employee adds an inventory location group, edits it, changes its status, and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new warehouse
     And the user sets the warehouse's warehouse name to "CucumberWarehouse"
     And the user sets the warehouse's warehouse type name to "DEFAULT"

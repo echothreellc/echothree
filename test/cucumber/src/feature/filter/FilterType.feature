@@ -2,7 +2,7 @@ Feature: Employee filter type
   An employee wants to add, edit, and delete a filter type
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee filter type
     Then no error should occur
 
   Scenario: Existing employee adds a filter type, edits it, and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new filter type
     And the user sets the filter type's filter kind name to "PRICE"
     And the user sets the filter type's name to "TEST_FILTER_TYPE"
@@ -37,17 +37,17 @@ Feature: Employee filter type
     Then no error should occur
 
   Scenario: Existing employee adds a filter type with a duplicate name and receives an error
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new filter type
     And the user sets the filter type's filter kind name to "PRICE"
     And the user sets the filter type's name to "OFFER_ITEM_PRICE"
     And the user sets the filter type's sort order to "1"
     And the user sets the filter type to "be" the default
     And the user adds the new filter type
-    Then the execution error "DuplicateFilterTypeName" should occur
+    Then the execution error DuplicateFilterTypeName should occur
 
   Scenario: Existing employee adds a filter type, filter, and attempts deleting the filter type while in-use
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new filter type
     And the user sets the filter type's filter kind name to "PRICE"
     And the user sets the filter type's name to "TEST_FILTER_TYPE"
@@ -71,7 +71,7 @@ Feature: Employee filter type
     And the user sets the filter type's filter kind name to "PRICE"
     And the user sets the filter type's name to the last filter type added
     And the user deletes the filter type
-    Then the execution error "CannotDeleteFilterTypeInUse" should occur
+    Then the execution error CannotDeleteFilterTypeInUse should occur
     When the user begins deleting a filter
     And the user sets the filter's filter kind name to "PRICE"
     And the user sets the filter's filter type name to "TEST_FILTER_TYPE"

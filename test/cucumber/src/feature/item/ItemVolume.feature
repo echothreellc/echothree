@@ -2,7 +2,7 @@ Feature: Employee item volume
   An employee wants to add, edit, and delete an item volume
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee item volume
     Then no error should occur
 
   Scenario: Existing employee adds two item unit of measure type, edits one of them, and then deletes both
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new item
     And the user sets the item's type to "REGULAR"
     And the user sets the item's use type to "REGULAR"

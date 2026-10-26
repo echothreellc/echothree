@@ -2,7 +2,7 @@ Feature: Employee vendor with postal address
   An employee wants to add a vendor with a postal address
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee vendor with postal address
     Then no error should occur
 
   Scenario: Existing employee adds a vendor, adds a postal address to it, and sets the status of it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new vendor
     And the user sets the vendor's name to "Cucumber Postal Address Vendor"
     And the user sets the vendor to "use" use item purchasing categories

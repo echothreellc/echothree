@@ -2,7 +2,7 @@ Feature: Employee entity attribute
   An employee wants to add, edit, and delete an entity list item
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee entity attribute
     Then no error should occur
 
   Scenario: Existing employee adds an entity list item, edits it, and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to "ECHO_THREE"
     And the user sets the entity attribute's entity type to "Item"

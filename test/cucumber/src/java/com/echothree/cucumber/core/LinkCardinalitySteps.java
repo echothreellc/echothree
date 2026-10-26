@@ -255,7 +255,7 @@ public class LinkCardinalitySteps implements En {
             values.asMap(String.class, String.class).forEach(edit::set);
         });
 
-        And("the user clears the link cardinality field {string}", (String fieldName) -> {
+        And("the user clears the link cardinality field {word}", (String fieldName) -> {
             var persona = CurrentPersona.persona;
             var edit = persona.createLinkCardinalityForm == null ? persona.linkCardinalityEdit : persona.createLinkCardinalityForm;
 
@@ -263,7 +263,7 @@ public class LinkCardinalitySteps implements En {
             edit.set(fieldName, null);
         });
 
-        Then("the link cardinality field {string} validation error {string} should occur", (String fieldName, String error) -> {
+        Then("the link cardinality field {word} validation error {word} should occur", (String fieldName, String error) -> {
             var commandResult = LastCommandResult.commandResult;
 
             assertThat(commandResult.hasValidationErrors()).isTrue();
@@ -363,7 +363,7 @@ public class LinkCardinalitySteps implements En {
             persona.linkCardinalityEdit = null;
         });
 
-        When("the user {string} a link cardinality description with:", (String operation, DataTable values) -> {
+        When("the user {word} a link cardinality description with:", (String operation, DataTable values) -> {
             assertThat(operation).isIn("creates", "retrieves", "deletes");
 
             var persona = CurrentPersona.persona;
@@ -442,7 +442,7 @@ public class LinkCardinalitySteps implements En {
             retrievedDescriptionCount = commandResult.hasErrors() ? null : commandResult.getExecutionResult().getResult().getLinkCardinalityDescriptionCount();
         });
 
-        Then("the link cardinality description page has {int} entries out of {long}", (Integer count, Long total) -> {
+        Then("the link cardinality description page has {int} entry/entries out of {long}", (Integer count, Long total) -> {
             assertThat(retrievedDescriptions).hasSize(count);
             assertThat(retrievedDescriptionCount).isEqualTo(total);
         });

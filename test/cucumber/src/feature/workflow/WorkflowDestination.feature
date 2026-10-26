@@ -2,7 +2,7 @@ Feature: Employee workflow destination
   An employee wants to add, edit, and delete a workflow destination
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee workflow destination
     Then no error should occur
 
   Scenario: Existing employee adds a workflow destination, edits it, and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new workflow
     And the user sets the workflow's name to "CUCUMBER_WORKFLOW"
     And the user sets the workflow's sort order to "1"
@@ -64,7 +64,7 @@ Feature: Employee workflow destination
     Then no error should occur
 
   Scenario: Existing employee adds a workflow destination with a duplicate name and receives an error
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new workflow destination
     And the user sets the workflow destination's workflow name to "EMPLOYEE_STATUS"
     And the user sets the workflow destination's workflow step name to "ACTIVE"
@@ -72,4 +72,4 @@ Feature: Employee workflow destination
     And the user sets the workflow destination to "be" the default
     And the user sets the workflow destination's sort order to "1"
     And the user adds the new workflow destination
-    Then the execution error "DuplicateWorkflowDestinationName" should occur
+    Then the execution error DuplicateWorkflowDestinationName should occur

@@ -2,7 +2,7 @@ Feature: Employee workflow entity type
   An employee wants to add and delete a workflow entity type
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee workflow entity type
     Then no error should occur
 
   Scenario: Existing employee adds a workflow entity type and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new workflow
     And the user sets the workflow's name to "CUCUMBER_WORKFLOW"
     And the user sets the workflow's sort order to "1"
@@ -37,10 +37,10 @@ Feature: Employee workflow entity type
     Then no error should occur
 
   Scenario: Existing employee adds a workflow with a duplicate name and receives an error
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new workflow entity type
     And the user sets the workflow entity type's workflow name to "EMPLOYEE_STATUS"
     And the user sets the workflow entity type's component vendor to "ECHO_THREE"
     And the user sets the workflow entity type's entity type to "Party"
     And the user adds the new workflow entity type
-    Then the execution error "DuplicateWorkflowEntityType" should occur
+    Then the execution error DuplicateWorkflowEntityType should occur

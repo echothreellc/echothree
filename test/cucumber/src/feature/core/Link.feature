@@ -3,7 +3,7 @@ Feature: Employee Links
   Employees create, retrieve, list, and delete Links with cardinality and directionality rules.
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -15,20 +15,20 @@ Feature: Employee Links
 
   Scenario Outline: Links: directed cardinality rejects reuse of a constrained endpoint
     Given the user has Link type "Primary" with cardinality "<cardinality>" and directionality "DIRECTED"
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetEntityRef | B |
     Then no error should occur
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | <source> |
       | TargetEntityRef | <target> |
-    Then the execution error "LinkCardinalityViolation" should occur
+    Then the execution error LinkCardinalityViolation should occur
     When the user lists Links with:
       | LinkTypeName | Primary |
     Then no error should occur
-    And the returned Links contain "1" rows
+    And the returned Links contain 1 row
 
     Examples:
       | cardinality | source | target |
@@ -39,12 +39,12 @@ Feature: Employee Links
 
   Scenario Outline: Links: directed cardinality permits reuse of an unconstrained endpoint
     Given the user has Link type "Primary" with cardinality "<cardinality>" and directionality "DIRECTED"
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetEntityRef | B |
     Then no error should occur
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | <source> |
       | TargetEntityRef | <target> |
@@ -52,7 +52,7 @@ Feature: Employee Links
     When the user lists Links with:
       | LinkTypeName | Primary |
     Then no error should occur
-    And the returned Links contain "2" rows
+    And the returned Links contain 2 rows
 
     Examples:
       | cardinality | source | target |
@@ -64,21 +64,21 @@ Feature: Employee Links
 
   Scenario Outline: Links: duplicates return the existing Link without another insertion
     Given the user has Link type "Primary" with cardinality "<cardinality>" and directionality "DIRECTED"
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetEntityRef | B |
     Then no error should occur
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceUuid | A |
       | TargetUuid | B |
-    Then the execution error "DuplicateLink" should occur
-    And the returned Link connects "A" to "B"
+    Then the execution error DuplicateLink should occur
+    And the returned Link connects A to B
     When the user lists Links with:
       | LinkTypeName | Primary |
     Then no error should occur
-    And the returned Links contain "1" rows
+    And the returned Links contain 1 row
 
     Examples:
       | cardinality |
@@ -89,28 +89,28 @@ Feature: Employee Links
 
   Scenario: Links: directed reverse lookup and deletion cannot change the forward Link
     Given the user has Link type "Primary" with cardinality "MANY_TO_MANY" and directionality "DIRECTED"
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetEntityRef | B |
     Then no error should occur
-    When the user "retrieves" a Link with:
+    When the user retrieves a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | B |
       | TargetEntityRef | A |
-    Then the execution error "UnknownLink" should occur
-    When the user "deletes" a Link with:
+    Then the execution error UnknownLink should occur
+    When the user deletes a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | B |
       | TargetEntityRef | A |
-    Then the execution error "UnknownLink" should occur
-    When the user "retrieves" a Link with:
+    Then the execution error UnknownLink should occur
+    When the user retrieves a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetEntityRef | B |
     Then no error should occur
-    And the returned Link connects "A" to "B"
-    When the user "creates" a Link with:
+    And the returned Link connects A to B
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | B |
       | TargetEntityRef | A |
@@ -118,31 +118,31 @@ Feature: Employee Links
     When the user lists Links with:
       | LinkTypeName | Primary |
     Then no error should occur
-    And the returned Links contain "2" rows
+    And the returned Links contain 2 rows
 
   Scenario Outline: Links: symmetric reversal is one Link for retrieval, duplication and deletion
     Given the user has Link type "Primary" with cardinality "<cardinality>" and directionality "SYMMETRIC"
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetEntityRef | B |
     Then no error should occur
-    When the user "retrieves" a Link with:
+    When the user retrieves a Link with:
       | LinkTypeName | Primary |
       | SourceUuid | B |
       | TargetUuid | A |
     Then no error should occur
-    And the returned Link connects "A" to "B"
-    When the user "creates" a Link with:
+    And the returned Link connects A to B
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | B |
       | TargetEntityRef | A |
-    Then the execution error "DuplicateLink" should occur
+    Then the execution error DuplicateLink should occur
     When the user lists Links with:
       | LinkTypeName | Primary |
     Then no error should occur
-    And the returned Links contain "1" rows
-    When the user "deletes" a Link with:
+    And the returned Links contain 1 row
+    When the user deletes a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | B |
       | TargetEntityRef | A |
@@ -150,8 +150,8 @@ Feature: Employee Links
     When the user lists Links with:
       | LinkTypeName | Primary |
     Then no error should occur
-    And the returned Links contain "0" rows
-    When the user "creates" a Link with:
+    And the returned Links contain 0 rows
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetEntityRef | B |
@@ -159,7 +159,7 @@ Feature: Employee Links
     When the user lists Links with:
       | LinkTypeName | Primary |
     Then no error should occur
-    And the returned Links contain "1" rows
+    And the returned Links contain 1 row
 
     Examples:
       | cardinality |
@@ -168,20 +168,20 @@ Feature: Employee Links
 
   Scenario Outline: Links: symmetric one-to-one constrains both roles of both endpoints
     Given the user has Link type "Primary" with cardinality "ONE_TO_ONE" and directionality "SYMMETRIC"
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetEntityRef | B |
     Then no error should occur
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | <source> |
       | TargetEntityRef | <target> |
-    Then the execution error "LinkCardinalityViolation" should occur
+    Then the execution error LinkCardinalityViolation should occur
     When the user lists Links with:
       | LinkTypeName | Primary |
     Then no error should occur
-    And the returned Links contain "1" rows
+    And the returned Links contain 1 row
 
     Examples:
       | source | target |
@@ -194,17 +194,17 @@ Feature: Employee Links
 
   Scenario: Links: symmetric many-to-many lists follow stored source and target columns
     Given the user has Link type "Primary" with cardinality "MANY_TO_MANY" and directionality "SYMMETRIC"
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetEntityRef | B |
     Then no error should occur
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | C |
       | TargetEntityRef | A |
     Then no error should occur
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | B |
       | TargetEntityRef | C |
@@ -212,41 +212,41 @@ Feature: Employee Links
     When the user lists Links with:
       | SourceEntityRef | A |
     Then no error should occur
-    And the returned Links contain "1" rows
+    And the returned Links contain 1 row
     And the returned Links are:
       | Type | Source | Target |
       | Primary | A | B |
     When the user lists Links with:
       | TargetUuid | A |
     Then no error should occur
-    And the returned Links contain "1" rows
+    And the returned Links contain 1 row
     And the returned Links are:
       | Type | Source | Target |
       | Primary | C | A |
 
   Scenario Outline: Links: self-links reject duplicates and reserve a one-to-one endpoint
     Given the user has Link type "Primary" with cardinality "ONE_TO_ONE" and directionality "<direction>"
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetEntityRef | A |
     Then no error should occur
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetEntityRef | A |
-    Then the execution error "DuplicateLink" should occur
-    When the user "creates" a Link with:
+    Then the execution error DuplicateLink should occur
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetEntityRef | B |
-    Then the execution error "LinkCardinalityViolation" should occur
-    When the user "deletes" a Link with:
+    Then the execution error LinkCardinalityViolation should occur
+    When the user deletes a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetEntityRef | A |
     Then no error should occur
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetEntityRef | B |
@@ -259,27 +259,27 @@ Feature: Employee Links
 
   Scenario Outline: Links: EntityRef and UUID endpoint combinations identify the same Link
     Given the user has Link type "Primary" with cardinality "MANY_TO_MANY" and directionality "DIRECTED"
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | <sourceField> | A |
       | <targetField> | B |
     Then no error should occur
-    When the user "retrieves" a Link with:
+    When the user retrieves a Link with:
       | LinkTypeName | Primary |
       | SourceUuid | A |
       | TargetUuid | B |
     Then no error should occur
-    And the returned Link connects "A" to "B"
-    When the user "deletes" a Link with:
+    And the returned Link connects A to B
+    When the user deletes a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetEntityRef | B |
     Then no error should occur
-    When the user "retrieves" a Link with:
+    When the user retrieves a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetEntityRef | B |
-    Then the execution error "UnknownLink" should occur
+    Then the execution error UnknownLink should occur
 
     Examples:
       | sourceField | targetField |
@@ -291,22 +291,22 @@ Feature: Employee Links
   Scenario: Links: cardinality is scoped to the LinkType and deletion frees the endpoint
     Given the user has Link type "Primary" with cardinality "ONE_TO_ONE" and directionality "DIRECTED"
     Given the user has Link type "Other" with cardinality "ONE_TO_ONE" and directionality "DIRECTED"
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetEntityRef | B |
     Then no error should occur
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Other |
       | SourceEntityRef | A |
       | TargetEntityRef | C |
     Then no error should occur
-    When the user "deletes" a Link with:
+    When the user deletes a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetEntityRef | B |
     Then no error should occur
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetEntityRef | C |
@@ -314,27 +314,27 @@ Feature: Employee Links
     When the user lists Links with:
       | LinkTypeName | Primary |
     Then no error should occur
-    And the returned Links contain "1" rows
+    And the returned Links contain 1 row
 
   Scenario: Links: list filters and pagination return current Links and an unpaginated total
     Given the user has Link type "Primary" with cardinality "MANY_TO_MANY" and directionality "DIRECTED"
     Given the user has Link type "Other" with cardinality "MANY_TO_MANY" and directionality "DIRECTED"
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetEntityRef | B |
     Then no error should occur
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetEntityRef | C |
     Then no error should occur
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | C |
       | TargetEntityRef | D |
     Then no error should occur
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Other |
       | SourceEntityRef | A |
       | TargetEntityRef | B |
@@ -342,30 +342,30 @@ Feature: Employee Links
     When the user lists Links with limit "2" and:
       | LinkTypeName | Primary |
     Then no error should occur
-    And the returned Links contain "2" rows
-    And the returned Link total count is "3"
+    And the returned Links contain 2 rows
+    And the returned Link total count is 3
     When the user lists Links with:
       | LinkTypeName | Primary |
       | SourceUuid | A |
     Then no error should occur
-    And the returned Links contain "2" rows
+    And the returned Links contain 2 rows
     When the user lists Links with:
       | LinkTypeName | Primary |
       | TargetEntityRef | B |
     Then no error should occur
-    And the returned Links contain "1" rows
+    And the returned Links contain 1 row
     When the user lists Links with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetUuid | B |
     Then no error should occur
-    And the returned Links contain "1" rows
+    And the returned Links contain 1 row
     When the user lists Links with:
       | LinkTypeName | Primary |
       | SourceEntityRef | D |
     Then no error should occur
-    And the returned Links contain "0" rows
-    When the user "deletes" a Link with:
+    And the returned Links contain 0 rows
+    When the user deletes a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetEntityRef | B |
@@ -373,19 +373,19 @@ Feature: Employee Links
     When the user lists Links with:
       | LinkTypeName | Primary |
     Then no error should occur
-    And the returned Links contain "2" rows
+    And the returned Links contain 2 rows
 
   Scenario Outline: Links: unknown identifiers and incompatible endpoint types do not create Links
     Given the user has Link type "Primary" with cardinality "MANY_TO_MANY" and directionality "DIRECTED"
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | <type> |
       | <sourceField> | <source> |
       | <targetField> | <target> |
-    Then the execution error "<error>" should occur
+    Then the execution error <error> should occur
     When the user lists Links with:
       | LinkTypeName | Primary |
     Then no error should occur
-    And the returned Links contain "0" rows
+    And the returned Links contain 0 rows
 
     Examples:
       | type | sourceField | source | targetField | target | error |
@@ -399,13 +399,13 @@ Feature: Employee Links
 
   Scenario Outline: Links: creates requires exactly one identifier for each endpoint
     Given the user has Link type "Primary" with cardinality "MANY_TO_MANY" and directionality "DIRECTED"
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | <sourceRef> |
       | SourceUuid | <sourceUuid> |
       | TargetEntityRef | <targetRef> |
       | TargetUuid | <targetUuid> |
-    Then the execution error "InvalidParameterCount" should occur
+    Then the execution error InvalidParameterCount should occur
 
     Examples:
       | sourceRef | sourceUuid | targetRef | targetUuid |
@@ -416,13 +416,13 @@ Feature: Employee Links
 
   Scenario Outline: Links: retrieves requires exactly one identifier for each endpoint
     Given the user has Link type "Primary" with cardinality "MANY_TO_MANY" and directionality "DIRECTED"
-    When the user "retrieves" a Link with:
+    When the user retrieves a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | <sourceRef> |
       | SourceUuid | <sourceUuid> |
       | TargetEntityRef | <targetRef> |
       | TargetUuid | <targetUuid> |
-    Then the execution error "InvalidParameterCount" should occur
+    Then the execution error InvalidParameterCount should occur
 
     Examples:
       | sourceRef | sourceUuid | targetRef | targetUuid |
@@ -433,13 +433,13 @@ Feature: Employee Links
 
   Scenario Outline: Links: deletes requires exactly one identifier for each endpoint
     Given the user has Link type "Primary" with cardinality "MANY_TO_MANY" and directionality "DIRECTED"
-    When the user "deletes" a Link with:
+    When the user deletes a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | <sourceRef> |
       | SourceUuid | <sourceUuid> |
       | TargetEntityRef | <targetRef> |
       | TargetUuid | <targetUuid> |
-    Then the execution error "InvalidParameterCount" should occur
+    Then the execution error InvalidParameterCount should occur
 
     Examples:
       | sourceRef | sourceUuid | targetRef | targetUuid |
@@ -455,7 +455,7 @@ Feature: Employee Links
       | SourceUuid | <sourceUuid> |
       | TargetEntityRef | <targetRef> |
       | TargetUuid | <targetUuid> |
-    Then the execution error "InvalidParameterCount" should occur
+    Then the execution error InvalidParameterCount should occur
 
     Examples:
       | sourceRef | sourceUuid | targetRef | targetUuid |
@@ -464,11 +464,11 @@ Feature: Employee Links
 
   Scenario Outline: Links: missing Links cannot be retrieved or deleted
     Given the user has Link type "Primary" with cardinality "MANY_TO_MANY" and directionality "DIRECTED"
-    When the user "<operation>" a Link with:
+    When the user <operation> a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetEntityRef | B |
-    Then the execution error "UnknownLink" should occur
+    Then the execution error UnknownLink should occur
 
     Examples:
       | operation |
@@ -477,13 +477,13 @@ Feature: Employee Links
 
   Scenario Outline: Links: creates validates identifier formats before execution
     Given the user has Link type "Primary" with cardinality "MANY_TO_MANY" and directionality "DIRECTED"
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | <sourceRef> |
       | SourceUuid | <sourceUuid> |
       | TargetEntityRef | <targetRef> |
       | TargetUuid | <targetUuid> |
-    Then the Link field "<field>" validation error "InvalidFormat" should occur
+    Then the Link field <field> validation error InvalidFormat should occur
 
     Examples:
       | field | sourceRef | sourceUuid | targetRef | targetUuid |
@@ -494,13 +494,13 @@ Feature: Employee Links
 
   Scenario Outline: Links: retrieves validates identifier formats before execution
     Given the user has Link type "Primary" with cardinality "MANY_TO_MANY" and directionality "DIRECTED"
-    When the user "retrieves" a Link with:
+    When the user retrieves a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | <sourceRef> |
       | SourceUuid | <sourceUuid> |
       | TargetEntityRef | <targetRef> |
       | TargetUuid | <targetUuid> |
-    Then the Link field "<field>" validation error "InvalidFormat" should occur
+    Then the Link field <field> validation error InvalidFormat should occur
 
     Examples:
       | field | sourceRef | sourceUuid | targetRef | targetUuid |
@@ -511,13 +511,13 @@ Feature: Employee Links
 
   Scenario Outline: Links: deletes validates identifier formats before execution
     Given the user has Link type "Primary" with cardinality "MANY_TO_MANY" and directionality "DIRECTED"
-    When the user "deletes" a Link with:
+    When the user deletes a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | <sourceRef> |
       | SourceUuid | <sourceUuid> |
       | TargetEntityRef | <targetRef> |
       | TargetUuid | <targetUuid> |
-    Then the Link field "<field>" validation error "InvalidFormat" should occur
+    Then the Link field <field> validation error InvalidFormat should occur
 
     Examples:
       | field | sourceRef | sourceUuid | targetRef | targetUuid |
@@ -528,11 +528,11 @@ Feature: Employee Links
 
   Scenario Outline: Links: required LinkType name is validated
     Given the user has Link type "Primary" with cardinality "MANY_TO_MANY" and directionality "DIRECTED"
-    When the user "<operation>" a Link with:
+    When the user <operation> a Link with:
       | LinkTypeName |  |
       | SourceEntityRef | A |
       | TargetEntityRef | B |
-    Then the Link field "LinkTypeName" validation error "RequiredField" should occur
+    Then the Link field LinkTypeName validation error RequiredField should occur
 
     Examples:
       | operation |
@@ -543,17 +543,17 @@ Feature: Employee Links
   Scenario: Links: deleting a LinkType removes all its Links but preserves another type
     Given the user has Link type "Primary" with cardinality "MANY_TO_MANY" and directionality "DIRECTED"
     Given the user has Link type "Other" with cardinality "MANY_TO_MANY" and directionality "DIRECTED"
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetEntityRef | B |
     Then no error should occur
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | C |
       | TargetEntityRef | D |
     Then no error should occur
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Other |
       | SourceEntityRef | A |
       | TargetEntityRef | B |
@@ -563,54 +563,54 @@ Feature: Employee Links
     When the user lists Links with:
       | SourceEntityRef | A |
     Then no error should occur
-    And the returned Links contain "1" rows
+    And the returned Links contain 1 row
     And the returned Links are:
       | Type | Source | Target |
       | Other | A | B |
 
   Scenario Outline: Links: deleting an endpoint removes incoming, outgoing and self Links
     Given the user has Link type "Primary" with cardinality "MANY_TO_MANY" and directionality "DIRECTED"
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetEntityRef | B |
     Then no error should occur
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | C |
       | TargetEntityRef | A |
     Then no error should occur
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetEntityRef | A |
     Then no error should occur
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | C |
       | TargetEntityRef | D |
     Then no error should occur
-    When the user deletes Link test endpoint "<endpoint>"
+    When the user deletes Link test endpoint <endpoint>
     Then no error should occur
     When the user lists Links with:
       | LinkTypeName | Primary |
     Then no error should occur
-    And the returned Links contain "<remaining>" rows
+    And the returned Links contain <remaining> <rowLabel>
 
     Examples:
-      | endpoint | remaining |
-      | A | 1 |
-      | B | 3 |
+      | endpoint | remaining | rowLabel |
+      | A        | 1         | row      |
+      | B        | 3         | rows     |
 
   Scenario Outline: Links: list returns specified filter transfers with matching rows
     Given the user has Link type "Primary" with cardinality "MANY_TO_MANY" and directionality "DIRECTED"
     And the user has Link type "Other" with cardinality "MANY_TO_MANY" and directionality "DIRECTED"
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Other |
       | SourceEntityRef | C |
       | TargetEntityRef | D |
     Then no error should occur
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetEntityRef | B |
@@ -622,7 +622,7 @@ Feature: Employee Links
       | TargetEntityRef | <targetRef> |
       | TargetUuid | <targetUuid> |
     Then no error should occur
-    And the returned Links contain "1" rows
+    And the returned Links contain 1 row
     And the returned Link filters are:
       | LinkType | <expectedType> |
       | SourceEntityInstance | <expectedSource> |
@@ -646,7 +646,7 @@ Feature: Employee Links
   Scenario Outline: Links: list returns specified filter transfers when no rows match
     Given the user has Link type "Primary" with cardinality "MANY_TO_MANY" and directionality "DIRECTED"
     And the user has Link type "Other" with cardinality "MANY_TO_MANY" and directionality "DIRECTED"
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Other |
       | SourceEntityRef | C |
       | TargetEntityRef | D |
@@ -658,7 +658,7 @@ Feature: Employee Links
       | TargetEntityRef | <targetRef> |
       | TargetUuid | <targetUuid> |
     Then no error should occur
-    And the returned Links contain "0" rows
+    And the returned Links contain 0 rows
     And the returned Link filters are:
       | LinkType | <expectedType> |
       | SourceEntityInstance | <expectedSource> |
@@ -681,7 +681,7 @@ Feature: Employee Links
 
   Scenario: Links: unfiltered lists leave all filter transfers unset
     Given the user has Link type "Primary" with cardinality "MANY_TO_MANY" and directionality "DIRECTED"
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetEntityRef | B |
@@ -696,12 +696,12 @@ Feature: Employee Links
 
   Scenario: Links: paginated lists preserve specified filter transfers and totals
     Given the user has Link type "Primary" with cardinality "MANY_TO_MANY" and directionality "DIRECTED"
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetEntityRef | B |
     Then no error should occur
-    When the user "creates" a Link with:
+    When the user creates a Link with:
       | LinkTypeName | Primary |
       | SourceEntityRef | A |
       | TargetEntityRef | C |
@@ -710,8 +710,8 @@ Feature: Employee Links
       | LinkTypeName | Primary |
       | SourceUuid | A |
     Then no error should occur
-    And the returned Links contain "1" rows
-    And the returned Link total count is "2"
+    And the returned Links contain 1 row
+    And the returned Link total count is 2
     And the returned Link filters are:
       | LinkType | Primary |
       | SourceEntityInstance | A |
@@ -720,8 +720,8 @@ Feature: Employee Links
       | LinkTypeName | Primary |
       | SourceEntityRef | D |
     Then no error should occur
-    And the returned Links contain "0" rows
-    And the returned Link total count is "0"
+    And the returned Links contain 0 rows
+    And the returned Link total count is 0
     And the returned Link filters are:
       | LinkType | Primary |
       | SourceEntityInstance | D |

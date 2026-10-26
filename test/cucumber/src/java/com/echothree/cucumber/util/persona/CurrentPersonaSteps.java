@@ -23,17 +23,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CurrentPersonaSteps implements En {
 
     public CurrentPersonaSteps() {
-        Then("the customer {string} begins using the application",
+        Then("the customer {word} begins using the application",
                 (String persona) -> {
                     CurrentPersona.persona = CustomerPersonas.getPersona(persona);
                 });
 
-        Then("the employee {string} begins using the application",
+        Then("the employee {word} begins using the application",
                 (String persona) -> {
                     CurrentPersona.persona = EmployeePersonas.getPersona(persona);
                 });
 
-        Then("the anonymous user {string} begins using the application",
+        Then("the anonymous user {word} begins using the application",
                 (String persona) -> {
                     CurrentPersona.persona = AnonymousPersonas.getPersona(persona);
                 });

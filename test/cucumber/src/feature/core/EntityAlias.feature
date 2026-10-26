@@ -2,7 +2,7 @@ Feature: Employee entity type
   An employee wants to add, edit, and delete an entity type
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee entity type
     Then no error should occur
 
   Scenario: Existing employee adds an entity alias
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new component vendor
     And the user sets the component vendor's name to "TEST_COMPONENT_VENDOR"
     And the user sets the component vendor's description to "Test Component Vendor"
@@ -54,7 +54,7 @@ Feature: Employee entity type
     Then no error should occur
 
   Scenario: Existing employee adds and deletes an entity alias
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new component vendor
     And the user sets the component vendor's name to "TEST_COMPONENT_VENDOR"
     And the user sets the component vendor's description to "Test Component Vendor"
@@ -101,7 +101,7 @@ Feature: Employee entity type
     Then no error should occur
 
   Scenario: Existing employee adds and edits an entity alias
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new component vendor
     And the user sets the component vendor's name to "TEST_COMPONENT_VENDOR"
     And the user sets the component vendor's description to "Test Component Vendor"

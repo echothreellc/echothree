@@ -2,7 +2,7 @@ Feature: Employee workflow step
   An employee wants to add, edit, and delete a workflow step
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee workflow step
     Then no error should occur
 
   Scenario: Existing employee adds a workflow step, edits it, and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new workflow
     And the user sets the workflow's name to "CUCUMBER_WORKFLOW"
     And the user sets the workflow's sort order to "1"
@@ -48,7 +48,7 @@ Feature: Employee workflow step
     Then no error should occur
 
   Scenario: Existing employee adds a workflow with a duplicate name and receives an error
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new workflow step
     And the user sets the workflow step's workflow name to "EMPLOYEE_STATUS"
     And the user sets the workflow step's type to "MANUAL_TRANSITION"
@@ -56,4 +56,4 @@ Feature: Employee workflow step
     And the user sets the workflow step to "be" the default
     And the user sets the workflow step's sort order to "1"
     And the user adds the new workflow step
-    Then the execution error "DuplicateWorkflowStepName" should occur
+    Then the execution error DuplicateWorkflowStepName should occur

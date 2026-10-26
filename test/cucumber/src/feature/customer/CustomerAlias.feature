@@ -2,7 +2,7 @@ Feature: Employee customer alias
   An employee wants to add, edit, and delete a customer alias
 
   Scenario: Anonymous user adds a customer with login and an employee adds, edits, and deletes a party alias
-    Given the anonymous user "Gerald" begins using the application
+    Given the anonymous user Gerald begins using the application
     Given the user begins adding a new customer
     And the user sets the new customer's first name to "Gerald"
     And the user sets the new customer's last name to "Jonas"
@@ -15,7 +15,7 @@ Feature: Employee customer alias
     And the user sets the new customer's answer to "Mufasa"
     When the user adds the new customer
     Then no error should occur
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     Given the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -42,4 +42,4 @@ Feature: Employee customer alias
     And the user sets the party alias type's party alias type to "TEST"
     And the user deletes the party alias
     Then no error should occur
-    And the user deletes the user login added by the anonymous user "Gerald"
+    And the user deletes the user login added by the anonymous user Gerald

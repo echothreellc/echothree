@@ -2,7 +2,7 @@ Feature: Employee offer item
   An employee wants to add, edit, and delete an offer item
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee offer item
     Then no error should occur
 
   Scenario: Existing employee adds a fixed offer item price, edits it, and deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new offer
     And the user sets the offer's offer name to "CUCUMBER_OFFER"
     And the user sets the offer to "not be" the default
@@ -64,7 +64,7 @@ Feature: Employee offer item
     Then no error should occur
 
   Scenario: Existing employee adds an offer with an offer item price filter and attempts to create an offer item price
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new offer
     And the user sets the offer's offer name to "CUCUMBER_OFFER"
     And the user sets the offer's offer item price filter name to "EXAMPLE_OFFER_ITEM_PRICE_FILTER"
@@ -86,14 +86,14 @@ Feature: Employee offer item
     And the user sets the offer item price's currency to "USD"
     And the user sets the offer item price's unit price to "5.99"
     And the user adds the new offer item price
-    Then the execution error "CannotManuallyCreateOfferItemPriceWhenOfferItemPriceFilterSet" should occur
+    Then the execution error CannotManuallyCreateOfferItemPriceWhenOfferItemPriceFilterSet should occur
     When the user begins deleting an offer
     And the user sets the offer's offer name to "CUCUMBER_OFFER"
     And the user deletes the offer
     Then no error should occur
 
   Scenario: Existing employee adds an offer with an offer item price filter and attempts to edit an offer item price
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new offer
     And the user sets the offer's offer name to "CUCUMBER_OFFER"
     And the user sets the offer's offer item price filter name to "EXAMPLE_OFFER_ITEM_PRICE_FILTER"
@@ -114,14 +114,14 @@ Feature: Employee offer item
     And the user sets the offer item price's unit of measure type to "EACH"
     And the user sets the offer item price's currency to "USD"
     When the user begins editing the offer item price
-    Then the execution error "CannotManuallyEditOfferItemPriceWhenOfferItemPriceFilterSet" should occur
+    Then the execution error CannotManuallyEditOfferItemPriceWhenOfferItemPriceFilterSet should occur
     When the user begins deleting an offer
     And the user sets the offer's offer name to "CUCUMBER_OFFER"
     And the user deletes the offer
     Then no error should occur
 
   Scenario: Existing employee adds an offer with an offer item price filter and attempts to delete an offer item price
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new offer
     And the user sets the offer's offer name to "CUCUMBER_OFFER"
     And the user sets the offer's offer item price filter name to "EXAMPLE_OFFER_ITEM_PRICE_FILTER"
@@ -142,7 +142,7 @@ Feature: Employee offer item
     And the user sets the offer item price's unit of measure type to "EACH"
     And the user sets the offer item price's currency to "USD"
     And the user deletes the offer item price
-    Then the execution error "CannotManuallyDeleteOfferItemPriceWhenOfferItemPriceFilterSet" should occur
+    Then the execution error CannotManuallyDeleteOfferItemPriceWhenOfferItemPriceFilterSet should occur
     When the user begins deleting an offer
     And the user sets the offer's offer name to "CUCUMBER_OFFER"
     And the user deletes the offer

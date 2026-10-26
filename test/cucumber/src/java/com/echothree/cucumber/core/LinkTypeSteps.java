@@ -349,7 +349,7 @@ public class LinkTypeSteps implements En {
             values.asMap(String.class, String.class).forEach(linkTypeEdit::set);
         });
 
-        And("the user clears the link type field {string}", (String fieldName) -> {
+        And("the user clears the link type field {word}", (String fieldName) -> {
             var persona = CurrentPersona.persona;
             var linkTypeEdit = persona.createLinkTypeForm == null ? persona.linkTypeEdit : persona.createLinkTypeForm;
 
@@ -357,7 +357,7 @@ public class LinkTypeSteps implements En {
             linkTypeEdit.set(fieldName, null);
         });
 
-        Then("the link type field {string} validation error {string} should occur", (String fieldName, String error) -> {
+        Then("the link type field {word} validation error {word} should occur", (String fieldName, String error) -> {
             var commandResult = LastCommandResult.commandResult;
 
             assertThat(commandResult.hasValidationErrors()).isTrue();

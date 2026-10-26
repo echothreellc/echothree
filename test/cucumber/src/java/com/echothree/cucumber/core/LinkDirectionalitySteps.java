@@ -255,7 +255,7 @@ public class LinkDirectionalitySteps implements En {
             values.asMap(String.class, String.class).forEach(edit::set);
         });
 
-        And("the user clears the link directionality field {string}", (String fieldName) -> {
+        And("the user clears the link directionality field {word}", (String fieldName) -> {
             var persona = CurrentPersona.persona;
             var edit = persona.createLinkDirectionalityForm == null ? persona.linkDirectionalityEdit : persona.createLinkDirectionalityForm;
 
@@ -263,7 +263,7 @@ public class LinkDirectionalitySteps implements En {
             edit.set(fieldName, null);
         });
 
-        Then("the link directionality field {string} validation error {string} should occur", (String fieldName, String error) -> {
+        Then("the link directionality field {word} validation error {word} should occur", (String fieldName, String error) -> {
             var commandResult = LastCommandResult.commandResult;
 
             assertThat(commandResult.hasValidationErrors()).isTrue();
@@ -363,7 +363,7 @@ public class LinkDirectionalitySteps implements En {
             persona.linkDirectionalityEdit = null;
         });
 
-        When("the user {string} a link directionality description with:", (String operation, DataTable values) -> {
+        When("the user {word} a link directionality description with:", (String operation, DataTable values) -> {
             assertThat(operation).isIn("creates", "retrieves", "deletes");
 
             var persona = CurrentPersona.persona;
@@ -443,7 +443,7 @@ public class LinkDirectionalitySteps implements En {
             retrievedDescriptionCount = commandResult.hasErrors() ? null : commandResult.getExecutionResult().getResult().getLinkDirectionalityDescriptionCount();
         });
 
-        Then("the link directionality description page has {int} entries out of {long}", (Integer count, Long total) -> {
+        Then("the link directionality description page has {int} entry/entries out of {long}", (Integer count, Long total) -> {
             assertThat(retrievedDescriptions).hasSize(count);
             assertThat(retrievedDescriptionCount).isEqualTo(total);
         });

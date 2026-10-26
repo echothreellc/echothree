@@ -2,7 +2,7 @@ Feature: Employee UPC-E item alias
   An employee wants to add, edit, and delete an item alias that is a UPC-E
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee UPC-E item alias
     Then no error should occur
 
   Scenario: Existing employee adds an item, then a valid UPC-E item alias, edits it, and deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new item
     And the user sets the item's type to "REGULAR"
     And the user sets the item's use type to "REGULAR"
@@ -54,7 +54,7 @@ Feature: Employee UPC-E item alias
     Then no error should occur
 
   Scenario: Existing employee adds an item, then tries to add a UPC-E item alias with an incorrect checksum
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new item
     And the user sets the item's type to "REGULAR"
     And the user sets the item's use type to "REGULAR"
@@ -87,12 +87,12 @@ Feature: Employee UPC-E item alias
     And the user sets the item alias's item alias type to "UPC_E"
     And the user sets the item alias's alias to "04210006"
     And the user adds the new item alias
-    Then the execution error "IncorrectUpcAChecksum" should occur
+    Then the execution error IncorrectUpcAChecksum should occur
     When the user sets the status of the last item added to "ACTIVE_TO_DISCONTINUED"
     Then no error should occur
 
   Scenario: Existing employee adds an item, then tries to add a UPC-E item alias with an incorrect character
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new item
     And the user sets the item's type to "REGULAR"
     And the user sets the item's use type to "REGULAR"
@@ -125,12 +125,12 @@ Feature: Employee UPC-E item alias
     And the user sets the item alias's item alias type to "UPC_E"
     And the user sets the item alias's alias to "04210A05"
     And the user adds the new item alias
-    Then the execution error "IncorrectUpcECharacter" should occur
+    Then the execution error IncorrectUpcECharacter should occur
     When the user sets the status of the last item added to "ACTIVE_TO_DISCONTINUED"
     Then no error should occur
 
   Scenario: Existing employee adds an item, then tries to add a UPC-E item alias with an incorrect length
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new item
     And the user sets the item's type to "REGULAR"
     And the user sets the item's use type to "REGULAR"
@@ -163,12 +163,12 @@ Feature: Employee UPC-E item alias
     And the user sets the item alias's item alias type to "UPC_E"
     And the user sets the item alias's alias to "0421000"
     And the user adds the new item alias
-    Then the execution error "IncorrectUpcELength" should occur
+    Then the execution error IncorrectUpcELength should occur
     When the user sets the status of the last item added to "ACTIVE_TO_DISCONTINUED"
     Then no error should occur
 
   Scenario: Existing employee adds an item, then tries to add a UPC-E item alias with an incorrect number system
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new item
     And the user sets the item's type to "REGULAR"
     And the user sets the item's use type to "REGULAR"
@@ -201,13 +201,13 @@ Feature: Employee UPC-E item alias
     And the user sets the item alias's item alias type to "UPC_E"
     And the user sets the item alias's alias to "24210005"
     And the user adds the new item alias
-    Then the execution error "IncorrectUpcENumberSystem" should occur
+    Then the execution error IncorrectUpcENumberSystem should occur
     When the user begins entering a new item alias
     And the user sets the item alias's item to the last item added
     And the user sets the item alias's unit of measure type to "EACH"
     And the user sets the item alias's item alias type to "UPC_E"
     And the user sets the item alias's alias to "81234569"
     And the user adds the new item alias
-    Then the execution error "IncorrectUpcENumberSystem" should occur
+    Then the execution error IncorrectUpcENumberSystem should occur
     When the user sets the status of the last item added to "ACTIVE_TO_DISCONTINUED"
     Then no error should occur

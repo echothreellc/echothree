@@ -2,7 +2,7 @@ Feature: Employee content collection
   An employee wants to add, edit, and delete a content collection
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee content collection
     Then no error should occur
 
   Scenario: Existing employee adds a content collection, edits it, and deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new content collection
     And the user sets the content collection's content collection name to "CucumberCollection"
     And the user sets the content collection's default source name to "TEST0001B"

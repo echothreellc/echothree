@@ -35,7 +35,7 @@ public class EncryptionSteps implements En {
     public EncryptionSteps() {
         Given("the user uses entity encryption key name {string}", (String name) -> entityEncryptionKeyName = name);
 
-        When("the user encrypts {string} and remembers it as {string}", (String value, String name) -> {
+        When("the user encrypts {string} and remembers it as {word}", (String value, String name) -> {
             var form = CoreUtil.getHome().getEncryptForm();
 
             form.setEntityEncryptionKeyName(entityEncryptionKeyName);
@@ -57,7 +57,7 @@ public class EncryptionSteps implements En {
             encryptedValues.put(name, result);
         });
 
-        Then("the encrypted values {string} and {string} have different IVs and ciphertext",
+        Then("the encrypted values {word} and {word} have different IVs and ciphertext",
                 (String first, String second) -> {
                     var firstResult = encryptedValue(first);
                     var secondResult = encryptedValue(second);
@@ -66,22 +66,22 @@ public class EncryptionSteps implements En {
                     assertThat(firstResult.getValue()).isNotEqualTo(secondResult.getValue());
                 });
 
-        When("the user decrypts {string} using its returned IV", (String name) ->
+        When("the user decrypts {word} using its returned IV", (String name) ->
                 decrypt(name, encryptedValue(name).getInitializationVector()));
 
-        When("the user decrypts {string} using its returned IV without padding", (String name) -> {
+        When("the user decrypts {word} using its returned IV without padding", (String name) -> {
             var iv = BaseEncoding.base64().decode(encryptedValue(name).getInitializationVector());
 
             decrypt(name, BaseEncoding.base64().omitPadding().encode(iv));
         });
 
-        When("the user decrypts {string} without an IV", (String name) -> decrypt(name, null));
+        When("the user decrypts {word} without an IV", (String name) -> decrypt(name, null));
 
-        When("the user decrypts {string} using IV {string}", (String name, String iv) -> decrypt(name, iv));
+        When("the user decrypts {word} using IV {string}", (String name, String iv) -> decrypt(name, iv));
 
         Then("the decrypted value is {string}", (String expected) -> assertThat(decryptedValue).isEqualTo(expected));
 
-        Then("the IV validation error {string} should occur", (String error) -> {
+        Then("the IV validation error {word} should occur", (String error) -> {
             var commandResult = LastCommandResult.commandResult;
 
             assertThat(commandResult.hasValidationErrors()).isTrue();
