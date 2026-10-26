@@ -95,18 +95,15 @@ public class EditLinkDirectionalityDescriptionCommand
         LinkDirectionalityDescription linkDirectionalityDescription = null;
         var linkDirectionalityName = spec.getLinkDirectionalityName();
         var linkDirectionality = linkDirectionalityLogic.getLinkDirectionalityByName(this, linkDirectionalityName);
+        var languageIsoName = spec.getLanguageIsoName();
+        var language = languageLogic.getLanguageByName(this, languageIsoName);
 
         if(!hasExecutionErrors()) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = languageLogic.getLanguageByName(this, languageIsoName);
+            linkDirectionalityDescription = linkDirectionalityControl.getLinkDirectionalityDescription(linkDirectionality, language,
+                    editModeToEntityPermission(editMode));
 
-            if(!hasExecutionErrors()) {
-                linkDirectionalityDescription = linkDirectionalityControl.getLinkDirectionalityDescription(linkDirectionality, language,
-                        editModeToEntityPermission(editMode));
-
-                if(linkDirectionalityDescription == null) {
-                    addExecutionError(ExecutionErrors.UnknownLinkDirectionalityDescription.name(), linkDirectionalityName, languageIsoName);
-                }
+            if(linkDirectionalityDescription == null) {
+                addExecutionError(ExecutionErrors.UnknownLinkDirectionalityDescription.name(), linkDirectionalityName, languageIsoName);
             }
         }
 

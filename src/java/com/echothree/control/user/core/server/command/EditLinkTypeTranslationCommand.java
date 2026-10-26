@@ -98,18 +98,15 @@ public class EditLinkTypeTranslationCommand
         LinkTypeTranslation linkTypeTranslation = null;
         var linkTypeName = spec.getLinkTypeName();
         var linkType = linkTypeLogic.getLinkTypeByName(this, linkTypeName);
+        var languageIsoName = spec.getLanguageIsoName();
+        var language = languageLogic.getLanguageByName(this, languageIsoName);
 
         if(!hasExecutionErrors()) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = languageLogic.getLanguageByName(this, languageIsoName);
+            linkTypeTranslation = linkTypeControl.getLinkTypeTranslation(linkType, language,
+                    editModeToEntityPermission(editMode));
 
-            if(!hasExecutionErrors()) {
-                linkTypeTranslation = linkTypeControl.getLinkTypeTranslation(linkType, language,
-                        editModeToEntityPermission(editMode));
-
-                if(linkTypeTranslation == null) {
-                    addExecutionError(ExecutionErrors.UnknownLinkTypeTranslation.name(), linkTypeName, languageIsoName);
-                }
+            if(linkTypeTranslation == null) {
+                addExecutionError(ExecutionErrors.UnknownLinkTypeTranslation.name(), linkTypeName, languageIsoName);
             }
         }
 

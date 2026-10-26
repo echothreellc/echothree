@@ -18,6 +18,8 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetLinkTypesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.LinkCardinalityControl;
+import com.echothree.model.control.core.server.control.LinkDirectionalityControl;
 import com.echothree.model.control.core.server.control.LinkTypeControl;
 import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.core.server.logic.LinkCardinalityLogic;
@@ -26,6 +28,9 @@ import com.echothree.model.control.core.server.logic.LinkTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.core.server.entity.EntityType;
+import com.echothree.model.data.core.server.entity.LinkCardinality;
+import com.echothree.model.data.core.server.entity.LinkDirectionality;
 import com.echothree.model.data.core.server.entity.LinkType;
 import com.echothree.model.data.core.server.factory.LinkTypeFactory;
 import com.echothree.util.common.command.BaseResult;
@@ -70,6 +75,12 @@ public class GetLinkTypesCommand
     }
 
     @Inject
+    LinkCardinalityControl linkCardinalityControl;
+
+    @Inject
+    LinkDirectionalityControl linkDirectionalityControl;
+
+    @Inject
     LinkTypeControl linkTypeControl;
 
     @Inject
@@ -90,6 +101,12 @@ public class GetLinkTypesCommand
     }
 
     private Condition condition;
+    private LinkType parentLinkType;
+    private EntityType sourceEntityType;
+    private EntityType targetEntityType;
+    private LinkCardinality linkCardinality;
+    private LinkDirectionality linkDirectionality;
+    private LinkType inverseLinkType;
 
     @Override
     protected void handleForm() {
@@ -97,32 +114,17 @@ public class GetLinkTypesCommand
                 || (form.getTargetComponentVendorName() == null) != (form.getTargetEntityTypeName() == null)) {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         } else {
-            var parentLinkType = form.getParentLinkTypeName() == null ? null : linkTypeLogic.getLinkTypeByName(this, form.getParentLinkTypeName());
+            parentLinkType = form.getParentLinkTypeName() == null ? null : linkTypeLogic.getLinkTypeByName(this, form.getParentLinkTypeName());
+            sourceEntityType = form.getSourceEntityTypeName() == null ? null : entityTypeLogic.getEntityTypeByName(this,
+                    form.getSourceComponentVendorName(), form.getSourceEntityTypeName());
+            targetEntityType = form.getTargetEntityTypeName() == null ? null : entityTypeLogic.getEntityTypeByName(this,
+                    form.getTargetComponentVendorName(), form.getTargetEntityTypeName());
+            linkCardinality = form.getLinkCardinalityName() == null ? null : linkCardinalityLogic.getLinkCardinalityByName(this, form.getLinkCardinalityName());
+            linkDirectionality = form.getLinkDirectionalityName() == null ? null : linkDirectionalityLogic.getLinkDirectionalityByName(this, form.getLinkDirectionalityName());
+            inverseLinkType = form.getInverseLinkTypeName() == null ? null : linkTypeLogic.getLinkTypeByName(this, form.getInverseLinkTypeName());
 
             if(!hasExecutionErrors()) {
-                var sourceEntityType = form.getSourceEntityTypeName() == null ? null : entityTypeLogic.getEntityTypeByName(this,
-                        form.getSourceComponentVendorName(), form.getSourceEntityTypeName());
-
-                if(!hasExecutionErrors()) {
-                    var targetEntityType = form.getTargetEntityTypeName() == null ? null : entityTypeLogic.getEntityTypeByName(this,
-                            form.getTargetComponentVendorName(), form.getTargetEntityTypeName());
-
-                    if(!hasExecutionErrors()) {
-                        var linkCardinality = form.getLinkCardinalityName() == null ? null : linkCardinalityLogic.getLinkCardinalityByName(this, form.getLinkCardinalityName());
-
-                        if(!hasExecutionErrors()) {
-                            var linkDirectionality = form.getLinkDirectionalityName() == null ? null : linkDirectionalityLogic.getLinkDirectionalityByName(this, form.getLinkDirectionalityName());
-
-                            if(!hasExecutionErrors()) {
-                                var inverseLinkType = form.getInverseLinkTypeName() == null ? null : linkTypeLogic.getLinkTypeByName(this, form.getInverseLinkTypeName());
-
-                                if(!hasExecutionErrors()) {
-                                    condition = linkTypeControl.getLinkTypeFilter(parentLinkType, sourceEntityType, targetEntityType, linkCardinality, linkDirectionality, inverseLinkType);
-                                }
-                            }
-                        }
-                    }
-                }
+                condition = linkTypeControl.getLinkTypeFilter(parentLinkType, sourceEntityType, targetEntityType, linkCardinality, linkDirectionality, inverseLinkType);
             }
         }
     }
@@ -142,11 +144,37 @@ public class GetLinkTypesCommand
         var result = CoreResultFactory.getGetLinkTypesResult();
 
         if(entities != null) {
+            var userVisit = getUserVisit();
+
+            if(parentLinkType != null) {
+                result.setParentLinkType(linkTypeControl.getLinkTypeTransfer(userVisit, parentLinkType));
+            }
+
+            if(sourceEntityType != null) {
+                result.setSourceEntityType(entityTypeControl.getEntityTypeTransfer(userVisit, sourceEntityType));
+            }
+
+            if(targetEntityType != null) {
+                result.setTargetEntityType(entityTypeControl.getEntityTypeTransfer(userVisit, targetEntityType));
+            }
+
+            if(linkCardinality != null) {
+                result.setLinkCardinality(linkCardinalityControl.getLinkCardinalityTransfer(userVisit, linkCardinality));
+            }
+
+            if(linkDirectionality != null) {
+                result.setLinkDirectionality(linkDirectionalityControl.getLinkDirectionalityTransfer(userVisit, linkDirectionality));
+            }
+
+            if(inverseLinkType != null) {
+                result.setInverseLinkType(linkTypeControl.getLinkTypeTransfer(userVisit, inverseLinkType));
+            }
+
             if(session.hasLimit(LinkTypeFactory.class)) {
                 result.setLinkTypeCount(getTotalEntities());
             }
 
-            result.setLinkTypes(linkTypeControl.getLinkTypeTransfers(getUserVisit(), entities));
+            result.setLinkTypes(linkTypeControl.getLinkTypeTransfers(userVisit, entities));
         }
 
         return result;

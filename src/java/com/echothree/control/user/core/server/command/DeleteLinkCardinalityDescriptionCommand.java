@@ -74,19 +74,16 @@ public class DeleteLinkCardinalityDescriptionCommand
     protected BaseResult execute() {
         var linkCardinalityName = form.getLinkCardinalityName();
         var linkCardinality = linkCardinalityLogic.getLinkCardinalityByName(this, linkCardinalityName);
+        var languageIsoName = form.getLanguageIsoName();
+        var language = languageLogic.getLanguageByName(this, languageIsoName);
 
         if(!hasExecutionErrors()) {
-            var languageIsoName = form.getLanguageIsoName();
-            var language = languageLogic.getLanguageByName(this, languageIsoName);
+            var linkCardinalityDescription = linkCardinalityControl.getLinkCardinalityDescriptionForUpdate(linkCardinality, language);
 
-            if(!hasExecutionErrors()) {
-                var linkCardinalityDescription = linkCardinalityControl.getLinkCardinalityDescriptionForUpdate(linkCardinality, language);
-
-                if(linkCardinalityDescription != null) {
-                    linkCardinalityControl.deleteLinkCardinalityDescription(linkCardinalityDescription, getPartyPK());
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownLinkCardinalityDescription.name(), linkCardinalityName, languageIsoName);
-                }
+            if(linkCardinalityDescription != null) {
+                linkCardinalityControl.deleteLinkCardinalityDescription(linkCardinalityDescription, getPartyPK());
+            } else {
+                addExecutionError(ExecutionErrors.UnknownLinkCardinalityDescription.name(), linkCardinalityName, languageIsoName);
             }
         }
 

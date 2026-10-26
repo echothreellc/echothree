@@ -74,19 +74,16 @@ public class DeleteLinkDirectionalityDescriptionCommand
     protected BaseResult execute() {
         var linkDirectionalityName = form.getLinkDirectionalityName();
         var linkDirectionality = linkDirectionalityLogic.getLinkDirectionalityByName(this, linkDirectionalityName);
+        var languageIsoName = form.getLanguageIsoName();
+        var language = languageLogic.getLanguageByName(this, languageIsoName);
 
         if(!hasExecutionErrors()) {
-            var languageIsoName = form.getLanguageIsoName();
-            var language = languageLogic.getLanguageByName(this, languageIsoName);
+            var linkDirectionalityDescription = linkDirectionalityControl.getLinkDirectionalityDescriptionForUpdate(linkDirectionality, language);
 
-            if(!hasExecutionErrors()) {
-                var linkDirectionalityDescription = linkDirectionalityControl.getLinkDirectionalityDescriptionForUpdate(linkDirectionality, language);
-
-                if(linkDirectionalityDescription != null) {
-                    linkDirectionalityControl.deleteLinkDirectionalityDescription(linkDirectionalityDescription, getPartyPK());
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownLinkDirectionalityDescription.name(), linkDirectionalityName, languageIsoName);
-                }
+            if(linkDirectionalityDescription != null) {
+                linkDirectionalityControl.deleteLinkDirectionalityDescription(linkDirectionalityDescription, getPartyPK());
+            } else {
+                addExecutionError(ExecutionErrors.UnknownLinkDirectionalityDescription.name(), linkDirectionalityName, languageIsoName);
             }
         }
 

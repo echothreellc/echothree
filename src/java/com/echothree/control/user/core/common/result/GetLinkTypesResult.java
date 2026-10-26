@@ -16,12 +16,33 @@
 
 package com.echothree.control.user.core.common.result;
 
+import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
+import com.echothree.model.control.core.common.transfer.LinkCardinalityTransfer;
+import com.echothree.model.control.core.common.transfer.LinkDirectionalityTransfer;
 import com.echothree.model.control.core.common.transfer.LinkTypeTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 
 public interface GetLinkTypesResult
         extends BaseResult {
+
+    LinkTypeTransfer getParentLinkType();
+    void setParentLinkType(LinkTypeTransfer parentLinkType);
+
+    EntityTypeTransfer getSourceEntityType();
+    void setSourceEntityType(EntityTypeTransfer sourceEntityType);
+
+    EntityTypeTransfer getTargetEntityType();
+    void setTargetEntityType(EntityTypeTransfer targetEntityType);
+
+    LinkCardinalityTransfer getLinkCardinality();
+    void setLinkCardinality(LinkCardinalityTransfer linkCardinality);
+
+    LinkDirectionalityTransfer getLinkDirectionality();
+    void setLinkDirectionality(LinkDirectionalityTransfer linkDirectionality);
+
+    LinkTypeTransfer getInverseLinkType();
+    void setInverseLinkType(LinkTypeTransfer inverseLinkType);
 
     Long getLinkTypeCount();
     void setLinkTypeCount(Long linkTypeCount);

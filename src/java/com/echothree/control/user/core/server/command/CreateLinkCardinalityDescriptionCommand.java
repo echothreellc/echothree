@@ -75,21 +75,18 @@ public class CreateLinkCardinalityDescriptionCommand
     protected BaseResult execute() {
         var linkCardinalityName = form.getLinkCardinalityName();
         var linkCardinality = linkCardinalityLogic.getLinkCardinalityByName(this, linkCardinalityName);
+        var languageIsoName = form.getLanguageIsoName();
+        var language = languageLogic.getLanguageByName(this, languageIsoName);
 
         if(!hasExecutionErrors()) {
-            var languageIsoName = form.getLanguageIsoName();
-            var language = languageLogic.getLanguageByName(this, languageIsoName);
+            var linkCardinalityDescription = linkCardinalityControl.getLinkCardinalityDescription(linkCardinality, language);
 
-            if(!hasExecutionErrors()) {
-                var linkCardinalityDescription = linkCardinalityControl.getLinkCardinalityDescription(linkCardinality, language);
+            if(linkCardinalityDescription == null) {
+                var description = form.getDescription();
 
-                if(linkCardinalityDescription == null) {
-                    var description = form.getDescription();
-
-                    linkCardinalityControl.createLinkCardinalityDescription(linkCardinality, language, description, getPartyPK());
-                } else {
-                    addExecutionError(ExecutionErrors.DuplicateLinkCardinalityDescription.name(), linkCardinalityName, languageIsoName);
-                }
+                linkCardinalityControl.createLinkCardinalityDescription(linkCardinality, language, description, getPartyPK());
+            } else {
+                addExecutionError(ExecutionErrors.DuplicateLinkCardinalityDescription.name(), linkCardinalityName, languageIsoName);
             }
         }
 

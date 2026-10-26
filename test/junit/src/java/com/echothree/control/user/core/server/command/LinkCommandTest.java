@@ -16,6 +16,36 @@
 
 package com.echothree.control.user.core.server.command;
 
+import com.echothree.model.data.core.common.pk.LinkDirectionalityPK;
+
+import com.echothree.model.data.core.common.pk.LinkCardinalityPK;
+
+import com.echothree.model.data.core.server.value.LinkDirectionalityValue;
+
+import com.echothree.model.data.core.server.value.LinkCardinalityValue;
+
+import com.echothree.model.data.core.server.value.EntityTypeValue;
+
+import com.echothree.model.data.core.server.entity.LinkDirectionality;
+
+import com.echothree.model.data.core.server.entity.LinkCardinality;
+
+import com.echothree.model.data.core.server.entity.EntityType;
+
+import com.echothree.model.control.core.server.control.LinkDirectionalityControl;
+
+import com.echothree.model.control.core.server.control.LinkCardinalityControl;
+
+import com.echothree.model.control.core.server.control.EntityTypeControl;
+
+import com.echothree.model.control.core.common.transfer.LinkDirectionalityTransfer;
+
+import com.echothree.model.control.core.common.transfer.LinkCardinalityTransfer;
+
+import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
+
+import com.echothree.control.user.core.common.result.GetLinkTypesResult;
+
 import com.echothree.control.user.core.common.result.GetLinksResult;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.common.transfer.LinkTypeTransfer;
@@ -251,6 +281,10 @@ public class LinkCommandTest {
     }
 
     private static class TestListCommand extends GetLinksCommand {
+        Session testSession() {
+            return session;
+        }
+
         int userVisitLookups;
 
         TestListCommand() throws ReflectiveOperationException {
@@ -339,6 +373,99 @@ public class LinkCommandTest {
         assertNull(result.getTargetEntityInstance());
         assertNull(result.getLinks());
         assertEquals(0, command.userVisitLookups);
+    }
+
+    private static class TestLinkTypesCommand extends GetLinkTypesCommand {
+        int userVisitLookups;
+
+        TestLinkTypesCommand(Session testSession) {
+            session = testSession;
+        }
+
+        @Override
+        public UserVisit getUserVisit() {
+            userVisitLookups++;
+            return null;
+        }
+
+        @SuppressWarnings("UnnecessaryAssignment") // Supply CDI dependencies without a container.
+        void useEntityTypeControl(EntityTypeControl control) {
+            entityTypeControl = control;
+        }
+    }
+
+    @Test
+    @SuppressWarnings("UnnecessaryAssignment")
+    public void linkTypeListsReturnSpecifiedFilterTransfersEvenWhenEmpty() throws ReflectiveOperationException {
+        var testSession = new TestListCommand().testSession();
+        var linkType = new LinkType(new LinkTypeValue(new LinkTypePK(1L), null, null), EntityPermission.READ_ONLY);
+        var entityType = new EntityType(
+                new EntityTypeValue(new EntityTypePK(1L), null, null), EntityPermission.READ_ONLY);
+        var cardinality = new LinkCardinality(
+                new LinkCardinalityValue(new LinkCardinalityPK(1L), null, null), EntityPermission.READ_ONLY);
+        var directionality = new LinkDirectionality(
+                new LinkDirectionalityValue(new LinkDirectionalityPK(1L), null, null), EntityPermission.READ_ONLY);
+        var typeTransfer = new LinkTypeTransfer("TEST", null, null, null, null, null, false, null, 0, null, null, null);
+        var entityTransfer = new EntityTypeTransfer();
+        var cardinalityTransfer = new LinkCardinalityTransfer("TEST", false, 0, null);
+        var directionalityTransfer = new LinkDirectionalityTransfer("TEST", false, 0, null);
+        var names = List.of("parentLinkType", "sourceEntityType", "targetEntityType", "linkCardinality", "linkDirectionality", "inverseLinkType");
+        var entities = List.of(linkType, entityType, entityType, cardinality, directionality, linkType);
+        var transfers = List.of(typeTransfer, entityTransfer, entityTransfer, cardinalityTransfer, directionalityTransfer, typeTransfer);
+
+        for(int filters = 0; filters < 64; filters++) {
+            var command = new TestLinkTypesCommand(testSession);
+            command.linkTypeControl = new LinkTypeControl() {
+                @Override
+                public LinkTypeTransfer getLinkTypeTransfer(UserVisit userVisit, LinkType entity) {
+                    assertSame(linkType, entity);
+                    return typeTransfer;
+                }
+
+                @Override
+                public List<LinkTypeTransfer> getLinkTypeTransfers(UserVisit userVisit, Collection<LinkType> returnedEntities) {
+                    assertTrue(returnedEntities.isEmpty());
+                    return List.of();
+                }
+            };
+            command.useEntityTypeControl(new EntityTypeControl() {
+                @Override
+                public EntityTypeTransfer getEntityTypeTransfer(UserVisit userVisit,
+                        EntityType entity) {
+                    assertSame(entityType, entity);
+                    return entityTransfer;
+                }
+            });
+            command.linkCardinalityControl = new LinkCardinalityControl() {
+                @Override
+                public LinkCardinalityTransfer getLinkCardinalityTransfer(UserVisit userVisit,
+                        LinkCardinality entity) {
+                    assertSame(cardinality, entity);
+                    return cardinalityTransfer;
+                }
+            };
+            command.linkDirectionalityControl = new LinkDirectionalityControl() {
+                @Override
+                public LinkDirectionalityTransfer getLinkDirectionalityTransfer(UserVisit userVisit,
+                        LinkDirectionality entity) {
+                    assertSame(directionality, entity);
+                    return directionalityTransfer;
+                }
+            };
+            for(int index = 0; index < names.size(); index++) {
+                var field = GetLinkTypesCommand.class.getDeclaredField(names.get(index));
+                field.setAccessible(true);
+                field.set(command, (filters & (1 << index)) == 0 ? null : entities.get(index));
+            }
+            var result = (GetLinkTypesResult)command.getResult(List.of());
+            var actualTransfers = new Object[]{result.getParentLinkType(), result.getSourceEntityType(), result.getTargetEntityType(),
+                    result.getLinkCardinality(), result.getLinkDirectionality(), result.getInverseLinkType()};
+            for(int index = 0; index < names.size(); index++) {
+                assertSame((filters & (1 << index)) == 0 ? null : transfers.get(index), actualTransfers[index], names.get(index));
+            }
+            assertTrue(result.getLinkTypes().isEmpty());
+            assertEquals(1, command.userVisitLookups);
+        }
     }
 
 }

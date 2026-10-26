@@ -74,19 +74,16 @@ public class DeleteLinkTypeTranslationCommand
     protected BaseResult execute() {
         var linkTypeName = form.getLinkTypeName();
         var linkType = linkTypeLogic.getLinkTypeByName(this, linkTypeName);
+        var languageIsoName = form.getLanguageIsoName();
+        var language = languageLogic.getLanguageByName(this, languageIsoName);
 
         if(!hasExecutionErrors()) {
-            var languageIsoName = form.getLanguageIsoName();
-            var language = languageLogic.getLanguageByName(this, languageIsoName);
+            var linkTypeTranslation = linkTypeControl.getLinkTypeTranslationForUpdate(linkType, language);
 
-            if(!hasExecutionErrors()) {
-                var linkTypeTranslation = linkTypeControl.getLinkTypeTranslationForUpdate(linkType, language);
-
-                if(linkTypeTranslation != null) {
-                    linkTypeControl.deleteLinkTypeTranslation(linkTypeTranslation, getPartyPK());
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownLinkTypeTranslation.name(), linkTypeName, languageIsoName);
-                }
+            if(linkTypeTranslation != null) {
+                linkTypeControl.deleteLinkTypeTranslation(linkTypeTranslation, getPartyPK());
+            } else {
+                addExecutionError(ExecutionErrors.UnknownLinkTypeTranslation.name(), linkTypeName, languageIsoName);
             }
         }
 
