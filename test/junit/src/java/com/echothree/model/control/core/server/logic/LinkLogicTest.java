@@ -58,7 +58,6 @@ import com.echothree.util.server.persistence.EntityPermission;
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Predicate;
 import org.jooq.Condition;
 import org.junit.jupiter.api.Test;
@@ -128,7 +127,7 @@ public class LinkLogicTest {
         Link link;
         final List<Link> links = new ArrayList<>();
         final List<EntityInstancePK> locks = new ArrayList<>();
-        final Map<Condition, Predicate<Link>> filters = new IdentityHashMap<>();
+        final IdentityHashMap<Condition, Predicate<Link>> filters = new IdentityHashMap<>();
         EntityPermission entityPermission;
         int creates;
         int deletes;
