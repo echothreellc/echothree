@@ -2,7 +2,7 @@ Feature: Employee location
   An employee wants to add, edit, and delete a location
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee location
     Then no error should occur
 
   Scenario: Existing employee adds a location, edits it, changes its status, and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new warehouse
     And the user sets the warehouse's warehouse name to "CucumberWarehouse"
     And the user sets the warehouse's name to "Cucumber Warehouse"
@@ -86,7 +86,7 @@ Feature: Employee location
     Then no error should occur
 
   Scenario: Existing employee adds a location type with no validation pattern and then adds a location
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new warehouse
     And the user sets the warehouse's warehouse name to "CucumberWarehouse"
     And the user sets the warehouse's warehouse type name to "DEFAULT"
@@ -140,7 +140,7 @@ Feature: Employee location
     Then no error should occur
 
   Scenario: Existing employee attempts to add a location with a name that does not match the validation pattern
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new warehouse
     And the user sets the warehouse's warehouse name to "CucumberWarehouse"
     And the user sets the warehouse's warehouse type name to "DEFAULT"
@@ -188,14 +188,14 @@ Feature: Employee location
     And the user sets the location's inventory location group name to "CucumberInventoryLocationGroup"
     And the user sets the location's description to "Cucumber Location"
     And the user adds the new location
-    Then the execution error "InvalidLocationName" should occur
+    Then the execution error InvalidLocationName should occur
     When the user begins deleting a warehouse
     And the user sets the warehouse's warehouse name to the last warehouse added
     And the user deletes the warehouse
     Then no error should occur
 
   Scenario: Existing employee adds a location type with no validation pattern and then attempts to add a location with a name that is too long
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new warehouse
     And the user sets the warehouse's warehouse name to "CucumberWarehouse"
     And the user sets the warehouse's warehouse type name to "DEFAULT"
@@ -242,14 +242,14 @@ Feature: Employee location
     And the user sets the location's inventory location group name to "CucumberInventoryLocationGroup"
     And the user sets the location's description to "Cucumber Location"
     And the user adds the new location
-    Then the execution error "InvalidLocationName" should occur
+    Then the execution error InvalidLocationName should occur
     When the user begins deleting a warehouse
     And the user sets the warehouse's warehouse name to the last warehouse added
     And the user deletes the warehouse
     Then no error should occur
 
   Scenario: Existing employee adds a location type with no validation pattern and then attempts to add a location with a name that is too short
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new warehouse
     And the user sets the warehouse's warehouse name to "CucumberWarehouse"
     And the user sets the warehouse's warehouse type name to "DEFAULT"
@@ -296,14 +296,14 @@ Feature: Employee location
     And the user sets the location's inventory location group name to "CucumberInventoryLocationGroup"
     And the user sets the location's description to "Cucumber Location"
     And the user adds the new location
-    Then the execution error "InvalidLocationName" should occur
+    Then the execution error InvalidLocationName should occur
     When the user begins deleting a warehouse
     And the user sets the warehouse's warehouse name to the last warehouse added
     And the user deletes the warehouse
     Then no error should occur
 
   Scenario: Existing employee adds a location type with no validation pattern and then adds and edits a location
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new warehouse
     And the user sets the warehouse's warehouse name to "CucumberWarehouse"
     And the user sets the warehouse's warehouse type name to "DEFAULT"
@@ -365,7 +365,7 @@ Feature: Employee location
     Then no error should occur
 
   Scenario: Existing employee adds a location and then edits it trying to use a name that does not match the validation pattern
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new warehouse
     And the user sets the warehouse's warehouse name to "CucumberWarehouse"
     And the user sets the warehouse's warehouse type name to "DEFAULT"
@@ -421,14 +421,14 @@ Feature: Employee location
     Then no error should occur
     And the user sets the location's new location name to "00"
     And the user finishes editing the location
-    Then the execution error "InvalidLocationName" should occur
+    Then the execution error InvalidLocationName should occur
     When the user begins deleting a warehouse
     And the user sets the warehouse's warehouse name to the last warehouse added
     And the user deletes the warehouse
     Then no error should occur
 
   Scenario: Existing employee adds a location type with no validation pattern and then attempts edits it trying to use a name that is too long
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new warehouse
     And the user sets the warehouse's warehouse name to "CucumberWarehouse"
     And the user sets the warehouse's warehouse type name to "DEFAULT"
@@ -483,14 +483,14 @@ Feature: Employee location
     Then no error should occur
     And the user sets the location's new location name to "0000"
     And the user finishes editing the location
-    Then the execution error "InvalidLocationName" should occur
+    Then the execution error InvalidLocationName should occur
     When the user begins deleting a warehouse
     And the user sets the warehouse's warehouse name to the last warehouse added
     And the user deletes the warehouse
     Then no error should occur
 
   Scenario: Existing employee adds a location type with no validation pattern and then attempts edits it trying to use a name that is too short
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new warehouse
     And the user sets the warehouse's warehouse name to "CucumberWarehouse"
     And the user sets the warehouse's warehouse type name to "DEFAULT"
@@ -544,7 +544,7 @@ Feature: Employee location
     Then no error should occur
     And the user sets the location's new location name to "0"
     And the user finishes editing the location
-    Then the execution error "InvalidLocationName" should occur
+    Then the execution error InvalidLocationName should occur
     When the user begins deleting a warehouse
     And the user sets the warehouse's warehouse name to the last warehouse added
     And the user deletes the warehouse

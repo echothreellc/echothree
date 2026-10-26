@@ -2,7 +2,7 @@ Feature: Employee selector type
   An employee wants to add, edit, and delete a selector type
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee selector type
     Then no error should occur
 
   Scenario: Existing employee adds a selector type, edits it, and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new selector type
     And the user sets the selector type's selector kind name to "ITEM"
     And the user sets the selector type's name to "TEST_SELECTOR_TYPE"
@@ -37,11 +37,11 @@ Feature: Employee selector type
     Then no error should occur
 
   Scenario: Existing employee adds a selector type with a duplicate name and receives an error
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new selector type
     And the user sets the selector type's selector kind name to "ITEM"
     And the user sets the selector type's name to "OFFER"
     And the user sets the selector type's sort order to "1"
     And the user sets the selector type to "be" the default
     And the user adds the new selector type
-    Then the execution error "DuplicateSelectorTypeName" should occur
+    Then the execution error DuplicateSelectorTypeName should occur

@@ -109,7 +109,7 @@ public class LinkSteps implements En {
                     linkTypes.put(alias, name);
                 });
 
-        When("the user {string} a Link with:", (String operation, DataTable values) -> {
+        When("the user {word} a Link with:", (String operation, DataTable values) -> {
             assertThat(operation).isIn("creates", "retrieves", "deletes");
             returnedLink = null;
 
@@ -144,19 +144,19 @@ public class LinkSteps implements En {
 
         When("the user lists Links with limit {string} and:", (String limit, DataTable values) -> list(values, limit));
 
-        Then("the returned Link connects {string} to {string}", (String source, String target) -> {
+        Then("the returned Link connects {word} to {word}", (String source, String target) -> {
             assertThat(returnedLink).isNotNull();
             assertThat(returnedLink.getSourceEntityInstance().getEntityRef()).isEqualTo(endpoints.get(source).entityRef());
             assertThat(returnedLink.getTargetEntityInstance().getEntityRef()).isEqualTo(endpoints.get(target).entityRef());
         });
 
-        Then("the returned Links contain {string} rows", (String count) -> {
+        Then("the returned Links contain {int} row(s)", (Integer rowCount) -> {
             assertThat(returnedLinks).isNotNull();
-            assertThat(returnedLinks.getLinks()).hasSize(Integer.parseInt(count));
+            assertThat(returnedLinks.getLinks()).hasSize(rowCount);
         });
 
-        Then("the returned Link total count is {string}", (String count) -> {
-            assertThat(returnedLinks.getLinkCount()).isEqualTo(Long.valueOf(count));
+        Then("the returned Link total count is {long}", (Long totalCount) -> {
+            assertThat(returnedLinks.getLinkCount()).isEqualTo(totalCount);
         });
 
         Then("the returned Link filters are:", (DataTable values) -> {
@@ -197,7 +197,7 @@ public class LinkSteps implements En {
             assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
         });
 
-        Then("the Link field {string} validation error {string} should occur", (String field, String error) -> {
+        Then("the Link field {word} validation error {word} should occur", (String field, String error) -> {
             var result = LastCommandResult.commandResult;
 
             assertThat(result.hasValidationErrors()).isTrue();
@@ -215,7 +215,7 @@ public class LinkSteps implements En {
             if(!result.hasErrors()) linkTypes.remove(alias);
         });
 
-        When("the user deletes Link test endpoint {string}", this::deleteEndpoint);
+        When("the user deletes Link test endpoint {word}", this::deleteEndpoint);
 
         After(Integer.MAX_VALUE, () -> {
             for(var alias : new ArrayList<>(linkTypes.keySet())) {

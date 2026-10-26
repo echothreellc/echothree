@@ -2,7 +2,7 @@ Feature: Employee GTIN-14 item alias
   An employee wants to add, edit, and delete an item alias that is a GTIN-14
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee GTIN-14 item alias
     Then no error should occur
 
   Scenario: Existing employee adds an item, then a valid GTIN-14 item alias, edits it, and deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new item
     And the user sets the item's type to "REGULAR"
     And the user sets the item's use type to "REGULAR"
@@ -54,7 +54,7 @@ Feature: Employee GTIN-14 item alias
     Then no error should occur
 
   Scenario: Existing employee adds an item, then tries to add a GTIN-14 item alias with an incorrect checksum
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new item
     And the user sets the item's type to "REGULAR"
     And the user sets the item's use type to "REGULAR"
@@ -87,12 +87,12 @@ Feature: Employee GTIN-14 item alias
     And the user sets the item alias's item alias type to "GTIN_14"
     And the user sets the item alias's alias to "00012345600013"
     And the user adds the new item alias
-    Then the execution error "IncorrectGtin14Checksum" should occur
+    Then the execution error IncorrectGtin14Checksum should occur
     When the user sets the status of the last item added to "ACTIVE_TO_DISCONTINUED"
     Then no error should occur
 
   Scenario: Existing employee adds an item, then tries to add a GTIN-14 item alias with an incorrect character
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new item
     And the user sets the item's type to "REGULAR"
     And the user sets the item's use type to "REGULAR"
@@ -125,12 +125,12 @@ Feature: Employee GTIN-14 item alias
     And the user sets the item alias's item alias type to "GTIN_14"
     And the user sets the item alias's alias to "00012345600A12"
     And the user adds the new item alias
-    Then the execution error "IncorrectGtin14Character" should occur
+    Then the execution error IncorrectGtin14Character should occur
     When the user sets the status of the last item added to "ACTIVE_TO_DISCONTINUED"
     Then no error should occur
 
   Scenario: Existing employee adds an item, then tries to add a GTIN-14 item alias with an incorrect length
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new item
     And the user sets the item's type to "REGULAR"
     And the user sets the item's use type to "REGULAR"
@@ -163,6 +163,6 @@ Feature: Employee GTIN-14 item alias
     And the user sets the item alias's item alias type to "GTIN_14"
     And the user sets the item alias's alias to "0001234560001"
     And the user adds the new item alias
-    Then the execution error "IncorrectGtin14Length" should occur
+    Then the execution error IncorrectGtin14Length should occur
     When the user sets the status of the last item added to "ACTIVE_TO_DISCONTINUED"
     Then no error should occur

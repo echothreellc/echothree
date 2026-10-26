@@ -2,7 +2,7 @@ Feature: Employee use
   An employee wants to add, edit, and delete an use
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee use
     Then no error should occur
 
   Scenario: Existing employee adds an use, edits it, and deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new use type
     And the user sets the use type's use type name to "CUCUMBER_USE_TYPE"
     And the user sets the use type to "not be" the default
@@ -45,7 +45,7 @@ Feature: Employee use
     Then no error should occur
 
   Scenario: Existing employee adds an use and tries to delete it while it's in use
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new offer
     And the user sets the offer's offer name to "CUCUMBER_OFFER"
     And the user sets the offer to "not be" the default
@@ -76,7 +76,7 @@ Feature: Employee use
     When the user begins deleting an use
     And the user sets the use's use name to "CUCUMBER_USE"
     And the user deletes the use
-    Then the execution error "CannotDeleteUseInUse" should occur
+    Then the execution error CannotDeleteUseInUse should occur
     When the user begins deleting an offer use
     And the user sets the offer use's offer name to the last offer added
     And the user sets the offer use's use name to the last use added

@@ -2,7 +2,7 @@ Feature: Employee selector
   An employee wants to add, edit, and delete a selector
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee selector
     Then no error should occur
 
   Scenario: Existing employee adds a selector, edits it, and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new selector
     And the user sets the selector's selector kind name to "ITEM"
     And the user sets the selector's selector type name to "FILTER"
@@ -40,7 +40,7 @@ Feature: Employee selector
     Then no error should occur
 
   Scenario: Existing employee adds a selector with a duplicate name and receives an error
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new selector
     And the user sets the selector's selector kind name to "ITEM"
     And the user sets the selector's selector type name to "OFFER"
@@ -48,4 +48,4 @@ Feature: Employee selector
     And the user sets the selector's sort order to "1"
     And the user sets the selector to "be" the default
     And the user adds the new selector
-    Then the execution error "DuplicateSelectorName" should occur
+    Then the execution error DuplicateSelectorName should occur

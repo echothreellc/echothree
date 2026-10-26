@@ -2,7 +2,7 @@ Feature: Employee entity attribute group
   An employee wants to add, edit, and delete an entity attribute group
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee entity attribute group
     Then no error should occur
 
   Scenario: Existing employee adds an entity attribute group, edits it, and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new entity attribute group
     And the user sets the entity attribute group's component vendor to "ECHO_THREE"
     And the user sets the entity attribute group's entity type to "Item"
@@ -40,7 +40,7 @@ Feature: Employee entity attribute group
     Then no error should occur
 
   Scenario: Existing employee adds an entity attribute group without a name, edits it, and then deletes it using names
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new entity attribute group
     And the user sets the entity attribute group's component vendor to "ECHO_THREE"
     And the user sets the entity attribute group's entity type to "Item"
@@ -67,7 +67,7 @@ Feature: Employee entity attribute group
     Then no error should occur
 
   Scenario: Existing employee adds an entity attribute group without a name, edits it, and then deletes it using entity reference
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new entity attribute group
     And the user sets the entity attribute group's component vendor to "ECHO_THREE"
     And the user sets the entity attribute group's entity type to "Item"
@@ -131,7 +131,7 @@ Feature: Employee entity attribute group
     And the user sets the entity attribute group's sort order to "1"
     And the user sets the entity attribute group to "be" the default
     And the user adds the new entity attribute group
-    Then the execution error "DuplicateEntityAttributeGroupName" should occur
+    Then the execution error DuplicateEntityAttributeGroupName should occur
     When the user begins entering a new entity attribute group
     And the user sets the entity attribute group's component vendor to "ECHO_THREE"
     And the user sets the entity attribute group's entity type to "TestGroupOwnerA"

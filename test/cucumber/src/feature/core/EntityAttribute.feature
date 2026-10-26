@@ -2,7 +2,7 @@ Feature: Employee entity attribute
   An employee wants to add and delete an entity attribute
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee entity attribute
     Then no error should occur
 
   Scenario: Existing employee adds an integer entity attribute, edits it, and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to "ECHO_THREE"
     And the user sets the entity attribute's entity type to "Item"
@@ -48,7 +48,7 @@ Feature: Employee entity attribute
     Then no error should occur
 
   Scenario: Existing employee adds a long entity attribute and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to "ECHO_THREE"
     And the user sets the entity attribute's entity type to "Item"
@@ -87,7 +87,7 @@ Feature: Employee entity attribute
     Then no error should occur
 
   Scenario: Existing employee adds a BLOB entity attribute and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to "ECHO_THREE"
     And the user sets the entity attribute's entity type to "Item"
@@ -106,7 +106,7 @@ Feature: Employee entity attribute
     Then no error should occur
 
   Scenario: Existing employee adds a CLOB entity attribute and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to "ECHO_THREE"
     And the user sets the entity attribute's entity type to "Item"
@@ -124,7 +124,7 @@ Feature: Employee entity attribute
     Then no error should occur
 
   Scenario: Existing employee adds a string entity attribute and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to "ECHO_THREE"
     And the user sets the entity attribute's entity type to "Item"
@@ -143,7 +143,7 @@ Feature: Employee entity attribute
     Then no error should occur
 
   Scenario: Existing employee adds a boolean entity attribute and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to "ECHO_THREE"
     And the user sets the entity attribute's entity type to "Item"
@@ -161,7 +161,7 @@ Feature: Employee entity attribute
     Then no error should occur
 
   Scenario: Existing employee adds a collection entity attribute and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to "ECHO_THREE"
     And the user sets the entity attribute's entity type to "Item"
@@ -179,7 +179,7 @@ Feature: Employee entity attribute
     Then no error should occur
 
   Scenario: Existing employee adds a date entity attribute and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to "ECHO_THREE"
     And the user sets the entity attribute's entity type to "Item"
@@ -197,7 +197,7 @@ Feature: Employee entity attribute
     Then no error should occur
 
   Scenario: Existing employee adds a time entity attribute and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to "ECHO_THREE"
     And the user sets the entity attribute's entity type to "Item"
@@ -215,7 +215,7 @@ Feature: Employee entity attribute
     Then no error should occur
 
   Scenario: Existing employee adds an entity entity attribute and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to "ECHO_THREE"
     And the user sets the entity attribute's entity type to "Item"
@@ -233,7 +233,7 @@ Feature: Employee entity attribute
     Then no error should occur
 
   Scenario: Existing employee adds a geopoint entity attribute and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to "ECHO_THREE"
     And the user sets the entity attribute's entity type to "Item"
@@ -251,7 +251,7 @@ Feature: Employee entity attribute
     Then no error should occur
 
   Scenario: Existing employee adds a name entity attribute and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to "ECHO_THREE"
     And the user sets the entity attribute's entity type to "Item"
@@ -269,7 +269,7 @@ Feature: Employee entity attribute
     Then no error should occur
 
   Scenario: Existing employee adds a list item entity attribute and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to "ECHO_THREE"
     And the user sets the entity attribute's entity type to "Item"
@@ -287,7 +287,7 @@ Feature: Employee entity attribute
     Then no error should occur
 
   Scenario: Existing employee adds a multiple list item entity attribute and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to "ECHO_THREE"
     And the user sets the entity attribute's entity type to "Item"
@@ -305,7 +305,7 @@ Feature: Employee entity attribute
     Then no error should occur
 
   Scenario: Existing employee adds an entity attribute to an entity type that is not extensible and receives an error
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to "ECHO_THREE"
     And the user sets the entity attribute's entity type to "ItemAlias"
@@ -314,4 +314,4 @@ Feature: Employee entity attribute
     And the user sets the entity attribute's sort order to "1"
     And the user sets the entity attribute's description to "Test Integer Attribute"
     And the user adds the new entity attribute
-    Then the execution error "EntityTypeIsNotExtensible" should occur
+    Then the execution error EntityTypeIsNotExtensible should occur

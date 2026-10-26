@@ -2,7 +2,7 @@ Feature: Employee message type
   An employee wants to add, edit, and delete a message type
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee message type
     Then no error should occur
 
   Scenario: Existing employee adds an message type, edits it, and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new message type
     And the user sets the message type's component vendor to "ECHO_THREE"
     And the user sets the message type's entity type to "Item"
@@ -39,7 +39,7 @@ Feature: Employee message type
     Then no error should occur
 
   Scenario: Existing employee adds an message type to an entity type that is not extensible and receives an error
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new message type
     And the user sets the message type's component vendor to "ECHO_THREE"
     And the user sets the message type's entity type to "ItemAlias"
@@ -48,4 +48,4 @@ Feature: Employee message type
     And the user sets the message type's sort order to "1"
     And the user sets the message type's description to "Test Message Type"
     And the user adds the new message type
-    Then the execution error "EntityTypeIsNotExtensible" should occur
+    Then the execution error EntityTypeIsNotExtensible should occur

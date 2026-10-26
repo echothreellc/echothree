@@ -2,7 +2,7 @@ Feature: Employee inventory transaction type
   An employee wants to add, edit, and delete an inventory transaction type
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee inventory transaction type
     Then no error should occur
 
   Scenario: Existing employee adds an inventory transaction type, edits it, changes its status, and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new inventory transaction type
     And the user sets the inventory transaction type's inventory transaction type name to "CucumberInventoryTransactionTypeName"
     And the user sets the inventory transaction type to "not be" the default
@@ -34,7 +34,7 @@ Feature: Employee inventory transaction type
     Then no error should occur
 
   Scenario: Existing employee adds an inventory transaction type, edits it by entity ref, and then deletes it by entity ref
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new inventory transaction type
     And the user sets the inventory transaction type's inventory transaction type name to "CucumberInventoryTransactionTypeRef"
     And the user sets the inventory transaction type to "not be" the default
@@ -103,7 +103,7 @@ Feature: Employee inventory transaction type
     And the user sets the inventory transaction type's sort order to "10"
     And the user sets the inventory transaction type's inventory transfer transaction sequence type name to "CucumberMissingSequenceType"
     And the user adds the new inventory transaction type
-    Then the execution error "UnknownSequenceTypeName" should occur
+    Then the execution error UnknownSequenceTypeName should occur
 
   Scenario: Unknown transfer transaction sequence is rejected during editing
     When the user begins entering a new inventory transaction type
@@ -119,7 +119,7 @@ Feature: Employee inventory transaction type
     Then no error should occur
     And the user sets the inventory transaction type's inventory transfer transaction sequence type name to "CucumberMissingSequenceType"
     And the user finishes editing the inventory transaction type
-    Then the execution error "UnknownSequenceTypeName" should occur
+    Then the execution error UnknownSequenceTypeName should occur
     And the user abandons editing the last inventory transaction type added
     Then no error should occur
     And the inventory transaction type's inventory transfer transaction sequence type name should be ""
@@ -191,7 +191,7 @@ Feature: Employee inventory transaction type
     And the user sets the inventory transaction type's inventory transfer transaction workflow name to "<workflow>"
     And the user sets the inventory transaction type's inventory transfer transaction workflow entrance name to "<entrance>"
     And the user adds the new inventory transaction type
-    Then the execution error "<error>" should occur
+    Then the execution error <error> should occur
 
     Examples:
       | workflow              | entrance        | error                                                   |
@@ -214,7 +214,7 @@ Feature: Employee inventory transaction type
     And the user sets the inventory transaction type's inventory transfer transaction workflow name to "<workflow>"
     And the user sets the inventory transaction type's inventory transfer transaction workflow entrance name to "<entrance>"
     And the user finishes editing the inventory transaction type
-    Then the execution error "<error>" should occur
+    Then the execution error <error> should occur
     And the user abandons editing the last inventory transaction type added
     Then no error should occur
     And the inventory transaction type's inventory transfer transaction workflow name should be ""
@@ -279,7 +279,7 @@ Feature: Employee inventory transaction type
     And the user sets the inventory transaction type's sort order to "10"
     And the user sets the inventory transaction type's inventory transaction sequence type name to "CucumberMissingSequenceType"
     And the user adds the new inventory transaction type
-    Then the execution error "UnknownSequenceTypeName" should occur
+    Then the execution error UnknownSequenceTypeName should occur
 
   Scenario: Unknown transaction sequence is rejected during editing
     When the user begins entering a new inventory transaction type
@@ -295,7 +295,7 @@ Feature: Employee inventory transaction type
     Then no error should occur
     And the user sets the inventory transaction type's inventory transaction sequence type name to "CucumberMissingSequenceType"
     And the user finishes editing the inventory transaction type
-    Then the execution error "UnknownSequenceTypeName" should occur
+    Then the execution error UnknownSequenceTypeName should occur
     And the user abandons editing the last inventory transaction type added
     Then no error should occur
     And the inventory transaction type's inventory transaction sequence type name should be ""
@@ -367,7 +367,7 @@ Feature: Employee inventory transaction type
     And the user sets the inventory transaction type's inventory transaction workflow name to "<workflow>"
     And the user sets the inventory transaction type's inventory transaction workflow entrance name to "<entrance>"
     And the user adds the new inventory transaction type
-    Then the execution error "<error>" should occur
+    Then the execution error <error> should occur
 
     Examples:
       | workflow              | entrance        | error                                           |
@@ -390,7 +390,7 @@ Feature: Employee inventory transaction type
     And the user sets the inventory transaction type's inventory transaction workflow name to "<workflow>"
     And the user sets the inventory transaction type's inventory transaction workflow entrance name to "<entrance>"
     And the user finishes editing the inventory transaction type
-    Then the execution error "<error>" should occur
+    Then the execution error <error> should occur
     And the user abandons editing the last inventory transaction type added
     Then no error should occur
     And the inventory transaction type's inventory transaction workflow name should be ""

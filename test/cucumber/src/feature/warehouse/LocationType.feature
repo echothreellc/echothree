@@ -2,7 +2,7 @@ Feature: Employee location type
   An employee wants to add, edit, and delete a location type
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee location type
     Then no error should occur
 
   Scenario: Existing employee adds a location type, edits it, and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new warehouse
     And the user sets the warehouse's warehouse name to "CucumberWarehouse"
     And the user sets the warehouse's warehouse type name to "DEFAULT"

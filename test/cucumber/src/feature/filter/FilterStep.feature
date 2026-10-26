@@ -2,7 +2,7 @@ Feature: Employee filter step
   An employee wants to add, edit, and delete a filter step
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee filter step
     Then no error should occur
 
   Scenario: Existing employee adds a filter step, edits it, and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new filter
     And the user sets the filter's filter kind name to "PRICE"
     And the user sets the filter's filter type name to "OFFER_ITEM_PRICE"
@@ -57,7 +57,7 @@ Feature: Employee filter step
     Then no error should occur
 
   Scenario: Existing employee adds a filter step with a duplicate name and receives an error
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new filter
     And the user sets the filter's filter kind name to "PRICE"
     And the user sets the filter's filter type name to "OFFER_ITEM_PRICE"
@@ -81,7 +81,7 @@ Feature: Employee filter step
     And the user sets the filter step's filter name to "TEST_FILTER"
     And the user sets the filter step's name to "TEST_FILTER_STEP"
     And the user adds the new filter step
-    Then the execution error "DuplicateFilterStepName" should occur
+    Then the execution error DuplicateFilterStepName should occur
     When the user begins deleting a filter
     And the user sets the filter's filter kind name to "PRICE"
     And the user sets the filter's filter type name to "OFFER_ITEM_PRICE"

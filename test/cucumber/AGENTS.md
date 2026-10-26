@@ -1,5 +1,11 @@
 # Cucumber Conventions
 
 - Use Cucumber Expressions instead of regular expressions for step definitions. Do not add regex anchors such as `^` or `$`.
-- Use `{string}` for string parameters and quote the corresponding values in feature files, including identifiers, execution-error names, and fixed choices such as `"be"` and `"not be"`.
-- Preserve fixed-choice restrictions with explicit checks in the step body when converting alternatives to `{string}`.
+- For inline step parameters, use `{string}` and quote inputs assigned to a `Form`, `Spec`, or `Edit`. This includes numeric-looking inputs, choices converted into field values such as `"be"` and `"not be"`, and values constructed through concatenation or other transformations. Follow the value through local variables and helper methods. Preserve the ability to test empty and malformed inputs.
+- A fixture alias whose text contributes to a field value is also a `{string}` parameter. For example, the Link type alias concatenated into `LinkTypeName` stays quoted. Keep references to those identifiers compatible with the steps that define them.
+- Use `{string}` for expected values compared against data supplied through a `Form`, `Spec`, or `Edit`, including names and identifiers in returned results. For example, an entity attribute group name compared with `getEntityAttributeGroupName()` stays quoted in assertions.
+- Use numeric parameter types for assertion counts: `{int}` for collection sizes and `{long}` for totals and search result counts. Match the Java parameter type to the value being compared instead of parsing a quoted count.
+- For other inline parameters, `{word}` may be used for single-word actions, validation field keys, error names, and test-local lookup labels whose text does not contribute to a field value. Keep `{string}` when quotes are needed for spaces, empty values, or clarity.
+- Preserve fixed-choice restrictions with explicit checks in the step body when using general-purpose parameter types such as `{string}` or `{word}`.
+- Use grammatically correct singular and plural wording in feature files, such as `1 row`, `0 rows`, and `2 rows`. Step definitions can support both forms with expressions such as `row(s)`, `result(s)`, or `entry/entries`; the feature text must still agree with the count. When a scenario outline varies the count, use an Examples column for the noun where needed, as with `rowLabel` in `Link.feature`.
+- Inline `{string}` quoting does not apply to DataTable or Examples cells. Keep cell values literal; add quotes only when the quotes are part of the intended value.

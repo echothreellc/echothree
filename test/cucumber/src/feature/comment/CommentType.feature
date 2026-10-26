@@ -2,7 +2,7 @@ Feature: Employee comment type
   An employee wants to add, edit, and delete a comment type
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee comment type
     Then no error should occur
 
   Scenario: Existing employee adds an comment type, edits it, and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new comment type
     And the user sets the comment type's component vendor to "ECHO_THREE"
     And the user sets the comment type's entity type to "Item"
@@ -39,7 +39,7 @@ Feature: Employee comment type
     Then no error should occur
 
   Scenario: Existing employee adds an comment type to an entity type that is not extensible and receives an error
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new comment type
     And the user sets the comment type's component vendor to "ECHO_THREE"
     And the user sets the comment type's entity type to "ItemAlias"
@@ -48,4 +48,4 @@ Feature: Employee comment type
     And the user sets the comment type's sort order to "1"
     And the user sets the comment type's description to "Test Comment Type"
     And the user adds the new comment type
-    Then the execution error "EntityTypeIsNotExtensible" should occur
+    Then the execution error EntityTypeIsNotExtensible should occur

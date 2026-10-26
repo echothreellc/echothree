@@ -2,7 +2,7 @@ Feature: Employee vendor item cost
   An employee wants to add, edit, and delete a vendor item cost
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee vendor item cost
     Then no error should occur
 
   Scenario: Existing employee adds a vendor, then a vendor item, then a vendor item cost, edits it, and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new vendor
     And the user sets the vendor to "use" use item purchasing categories
     And the user indicates the vendor "does" allow solicitations to the email address

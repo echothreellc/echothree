@@ -2,7 +2,7 @@ Feature: Employee link directionality
   An employee wants to add, edit, and delete a link directionality
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee link directionality
     Then no error should occur
 
   Scenario: Existing employee adds a link directionality, edits it, and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new link directionality
     And the user sets the link directionality's link directionality name to "CucumberLinkDirectionality"
     And the user sets the link directionality to "not be" the default
@@ -40,9 +40,9 @@ Feature: Employee link directionality
       | IsDefault | false |
       | SortOrder | 10 |
       | Description | Original description |
-    And the user clears the link directionality field "<field>"
+    And the user clears the link directionality field <field>
     And the user adds the new link directionality
-    Then the link directionality field "<field>" validation error "RequiredField" should occur
+    Then the link directionality field <field> validation error RequiredField should occur
 
     Examples:
       | field |
@@ -60,7 +60,7 @@ Feature: Employee link directionality
     And the user enters these link directionality values:
       | <field> | <value> |
     And the user adds the new link directionality
-    Then the link directionality field "<field>" validation error "InvalidFormat" should occur
+    Then the link directionality field <field> validation error InvalidFormat should occur
 
     Examples:
       | field | value |
@@ -83,7 +83,7 @@ Feature: Employee link directionality
       | SortOrder | 99 |
       | Description | Must not replace original |
     And the user adds the new link directionality
-    Then the execution error "DuplicateLinkDirectionalityName" should occur
+    Then the execution error DuplicateLinkDirectionalityName should occur
     When the user retrieves the link directionality with:
       | LinkDirectionalityName | CucumberLinkDirectionalityDuplicate |
     Then no error should occur
@@ -119,7 +119,7 @@ Feature: Employee link directionality
     Then no error should occur
     And the user sets the link directionality's new link directionality name to "CucumberLinkDirectionalityFirst"
     And the user finishes editing the link directionality
-    Then the execution error "DuplicateLinkDirectionalityName" should occur
+    Then the execution error DuplicateLinkDirectionalityName should occur
     When the user abandons editing link directionality "CucumberLinkDirectionalitySecond"
     Then no error should occur
     When the user retrieves the link directionality with:
@@ -156,7 +156,7 @@ Feature: Employee link directionality
     And the user enters these link directionality values:
       | <field> | <value> |
     And the user finishes editing the link directionality
-    Then the link directionality field "<field>" validation error "<error>" should occur
+    Then the link directionality field <field> validation error <error> should occur
     When the user abandons editing link directionality "CucumberLinkDirectionalityEdit"
     Then no error should occur
     When the user retrieves the link directionality with:
@@ -179,7 +179,7 @@ Feature: Employee link directionality
   Scenario Outline: LinkDirectionality unknown names are rejected by each identifying command
     When the user <operation> the link directionality with:
       | LinkDirectionalityName | CucumberLinkDirectionalityMissing |
-    Then the execution error "UnknownLinkDirectionalityName" should occur
+    Then the execution error UnknownLinkDirectionalityName should occur
 
     Examples:
       | operation |
@@ -189,20 +189,20 @@ Feature: Employee link directionality
   Scenario: LinkDirectionality cannot make an unknown record the default
     When the user sets the default link directionality with:
       | LinkDirectionalityName | CucumberLinkDirectionalityMissing |
-    Then the execution error "UnknownLinkDirectionalityName" should occur
+    Then the execution error UnknownLinkDirectionalityName should occur
 
   Scenario: LinkDirectionality cannot lock an unknown record for editing
     When the user begins specifying a link directionality to edit
     And the user specifies the link directionality with:
       | LinkDirectionalityName | CucumberLinkDirectionalityMissing |
     And the user begins editing the link directionality
-    Then the execution error "UnknownLinkDirectionalityName" should occur
+    Then the execution error UnknownLinkDirectionalityName should occur
 
   Scenario Outline: LinkDirectionality alternative identifiers cannot be combined
     When the user <operation> the link directionality with:
       | LinkDirectionalityName | DIRECTED |
       | Uuid | 00000000-0000-0000-0000-000000000001 |
-    Then the execution error "InvalidParameterCount" should occur
+    Then the execution error InvalidParameterCount should occur
 
     Examples:
       | operation |
@@ -213,12 +213,12 @@ Feature: Employee link directionality
     When the user sets the default link directionality with:
       | LinkDirectionalityName | DIRECTED |
       | Uuid | 00000000-0000-0000-0000-000000000001 |
-    Then the execution error "InvalidParameterCount" should occur
+    Then the execution error InvalidParameterCount should occur
 
   Scenario Outline: LinkDirectionality destructive commands require an identifier
     When the user <operation> the link directionality with:
       | LinkDirectionalityName |  |
-    Then the execution error "InvalidParameterCount" should occur
+    Then the execution error InvalidParameterCount should occur
 
     Examples:
       | operation |
@@ -227,7 +227,7 @@ Feature: Employee link directionality
   Scenario: LinkDirectionality set default requires an identifier
     When the user sets the default link directionality with:
       | LinkDirectionalityName |  |
-    Then the execution error "InvalidParameterCount" should occur
+    Then the execution error InvalidParameterCount should occur
 
   Scenario: LinkDirectionality retrieval supports entity references and deletion removes name lookups
     When the user begins entering a new link directionality
@@ -247,7 +247,7 @@ Feature: Employee link directionality
     Then no error should occur
     When the user retrieves the link directionality with:
       | LinkDirectionalityName | CucumberLinkDirectionalityReference |
-    Then the execution error "UnknownLinkDirectionalityName" should occur
+    Then the execution error UnknownLinkDirectionalityName should occur
 
   Scenario: LinkDirectionality default switching preserves exactly one default
     Given the user remembers the default link directionality
@@ -324,11 +324,11 @@ Feature: Employee link directionality
       | Description | Original description |
     And the user adds the new link directionality
     Then no error should occur
-    When the user "creates" a link directionality description with:
+    When the user creates a link directionality description with:
       | LinkDirectionalityName | <owner> |
       | LanguageIsoName | <language> |
       | Description | Description test |
-    Then the execution error "<error>" should occur
+    Then the execution error <error> should occur
     When the user deletes the link directionality with:
       | LinkDirectionalityName | CucumberLinkDirectionalityOwner |
     Then no error should occur
@@ -347,11 +347,11 @@ Feature: Employee link directionality
       | Description | Original description |
     And the user adds the new link directionality
     Then no error should occur
-    When the user "creates" a link directionality description with:
+    When the user creates a link directionality description with:
       | LinkDirectionalityName | <owner> |
       | LanguageIsoName | <language> |
       | Description | <description> |
-    Then the link directionality field "<field>" validation error "RequiredField" should occur
+    Then the link directionality field <field> validation error RequiredField should occur
     When the user deletes the link directionality with:
       | LinkDirectionalityName | CucumberLinkDirectionalityRequiredDesc |
     Then no error should occur
@@ -371,10 +371,10 @@ Feature: Employee link directionality
       | Description | Original description |
     And the user adds the new link directionality
     Then no error should occur
-    When the user "<operation>" a link directionality description with:
+    When the user <operation> a link directionality description with:
       | LinkDirectionalityName | CucumberLinkDirectionalityNoDesc |
       | LanguageIsoName | fr |
-    Then the execution error "UnknownLinkDirectionalityDescription" should occur
+    Then the execution error UnknownLinkDirectionalityDescription should occur
     When the user deletes the link directionality with:
       | LinkDirectionalityName | CucumberLinkDirectionalityNoDesc |
     Then no error should occur
@@ -397,7 +397,7 @@ Feature: Employee link directionality
       | LinkDirectionalityName | CucumberLinkDirectionalityNoEditDesc |
       | LanguageIsoName | fr |
       | Description | Changed |
-    Then the execution error "UnknownLinkDirectionalityDescription" should occur
+    Then the execution error UnknownLinkDirectionalityDescription should occur
     When the user deletes the link directionality with:
       | LinkDirectionalityName | CucumberLinkDirectionalityNoEditDesc |
     Then no error should occur
@@ -411,17 +411,17 @@ Feature: Employee link directionality
       | Description | Original description |
     And the user adds the new link directionality
     Then no error should occur
-    When the user "creates" a link directionality description with:
+    When the user creates a link directionality description with:
       | LinkDirectionalityName | CucumberLinkDirectionalityLocalized |
       | LanguageIsoName | en |
       | Description | Duplicate text |
-    Then the execution error "DuplicateLinkDirectionalityDescription" should occur
-    When the user "retrieves" a link directionality description with:
+    Then the execution error DuplicateLinkDirectionalityDescription should occur
+    When the user retrieves a link directionality description with:
       | LinkDirectionalityName | CucumberLinkDirectionalityLocalized |
       | LanguageIsoName | en |
     Then no error should occur
     And the retrieved link directionality description is "Original description"
-    When the user "creates" a link directionality description with:
+    When the user creates a link directionality description with:
       | LinkDirectionalityName | CucumberLinkDirectionalityLocalized |
       | LanguageIsoName | fr |
       | Description | French description |
@@ -430,8 +430,8 @@ Feature: Employee link directionality
       | LinkDirectionalityName | CucumberLinkDirectionalityLocalized |
       | LanguageIsoName | fr |
       | Description |  |
-    Then the link directionality field "Description" validation error "RequiredField" should occur
-    When the user "retrieves" a link directionality description with:
+    Then the link directionality field Description validation error RequiredField should occur
+    When the user retrieves a link directionality description with:
       | LinkDirectionalityName | CucumberLinkDirectionalityLocalized |
       | LanguageIsoName | fr |
     Then no error should occur
@@ -441,19 +441,19 @@ Feature: Employee link directionality
       | LanguageIsoName | fr |
       | Description | Edited French description |
     Then no error should occur
-    When the user "retrieves" a link directionality description with:
+    When the user retrieves a link directionality description with:
       | LinkDirectionalityName | CucumberLinkDirectionalityLocalized |
       | LanguageIsoName | fr |
     Then no error should occur
     And the retrieved link directionality description is "Edited French description"
-    When the user "retrieves" a link directionality description with:
+    When the user retrieves a link directionality description with:
       | LinkDirectionalityName | CucumberLinkDirectionalityLocalized |
       | LanguageIsoName | en |
     Then no error should occur
     And the retrieved link directionality description is "Original description"
     When the user lists descriptions for link directionality "CucumberLinkDirectionalityLocalized" with limit "1"
     Then no error should occur
-    And the link directionality description page has 1 entries out of 2
+    And the link directionality description page has 1 entry out of 2
     When the user deletes the link directionality with:
       | LinkDirectionalityName | CucumberLinkDirectionalityLocalized |
     Then no error should occur
@@ -474,7 +474,7 @@ Feature: Employee link directionality
     Then no error should occur
     When the user deletes the link directionality with:
       | LinkDirectionalityName | DIRECTED |
-    Then the execution error "CannotDeleteLinkDirectionalityInUse" should occur
+    Then the execution error CannotDeleteLinkDirectionalityInUse should occur
     When the user retrieves the link directionality with:
       | LinkDirectionalityName | DIRECTED |
     Then no error should occur

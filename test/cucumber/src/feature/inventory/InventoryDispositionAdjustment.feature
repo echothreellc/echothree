@@ -2,7 +2,7 @@ Feature: Employee inventory disposition adjustment
   An employee wants to add, edit, and delete an inventory disposition adjustment
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee inventory disposition adjustment
     Then no error should occur
 
   Scenario: Existing employee adds an inventory disposition adjustment, edits it, changes its status, and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new inventory disposition adjustment
     And the user sets the inventory disposition adjustment's inventory transaction type name to "TEST_INVENTORY_TRANSACTION_TYPE"
     And the user sets the inventory disposition adjustment's inventory disposition adjustment name to "CucumberInventoryDispositionAdjName"
@@ -42,7 +42,7 @@ Feature: Employee inventory disposition adjustment
     Then no error should occur
 
   Scenario: Existing employee adds an inventory disposition adjustment, edits it by entity ref, and then deletes it by entity ref
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new inventory disposition adjustment
     And the user sets the inventory disposition adjustment's inventory transaction type name to "TEST_INVENTORY_TRANSACTION_TYPE"
     And the user sets the inventory disposition adjustment's inventory disposition name to "TEST_INVENTORY_DISPOSITION"

@@ -2,7 +2,7 @@ Feature: Employee login
   An employee wants to login so that they will be able to work with their account
 
   Scenario: Existing employee login with remote IPv4 address that's successful
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -13,7 +13,7 @@ Feature: Employee login
     Then no error should occur
 
   Scenario: Existing employee login with remote IPv4 address that fails
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -24,7 +24,7 @@ Feature: Employee login
     Then an error should occur
 
   Scenario: Existing employee login that's successful
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -34,7 +34,7 @@ Feature: Employee login
     Then no error should occur
 
   Scenario: Existing employee login that fails
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"

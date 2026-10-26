@@ -2,7 +2,7 @@ Feature: Employee offer use
   An employee wants to add, edit, and delete an offer use
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee offer use
     Then no error should occur
 
   Scenario: Existing employee adds an offer use, edits it, and deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new offer
     And the user sets the offer's offer name to "CUCUMBER_OFFER"
     And the user sets the offer to "not be" the default
@@ -67,7 +67,7 @@ Feature: Employee offer use
     Then no error should occur
 
   Scenario: Existing employee adds an offer use and tries to delete it while it's in use by a content collection
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new offer
     And the user sets the offer's offer name to "CUCUMBER_OFFER"
     And the user sets the offer to "not be" the default
@@ -106,7 +106,7 @@ Feature: Employee offer use
     And the user sets the offer use's offer name to the last offer added
     And the user sets the offer use's use name to the last use added
     And the user deletes the offer use
-    Then the execution error "CannotDeleteOfferUseInUse" should occur
+    Then the execution error CannotDeleteOfferUseInUse should occur
     When the user begins deleting a content collection
     And the user sets the content collection's content collection name to "CucumberCollection"
     And the user deletes the content collection
@@ -130,7 +130,7 @@ Feature: Employee offer use
     Then no error should occur
 
   Scenario: Existing employee adds an offer use and tries to delete it while it's in use by a content catalog
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new offer
     And the user sets the offer's offer name to "CUCUMBER_OFFER"
     And the user sets the offer to "not be" the default
@@ -179,7 +179,7 @@ Feature: Employee offer use
     And the user sets the offer use's offer name to the last offer added
     And the user sets the offer use's use name to the last use added
     And the user deletes the offer use
-    Then the execution error "CannotDeleteOfferUseInUse" should occur
+    Then the execution error CannotDeleteOfferUseInUse should occur
     When the user begins deleting a content catalog
     And the user sets the content catalog's content collection name to "CucumberCollection"
     And the user sets the content catalog's content catalog name to "CucumberCatalog"
@@ -208,7 +208,7 @@ Feature: Employee offer use
     Then no error should occur
 
   Scenario: Existing employee adds an offer use and tries to delete it while it's in use by a content category
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new offer
     And the user sets the offer's offer name to "CUCUMBER_OFFER"
     And the user sets the offer to "not be" the default
@@ -268,7 +268,7 @@ Feature: Employee offer use
     And the user sets the offer use's offer name to the last offer added
     And the user sets the offer use's use name to the last use added
     And the user deletes the offer use
-    Then the execution error "CannotDeleteOfferUseInUse" should occur
+    Then the execution error CannotDeleteOfferUseInUse should occur
     When the user begins deleting a content category
     And the user sets the content category's content collection name to "CucumberCollection"
     And the user sets the content category's content catalog name to "CucumberCatalog"

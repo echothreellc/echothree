@@ -2,7 +2,7 @@ Feature: Employee purchase order
   An employee wants to add a purchase order
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee purchase order
     Then no error should occur
 
   Scenario: Existing employee adds a purchase order and sets the status of it to canceled
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new purchase order
     And the user sets the purchase order's vendor name to "TEST_VENDOR"
     And the user adds the new purchase order
@@ -24,7 +24,7 @@ Feature: Employee purchase order
     Then no error should occur
 
   Scenario: Existing employee adds a purchase order and sets the status of it to entry complete
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new purchase order
     And the user sets the purchase order's vendor name to "TEST_VENDOR"
     And the user adds the new purchase order

@@ -35,7 +35,7 @@ public class CustomerLoginSteps implements En {
                     }
                 });
 
-        When("the user begins to log in as an customer",
+        When("the user begins to log in as a customer",
                 () -> {
                     var persona = CurrentPersona.persona;
 

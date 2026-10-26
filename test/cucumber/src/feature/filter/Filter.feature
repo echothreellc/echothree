@@ -2,7 +2,7 @@ Feature: Employee filter
   An employee wants to add, edit, and delete a filter
 
   Background:
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     And the user is not currently logged in
     When the user begins to log in as an employee
     And the employee sets the username to "Test E"
@@ -12,7 +12,7 @@ Feature: Employee filter
     Then no error should occur
 
   Scenario: Existing employee adds a filter, edits it, and then deletes it
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new filter
     And the user sets the filter's filter kind name to "PRICE"
     And the user sets the filter's filter type name to "OFFER_ITEM_PRICE"
@@ -42,7 +42,7 @@ Feature: Employee filter
     Then no error should occur
 
   Scenario: Existing employee adds a filter with a duplicate name and receives an error
-    Given the employee "Test" begins using the application
+    Given the employee Test begins using the application
     When the user begins entering a new filter
     And the user sets the filter's filter kind name to "PRICE"
     And the user sets the filter's filter type name to "OFFER_ITEM_PRICE"
@@ -52,4 +52,4 @@ Feature: Employee filter
     And the user sets the filter's sort order to "1"
     And the user sets the filter to "be" the default
     And the user adds the new filter
-    Then the execution error "DuplicateFilterName" should occur
+    Then the execution error DuplicateFilterName should occur

@@ -99,11 +99,11 @@ public class SearchItemsSteps implements En {
                     persona.clearItemResultsForm = null;
                 });
 
-        And("the user's search results contain {string} result(s)",
-                (String itemSearchCount) -> {
+        And("the user's search results contain {long} result(s)",
+                (Long itemSearchCount) -> {
                     var persona = CurrentPersona.persona;
 
-                    assertThat(persona.lastSearchItemsCount).isEqualTo(Long.valueOf(itemSearchCount));
+                    assertThat(persona.lastSearchItemsCount).isEqualTo(itemSearchCount);
                 });
 
         And("the user sets the item search's search type to {string}",
