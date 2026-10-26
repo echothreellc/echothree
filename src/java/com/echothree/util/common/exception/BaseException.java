@@ -47,9 +47,8 @@ public abstract class BaseException
 
         try {
             // Check if we're running in the app server. If not, a ClassNotFoundException will be thrown.
-            if(Class.forName("com.echothree.util.server.message.MessageUtils") != null) {
-                result = MessageUtils.getInstance().getExceptionMessage(CommandMessageTypes.Error.name(), message);
-            }
+            Class.forName("com.echothree.util.server.message.MessageUtils");
+            result = MessageUtils.getInstance().getExceptionMessage(CommandMessageTypes.Error.name(), message);
         } catch(ClassNotFoundException cnfe) {
             result = "??" + message.getKey() + "??";
         }
