@@ -1,5 +1,8 @@
 image: gitlab.echothree.com:5050/containers/jdk-build-tools:latest
 
+include:
+  - template: Jobs/Dependency-Scanning.v2.gitlab-ci.yml
+
 cache:
   - key: ivy2
     paths:
@@ -7,9 +10,12 @@ cache:
 
 variables:
   ANT_OPTS: "-Xmx6150m -Divy.default.ivy.user.dir=$CI_PROJECT_DIR/.ivy2"
+  # Ant supplies the resolved Ivy report; other package managers need no resolution jobs.
+  DS_DISABLED_RESOLUTION_JOBS: "maven,gradle,python"
 
 stages:
   - compile
+  - test
   - javadoc
 
 compile:
@@ -18,8 +24,10 @@ compile:
     - ant setup-ivy
     - ant compile
     - ant deploy
+    - ant dependency-report
   artifacts:
     paths:
+      - generated/ivy/ivy-report.xml
       - build/ears/echothree.ear
       - build/jars/echothree-client.jar
       - build/ui/web/cms/war/cms.war
@@ -55,6 +63,20 @@ compile:
       - build/lib/logback-core.jar
       - build/lib/wildfly-client-all.jar
     expire_in: 1 week
+
+dependency-scanning:
+  stage: test
+  variables:
+    DS_MAX_DEPTH: "3"
+  needs:
+    - job: compile
+      artifacts: true
+  # Match the existing build's branch/tag pipelines, including branches with open MRs.
+  # The report is a build artifact, so rules:exists cannot detect it before the build.
+  rules:
+    - if: '$DEPENDENCY_SCANNING_DISABLED == "true" || $DEPENDENCY_SCANNING_DISABLED == "1"'
+      when: never
+    - if: '$CI_COMMIT_BRANCH || $CI_COMMIT_TAG'
 
 javadoc:
   stage: javadoc
