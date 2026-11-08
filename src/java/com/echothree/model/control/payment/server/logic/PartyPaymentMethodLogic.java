@@ -227,13 +227,13 @@ public class PartyPaymentMethodLogic
         var billingContactMechanism = billingContactMechanismName == null? null: contactControl.getContactMechanismByName(billingContactMechanismName);
 
         if(billingContactMechanism != null) {
-            var billingPartyContactMechanism = billingContactMechanism == null? null: contactControl.getPartyContactMechanism(party, billingContactMechanism);
+            var billingPartyContactMechanism = contactControl.getPartyContactMechanism(party, billingContactMechanism);
 
             if(billingPartyContactMechanism == null) {
                  ema.addExecutionError(ExecutionErrors.UnknownPartyContactMechanism.name(), party.getLastDetail().getPartyName(), billingContactMechanismName);
             }
         } else {
-            if(billingContactMechanismName != null && billingContactMechanism == null) {
+            if(billingContactMechanismName != null) {
                 ema.addExecutionError(ExecutionErrors.UnknownBillingContactMechanismName.name(), billingContactMechanismName);
             } else if(paymentMethodCreditCard.getRequireBilling()) {
                 ema.addExecutionError(ExecutionErrors.MissingBillingContactMechanismName.name());
@@ -248,7 +248,7 @@ public class PartyPaymentMethodLogic
         var issuerContactMechanism = issuerContactMechanismName == null ? null : contactControl.getContactMechanismByName(issuerContactMechanismName);
 
         if(issuerName != null && issuerContactMechanism != null) {
-            var issuerPartyContactMechanism = issuerContactMechanism == null ? null : contactControl.getPartyContactMechanism(party, issuerContactMechanism);
+            var issuerPartyContactMechanism = contactControl.getPartyContactMechanism(party, issuerContactMechanism);
 
             if(issuerPartyContactMechanism == null) {
                 ema.addExecutionError(ExecutionErrors.UnknownPartyContactMechanism.name(), party.getLastDetail().getPartyName(), issuerContactMechanismName);
