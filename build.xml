@@ -129,6 +129,12 @@
         <ivy:resolve conf="binaries" />
         <ivy:report todir="generated/ivy" />
     </target>
+
+    <target name="dependency-report" depends="setup-ivy" description="Export resolved binary dependencies for GitLab SBOM scanning">
+        <ivy:resolve conf="binaries" />
+        <ivy:report conf="binaries" todir="generated/ivy" outputpattern="ivy-report.[ext]"
+            xml="true" xsl="false" graph="false" />
+    </target>
     
     <target name="compile" depends="build-properties,setup-ivy,ivy-lib">
         <ant dir="src" target="jars"/>
@@ -190,6 +196,7 @@
             <ant target="javadoc"/>
             <ant target="pmd"/>
             <ant target="ivy-report"/>
+            <ant target="dependency-report"/>
         </parallel>
     </target>
     
