@@ -96,6 +96,8 @@ public class CacheTag
         }
 
         /**
+         * Returns the entity references collected for this cache tag.
+         *
          * @return the entityRefs
          */
         public Set<String> getEntityRefs() {
@@ -103,6 +105,8 @@ public class CacheTag
         }
 
         /**
+         * Returns the entity reference container for the enclosing cache tag.
+         *
          * @return the previousEntityRefs
          */
         public EntityRefs getPreviousEntityRefs() {
