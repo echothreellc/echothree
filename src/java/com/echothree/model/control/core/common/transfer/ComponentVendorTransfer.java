@@ -57,7 +57,7 @@ public final class ComponentVendorTransfer
      */
     @Override
     public int hashCode() {
-        return Objects.hash(componentVendorName);
+        return Objects.hashCode(componentVendorName);
     }
 
 }
