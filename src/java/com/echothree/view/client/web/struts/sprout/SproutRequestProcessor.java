@@ -60,8 +60,8 @@ public class SproutRequestProcessor
             final Action action, final ActionForm form, final ActionMapping mapping)
             throws IOException, ServletException {
         // initialize Sprout if necessary
-        if(action instanceof Sprout) {
-            ((Sprout)action).init(mapping, form, request, response);
+        if(action instanceof Sprout sprout) {
+            sprout.init(mapping, form, request, response);
         }
 
         return super.processActionPerform(request, response, action, form, mapping);
