@@ -86,7 +86,7 @@ public class BaseSelectorEvaluator {
                 var rsnd = snb.getRightSelectorNode().getLastDetail(); // Right Selector Node Detail
                 var rr = evaluateSelectorNode(rsnd); // Right Result
                 
-                result = lrbv && rr;
+                result = rr;
             }
         } else if(sbtn.equals(SelectorBooleanTypes.OR.name())) {
             // If its an OR, don't evaluate the right side if the left side is already true

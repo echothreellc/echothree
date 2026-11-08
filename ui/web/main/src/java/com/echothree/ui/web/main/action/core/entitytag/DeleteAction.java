@@ -97,7 +97,7 @@ public class DeleteAction
             actionForward = new ActionForward(actionForm.getReturnUrl(), true);
         } else {
             // Sending them to 'Form'
-            actionForward = new CustomActionForward(mapping.findForward(forwardKey == null ? getDisplayForward(actionForm, request) : forwardKey));
+            actionForward = new CustomActionForward(mapping.findForward(forwardKey));
             setupTransfer(actionForm, request);
         }
 
