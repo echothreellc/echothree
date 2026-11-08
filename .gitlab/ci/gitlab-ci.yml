@@ -2,6 +2,7 @@ image: gitlab.echothree.com:5050/containers/jdk-build-tools:latest
 
 include:
   - template: Jobs/Dependency-Scanning.v2.gitlab-ci.yml
+  - template: Jobs/Secret-Detection.gitlab-ci.yml
 
 cache:
   - key: ivy2
@@ -77,6 +78,16 @@ dependency-scanning:
     - if: '$DEPENDENCY_SCANNING_DISABLED == "true" || $DEPENDENCY_SCANNING_DISABLED == "1"'
       when: never
     - if: '$CI_COMMIT_BRANCH || $CI_COMMIT_TAG'
+
+secret_detection:
+  stage: test
+  # Scan repository history without waiting for compilation or downloading build artifacts.
+  needs: []
+  cache: []
+  rules:
+    - if: '$SECRET_DETECTION_DISABLED == "true" || $SECRET_DETECTION_DISABLED == "1"'
+      when: never
+    - if: '$CI_COMMIT_BRANCH'
 
 javadoc:
   stage: javadoc
