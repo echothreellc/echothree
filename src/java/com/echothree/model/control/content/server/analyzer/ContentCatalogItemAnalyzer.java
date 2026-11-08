@@ -65,7 +65,8 @@ public class ContentCatalogItemAnalyzer
     }
     
     /**
-     * 
+     * Adds dictionary analyzers for item description types that allow text content.
+     *
      * @param fieldAnalyzers A Map of field Analyzers.
      * @return the field Analyzer map with additional Analyzers for ItemDescriptionTypes added.
      */
