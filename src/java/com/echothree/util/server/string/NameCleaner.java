@@ -31,11 +31,11 @@ public final class NameCleaner
         loadNameSuffixes(partyControl);
     }
 
-    protected final void loadPersonalTitles(PartyControl partyControl) {
+    void loadPersonalTitles(PartyControl partyControl) {
         setupPersonalTitles(partyControl.getPersonalTitleChoices(null, false));
     }
 
-    protected void loadNameSuffixes(PartyControl partyControl) {
+    void loadNameSuffixes(PartyControl partyControl) {
         setupNameSuffixes(partyControl.getNameSuffixChoices(null, false));
     }
 
