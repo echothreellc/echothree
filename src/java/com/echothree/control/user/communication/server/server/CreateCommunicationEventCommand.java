@@ -167,8 +167,8 @@ public class CreateCommunicationEventCommand
                             if(addresses != null && addresses.length > 0) {
                                 var address = addresses[0];
 
-                                if(address instanceof InternetAddress) {
-                                    emailAddress = ((InternetAddress)address).getAddress();
+                                if(address instanceof InternetAddress internetAddress) {
+                                    emailAddress = internetAddress.getAddress();
                                 }
                             }
 
