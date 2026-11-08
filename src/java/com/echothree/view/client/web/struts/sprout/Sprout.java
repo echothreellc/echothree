@@ -135,8 +135,8 @@ public abstract class Sprout
     private static final ThreadLocal<DynaActionForm> formHolder = new ThreadLocal<>();
     
     public final void init(final ActionMapping mapping, final ActionForm form, final HttpServletRequest request, final HttpServletResponse response) {
-        if ( form instanceof DynaActionForm )
-            formHolder.set( (DynaActionForm) form );
+        if(form instanceof DynaActionForm dynaActionForm)
+            formHolder.set(dynaActionForm);
         else
             // clean up
             formHolder.remove();

@@ -58,13 +58,12 @@ public class JSessionIdFilter
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
             throws IOException, ServletException {
-        if(!(req instanceof HttpServletRequest)) {
+        if(!(req instanceof HttpServletRequest request)) {
             chain.doFilter(req, res);
             
             return;
         }
 
-        var request = (HttpServletRequest) req;
         var response = (HttpServletResponse) res;
 
         // Redirect requests with JSESSIONID in URL to clean version (old links 
