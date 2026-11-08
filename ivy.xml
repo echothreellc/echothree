@@ -10,21 +10,21 @@
         <dependency org="ch.qos.logback" name="logback-classic" rev="1.6.5" conf="sources->sources" />
         <dependency org="ch.qos.logback" name="logback-core" rev="1.6.5" conf="sources->sources" />
         <dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.21" conf="sources->sources" />
-        <dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.21.6" conf="sources->sources" />
-        <dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.21.6" conf="sources->sources" />
+        <dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.21.7" conf="sources->sources" />
+        <dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.21.7" conf="sources->sources" />
         <dependency org="com.fasterxml.uuid" name="java-uuid-generator" rev="5.2.0" conf="sources->sources" />
         <dependency org="com.github.ben-manes.caffeine" name="caffeine" rev="3.3.1" conf="sources->sources" />
         <dependency org="com.google.code.gson" name="gson" rev="2.14.0" conf="sources->sources" />
         <dependency org="com.google.errorprone" name="error_prone_core" rev="2.51.0" conf="sources->sources" />
         <dependency org="com.google.guava" name="failureaccess" rev="1.0.3" conf="sources->sources" />
-        <dependency org="com.google.guava" name="guava" rev="33.6.0-jre" conf="sources->sources" />
+        <dependency org="com.google.guava" name="guava" rev="33.7.2-jre" conf="sources->sources" />
         <dependency org="com.graphql-java" name="graphql-java" rev="21.5" conf="sources->sources" />
         <dependency org="com.graphql-java" name="graphql-java-extended-scalars" rev="21.0" conf="sources->sources" />
         <dependency org="com.ibm.icu" name="icu4j" rev="78.2" conf="sources->sources" />
         <dependency org="com.lowagie" name="itext" rev="2.0.8" conf="sources->sources" />
         <dependency org="com.rometools" name="rome" rev="1.18.0" conf="sources->sources" />
         <dependency org="com.sun.mail" name="javax.mail" rev="1.6.2" conf="sources->sources" />
-        <dependency org="commons-beanutils" name="commons-beanutils" rev="1.9.4" conf="sources->sources" />
+        <dependency org="commons-beanutils" name="commons-beanutils" rev="1.11.0" conf="sources->sources" />
         <dependency org="commons-cli" name="commons-cli" rev="1.11.0" conf="sources->sources" />
         <dependency org="commons-codec" name="commons-codec" rev="1.23.0" conf="sources->sources" />
         <dependency org="commons-collections" name="commons-collections" rev="3.2.2" conf="sources->sources" />
@@ -33,7 +33,7 @@
         <dependency org="commons-fileupload" name="commons-fileupload" rev="1.6.0" conf="sources->sources" />
         <dependency org="commons-io" name="commons-io" rev="2.19.0" conf="sources->sources" />
         <dependency org="commons-lang" name="commons-lang" rev="2.6" conf="sources->sources" />
-        <dependency org="commons-net" name="commons-net" rev="3.6" conf="sources->sources" />
+        <dependency org="commons-net" name="commons-net" rev="3.9.0" conf="sources->sources" />
         <dependency org="commons-validator" name="commons-validator" rev="1.7" conf="sources->sources" />
         <dependency org="de.odysseus.juel" name="juel-api" rev="2.2.7" conf="sources->sources" />
         <dependency org="de.odysseus.juel" name="juel-impl" rev="2.2.7" conf="sources->sources" />
@@ -67,8 +67,8 @@
         <dependency org="net.sf.textile4j" name="textile4j" rev="1.2" conf="sources->sources" />
         <dependency org="net.sourceforge.nekohtml" name="nekohtml" rev="1.9.22" conf="sources->sources" />
         <dependency org="org.antlr" name="antlr4-runtime" rev="4.5.1" conf="sources->sources" />
-        <dependency org="org.apache.avro" name="avro" rev="1.12.0" conf="sources->sources" />
-        <dependency org="org.apache.avro" name="avro-compiler" rev="1.12.0" conf="sources->sources" />
+        <dependency org="org.apache.avro" name="avro" rev="1.12.1" conf="sources->sources" />
+        <dependency org="org.apache.avro" name="avro-compiler" rev="1.12.1" conf="sources->sources" />
         <dependency org="org.apache.commons" name="commons-collections4" rev="4.4" conf="sources->sources" />
         <dependency org="org.apache.commons" name="commons-text" rev="1.13.1" conf="sources->sources" />
         <dependency org="org.apache.httpcomponents" name="fluent-hc" rev="4.5.13" conf="sources->sources" />
@@ -76,7 +76,7 @@
         <dependency org="org.apache.httpcomponents" name="httpclient-cache" rev="4.5.13" conf="sources->sources" />
         <dependency org="org.apache.httpcomponents" name="httpcore" rev="4.4.15" conf="sources->sources" />
         <dependency org="org.apache.httpcomponents" name="httpmime" rev="4.5.13" conf="sources->sources" />
-        <dependency org="org.apache.kafka" name="kafka-clients" rev="4.1.1" conf="sources->sources" />
+        <dependency org="org.apache.kafka" name="kafka-clients" rev="4.1.2" conf="sources->sources" />
         <dependency org="org.apache.lucene" name="lucene-analysis-common" rev="10.5.2" conf="sources->sources" />
         <dependency org="org.apache.lucene" name="lucene-analysis-kuromoji" rev="10.5.2" conf="sources->sources" />
         <dependency org="org.apache.lucene" name="lucene-backward-codecs" rev="10.5.2" conf="sources->sources" />
@@ -87,7 +87,7 @@
         <dependency org="org.assertj" name="assertj-core" rev="3.23.1" conf="sources->sources" />
         <dependency org="org.assertj" name="assertj-guava" rev="3.5.0" conf="sources->sources" />
         <dependency org="io.github.eisop" name="dataflow-errorprone" rev="3.49.5-eisop1" conf="sources->sources" />
-        <dependency org="org.freemarker" name="freemarker" rev="2.3.31" conf="sources->sources" />
+        <dependency org="org.freemarker" name="freemarker" rev="2.3.35" conf="sources->sources" />
         <dependency org="org.infinispan" name="infinispan-commons" rev="13.0.8.Final" conf="sources->sources" />
         <dependency org="org.infinispan" name="infinispan-core" rev="13.0.8.Final" conf="sources->sources" />
         <dependency org="org.jacoco" name="org.jacoco.agent" rev="0.8.13" conf="sources->sources" />
@@ -103,28 +103,28 @@
         <dependency org="org.slf4j" name="slf4j-api" rev="2.0.19" conf="sources->sources" />
         <dependency org="org.threeten" name="threeten-extra" rev="1.5.0" conf="sources->sources" />
         <dependency org="org.wildfly" name="wildfly-client-all" rev="26.1.3.Final" conf="sources->sources" />
-        <dependency org="xalan" name="xalan" rev="2.7.2" conf="sources->sources" />
+        <dependency org="xalan" name="xalan" rev="2.7.3" conf="sources->sources" />
         <dependency org="xerces" name="xercesImpl" rev="2.12.2" conf="sources->sources" />
         <dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="sources->sources" />
 
         <dependency org="ch.qos.logback" name="logback-classic" rev="1.6.5" conf="javadoc->javadoc" />
         <dependency org="ch.qos.logback" name="logback-core" rev="1.6.5" conf="javadoc->javadoc" />
         <dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.21" conf="javadoc->javadoc" />
-        <dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.21.6" conf="javadoc->javadoc" />
-        <dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.21.6" conf="javadoc->javadoc" />
+        <dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.21.7" conf="javadoc->javadoc" />
+        <dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.21.7" conf="javadoc->javadoc" />
         <dependency org="com.fasterxml.uuid" name="java-uuid-generator" rev="5.2.0" conf="javadoc->javadoc" />
         <dependency org="com.github.ben-manes.caffeine" name="caffeine" rev="3.3.1" conf="javadoc->javadoc" />
         <dependency org="com.google.code.gson" name="gson" rev="2.14.0" conf="javadoc->javadoc" />
         <dependency org="com.google.errorprone" name="error_prone_core" rev="2.51.0" conf="javadoc->javadoc" />
         <dependency org="com.google.guava" name="failureaccess" rev="1.0.3" conf="javadoc->javadoc" />
-        <dependency org="com.google.guava" name="guava" rev="33.6.0-jre" conf="javadoc->javadoc" />
+        <dependency org="com.google.guava" name="guava" rev="33.7.2-jre" conf="javadoc->javadoc" />
         <dependency org="com.graphql-java" name="graphql-java" rev="21.5" conf="javadoc->javadoc" />
         <dependency org="com.graphql-java" name="graphql-java-extended-scalars" rev="21.0" conf="javadoc->javadoc" />
         <dependency org="com.ibm.icu" name="icu4j" rev="78.2" conf="javadoc->javadoc" />
         <dependency org="com.lowagie" name="itext" rev="2.0.8" conf="javadoc->javadoc" />
         <dependency org="com.rometools" name="rome" rev="1.18.0" conf="javadoc->javadoc" />
         <dependency org="com.sun.mail" name="javax.mail" rev="1.6.2" conf="javadoc->javadoc" />
-        <dependency org="commons-beanutils" name="commons-beanutils" rev="1.9.4" conf="javadoc->javadoc" />
+        <dependency org="commons-beanutils" name="commons-beanutils" rev="1.11.0" conf="javadoc->javadoc" />
         <dependency org="commons-cli" name="commons-cli" rev="1.11.0" conf="javadoc->javadoc" />
         <dependency org="commons-codec" name="commons-codec" rev="1.23.0" conf="javadoc->javadoc" />
         <dependency org="commons-collections" name="commons-collections" rev="3.2.2" conf="javadoc->javadoc" />
@@ -133,7 +133,7 @@
         <dependency org="commons-fileupload" name="commons-fileupload" rev="1.6.0" conf="javadoc->javadoc" />
         <dependency org="commons-io" name="commons-io" rev="2.19.0" conf="javadoc->javadoc" />
         <dependency org="commons-lang" name="commons-lang" rev="2.6" conf="javadoc->javadoc" />
-        <dependency org="commons-net" name="commons-net" rev="3.6" conf="javadoc->javadoc" />
+        <dependency org="commons-net" name="commons-net" rev="3.9.0" conf="javadoc->javadoc" />
         <dependency org="commons-validator" name="commons-validator" rev="1.7" conf="javadoc->javadoc" />
         <dependency org="de.odysseus.juel" name="juel-api" rev="2.2.7" conf="javadoc->javadoc" />
         <dependency org="de.odysseus.juel" name="juel-impl" rev="2.2.7" conf="javadoc->javadoc" />
@@ -166,8 +166,8 @@
         <dependency org="net.sf.textile4j" name="textile4j" rev="1.2" conf="javadoc->javadoc" />
         <dependency org="net.sourceforge.nekohtml" name="nekohtml" rev="1.9.22" conf="javadoc->javadoc" />
         <dependency org="org.antlr" name="antlr4-runtime" rev="4.5.1" conf="javadoc->javadoc" />
-        <dependency org="org.apache.avro" name="avro" rev="1.12.0" conf="javadoc->javadoc" />
-        <dependency org="org.apache.avro" name="avro-compiler" rev="1.12.0" conf="javadoc->javadoc" />
+        <dependency org="org.apache.avro" name="avro" rev="1.12.1" conf="javadoc->javadoc" />
+        <dependency org="org.apache.avro" name="avro-compiler" rev="1.12.1" conf="javadoc->javadoc" />
         <dependency org="org.apache.commons" name="commons-collections4" rev="4.4" conf="javadoc->javadoc" />
         <dependency org="org.apache.commons" name="commons-text" rev="1.13.1" conf="javadoc->javadoc" />
         <dependency org="org.apache.httpcomponents" name="fluent-hc" rev="4.5.13" conf="javadoc->javadoc" />
@@ -175,7 +175,7 @@
         <dependency org="org.apache.httpcomponents" name="httpclient-cache" rev="4.5.13" conf="javadoc->javadoc" />
         <dependency org="org.apache.httpcomponents" name="httpcore" rev="4.4.15" conf="javadoc->javadoc" />
         <dependency org="org.apache.httpcomponents" name="httpmime" rev="4.5.13" conf="javadoc->javadoc" />
-        <dependency org="org.apache.kafka" name="kafka-clients" rev="4.1.1" conf="javadoc->javadoc" />
+        <dependency org="org.apache.kafka" name="kafka-clients" rev="4.1.2" conf="javadoc->javadoc" />
         <dependency org="org.apache.lucene" name="lucene-analysis-common" rev="10.5.2" conf="javadoc->javadoc" />
         <dependency org="org.apache.lucene" name="lucene-analysis-kuromoji" rev="10.5.2" conf="javadoc->javadoc" />
         <dependency org="org.apache.lucene" name="lucene-backward-codecs" rev="10.5.2" conf="javadoc->javadoc" />
@@ -186,7 +186,7 @@
         <dependency org="org.assertj" name="assertj-core" rev="3.23.1" conf="javadoc->javadoc" />
         <dependency org="org.assertj" name="assertj-guava" rev="3.5.0" conf="javadoc->javadoc" />
         <dependency org="io.github.eisop" name="dataflow-errorprone" rev="3.49.5-eisop1" conf="javadoc->javadoc" />
-        <dependency org="org.freemarker" name="freemarker" rev="2.3.31" conf="javadoc->javadoc" />
+        <dependency org="org.freemarker" name="freemarker" rev="2.3.35" conf="javadoc->javadoc" />
         <dependency org="org.infinispan" name="infinispan-commons" rev="13.0.8.Final" conf="javadoc->javadoc" />
         <dependency org="org.infinispan" name="infinispan-core" rev="13.0.8.Final" conf="javadoc->javadoc" />
         <dependency org="org.jacoco" name="org.jacoco.agent" rev="0.8.13" conf="javadoc->javadoc" />
@@ -202,15 +202,15 @@
         <dependency org="org.slf4j" name="slf4j-api" rev="2.0.19" conf="javadoc->javadoc" />
         <dependency org="org.threeten" name="threeten-extra" rev="1.5.0" conf="javadoc->javadoc" />
         <dependency org="org.wildfly" name="wildfly-client-all" rev="26.1.3.Final" conf="javadoc->javadoc" />
-        <dependency org="xalan" name="xalan" rev="2.7.2" conf="javadoc->javadoc" />
+        <dependency org="xalan" name="xalan" rev="2.7.3" conf="javadoc->javadoc" />
         <dependency org="xerces" name="xercesImpl" rev="2.12.2" conf="javadoc->javadoc" />
         <dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="javadoc->javadoc" />
 
         <dependency org="ch.qos.logback" name="logback-classic" rev="1.6.5" conf="binaries->default" />
         <dependency org="ch.qos.logback" name="logback-core" rev="1.6.5" conf="binaries->default" />
         <dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.21" conf="binaries->default" />
-        <dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.21.6" conf="binaries->default" />
-        <dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.21.6" conf="binaries->default" />
+        <dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.21.7" conf="binaries->default" />
+        <dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.21.7" conf="binaries->default" />
         <dependency org="com.fasterxml.uuid" name="java-uuid-generator" rev="5.2.0" conf="binaries->default" />
         <dependency org="com.github.ben-manes.caffeine" name="caffeine" rev="3.3.1" conf="binaries->default" />
         <dependency org="com.google.code.gson" name="gson" rev="2.14.0" conf="binaries->default" />
@@ -218,14 +218,14 @@
             <artifact name="error_prone_core" e:classifier="with-dependencies" ext="jar"/>
         </dependency>
         <dependency org="com.google.guava" name="failureaccess" rev="1.0.3" conf="binaries->default" />
-        <dependency org="com.google.guava" name="guava" rev="33.6.0-jre" conf="binaries->default" />
+        <dependency org="com.google.guava" name="guava" rev="33.7.2-jre" conf="binaries->default" />
         <dependency org="com.graphql-java" name="graphql-java" rev="21.5" conf="binaries->default" />
         <dependency org="com.graphql-java" name="graphql-java-extended-scalars" rev="21.0" conf="binaries->default" />
         <dependency org="com.ibm.icu" name="icu4j" rev="78.2" conf="binaries->default" />
         <dependency org="com.lowagie" name="itext" rev="2.0.8" conf="binaries->default" />
         <dependency org="com.rometools" name="rome" rev="1.18.0" conf="binaries->default" />
         <dependency org="com.sun.mail" name="javax.mail" rev="1.6.2" conf="binaries->default" />
-        <dependency org="commons-beanutils" name="commons-beanutils" rev="1.9.4" conf="binaries->default" />
+        <dependency org="commons-beanutils" name="commons-beanutils" rev="1.11.0" conf="binaries->default" />
         <dependency org="commons-cli" name="commons-cli" rev="1.11.0" conf="binaries->default" />
         <dependency org="commons-codec" name="commons-codec" rev="1.23.0" conf="binaries->default" />
         <dependency org="commons-collections" name="commons-collections" rev="3.2.2" conf="binaries->default" />
@@ -234,7 +234,7 @@
         <dependency org="commons-fileupload" name="commons-fileupload" rev="1.6.0" conf="binaries->default" />
         <dependency org="commons-io" name="commons-io" rev="2.19.0" conf="binaries->default" />
         <dependency org="commons-lang" name="commons-lang" rev="2.6" conf="binaries->default" />
-        <dependency org="commons-net" name="commons-net" rev="3.6" conf="binaries->default" />
+        <dependency org="commons-net" name="commons-net" rev="3.9.0" conf="binaries->default" />
         <dependency org="commons-validator" name="commons-validator" rev="1.7" conf="binaries->default" />
         <dependency org="de.odysseus.juel" name="juel-api" rev="2.2.7" conf="binaries->default" />
         <dependency org="de.odysseus.juel" name="juel-impl" rev="2.2.7" conf="binaries->default" />
@@ -270,8 +270,8 @@
         <dependency org="net.sf.textile4j" name="textile4j" rev="1.2" conf="binaries->default" />
         <dependency org="net.sourceforge.nekohtml" name="nekohtml" rev="1.9.22" conf="binaries->default" />
         <dependency org="org.antlr" name="antlr4-runtime" rev="4.5.1" conf="binaries->default" />
-        <dependency org="org.apache.avro" name="avro" rev="1.12.0" conf="binaries->default" />
-        <dependency org="org.apache.avro" name="avro-compiler" rev="1.12.0" conf="binaries->default" />
+        <dependency org="org.apache.avro" name="avro" rev="1.12.1" conf="binaries->default" />
+        <dependency org="org.apache.avro" name="avro-compiler" rev="1.12.1" conf="binaries->default" />
         <dependency org="org.apache.commons" name="commons-collections4" rev="4.4" conf="binaries->default" />
         <dependency org="org.apache.commons" name="commons-text" rev="1.13.1" conf="binaries->default" />
         <dependency org="org.apache.httpcomponents" name="fluent-hc" rev="4.5.13" conf="binaries->default" />
@@ -279,7 +279,7 @@
         <dependency org="org.apache.httpcomponents" name="httpclient-cache" rev="4.5.13" conf="binaries->default" />
         <dependency org="org.apache.httpcomponents" name="httpcore" rev="4.4.15" conf="binaries->default" />
         <dependency org="org.apache.httpcomponents" name="httpmime" rev="4.5.13" conf="binaries->default" />
-        <dependency org="org.apache.kafka" name="kafka-clients" rev="4.1.1" conf="binaries->default" />
+        <dependency org="org.apache.kafka" name="kafka-clients" rev="4.1.2" conf="binaries->default" />
         <dependency org="org.apache.lucene" name="lucene-analysis-common" rev="10.5.2" conf="binaries->default" />
         <dependency org="org.apache.lucene" name="lucene-analysis-kuromoji" rev="10.5.2" conf="binaries->default" />
         <dependency org="org.apache.lucene" name="lucene-backward-codecs" rev="10.5.2" conf="binaries->default" />
@@ -290,7 +290,7 @@
         <dependency org="org.assertj" name="assertj-core" rev="3.23.1" conf="binaries->default" />
         <dependency org="org.assertj" name="assertj-guava" rev="3.5.0" conf="binaries->default" />
         <dependency org="io.github.eisop" name="dataflow-errorprone" rev="3.49.5-eisop1" conf="binaries->default" />
-        <dependency org="org.freemarker" name="freemarker" rev="2.3.31" conf="binaries->default" />
+        <dependency org="org.freemarker" name="freemarker" rev="2.3.35" conf="binaries->default" />
         <dependency org="org.infinispan" name="infinispan-commons" rev="13.0.8.Final" conf="binaries->default" />
         <dependency org="org.infinispan" name="infinispan-core" rev="13.0.8.Final" conf="binaries->default" />
         <dependency org="org.jacoco" name="org.jacoco.agent" rev="0.8.13" conf="binaries->default">
@@ -310,7 +310,7 @@
         <dependency org="org.slf4j" name="slf4j-api" rev="2.0.19" conf="binaries->default" />
         <dependency org="org.threeten" name="threeten-extra" rev="1.5.0" conf="binaries->default" />
         <dependency org="org.wildfly" name="wildfly-client-all" rev="26.1.3.Final" conf="binaries->default" />
-        <dependency org="xalan" name="xalan" rev="2.7.2" conf="binaries->default" />
+        <dependency org="xalan" name="xalan" rev="2.7.3" conf="binaries->default" />
         <dependency org="xerces" name="xercesImpl" rev="2.12.2" conf="binaries->default" />
         <dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="binaries->default" />
         <!-- Legacy library calls use the SLF4J JCL bridge; never retrieve the old implementations. -->
