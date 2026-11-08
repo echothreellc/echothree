@@ -31,7 +31,8 @@ public class DecimalUtils {
     }
 
     /**
-     * 
+     * Converts a decimal value to a scaled integer string, preserving MAX_VALUE and MIN_VALUE markers.
+     *
      * @param minusSign Character to use when looking for a minus sign in the value, may be null if amount is positive-only
      * @param fractionSeparator Character that separates the whole part of the value from the decimal portion
      * @param fractionDigits Number of characters to look for in the decimal portion of the value
