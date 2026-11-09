@@ -100,10 +100,13 @@ gitlab-advanced-sast:
     SAST_SCANNER_ALLOWED_CLI_OPTS: "--multi-core 4"
     GITLAB_ADV_SAST_INCR_SCAN: "true"
     ADVANCED_SAST_PARTIAL_SCAN: "differential"
-    GITLAB_ADV_SAST_INCR_SCAN_SEARCH_PERIOD: "7 days"
+    # If the cache expires, the next full scan rebuilds it automatically.
+    # To rebuild before merging, run a branch pipeline with ADVANCED_SAST_PARTIAL_SCAN=false;
+    # keep GITLAB_ADV_SAST_INCR_SCAN=true so that scan saves a reusable cache.
+    GITLAB_ADV_SAST_INCR_SCAN_SEARCH_PERIOD: "30 days"
   # The template retains ts-cache.sqlite.gz alongside the SAST report for reuse.
   artifacts:
-    expire_in: 1 week
+    expire_in: 30 days
 
 secret_detection:
   stage: test
