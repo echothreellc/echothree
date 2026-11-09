@@ -1,5 +1,25 @@
 # Changelog
 
+## 2026-11-08-01
+
+* GetLinkTypes UC Not Including All Parameters in Result [2465](https://gitlab.echothree.com/echothree/echothree/-/work_items/2465)
+* Error Prone 2.51.0 Upgrade [2466](https://gitlab.echothree.com/echothree/echothree/-/work_items/2466)
+* Caffeine 3.3.1 Upgrade [2467](https://gitlab.echothree.com/echothree/echothree/-/work_items/2467)
+* commons-cli 1.11.0 Upgrade [2468](https://gitlab.echothree.com/echothree/echothree/-/work_items/2468)
+* commons-codec 1.23.0 Upgrade [2469](https://gitlab.echothree.com/echothree/echothree/-/work_items/2469)
+* commons-fileupload 1.6 Upgrade [2470](https://gitlab.echothree.com/echothree/echothree/-/work_items/2470)
+* cucumber-java8/cucumber-junit 8.0.4 Upgrade [2471](https://gitlab.echothree.com/echothree/echothree/-/work_items/2471)
+* Cucumber Step Grammar Clean-Up [2472](https://gitlab.echothree.com/echothree/echothree/-/work_items/2472)
+* Correct Hash Code In Objects Hash Warnings From Error Prone [2473](https://gitlab.echothree.com/echothree/echothree/-/work_items/2473)
+* Correct Unicode Escape Warnings From Error Prone [2474](https://gitlab.echothree.com/echothree/echothree/-/work_items/2474)
+* Correct Protected Members In Final Class Warnings From Error Prone [2475](https://gitlab.echothree.com/echothree/echothree/-/work_items/2475)
+* Correct Pattern Matching Instanceof Warnings From Error Prone [2476](https://gitlab.echothree.com/echothree/echothree/-/work_items/2476)
+* Correct Already Checked Warnings From Error Prone [2477](https://gitlab.echothree.com/echothree/echothree/-/work_items/2477)
+* Correct Missing Summary Warnings From Error Prone [2478](https://gitlab.echothree.com/echothree/echothree/-/work_items/2478)
+* Low Risk Dependency Upgrades [2479](https://gitlab.echothree.com/echothree/echothree/-/work_items/2479)
+* Enable Dependency Scanning [2480](https://gitlab.echothree.com/echothree/echothree/-/work_items/2480)
+* Enable Secret Scanning [2481](https://gitlab.echothree.com/echothree/echothree/-/work_items/2481)
+
 ## 2026-10-25-01
 
 * Convert EditTransactionTypeDescription UC to Use BaseAbstractEditCommand [872](https://gitlab.echothree.com/echothree/echothree/-/work_items/872)
