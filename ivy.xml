@@ -9,9 +9,9 @@
     <dependencies>
         <dependency org="ch.qos.logback" name="logback-classic" rev="1.6.5" conf="sources->sources" />
         <dependency org="ch.qos.logback" name="logback-core" rev="1.6.5" conf="sources->sources" />
-        <dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.21" conf="sources->sources" />
-        <dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.21.7" conf="sources->sources" />
-        <dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.21.7" conf="sources->sources" />
+        <dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.23" conf="sources->sources" />
+        <dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.23.0" conf="sources->sources" />
+        <dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.23.0" conf="sources->sources" />
         <dependency org="com.fasterxml.uuid" name="java-uuid-generator" rev="5.2.0" conf="sources->sources" />
         <dependency org="com.github.ben-manes.caffeine" name="caffeine" rev="3.3.1" conf="sources->sources" />
         <dependency org="com.google.code.gson" name="gson" rev="2.14.0" conf="sources->sources" />
@@ -109,9 +109,9 @@
 
         <dependency org="ch.qos.logback" name="logback-classic" rev="1.6.5" conf="javadoc->javadoc" />
         <dependency org="ch.qos.logback" name="logback-core" rev="1.6.5" conf="javadoc->javadoc" />
-        <dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.21" conf="javadoc->javadoc" />
-        <dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.21.7" conf="javadoc->javadoc" />
-        <dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.21.7" conf="javadoc->javadoc" />
+        <dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.23" conf="javadoc->javadoc" />
+        <dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.23.0" conf="javadoc->javadoc" />
+        <dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.23.0" conf="javadoc->javadoc" />
         <dependency org="com.fasterxml.uuid" name="java-uuid-generator" rev="5.2.0" conf="javadoc->javadoc" />
         <dependency org="com.github.ben-manes.caffeine" name="caffeine" rev="3.3.1" conf="javadoc->javadoc" />
         <dependency org="com.google.code.gson" name="gson" rev="2.14.0" conf="javadoc->javadoc" />
@@ -208,9 +208,9 @@
 
         <dependency org="ch.qos.logback" name="logback-classic" rev="1.6.5" conf="binaries->default" />
         <dependency org="ch.qos.logback" name="logback-core" rev="1.6.5" conf="binaries->default" />
-        <dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.21" conf="binaries->default" />
-        <dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.21.7" conf="binaries->default" />
-        <dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.21.7" conf="binaries->default" />
+        <dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.23" conf="binaries->default" />
+        <dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.23.0" conf="binaries->default" />
+        <dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.23.0" conf="binaries->default" />
         <dependency org="com.fasterxml.uuid" name="java-uuid-generator" rev="5.2.0" conf="binaries->default" />
         <dependency org="com.github.ben-manes.caffeine" name="caffeine" rev="3.3.1" conf="binaries->default" />
         <dependency org="com.google.code.gson" name="gson" rev="2.14.0" conf="binaries->default" />
