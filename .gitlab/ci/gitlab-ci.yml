@@ -94,6 +94,10 @@ sast:
 
 gitlab-advanced-sast:
   variables:
+    # Leave capacity for the runner's second concurrent job.
+    ADVANCED_SAST_AVAILABLE_CPUS: "4"
+    ADVANCED_SAST_AVAILABLE_MEMORY: "16384"
+    SAST_SCANNER_ALLOWED_CLI_OPTS: "--multi-core 4"
     GITLAB_ADV_SAST_INCR_SCAN: "true"
     ADVANCED_SAST_PARTIAL_SCAN: "differential"
     GITLAB_ADV_SAST_INCR_SCAN_SEARCH_PERIOD: "7 days"
