@@ -93,6 +93,21 @@ sast:
   cache: []
 
 gitlab-advanced-sast:
+  rules:
+    - if: '$SAST_DISABLED == "true" || $SAST_DISABLED == "1"'
+      when: never
+    - if: '$SAST_EXCLUDED_ANALYZERS =~ /(^|[,[:space:]])gitlab-advanced-sast([,[:space:]]|$)/'
+      when: never
+    - if: '$GITLAB_ADVANCED_SAST_ENABLED != "true" && $GITLAB_ADVANCED_SAST_ENABLED != "1"'
+      when: never
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $GITLAB_FEATURES =~ /\bsast_advanced\b/'
+    # GitLab creates a pipeline for a new branch before it has any commits of its own.
+    # Skip that unchanged branch to avoid the analyzer's empty-diff full-scan fallback.
+    - if: '$CI_COMMIT_BRANCH && $GITLAB_FEATURES =~ /\bsast_advanced\b/'
+      changes:
+        compare_to: 'refs/heads/$CI_DEFAULT_BRANCH'
+        paths:
+          - '**/*'
   variables:
     # Leave capacity for the runner's second concurrent job.
     ADVANCED_SAST_AVAILABLE_CPUS: "4"
