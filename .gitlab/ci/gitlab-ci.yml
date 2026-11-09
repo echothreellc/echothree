@@ -3,6 +3,7 @@ image: gitlab.echothree.com:5050/containers/jdk-build-tools:latest
 include:
   - template: Jobs/Dependency-Scanning.v2.gitlab-ci.yml
   - template: Jobs/Secret-Detection.gitlab-ci.yml
+  - template: Jobs/SAST.gitlab-ci.yml
 
 cache:
   - key: ivy2
@@ -13,6 +14,13 @@ variables:
   ANT_OPTS: "-Xmx6150m -Divy.default.ivy.user.dir=$CI_PROJECT_DIR/.ivy2"
   # Ant supplies the resolved Ivy report; other package managers need no resolution jobs.
   DS_DISABLED_RESOLUTION_JOBS: "maven,gradle,python"
+  # Keep security scanners in the existing branch pipelines, including open MR branches.
+  AST_ENABLE_MR_PIPELINES: "false"
+  GITLAB_ADVANCED_SAST_ENABLED: "true"
+  # Source analysis avoids a second Ant build in the SpotBugs analyzer.
+  SAST_EXCLUDED_ANALYZERS: "spotbugs"
+  # Semgrep's supplemental rules also inherit these exclusions through the template.
+  DEFAULT_SAST_EXCLUDED_PATHS: "spec,test,tests,tmp,/generated/,**/build/,/lib/,/.ivy2/,**/*.min.js"
 
 stages:
   - compile
@@ -78,6 +86,27 @@ dependency-scanning:
     - if: '$DEPENDENCY_SCANNING_DISABLED == "true" || $DEPENDENCY_SCANNING_DISABLED == "1"'
       when: never
     - if: '$CI_COMMIT_BRANCH || $CI_COMMIT_TAG'
+
+sast:
+  # Source analyzers do not need build artifacts or the Ivy cache.
+  needs: []
+  cache: []
+
+gitlab-advanced-sast:
+  variables:
+    # Leave capacity for the runner's second concurrent job.
+    ADVANCED_SAST_AVAILABLE_CPUS: "4"
+    ADVANCED_SAST_AVAILABLE_MEMORY: "16384"
+    SAST_SCANNER_ALLOWED_CLI_OPTS: "--multi-core 4"
+    GITLAB_ADV_SAST_INCR_SCAN: "true"
+    ADVANCED_SAST_PARTIAL_SCAN: "differential"
+    # If the cache expires, the next full scan rebuilds it automatically.
+    # To rebuild before merging, run a branch pipeline with ADVANCED_SAST_PARTIAL_SCAN=false;
+    # keep GITLAB_ADV_SAST_INCR_SCAN=true so that scan saves a reusable cache.
+    GITLAB_ADV_SAST_INCR_SCAN_SEARCH_PERIOD: "30 days"
+  # The template retains ts-cache.sqlite.gz alongside the SAST report for reuse.
+  artifacts:
+    expire_in: 30 days
 
 secret_detection:
   stage: test
