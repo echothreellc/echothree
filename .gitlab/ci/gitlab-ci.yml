@@ -92,6 +92,15 @@ sast:
   needs: []
   cache: []
 
+gitlab-advanced-sast:
+  variables:
+    GITLAB_ADV_SAST_INCR_SCAN: "true"
+    ADVANCED_SAST_PARTIAL_SCAN: "differential"
+    GITLAB_ADV_SAST_INCR_SCAN_SEARCH_PERIOD: "7 days"
+  # The template retains ts-cache.sqlite.gz alongside the SAST report for reuse.
+  artifacts:
+    expire_in: 1 week
+
 secret_detection:
   stage: test
   # Scan repository history without waiting for compilation or downloading build artifacts.
