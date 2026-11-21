@@ -90,9 +90,9 @@
         <dependency org="org.freemarker" name="freemarker" rev="2.3.35" conf="sources->sources" />
         <dependency org="org.infinispan" name="infinispan-commons" rev="13.0.8.Final" conf="sources->sources" />
         <dependency org="org.infinispan" name="infinispan-core" rev="13.0.8.Final" conf="sources->sources" />
-        <dependency org="org.jacoco" name="org.jacoco.agent" rev="0.8.13" conf="sources->sources" />
-        <dependency org="org.jacoco" name="org.jacoco.ant" rev="0.8.13" conf="sources->sources" />
-        <dependency org="org.jacoco" name="org.jacoco.report" rev="0.8.13" conf="sources->sources" />
+        <dependency org="org.jacoco" name="org.jacoco.agent" rev="0.8.16" conf="sources->sources" />
+        <dependency org="org.jacoco" name="org.jacoco.ant" rev="0.8.16" conf="sources->sources" />
+        <dependency org="org.jacoco" name="org.jacoco.report" rev="0.8.16" conf="sources->sources" />
         <dependency org="org.javassist" name="javassist" rev="3.29.0-GA" conf="sources->sources" />
         <dependency org="org.jfree" name="jfreechart" rev="1.5.3" conf="sources->sources" />
         <dependency org="org.jooq" name="jooq" rev="3.21.9" conf="sources->sources" />
@@ -189,9 +189,9 @@
         <dependency org="org.freemarker" name="freemarker" rev="2.3.35" conf="javadoc->javadoc" />
         <dependency org="org.infinispan" name="infinispan-commons" rev="13.0.8.Final" conf="javadoc->javadoc" />
         <dependency org="org.infinispan" name="infinispan-core" rev="13.0.8.Final" conf="javadoc->javadoc" />
-        <dependency org="org.jacoco" name="org.jacoco.agent" rev="0.8.13" conf="javadoc->javadoc" />
-        <dependency org="org.jacoco" name="org.jacoco.ant" rev="0.8.13" conf="javadoc->javadoc" />
-        <dependency org="org.jacoco" name="org.jacoco.report" rev="0.8.13" conf="javadoc->javadoc" />
+        <dependency org="org.jacoco" name="org.jacoco.agent" rev="0.8.16" conf="javadoc->javadoc" />
+        <dependency org="org.jacoco" name="org.jacoco.ant" rev="0.8.16" conf="javadoc->javadoc" />
+        <dependency org="org.jacoco" name="org.jacoco.report" rev="0.8.16" conf="javadoc->javadoc" />
         <dependency org="org.javassist" name="javassist" rev="3.29.0-GA" conf="javadoc->javadoc" />
         <dependency org="org.jfree" name="jfreechart" rev="1.5.3" conf="javadoc->javadoc" />
         <dependency org="org.jooq" name="jooq" rev="3.21.9" conf="javadoc->javadoc" />
@@ -293,13 +293,13 @@
         <dependency org="org.freemarker" name="freemarker" rev="2.3.35" conf="binaries->default" />
         <dependency org="org.infinispan" name="infinispan-commons" rev="13.0.8.Final" conf="binaries->default" />
         <dependency org="org.infinispan" name="infinispan-core" rev="13.0.8.Final" conf="binaries->default" />
-        <dependency org="org.jacoco" name="org.jacoco.agent" rev="0.8.13" conf="binaries->default">
+        <dependency org="org.jacoco" name="org.jacoco.agent" rev="0.8.16" conf="binaries->default">
             <artifact name="org.jacoco.agent" e:classifier="runtime" ext="jar"/>
         </dependency>
-        <dependency org="org.jacoco" name="org.jacoco.ant" rev="0.8.13" conf="binaries->default">
+        <dependency org="org.jacoco" name="org.jacoco.ant" rev="0.8.16" conf="binaries->default">
             <artifact name="org.jacoco.ant" e:classifier="nodeps" ext="jar"/>
         </dependency>
-        <dependency org="org.jacoco" name="org.jacoco.report" rev="0.8.13" conf="binaries->default"/>
+        <dependency org="org.jacoco" name="org.jacoco.report" rev="0.8.16" conf="binaries->default"/>
         <dependency org="org.javassist" name="javassist" rev="3.29.0-GA" conf="binaries->default" />
         <dependency org="org.jfree" name="jfreechart" rev="1.5.3" conf="binaries->default" />
         <dependency org="org.jooq" name="jooq" rev="3.21.9" conf="binaries->default" />
