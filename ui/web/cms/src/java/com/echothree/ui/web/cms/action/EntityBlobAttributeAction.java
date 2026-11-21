@@ -162,19 +162,32 @@ public class EntityBlobAttributeAction
     }
 
     @Override
+    protected Long getLastModified(HttpServletRequest request) {
+        Long lastModified = null;
+        var entityBlobAttribute = (EntityBlobAttributeTransfer)request.getAttribute(attributeTransferObject);
+
+        if(entityBlobAttribute != null) {
+            var entityTime = entityBlobAttribute.getEntityInstance().getEntityTime();
+            var modifiedTime = entityTime.getUnformattedModifiedTime();
+
+            lastModified = modifiedTime == null ? entityTime.getUnformattedCreatedTime() : modifiedTime;
+        }
+
+        return lastModified;
+    }
+
+    @Override
     protected StreamInfo getStreamInfo(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
         StreamInfo streamInfo = null;
         var entityBlobAttribute = (EntityBlobAttributeTransfer)request.getAttribute(attributeTransferObject);
 
         if(entityBlobAttribute != null) {
             var mimeType = entityBlobAttribute.getMimeType();
-            var entityTime = entityBlobAttribute.getEntityInstance().getEntityTime();
-            var modifiedTime = entityTime.getUnformattedModifiedTime();
             byte bytes[] = entityBlobAttribute.getBlobAttribute().byteArrayValue();
 
             if(bytes != null) {
                 streamInfo = new ByteArrayStreamInfo(mimeType == null ? MimeTypes.TEXT_PLAIN.mimeTypeName() : mimeType.getMimeTypeName(),
-                        new ByteArrayInputStream(bytes), modifiedTime == null ? entityTime.getUnformattedCreatedTime() : modifiedTime);
+                        new ByteArrayInputStream(bytes), getLastModified(request));
             }
         }
 

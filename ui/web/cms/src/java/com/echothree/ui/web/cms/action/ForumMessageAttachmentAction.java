@@ -162,6 +162,21 @@ public class ForumMessageAttachmentAction
     }
 
     @Override
+    protected Long getLastModified(HttpServletRequest request) {
+        Long lastModified = null;
+        var forumMessageAttachment = (ForumMessageAttachmentTransfer)request.getAttribute(attributeTransferObject);
+
+        if(forumMessageAttachment != null) {
+            var entityTime = forumMessageAttachment.getForumMessage().getEntityInstance().getEntityTime();
+            var modifiedTime = entityTime.getUnformattedModifiedTime();
+
+            lastModified = modifiedTime == null ? entityTime.getUnformattedCreatedTime() : modifiedTime;
+        }
+
+        return lastModified;
+    }
+
+    @Override
     protected StreamInfo getStreamInfo(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
         StreamInfo streamInfo = null;
         var forumMessageAttachment = (ForumMessageAttachmentTransfer)request.getAttribute(attributeTransferObject);
@@ -170,8 +185,6 @@ public class ForumMessageAttachmentAction
             var mimeType = forumMessageAttachment.getMimeType();
             var entityAttributeType = mimeType == null ? null : mimeType.getEntityAttributeType();
             var entityAttributeTypeName = entityAttributeType == null ? null : entityAttributeType.getEntityAttributeTypeName();
-            var entityTime = forumMessageAttachment.getForumMessage().getEntityInstance().getEntityTime();
-            var modifiedTime = entityTime.getUnformattedModifiedTime();
             byte bytes[] = null;
 
             if(EntityAttributeTypes.CLOB.name().equals(entityAttributeTypeName)) {
@@ -184,7 +197,7 @@ public class ForumMessageAttachmentAction
 
             if(bytes != null) {
                 streamInfo = new ByteArrayStreamInfo(mimeType == null ? MimeTypes.TEXT_PLAIN.mimeTypeName() : mimeType.getMimeTypeName(),
-                        new ByteArrayInputStream(bytes), modifiedTime == null ? entityTime.getUnformattedCreatedTime() : modifiedTime);
+                        new ByteArrayInputStream(bytes), getLastModified(request));
             }
         }
 
