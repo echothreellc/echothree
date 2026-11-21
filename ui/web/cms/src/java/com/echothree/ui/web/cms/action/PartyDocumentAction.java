@@ -157,6 +157,21 @@ public class PartyDocumentAction
     }
 
     @Override
+    protected Long getLastModified(HttpServletRequest request) {
+        Long lastModified = null;
+        var partyDocument = (PartyDocumentTransfer)request.getAttribute(attributeTransferObject);
+
+        if(partyDocument != null) {
+            var entityTime = partyDocument.getDocument().getEntityInstance().getEntityTime();
+            var modifiedTime = entityTime.getUnformattedModifiedTime();
+
+            lastModified = modifiedTime == null ? entityTime.getUnformattedCreatedTime() : modifiedTime;
+        }
+
+        return lastModified;
+    }
+
+    @Override
     protected StreamInfo getStreamInfo(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
         StreamInfo streamInfo = null;
         var partyDocument = (PartyDocumentTransfer)request.getAttribute(attributeTransferObject);
@@ -166,8 +181,6 @@ public class PartyDocumentAction
             var mimeType = document.getMimeType();
             var entityAttributeType = mimeType == null ? null : mimeType.getEntityAttributeType();
             var entityAttributeTypeName = entityAttributeType == null ? null : entityAttributeType.getEntityAttributeTypeName();
-            var entityTime = document.getEntityInstance().getEntityTime();
-            var modifiedTime = entityTime.getUnformattedModifiedTime();
             byte bytes[] = null;
 
             if(EntityAttributeTypes.CLOB.name().equals(entityAttributeTypeName)) {
@@ -180,7 +193,7 @@ public class PartyDocumentAction
 
             if(bytes != null) {
                 streamInfo = new ByteArrayStreamInfo(mimeType == null ? MimeTypes.TEXT_PLAIN.mimeTypeName() : mimeType.getMimeTypeName(),
-                        new ByteArrayInputStream(bytes), modifiedTime == null ? entityTime.getUnformattedCreatedTime() : modifiedTime);
+                        new ByteArrayInputStream(bytes), getLastModified(request));
             }
         }
 

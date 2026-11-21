@@ -111,6 +111,16 @@ public abstract class CmsBaseDownloadAction
     }
 
     /**
+     * Returns the resource modification time from server-side metadata, without opening its stream.
+     *
+     * @param request The HTTP request we are processing.
+     * @return The modification time, or <code>null</code> if it is unavailable.
+     */
+    protected Long getLastModified(HttpServletRequest request) {
+        return null;
+    }
+
+    /**
      * Process the specified HTTP request, and create the corresponding HTTP
      * response (or forward to another web component that will create it).
      * Return an <code>ActionForward</code> instance describing where and how
@@ -137,14 +147,14 @@ public abstract class CmsBaseDownloadAction
         var previousETag = request.getHeader("If-None-Match");
 
         if(eTag != null && (previousETag != null && previousETag.equals(eTag))) { // compare previous token with current one
-            var ifModifiedSince = request.getHeader("If-Modified-Since");
+            response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
 
-            response.sendError(HttpServletResponse.SC_NOT_MODIFIED);
-
-            // Send the current ETag and the If-Modified-Since header in the response.
+            // Use the server-generated ETag; never reflect request headers as response metadata.
             response.setHeader("ETag", eTag);
-            if(ifModifiedSince != null) {
-                response.setHeader("Last-Modified", request.getHeader("If-Modified-Since"));
+            var lastModified = getLastModified(request);
+
+            if(lastModified != null) {
+                response.setDateHeader("Last-Modified", lastModified);
             }
         } else {
             var info = getStreamInfo(mapping, form, request, response);
@@ -161,7 +171,7 @@ public abstract class CmsBaseDownloadAction
                     // in the response. Otherwise, the returned information is not-cachable.
                     if(eTag != null && lastModified != null) {
                         response.setHeader("ETag", eTag);
-                        response.setDateHeader("Last-Modified", info.getLastModified());
+                        response.setDateHeader("Last-Modified", lastModified);
                     } else {
                         // Copied from Struts
                         response.setHeader("Pragma", "No-cache");
