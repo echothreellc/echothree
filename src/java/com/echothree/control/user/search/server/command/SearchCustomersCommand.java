@@ -16,6 +16,7 @@
 
 package com.echothree.control.user.search.server.command;
 
+import com.google.re2j.Pattern;
 import com.echothree.control.user.search.common.form.SearchCustomersForm;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.customer.server.control.CustomerControl;
@@ -44,7 +45,6 @@ import com.echothree.util.server.validation.Validator;
 import com.google.common.base.Splitter;
 import java.util.List;
 import java.util.Locale;
-import java.util.regex.Pattern;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 

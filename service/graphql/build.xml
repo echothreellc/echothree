@@ -100,6 +100,7 @@
             <!-- Google Guava -->
             <lib dir="${build.lib.dir}">
                 <include name="guava.jar"/>
+                <include name="re2j.jar" />
                 <include name="failureaccess.jar" />
             </lib>
             <!-- GraphQL -->

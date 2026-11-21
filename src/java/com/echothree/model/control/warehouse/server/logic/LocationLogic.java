@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.warehouse.server.logic;
 
+import com.google.re2j.Pattern;
 import com.echothree.control.user.inventory.common.spec.InventoryLocationSpec;
 import com.echothree.model.control.warehouse.common.exception.InvalidLocationNameException;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
@@ -24,7 +25,6 @@ import com.echothree.model.data.warehouse.server.entity.LocationType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import java.util.regex.Pattern;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 

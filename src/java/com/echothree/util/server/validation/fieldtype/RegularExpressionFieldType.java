@@ -16,13 +16,13 @@
 
 package com.echothree.util.server.validation.fieldtype;
 
+import com.google.re2j.Pattern;
+import com.google.re2j.PatternSyntaxException;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.message.Message;
 import com.echothree.util.common.message.Messages;
 import com.echothree.util.server.validation.Validator;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 public class RegularExpressionFieldType
         extends BaseFieldType {

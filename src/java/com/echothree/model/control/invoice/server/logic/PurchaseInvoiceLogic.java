@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.invoice.server.logic;
 
+import com.google.re2j.Pattern;
 import com.echothree.model.control.accounting.common.AccountingConstants;
 import com.echothree.model.control.accounting.server.logic.GlAccountLogic;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
@@ -82,7 +83,7 @@ public class PurchaseInvoiceLogic {
             } else {
                 var referenceValidationPattern = vendor.getReferenceValidationPattern();
                 
-                if(referenceValidationPattern != null && !reference.matches(referenceValidationPattern)) {
+                if(referenceValidationPattern != null && !Pattern.matches(referenceValidationPattern, reference)) {
                     eea.addExecutionError(ExecutionErrors.InvalidPurchaseInvoiceReference.name());
                 }
             }

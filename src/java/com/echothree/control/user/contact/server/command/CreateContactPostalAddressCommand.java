@@ -16,6 +16,7 @@
 
 package com.echothree.control.user.contact.server.command;
 
+import com.google.re2j.Pattern;
 import com.echothree.control.user.contact.common.form.CreateContactPostalAddressForm;
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
@@ -185,7 +186,7 @@ public class CreateContactPostalAddressCommand
                         postalCodeLength = Integer.MAX_VALUE;
                     }
                     
-                    if(postalCode == null || ((postalCodePattern == null || postalCode.matches(postalCodePattern)) && (postalCode.length() <= postalCodeLength))) {
+                    if(postalCode == null || ((postalCodePattern == null || Pattern.matches(postalCodePattern, postalCode)) && (postalCode.length() <= postalCodeLength))) {
                         GeoCode postalCodeGeoCode = null;
                         var postalCodeAlias = postalCode == null? null: StringUtils.getInstance().cleanStringToLettersOrDigits(StringUtils.getInstance().cleanStringToName(postalCode));
                         
