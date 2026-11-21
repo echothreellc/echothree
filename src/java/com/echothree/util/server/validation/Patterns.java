@@ -20,15 +20,15 @@ import java.util.regex.Pattern;
 
 public interface Patterns {
     
-    Pattern Option = Pattern.compile("^([a-z]|[A-Z]|[0-9]|-|_)+$");
-    Pattern TableNameSingular = Pattern.compile("^([a-z]|[A-Z]|[0-9]|-|_)+$");
+    Pattern Option = Pattern.compile("^[a-zA-Z0-9_-]++$");
+    Pattern TableNameSingular = Pattern.compile("^[a-zA-Z0-9_-]++$");
     
     Pattern Id = Pattern.compile("^[0-9]+$");
     Pattern Boolean = Pattern.compile("^(true|false)$");
-    Pattern EntityName = Pattern.compile("^([a-z]|[A-Z]|[0-9]|-|_)+$");
-    Pattern EntityName2 = Pattern.compile("^([a-z]|[A-Z]|[0-9]|-|_)+:([a-z]|[A-Z]|[0-9]|-|_)+$");
-    Pattern EntityNames = Pattern.compile("^(|([a-z]|[A-Z]|[0-9]|-|_)+:)*([a-z]|[A-Z]|[0-9]|-|_)+$");
-    Pattern EntityRef = Pattern.compile("^([a-z]|[A-Z]|[0-9]|-|_|\\.)+\\.([a-z]|[A-Z]|[0-9]|-|_|\\.)+\\.([0-9])+$");
+    Pattern EntityName = Pattern.compile("^[a-zA-Z0-9_-]++$");
+    Pattern EntityName2 = Pattern.compile("^[a-zA-Z0-9_-]++:[a-zA-Z0-9_-]++$");
+    Pattern EntityNames = Pattern.compile("^[a-zA-Z0-9_-]++(?::[a-zA-Z0-9_-]++)*+$");
+    Pattern EntityRef = Pattern.compile("^[a-zA-Z0-9_.-]+\\.[a-zA-Z0-9_.-]+\\.[0-9]++$");
     Pattern EmailAddress = Pattern.compile("^.+@.+\\.(com|net|int|org|mil|edu|gov|[a-z][a-z]|aero|biz|coop|info|museum|name|pro)$");
     Pattern Year = Pattern.compile("^(19|20)[0-9][0-9]$");
     Pattern SignedNumbers = Pattern.compile("^((|-)[0-9]+|MAX_VALUE|MIN_VALUE)$");
@@ -42,8 +42,8 @@ public interface Patterns {
     Pattern TrueOrFalse = Pattern.compile("^([tT][rR][uU][eE]|[fF][aA][lL][sS][eE])$");
     Pattern Precent = Pattern.compile("^(|1)(|[0-9])[0-9](|%)$");
     Pattern FractionalPercent = Pattern.compile("^(|1)(|[0-9])[0-9](|\\.(|[0-9])(|[0-9])(|[0-9]))(|%)$");
-    Pattern HostName = Pattern.compile("^([a-z]|[A-Z]|[0-9]|-|\\.)+$");
-    Pattern DomainName = Pattern.compile("^([0-9a-z\\-])+\\.(com|net|int|org|mil|edu|gov|[a-z][a-z]|aero|biz|coop|info|museum|name|pro)$");
+    Pattern HostName = Pattern.compile("^[a-zA-Z0-9.-]++$");
+    Pattern DomainName = Pattern.compile("^[0-9a-z-]++\\.(com|net|int|org|mil|edu|gov|[a-z][a-z]|aero|biz|coop|info|museum|name|pro)$");
     Pattern DomainSuffix = Pattern.compile("^\\.(com|net|int|org|mil|edu|gov|[a-z][a-z]|aero|biz|coop|info|museum|name|pro)$");
     Pattern CreditCardMonth = Pattern.compile("^((|0)[1-9]|1[0-2])$");
     Pattern CreditCardYear = Pattern.compile("^(20[0-9][0-9]|([0-9][0-9]|[0-9]))$");
@@ -52,10 +52,11 @@ public interface Patterns {
     Pattern Number3 = Pattern.compile("^[0-9][0-9][0-9]$");
     Pattern Numbers = Pattern.compile("^[0-9]+$");
     Pattern SequenceMask = Pattern.compile("^[AZ9]+$");
-    Pattern Tag = Pattern.compile("^([a-z]|[0-9]|-|_| )+$");
-    Pattern TimeZoneName = Pattern.compile("^([a-z]|[A-Z]|[0-9]|-|_|\\.|/)+$");
-    Pattern MimeType = Pattern.compile("^([a-z]|[A-Z]|[0-9]|-|_|\\.\\+)+/([a-z]|[A-Z]|[0-9]|-|_|\\.|\\+)+$");
-    Pattern Key = Pattern.compile("^([a-z]|[A-Z]|[0-9]|-|_)+$");
+    Pattern Tag = Pattern.compile("^[a-z0-9_ -]++$");
+    Pattern TimeZoneName = Pattern.compile("^[a-zA-Z0-9_./-]++$");
+    // Bare media type names (RFC 6838 section 4.2); field validation enforces length limits.
+    Pattern MimeType = Pattern.compile("^[a-zA-Z0-9][a-zA-Z0-9!#$&^_.+-]*+/[a-zA-Z0-9][a-zA-Z0-9!#$&^_.+-]*+$");
+    Pattern Key = Pattern.compile("^[a-zA-Z0-9_-]++$");
     Pattern HarmonizedTariffScheduleCode = Pattern.compile("^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]$");
     
 }

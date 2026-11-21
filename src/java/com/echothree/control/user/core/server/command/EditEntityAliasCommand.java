@@ -16,6 +16,7 @@
 
 package com.echothree.control.user.core.server.command;
 
+import com.google.re2j.Pattern;
 import com.echothree.control.user.core.common.edit.CoreEditFactory;
 import com.echothree.control.user.core.common.edit.EntityAliasEdit;
 import com.echothree.control.user.core.common.form.EditEntityAliasForm;
@@ -40,7 +41,6 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import java.util.List;
-import java.util.regex.Pattern;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 

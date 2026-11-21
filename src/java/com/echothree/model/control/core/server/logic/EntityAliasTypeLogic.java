@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.core.server.logic;
 
+import com.google.re2j.Pattern;
 import com.echothree.control.user.core.common.spec.EntityAliasTypeSpec;
 import com.echothree.control.user.core.common.spec.EntityAliasTypeUniversalSpec;
 import com.echothree.control.user.core.common.spec.EntityAliasTypeUuid;
@@ -51,7 +52,6 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 

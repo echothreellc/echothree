@@ -56,10 +56,12 @@ public class TagFieldType
             hadErrors = true;
         }
 
-        var m = Patterns.Tag.matcher(lcFieldValue);
-        if(!m.matches()) {
-            validationMessages.add(fieldName, new Message(Validator.ERROR_INVALID_FORMAT));
-            hadErrors = true;
+        if(!hadErrors) {
+            var m = Patterns.Tag.matcher(lcFieldValue);
+            if(!m.matches()) {
+                validationMessages.add(fieldName, new Message(Validator.ERROR_INVALID_FORMAT));
+                hadErrors = true;
+            }
         }
         
         return hadErrors? null: lcFieldValue;

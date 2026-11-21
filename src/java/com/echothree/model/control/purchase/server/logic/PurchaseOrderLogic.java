@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.purchase.server.logic;
 
+import com.google.re2j.Pattern;
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.server.logic.CancellationPolicyLogic;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
@@ -146,7 +147,7 @@ public class PurchaseOrderLogic
                     handleExecutionError(PurchaseOrderDuplicateReferenceException.class, eea, ExecutionErrors.PurchaseOrderDuplicateReference.name());
                 }
 
-                if(referenceValidationPattern != null && !reference.matches(referenceValidationPattern)) {
+                if(referenceValidationPattern != null && !Pattern.matches(referenceValidationPattern, reference)) {
                     handleExecutionError(InvalidPurchaseOrderReferenceException.class, eea, ExecutionErrors.InvalidPurchaseOrderReference.name());
                 }
             }

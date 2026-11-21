@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.core.server.logic;
 
+import com.google.re2j.Pattern;
 import com.echothree.control.user.core.common.edit.EntityListItemAttributeEdit;
 import com.echothree.control.user.core.common.spec.EntityAttributeSpec;
 import com.echothree.control.user.core.common.spec.EntityAttributeUniversalSpec;
@@ -149,7 +150,6 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 

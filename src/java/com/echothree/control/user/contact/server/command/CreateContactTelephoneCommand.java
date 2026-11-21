@@ -16,6 +16,7 @@
 
 package com.echothree.control.user.contact.server.command;
 
+import com.google.re2j.Pattern;
 import com.echothree.control.user.contact.common.form.CreateContactTelephoneForm;
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
@@ -44,7 +45,6 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import java.util.Locale;
-import java.util.regex.Pattern;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
