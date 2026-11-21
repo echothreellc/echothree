@@ -385,9 +385,7 @@ public class ItemDescriptionAction
                         }
                     }
 
-                    if(graphics2D != null) {
-                        graphics2D.dispose();
-                    }
+                    graphics2D.dispose();
                 }
             }
         }
@@ -431,9 +429,9 @@ public class ItemDescriptionAction
                 if(compositeImage != null) {
                     request.setAttribute(attributeCompositeImage, compositeImage);
 
-                    eTag = new StringBuilder(compositeImage.imagesIncludedETagComponent).append('-')
-                            .append(Integer.toHexString(compositeImage.blobDescription.length())).append('-')
-                            .append(Long.toHexString(compositeImage.lastModified)).toString();
+                    eTag = compositeImage.imagesIncludedETagComponent + '-' +
+                            Integer.toHexString(compositeImage.blobDescription.length()) + '-' +
+                            Long.toHexString(compositeImage.lastModified);
                 }
             } else {
                 // Single item image.
@@ -453,6 +451,27 @@ public class ItemDescriptionAction
     }
 
     @Override
+    protected Long getLastModified(HttpServletRequest request) {
+        Long lastModified = null;
+        var itemDescription = (ItemDescriptionTransfer)request.getAttribute(attributeTransferObject);
+
+        if(itemDescription != null) {
+            var entityTime = itemDescription.getItem().getEntityInstance().getEntityTime();
+            var modifiedTime = entityTime.getUnformattedModifiedTime();
+
+            lastModified = modifiedTime == null ? entityTime.getUnformattedCreatedTime() : modifiedTime;
+        } else {
+            var compositeImage = (CompositeImage)request.getAttribute(attributeCompositeImage);
+
+            if(compositeImage != null) {
+                lastModified = compositeImage.lastModified;
+            }
+        }
+
+        return lastModified;
+    }
+
+    @Override
     protected StreamInfo getStreamInfo(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
         StreamInfo streamInfo = null;
         var itemDescription = (ItemDescriptionTransfer)request.getAttribute(attributeTransferObject);
@@ -462,15 +481,13 @@ public class ItemDescriptionAction
             
             if(compositeImage != null) {
                 streamInfo = new ByteArrayStreamInfo(compositeImage.mimeTypeName, new ByteArrayInputStream(compositeImage.blobDescription.byteArrayValue()),
-                        compositeImage.lastModified);
+                        getLastModified(request));
             }
         } else {
             var mimeType = itemDescription.getMimeType();
             var entityAttributeType = mimeType == null ? null : mimeType.getEntityAttributeType();
             var entityAttributeTypeName = entityAttributeType == null ? null : entityAttributeType.getEntityAttributeTypeName();
-            var entityTime = itemDescription.getItem().getEntityInstance().getEntityTime();
-            var modifiedTime = entityTime.getUnformattedModifiedTime();
-            byte bytes[] = null;
+            byte[] bytes = null;
 
             if(entityAttributeTypeName == null || EntityAttributeTypes.CLOB.name().equals(entityAttributeTypeName)) {
                 if(entityAttributeTypeName == null) {
@@ -486,7 +503,7 @@ public class ItemDescriptionAction
 
             if(bytes != null) {
                 streamInfo = new ByteArrayStreamInfo(mimeType == null ? MimeTypes.TEXT_PLAIN.mimeTypeName() : mimeType.getMimeTypeName(),
-                        new ByteArrayInputStream(bytes), modifiedTime == null ? entityTime.getUnformattedCreatedTime() : modifiedTime);
+                        new ByteArrayInputStream(bytes), getLastModified(request));
             }
         }
 
