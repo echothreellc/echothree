@@ -24,12 +24,12 @@ package com.echothree.view.client.web.filter;
 //
 // Improved version: https://gist.github.com/anonymous/0045ef4df99b31b43daa
 
+import com.google.re2j.Pattern;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.regex.Pattern;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;

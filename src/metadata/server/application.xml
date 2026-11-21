@@ -19,6 +19,10 @@
     <module>
         <ejb>guava.jar</ejb>
     </module>
+
+    <module>
+        <ejb>re2j.jar</ejb>
+    </module>
     
     <module>
         <ejb>failureaccess.jar</ejb>

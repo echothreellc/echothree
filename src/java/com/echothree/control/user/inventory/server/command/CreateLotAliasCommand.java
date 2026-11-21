@@ -16,6 +16,7 @@
 
 package com.echothree.control.user.inventory.server.command;
 
+import com.google.re2j.Pattern;
 import com.echothree.control.user.inventory.common.form.CreateLotAliasForm;
 import com.echothree.model.control.inventory.server.control.LotAliasControl;
 import com.echothree.model.control.inventory.server.logic.LotLogic;
@@ -32,7 +33,6 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
-import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 

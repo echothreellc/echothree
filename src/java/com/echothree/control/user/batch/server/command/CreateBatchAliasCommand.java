@@ -16,6 +16,7 @@
 
 package com.echothree.control.user.batch.server.command;
 
+import com.google.re2j.Pattern;
 import com.echothree.control.user.batch.common.form.CreateBatchAliasForm;
 import com.echothree.control.user.batch.server.command.util.BatchAliasUtil;
 import com.echothree.model.control.batch.server.control.BatchControl;
@@ -30,7 +31,6 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
-import java.util.regex.Pattern;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 

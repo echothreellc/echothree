@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.geo.server.control;
 
+import com.google.re2j.Pattern;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.geo.common.GeoCodeAliasTypes;
 import com.echothree.model.control.geo.common.GeoCodeScopes;
@@ -182,7 +183,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.regex.Pattern;
 import javax.inject.Inject;
 
 @CommandScope

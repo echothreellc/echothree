@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.payment.server.logic;
 
+import com.google.re2j.Pattern;
 import com.echothree.control.user.payment.common.edit.PartyPaymentMethodEdit;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -39,7 +40,6 @@ import com.echothree.util.server.persistence.Session;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.regex.Pattern;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 

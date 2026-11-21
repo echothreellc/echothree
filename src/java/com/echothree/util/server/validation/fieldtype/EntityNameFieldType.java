@@ -61,9 +61,11 @@ public class EntityNameFieldType
             errorMaximumLength = true;
         }
 
-        var m = Patterns.EntityName.matcher(fieldValue);
-        if(!m.matches()) {
-            errorInvalidFormat = true;
+        if(!errorMinimumLength && !errorMaximumLength) {
+            var m = Patterns.EntityName.matcher(fieldValue);
+            if(!m.matches()) {
+                errorInvalidFormat = true;
+            }
         }
 
         var validName = !(errorMinimumLength || errorMaximumLength || errorInvalidFormat);

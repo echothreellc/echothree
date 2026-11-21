@@ -57,10 +57,12 @@ public class SequenceMaskFieldType
             hadErrors = true;
         }
 
-        var m = Patterns.SequenceMask.matcher(fieldValue);
-        if(!m.matches()) {
-            validationMessages.add(fieldName, new Message(Validator.ERROR_INVALID_FORMAT));
-            hadErrors = true;
+        if(!hadErrors) {
+            var m = Patterns.SequenceMask.matcher(fieldValue);
+            if(!m.matches()) {
+                validationMessages.add(fieldName, new Message(Validator.ERROR_INVALID_FORMAT));
+                hadErrors = true;
+            }
         }
         
         return hadErrors? null: fieldValue;

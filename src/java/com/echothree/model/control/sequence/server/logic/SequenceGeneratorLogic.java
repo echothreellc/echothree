@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.sequence.server.logic;
 
+import com.google.re2j.Pattern;
 import com.echothree.model.control.sequence.common.SequenceChecksumTypes;
 import com.echothree.model.control.sequence.common.SequenceEncoderTypes;
 import com.echothree.model.control.sequence.common.exception.UnimplementedSequenceChecksumTypeException;
@@ -43,7 +44,6 @@ import java.util.EmptyStackException;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.regex.Pattern;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
@@ -365,7 +365,7 @@ public class SequenceGeneratorLogic
             // ...and each Sequence within them.
             for(var sequence : sequenceControl.getSequencesBySequenceType(sequenceType)) {
                 // Check the regexp that's generated for this sequence against the value.
-                if(value.matches(getPattern(sequence))) {
+                if(Pattern.matches(getPattern(sequence), value)) {
                     // If the regexp matches, check the checksum. If it matches, we've
                     // probably got a match. If not, continue looking for other matches.
                     if(verifyValue(sequenceType, value)) {

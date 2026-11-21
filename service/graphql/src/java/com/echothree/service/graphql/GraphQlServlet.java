@@ -40,7 +40,6 @@ import graphql.introspection.IntrospectionQuery;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutionException;
-import java.util.regex.Pattern;
 import javax.naming.NamingException;
 import javax.servlet.AsyncContext;
 import javax.servlet.ServletConfig;
@@ -70,8 +69,6 @@ public class GraphQlServlet
     protected static final GraphQlRequest INTROSPECTION_REQUEST = new GraphQlRequest(IntrospectionQuery.INTROSPECTION_QUERY, null, null);
 
     protected static final String IDEMPOTENCY_KEY = "Idempotency-Key";
-
-    private static final Pattern HEADER_SANITIZATION_PATTERN = Pattern.compile("[\\r\\n]");
 
     protected GraphQlConfiguration configuration;
     protected HttpRequestHandler getHandler;
@@ -175,7 +172,7 @@ public class GraphQlServlet
     }
 
     private String sanitizeHeaderValue(String headerValue) {
-        return headerValue == null ? null : HEADER_SANITIZATION_PATTERN.matcher(headerValue).replaceAll("");
+        return headerValue == null ? null : headerValue.replace("\r", "").replace("\n", "");
     }
 
     @Override

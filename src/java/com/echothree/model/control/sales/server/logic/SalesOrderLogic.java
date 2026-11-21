@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.sales.server.logic;
 
+import com.google.re2j.Pattern;
 import com.echothree.model.control.accounting.common.exception.InvalidCurrencyException;
 import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
 import com.echothree.model.control.associate.server.logic.AssociateReferralLogic;
@@ -238,7 +239,7 @@ public class SalesOrderLogic
                     }
                 }
 
-                if(referenceValidationPattern != null && !reference.matches(referenceValidationPattern)) {
+                if(referenceValidationPattern != null && !Pattern.matches(referenceValidationPattern, reference)) {
                     handleExecutionError(InvalidSalesOrderReferenceException.class, eea, ExecutionErrors.InvalidSalesOrderReference.name());
                 }
             }
