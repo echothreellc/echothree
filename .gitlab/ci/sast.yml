@@ -1,0 +1,37 @@
+include:
+  - template: Jobs/SAST.gitlab-ci.yml
+
+sast:
+  # Source analyzers do not need build artifacts or the Ivy cache.
+  needs: []
+  cache: []
+
+gitlab-advanced-sast:
+  rules:
+    - if: '$SAST_DISABLED == "true" || $SAST_DISABLED == "1"'
+      when: never
+    - if: '$SAST_EXCLUDED_ANALYZERS =~ /(^|[,[:space:]])gitlab-advanced-sast([,[:space:]]|$)/'
+      when: never
+    - if: '$GITLAB_ADVANCED_SAST_ENABLED != "true" && $GITLAB_ADVANCED_SAST_ENABLED != "1"'
+      when: never
+    - if: '$CI_COMMIT_BRANCH == "master" && $GITLAB_FEATURES =~ /\bsast_advanced\b/'
+  variables:
+    # Leave capacity for the runner's second concurrent job.
+    ADVANCED_SAST_AVAILABLE_CPUS: "4"
+    ADVANCED_SAST_AVAILABLE_MEMORY: "16384"
+    SAST_SCANNER_ALLOWED_CLI_OPTS: "--multi-core 4"
+    GITLAB_ADV_SAST_INCR_SCAN: "true"
+    ADVANCED_SAST_PARTIAL_SCAN: "differential"
+    # If the cache expires, the next full scan rebuilds it automatically.
+    # To rebuild explicitly, run a master pipeline with ADVANCED_SAST_PARTIAL_SCAN=false;
+    # keep GITLAB_ADV_SAST_INCR_SCAN=true so that scan saves a reusable cache.
+    GITLAB_ADV_SAST_INCR_SCAN_SEARCH_PERIOD: "30 days"
+  # paths replaces the template list; retain the report and incremental analysis cache.
+  artifacts:
+    paths:
+      - gl-sast-report.json
+      - ts-cache.sqlite.gz
+      - '**/scan_metrics.csv'
+      - '**/lightz_times.json'
+    when: always
+    expire_in: 30 days
