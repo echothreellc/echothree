@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-11-22-01
+
+* Enable Advanced SAST [2482](https://gitlab.echothree.com/echothree/echothree/-/work_items/2482)
+* Jackson 2.23 Upgrade [2483](https://gitlab.echothree.com/echothree/echothree/-/work_items/2483)
+* Bootstrap 5.3.9 Upgrade [2484](https://gitlab.echothree.com/echothree/echothree/-/work_items/2484)
+* kafka-clients 4.4.0 Upgrade [2485](https://gitlab.echothree.com/echothree/echothree/-/work_items/2485)
+* JaCoCo 0.8.16 Upgrade [2486](https://gitlab.echothree.com/echothree/echothree/-/work_items/2486)
+* Address HTTP Response Splitting [2487](https://gitlab.echothree.com/echothree/echothree/-/work_items/2487)
+* Address Inefficient Regular Expression Complexity [2488](https://gitlab.echothree.com/echothree/echothree/-/work_items/2488)
+* Run Advanced SAST Only on Master [2489](https://gitlab.echothree.com/echothree/echothree/-/work_items/2489)
+
 ## 2026-11-08-01
 
 * GetLinkTypes UC Not Including All Parameters in Result [2465](https://gitlab.echothree.com/echothree/echothree/-/work_items/2465)
