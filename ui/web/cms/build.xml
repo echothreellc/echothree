@@ -118,14 +118,6 @@
             <lib dir="${build.lib.dir}">
                 <include name="commons-lang.jar"/>
             </lib>
-            <!-- EZMorph -->
-            <lib dir="${build.lib.dir}">
-                <include name="ezmorph.jar"/>
-            </lib>
-            <!-- JSON-lib -->
-            <lib dir="${build.lib.dir}">
-                <include name="json-lib-jdk15.jar"/>
-            </lib>
             <!-- iText -->
             <lib dir="${build.lib.dir}">
                 <include name="itext.jar"/>
