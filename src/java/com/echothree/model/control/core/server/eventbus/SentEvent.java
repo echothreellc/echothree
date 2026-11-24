@@ -17,17 +17,46 @@
 package com.echothree.model.control.core.server.eventbus;
 
 import com.echothree.model.data.core.server.entity.Event;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
 
 public class SentEvent {
 
-    private Event event;
+    private static final ThreadLocal<Map<Class<?>, Object>> CURRENT_PROPAGATION_STATE = new ThreadLocal<>();
+
+    private final Event event;
+    private final Map<Class<?>, Object> propagationState;
 
     public SentEvent(Event event) {
         this.event = event;
+
+        var currentPropagationState = CURRENT_PROPAGATION_STATE.get();
+        propagationState = currentPropagationState == null ? new HashMap<>() : currentPropagationState;
     }
 
     public Event getEvent() {
         return event;
+    }
+
+    <T> T getPropagationState(Class<T> stateClass, Supplier<T> stateFactory) {
+        return stateClass.cast(propagationState.computeIfAbsent(stateClass, ignored -> stateFactory.get()));
+    }
+
+    // Follow-on events retain this state even when EventBus queues delivery until the receiver returns.
+    void applyWithPropagationContext(Runnable action) {
+        var previousPropagationState = CURRENT_PROPAGATION_STATE.get();
+        CURRENT_PROPAGATION_STATE.set(propagationState);
+
+        try {
+            action.run();
+        } finally {
+            if(previousPropagationState == null) {
+                CURRENT_PROPAGATION_STATE.remove();
+            } else {
+                CURRENT_PROPAGATION_STATE.set(previousPropagationState);
+            }
+        }
     }
 
 }

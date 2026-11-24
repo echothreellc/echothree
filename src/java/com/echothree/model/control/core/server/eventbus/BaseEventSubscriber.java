@@ -32,7 +32,7 @@ public abstract class BaseEventSubscriber {
         var componentVendorName = componentVendor.getLastDetail().getComponentVendorName();
         var eventType = EventTypes.valueOf(event.getEventType().getEventTypeName());
 
-        f5.apply(event, entityInstance, eventType, componentVendorName, entityTypeName);
+        se.applyWithPropagationContext(() -> f5.apply(event, entityInstance, eventType, componentVendorName, entityTypeName));
     }
 
 }
