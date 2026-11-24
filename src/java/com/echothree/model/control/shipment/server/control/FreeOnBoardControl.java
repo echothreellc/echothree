@@ -366,7 +366,7 @@ public class FreeOnBoardControl
     }
 
 
-    private FreeOnBoardDescription getFreeOnBoardDescription(final FreeOnBoard freeOnBoard,
+    public FreeOnBoardDescription getFreeOnBoardDescription(final FreeOnBoard freeOnBoard,
             final Language language, final EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(FreeOnBoardDescriptions.fields())
