@@ -1219,7 +1219,7 @@ public class CommunicationControl
                 .orElse(0L);
     }
 
-    private CommunicationSource getCommunicationSourceByName(String communicationSourceName, EntityPermission entityPermission) {
+    public CommunicationSource getCommunicationSourceByName(String communicationSourceName, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(CommunicationSources.fields())
                 .from(CommunicationSources)
@@ -1379,7 +1379,7 @@ public class CommunicationControl
         return communicationSourceDescription;
     }
     
-    private CommunicationSourceDescription getCommunicationSourceDescription(CommunicationSource communicationSource,
+    public CommunicationSourceDescription getCommunicationSourceDescription(CommunicationSource communicationSource,
             Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(CommunicationSourceDescriptions.fields())
