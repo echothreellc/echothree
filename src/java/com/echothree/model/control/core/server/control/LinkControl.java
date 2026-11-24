@@ -184,6 +184,28 @@ public class LinkControl
         return getLinks(condition, EntityPermission.READ_WRITE);
     }
 
+    // Event propagation must include every current Link, regardless of client pagination.
+    private List<Link> getLinksForTouch(Condition condition) {
+        var query = session.getDslContext()
+                .select(Links.fields())
+                .from(Links)
+                .where(condition)
+                .and(Links.THRU_TIME.eq(Session.MAX_TIME));
+
+        return linkFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
+    }
+
+    public List<Link> getLinksByLinkTypeForTouch(LinkType linkType) {
+        return getLinksForTouch(Links.LINK_TYPE.eq(linkType.getPrimaryKey()));
+    }
+
+    public List<Link> getLinksByEntityInstanceForTouch(EntityInstance entityInstance) {
+        var entityInstancePK = entityInstance.getPrimaryKey();
+
+        return getLinksForTouch(Links.SOURCE_ENTITY_INSTANCE.eq(entityInstancePK)
+                .or(Links.TARGET_ENTITY_INSTANCE.eq(entityInstancePK)));
+    }
+
     public LinkTransfer getLinkTransfer(UserVisit userVisit, Link link) {
         return linkTransferCache.getTransfer(userVisit, link);
     }
