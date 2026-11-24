@@ -1167,7 +1167,7 @@ public class ShipmentControl
                 .orElse(0L);
     }
 
-    private ShipmentTypeShippingMethod getShipmentTypeShippingMethod(ShipmentType shipmentType, ShippingMethod shippingMethod, EntityPermission entityPermission) {
+    public ShipmentTypeShippingMethod getShipmentTypeShippingMethod(ShipmentType shipmentType, ShippingMethod shippingMethod, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(ShipmentTypeShippingMethods.fields())
                 .from(ShipmentTypeShippingMethods)

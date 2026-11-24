@@ -18,23 +18,24 @@ package com.echothree.control.user.shipment.server.command;
 
 import com.echothree.control.user.shipment.common.edit.ShipmentEditFactory;
 import com.echothree.control.user.shipment.common.edit.ShipmentTypeShippingMethodEdit;
+import com.echothree.control.user.shipment.common.result.EditShipmentTypeShippingMethodResult;
 import com.echothree.control.user.shipment.common.result.ShipmentResultFactory;
 import com.echothree.control.user.shipment.common.spec.ShipmentTypeShippingMethodSpec;
 import com.echothree.model.control.shipment.server.control.ShipmentControl;
-import com.echothree.model.control.shipping.server.control.ShippingControl;
+import com.echothree.model.control.shipping.server.logic.ShippingMethodLogic;
+import com.echothree.model.data.shipment.server.entity.ShipmentTypeShippingMethod;
+import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class EditShipmentTypeShippingMethodCommand
-        extends BaseEditCommand<ShipmentTypeShippingMethodSpec, ShipmentTypeShippingMethodEdit> {
+        extends BaseAbstractEditCommand<ShipmentTypeShippingMethodSpec, ShipmentTypeShippingMethodEdit, EditShipmentTypeShippingMethodResult, ShipmentTypeShippingMethod, ShippingMethod> {
     
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
@@ -55,74 +56,72 @@ public class EditShipmentTypeShippingMethodCommand
     ShipmentControl shipmentControl;
 
     @Inject
-    ShippingControl shippingControl;
+    ShippingMethodLogic shippingMethodLogic;
 
-    
     /** Creates a new instance of EditShipmentTypeShippingMethodCommand */
     public EditShipmentTypeShippingMethodCommand() {
         super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = ShipmentResultFactory.getEditShipmentTypeShippingMethodResult();
+    public EditShipmentTypeShippingMethodResult getResult() {
+        return ShipmentResultFactory.getEditShipmentTypeShippingMethodResult();
+    }
+
+    @Override
+    public ShipmentTypeShippingMethodEdit getEdit() {
+        return ShipmentEditFactory.getShipmentTypeShippingMethodEdit();
+    }
+
+    @Override
+    public ShipmentTypeShippingMethod getEntity(EditShipmentTypeShippingMethodResult result) {
+        ShipmentTypeShippingMethod shipmentTypeShippingMethod = null;
         var shipmentTypeName = spec.getShipmentTypeName();
         var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
-        
+
         if(shipmentType != null) {
             var shippingMethodName = spec.getShippingMethodName();
-            var shippingMethod = shippingControl.getShippingMethodByName(shippingMethodName);
-            
-            if(shippingMethod != null) {
-                if(editMode.equals(EditMode.LOCK)) {
-                    var shipmentTypeShippingMethod = shipmentControl.getShipmentTypeShippingMethod(shipmentType, shippingMethod);
-                    
-                    if(shipmentTypeShippingMethod != null) {
-                        result.setShipmentTypeShippingMethod(shipmentControl.getShipmentTypeShippingMethodTransfer(getUserVisit(), shipmentTypeShippingMethod));
-                        
-                        if(lockEntity(shippingMethod)) {
-                            var edit = ShipmentEditFactory.getShipmentTypeShippingMethodEdit();
-                            
-                            result.setEdit(edit);
-                            edit.setIsDefault(shipmentTypeShippingMethod.getIsDefault().toString());
-                            edit.setSortOrder(shipmentTypeShippingMethod.getSortOrder().toString());
-                            
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                        }
-                        
-                        result.setEntityLock(getEntityLockTransfer(shipmentTypeShippingMethod));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownShipmentTypeShippingMethod.name());
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var shipmentTypeShippingMethodValue = shipmentControl.getShipmentTypeShippingMethodValueForUpdate(shipmentType, shippingMethod);
-                    
-                    if(shipmentTypeShippingMethodValue != null) {
-                        if(lockEntityForUpdate(shippingMethod)) {
-                            try {
-                                shipmentTypeShippingMethodValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
-                                shipmentTypeShippingMethodValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
-                                
-                                shipmentControl.updateShipmentTypeShippingMethodFromValue(shipmentTypeShippingMethodValue, getPartyPK());
-                            } finally {
-                                unlockEntity(shippingMethod);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownShipmentTypeShippingMethod.name());
-                    }
+            var shippingMethod = shippingMethodLogic.getShippingMethodByName(this, shippingMethodName);
+
+            if(!hasExecutionErrors()) {
+                shipmentTypeShippingMethod = shipmentControl.getShipmentTypeShippingMethod(shipmentType, shippingMethod,
+                        editModeToEntityPermission(editMode));
+
+                if(shipmentTypeShippingMethod == null) {
+                    addExecutionError(ExecutionErrors.UnknownShipmentTypeShippingMethod.name(), shipmentTypeName, shippingMethodName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownShippingMethodName.name(), shippingMethodName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownShipmentTypeName.name(), shipmentTypeName);
         }
-        
-        return result;
+
+        return shipmentTypeShippingMethod;
     }
-    
+
+    @Override
+    public ShippingMethod getLockEntity(ShipmentTypeShippingMethod shipmentTypeShippingMethod) {
+        return shipmentTypeShippingMethod.getShippingMethod();
+    }
+
+    @Override
+    public void fillInResult(EditShipmentTypeShippingMethodResult result, ShipmentTypeShippingMethod shipmentTypeShippingMethod) {
+        result.setShipmentTypeShippingMethod(shipmentControl.getShipmentTypeShippingMethodTransfer(getUserVisit(), shipmentTypeShippingMethod));
+    }
+
+    @Override
+    public void doLock(ShipmentTypeShippingMethodEdit edit, ShipmentTypeShippingMethod shipmentTypeShippingMethod) {
+        edit.setIsDefault(shipmentTypeShippingMethod.getIsDefault().toString());
+        edit.setSortOrder(shipmentTypeShippingMethod.getSortOrder().toString());
+    }
+
+    @Override
+    public void doUpdate(ShipmentTypeShippingMethod shipmentTypeShippingMethod) {
+        var shipmentTypeShippingMethodValue = shipmentTypeShippingMethod.getShipmentTypeShippingMethodValue().clone();
+
+        shipmentTypeShippingMethodValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+        shipmentTypeShippingMethodValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        shipmentControl.updateShipmentTypeShippingMethodFromValue(shipmentTypeShippingMethodValue, getPartyPK());
+    }
+
 }
