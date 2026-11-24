@@ -1598,7 +1598,7 @@ public class ReturnPolicyControl
         return getDefaultReturnReasonForUpdate(returnKind).getLastDetailForUpdate().getReturnReasonDetailValue().clone();
     }
     
-    private ReturnReason getReturnReasonByName(ReturnKind returnKind, String returnReasonName, EntityPermission entityPermission) {
+    public ReturnReason getReturnReasonByName(ReturnKind returnKind, String returnReasonName, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(ReturnReasons.fields())
                 .from(ReturnReasons)
@@ -1788,7 +1788,7 @@ public class ReturnPolicyControl
         return returnReasonDescription;
     }
     
-    private ReturnReasonDescription getReturnReasonDescription(ReturnReason returnReason, Language language, EntityPermission entityPermission) {
+    public ReturnReasonDescription getReturnReasonDescription(ReturnReason returnReason, Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(ReturnReasonDescriptions.fields())
                 .from(ReturnReasonDescriptions)
