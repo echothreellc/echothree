@@ -16,6 +16,7 @@
 
 package com.echothree.ui.cli.database;
 
+import com.echothree.ui.cli.database.util.ConfigurationLoader;
 import com.echothree.ui.cli.database.util.DatabaseUtilitiesFactory;
 import com.echothree.ui.cli.database.util.definition.DatabaseDefinitionParser;
 import com.echothree.ui.cli.database.util.definition.Databases;
@@ -25,7 +26,6 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.configuration2.Configuration;
-import org.apache.commons.configuration2.builder.fluent.Configurations;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +52,7 @@ public class Database {
         Configuration result = null;
 
         try {
-            result = new Configurations().combined(Database.class.getResource("/config.xml"));
+            result = ConfigurationLoader.load(Database.class.getResource("/echothree-database.properties"));
         } catch(ConfigurationException ex) {
             log.error(ex.toString(), ex);
         }

@@ -16,6 +16,7 @@
 
 package com.echothree.ui.cli.amazon;
 
+import com.echothree.ui.cli.amazon.util.ConfigurationLoader;
 import com.echothree.ui.cli.amazon.batch.order.BatchOrderDirectoryHandler;
 import com.echothree.ui.cli.amazon.batch.order.BatchOrderFileHandler;
 import org.apache.commons.cli.CommandLine;
@@ -23,7 +24,6 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.configuration2.Configuration;
-import org.apache.commons.configuration2.builder.fluent.Configurations;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +44,7 @@ public class AmazonUtility {
         Configuration result = null;
 
         try {
-            result = new Configurations().combined("config.xml");
+            result = ConfigurationLoader.load("echothree-amazon.properties");
         } catch(ConfigurationException ex) {
             log.error(ex.toString(), ex);
         }

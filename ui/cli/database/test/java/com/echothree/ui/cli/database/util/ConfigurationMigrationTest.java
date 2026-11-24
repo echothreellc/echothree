@@ -16,12 +16,19 @@
 
 package com.echothree.ui.cli.database.util;
 
+import java.net.URI;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import org.apache.commons.configuration2.builder.fluent.Configurations;
+import java.util.jar.JarEntry;
+import java.util.jar.JarOutputStream;
+import org.apache.commons.configuration2.ex.ConfigurationException;
+import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -31,15 +38,38 @@ public class ConfigurationMigrationTest {
     @TempDir
     Path temporaryDirectory;
 
+    @Test
+    public void missingPropertiesFailExplicitly() {
+        assertThrows(ConfigurationException.class, () -> ConfigurationLoader.load((URL) null));
+        assertThrows(ConfigurationException.class,
+                () -> ConfigurationLoader.load(temporaryDirectory.resolve("missing.properties").toString()));
+    }
+
+    @Test
+    public void fileNameLookupFindsClasspathProperties() throws Exception {
+        var propertiesFile = temporaryDirectory.resolve("classpath-configuration.properties");
+        Files.writeString(propertiesFile, "configuration.migration.classpath=loaded\n");
+        var currentThread = Thread.currentThread();
+        var originalClassLoader = currentThread.getContextClassLoader();
+
+        try(var classLoader = new URLClassLoader(new URL[] { temporaryDirectory.toUri().toURL() }, originalClassLoader)) {
+            currentThread.setContextClassLoader(classLoader);
+            var configuration = ConfigurationLoader.load(propertiesFile.getFileName().toString());
+            assertEquals("loaded", configuration.getString("configuration.migration.classpath"));
+        } finally {
+            currentThread.setContextClassLoader(originalClassLoader);
+        }
+    }
+
     @ParameterizedTest
-    @ValueSource(strings = { "amazon", "database", "mailtransfer" })
-    public void configurationDefinitionsPreserveLegacyPropertyBehavior(String toolName) throws Exception {
-        var definitionFile = temporaryDirectory.resolve("config.xml");
-        Files.copy(Path.of("..", toolName, "src", "metadata", "config.xml"), definitionFile);
-        Files.writeString(temporaryDirectory.resolve("echothree-" + toolName + ".properties"), """
+    @ValueSource(strings = { "file", "url", "jar" })
+    public void directLoadingPreservesLegacyPropertyBehavior(String sourceType) throws Exception {
+        var propertiesFile = temporaryDirectory.resolve("configuration-loader.properties");
+        Files.writeString(propertiesFile, """
                 configuration.migration.override=file
                 configuration.migration.base=example
                 configuration.migration.interpolated=${configuration.migration.base}/path
+                configuration.migration.systemInterpolated=${configuration.migration.override}/path
                 configuration.migration.enabled=true
                 configuration.migration.list=first,second
                 configuration.migration.escaped=first\\,second
@@ -49,14 +79,25 @@ public class ConfigurationMigrationTest {
         var previousValue = System.setProperty(overrideProperty, "system");
 
         try {
-            var configurations = new Configurations();
-            // The database CLI loads a URL; the Amazon and mail transfer CLIs load a path.
-            var configuration = toolName.equals("database")
-                    ? configurations.combined(definitionFile.toUri().toURL())
-                    : configurations.combined(definitionFile.toString());
+            var configuration = switch(sourceType) {
+                case "file" -> ConfigurationLoader.load(propertiesFile.toString());
+                case "url" -> ConfigurationLoader.load(propertiesFile.toUri().toURL());
+                case "jar" -> {
+                    var jarFile = temporaryDirectory.resolve("configuration.jar");
+                    try(var jarOutput = new JarOutputStream(Files.newOutputStream(jarFile))) {
+                        jarOutput.putNextEntry(new JarEntry(propertiesFile.getFileName().toString()));
+                        Files.copy(propertiesFile, jarOutput);
+                        jarOutput.closeEntry();
+                    }
+                    yield ConfigurationLoader.load(URI.create("jar:" + jarFile.toUri()
+                            + "!/" + propertiesFile.getFileName()).toURL());
+                }
+                default -> throw new IllegalArgumentException("Unknown source type: " + sourceType);
+            };
 
             assertEquals("system", configuration.getString(overrideProperty));
             assertEquals("example/path", configuration.getString("configuration.migration.interpolated"));
+            assertEquals("system/path", configuration.getString("configuration.migration.systemInterpolated"));
             assertTrue(configuration.getBoolean("configuration.migration.enabled"));
             assertTrue(configuration.getBoolean("configuration.migration.missing", true));
             assertEquals(List.of("first", "second"), configuration.getList("configuration.migration.list"));
