@@ -65,7 +65,10 @@ compile:
       - build/lib/icu4j.jar
       - build/lib/commons-cli.jar
       - build/lib/commons-lang.jar
-      - build/lib/commons-configuration.jar
+      - build/lib/commons-configuration2.jar
+      - build/lib/commons-lang3.jar
+      - build/lib/commons-text.jar
+      - build/lib/commons-io.jar
       - build/lib/commons-beanutils.jar
       - build/lib/jcl-over-slf4j.jar
       - build/lib/commons-collections.jar

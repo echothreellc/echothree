@@ -20,7 +20,7 @@ import com.echothree.util.common.string.StringUtils;
 import java.io.File;
 import java.io.IOException;
 import javax.naming.NamingException;
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

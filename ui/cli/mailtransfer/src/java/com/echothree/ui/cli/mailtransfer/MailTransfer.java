@@ -1,4 +1,4 @@
-package com.echothree.ui.cli.mailtransfer;// --------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
 // Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,15 +14,17 @@ package com.echothree.ui.cli.mailtransfer;// -----------------------------------
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
+package com.echothree.ui.cli.mailtransfer;
+
+import com.echothree.ui.cli.mailtransfer.util.ConfigurationLoader;
 import com.echothree.ui.cli.mailtransfer.util.MailTransferUtility;
 import com.echothree.ui.cli.mailtransfer.util.blogentry.BlogEntryTransfer;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.DefaultConfigurationBuilder;
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +45,7 @@ public class MailTransfer {
         Configuration result = null;
 
         try {
-            result = new DefaultConfigurationBuilder("config.xml").getConfiguration();
+            result = ConfigurationLoader.load("echothree-mailtransfer.properties");
         } catch(ConfigurationException ce) {
             logger.error("An Exception occurred:", ce);
         }

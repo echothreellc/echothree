@@ -29,7 +29,7 @@
         <dependency org="commons-cli" name="commons-cli" rev="1.11.0" conf="sources->sources" />
         <dependency org="commons-codec" name="commons-codec" rev="1.23.0" conf="sources->sources" />
         <dependency org="commons-collections" name="commons-collections" rev="3.2.2" conf="sources->sources" />
-        <dependency org="commons-configuration" name="commons-configuration" rev="1.10" conf="sources->sources" />
+        <dependency org="org.apache.commons" name="commons-configuration2" rev="2.15.1" conf="sources->sources" />
         <dependency org="commons-digester" name="commons-digester" rev="1.8.1" conf="sources->sources" />
         <dependency org="commons-fileupload" name="commons-fileupload" rev="1.6.0" conf="sources->sources" />
         <dependency org="commons-io" name="commons-io" rev="2.19.0" conf="sources->sources" />
@@ -128,7 +128,7 @@
         <dependency org="commons-cli" name="commons-cli" rev="1.11.0" conf="javadoc->javadoc" />
         <dependency org="commons-codec" name="commons-codec" rev="1.23.0" conf="javadoc->javadoc" />
         <dependency org="commons-collections" name="commons-collections" rev="3.2.2" conf="javadoc->javadoc" />
-        <dependency org="commons-configuration" name="commons-configuration" rev="1.10" conf="javadoc->javadoc" />
+        <dependency org="org.apache.commons" name="commons-configuration2" rev="2.15.1" conf="javadoc->javadoc" />
         <dependency org="commons-digester" name="commons-digester" rev="1.8.1" conf="javadoc->javadoc" />
         <dependency org="commons-fileupload" name="commons-fileupload" rev="1.6.0" conf="javadoc->javadoc" />
         <dependency org="commons-io" name="commons-io" rev="2.19.0" conf="javadoc->javadoc" />
@@ -228,7 +228,7 @@
         <dependency org="commons-cli" name="commons-cli" rev="1.11.0" conf="binaries->default" />
         <dependency org="commons-codec" name="commons-codec" rev="1.23.0" conf="binaries->default" />
         <dependency org="commons-collections" name="commons-collections" rev="3.2.2" conf="binaries->default" />
-        <dependency org="commons-configuration" name="commons-configuration" rev="1.10" conf="binaries->default" />
+        <dependency org="org.apache.commons" name="commons-configuration2" rev="2.15.1" conf="binaries->default" />
         <dependency org="commons-digester" name="commons-digester" rev="1.8.1" conf="binaries->default" />
         <dependency org="commons-fileupload" name="commons-fileupload" rev="1.6.0" conf="binaries->default" />
         <dependency org="commons-io" name="commons-io" rev="2.19.0" conf="binaries->default" />
