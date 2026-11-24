@@ -216,7 +216,7 @@ public class CommunicationControl
                 .orElse(0L);
     }
 
-    private CommunicationEventPurpose getCommunicationEventPurposeByName(String communicationEventPurposeName, EntityPermission entityPermission) {
+    public CommunicationEventPurpose getCommunicationEventPurposeByName(String communicationEventPurposeName, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(CommunicationEventPurposes.fields())
                 .from(CommunicationEventPurposes)
@@ -444,7 +444,7 @@ public class CommunicationControl
         return communicationEventPurposeDescription;
     }
     
-    private CommunicationEventPurposeDescription getCommunicationEventPurposeDescription(CommunicationEventPurpose communicationEventPurpose,
+    public CommunicationEventPurposeDescription getCommunicationEventPurposeDescription(CommunicationEventPurpose communicationEventPurpose,
             Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(CommunicationEventPurposeDescriptions.fields())
