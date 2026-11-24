@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use Echo Three in your work, please cite it using this metadata."
+type: software
+title: "Echo Three"
+authors:
+  - family-names: Harms
+    given-names: Richard
+    affiliation: "Echo Three, LLC"
+abstract: >-
+  A Java EE application toolkit providing an extensible platform for customer
+  management (CRM), product information management (PIM), content management
+  (CMS), and other functionality. Integrates with other applications through
+  a GraphQL API, Java EE EJBs, or a JSP tag library.
+license: Apache-2.0
+repository-code: "https://gitlab.echothree.com/echothree/echothree"
+url: "https://www.echothree.com/"
+keywords:
+  - Java
+  - Java EE
+  - CRM
+  - PIM
+  - CMS
+  - GraphQL
