@@ -24,7 +24,6 @@ import com.echothree.control.user.returnpolicy.common.spec.ReturnReasonDescripti
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
-import com.echothree.model.control.returnpolicy.server.logic.ReturnKindLogic;
 import com.echothree.model.control.returnpolicy.server.logic.ReturnReasonLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -75,9 +74,6 @@ public class EditReturnReasonDescriptionCommand
     LanguageLogic languageLogic;
 
     @Inject
-    ReturnKindLogic returnKindLogic;
-
-    @Inject
     ReturnReasonLogic returnReasonLogic;
 
     /** Creates a new instance of EditReturnReasonDescriptionCommand */
@@ -99,21 +95,17 @@ public class EditReturnReasonDescriptionCommand
     public ReturnReasonDescription getEntity(EditReturnReasonDescriptionResult result) {
         ReturnReasonDescription returnReasonDescription = null;
         var returnKindName = spec.getReturnKindName();
+        var returnReasonName = spec.getReturnReasonName();
         var languageIsoName = spec.getLanguageIsoName();
-        var returnKind = returnKindLogic.getReturnKindByName(this, returnKindName);
+        var returnReason = returnReasonLogic.getReturnReasonByName(this, returnKindName, returnReasonName);
         var language = languageLogic.getLanguageByName(this, languageIsoName);
 
         if(!hasExecutionErrors()) {
-            var returnReasonName = spec.getReturnReasonName();
-            var returnReason = returnReasonLogic.getReturnReasonByName(this, returnKind, returnReasonName);
+            returnReasonDescription = returnPolicyControl.getReturnReasonDescription(returnReason, language,
+                    editModeToEntityPermission(editMode));
 
-            if(!hasExecutionErrors()) {
-                returnReasonDescription = returnPolicyControl.getReturnReasonDescription(returnReason, language,
-                        editModeToEntityPermission(editMode));
-
-                if(returnReasonDescription == null) {
-                    addExecutionError(ExecutionErrors.UnknownReturnReasonDescription.name(), returnKindName, returnReasonName, languageIsoName);
-                }
+            if(returnReasonDescription == null) {
+                addExecutionError(ExecutionErrors.UnknownReturnReasonDescription.name(), returnKindName, returnReasonName, languageIsoName);
             }
         }
 

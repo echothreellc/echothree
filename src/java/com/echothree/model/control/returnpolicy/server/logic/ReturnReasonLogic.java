@@ -34,6 +34,9 @@ public class ReturnReasonLogic
     @Inject
     ReturnPolicyControl returnPolicyControl;
 
+    @Inject
+    ReturnKindLogic returnKindLogic;
+
     protected ReturnReasonLogic() {
         super();
     }
@@ -58,6 +61,28 @@ public class ReturnReasonLogic
     public ReturnReason getReturnReasonByNameForUpdate(final ExecutionErrorAccumulator eea, final ReturnKind returnKind,
             final String returnReasonName) {
         return getReturnReasonByName(eea, returnKind, returnReasonName, EntityPermission.READ_WRITE);
+    }
+
+    public ReturnReason getReturnReasonByName(final ExecutionErrorAccumulator eea, final String returnKindName,
+            final String returnReasonName, final EntityPermission entityPermission) {
+        var returnKind = returnKindLogic.getReturnKindByName(eea, returnKindName);
+        ReturnReason returnReason = null;
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            returnReason = getReturnReasonByName(eea, returnKind, returnReasonName, entityPermission);
+        }
+
+        return returnReason;
+    }
+
+    public ReturnReason getReturnReasonByName(final ExecutionErrorAccumulator eea, final String returnKindName,
+            final String returnReasonName) {
+        return getReturnReasonByName(eea, returnKindName, returnReasonName, EntityPermission.READ_ONLY);
+    }
+
+    public ReturnReason getReturnReasonByNameForUpdate(final ExecutionErrorAccumulator eea, final String returnKindName,
+            final String returnReasonName) {
+        return getReturnReasonByName(eea, returnKindName, returnReasonName, EntityPermission.READ_WRITE);
     }
 
 }
