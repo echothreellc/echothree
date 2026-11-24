@@ -7,6 +7,7 @@
 # GitLab Workflow
 
 - Complete the requested steps without redundant confirmation; required tool approvals still apply. Do not merge or close work items unless requested.
+- Keep iterative changes local while working through feedback. Do not commit or push after every change; commit and push when the user requests it.
 - Prefix shell commands with `rtk` and prefer `glab` over browser automation. For API calls, specify `--hostname gitlab.echothree.com`; this project is `echothree/echothree`.
 - Reuse known context and existing work items, branches, and merge requests. Match similar past items for titles, classification labels, and commit style (`#<issue>: <description>`).
 - When requested, use the current iteration, assign to the authenticated user, and create a related draft merge request with the default issue branch name and target branch. Let GitLab generate the issue reference; do not add a duplicate closing reference.

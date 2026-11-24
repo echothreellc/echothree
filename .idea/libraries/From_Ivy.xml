@@ -18,7 +18,7 @@
       <root url="jar://$PROJECT_DIR$/build/lib/commons-codec.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/commons-collections.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/commons-collections4.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/commons-configuration.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/commons-configuration2.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/commons-digester.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/commons-fileupload.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/commons-io.jar!/" />
@@ -179,6 +179,7 @@
       <root url="jar://$PROJECT_DIR$/build/lib/listenablefuture.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/logback-classic.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/logback-core.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/re2j.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/antlr4-runtime-javadoc.jar!/" />
@@ -188,7 +189,7 @@
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/commons-codec-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/commons-collections-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/commons-collections4-javadoc.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/commons-configuration-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/commons-configuration2-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/commons-fileupload-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/commons-io-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/commons-lang-javadoc.jar!/" />
@@ -275,6 +276,7 @@
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/logback-classic-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/logback-core-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/lucene-backward-codecs-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/re2j-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/build/lib-sources/activation-sources.jar!/" />
@@ -286,7 +288,7 @@
       <root url="jar://$PROJECT_DIR$/build/lib-sources/commons-codec-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/commons-collections-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/commons-collections4-sources.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib-sources/commons-configuration-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/commons-configuration2-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/commons-digester-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/commons-fileupload-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/commons-io-sources.jar!/" />
@@ -376,6 +378,7 @@
       <root url="jar://$PROJECT_DIR$/build/lib-sources/junit-jupiter-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/logback-classic-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/logback-core-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/re2j-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
