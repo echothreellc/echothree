@@ -191,7 +191,7 @@ public class MessageControl
         return getMessageTypes(entityType, EntityPermission.READ_WRITE);
     }
     
-    private MessageType getMessageTypeByName(EntityType entityType, String messageTypeName, EntityPermission entityPermission) {
+    public MessageType getMessageTypeByName(EntityType entityType, String messageTypeName, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(MessageTypes.fields())
                 .from(MessageTypes)
@@ -307,7 +307,7 @@ public class MessageControl
         return messageTypeDescription;
     }
     
-    private MessageTypeDescription getMessageTypeDescription(MessageType messageType, Language language, EntityPermission entityPermission) {
+    public MessageTypeDescription getMessageTypeDescription(MessageType messageType, Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(MessageTypeDescriptions.fields())
                 .from(MessageTypeDescriptions)
