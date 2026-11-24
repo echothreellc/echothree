@@ -48,7 +48,7 @@ public class Mod10SequenceChecksum
 
     @Override
     public String regexp() {
-        return "[\\p{Digit}]";
+        return "[0-9]";
     }
 
     @Override

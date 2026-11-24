@@ -48,7 +48,7 @@ public class Mod36SequenceChecksum
 
     @Override
     public String regexp() {
-        return "[\\p{Upper}\\p{Digit}]";
+        return "[A-Z0-9]";
     }
 
     @Override

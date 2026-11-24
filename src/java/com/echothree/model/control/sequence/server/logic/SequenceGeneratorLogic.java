@@ -323,9 +323,9 @@ public class SequenceGeneratorLogic
 
         for(var maskChar : maskChars) {
             switch(maskChar) {
-                case '9' -> pattern.append("[\\p{Digit}]");
-                case 'A' -> pattern.append("\\p{Upper}");
-                case 'Z' -> pattern.append("[\\p{Upper}\\p{Digit}]");
+                case '9' -> pattern.append("[0-9]");
+                case 'A' -> pattern.append("[A-Z]");
+                case 'Z' -> pattern.append("[A-Z0-9]");
             }
         }
 
