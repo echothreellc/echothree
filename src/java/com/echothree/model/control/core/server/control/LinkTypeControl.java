@@ -37,6 +37,7 @@ import com.echothree.model.data.core.server.value.LinkTypeDetailValue;
 import com.echothree.model.data.core.server.value.LinkTypeTranslationValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.LINK_TYPES_ACTIVE_DETAIL_FK;
 import static com.echothree.model.jooq.server.keys.core.CoreForeignKeys.LINK_TYPES_LAST_DETAIL_FK;
 import static com.echothree.model.jooq.server.tables.core.LinkTypeDetails.LinkTypeDetails;
 import static com.echothree.model.jooq.server.tables.core.LinkTypeTranslations.LinkTypeTranslations;
@@ -234,6 +235,39 @@ public class LinkTypeControl
 
     public List<LinkType> getLinkTypesForUpdate(Condition condition) {
         return getLinkTypes(EntityPermission.READ_WRITE, condition);
+    }
+
+    // Event propagation must include every dependent LinkType, regardless of client pagination.
+    private List<LinkType> getLinkTypesForTouch(Condition condition) {
+        var query = session.getDslContext()
+                .select(LinkTypes.fields())
+                .from(LinkTypes)
+                .join(LinkTypeDetails).onKey(LINK_TYPES_ACTIVE_DETAIL_FK)
+                .where(condition);
+
+        return linkTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
+    }
+
+    public List<LinkType> getLinkTypesByParentOrInverseLinkTypeForTouch(LinkType linkType) {
+        var linkTypePK = linkType.getPrimaryKey();
+
+        return getLinkTypesForTouch(LinkTypeDetails.PARENT_LINK_TYPE.eq(linkTypePK)
+                .or(LinkTypeDetails.INVERSE_LINK_TYPE.eq(linkTypePK)));
+    }
+
+    public List<LinkType> getLinkTypesByEntityTypeForTouch(EntityType entityType) {
+        var entityTypePK = entityType.getPrimaryKey();
+
+        return getLinkTypesForTouch(LinkTypeDetails.SOURCE_ENTITY_TYPE.eq(entityTypePK)
+                .or(LinkTypeDetails.TARGET_ENTITY_TYPE.eq(entityTypePK)));
+    }
+
+    public List<LinkType> getLinkTypesByLinkCardinalityForTouch(LinkCardinality linkCardinality) {
+        return getLinkTypesForTouch(LinkTypeDetails.LINK_CARDINALITY.eq(linkCardinality.getPrimaryKey()));
+    }
+
+    public List<LinkType> getLinkTypesByLinkDirectionalityForTouch(LinkDirectionality linkDirectionality) {
+        return getLinkTypesForTouch(LinkTypeDetails.LINK_DIRECTIONALITY.eq(linkDirectionality.getPrimaryKey()));
     }
 
     public LinkTypeTransfer getLinkTypeTransfer(UserVisit userVisit, LinkType linkType) {
