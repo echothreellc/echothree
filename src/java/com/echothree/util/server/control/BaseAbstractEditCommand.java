@@ -148,9 +148,12 @@ public abstract class BaseAbstractEditCommand<S extends BaseSpec, E extends Base
         errorResult = getResult();
 
         var baseEntity = getEntity(errorResult);
-        var lockEntity = getLockEntity(baseEntity);
-        
-        fillInResult(errorResult, baseEntity, lockEntity);
+
+        if(baseEntity != null) {
+            var lockEntity = getLockEntity(baseEntity);
+
+            fillInResult(errorResult, baseEntity, lockEntity);
+        }
     }
     
     @Override

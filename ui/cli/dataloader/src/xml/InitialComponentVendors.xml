@@ -175,6 +175,9 @@
             <entityType entityTypeName="LinkTypeTranslation" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Link Type Translation" />
             </entityType>
+            <entityType entityTypeName="Link" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Link" />
+            </entityType>
             <entityType entityTypeName="EntityBooleanDefault" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Boolean Default" />
             </entityType>
