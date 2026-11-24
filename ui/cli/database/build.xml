@@ -53,7 +53,10 @@
             <file file="${build.lib.dir}/guava.jar"/>
             <file file="${build.lib.dir}/commons-cli.jar"/>
             <file file="${build.lib.dir}/commons-lang.jar"/>
-            <file file="${build.lib.dir}/commons-configuration.jar"/>
+            <file file="${build.lib.dir}/commons-configuration2.jar"/>
+            <file file="${build.lib.dir}/commons-lang3.jar"/>
+            <file file="${build.lib.dir}/commons-text.jar"/>
+            <file file="${build.lib.dir}/commons-io.jar"/>
             <file file="${build.lib.dir}/commons-beanutils.jar"/>
             <file file="${build.lib.dir}/jcl-over-slf4j.jar"/>
             <file file="${build.lib.dir}/slf4j-api.jar"/>

@@ -22,7 +22,7 @@ import com.echothree.ui.cli.amazon.batch.order.tasks.DumpOrders;
 import com.echothree.ui.cli.amazon.batch.order.tasks.EnterOrders;
 import java.io.IOException;
 import javax.naming.NamingException;
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 
 public class BatchOrderFileHandler {
 

@@ -16,5 +16,10 @@
 <!--                                                                                  -->
 <configuration>
     <system />
-    <properties fileName="echothree-mailtransfer.properties" />
+    <properties fileName="echothree-mailtransfer.properties">
+        <!-- Preserve Commons Configuration 1.x comma splitting and escaping. -->
+        <listDelimiterHandler config-class="org.apache.commons.configuration2.convert.LegacyListDelimiterHandler">
+            <config-constrarg config-type="char" config-value="," />
+        </listDelimiterHandler>
+    </properties>
 </configuration>
