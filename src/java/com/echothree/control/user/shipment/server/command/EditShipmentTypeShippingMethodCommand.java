@@ -22,6 +22,7 @@ import com.echothree.control.user.shipment.common.result.EditShipmentTypeShippin
 import com.echothree.control.user.shipment.common.result.ShipmentResultFactory;
 import com.echothree.control.user.shipment.common.spec.ShipmentTypeShippingMethodSpec;
 import com.echothree.model.control.shipment.server.control.ShipmentControl;
+import com.echothree.model.control.shipment.server.logic.ShipmentTypeLogic;
 import com.echothree.model.control.shipping.server.logic.ShippingMethodLogic;
 import com.echothree.model.data.shipment.server.entity.ShipmentTypeShippingMethod;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
@@ -56,6 +57,9 @@ public class EditShipmentTypeShippingMethodCommand
     ShipmentControl shipmentControl;
 
     @Inject
+    ShipmentTypeLogic shipmentTypeLogic;
+
+    @Inject
     ShippingMethodLogic shippingMethodLogic;
 
     /** Creates a new instance of EditShipmentTypeShippingMethodCommand */
@@ -77,22 +81,17 @@ public class EditShipmentTypeShippingMethodCommand
     public ShipmentTypeShippingMethod getEntity(EditShipmentTypeShippingMethodResult result) {
         ShipmentTypeShippingMethod shipmentTypeShippingMethod = null;
         var shipmentTypeName = spec.getShipmentTypeName();
-        var shipmentType = shipmentControl.getShipmentTypeByName(shipmentTypeName);
+        var shipmentType = shipmentTypeLogic.getShipmentTypeByName(this, shipmentTypeName);
+        var shippingMethodName = spec.getShippingMethodName();
+        var shippingMethod = shippingMethodLogic.getShippingMethodByName(this, shippingMethodName);
 
-        if(shipmentType != null) {
-            var shippingMethodName = spec.getShippingMethodName();
-            var shippingMethod = shippingMethodLogic.getShippingMethodByName(this, shippingMethodName);
+        if(!hasExecutionErrors()) {
+            shipmentTypeShippingMethod = shipmentControl.getShipmentTypeShippingMethod(shipmentType, shippingMethod,
+                    editModeToEntityPermission(editMode));
 
-            if(!hasExecutionErrors()) {
-                shipmentTypeShippingMethod = shipmentControl.getShipmentTypeShippingMethod(shipmentType, shippingMethod,
-                        editModeToEntityPermission(editMode));
-
-                if(shipmentTypeShippingMethod == null) {
-                    addExecutionError(ExecutionErrors.UnknownShipmentTypeShippingMethod.name(), shipmentTypeName, shippingMethodName);
-                }
+            if(shipmentTypeShippingMethod == null) {
+                addExecutionError(ExecutionErrors.UnknownShipmentTypeShippingMethod.name(), shipmentTypeName, shippingMethodName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownShipmentTypeName.name(), shipmentTypeName);
         }
 
         return shipmentTypeShippingMethod;

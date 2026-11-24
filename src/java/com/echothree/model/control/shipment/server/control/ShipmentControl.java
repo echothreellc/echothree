@@ -256,7 +256,7 @@ public class ShipmentControl
                 .orElse(0L);
     }
 
-    private ShipmentType getShipmentTypeByName(String shipmentTypeName, EntityPermission entityPermission) {
+    public ShipmentType getShipmentTypeByName(String shipmentTypeName, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(ShipmentTypes.fields())
                 .from(ShipmentTypes)
