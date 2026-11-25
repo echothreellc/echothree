@@ -1494,17 +1494,29 @@ public class PartyControl
         return timeZoneFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
-    public TimeZone getTimeZoneByJavaName(String javaTimeZoneName) {
-        var query = session.getDslContext()
+    public TimeZone getTimeZoneByJavaName(final String javaTimeZoneName, final EntityPermission entityPermission) {
+        var baseQuery = session.getDslContext()
                 .select(TimeZones.fields())
                 .from(TimeZones)
-                .join(TimeZoneDetails).onKey(TIME_ZONE_DETAILS_TIME_ZONE_FK)
-                .where(TimeZoneDetails.JAVA_TIME_ZONE_NAME.eq(javaTimeZoneName),
-                        TimeZoneDetails.THRU_TIME.eq(Session.MAX_TIME));
-        
-        return timeZoneFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
+                .join(TimeZoneDetails).onKey(TIME_ZONES_ACTIVE_DETAIL_FK)
+                .where(TimeZoneDetails.JAVA_TIME_ZONE_NAME.eq(javaTimeZoneName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return timeZoneFactory.getEntityFromQuery(entityPermission, query);
     }
-    
+
+    public TimeZone getTimeZoneByJavaName(final String javaTimeZoneName) {
+        return getTimeZoneByJavaName(javaTimeZoneName, EntityPermission.READ_ONLY);
+    }
+
+    public TimeZone getTimeZoneByJavaNameForUpdate(final String javaTimeZoneName) {
+        return getTimeZoneByJavaName(javaTimeZoneName, EntityPermission.READ_WRITE);
+    }
+
     public TimeZoneChoicesBean getTimeZoneChoices(String defaultTimeZoneChoice, Language language, boolean allowNullChoice) {
         var timeZones = getTimeZones();
         var size = timeZones.size();
@@ -1603,7 +1615,7 @@ public class PartyControl
         return getTimeZoneDescriptionsByTimeZone(timeZone, EntityPermission.READ_WRITE);
     }
     
-    private TimeZoneDescription getTimeZoneDescription(TimeZone timeZone, Language language, EntityPermission entityPermission) {
+    public TimeZoneDescription getTimeZoneDescription(TimeZone timeZone, Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(TimeZoneDescriptions.fields())
                 .from(TimeZoneDescriptions)
