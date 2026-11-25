@@ -934,7 +934,7 @@ public class TermControl
                 .orElse(0L);
     }
 
-    private CustomerTypeCreditLimit getCustomerTypeCreditLimit(CustomerType customerType, Currency currency, EntityPermission entityPermission) {
+    public CustomerTypeCreditLimit getCustomerTypeCreditLimit(CustomerType customerType, Currency currency, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(CustomerTypeCreditLimits.fields())
                 .from(CustomerTypeCreditLimits)

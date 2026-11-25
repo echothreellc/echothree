@@ -18,20 +18,20 @@ package com.echothree.control.user.term.server.command;
 
 import com.echothree.control.user.term.common.edit.CustomerTypeCreditLimitEdit;
 import com.echothree.control.user.term.common.edit.TermEditFactory;
-import com.echothree.control.user.term.common.form.EditCustomerTypeCreditLimitForm;
+import com.echothree.control.user.term.common.result.EditCustomerTypeCreditLimitResult;
 import com.echothree.control.user.term.common.result.TermResultFactory;
 import com.echothree.control.user.term.common.spec.CustomerTypeCreditLimitSpec;
-import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.customer.server.control.CustomerControl;
+import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
+import com.echothree.model.control.customer.server.logic.CustomerTypeLogic;
 import com.echothree.model.control.term.server.control.TermControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.accounting.server.entity.Currency;
+import com.echothree.model.data.customer.server.entity.CustomerType;
+import com.echothree.model.data.term.server.entity.CustomerTypeCreditLimit;
+import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.form.BaseForm;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.string.AmountUtils;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
@@ -40,108 +40,114 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditCustomerTypeCreditLimitCommand
-        extends BaseEditCommand<CustomerTypeCreditLimitSpec, CustomerTypeCreditLimitEdit> {
-    
+        extends BaseAbstractEditCommand<CustomerTypeCreditLimitSpec, CustomerTypeCreditLimitEdit, EditCustomerTypeCreditLimitResult, CustomerTypeCreditLimit, CustomerType> {
+
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CreditLimit", FieldType.UNSIGNED_PRICE_LINE, false, null, null),
                 new FieldDefinition("PotentialCreditLimit", FieldType.UNSIGNED_PRICE_LINE, false, null, null)
         );
     }
 
-    @Inject
-    AccountingControl accountingControl;
-
-    @Inject
-    CustomerControl customerControl;
+    private Currency currency;
+    private boolean currencyResolved;
 
     @Inject
     TermControl termControl;
 
-    
+    @Inject
+    CurrencyLogic currencyLogic;
+
+    @Inject
+    CustomerTypeLogic customerTypeLogic;
+
     /** Creates a new instance of EditCustomerTypeCreditLimitCommand */
     public EditCustomerTypeCreditLimitCommand() {
         super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
+    private Currency resolveCurrency() {
+        if(!currencyResolved) {
+            currency = currencyLogic.getCurrencyByName(this, spec.getCurrencyIsoName());
+            currencyResolved = true;
+        }
+
+        return currency;
+    }
+
     @Override
     protected void setupValidatorForEdit(Validator validator, BaseForm specForm) {
-        var currencyIsoName = spec.getCurrencyIsoName();
-        validator.setCurrency(accountingControl.getCurrencyByIsoName(currencyIsoName));
+        validator.setCurrency(resolveCurrency());
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = TermResultFactory.getEditCustomerTypeCreditLimitResult();
-        var customerTypeName= spec.getCustomerTypeName();
-        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
-        
-        if(customerType != null) {
-            var currencyIsoName = spec.getCurrencyIsoName();
-            var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
-            
-            if(currency != null) {
-                if(editMode.equals(EditMode.LOCK)) {
-                    var customerTypeCreditLimit = termControl.getCustomerTypeCreditLimit(customerType, currency);
-                    
-                    if(customerTypeCreditLimit != null) {
-                        result.setCustomerTypeCreditLimit(termControl.getCustomerTypeCreditLimitTransfer(getUserVisit(), customerTypeCreditLimit));
-                        
-                        if(lockEntity(customerType)) {
-                            var edit = TermEditFactory.getCustomerTypeCreditLimitEdit();
-                            
-                            result.setEdit(edit);
-                            edit.setCreditLimit(AmountUtils.getInstance().formatPriceLine(currency, customerTypeCreditLimit.getCreditLimit()));
-                            edit.setPotentialCreditLimit(AmountUtils.getInstance().formatPriceLine(currency, customerTypeCreditLimit.getPotentialCreditLimit()));
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                        }
-                        
-                        result.setEntityLock(getEntityLockTransfer(customerType));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownCustomerTypeCreditLimit.name());
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var customerTypeCreditLimitValue = termControl.getCustomerTypeCreditLimitValueForUpdate(customerType, currency);
-                    
-                    if(customerTypeCreditLimitValue != null) {
-                        if(lockEntityForUpdate(customerType)) {
-                            var strCreditLimit = edit.getCreditLimit();
-                            var creditLimit = strCreditLimit == null? null: Long.valueOf(strCreditLimit);
-                            var strPotentialCreditLimit = edit.getPotentialCreditLimit();
-                            var potentialCreditLimit = strPotentialCreditLimit == null? null: Long.valueOf(strPotentialCreditLimit);
-                            
-                            try {
-                                customerTypeCreditLimitValue.setCreditLimit(creditLimit);
-                                customerTypeCreditLimitValue.setPotentialCreditLimit(potentialCreditLimit);
-                                
-                                termControl.updateCustomerTypeCreditLimitFromValue(customerTypeCreditLimitValue, getPartyPK());
-                            } finally {
-                                unlockEntity(customerType);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownCustomerTypeCreditLimit.name());
-                    }
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownCurrencyIsoName.name(), currencyIsoName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownCustomerTypeName.name(), customerTypeName);
-        }
-        
-        return result;
+    public EditCustomerTypeCreditLimitResult getResult() {
+        return TermResultFactory.getEditCustomerTypeCreditLimitResult();
     }
-    
+
+    @Override
+    public CustomerTypeCreditLimitEdit getEdit() {
+        return TermEditFactory.getCustomerTypeCreditLimitEdit();
+    }
+
+    @Override
+    public CustomerTypeCreditLimit getEntity(EditCustomerTypeCreditLimitResult result) {
+        CustomerTypeCreditLimit customerTypeCreditLimit = null;
+        var customerTypeName = spec.getCustomerTypeName();
+        var currencyIsoName = spec.getCurrencyIsoName();
+        var customerType = customerTypeLogic.getCustomerTypeByName(this, customerTypeName);
+        var currency = resolveCurrency();
+
+        if(!hasExecutionErrors()) {
+            customerTypeCreditLimit = termControl.getCustomerTypeCreditLimit(customerType, currency, editModeToEntityPermission(editMode));
+
+            if(customerTypeCreditLimit == null) {
+                addExecutionError(ExecutionErrors.UnknownCustomerTypeCreditLimit.name(), customerTypeName, currencyIsoName);
+            }
+        }
+
+        return customerTypeCreditLimit;
+    }
+
+    @Override
+    public CustomerType getLockEntity(CustomerTypeCreditLimit customerTypeCreditLimit) {
+        return customerTypeCreditLimit.getCustomerType();
+    }
+
+    @Override
+    public void fillInResult(EditCustomerTypeCreditLimitResult result, CustomerTypeCreditLimit customerTypeCreditLimit) {
+        result.setCustomerTypeCreditLimit(termControl.getCustomerTypeCreditLimitTransfer(getUserVisit(), customerTypeCreditLimit));
+    }
+
+    @Override
+    public void doLock(CustomerTypeCreditLimitEdit edit, CustomerTypeCreditLimit customerTypeCreditLimit) {
+        var currency = customerTypeCreditLimit.getCurrency();
+        var amountUtils = AmountUtils.getInstance();
+
+        edit.setCreditLimit(amountUtils.formatPriceLine(currency, customerTypeCreditLimit.getCreditLimit()));
+        edit.setPotentialCreditLimit(amountUtils.formatPriceLine(currency, customerTypeCreditLimit.getPotentialCreditLimit()));
+    }
+
+    @Override
+    public void doUpdate(CustomerTypeCreditLimit customerTypeCreditLimit) {
+        var customerTypeCreditLimitValue = termControl.getCustomerTypeCreditLimitValue(customerTypeCreditLimit);
+        var creditLimit = edit.getCreditLimit();
+        var potentialCreditLimit = edit.getPotentialCreditLimit();
+
+        customerTypeCreditLimitValue.setCreditLimit(creditLimit == null ? null : Long.valueOf(creditLimit));
+        customerTypeCreditLimitValue.setPotentialCreditLimit(potentialCreditLimit == null ? null : Long.valueOf(potentialCreditLimit));
+
+        if(customerTypeCreditLimitValue.hasBeenModified()) {
+            termControl.updateCustomerTypeCreditLimitFromValue(customerTypeCreditLimitValue, getPartyPK());
+        }
+    }
+
 }
