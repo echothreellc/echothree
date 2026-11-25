@@ -18,36 +18,45 @@ package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.edit.DivisionEdit;
 import com.echothree.control.user.party.common.edit.PartyEditFactory;
-import com.echothree.control.user.party.common.form.EditDivisionForm;
+import com.echothree.control.user.party.common.result.EditDivisionResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
-import com.echothree.control.user.party.common.spec.DivisionSpec;
-import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.control.user.party.common.spec.DivisionUniversalSpec;
+import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.DivisionLogic;
+import com.echothree.model.control.party.server.logic.DateTimeFormatLogic;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
+import com.echothree.model.control.party.server.logic.TimeZoneLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.party.server.entity.DateTimeFormat;
+import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.party.server.entity.PartyDivision;
+import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class EditDivisionCommand
-        extends BaseEditCommand<DivisionSpec, DivisionEdit> {
-    
+        extends BaseAbstractEditCommand<DivisionUniversalSpec, DivisionEdit, EditDivisionResult, PartyDivision, Party> {
+
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("CompanyName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("DivisionName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("CompanyName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("DivisionName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DivisionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Name", FieldType.STRING, true, 1L, 60L),
@@ -60,137 +69,122 @@ public class EditDivisionCommand
         );
     }
 
-    @Inject
-    AccountingControl accountingControl;
+    private Language preferredLanguage;
+    private Currency preferredCurrency;
+    private TimeZone preferredTimeZone;
+    private DateTimeFormat preferredDateTimeFormat;
 
     @Inject
     PartyControl partyControl;
 
-    
+    @Inject
+    DivisionLogic divisionLogic;
+
+    @Inject
+    CurrencyLogic currencyLogic;
+
+    @Inject
+    DateTimeFormatLogic dateTimeFormatLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
+
+    @Inject
+    TimeZoneLogic timeZoneLogic;
+
     /** Creates a new instance of EditDivisionCommand */
     public EditDivisionCommand() {
         super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = PartyResultFactory.getEditDivisionResult();
-        var companyName = spec.getCompanyName();
-        var partyCompany = partyControl.getPartyCompanyByName(companyName);
-        
-        if(partyCompany != null) {
-            var originalDivisionName = spec.getDivisionName();
-            var partyCompanyParty = partyCompany.getParty();
-            var partyDivision = partyControl.getPartyDivisionByNameForUpdate(partyCompanyParty, originalDivisionName);
-            
-            if(partyDivision != null) {
-                var party = partyDivision.getParty();
-                
-                if(editMode.equals(EditMode.LOCK)) {
-                    result.setDivision(partyControl.getDivisionTransfer(getUserVisit(), partyDivision));
-                    
-                    if(lockEntity(party)) {
-                        var edit = PartyEditFactory.getDivisionEdit();
-                        var partyDetail = party.getLastDetail();
-                        var partyGroup = partyControl.getPartyGroup(party);
-                        var preferredLanguage = partyDetail.getPreferredLanguage();
-                        var preferredCurrency = partyDetail.getPreferredCurrency();
-                        var preferredTimeZone = partyDetail.getPreferredTimeZone();
-                        var preferredDateTimeFormat = partyDetail.getPreferredDateTimeFormat();
-                        
-                        result.setEdit(edit);
-                        edit.setDivisionName(partyDivision.getPartyDivisionName());
-                        edit.setName(partyGroup.getName());
-                        edit.setPreferredLanguageIsoName(preferredLanguage == null? null: preferredLanguage.getLanguageIsoName());
-                        edit.setPreferredCurrencyIsoName(preferredCurrency == null? null: preferredCurrency.getCurrencyIsoName());
-                        edit.setPreferredJavaTimeZoneName(preferredTimeZone == null? null: preferredTimeZone.getLastDetail().getJavaTimeZoneName());
-                        edit.setPreferredDateTimeFormatName(preferredDateTimeFormat == null? null: preferredDateTimeFormat.getLastDetail().getDateTimeFormatName());
-                        edit.setIsDefault(partyDivision.getIsDefault().toString());
-                        edit.setSortOrder(partyDivision.getSortOrder().toString());
-                    } else {
-                        addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                    }
-                    
-                    result.setEntityLock(getEntityLockTransfer(party));
-                } else if(editMode.equals(EditMode.ABANDON)) {
-                    unlockEntity(party);
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var partyDivisionValue = partyControl.getPartyDivisionValueForUpdate(partyDivision);
-                    var divisionName = edit.getDivisionName();
-                    var duplicatePartyDivision = partyControl.getPartyDivisionByName(partyCompanyParty, divisionName);
-                    
-                    if(duplicatePartyDivision == null || duplicatePartyDivision.getPrimaryKey().equals(partyDivisionValue.getPrimaryKey())) {
-                        var preferredLanguageIsoName = edit.getPreferredLanguageIsoName();
-                        var preferredLanguage = preferredLanguageIsoName == null? null: partyControl.getLanguageByIsoName(preferredLanguageIsoName);
-                        
-                        if(preferredLanguageIsoName == null || (preferredLanguage != null)) {
-                            var preferredJavaTimeZoneName = edit.getPreferredJavaTimeZoneName();
-                            var preferredTimeZone = preferredJavaTimeZoneName == null? null: partyControl.getTimeZoneByJavaName(preferredJavaTimeZoneName);
-                            
-                            if(preferredJavaTimeZoneName == null || (preferredTimeZone != null)) {
-                                var preferredDateTimeFormatName = edit.getPreferredDateTimeFormatName();
-                                var preferredDateTimeFormat = preferredDateTimeFormatName == null? null: partyControl.getDateTimeFormatByName(preferredDateTimeFormatName);
-                                
-                                if(preferredDateTimeFormatName == null || (preferredDateTimeFormat != null)) {
-                                    var preferredCurrencyIsoName = edit.getPreferredCurrencyIsoName();
-                                    Currency preferredCurrency;
-                                    
-                                    if(preferredCurrencyIsoName == null)
-                                        preferredCurrency = null;
-                                    else {
-                                        preferredCurrency = accountingControl.getCurrencyByIsoName(preferredCurrencyIsoName);
-                                    }
-                                    
-                                    if(preferredCurrencyIsoName == null || (preferredCurrency != null)) {
-                                        if(lockEntityForUpdate(party)) {
-                                            try {
-                                                var updatedBy = getPartyPK();
-                                                var partyDetailValue = partyControl.getPartyDetailValueForUpdate(party);
-                                                var partyGroupValue = partyControl.getPartyGroupValueForUpdate(party);
-                                                
-                                                partyDivisionValue.setPartyDivisionName(divisionName);
-                                                partyGroupValue.setName(edit.getName());
-                                                partyDivisionValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
-                                                partyDivisionValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
-                                                
-                                                partyControl.updatePartyDivisionFromValue(partyDivisionValue, updatedBy);
-                                                partyControl.updatePartyFromValue(partyDetailValue, updatedBy);
-                                                partyControl.updatePartyGroupFromValue(partyGroupValue, updatedBy);
-                                            } finally {
-                                                unlockEntity(party);
-                                            }
-                                        } else {
-                                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                                        }
-                                    } else {
-                                        addExecutionError(ExecutionErrors.UnknownCurrencyIsoName.name(), preferredCurrencyIsoName);
-                                    }
-                                } else {
-                                    addExecutionError(ExecutionErrors.UnknownDateTimeFormatName.name(), preferredDateTimeFormatName);
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownJavaTimeZoneName.name(), preferredJavaTimeZoneName);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), preferredLanguageIsoName);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.DuplicateDivisionName.name(), divisionName);
-                    }
-                    
-                    if(hasExecutionErrors()) {
-                        result.setDivision(partyControl.getDivisionTransfer(getUserVisit(), partyDivision));
-                        result.setEntityLock(getEntityLockTransfer(party));
-                    }
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownDivisionName.name(), originalDivisionName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownCompanyName.name(), companyName);
-        }
-        
-        return result;
+    public EditDivisionResult getResult() {
+        return PartyResultFactory.getEditDivisionResult();
     }
-    
+
+    @Override
+    public DivisionEdit getEdit() {
+        return PartyEditFactory.getDivisionEdit();
+    }
+
+    @Override
+    public PartyDivision getEntity(EditDivisionResult result) {
+        return divisionLogic.getPartyDivisionByUniversalSpec(this, spec, editModeToEntityPermission(editMode));
+    }
+
+    @Override
+    public Party getLockEntity(PartyDivision partyDivision) {
+        return partyDivision.getParty();
+    }
+
+    @Override
+    public void fillInResult(EditDivisionResult result, PartyDivision partyDivision) {
+        result.setDivision(partyControl.getDivisionTransfer(getUserVisit(), partyDivision));
+    }
+
+    @Override
+    public void doLock(DivisionEdit edit, PartyDivision partyDivision) {
+        var party = partyDivision.getParty();
+        var partyDetail = party.getLastDetail();
+        var partyGroup = partyControl.getPartyGroup(party);
+        var preferredLanguage = partyDetail.getPreferredLanguage();
+        var preferredCurrency = partyDetail.getPreferredCurrency();
+        var preferredTimeZone = partyDetail.getPreferredTimeZone();
+        var preferredDateTimeFormat = partyDetail.getPreferredDateTimeFormat();
+
+        edit.setDivisionName(partyDivision.getPartyDivisionName());
+        edit.setName(partyGroup.getName());
+        edit.setPreferredLanguageIsoName(preferredLanguage == null? null: preferredLanguage.getLanguageIsoName());
+        edit.setPreferredCurrencyIsoName(preferredCurrency == null? null: preferredCurrency.getCurrencyIsoName());
+        edit.setPreferredJavaTimeZoneName(preferredTimeZone == null? null: preferredTimeZone.getLastDetail().getJavaTimeZoneName());
+        edit.setPreferredDateTimeFormatName(preferredDateTimeFormat == null? null: preferredDateTimeFormat.getLastDetail().getDateTimeFormatName());
+        edit.setIsDefault(partyDivision.getIsDefault().toString());
+        edit.setSortOrder(partyDivision.getSortOrder().toString());
+    }
+
+    @Override
+    public void canUpdate(PartyDivision partyDivision) {
+        var divisionName = edit.getDivisionName();
+        var companyParty = partyDivision.getCompanyParty();
+        var duplicatePartyDivision = partyControl.getPartyDivisionByName(companyParty, divisionName);
+
+        if(duplicatePartyDivision != null && !partyDivision.equals(duplicatePartyDivision)) {
+            var partyCompany = partyControl.getPartyCompany(companyParty);
+
+            addExecutionError(ExecutionErrors.DuplicateDivisionName.name(), partyCompany.getPartyCompanyName(), divisionName);
+        }
+
+        var preferredLanguageIsoName = edit.getPreferredLanguageIsoName();
+        var preferredCurrencyIsoName = edit.getPreferredCurrencyIsoName();
+        var preferredJavaTimeZoneName = edit.getPreferredJavaTimeZoneName();
+        var preferredDateTimeFormatName = edit.getPreferredDateTimeFormatName();
+
+        preferredLanguage = preferredLanguageIsoName == null ? null : languageLogic.getLanguageByName(this, preferredLanguageIsoName);
+        preferredCurrency = preferredCurrencyIsoName == null ? null : currencyLogic.getCurrencyByName(this, preferredCurrencyIsoName);
+        preferredTimeZone = preferredJavaTimeZoneName == null ? null : timeZoneLogic.getTimeZoneByName(this, preferredJavaTimeZoneName);
+        preferredDateTimeFormat = preferredDateTimeFormatName == null ? null : dateTimeFormatLogic.getDateTimeFormatByName(this, preferredDateTimeFormatName);
+    }
+
+    @Override
+    public void doUpdate(PartyDivision partyDivision) {
+        var party = partyDivision.getParty();
+        var updatedBy = getPartyPK();
+        var partyDivisionValue = partyControl.getPartyDivisionValueForUpdate(partyDivision);
+        var partyDetailValue = partyControl.getPartyDetailValueForUpdate(party);
+        var partyGroupValue = partyControl.getPartyGroupValueForUpdate(party);
+
+        partyDivisionValue.setPartyDivisionName(edit.getDivisionName());
+        partyDivisionValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+        partyDivisionValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+        partyGroupValue.setName(edit.getName());
+        partyDetailValue.setPreferredLanguagePK(preferredLanguage == null ? null : preferredLanguage.getPrimaryKey());
+        partyDetailValue.setPreferredCurrencyPK(preferredCurrency == null ? null : preferredCurrency.getPrimaryKey());
+        partyDetailValue.setPreferredTimeZonePK(preferredTimeZone == null ? null : preferredTimeZone.getPrimaryKey());
+        partyDetailValue.setPreferredDateTimeFormatPK(preferredDateTimeFormat == null ? null : preferredDateTimeFormat.getPrimaryKey());
+
+        partyControl.updatePartyDivisionFromValue(partyDivisionValue, updatedBy);
+        partyControl.updatePartyFromValue(partyDetailValue, updatedBy);
+        partyControl.updatePartyGroupFromValue(partyGroupValue, updatedBy);
+    }
+
 }
