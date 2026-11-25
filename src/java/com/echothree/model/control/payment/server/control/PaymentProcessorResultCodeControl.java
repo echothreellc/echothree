@@ -366,7 +366,7 @@ public class PaymentProcessorResultCodeControl
     }
 
 
-    private PaymentProcessorResultCodeDescription getPaymentProcessorResultCodeDescription(final PaymentProcessorResultCode paymentProcessorResultCode,
+    public PaymentProcessorResultCodeDescription getPaymentProcessorResultCodeDescription(final PaymentProcessorResultCode paymentProcessorResultCode,
             final Language language, final EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PaymentProcessorResultCodeDescriptions.fields())
