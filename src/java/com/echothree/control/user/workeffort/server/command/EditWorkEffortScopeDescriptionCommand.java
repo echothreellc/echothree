@@ -18,119 +18,108 @@ package com.echothree.control.user.workeffort.server.command;
 
 import com.echothree.control.user.workeffort.common.edit.WorkEffortEditFactory;
 import com.echothree.control.user.workeffort.common.edit.WorkEffortScopeDescriptionEdit;
-import com.echothree.control.user.workeffort.common.form.EditWorkEffortScopeDescriptionForm;
+import com.echothree.control.user.workeffort.common.result.EditWorkEffortScopeDescriptionResult;
 import com.echothree.control.user.workeffort.common.result.WorkEffortResultFactory;
 import com.echothree.control.user.workeffort.common.spec.WorkEffortScopeDescriptionSpec;
-import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.workeffort.server.logic.WorkEffortScopeLogic;
+import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
+import com.echothree.model.data.workeffort.server.entity.WorkEffortScopeDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class EditWorkEffortScopeDescriptionCommand
-        extends BaseEditCommand<WorkEffortScopeDescriptionSpec, WorkEffortScopeDescriptionEdit> {
-    
+        extends BaseAbstractEditCommand<WorkEffortScopeDescriptionSpec, WorkEffortScopeDescriptionEdit, EditWorkEffortScopeDescriptionResult, WorkEffortScopeDescription, WorkEffortScope> {
+
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WorkEffortTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("WorkEffortScopeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
 
     @Inject
-    PartyControl partyControl;
-
-    @Inject
     WorkEffortControl workEffortControl;
 
-    
+    @Inject
+    LanguageLogic languageLogic;
+
+    @Inject
+    WorkEffortScopeLogic workEffortScopeLogic;
+
     /** Creates a new instance of EditWorkEffortScopeDescriptionCommand */
     public EditWorkEffortScopeDescriptionCommand() {
         super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = WorkEffortResultFactory.getEditWorkEffortScopeDescriptionResult();
-        var workEffortTypeName = spec.getWorkEffortTypeName();
-        var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
-        
-        if(workEffortType != null) {
-            var workEffortScopeName = spec.getWorkEffortScopeName();
-            var workEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, workEffortScopeName);
-            
-            if(workEffortScope != null) {
-                var languageIsoName = spec.getLanguageIsoName();
-                var language = partyControl.getLanguageByIsoName(languageIsoName);
-                
-                if(language != null) {
-                    if(editMode.equals(EditMode.LOCK)) {
-                        var workEffortScopeDescription = workEffortControl.getWorkEffortScopeDescription(workEffortScope, language);
-                        
-                        if(workEffortScopeDescription != null) {
-                            result.setWorkEffortScopeDescription(workEffortControl.getWorkEffortScopeDescriptionTransfer(getUserVisit(), workEffortScopeDescription));
-                            
-                            if(lockEntity(workEffortScope)) {
-                                var edit = WorkEffortEditFactory.getWorkEffortScopeDescriptionEdit();
-                                
-                                result.setEdit(edit);
-                                edit.setDescription(workEffortScopeDescription.getDescription());
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                            }
-                            
-                            result.setEntityLock(getEntityLockTransfer(workEffortScope));
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownWorkEffortScopeDescription.name());
-                        }
-                    } else if(editMode.equals(EditMode.UPDATE)) {
-                        var workEffortScopeDescriptionValue = workEffortControl.getWorkEffortScopeDescriptionValueForUpdate(workEffortScope, language);
-                        
-                        if(workEffortScopeDescriptionValue != null) {
-                            if(lockEntityForUpdate(workEffortScope)) {
-                                try {
-                                    var description = edit.getDescription();
-                                    
-                                    workEffortScopeDescriptionValue.setDescription(description);
-                                    
-                                    workEffortControl.updateWorkEffortScopeDescriptionFromValue(workEffortScopeDescriptionValue, getPartyPK());
-                                } finally {
-                                    unlockEntity(workEffortScope);
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockStale.name());
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownWorkEffortScopeDescription.name());
-                        }
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownWorkEffortScopeName.name(), workEffortTypeName, workEffortScopeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownWorkEffortTypeName.name(), workEffortTypeName);
-        }
-        
-        return result;
+    public EditWorkEffortScopeDescriptionResult getResult() {
+        return WorkEffortResultFactory.getEditWorkEffortScopeDescriptionResult();
     }
-    
+
+    @Override
+    public WorkEffortScopeDescriptionEdit getEdit() {
+        return WorkEffortEditFactory.getWorkEffortScopeDescriptionEdit();
+    }
+
+    @Override
+    public WorkEffortScopeDescription getEntity(EditWorkEffortScopeDescriptionResult result) {
+        WorkEffortScopeDescription workEffortScopeDescription = null;
+        var workEffortTypeName = spec.getWorkEffortTypeName();
+        var workEffortScopeName = spec.getWorkEffortScopeName();
+        var languageIsoName = spec.getLanguageIsoName();
+        var workEffortScope = workEffortScopeLogic.getWorkEffortScopeByName(this, workEffortTypeName, workEffortScopeName);
+        var language = languageLogic.getLanguageByName(this, languageIsoName);
+
+        if(!hasExecutionErrors()) {
+            workEffortScopeDescription = workEffortControl.getWorkEffortScopeDescription(workEffortScope, language,
+                    editModeToEntityPermission(editMode));
+
+            if(workEffortScopeDescription == null) {
+                addExecutionError(ExecutionErrors.UnknownWorkEffortScopeDescription.name(), workEffortTypeName, workEffortScopeName, languageIsoName);
+            }
+        }
+
+        return workEffortScopeDescription;
+    }
+
+    @Override
+    public WorkEffortScope getLockEntity(WorkEffortScopeDescription workEffortScopeDescription) {
+        return workEffortScopeDescription.getWorkEffortScope();
+    }
+
+    @Override
+    public void fillInResult(EditWorkEffortScopeDescriptionResult result, WorkEffortScopeDescription workEffortScopeDescription) {
+        result.setWorkEffortScopeDescription(workEffortControl.getWorkEffortScopeDescriptionTransfer(getUserVisit(), workEffortScopeDescription));
+    }
+
+    @Override
+    public void doLock(WorkEffortScopeDescriptionEdit edit, WorkEffortScopeDescription workEffortScopeDescription) {
+        edit.setDescription(workEffortScopeDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(WorkEffortScopeDescription workEffortScopeDescription) {
+        var workEffortScopeDescriptionValue = workEffortControl.getWorkEffortScopeDescriptionValue(workEffortScopeDescription);
+
+        workEffortScopeDescriptionValue.setDescription(edit.getDescription());
+
+        workEffortControl.updateWorkEffortScopeDescriptionFromValue(workEffortScopeDescriptionValue, getPartyPK());
+    }
+
 }

@@ -565,7 +565,7 @@ public class WorkEffortControl
         return getDefaultWorkEffortScopeForUpdate(workEffortType).getLastDetailForUpdate().getWorkEffortScopeDetailValue().clone();
     }
     
-    private WorkEffortScope getWorkEffortScopeByName(WorkEffortType workEffortType, String workEffortScopeName, EntityPermission entityPermission) {
+    public WorkEffortScope getWorkEffortScopeByName(WorkEffortType workEffortType, String workEffortScopeName, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(WorkEffortScopes.fields())
                 .from(WorkEffortScopes)
@@ -777,7 +777,7 @@ public class WorkEffortControl
         return workEffortScopeDescription;
     }
     
-    private WorkEffortScopeDescription getWorkEffortScopeDescription(WorkEffortScope workEffortScope, Language language,
+    public WorkEffortScopeDescription getWorkEffortScopeDescription(WorkEffortScope workEffortScope, Language language,
             EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(WorkEffortScopeDescriptions.fields())
