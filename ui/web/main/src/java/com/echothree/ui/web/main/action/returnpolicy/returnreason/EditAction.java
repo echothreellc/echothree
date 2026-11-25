@@ -62,7 +62,7 @@ public class EditAction
             if(forwardKey == null) {
                 var actionForm = (EditActionForm)form;
                 var commandForm = ReturnPolicyUtil.getHome().getEditReturnReasonForm();
-                var spec = ReturnPolicyUtil.getHome().getReturnReasonSpec();
+                var spec = ReturnPolicyUtil.getHome().getReturnReasonUniversalSpec();
                 
                 if(returnKindName == null)
                     returnKindName = actionForm.getReturnKindName();
