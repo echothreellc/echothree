@@ -16,23 +16,23 @@
 
 package com.echothree.control.user.shipment.server.command;
 
-import com.echothree.control.user.shipment.common.edit.ShipmentEditFactory;
 import com.echothree.control.user.shipment.common.edit.FreeOnBoardDescriptionEdit;
-import com.echothree.control.user.shipment.common.form.EditFreeOnBoardDescriptionForm;
+import com.echothree.control.user.shipment.common.edit.ShipmentEditFactory;
+import com.echothree.control.user.shipment.common.result.EditFreeOnBoardDescriptionResult;
 import com.echothree.control.user.shipment.common.result.ShipmentResultFactory;
 import com.echothree.control.user.shipment.common.spec.FreeOnBoardDescriptionSpec;
-import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
+import com.echothree.model.control.shipment.server.logic.FreeOnBoardLogic;
+import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
+import com.echothree.model.data.shipment.server.entity.FreeOnBoardDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -42,12 +42,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditFreeOnBoardDescriptionCommand
-        extends BaseEditCommand<FreeOnBoardDescriptionSpec, FreeOnBoardDescriptionEdit> {
-    
+        extends BaseAbstractEditCommand<FreeOnBoardDescriptionSpec, FreeOnBoardDescriptionEdit, EditFreeOnBoardDescriptionResult, FreeOnBoardDescription, FreeOnBoard> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -55,12 +55,12 @@ public class EditFreeOnBoardDescriptionCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.FreeOnBoard.name(), SecurityRoles.Description.name())
                 ))
         ));
-        
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("FreeOnBoardName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
@@ -70,77 +70,68 @@ public class EditFreeOnBoardDescriptionCommand
     FreeOnBoardControl freeOnBoardControl;
 
     @Inject
-    PartyControl partyControl;
+    FreeOnBoardLogic freeOnBoardLogic;
 
-    
+    @Inject
+    LanguageLogic languageLogic;
+
     /** Creates a new instance of EditFreeOnBoardDescriptionCommand */
     public EditFreeOnBoardDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = ShipmentResultFactory.getEditFreeOnBoardDescriptionResult();
-        var freeOnBoardName = spec.getFreeOnBoardName();
-        var freeOnBoard = freeOnBoardControl.getFreeOnBoardByName(freeOnBoardName);
-        
-        if(freeOnBoard != null) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = partyControl.getLanguageByIsoName(languageIsoName);
-            
-            if(language != null) {
-                if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    var freeOnBoardDescription = freeOnBoardControl.getFreeOnBoardDescription(freeOnBoard, language);
-                    
-                    if(freeOnBoardDescription != null) {
-                        if(editMode.equals(EditMode.LOCK)) {
-                            result.setFreeOnBoardDescription(freeOnBoardControl.getFreeOnBoardDescriptionTransfer(getUserVisit(), freeOnBoardDescription));
-
-                            if(lockEntity(freeOnBoard)) {
-                                var edit = ShipmentEditFactory.getFreeOnBoardDescriptionEdit();
-
-                                result.setEdit(edit);
-                                edit.setDescription(freeOnBoardDescription.getDescription());
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                            }
-
-                            result.setEntityLock(getEntityLockTransfer(freeOnBoard));
-                        } else { // EditMode.ABANDON
-                            unlockEntity(freeOnBoard);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownFreeOnBoardDescription.name());
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var freeOnBoardDescriptionValue = freeOnBoardControl.getFreeOnBoardDescriptionValueForUpdate(freeOnBoard, language);
-                    
-                    if(freeOnBoardDescriptionValue != null) {
-                        if(lockEntityForUpdate(freeOnBoard)) {
-                            try {
-                                var description = edit.getDescription();
-                                
-                                freeOnBoardDescriptionValue.setDescription(description);
-                                
-                                freeOnBoardControl.updateFreeOnBoardDescriptionFromValue(freeOnBoardDescriptionValue, getPartyPK());
-                            } finally {
-                                unlockEntity(freeOnBoard);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownFreeOnBoardDescription.name());
-                    }
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownFreeOnBoardName.name(), freeOnBoardName);
-        }
-        
-        return result;
+    public EditFreeOnBoardDescriptionResult getResult() {
+        return ShipmentResultFactory.getEditFreeOnBoardDescriptionResult();
     }
-    
+
+    @Override
+    public FreeOnBoardDescriptionEdit getEdit() {
+        return ShipmentEditFactory.getFreeOnBoardDescriptionEdit();
+    }
+
+    @Override
+    public FreeOnBoardDescription getEntity(EditFreeOnBoardDescriptionResult result) {
+        FreeOnBoardDescription freeOnBoardDescription = null;
+        var freeOnBoardName = spec.getFreeOnBoardName();
+        var languageIsoName = spec.getLanguageIsoName();
+        var freeOnBoard = freeOnBoardLogic.getFreeOnBoardByName(this, freeOnBoardName);
+        var language = languageLogic.getLanguageByName(this, languageIsoName);
+
+        if(!hasExecutionErrors()) {
+            freeOnBoardDescription = freeOnBoardControl.getFreeOnBoardDescription(freeOnBoard, language,
+                    editModeToEntityPermission(editMode));
+
+            if(freeOnBoardDescription == null) {
+                addExecutionError(ExecutionErrors.UnknownFreeOnBoardDescription.name(), freeOnBoardName, languageIsoName);
+            }
+        }
+
+        return freeOnBoardDescription;
+    }
+
+    @Override
+    public FreeOnBoard getLockEntity(FreeOnBoardDescription freeOnBoardDescription) {
+        return freeOnBoardDescription.getFreeOnBoard();
+    }
+
+    @Override
+    public void fillInResult(EditFreeOnBoardDescriptionResult result, FreeOnBoardDescription freeOnBoardDescription) {
+        result.setFreeOnBoardDescription(freeOnBoardControl.getFreeOnBoardDescriptionTransfer(getUserVisit(), freeOnBoardDescription));
+    }
+
+    @Override
+    public void doLock(FreeOnBoardDescriptionEdit edit, FreeOnBoardDescription freeOnBoardDescription) {
+        edit.setDescription(freeOnBoardDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(FreeOnBoardDescription freeOnBoardDescription) {
+        var freeOnBoardDescriptionValue = freeOnBoardControl.getFreeOnBoardDescriptionValue(freeOnBoardDescription);
+
+        freeOnBoardDescriptionValue.setDescription(edit.getDescription());
+
+        freeOnBoardControl.updateFreeOnBoardDescriptionFromValue(freeOnBoardDescriptionValue, getPartyPK());
+    }
+
 }
