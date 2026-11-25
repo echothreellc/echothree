@@ -16,6 +16,11 @@
 
 package com.echothree.model.control.message.server.logic;
 
+import com.echothree.control.user.message.common.spec.MessageTypeUniversalSpec;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.message.common.exception.UnknownMessageTypeNameException;
 import com.echothree.model.control.message.server.control.MessageControl;
@@ -36,20 +41,24 @@ public class MessageTypeLogic
     MessageControl messageControl;
 
     @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
     EntityTypeLogic entityTypeLogic;
 
     protected MessageTypeLogic() {
         super();
     }
 
-    public MessageType getMessageTypeByName(final ExecutionErrorAccumulator eea, final EntityType entityType,
-            final String messageTypeName, final EntityPermission entityPermission) {
+    public MessageType getMessageTypeByName(final ExecutionErrorAccumulator eea, final EntityType entityType, final String messageTypeName,
+            final EntityPermission entityPermission) {
         var messageType = messageControl.getMessageTypeByName(entityType, messageTypeName, entityPermission);
 
         if(messageType == null) {
+            var entityTypeDetail = entityType.getLastDetail();
+
             handleExecutionError(UnknownMessageTypeNameException.class, eea, ExecutionErrors.UnknownMessageTypeName.name(),
-                    entityType.getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName(),
-                    entityType.getLastDetail().getEntityTypeName(), messageTypeName);
+                    entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(), messageTypeName);
         }
 
         return messageType;
@@ -70,7 +79,7 @@ public class MessageTypeLogic
         var entityType = entityTypeLogic.getEntityTypeByName(eea, componentVendorName, entityTypeName);
         MessageType messageType = null;
 
-        if(eea == null || !eea.hasExecutionErrors()) {
+        if(!hasExecutionErrors(eea)) {
             messageType = getMessageTypeByName(eea, entityType, messageTypeName, entityPermission);
         }
 
@@ -85,6 +94,40 @@ public class MessageTypeLogic
     public MessageType getMessageTypeByNameForUpdate(final ExecutionErrorAccumulator eea, final String componentVendorName,
             final String entityTypeName, final String messageTypeName) {
         return getMessageTypeByName(eea, componentVendorName, entityTypeName, messageTypeName, EntityPermission.READ_WRITE);
+    }
+
+    public MessageType getMessageTypeByUniversalSpec(final ExecutionErrorAccumulator eea, final MessageTypeUniversalSpec universalSpec,
+            final EntityPermission entityPermission) {
+        MessageType messageType = null;
+        var componentVendorName = universalSpec.getComponentVendorName();
+        var entityTypeName = universalSpec.getEntityTypeName();
+        var messageTypeName = universalSpec.getMessageTypeName();
+        var nameParameterCount = (componentVendorName == null ? 0 : 1) + (entityTypeName == null ? 0 : 1)
+                + (messageTypeName == null ? 0 : 1);
+        var possibleEntitySpecs = entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
+
+        if(nameParameterCount == 3 && possibleEntitySpecs == 0) {
+            messageType = getMessageTypeByName(eea, componentVendorName, entityTypeName, messageTypeName, entityPermission);
+        } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
+                    ComponentVendors.ECHO_THREE.name(), EntityTypes.MessageType.name());
+
+            if(!hasExecutionErrors(eea)) {
+                messageType = messageControl.getMessageTypeByEntityInstance(entityInstance, entityPermission);
+            }
+        } else {
+            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return messageType;
+    }
+
+    public MessageType getMessageTypeByUniversalSpec(final ExecutionErrorAccumulator eea, final MessageTypeUniversalSpec universalSpec) {
+        return getMessageTypeByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+    }
+
+    public MessageType getMessageTypeByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final MessageTypeUniversalSpec universalSpec) {
+        return getMessageTypeByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
     }
 
 }

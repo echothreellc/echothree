@@ -17,11 +17,11 @@
 package com.echothree.control.user.message.common.form;
 
 import com.echothree.control.user.message.common.edit.MessageTypeEdit;
-import com.echothree.control.user.message.common.spec.MessageTypeSpec;
+import com.echothree.control.user.message.common.spec.MessageTypeUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditMessageTypeForm
-        extends BaseEditForm<MessageTypeSpec, MessageTypeEdit> {
+        extends BaseEditForm<MessageTypeUniversalSpec, MessageTypeEdit> {
     
     // Nothing additional beyond BaseEditForm
     

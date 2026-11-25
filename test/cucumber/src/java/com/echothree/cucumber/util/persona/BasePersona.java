@@ -228,7 +228,7 @@ import com.echothree.control.user.item.common.spec.ItemWeightTypeUniversalSpec;
 import com.echothree.control.user.message.common.edit.MessageTypeEdit;
 import com.echothree.control.user.message.common.form.CreateMessageTypeForm;
 import com.echothree.control.user.message.common.form.DeleteMessageTypeForm;
-import com.echothree.control.user.message.common.spec.MessageTypeSpec;
+import com.echothree.control.user.message.common.spec.MessageTypeUniversalSpec;
 import com.echothree.control.user.offer.common.edit.OfferEdit;
 import com.echothree.control.user.offer.common.edit.OfferItemPriceEdit;
 import com.echothree.control.user.offer.common.edit.OfferUseEdit;
@@ -725,7 +725,7 @@ public class BasePersona {
     // Message
     public CreateMessageTypeForm createMessageTypeForm;
     public DeleteMessageTypeForm deleteMessageTypeForm;
-    public MessageTypeSpec messageTypeSpec;
+    public MessageTypeUniversalSpec messageTypeSpec;
     public MessageTypeEdit messageTypeEdit;
 
     public String lastMessageTypeName;

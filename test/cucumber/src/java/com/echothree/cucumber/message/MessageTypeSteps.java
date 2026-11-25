@@ -85,7 +85,7 @@ public class MessageTypeSteps implements En {
                     assertThat(persona.deleteMessageTypeForm).isNull();
                     assertThat(persona.messageTypeSpec).isNull();
 
-                    persona.messageTypeSpec = MessageUtil.getHome().getMessageTypeSpec();
+                    persona.messageTypeSpec = MessageUtil.getHome().getMessageTypeUniversalSpec();
                 });
 
         When("the user begins editing the message type",
