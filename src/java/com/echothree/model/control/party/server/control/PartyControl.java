@@ -969,7 +969,7 @@ public class PartyControl
         return personalTitleDetailFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
-    private PersonalTitle getDefaultPersonalTitle(EntityPermission entityPermission) {
+    public PersonalTitle getDefaultPersonalTitle(EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PersonalTitles.fields())
                 .from(PersonalTitles)

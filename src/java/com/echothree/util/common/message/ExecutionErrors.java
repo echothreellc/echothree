@@ -847,6 +847,7 @@ public enum ExecutionErrors {
     UnknownDateTimeFormatDescription,
     UnknownNameSuffixId,
     UnknownPersonalTitleId,
+    UnknownDefaultPersonalTitle,
     DuplicateEntityTypeName,
     DuplicateComponentName,
     DuplicateComponentStageName,

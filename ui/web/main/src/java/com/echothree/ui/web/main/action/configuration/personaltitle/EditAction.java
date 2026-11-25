@@ -58,7 +58,7 @@ public class EditAction
             if(forwardKey == null) {
                 var actionForm = (EditActionForm)form;
                 var commandForm = PartyUtil.getHome().getEditPersonalTitleForm();
-                var spec = PartyUtil.getHome().getPersonalTitleSpec();
+                var spec = PartyUtil.getHome().getPersonalTitleUniversalSpec();
                 
                 if(personalTitleId == null)
                     personalTitleId = actionForm.getPersonalTitleId();
