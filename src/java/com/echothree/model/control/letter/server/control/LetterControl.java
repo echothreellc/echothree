@@ -1268,7 +1268,7 @@ public class LetterControl
                 .orElse(0L);
     }
 
-    private LetterContactMechanismPurpose getLetterContactMechanismPurpose(Letter letter, Integer priority,
+    public LetterContactMechanismPurpose getLetterContactMechanismPurpose(Letter letter, Integer priority,
             EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(LetterContactMechanismPurposes.fields())
