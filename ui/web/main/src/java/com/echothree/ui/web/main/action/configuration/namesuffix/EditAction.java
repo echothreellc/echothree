@@ -58,7 +58,7 @@ public class EditAction
             if(forwardKey == null) {
                 var actionForm = (EditActionForm)form;
                 var commandForm = PartyUtil.getHome().getEditNameSuffixForm();
-                var spec = PartyUtil.getHome().getNameSuffixSpec();
+                var spec = PartyUtil.getHome().getNameSuffixUniversalSpec();
                 
                 if(nameSuffixId == null)
                     nameSuffixId = actionForm.getNameSuffixId();
