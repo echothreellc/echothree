@@ -846,6 +846,7 @@ public enum ExecutionErrors {
     UnknownTimeZoneDescription,
     UnknownDateTimeFormatDescription,
     UnknownNameSuffixId,
+    UnknownDefaultNameSuffix,
     UnknownPersonalTitleId,
     UnknownDefaultPersonalTitle,
     DuplicateEntityTypeName,

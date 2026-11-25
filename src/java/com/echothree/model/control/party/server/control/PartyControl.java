@@ -1245,7 +1245,7 @@ public class PartyControl
         return nameSuffixDetailFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
-    private NameSuffix getDefaultNameSuffix(EntityPermission entityPermission) {
+    public NameSuffix getDefaultNameSuffix(EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(NameSuffixes.fields())
                 .from(NameSuffixes)

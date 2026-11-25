@@ -17,11 +17,11 @@
 package com.echothree.control.user.party.common.form;
 
 import com.echothree.control.user.party.common.edit.NameSuffixEdit;
-import com.echothree.control.user.party.common.spec.NameSuffixSpec;
+import com.echothree.control.user.party.common.spec.NameSuffixUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditNameSuffixForm
-        extends BaseEditForm<NameSuffixSpec, NameSuffixEdit> {
+        extends BaseEditForm<NameSuffixUniversalSpec, NameSuffixEdit> {
     
     // Nothing additional beyond BaseEditForm
     
