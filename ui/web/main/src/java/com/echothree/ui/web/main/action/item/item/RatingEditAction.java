@@ -21,7 +21,7 @@ import com.echothree.control.user.rating.common.RatingUtil;
 import com.echothree.control.user.rating.common.edit.RatingEdit;
 import com.echothree.control.user.rating.common.form.EditRatingForm;
 import com.echothree.control.user.rating.common.result.EditRatingResult;
-import com.echothree.control.user.rating.common.spec.RatingSpec;
+import com.echothree.control.user.rating.common.spec.RatingUniversalSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -47,12 +47,12 @@ import javax.servlet.http.HttpServletRequest;
     }
 )
 public class RatingEditAction
-        extends MainBaseEditAction<RatingEditActionForm, RatingSpec, RatingEdit, EditRatingForm, EditRatingResult> {
+        extends MainBaseEditAction<RatingEditActionForm, RatingUniversalSpec, RatingEdit, EditRatingForm, EditRatingResult> {
     
     @Override
-    protected RatingSpec getSpec(HttpServletRequest request, RatingEditActionForm actionForm)
+    protected RatingUniversalSpec getSpec(HttpServletRequest request, RatingEditActionForm actionForm)
             throws NamingException {
-        var spec = RatingUtil.getHome().getRatingSpec();
+        var spec = RatingUtil.getHome().getRatingUniversalSpec();
         var ratingName = request.getParameter(ParameterConstants.RATING_NAME);
 
         if(ratingName == null) {
@@ -81,7 +81,7 @@ public class RatingEditAction
     }
     
     @Override
-    protected void setupActionForm(HttpServletRequest request, RatingEditActionForm actionForm, EditRatingResult result, RatingSpec spec, RatingEdit edit) {
+    protected void setupActionForm(HttpServletRequest request, RatingEditActionForm actionForm, EditRatingResult result, RatingUniversalSpec spec, RatingEdit edit) {
         actionForm.setItemName(request.getParameter(ParameterConstants.ITEM_NAME));
         actionForm.setRatingName(spec.getRatingName());
         actionForm.setRatingTypeListItemChoice(edit.getRatingTypeListItemName());
