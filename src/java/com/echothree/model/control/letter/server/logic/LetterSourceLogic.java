@@ -18,10 +18,6 @@ package com.echothree.model.control.letter.server.logic;
 
 import com.echothree.control.user.letter.common.spec.LetterSourceUniversalSpec;
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
-import com.echothree.model.control.contact.common.exception.InvalidContactMechanismTypeException;
-import com.echothree.model.control.contact.common.exception.UnknownContactMechanismAliasException;
-import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.control.contact.server.logic.ContactMechanismAliasTypeLogic;
 import com.echothree.model.control.contact.server.logic.ContactMechanismLogic;
 import com.echothree.model.control.contact.server.logic.PartyContactMechanismLogic;
 import com.echothree.model.control.core.common.ComponentVendors;
@@ -29,12 +25,24 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.letter.common.exception.UnknownDefaultLetterSourceException;
+import com.echothree.model.control.letter.common.exception.UnknownEmailAddressContactMechanismAliasException;
+import com.echothree.model.control.letter.common.exception.UnknownEmailAddressContactMechanismAliasTypeNameException;
+import com.echothree.model.control.letter.common.exception.UnknownEmailAddressContactMechanismNameException;
+import com.echothree.model.control.letter.common.exception.UnknownEmailAddressPartyContactMechanismException;
+import com.echothree.model.control.letter.common.exception.UnknownLetterSourceContactMechanismAliasException;
+import com.echothree.model.control.letter.common.exception.UnknownLetterSourceContactMechanismAliasTypeNameException;
+import com.echothree.model.control.letter.common.exception.UnknownLetterSourceContactMechanismNameException;
 import com.echothree.model.control.letter.common.exception.UnknownLetterSourceNameException;
+import com.echothree.model.control.letter.common.exception.UnknownLetterSourcePartyContactMechanismException;
+import com.echothree.model.control.letter.common.exception.UnknownPostalAddressContactMechanismAliasException;
+import com.echothree.model.control.letter.common.exception.UnknownPostalAddressContactMechanismAliasTypeNameException;
+import com.echothree.model.control.letter.common.exception.UnknownPostalAddressContactMechanismNameException;
+import com.echothree.model.control.letter.common.exception.UnknownPostalAddressPartyContactMechanismException;
 import com.echothree.model.control.letter.server.control.LetterControl;
-import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.letter.server.entity.LetterSource;
 import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -47,13 +55,7 @@ public class LetterSourceLogic
         extends BaseLogic {
 
     @Inject
-    ContactControl contactControl;
-
-    @Inject
     LetterControl letterControl;
-
-    @Inject
-    ContactMechanismAliasTypeLogic contactMechanismAliasTypeLogic;
 
     @Inject
     ContactMechanismLogic contactMechanismLogic;
@@ -139,37 +141,44 @@ public class LetterSourceLogic
     public PartyContactMechanism getLetterSourcePartyContactMechanism(final ExecutionErrorAccumulator eea, final Party companyParty,
             final String contactMechanismName, final String contactMechanismAliasTypeName, final String alias,
             final ContactMechanismTypes expectedContactMechanismType) {
-        ContactMechanism contactMechanism = null;
+        return switch(expectedContactMechanismType) {
+            case EMAIL_ADDRESS -> getLetterSourcePartyContactMechanism(
+                    UnknownEmailAddressContactMechanismNameException.class, ExecutionErrors.UnknownEmailAddressContactMechanismName,
+                    UnknownEmailAddressContactMechanismAliasTypeNameException.class, ExecutionErrors.UnknownEmailAddressContactMechanismAliasTypeName,
+                    UnknownEmailAddressContactMechanismAliasException.class, ExecutionErrors.UnknownEmailAddressContactMechanismAlias,
+                    UnknownEmailAddressPartyContactMechanismException.class, ExecutionErrors.UnknownEmailAddressPartyContactMechanism,
+                    eea, companyParty, contactMechanismName, contactMechanismAliasTypeName, alias, expectedContactMechanismType);
+            case POSTAL_ADDRESS -> getLetterSourcePartyContactMechanism(
+                    UnknownPostalAddressContactMechanismNameException.class, ExecutionErrors.UnknownPostalAddressContactMechanismName,
+                    UnknownPostalAddressContactMechanismAliasTypeNameException.class, ExecutionErrors.UnknownPostalAddressContactMechanismAliasTypeName,
+                    UnknownPostalAddressContactMechanismAliasException.class, ExecutionErrors.UnknownPostalAddressContactMechanismAlias,
+                    UnknownPostalAddressPartyContactMechanismException.class, ExecutionErrors.UnknownPostalAddressPartyContactMechanism,
+                    eea, companyParty, contactMechanismName, contactMechanismAliasTypeName, alias, expectedContactMechanismType);
+            case WEB_ADDRESS -> getLetterSourcePartyContactMechanism(
+                    UnknownLetterSourceContactMechanismNameException.class, ExecutionErrors.UnknownLetterSourceContactMechanismName,
+                    UnknownLetterSourceContactMechanismAliasTypeNameException.class, ExecutionErrors.UnknownLetterSourceContactMechanismAliasTypeName,
+                    UnknownLetterSourceContactMechanismAliasException.class, ExecutionErrors.UnknownLetterSourceContactMechanismAlias,
+                    UnknownLetterSourcePartyContactMechanismException.class, ExecutionErrors.UnknownLetterSourcePartyContactMechanism,
+                    eea, companyParty, contactMechanismName, contactMechanismAliasTypeName, alias, expectedContactMechanismType);
+            default -> throw new IllegalArgumentException(expectedContactMechanismType.name());
+        };
+    }
+
+    private PartyContactMechanism getLetterSourcePartyContactMechanism(final Class<? extends BaseException> unknownNameException,
+            final ExecutionErrors unknownNameExecutionError, final Class<? extends BaseException> unknownAliasTypeException,
+            final ExecutionErrors unknownAliasTypeExecutionError, final Class<? extends BaseException> unknownAliasException,
+            final ExecutionErrors unknownAliasExecutionError, final Class<? extends BaseException> unknownPartyContactMechanismException,
+            final ExecutionErrors unknownPartyContactMechanismExecutionError, final ExecutionErrorAccumulator eea, final Party companyParty,
+            final String contactMechanismName, final String contactMechanismAliasTypeName, final String alias,
+            final ContactMechanismTypes expectedContactMechanismType) {
+        var contactMechanism = contactMechanismLogic.getContactMechanismByNameOrAlias(unknownNameException, unknownNameExecutionError,
+                unknownAliasTypeException, unknownAliasTypeExecutionError, unknownAliasException, unknownAliasExecutionError,
+                eea, contactMechanismName, contactMechanismAliasTypeName, alias, expectedContactMechanismType);
         PartyContactMechanism partyContactMechanism = null;
 
-        if(contactMechanismName != null && contactMechanismAliasTypeName == null && alias == null) {
-            contactMechanism = contactMechanismLogic.getContactMechanismByName(eea, contactMechanismName);
-        } else if(contactMechanismName == null && contactMechanismAliasTypeName != null && alias != null) {
-            var contactMechanismAliasType = contactMechanismAliasTypeLogic.getContactMechanismAliasTypeByName(eea, contactMechanismAliasTypeName);
-
-            if(!hasExecutionErrors(eea)) {
-                var contactMechanismAlias = contactControl.getContactMechanismAliasByAlias(contactMechanismAliasType, alias);
-
-                if(contactMechanismAlias == null) {
-                    handleExecutionError(UnknownContactMechanismAliasException.class, eea, ExecutionErrors.UnknownContactMechanismAlias.name(),
-                            contactMechanismAliasTypeName, alias);
-                } else {
-                    contactMechanism = contactMechanismAlias.getContactMechanism();
-                }
-            }
-        } else {
-            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-        }
-
         if(!hasExecutionErrors(eea)) {
-            var contactMechanismTypeName = contactMechanism.getLastDetail().getContactMechanismType().getContactMechanismTypeName();
-
-            if(expectedContactMechanismType.name().equals(contactMechanismTypeName)) {
-                partyContactMechanism = partyContactMechanismLogic.getPartyContactMechanism(eea, companyParty, contactMechanism);
-            } else {
-                handleExecutionError(InvalidContactMechanismTypeException.class, eea, ExecutionErrors.InvalidContactMechanismType.name(),
-                        contactMechanismTypeName);
-            }
+            partyContactMechanism = partyContactMechanismLogic.getPartyContactMechanism(unknownPartyContactMechanismException,
+                    unknownPartyContactMechanismExecutionError, eea, companyParty, contactMechanism);
         }
 
         return partyContactMechanism;

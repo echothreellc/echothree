@@ -184,6 +184,7 @@ public class EditLetterSourceCommand
             var letterSourceDescriptionValue = letterControl.getLetterSourceDescriptionValue(letterSourceDescription);
 
             letterSourceDescriptionValue.setDescription(description);
+
             letterControl.updateLetterSourceDescriptionFromValue(letterSourceDescriptionValue, partyPK);
         }
     }
