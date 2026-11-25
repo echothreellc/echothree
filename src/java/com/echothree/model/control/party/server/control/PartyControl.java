@@ -5041,7 +5041,7 @@ public class PartyControl
                 .orElse(0L);
     }
 
-    private Gender getGenderByName(String genderName, EntityPermission entityPermission) {
+    public Gender getGenderByName(String genderName, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(Genders.fields())
                 .from(Genders)
@@ -5265,7 +5265,7 @@ public class PartyControl
         return genderDescription;
     }
     
-    private GenderDescription getGenderDescription(Gender gender, Language language, EntityPermission entityPermission) {
+    public GenderDescription getGenderDescription(Gender gender, Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(GenderDescriptions.fields())
                 .from(GenderDescriptions)
