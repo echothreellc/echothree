@@ -85,7 +85,7 @@ public class CommentTypeSteps implements En {
                     assertThat(persona.deleteCommentTypeForm).isNull();
                     assertThat(persona.commentTypeSpec).isNull();
 
-                    persona.commentTypeSpec = CommentUtil.getHome().getCommentTypeSpec();
+                    persona.commentTypeSpec = CommentUtil.getHome().getCommentTypeUniversalSpec();
                 });
 
         When("the user begins editing the comment type",

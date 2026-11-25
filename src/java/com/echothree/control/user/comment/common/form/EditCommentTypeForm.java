@@ -17,11 +17,11 @@
 package com.echothree.control.user.comment.common.form;
 
 import com.echothree.control.user.comment.common.edit.CommentTypeEdit;
-import com.echothree.control.user.comment.common.spec.CommentTypeSpec;
+import com.echothree.control.user.comment.common.spec.CommentTypeUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditCommentTypeForm
-        extends BaseEditForm<CommentTypeSpec, CommentTypeEdit> {
+        extends BaseEditForm<CommentTypeUniversalSpec, CommentTypeEdit> {
     
     // Nothing additional beyond BaseEditForm
     

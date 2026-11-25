@@ -23,7 +23,7 @@ import com.echothree.control.user.campaign.common.form.CreateUserVisitCampaignFo
 import com.echothree.control.user.comment.common.edit.CommentTypeEdit;
 import com.echothree.control.user.comment.common.form.CreateCommentTypeForm;
 import com.echothree.control.user.comment.common.form.DeleteCommentTypeForm;
-import com.echothree.control.user.comment.common.spec.CommentTypeSpec;
+import com.echothree.control.user.comment.common.spec.CommentTypeUniversalSpec;
 import com.echothree.control.user.contact.common.edit.ContactEmailAddressEdit;
 import com.echothree.control.user.contact.common.edit.ContactPostalAddressEdit;
 import com.echothree.control.user.contact.common.edit.ContactTelephoneEdit;
@@ -527,7 +527,7 @@ public class BasePersona {
     // Comment
     public CreateCommentTypeForm createCommentTypeForm;
     public DeleteCommentTypeForm deleteCommentTypeForm;
-    public CommentTypeSpec commentTypeSpec;
+    public CommentTypeUniversalSpec commentTypeSpec;
     public CommentTypeEdit commentTypeEdit;
 
     public String lastCommentTypeName;
