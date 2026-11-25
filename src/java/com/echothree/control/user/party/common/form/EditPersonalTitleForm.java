@@ -17,11 +17,11 @@
 package com.echothree.control.user.party.common.form;
 
 import com.echothree.control.user.party.common.edit.PersonalTitleEdit;
-import com.echothree.control.user.party.common.spec.PersonalTitleSpec;
+import com.echothree.control.user.party.common.spec.PersonalTitleUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditPersonalTitleForm
-        extends BaseEditForm<PersonalTitleSpec, PersonalTitleEdit> {
+        extends BaseEditForm<PersonalTitleUniversalSpec, PersonalTitleEdit> {
     
     // Nothing additional beyond BaseEditForm
     
