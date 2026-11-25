@@ -62,7 +62,7 @@ public class EditAction
             if(forwardKey == null) {
                 var actionForm = (EditActionForm)form;
                 var commandForm = MessageUtil.getHome().getEditMessageTypeForm();
-                var spec = MessageUtil.getHome().getMessageTypeSpec();
+                var spec = MessageUtil.getHome().getMessageTypeUniversalSpec();
                 var originalTypeMessageName = request.getParameter(ParameterConstants.ORIGINAL_MESSAGE_TYPE_NAME);
                 
                 if(componentVendorName == null)
