@@ -18,19 +18,21 @@ package com.echothree.control.user.subscription.server.command;
 
 import com.echothree.control.user.subscription.common.edit.SubscriptionEditFactory;
 import com.echothree.control.user.subscription.common.edit.SubscriptionTypeDescriptionEdit;
+import com.echothree.control.user.subscription.common.result.EditSubscriptionTypeDescriptionResult;
 import com.echothree.control.user.subscription.common.result.SubscriptionResultFactory;
 import com.echothree.control.user.subscription.common.spec.SubscriptionTypeDescriptionSpec;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
+import com.echothree.model.control.subscription.server.logic.SubscriptionTypeLogic;
+import com.echothree.model.data.subscription.server.entity.SubscriptionType;
+import com.echothree.model.data.subscription.server.entity.SubscriptionTypeDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -40,12 +42,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditSubscriptionTypeDescriptionCommand
-        extends BaseEditCommand<SubscriptionTypeDescriptionSpec, SubscriptionTypeDescriptionEdit> {
+        extends BaseAbstractEditCommand<SubscriptionTypeDescriptionSpec, SubscriptionTypeDescriptionEdit, EditSubscriptionTypeDescriptionResult, SubscriptionTypeDescription, SubscriptionType> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -59,90 +61,79 @@ public class EditSubscriptionTypeDescriptionCommand
                 new FieldDefinition("SubscriptionTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
 
     @Inject
-    PartyControl partyControl;
-
-    @Inject
     SubscriptionControl subscriptionControl;
 
-    
+    @Inject
+    LanguageLogic languageLogic;
+
+    @Inject
+    SubscriptionTypeLogic subscriptionTypeLogic;
+
     /** Creates a new instance of EditSubscriptionTypeDescriptionCommand */
     public EditSubscriptionTypeDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = SubscriptionResultFactory.getEditSubscriptionTypeDescriptionResult();
-        var subscriptionKindName = spec.getSubscriptionKindName();
-        var subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
-        
-        if(subscriptionKind != null) {
-            var subscriptionTypeName = spec.getSubscriptionTypeName();
-            var subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
-            
-            if(subscriptionType != null) {
-                var languageIsoName = spec.getLanguageIsoName();
-                var language = partyControl.getLanguageByIsoName(languageIsoName);
-                
-                if(language != null) {
-                    if(editMode.equals(EditMode.LOCK)) {
-                        var subscriptionTypeDescription = subscriptionControl.getSubscriptionTypeDescription(subscriptionType, language);
-                        
-                        if(subscriptionTypeDescription != null) {
-                            result.setSubscriptionTypeDescription(subscriptionControl.getSubscriptionTypeDescriptionTransfer(getUserVisit(), subscriptionTypeDescription));
-                            
-                            if(lockEntity(subscriptionType)) {
-                                var edit = SubscriptionEditFactory.getSubscriptionTypeDescriptionEdit();
-                                
-                                result.setEdit(edit);
-                                edit.setDescription(subscriptionTypeDescription.getDescription());
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                            }
-                            
-                            result.setEntityLock(getEntityLockTransfer(subscriptionType));
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownSubscriptionTypeDescription.name());
-                        }
-                    } else if(editMode.equals(EditMode.UPDATE)) {
-                        var subscriptionTypeDescriptionValue = subscriptionControl.getSubscriptionTypeDescriptionValueForUpdate(subscriptionType, language);
-                        
-                        if(subscriptionTypeDescriptionValue != null) {
-                            if(lockEntityForUpdate(subscriptionType)) {
-                                try {
-                                    var description = edit.getDescription();
-                                    
-                                    subscriptionTypeDescriptionValue.setDescription(description);
-                                    
-                                    subscriptionControl.updateSubscriptionTypeDescriptionFromValue(subscriptionTypeDescriptionValue, getPartyPK());
-                                } finally {
-                                    unlockEntity(subscriptionType);
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockStale.name());
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownSubscriptionTypeDescription.name());
-                        }
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownSubscriptionTypeName.name(), subscriptionTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownSubscriptionKindName.name(), subscriptionKindName);
-        }
-        
-        return result;
+    public EditSubscriptionTypeDescriptionResult getResult() {
+        return SubscriptionResultFactory.getEditSubscriptionTypeDescriptionResult();
     }
-    
+
+    @Override
+    public SubscriptionTypeDescriptionEdit getEdit() {
+        return SubscriptionEditFactory.getSubscriptionTypeDescriptionEdit();
+    }
+
+    @Override
+    public SubscriptionTypeDescription getEntity(EditSubscriptionTypeDescriptionResult result) {
+        SubscriptionTypeDescription subscriptionTypeDescription = null;
+        var subscriptionKindName = spec.getSubscriptionKindName();
+        var subscriptionTypeName = spec.getSubscriptionTypeName();
+        var languageIsoName = spec.getLanguageIsoName();
+        var subscriptionType = subscriptionTypeLogic.getSubscriptionTypeByName(this, subscriptionKindName, subscriptionTypeName);
+        var language = languageLogic.getLanguageByName(this, languageIsoName);
+
+        if(!hasExecutionErrors()) {
+            subscriptionTypeDescription = subscriptionControl.getSubscriptionTypeDescription(subscriptionType, language,
+                    editModeToEntityPermission(editMode));
+
+            if(subscriptionTypeDescription == null) {
+                addExecutionError(ExecutionErrors.UnknownSubscriptionTypeDescription.name(), subscriptionKindName, subscriptionTypeName, languageIsoName);
+            }
+        }
+
+        return subscriptionTypeDescription;
+    }
+
+    @Override
+    public SubscriptionType getLockEntity(SubscriptionTypeDescription subscriptionTypeDescription) {
+        return subscriptionTypeDescription.getSubscriptionType();
+    }
+
+    @Override
+    public void fillInResult(EditSubscriptionTypeDescriptionResult result, SubscriptionTypeDescription subscriptionTypeDescription) {
+        result.setSubscriptionTypeDescription(subscriptionControl.getSubscriptionTypeDescriptionTransfer(getUserVisit(), subscriptionTypeDescription));
+    }
+
+    @Override
+    public void doLock(SubscriptionTypeDescriptionEdit edit, SubscriptionTypeDescription subscriptionTypeDescription) {
+        edit.setDescription(subscriptionTypeDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(SubscriptionTypeDescription subscriptionTypeDescription) {
+        var subscriptionTypeDescriptionValue = subscriptionControl.getSubscriptionTypeDescriptionValue(subscriptionTypeDescription);
+
+        subscriptionTypeDescriptionValue.setDescription(edit.getDescription());
+
+        subscriptionControl.updateSubscriptionTypeDescriptionFromValue(subscriptionTypeDescriptionValue, getPartyPK());
+    }
+
 }

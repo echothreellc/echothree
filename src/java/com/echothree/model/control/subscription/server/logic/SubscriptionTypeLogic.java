@@ -49,6 +49,7 @@ public class SubscriptionTypeLogic
 
     @Inject
     ParameterUtils parameterUtils;
+
     @Inject
     SubscriptionControl subscriptionControl;
 
