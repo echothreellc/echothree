@@ -58,7 +58,7 @@ public class EditAction
             if(forwardKey == null) {
                 var actionForm = (EditActionForm)form;
                 var commandForm = ContactUtil.getHome().getEditPostalAddressFormatForm();
-                var spec = ContactUtil.getHome().getPostalAddressFormatSpec();
+                var spec = ContactUtil.getHome().getPostalAddressFormatUniversalSpec();
                 
                 if(originalPostalAddressFormatName == null)
                     originalPostalAddressFormatName = actionForm.getOriginalPostalAddressFormatName();
