@@ -23,6 +23,7 @@ import com.echothree.model.data.rating.server.entity.RatingTypeListItem;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
@@ -39,14 +40,15 @@ public class RatingTypeListItemLogic
     protected RatingTypeListItemLogic() {
         super();
     }
-    
-    public RatingTypeListItem getRatingTypeListItemByName(final ExecutionErrorAccumulator eea, final RatingType ratingType, final String ratingTypeListItemName) {
-        var ratingTypeListItem = ratingControl.getRatingTypeListItemByName(ratingType, ratingTypeListItemName);
+
+    public RatingTypeListItem getRatingTypeListItemByName(final ExecutionErrorAccumulator eea, final RatingType ratingType, final String ratingTypeListItemName,
+            final EntityPermission entityPermission) {
+        var ratingTypeListItem = ratingControl.getRatingTypeListItemByName(ratingType, ratingTypeListItemName, entityPermission);
 
         if(ratingTypeListItem == null) {
             var ratingTypeDetail = ratingType.getLastDetail();
             var entityTypeDetail = ratingTypeDetail.getEntityType().getLastDetail();
-            
+
             handleExecutionError(UnknownRatingTypeListItemNameException.class, eea, ExecutionErrors.UnknownRatingTypeListItemName.name(),
                     entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(),
                     ratingTypeDetail.getRatingTypeName(), ratingTypeListItemName);
@@ -55,16 +57,36 @@ public class RatingTypeListItemLogic
         return ratingTypeListItem;
     }
 
+    public RatingTypeListItem getRatingTypeListItemByName(final ExecutionErrorAccumulator eea, final RatingType ratingType,
+            final String ratingTypeListItemName) {
+        return getRatingTypeListItemByName(eea, ratingType, ratingTypeListItemName, EntityPermission.READ_ONLY);
+    }
+
+    public RatingTypeListItem getRatingTypeListItemByNameForUpdate(final ExecutionErrorAccumulator eea, final RatingType ratingType,
+            final String ratingTypeListItemName) {
+        return getRatingTypeListItemByName(eea, ratingType, ratingTypeListItemName, EntityPermission.READ_WRITE);
+    }
+
     public RatingTypeListItem getRatingTypeListItemByName(final ExecutionErrorAccumulator eea, final String componentVendorName, final String entityTypeName,
-            final String ratingTypeName, final String ratingTypeListItemName) {
+            final String ratingTypeName, final String ratingTypeListItemName, final EntityPermission entityPermission) {
         var ratingType = ratingTypeLogic.getRatingTypeByName(eea, componentVendorName, entityTypeName, ratingTypeName);
         RatingTypeListItem ratingTypeListItem = null;
-        
+
         if(!hasExecutionErrors(eea)) {
-            ratingTypeListItem = getRatingTypeListItemByName(eea, ratingType, ratingTypeListItemName);
+            ratingTypeListItem = getRatingTypeListItemByName(eea, ratingType, ratingTypeListItemName, entityPermission);
         }
-        
+
         return ratingTypeListItem;
     }
-    
+
+    public RatingTypeListItem getRatingTypeListItemByName(final ExecutionErrorAccumulator eea, final String componentVendorName,
+            final String entityTypeName, final String ratingTypeName, final String ratingTypeListItemName) {
+        return getRatingTypeListItemByName(eea, componentVendorName, entityTypeName, ratingTypeName, ratingTypeListItemName, EntityPermission.READ_ONLY);
+    }
+
+    public RatingTypeListItem getRatingTypeListItemByNameForUpdate(final ExecutionErrorAccumulator eea, final String componentVendorName,
+            final String entityTypeName, final String ratingTypeName, final String ratingTypeListItemName) {
+        return getRatingTypeListItemByName(eea, componentVendorName, entityTypeName, ratingTypeName, ratingTypeListItemName, EntityPermission.READ_WRITE);
+    }
+
 }

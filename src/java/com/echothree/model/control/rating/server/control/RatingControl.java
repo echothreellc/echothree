@@ -171,7 +171,7 @@ public class RatingControl
         return getRatingTypes(entityType, EntityPermission.READ_WRITE);
     }
     
-    private RatingType getRatingTypeByName(EntityType entityType, String ratingTypeName, EntityPermission entityPermission) {
+    public RatingType getRatingTypeByName(EntityType entityType, String ratingTypeName, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(RatingTypes.fields())
                 .from(RatingTypes)
@@ -482,7 +482,7 @@ public class RatingControl
                 .orElse(0L);
     }
 
-    private RatingTypeListItem getRatingTypeListItemByName(RatingType ratingType, String ratingTypeListItemName,
+    public RatingTypeListItem getRatingTypeListItemByName(RatingType ratingType, String ratingTypeListItemName,
             EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(RatingTypeListItems.fields())
@@ -731,7 +731,7 @@ public class RatingControl
         return ratingTypeListItemDescription;
     }
     
-    private RatingTypeListItemDescription getRatingTypeListItemDescription(RatingTypeListItem ratingTypeListItem, Language language, EntityPermission entityPermission) {
+    public RatingTypeListItemDescription getRatingTypeListItemDescription(RatingTypeListItem ratingTypeListItem, Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(RatingTypeListItemDescriptions.fields())
                 .from(RatingTypeListItemDescriptions)

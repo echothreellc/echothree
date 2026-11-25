@@ -24,6 +24,7 @@ import com.echothree.model.data.rating.server.entity.RatingType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
@@ -40,13 +41,14 @@ public class RatingTypeLogic
     protected RatingTypeLogic() {
         super();
     }
-    
-    public RatingType getRatingTypeByName(final ExecutionErrorAccumulator eea, final EntityType entityType, final String ratingTypeName) {
-        var ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
+
+    public RatingType getRatingTypeByName(final ExecutionErrorAccumulator eea, final EntityType entityType, final String ratingTypeName,
+            final EntityPermission entityPermission) {
+        var ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName, entityPermission);
 
         if(ratingType == null) {
             var entityTypeDetail = entityType.getLastDetail();
-            
+
             handleExecutionError(UnknownRatingTypeNameException.class, eea, ExecutionErrors.UnknownRatingTypeName.name(),
                     entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(), ratingTypeName);
         }
@@ -54,15 +56,36 @@ public class RatingTypeLogic
         return ratingType;
     }
 
-    public RatingType getRatingTypeByName(final ExecutionErrorAccumulator eea, final String componentVendorName, final String entityTypeName, final String ratingTypeName) {
+    public RatingType getRatingTypeByName(final ExecutionErrorAccumulator eea, final EntityType entityType,
+            final String ratingTypeName) {
+        return getRatingTypeByName(eea, entityType, ratingTypeName, EntityPermission.READ_ONLY);
+    }
+
+    public RatingType getRatingTypeByNameForUpdate(final ExecutionErrorAccumulator eea, final EntityType entityType,
+            final String ratingTypeName) {
+        return getRatingTypeByName(eea, entityType, ratingTypeName, EntityPermission.READ_WRITE);
+    }
+
+    public RatingType getRatingTypeByName(final ExecutionErrorAccumulator eea, final String componentVendorName,
+            final String entityTypeName, final String ratingTypeName, final EntityPermission entityPermission) {
         var entityType = entityTypeLogic.getEntityTypeByName(eea, componentVendorName, entityTypeName);
         RatingType ratingType = null;
-        
+
         if(!hasExecutionErrors(eea)) {
-            ratingType = getRatingTypeByName(eea, entityType, ratingTypeName);
+            ratingType = getRatingTypeByName(eea, entityType, ratingTypeName, entityPermission);
         }
-        
+
         return ratingType;
     }
-    
+
+    public RatingType getRatingTypeByName(final ExecutionErrorAccumulator eea, final String componentVendorName,
+            final String entityTypeName, final String ratingTypeName) {
+        return getRatingTypeByName(eea, componentVendorName, entityTypeName, ratingTypeName, EntityPermission.READ_ONLY);
+    }
+
+    public RatingType getRatingTypeByNameForUpdate(final ExecutionErrorAccumulator eea, final String componentVendorName,
+            final String entityTypeName, final String ratingTypeName) {
+        return getRatingTypeByName(eea, componentVendorName, entityTypeName, ratingTypeName, EntityPermission.READ_WRITE);
+    }
+
 }
