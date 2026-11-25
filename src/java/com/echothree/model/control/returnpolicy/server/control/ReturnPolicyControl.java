@@ -1254,7 +1254,7 @@ public class ReturnPolicyControl
                 .orElse(0L);
     }
 
-    private ReturnPolicyReason getReturnPolicyReason(ReturnPolicy returnPolicy, ReturnReason returnReason, EntityPermission entityPermission) {
+    public ReturnPolicyReason getReturnPolicyReason(ReturnPolicy returnPolicy, ReturnReason returnReason, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(ReturnPolicyReasons.fields())
                 .from(ReturnPolicyReasons)

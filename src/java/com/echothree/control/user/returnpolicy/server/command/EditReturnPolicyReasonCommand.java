@@ -18,20 +18,19 @@ package com.echothree.control.user.returnpolicy.server.command;
 
 import com.echothree.control.user.returnpolicy.common.edit.ReturnPolicyEditFactory;
 import com.echothree.control.user.returnpolicy.common.edit.ReturnPolicyReasonEdit;
-import com.echothree.control.user.returnpolicy.common.form.EditReturnPolicyReasonForm;
+import com.echothree.control.user.returnpolicy.common.result.EditReturnPolicyReasonResult;
 import com.echothree.control.user.returnpolicy.common.result.ReturnPolicyResultFactory;
 import com.echothree.control.user.returnpolicy.common.spec.ReturnPolicyReasonSpec;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
+import com.echothree.model.control.returnpolicy.server.logic.ReturnPolicyReasonLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
+import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicyReason;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -41,12 +40,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditReturnPolicyReasonCommand
-        extends BaseEditCommand<ReturnPolicyReasonSpec, ReturnPolicyReasonEdit> {
-    
+        extends BaseAbstractEditCommand<ReturnPolicyReasonSpec, ReturnPolicyReasonEdit, EditReturnPolicyReasonResult, ReturnPolicyReason, ReturnPolicy> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -60,7 +59,7 @@ public class EditReturnPolicyReasonCommand
                 new FieldDefinition("ReturnPolicyName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ReturnReasonName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
@@ -70,79 +69,54 @@ public class EditReturnPolicyReasonCommand
     @Inject
     ReturnPolicyControl returnPolicyControl;
 
-    
+    @Inject
+    ReturnPolicyReasonLogic returnPolicyReasonLogic;
+
     /** Creates a new instance of EditReturnPolicyReasonCommand */
     public EditReturnPolicyReasonCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = ReturnPolicyResultFactory.getEditReturnPolicyReasonResult();
-        var returnPolicyName = spec.getReturnPolicyName();
-        var returnKindName = spec.getReturnKindName();
-        var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
-        
-        if(returnKind != null) {
-            var returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
-            
-            if(returnPolicy != null) {
-                var returnReasonName = spec.getReturnReasonName();
-                var returnReason = returnPolicyControl.getReturnReasonByName(returnKind, returnReasonName);
-                
-                if(returnReason != null) {
-                    if(editMode.equals(EditMode.LOCK)) {
-                        var returnPolicyReason = returnPolicyControl.getReturnPolicyReason(returnPolicy, returnReason);
-                        
-                        if(returnPolicyReason != null) {
-                            result.setReturnPolicyReason(returnPolicyControl.getReturnPolicyReasonTransfer(getUserVisit(), returnPolicyReason));
-                            
-                            if(lockEntity(returnPolicy)) {
-                                var edit = ReturnPolicyEditFactory.getReturnPolicyReasonEdit();
-                                
-                                result.setEdit(edit);
-                                edit.setIsDefault(returnPolicyReason.getIsDefault().toString());
-                                edit.setSortOrder(returnPolicyReason.getSortOrder().toString());
-                                
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                            }
-                            
-                            result.setEntityLock(getEntityLockTransfer(returnPolicyReason));
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownReturnPolicyReason.name());
-                        }
-                    } else if(editMode.equals(EditMode.UPDATE)) {
-                        var returnPolicyReasonValue = returnPolicyControl.getReturnPolicyReasonValueForUpdate(returnPolicy, returnReason);
-                        
-                        if(returnPolicyReasonValue != null) {
-                            if(lockEntityForUpdate(returnPolicy)) {
-                                try {
-                                    returnPolicyReasonValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
-                                    returnPolicyReasonValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
-                                    
-                                    returnPolicyControl.updateReturnPolicyReasonFromValue(returnPolicyReasonValue, getPartyPK());
-                                } finally {
-                                    unlockEntity(returnPolicy);
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockStale.name());
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownReturnPolicyReason.name());
-                        }
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownReturnReasonName.name(), returnReasonName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownReturnPolicyName.name(), returnPolicyName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownReturnKindName.name(), returnKindName);
-        }
-        
-        return result;
+    public EditReturnPolicyReasonResult getResult() {
+        return ReturnPolicyResultFactory.getEditReturnPolicyReasonResult();
     }
-    
+
+    @Override
+    public ReturnPolicyReasonEdit getEdit() {
+        return ReturnPolicyEditFactory.getReturnPolicyReasonEdit();
+    }
+
+    @Override
+    public ReturnPolicyReason getEntity(EditReturnPolicyReasonResult result) {
+        return returnPolicyReasonLogic.getReturnPolicyReason(this, spec.getReturnKindName(), spec.getReturnPolicyName(),
+                spec.getReturnReasonName(), editModeToEntityPermission(editMode));
+    }
+
+    @Override
+    public ReturnPolicy getLockEntity(ReturnPolicyReason returnPolicyReason) {
+        return returnPolicyReason.getReturnPolicy();
+    }
+
+    @Override
+    public void fillInResult(EditReturnPolicyReasonResult result, ReturnPolicyReason returnPolicyReason) {
+        result.setReturnPolicyReason(returnPolicyControl.getReturnPolicyReasonTransfer(getUserVisit(), returnPolicyReason));
+    }
+
+    @Override
+    public void doLock(ReturnPolicyReasonEdit edit, ReturnPolicyReason returnPolicyReason) {
+        edit.setIsDefault(returnPolicyReason.getIsDefault().toString());
+        edit.setSortOrder(returnPolicyReason.getSortOrder().toString());
+    }
+
+    @Override
+    public void doUpdate(ReturnPolicyReason returnPolicyReason) {
+        var returnPolicyReasonValue = returnPolicyReason.getReturnPolicyReasonValue().clone();
+
+        returnPolicyReasonValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+        returnPolicyReasonValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        returnPolicyControl.updateReturnPolicyReasonFromValue(returnPolicyReasonValue, getPartyPK());
+    }
+
 }
