@@ -18,22 +18,12 @@ package com.echothree.control.user.contact.common.result;
 
 import com.echothree.control.user.contact.common.edit.PostalAddressFormatEdit;
 import com.echothree.model.control.contact.common.transfer.PostalAddressFormatTransfer;
-import com.echothree.model.control.core.common.transfer.EntityLockTransfer;
 import com.echothree.util.common.command.BaseEditResult;
 
 public interface EditPostalAddressFormatResult
-        extends BaseEditResult {
+        extends BaseEditResult<PostalAddressFormatEdit> {
     
     PostalAddressFormatTransfer getPostalAddressFormat();
     void setPostalAddressFormat(PostalAddressFormatTransfer postalAddressFormat);
-    
-    @Override
-    PostalAddressFormatEdit getEdit();
-    void setEdit(PostalAddressFormatEdit edit);
-    
-    @Override
-    EntityLockTransfer getEntityLock();
-    @Override
-    void setEntityLock(EntityLockTransfer entityLock);
     
 }

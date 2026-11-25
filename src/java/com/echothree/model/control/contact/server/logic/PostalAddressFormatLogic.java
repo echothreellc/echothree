@@ -16,8 +16,13 @@
 
 package com.echothree.model.control.contact.server.logic;
 
+import com.echothree.control.user.contact.common.spec.PostalAddressFormatUniversalSpec;
 import com.echothree.model.control.contact.common.exception.UnknownPostalAddressFormatNameException;
 import com.echothree.model.control.contact.server.control.ContactControl;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.data.contact.server.entity.PostalAddressFormat;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
@@ -32,6 +37,9 @@ public class PostalAddressFormatLogic
 
     @Inject
     ContactControl contactControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected PostalAddressFormatLogic() {
         super();
@@ -54,6 +62,40 @@ public class PostalAddressFormatLogic
 
     public PostalAddressFormat getPostalAddressFormatByNameForUpdate(final ExecutionErrorAccumulator eea, final String postalAddressFormatName) {
         return getPostalAddressFormatByName(eea, postalAddressFormatName, EntityPermission.READ_WRITE);
+    }
+
+    public PostalAddressFormat getPostalAddressFormatByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final PostalAddressFormatUniversalSpec universalSpec, final EntityPermission entityPermission) {
+        PostalAddressFormat postalAddressFormat = null;
+        var postalAddressFormatName = universalSpec.getPostalAddressFormatName();
+        var parameterCount = (postalAddressFormatName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
+
+        if(parameterCount == 1) {
+            if(postalAddressFormatName == null) {
+                var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.PostalAddressFormat.name());
+
+                if(eea == null || !eea.hasExecutionErrors()) {
+                    postalAddressFormat = contactControl.getPostalAddressFormatByEntityInstance(entityInstance, entityPermission);
+                }
+            } else {
+                postalAddressFormat = getPostalAddressFormatByName(eea, postalAddressFormatName, entityPermission);
+            }
+        } else {
+            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return postalAddressFormat;
+    }
+
+    public PostalAddressFormat getPostalAddressFormatByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final PostalAddressFormatUniversalSpec universalSpec) {
+        return getPostalAddressFormatByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+    }
+
+    public PostalAddressFormat getPostalAddressFormatByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
+            final PostalAddressFormatUniversalSpec universalSpec) {
+        return getPostalAddressFormatByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
     }
 
 }
