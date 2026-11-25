@@ -58,7 +58,7 @@ public class EditAction
             if(forwardKey == null) {
                 var actionForm = (EditActionForm)form;
                 var commandForm = AssociateUtil.getHome().getEditAssociateProgramForm();
-                var spec = AssociateUtil.getHome().getAssociateProgramSpec();
+                var spec = AssociateUtil.getHome().getAssociateProgramUniversalSpec();
                 
                 if(originalAssociateProgramName == null)
                     originalAssociateProgramName = actionForm.getOriginalAssociateProgramName();

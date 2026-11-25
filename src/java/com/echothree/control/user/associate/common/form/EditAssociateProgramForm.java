@@ -17,11 +17,11 @@
 package com.echothree.control.user.associate.common.form;
 
 import com.echothree.control.user.associate.common.edit.AssociateProgramEdit;
-import com.echothree.control.user.associate.common.spec.AssociateProgramSpec;
+import com.echothree.control.user.associate.common.spec.AssociateProgramUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditAssociateProgramForm
-        extends BaseEditForm<AssociateProgramSpec, AssociateProgramEdit> {
+        extends BaseEditForm<AssociateProgramUniversalSpec, AssociateProgramEdit> {
     
     // Nothing additional beyond BaseEditForm
     
