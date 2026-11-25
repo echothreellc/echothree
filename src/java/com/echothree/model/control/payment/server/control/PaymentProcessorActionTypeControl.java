@@ -370,7 +370,7 @@ public class PaymentProcessorActionTypeControl
     }
 
 
-    private PaymentProcessorActionTypeDescription getPaymentProcessorActionTypeDescription(final PaymentProcessorActionType paymentProcessorActionType,
+    public PaymentProcessorActionTypeDescription getPaymentProcessorActionTypeDescription(final PaymentProcessorActionType paymentProcessorActionType,
             final Language language, final EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PaymentProcessorActionTypeDescriptions.fields())
