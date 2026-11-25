@@ -16,6 +16,11 @@
 
 package com.echothree.model.control.party.server.logic;
 
+import com.echothree.control.user.party.common.spec.GenderUniversalSpec;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.exception.UnknownGenderNameException;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.Gender;
@@ -32,6 +37,9 @@ public class GenderLogic
 
     @Inject
     PartyControl partyControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected GenderLogic() {
         super();
@@ -54,6 +62,40 @@ public class GenderLogic
 
     public Gender getGenderByNameForUpdate(final ExecutionErrorAccumulator eea, final String genderName) {
         return getGenderByName(eea, genderName, EntityPermission.READ_WRITE);
+    }
+
+    public Gender getGenderByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final GenderUniversalSpec universalSpec, final EntityPermission entityPermission) {
+        Gender gender = null;
+        var genderName = universalSpec.getGenderName();
+        var parameterCount = (genderName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
+
+        if(parameterCount == 1) {
+            if(genderName == null) {
+                var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.Gender.name());
+
+                if(eea == null || !eea.hasExecutionErrors()) {
+                    gender = partyControl.getGenderByEntityInstance(entityInstance, entityPermission);
+                }
+            } else {
+                gender = getGenderByName(eea, genderName, entityPermission);
+            }
+        } else {
+            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return gender;
+    }
+
+    public Gender getGenderByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final GenderUniversalSpec universalSpec) {
+        return getGenderByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+    }
+
+    public Gender getGenderByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
+            final GenderUniversalSpec universalSpec) {
+        return getGenderByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
     }
 
 }
