@@ -853,7 +853,7 @@ public class SubscriptionControl
         return subscriptionTypeDescription;
     }
     
-    private SubscriptionTypeDescription getSubscriptionTypeDescription(SubscriptionType subscriptionType, Language language,
+    public SubscriptionTypeDescription getSubscriptionTypeDescription(SubscriptionType subscriptionType, Language language,
             EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(SubscriptionTypeDescriptions.fields())
