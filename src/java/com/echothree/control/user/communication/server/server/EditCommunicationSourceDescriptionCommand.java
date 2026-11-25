@@ -18,36 +18,35 @@ package com.echothree.control.user.communication.server.server;
 
 import com.echothree.control.user.communication.common.edit.CommunicationEditFactory;
 import com.echothree.control.user.communication.common.edit.CommunicationSourceDescriptionEdit;
-import com.echothree.control.user.communication.common.form.EditCommunicationSourceDescriptionForm;
 import com.echothree.control.user.communication.common.result.CommunicationResultFactory;
+import com.echothree.control.user.communication.common.result.EditCommunicationSourceDescriptionResult;
 import com.echothree.control.user.communication.common.spec.CommunicationSourceDescriptionSpec;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
-import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.communication.server.logic.CommunicationSourceLogic;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
+import com.echothree.model.data.communication.server.entity.CommunicationSource;
+import com.echothree.model.data.communication.server.entity.CommunicationSourceDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
-import java.util.ArrayList;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class EditCommunicationSourceDescriptionCommand
-        extends BaseEditCommand<CommunicationSourceDescriptionSpec, CommunicationSourceDescriptionEdit> {
-    
+        extends BaseAbstractEditCommand<CommunicationSourceDescriptionSpec, CommunicationSourceDescriptionEdit, EditCommunicationSourceDescriptionResult, CommunicationSourceDescription, CommunicationSource> {
+
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CommunicationSourceName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
@@ -57,72 +56,68 @@ public class EditCommunicationSourceDescriptionCommand
     CommunicationControl communicationControl;
 
     @Inject
-    PartyControl partyControl;
-    
+    CommunicationSourceLogic communicationSourceLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
+
     /** Creates a new instance of EditCommunicationSourceDescriptionCommand */
     public EditCommunicationSourceDescriptionCommand() {
         super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = CommunicationResultFactory.getEditCommunicationSourceDescriptionResult();
-        var communicationSourceName = spec.getCommunicationSourceName();
-        var communicationSource = communicationControl.getCommunicationSourceByName(communicationSourceName);
-        
-        if(communicationSource != null) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = partyControl.getLanguageByIsoName(languageIsoName);
-            
-            if(language != null) {
-                if(editMode.equals(EditMode.LOCK)) {
-                    var communicationSourceDescription = communicationControl.getCommunicationSourceDescription(communicationSource, language);
-                    
-                    if(communicationSourceDescription != null) {
-                        result.setCommunicationSourceDescription(communicationControl.getCommunicationSourceDescriptionTransfer(getUserVisit(), communicationSourceDescription));
-                        
-                        if(lockEntity(communicationSource)) {
-                            var edit = CommunicationEditFactory.getCommunicationSourceDescriptionEdit();
-                            
-                            result.setEdit(edit);
-                            edit.setDescription(communicationSourceDescription.getDescription());
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                        }
-                        
-                        result.setEntityLock(getEntityLockTransfer(communicationSource));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownCommunicationSourceDescription.name());
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var communicationSourceDescriptionValue = communicationControl.getCommunicationSourceDescriptionValueForUpdate(communicationSource, language);
-                    
-                    if(communicationSourceDescriptionValue != null) {
-                        if(lockEntityForUpdate(communicationSource)) {
-                            try {
-                                var description = edit.getDescription();
-                                
-                                communicationSourceDescriptionValue.setDescription(description);
-                                
-                                communicationControl.updateCommunicationSourceDescriptionFromValue(communicationSourceDescriptionValue, getPartyPK());
-                            } finally {
-                                unlockEntity(communicationSource);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownCommunicationSourceDescription.name());
-                    }
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownCommunicationSourceName.name(), communicationSourceName);
-        }
-        
-        return result;
+    public EditCommunicationSourceDescriptionResult getResult() {
+        return CommunicationResultFactory.getEditCommunicationSourceDescriptionResult();
     }
-    
+
+    @Override
+    public CommunicationSourceDescriptionEdit getEdit() {
+        return CommunicationEditFactory.getCommunicationSourceDescriptionEdit();
+    }
+
+    @Override
+    public CommunicationSourceDescription getEntity(EditCommunicationSourceDescriptionResult result) {
+        CommunicationSourceDescription communicationSourceDescription = null;
+        var communicationSourceName = spec.getCommunicationSourceName();
+        var languageIsoName = spec.getLanguageIsoName();
+        var communicationSource = communicationSourceLogic.getCommunicationSourceByName(this, communicationSourceName);
+        var language = languageLogic.getLanguageByName(this, languageIsoName);
+
+        if(!hasExecutionErrors()) {
+            communicationSourceDescription = communicationControl.getCommunicationSourceDescription(communicationSource, language,
+                    editModeToEntityPermission(editMode));
+
+            if(communicationSourceDescription == null) {
+                addExecutionError(ExecutionErrors.UnknownCommunicationSourceDescription.name(), communicationSourceName, languageIsoName);
+            }
+        }
+
+        return communicationSourceDescription;
+    }
+
+    @Override
+    public CommunicationSource getLockEntity(CommunicationSourceDescription communicationSourceDescription) {
+        return communicationSourceDescription.getCommunicationSource();
+    }
+
+    @Override
+    public void fillInResult(EditCommunicationSourceDescriptionResult result, CommunicationSourceDescription communicationSourceDescription) {
+        result.setCommunicationSourceDescription(communicationControl.getCommunicationSourceDescriptionTransfer(getUserVisit(), communicationSourceDescription));
+    }
+
+    @Override
+    public void doLock(CommunicationSourceDescriptionEdit edit, CommunicationSourceDescription communicationSourceDescription) {
+        edit.setDescription(communicationSourceDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(CommunicationSourceDescription communicationSourceDescription) {
+        var communicationSourceDescriptionValue = communicationControl.getCommunicationSourceDescriptionValue(communicationSourceDescription);
+
+        communicationSourceDescriptionValue.setDescription(edit.getDescription());
+
+        communicationControl.updateCommunicationSourceDescriptionFromValue(communicationSourceDescriptionValue, getPartyPK());
+    }
+
 }
