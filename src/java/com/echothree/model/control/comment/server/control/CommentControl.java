@@ -198,7 +198,7 @@ public class CommentControl
         return getCommentTypes(entityType, EntityPermission.READ_WRITE);
     }
     
-    private CommentType getCommentTypeByName(EntityType entityType, String commentTypeName, EntityPermission entityPermission) {
+    public CommentType getCommentTypeByName(EntityType entityType, String commentTypeName, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(CommentTypes.fields())
                 .from(CommentTypes)
@@ -526,7 +526,7 @@ public class CommentControl
         return getCommentUsageTypes(commentType, EntityPermission.READ_WRITE);
     }
     
-    private CommentUsageType getCommentUsageTypeByName(CommentType commentType, String commentUsageTypeName,
+    public CommentUsageType getCommentUsageTypeByName(CommentType commentType, String commentUsageTypeName,
             EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(CommentUsageTypes.fields())
@@ -644,7 +644,7 @@ public class CommentControl
         return commentUsageTypeDescription;
     }
     
-    private CommentUsageTypeDescription getCommentUsageTypeDescription(CommentUsageType commentUsageType, Language language,
+    public CommentUsageTypeDescription getCommentUsageTypeDescription(CommentUsageType commentUsageType, Language language,
             EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(CommentUsageTypeDescriptions.fields())
