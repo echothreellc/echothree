@@ -373,7 +373,7 @@ public class PaymentProcessorTypeControl
     }
 
 
-    private PaymentProcessorTypeDescription getPaymentProcessorTypeDescription(final PaymentProcessorType paymentProcessorType,
+    public PaymentProcessorTypeDescription getPaymentProcessorTypeDescription(final PaymentProcessorType paymentProcessorType,
             final Language language, final EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PaymentProcessorTypeDescriptions.fields())
