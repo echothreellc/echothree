@@ -18,21 +18,21 @@ package com.echothree.control.user.returnpolicy.server.command;
 
 import com.echothree.control.user.returnpolicy.common.edit.ReturnPolicyEditFactory;
 import com.echothree.control.user.returnpolicy.common.edit.ReturnReasonDescriptionEdit;
-import com.echothree.control.user.returnpolicy.common.form.EditReturnReasonDescriptionForm;
+import com.echothree.control.user.returnpolicy.common.result.EditReturnReasonDescriptionResult;
 import com.echothree.control.user.returnpolicy.common.result.ReturnPolicyResultFactory;
 import com.echothree.control.user.returnpolicy.common.spec.ReturnReasonDescriptionSpec;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
+import com.echothree.model.control.returnpolicy.server.logic.ReturnReasonLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.returnpolicy.server.entity.ReturnReason;
+import com.echothree.model.data.returnpolicy.server.entity.ReturnReasonDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -42,12 +42,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditReturnReasonDescriptionCommand
-        extends BaseEditCommand<ReturnReasonDescriptionSpec, ReturnReasonDescriptionEdit> {
-    
+        extends BaseAbstractEditCommand<ReturnReasonDescriptionSpec, ReturnReasonDescriptionEdit, EditReturnReasonDescriptionResult, ReturnReasonDescription, ReturnReason> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -61,90 +61,79 @@ public class EditReturnReasonDescriptionCommand
                 new FieldDefinition("ReturnReasonName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
 
     @Inject
-    PartyControl partyControl;
-
-    @Inject
     ReturnPolicyControl returnPolicyControl;
 
-    
+    @Inject
+    LanguageLogic languageLogic;
+
+    @Inject
+    ReturnReasonLogic returnReasonLogic;
+
     /** Creates a new instance of EditReturnReasonDescriptionCommand */
     public EditReturnReasonDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = ReturnPolicyResultFactory.getEditReturnReasonDescriptionResult();
-        var returnKindName = spec.getReturnKindName();
-        var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
-        
-        if(returnKind != null) {
-            var returnReasonName = spec.getReturnReasonName();
-            var returnReason = returnPolicyControl.getReturnReasonByName(returnKind, returnReasonName);
-            
-            if(returnReason != null) {
-                var languageIsoName = spec.getLanguageIsoName();
-                var language = partyControl.getLanguageByIsoName(languageIsoName);
-                
-                if(language != null) {
-                    if(editMode.equals(EditMode.LOCK)) {
-                        var returnReasonDescription = returnPolicyControl.getReturnReasonDescription(returnReason, language);
-                        
-                        if(returnReasonDescription != null) {
-                            result.setReturnReasonDescription(returnPolicyControl.getReturnReasonDescriptionTransfer(getUserVisit(), returnReasonDescription));
-                            
-                            if(lockEntity(returnReason)) {
-                                var edit = ReturnPolicyEditFactory.getReturnReasonDescriptionEdit();
-                                
-                                result.setEdit(edit);
-                                edit.setDescription(returnReasonDescription.getDescription());
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                            }
-                            
-                            result.setEntityLock(getEntityLockTransfer(returnReason));
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownReturnReasonDescription.name());
-                        }
-                    } else if(editMode.equals(EditMode.UPDATE)) {
-                        var returnReasonDescriptionValue = returnPolicyControl.getReturnReasonDescriptionValueForUpdate(returnReason, language);
-                        
-                        if(returnReasonDescriptionValue != null) {
-                            if(lockEntityForUpdate(returnReason)) {
-                                try {
-                                    var description = edit.getDescription();
-                                    
-                                    returnReasonDescriptionValue.setDescription(description);
-                                    
-                                    returnPolicyControl.updateReturnReasonDescriptionFromValue(returnReasonDescriptionValue, getPartyPK());
-                                } finally {
-                                    unlockEntity(returnReason);
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockStale.name());
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownReturnReasonDescription.name());
-                        }
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownReturnReasonName.name(), returnReasonName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownReturnKindName.name(), returnKindName);
-        }
-        
-        return result;
+    public EditReturnReasonDescriptionResult getResult() {
+        return ReturnPolicyResultFactory.getEditReturnReasonDescriptionResult();
     }
-    
+
+    @Override
+    public ReturnReasonDescriptionEdit getEdit() {
+        return ReturnPolicyEditFactory.getReturnReasonDescriptionEdit();
+    }
+
+    @Override
+    public ReturnReasonDescription getEntity(EditReturnReasonDescriptionResult result) {
+        ReturnReasonDescription returnReasonDescription = null;
+        var returnKindName = spec.getReturnKindName();
+        var returnReasonName = spec.getReturnReasonName();
+        var languageIsoName = spec.getLanguageIsoName();
+        var returnReason = returnReasonLogic.getReturnReasonByName(this, returnKindName, returnReasonName);
+        var language = languageLogic.getLanguageByName(this, languageIsoName);
+
+        if(!hasExecutionErrors()) {
+            returnReasonDescription = returnPolicyControl.getReturnReasonDescription(returnReason, language,
+                    editModeToEntityPermission(editMode));
+
+            if(returnReasonDescription == null) {
+                addExecutionError(ExecutionErrors.UnknownReturnReasonDescription.name(), returnKindName, returnReasonName, languageIsoName);
+            }
+        }
+
+        return returnReasonDescription;
+    }
+
+    @Override
+    public ReturnReason getLockEntity(ReturnReasonDescription returnReasonDescription) {
+        return returnReasonDescription.getReturnReason();
+    }
+
+    @Override
+    public void fillInResult(EditReturnReasonDescriptionResult result, ReturnReasonDescription returnReasonDescription) {
+        result.setReturnReasonDescription(returnPolicyControl.getReturnReasonDescriptionTransfer(getUserVisit(), returnReasonDescription));
+    }
+
+    @Override
+    public void doLock(ReturnReasonDescriptionEdit edit, ReturnReasonDescription returnReasonDescription) {
+        edit.setDescription(returnReasonDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(ReturnReasonDescription returnReasonDescription) {
+        var returnReasonDescriptionValue = returnPolicyControl.getReturnReasonDescriptionValue(returnReasonDescription);
+
+        returnReasonDescriptionValue.setDescription(edit.getDescription());
+
+        returnPolicyControl.updateReturnReasonDescriptionFromValue(returnReasonDescriptionValue, getPartyPK());
+    }
+
 }
