@@ -369,7 +369,7 @@ public class PaymentMethodTypeControl
     }
 
 
-    private PaymentMethodTypeDescription getPaymentMethodTypeDescription(final PaymentMethodType paymentMethodType,
+    public PaymentMethodTypeDescription getPaymentMethodTypeDescription(final PaymentMethodType paymentMethodType,
             final Language language, final EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PaymentMethodTypeDescriptions.fields())
