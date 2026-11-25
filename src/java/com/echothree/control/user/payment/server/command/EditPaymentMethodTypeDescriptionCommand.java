@@ -18,21 +18,21 @@ package com.echothree.control.user.payment.server.command;
 
 import com.echothree.control.user.payment.common.edit.PaymentEditFactory;
 import com.echothree.control.user.payment.common.edit.PaymentMethodTypeDescriptionEdit;
-import com.echothree.control.user.payment.common.form.EditPaymentMethodTypeDescriptionForm;
+import com.echothree.control.user.payment.common.result.EditPaymentMethodTypeDescriptionResult;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.control.user.payment.common.spec.PaymentMethodTypeDescriptionSpec;
-import com.echothree.model.control.payment.server.control.PaymentMethodTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
+import com.echothree.model.control.payment.server.control.PaymentMethodTypeControl;
+import com.echothree.model.control.payment.server.logic.PaymentMethodTypeLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.payment.server.entity.PaymentMethodType;
+import com.echothree.model.data.payment.server.entity.PaymentMethodTypeDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -42,12 +42,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditPaymentMethodTypeDescriptionCommand
-        extends BaseEditCommand<PaymentMethodTypeDescriptionSpec, PaymentMethodTypeDescriptionEdit> {
-    
+        extends BaseAbstractEditCommand<PaymentMethodTypeDescriptionSpec, PaymentMethodTypeDescriptionEdit, EditPaymentMethodTypeDescriptionResult, PaymentMethodTypeDescription, PaymentMethodType> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -55,92 +55,83 @@ public class EditPaymentMethodTypeDescriptionCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.PaymentMethodType.name(), SecurityRoles.Description.name())
                 ))
         ));
-        
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PaymentMethodTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
 
     @Inject
-    PartyControl partyControl;
-
-    @Inject
     PaymentMethodTypeControl paymentMethodTypeControl;
 
-    
+    @Inject
+    LanguageLogic languageLogic;
+
+    @Inject
+    PaymentMethodTypeLogic paymentMethodTypeLogic;
+
     /** Creates a new instance of EditPaymentMethodTypeDescriptionCommand */
     public EditPaymentMethodTypeDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = PaymentResultFactory.getEditPaymentMethodTypeDescriptionResult();
-        var paymentMethodTypeName = spec.getPaymentMethodTypeName();
-        var paymentMethodType = paymentMethodTypeControl.getPaymentMethodTypeByName(paymentMethodTypeName);
-        
-        if(paymentMethodType != null) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = partyControl.getLanguageByIsoName(languageIsoName);
-            
-            if(language != null) {
-                if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    var paymentMethodTypeDescription = paymentMethodTypeControl.getPaymentMethodTypeDescription(paymentMethodType, language);
-                    
-                    if(paymentMethodTypeDescription != null) {
-                        if(editMode.equals(EditMode.LOCK)) {
-                            result.setPaymentMethodTypeDescription(paymentMethodTypeControl.getPaymentMethodTypeDescriptionTransfer(getUserVisit(), paymentMethodTypeDescription));
-
-                            if(lockEntity(paymentMethodType)) {
-                                var edit = PaymentEditFactory.getPaymentMethodTypeDescriptionEdit();
-
-                                result.setEdit(edit);
-                                edit.setDescription(paymentMethodTypeDescription.getDescription());
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                            }
-
-                            result.setEntityLock(getEntityLockTransfer(paymentMethodType));
-                        } else { // EditMode.ABANDON
-                            unlockEntity(paymentMethodType);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownPaymentMethodTypeDescription.name());
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var paymentMethodTypeDescriptionValue = paymentMethodTypeControl.getPaymentMethodTypeDescriptionValueForUpdate(paymentMethodType, language);
-                    
-                    if(paymentMethodTypeDescriptionValue != null) {
-                        if(lockEntityForUpdate(paymentMethodType)) {
-                            try {
-                                var description = edit.getDescription();
-                                
-                                paymentMethodTypeDescriptionValue.setDescription(description);
-                                
-                                paymentMethodTypeControl.updatePaymentMethodTypeDescriptionFromValue(paymentMethodTypeDescriptionValue, getPartyPK());
-                            } finally {
-                                unlockEntity(paymentMethodType);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownPaymentMethodTypeDescription.name());
-                    }
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownPaymentMethodTypeName.name(), paymentMethodTypeName);
-        }
-        
-        return result;
+    public EditPaymentMethodTypeDescriptionResult getResult() {
+        return PaymentResultFactory.getEditPaymentMethodTypeDescriptionResult();
     }
-    
+
+    @Override
+    public PaymentMethodTypeDescriptionEdit getEdit() {
+        return PaymentEditFactory.getPaymentMethodTypeDescriptionEdit();
+    }
+
+    @Override
+    public PaymentMethodTypeDescription getEntity(EditPaymentMethodTypeDescriptionResult result) {
+        PaymentMethodTypeDescription paymentMethodTypeDescription = null;
+        var paymentMethodTypeName = spec.getPaymentMethodTypeName();
+        var languageIsoName = spec.getLanguageIsoName();
+        var paymentMethodType = paymentMethodTypeLogic.getPaymentMethodTypeByName(this, paymentMethodTypeName);
+        var language = languageLogic.getLanguageByName(this, languageIsoName);
+
+        if(!hasExecutionErrors()) {
+            paymentMethodTypeDescription = paymentMethodTypeControl.getPaymentMethodTypeDescription(paymentMethodType, language,
+                    editModeToEntityPermission(editMode));
+
+            if(paymentMethodTypeDescription == null) {
+                addExecutionError(ExecutionErrors.UnknownPaymentMethodTypeDescription.name(), paymentMethodTypeName, languageIsoName);
+            }
+        }
+
+        return paymentMethodTypeDescription;
+    }
+
+    @Override
+    public PaymentMethodType getLockEntity(PaymentMethodTypeDescription paymentMethodTypeDescription) {
+        return paymentMethodTypeDescription.getPaymentMethodType();
+    }
+
+    @Override
+    public void fillInResult(EditPaymentMethodTypeDescriptionResult result, PaymentMethodTypeDescription paymentMethodTypeDescription) {
+        result.setPaymentMethodTypeDescription(paymentMethodTypeControl.getPaymentMethodTypeDescriptionTransfer(getUserVisit(), paymentMethodTypeDescription));
+    }
+
+    @Override
+    public void doLock(PaymentMethodTypeDescriptionEdit edit, PaymentMethodTypeDescription paymentMethodTypeDescription) {
+        edit.setDescription(paymentMethodTypeDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(PaymentMethodTypeDescription paymentMethodTypeDescription) {
+        var paymentMethodTypeDescriptionValue = paymentMethodTypeControl.getPaymentMethodTypeDescriptionValue(paymentMethodTypeDescription);
+
+        paymentMethodTypeDescriptionValue.setDescription(edit.getDescription());
+
+        paymentMethodTypeControl.updatePaymentMethodTypeDescriptionFromValue(paymentMethodTypeDescriptionValue, getPartyPK());
+    }
+
 }
