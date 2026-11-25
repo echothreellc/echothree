@@ -22,6 +22,7 @@ import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
@@ -35,9 +36,10 @@ public class DateTimeFormatLogic
     protected DateTimeFormatLogic() {
         super();
     }
-    
-    public DateTimeFormat getDateTimeFormatByName(final ExecutionErrorAccumulator eea, final String dateTimeFormatName) {
-        var dateTimeFormat = partyControl.getDateTimeFormatByName(dateTimeFormatName);
+
+    public DateTimeFormat getDateTimeFormatByName(final ExecutionErrorAccumulator eea, final String dateTimeFormatName,
+            final EntityPermission entityPermission) {
+        var dateTimeFormat = partyControl.getDateTimeFormatByName(dateTimeFormatName, entityPermission);
 
         if(dateTimeFormat == null) {
             handleExecutionError(UnknownDateTimeFormatNameException.class, eea, ExecutionErrors.UnknownDateTimeFormatName.name(), dateTimeFormatName);
@@ -45,5 +47,13 @@ public class DateTimeFormatLogic
 
         return dateTimeFormat;
     }
-    
+
+    public DateTimeFormat getDateTimeFormatByName(final ExecutionErrorAccumulator eea, final String dateTimeFormatName) {
+        return getDateTimeFormatByName(eea, dateTimeFormatName, EntityPermission.READ_ONLY);
+    }
+
+    public DateTimeFormat getDateTimeFormatByNameForUpdate(final ExecutionErrorAccumulator eea, final String dateTimeFormatName) {
+        return getDateTimeFormatByName(eea, dateTimeFormatName, EntityPermission.READ_WRITE);
+    }
+
 }

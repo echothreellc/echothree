@@ -1786,17 +1786,29 @@ public class PartyControl
         return dateTimeFormatFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
     }
     
-    public DateTimeFormat getDateTimeFormatByName(String dateTimeFormatName) {
-        var query = session.getDslContext()
+    public DateTimeFormat getDateTimeFormatByName(final String dateTimeFormatName, final EntityPermission entityPermission) {
+        var baseQuery = session.getDslContext()
                 .select(DateTimeFormats.fields())
                 .from(DateTimeFormats)
-                .join(DateTimeFormatDetails).onKey(DATE_TIME_FORMAT_DETAILS_DATE_TIME_FORMAT_FK)
-                .where(DateTimeFormatDetails.DATE_TIME_FORMAT_NAME.eq(dateTimeFormatName),
-                        DateTimeFormatDetails.THRU_TIME.eq(Session.MAX_TIME));
-        
-        return dateTimeFormatFactory.getEntityFromQuery(EntityPermission.READ_ONLY, query);
+                .join(DateTimeFormatDetails).onKey(DATE_TIME_FORMATS_ACTIVE_DETAIL_FK)
+                .where(DateTimeFormatDetails.DATE_TIME_FORMAT_NAME.eq(dateTimeFormatName));
+
+        var query = switch(entityPermission) {
+            case READ_ONLY -> baseQuery;
+            case READ_WRITE -> baseQuery.forUpdate();
+        };
+
+        return dateTimeFormatFactory.getEntityFromQuery(entityPermission, query);
     }
-    
+
+    public DateTimeFormat getDateTimeFormatByName(final String dateTimeFormatName) {
+        return getDateTimeFormatByName(dateTimeFormatName, EntityPermission.READ_ONLY);
+    }
+
+    public DateTimeFormat getDateTimeFormatByNameForUpdate(final String dateTimeFormatName) {
+        return getDateTimeFormatByName(dateTimeFormatName, EntityPermission.READ_WRITE);
+    }
+
     public DateTimeFormatChoicesBean getDateTimeFormatChoices(String defaultDateTimeFormatChoice, Language language, boolean allowNullChoice) {
         var dateTimeFormats = getDateTimeFormats();
         var size = dateTimeFormats.size();
@@ -1896,7 +1908,7 @@ public class PartyControl
         return getDateTimeFormatDescriptionsByDateTimeFormat(dateTimeFormat, EntityPermission.READ_WRITE);
     }
     
-    private DateTimeFormatDescription getDateTimeFormatDescription(DateTimeFormat dateTimeFormat, Language language, EntityPermission entityPermission) {
+    public DateTimeFormatDescription getDateTimeFormatDescription(DateTimeFormat dateTimeFormat, Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(DateTimeFormatDescriptions.fields())
                 .from(DateTimeFormatDescriptions)
