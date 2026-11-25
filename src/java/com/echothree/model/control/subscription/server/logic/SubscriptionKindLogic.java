@@ -26,7 +26,6 @@ import com.echothree.model.control.subscription.common.exception.UnknownSubscrip
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
 import com.echothree.model.data.subscription.server.entity.SubscriptionKind;
 import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
