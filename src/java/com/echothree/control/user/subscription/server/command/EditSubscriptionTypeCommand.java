@@ -18,21 +18,22 @@ package com.echothree.control.user.subscription.server.command;
 
 import com.echothree.control.user.subscription.common.edit.SubscriptionEditFactory;
 import com.echothree.control.user.subscription.common.edit.SubscriptionTypeEdit;
+import com.echothree.control.user.subscription.common.result.EditSubscriptionTypeResult;
 import com.echothree.control.user.subscription.common.result.SubscriptionResultFactory;
-import com.echothree.control.user.subscription.common.spec.SubscriptionTypeSpec;
+import com.echothree.control.user.subscription.common.spec.SubscriptionTypeUniversalSpec;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.common.SequenceTypes;
-import com.echothree.model.control.sequence.server.control.SequenceControl;
+import com.echothree.model.control.sequence.server.logic.SequenceLogic;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
+import com.echothree.model.control.subscription.server.logic.SubscriptionTypeLogic;
 import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
+import com.echothree.model.data.subscription.server.entity.SubscriptionType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -42,12 +43,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditSubscriptionTypeCommand
-        extends BaseEditCommand<SubscriptionTypeSpec, SubscriptionTypeEdit> {
+        extends BaseAbstractEditCommand<SubscriptionTypeUniversalSpec, SubscriptionTypeEdit, EditSubscriptionTypeResult, SubscriptionType, SubscriptionType> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -57,10 +58,12 @@ public class EditSubscriptionTypeCommand
         ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("SubscriptionKindName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("SubscriptionTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("SubscriptionKindName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("SubscriptionTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SubscriptionTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SubscriptionSequenceName", FieldType.ENTITY_NAME, false, null, null),
@@ -70,118 +73,104 @@ public class EditSubscriptionTypeCommand
         );
     }
 
-    @Inject
-    SequenceControl sequenceControl;
+    private Sequence subscriptionSequence;
 
     @Inject
     SubscriptionControl subscriptionControl;
 
-    
+    @Inject
+    SequenceLogic sequenceLogic;
+
+    @Inject
+    SubscriptionTypeLogic subscriptionTypeLogic;
+
     /** Creates a new instance of EditSubscriptionTypeCommand */
     public EditSubscriptionTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = SubscriptionResultFactory.getEditSubscriptionTypeResult();
-        var subscriptionKindName = spec.getSubscriptionKindName();
-        var subscriptionKind = subscriptionControl.getSubscriptionKindByName(subscriptionKindName);
-        
-        if(subscriptionKind != null) {
-            if(editMode.equals(EditMode.LOCK)) {
-                var subscriptionTypeName = spec.getSubscriptionTypeName();
-                var subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
-                
-                if(subscriptionType != null) {
-                    result.setSubscriptionType(subscriptionControl.getSubscriptionTypeTransfer(getUserVisit(), subscriptionType));
-                    
-                    if(lockEntity(subscriptionType)) {
-                        var subscriptionTypeDescription = subscriptionControl.getSubscriptionTypeDescription(subscriptionType, getPreferredLanguage());
-                        var edit = SubscriptionEditFactory.getSubscriptionTypeEdit();
-                        var subscriptionTypeDetail = subscriptionType.getLastDetail();
-                        var subscriptionSequence = subscriptionTypeDetail.getSubscriptionSequence();
-                        
-                        result.setEdit(edit);
-                        edit.setSubscriptionTypeName(subscriptionTypeDetail.getSubscriptionTypeName());
-                        edit.setSubscriptionSequenceName(subscriptionSequence == null? null: subscriptionSequence.getLastDetail().getSequenceName());
-                        edit.setIsDefault(subscriptionTypeDetail.getIsDefault().toString());
-                        edit.setSortOrder(subscriptionTypeDetail.getSortOrder().toString());
-                        
-                        if(subscriptionTypeDescription != null) {
-                            edit.setDescription(subscriptionTypeDescription.getDescription());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                    }
-                    
-                    result.setEntityLock(getEntityLockTransfer(subscriptionType));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownSubscriptionTypeName.name(), subscriptionTypeName);
-                }
-            } else if(editMode.equals(EditMode.UPDATE)) {
-                var subscriptionTypeName = spec.getSubscriptionTypeName();
-                var subscriptionType = subscriptionControl.getSubscriptionTypeByNameForUpdate(subscriptionKind, subscriptionTypeName);
-                
-                if(subscriptionType != null) {
-                    subscriptionTypeName = edit.getSubscriptionTypeName();
-                    var duplicateSubscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
-                    
-                    if(duplicateSubscriptionType == null || subscriptionType.equals(duplicateSubscriptionType)) {
-                        var subscriptionSequenceName = edit.getSubscriptionSequenceName();
-                        Sequence subscriptionSequence = null;
-                        
-                        if(subscriptionSequenceName != null) {
-                            var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.SUBSCRIPTION.name());
-                            subscriptionSequence = sequenceControl.getSequenceByName(sequenceType, subscriptionSequenceName);
-                        }
-                        
-                        if(subscriptionSequenceName == null || subscriptionSequence != null) {
-                            if(lockEntityForUpdate(subscriptionType)) {
-                                try {
-                                    var partyPK = getPartyPK();
-                                    var subscriptionTypeDetailValue = subscriptionControl.getSubscriptionTypeDetailValueForUpdate(subscriptionType);
-                                    var subscriptionTypeDescription = subscriptionControl.getSubscriptionTypeDescriptionForUpdate(subscriptionType, getPreferredLanguage());
-                                    var description = edit.getDescription();
-                                    
-                                    subscriptionTypeDetailValue.setSubscriptionTypeName(edit.getSubscriptionTypeName());
-                                    subscriptionTypeDetailValue.setSubscriptionSequencePK(subscriptionSequence == null? null: subscriptionSequence.getPrimaryKey());
-                                    subscriptionTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
-                                    subscriptionTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
-                                    
-                                    subscriptionControl.updateSubscriptionTypeFromValue(subscriptionTypeDetailValue, partyPK);
-                                    
-                                    if(subscriptionTypeDescription == null && description != null) {
-                                        subscriptionControl.createSubscriptionTypeDescription(subscriptionType, getPreferredLanguage(), description, partyPK);
-                                    } else if(subscriptionTypeDescription != null && description == null) {
-                                        subscriptionControl.deleteSubscriptionTypeDescription(subscriptionTypeDescription, partyPK);
-                                    } else if(subscriptionTypeDescription != null && description != null) {
-                                        var subscriptionTypeDescriptionValue = subscriptionControl.getSubscriptionTypeDescriptionValue(subscriptionTypeDescription);
-                                        
-                                        subscriptionTypeDescriptionValue.setDescription(description);
-                                        subscriptionControl.updateSubscriptionTypeDescriptionFromValue(subscriptionTypeDescriptionValue, partyPK);
-                                    }
-                                } finally {
-                                    unlockEntity(subscriptionType);
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockStale.name());
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownSubscriptionSequenceName.name(), subscriptionSequenceName);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.DuplicateSubscriptionTypeName.name(), subscriptionTypeName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownSubscriptionTypeName.name(), subscriptionTypeName);
-                }
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownSubscriptionKindName.name(), subscriptionKindName);
-        }
-        
-        return result;
+    public EditSubscriptionTypeResult getResult() {
+        return SubscriptionResultFactory.getEditSubscriptionTypeResult();
     }
-    
+
+    @Override
+    public SubscriptionTypeEdit getEdit() {
+        return SubscriptionEditFactory.getSubscriptionTypeEdit();
+    }
+
+    @Override
+    public SubscriptionType getEntity(EditSubscriptionTypeResult result) {
+        return subscriptionTypeLogic.getSubscriptionTypeByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
+    }
+
+    @Override
+    public SubscriptionType getLockEntity(SubscriptionType subscriptionType) {
+        return subscriptionType;
+    }
+
+    @Override
+    public void fillInResult(EditSubscriptionTypeResult result, SubscriptionType subscriptionType) {
+        result.setSubscriptionType(subscriptionControl.getSubscriptionTypeTransfer(getUserVisit(), subscriptionType));
+    }
+
+    @Override
+    public void doLock(SubscriptionTypeEdit edit, SubscriptionType subscriptionType) {
+        var subscriptionTypeDescription = subscriptionControl.getSubscriptionTypeDescription(subscriptionType, getPreferredLanguage());
+        var subscriptionTypeDetail = subscriptionType.getLastDetail();
+        var subscriptionSequence = subscriptionTypeDetail.getSubscriptionSequence();
+
+        edit.setSubscriptionTypeName(subscriptionTypeDetail.getSubscriptionTypeName());
+        edit.setSubscriptionSequenceName(subscriptionSequence == null? null: subscriptionSequence.getLastDetail().getSequenceName());
+        edit.setIsDefault(subscriptionTypeDetail.getIsDefault().toString());
+        edit.setSortOrder(subscriptionTypeDetail.getSortOrder().toString());
+
+        if(subscriptionTypeDescription != null) {
+            edit.setDescription(subscriptionTypeDescription.getDescription());
+        }
+    }
+
+    @Override
+    public void canUpdate(SubscriptionType subscriptionType) {
+        var subscriptionKind = subscriptionType.getLastDetail().getSubscriptionKind();
+        var subscriptionTypeName = edit.getSubscriptionTypeName();
+        var duplicateSubscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
+        var subscriptionSequenceName = edit.getSubscriptionSequenceName();
+
+        if(duplicateSubscriptionType != null && !subscriptionType.equals(duplicateSubscriptionType)) {
+            addExecutionError(ExecutionErrors.DuplicateSubscriptionTypeName.name(),
+                    subscriptionKind.getLastDetail().getSubscriptionKindName(), subscriptionTypeName);
+        }
+
+        subscriptionSequence = subscriptionSequenceName == null ? null : sequenceLogic.getSequenceByName(this,
+                SequenceTypes.SUBSCRIPTION.name(), subscriptionSequenceName);
+    }
+
+    @Override
+    public void doUpdate(SubscriptionType subscriptionType) {
+        var partyPK = getPartyPK();
+        var subscriptionTypeDetailValue = subscriptionControl.getSubscriptionTypeDetailValueForUpdate(subscriptionType);
+        var subscriptionTypeDescription = subscriptionControl.getSubscriptionTypeDescriptionForUpdate(subscriptionType, getPreferredLanguage());
+        var description = edit.getDescription();
+
+        subscriptionTypeDetailValue.setSubscriptionTypeName(edit.getSubscriptionTypeName());
+        subscriptionTypeDetailValue.setSubscriptionSequencePK(subscriptionSequence == null? null: subscriptionSequence.getPrimaryKey());
+        subscriptionTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+        subscriptionTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        subscriptionControl.updateSubscriptionTypeFromValue(subscriptionTypeDetailValue, partyPK);
+
+        if(subscriptionTypeDescription == null && description != null) {
+            subscriptionControl.createSubscriptionTypeDescription(subscriptionType, getPreferredLanguage(), description, partyPK);
+        } else if(subscriptionTypeDescription != null && description == null) {
+            subscriptionControl.deleteSubscriptionTypeDescription(subscriptionTypeDescription, partyPK);
+        } else if(subscriptionTypeDescription != null && description != null) {
+            var subscriptionTypeDescriptionValue = subscriptionControl.getSubscriptionTypeDescriptionValue(subscriptionTypeDescription);
+
+            subscriptionTypeDescriptionValue.setDescription(description);
+
+            subscriptionControl.updateSubscriptionTypeDescriptionFromValue(subscriptionTypeDescriptionValue, partyPK);
+        }
+    }
+
 }

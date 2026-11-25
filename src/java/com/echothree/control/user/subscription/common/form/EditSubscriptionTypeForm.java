@@ -17,11 +17,11 @@
 package com.echothree.control.user.subscription.common.form;
 
 import com.echothree.control.user.subscription.common.edit.SubscriptionTypeEdit;
-import com.echothree.control.user.subscription.common.spec.SubscriptionTypeSpec;
+import com.echothree.control.user.subscription.common.spec.SubscriptionTypeUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditSubscriptionTypeForm
-        extends BaseEditForm<SubscriptionTypeSpec, SubscriptionTypeEdit> {
+        extends BaseEditForm<SubscriptionTypeUniversalSpec, SubscriptionTypeEdit> {
     
     // Nothing additional beyond BaseEditForm
     
