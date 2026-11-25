@@ -1527,7 +1527,7 @@ public class UserControl
         return recoveryQuestionDescription;
     }
     
-    private RecoveryQuestionDescription getRecoveryQuestionDescription(RecoveryQuestion recoveryQuestion, Language language,
+    public RecoveryQuestionDescription getRecoveryQuestionDescription(RecoveryQuestion recoveryQuestion, Language language,
             EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(RecoveryQuestionDescriptions.fields())

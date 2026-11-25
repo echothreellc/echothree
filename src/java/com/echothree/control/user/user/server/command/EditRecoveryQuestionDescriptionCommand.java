@@ -18,107 +18,102 @@ package com.echothree.control.user.user.server.command;
 
 import com.echothree.control.user.user.common.edit.RecoveryQuestionDescriptionEdit;
 import com.echothree.control.user.user.common.edit.UserEditFactory;
-import com.echothree.control.user.user.common.form.EditRecoveryQuestionDescriptionForm;
+import com.echothree.control.user.user.common.result.EditRecoveryQuestionDescriptionResult;
 import com.echothree.control.user.user.common.result.UserResultFactory;
 import com.echothree.control.user.user.common.spec.RecoveryQuestionDescriptionSpec;
-import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
+import com.echothree.model.control.user.server.logic.RecoveryQuestionLogic;
+import com.echothree.model.data.user.server.entity.RecoveryQuestion;
+import com.echothree.model.data.user.server.entity.RecoveryQuestionDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class EditRecoveryQuestionDescriptionCommand
-        extends BaseEditCommand<RecoveryQuestionDescriptionSpec, RecoveryQuestionDescriptionEdit> {
-    
+        extends BaseAbstractEditCommand<RecoveryQuestionDescriptionSpec, RecoveryQuestionDescriptionEdit, EditRecoveryQuestionDescriptionResult, RecoveryQuestionDescription, RecoveryQuestion> {
+
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("RecoveryQuestionName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
 
     @Inject
-    PartyControl partyControl;
+    LanguageLogic languageLogic;
 
-    
+    @Inject
+    RecoveryQuestionLogic recoveryQuestionLogic;
+
     /** Creates a new instance of EditRecoveryQuestionDescriptionCommand */
     public EditRecoveryQuestionDescriptionCommand() {
         super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = UserResultFactory.getEditRecoveryQuestionDescriptionResult();
-        var recoveryQuestionName = spec.getRecoveryQuestionName();
-        var recoveryQuestion = userControl.getRecoveryQuestionByName(recoveryQuestionName);
-        
-        if(recoveryQuestion != null) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = partyControl.getLanguageByIsoName(languageIsoName);
-            
-            if(language != null) {
-                if(editMode.equals(EditMode.LOCK)) {
-                    var recoveryQuestionDescription = userControl.getRecoveryQuestionDescription(recoveryQuestion, language);
-                    
-                    if(recoveryQuestionDescription != null) {
-                        result.setRecoveryQuestionDescription(userControl.getRecoveryQuestionDescriptionTransfer(getUserVisit(), recoveryQuestionDescription));
-                        
-                        if(lockEntity(recoveryQuestion)) {
-                            var edit = UserEditFactory.getRecoveryQuestionDescriptionEdit();
-                            
-                            result.setEdit(edit);
-                            edit.setDescription(recoveryQuestionDescription.getDescription());
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                        }
-                        
-                        result.setEntityLock(getEntityLockTransfer(recoveryQuestion));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownRecoveryQuestionDescription.name());
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var recoveryQuestionDescriptionValue = userControl.getRecoveryQuestionDescriptionValueForUpdate(recoveryQuestion, language);
-                    
-                    if(recoveryQuestionDescriptionValue != null) {
-                        if(lockEntityForUpdate(recoveryQuestion)) {
-                            try {
-                                var description = edit.getDescription();
-                                
-                                recoveryQuestionDescriptionValue.setDescription(description);
-                                
-                                userControl.updateRecoveryQuestionDescriptionFromValue(recoveryQuestionDescriptionValue, getPartyPK());
-                            } finally {
-                                unlockEntity(recoveryQuestion);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownRecoveryQuestionDescription.name());
-                    }
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownRecoveryQuestionName.name(), recoveryQuestionName);
-        }
-        
-        return result;
+    public EditRecoveryQuestionDescriptionResult getResult() {
+        return UserResultFactory.getEditRecoveryQuestionDescriptionResult();
     }
-    
+
+    @Override
+    public RecoveryQuestionDescriptionEdit getEdit() {
+        return UserEditFactory.getRecoveryQuestionDescriptionEdit();
+    }
+
+    @Override
+    public RecoveryQuestionDescription getEntity(EditRecoveryQuestionDescriptionResult result) {
+        RecoveryQuestionDescription recoveryQuestionDescription = null;
+        var recoveryQuestionName = spec.getRecoveryQuestionName();
+        var languageIsoName = spec.getLanguageIsoName();
+        var recoveryQuestion = recoveryQuestionLogic.getRecoveryQuestionByName(this, recoveryQuestionName);
+        var language = languageLogic.getLanguageByName(this, languageIsoName);
+
+        if(!hasExecutionErrors()) {
+            recoveryQuestionDescription = userControl.getRecoveryQuestionDescription(recoveryQuestion, language,
+                    editModeToEntityPermission(editMode));
+
+            if(recoveryQuestionDescription == null) {
+                addExecutionError(ExecutionErrors.UnknownRecoveryQuestionDescription.name(), recoveryQuestionName, languageIsoName);
+            }
+        }
+
+        return recoveryQuestionDescription;
+    }
+
+    @Override
+    public RecoveryQuestion getLockEntity(RecoveryQuestionDescription recoveryQuestionDescription) {
+        return recoveryQuestionDescription.getRecoveryQuestion();
+    }
+
+    @Override
+    public void fillInResult(EditRecoveryQuestionDescriptionResult result, RecoveryQuestionDescription recoveryQuestionDescription) {
+        result.setRecoveryQuestionDescription(userControl.getRecoveryQuestionDescriptionTransfer(getUserVisit(), recoveryQuestionDescription));
+    }
+
+    @Override
+    public void doLock(RecoveryQuestionDescriptionEdit edit, RecoveryQuestionDescription recoveryQuestionDescription) {
+        edit.setDescription(recoveryQuestionDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(RecoveryQuestionDescription recoveryQuestionDescription) {
+        var recoveryQuestionDescriptionValue = userControl.getRecoveryQuestionDescriptionValue(recoveryQuestionDescription);
+
+        recoveryQuestionDescriptionValue.setDescription(edit.getDescription());
+
+        userControl.updateRecoveryQuestionDescriptionFromValue(recoveryQuestionDescriptionValue, getPartyPK());
+    }
+
 }
