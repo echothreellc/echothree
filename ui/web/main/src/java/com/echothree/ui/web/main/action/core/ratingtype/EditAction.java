@@ -62,7 +62,7 @@ public class EditAction
             if(forwardKey == null) {
                 var actionForm = (EditActionForm)form;
                 var commandForm = RatingUtil.getHome().getEditRatingTypeForm();
-                var spec = RatingUtil.getHome().getRatingTypeSpec();
+                var spec = RatingUtil.getHome().getRatingTypeUniversalSpec();
                 var originalTypeRatingName = request.getParameter(ParameterConstants.ORIGINAL_RATING_TYPE_NAME);
                 
                 if(componentVendorName == null)

@@ -273,7 +273,7 @@ import com.echothree.control.user.purchase.common.spec.PurchaseOrderSpec;
 import com.echothree.control.user.rating.common.edit.RatingTypeEdit;
 import com.echothree.control.user.rating.common.form.CreateRatingTypeForm;
 import com.echothree.control.user.rating.common.form.DeleteRatingTypeForm;
-import com.echothree.control.user.rating.common.spec.RatingTypeSpec;
+import com.echothree.control.user.rating.common.spec.RatingTypeUniversalSpec;
 import com.echothree.control.user.search.common.form.CheckItemSpellingForm;
 import com.echothree.control.user.search.common.form.ClearItemResultsForm;
 import com.echothree.control.user.search.common.form.CreateItemSearchResultActionForm;
@@ -813,7 +813,7 @@ public class BasePersona {
     // Rating
     public CreateRatingTypeForm createRatingTypeForm;
     public DeleteRatingTypeForm deleteRatingTypeForm;
-    public RatingTypeSpec ratingTypeSpec;
+    public RatingTypeUniversalSpec ratingTypeSpec;
     public RatingTypeEdit ratingTypeEdit;
 
     public String lastRatingTypeName;
