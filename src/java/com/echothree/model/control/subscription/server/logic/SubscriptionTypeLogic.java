@@ -16,22 +16,15 @@
 
 package com.echothree.model.control.subscription.server.logic;
 
-import com.echothree.control.user.filter.common.spec.FilterTypeUniversalSpec;
-import com.echothree.control.user.subscription.common.spec.SubscriptionKindUniversalSpec;
 import com.echothree.control.user.subscription.common.spec.SubscriptionTypeUniversalSpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
-import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterKindException;
-import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterTypeException;
-import com.echothree.model.control.filter.server.logic.FilterKindLogic;
 import com.echothree.model.control.subscription.common.exception.UnknownDefaultSubscriptionKindException;
 import com.echothree.model.control.subscription.common.exception.UnknownDefaultSubscriptionTypeException;
 import com.echothree.model.control.subscription.common.exception.UnknownSubscriptionTypeNameException;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
-import com.echothree.model.data.filter.server.entity.FilterKind;
-import com.echothree.model.data.filter.server.entity.FilterType;
 import com.echothree.model.data.subscription.server.entity.SubscriptionKind;
 import com.echothree.model.data.subscription.server.entity.SubscriptionType;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -39,16 +32,12 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 @ApplicationScoped
 public class SubscriptionTypeLogic
         extends BaseLogic {
-
-    @Inject
-    ParameterUtils parameterUtils;
 
     @Inject
     SubscriptionControl subscriptionControl;
@@ -111,11 +100,10 @@ public class SubscriptionTypeLogic
             final boolean allowDefault, final EntityPermission entityPermission) {
         var subscriptionKindName = universalSpec.getSubscriptionKindName();
         var subscriptionTypeName = universalSpec.getSubscriptionTypeName();
-        var nameParameterCount = parameterUtils.countNonNullParameters(subscriptionKindName, subscriptionTypeName);
         var possibleEntitySpecs = entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         SubscriptionType subscriptionType = null;
 
-        if(nameParameterCount < 3 && possibleEntitySpecs == 0) {
+        if(possibleEntitySpecs == 0) {
             SubscriptionKind subscriptionKind = null;
 
             if(subscriptionKindName == null) {
@@ -138,7 +126,8 @@ public class SubscriptionTypeLogic
                         subscriptionType = subscriptionControl.getDefaultSubscriptionType(subscriptionKind, entityPermission);
 
                         if(subscriptionType == null) {
-                            handleExecutionError(UnknownDefaultSubscriptionTypeException.class, eea, ExecutionErrors.UnknownDefaultSubscriptionType.name());
+                            handleExecutionError(UnknownDefaultSubscriptionTypeException.class, eea, ExecutionErrors.UnknownDefaultSubscriptionType.name(),
+                                    subscriptionKind.getLastDetail().getSubscriptionKindName());
                         }
                     } else {
                         handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
@@ -147,7 +136,7 @@ public class SubscriptionTypeLogic
                     subscriptionType = getSubscriptionTypeByName(eea, subscriptionKind, subscriptionTypeName, entityPermission);
                 }
             }
-        } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
+        } else if(subscriptionKindName == null && subscriptionTypeName == null && possibleEntitySpecs == 1) {
             var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHO_THREE.name(), EntityTypes.SubscriptionType.name());
 
