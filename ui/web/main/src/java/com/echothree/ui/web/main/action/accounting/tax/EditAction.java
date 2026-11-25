@@ -52,7 +52,7 @@ public class EditAction
         String forwardKey;
         var originalTaxName = request.getParameter(ParameterConstants.ORIGINAL_TAX_NAME);
         var commandForm = TaxUtil.getHome().getEditTaxForm();
-        var spec = TaxUtil.getHome().getTaxSpec();
+        var spec = TaxUtil.getHome().getTaxUniversalSpec();
         
         if(originalTaxName == null) {
             originalTaxName = actionForm.getOriginalTaxName();

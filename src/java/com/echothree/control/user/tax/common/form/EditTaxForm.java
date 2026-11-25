@@ -17,11 +17,11 @@
 package com.echothree.control.user.tax.common.form;
 
 import com.echothree.control.user.tax.common.edit.TaxEdit;
-import com.echothree.control.user.tax.common.spec.TaxSpec;
+import com.echothree.control.user.tax.common.spec.TaxUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditTaxForm
-        extends BaseEditForm<TaxSpec, TaxEdit> {
+        extends BaseEditForm<TaxUniversalSpec, TaxEdit> {
     
     // Nothing additional beyond BaseEditForm
     
