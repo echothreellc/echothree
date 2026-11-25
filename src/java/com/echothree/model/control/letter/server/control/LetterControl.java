@@ -767,7 +767,7 @@ public class LetterControl
                 .orElse(0L);
     }
 
-    private Letter getLetterByName(ChainType chainType, String letterName, EntityPermission entityPermission) {
+    public Letter getLetterByName(ChainType chainType, String letterName, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(Letters.fields())
                 .from(Letters)
@@ -1068,7 +1068,7 @@ public class LetterControl
         return letterDescription;
     }
     
-    private LetterDescription getLetterDescription(Letter letter, Language language, EntityPermission entityPermission) {
+    public LetterDescription getLetterDescription(Letter letter, Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(LetterDescriptions.fields())
                 .from(LetterDescriptions)
