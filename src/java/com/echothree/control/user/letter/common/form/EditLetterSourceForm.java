@@ -17,11 +17,11 @@
 package com.echothree.control.user.letter.common.form;
 
 import com.echothree.control.user.letter.common.edit.LetterSourceEdit;
-import com.echothree.control.user.letter.common.spec.LetterSourceSpec;
+import com.echothree.control.user.letter.common.spec.LetterSourceUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditLetterSourceForm
-        extends BaseEditForm<LetterSourceSpec, LetterSourceEdit> {
+        extends BaseEditForm<LetterSourceUniversalSpec, LetterSourceEdit> {
     
     // Nothing additional beyond BaseEditForm
     
