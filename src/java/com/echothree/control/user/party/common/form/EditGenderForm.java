@@ -17,11 +17,11 @@
 package com.echothree.control.user.party.common.form;
 
 import com.echothree.control.user.party.common.edit.GenderEdit;
-import com.echothree.control.user.party.common.spec.GenderSpec;
+import com.echothree.control.user.party.common.spec.GenderUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditGenderForm
-        extends BaseEditForm<GenderSpec, GenderEdit> {
+        extends BaseEditForm<GenderUniversalSpec, GenderEdit> {
     
     // Nothing additional beyond BaseEditForm
     
