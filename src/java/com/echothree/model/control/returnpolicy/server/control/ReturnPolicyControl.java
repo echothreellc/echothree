@@ -1967,7 +1967,7 @@ public class ReturnPolicyControl
                 .orElse(0L);
     }
 
-    private ReturnReasonType getReturnReasonType(ReturnReason returnReason, ReturnType returnType, EntityPermission entityPermission) {
+    public ReturnReasonType getReturnReasonType(ReturnReason returnReason, ReturnType returnType, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(ReturnReasonTypes.fields())
                 .from(ReturnReasonTypes)
@@ -2323,7 +2323,7 @@ public class ReturnPolicyControl
         return getDefaultReturnTypeForUpdate(returnKind).getLastDetailForUpdate().getReturnTypeDetailValue().clone();
     }
     
-    private ReturnType getReturnTypeByName(ReturnKind returnKind, String returnTypeName, EntityPermission entityPermission) {
+    public ReturnType getReturnTypeByName(ReturnKind returnKind, String returnTypeName, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(ReturnTypes.fields())
                 .from(ReturnTypes)
