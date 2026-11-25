@@ -1089,7 +1089,7 @@ public class TermControl
                 .orElse(0L);
     }
 
-    private PartyCreditLimit getPartyCreditLimit(Party party, Currency currency, EntityPermission entityPermission) {
+    public PartyCreditLimit getPartyCreditLimit(Party party, Currency currency, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PartyCreditLimits.fields())
                 .from(PartyCreditLimits)
