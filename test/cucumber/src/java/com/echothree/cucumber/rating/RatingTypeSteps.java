@@ -85,7 +85,7 @@ public class RatingTypeSteps implements En {
                     assertThat(persona.deleteRatingTypeForm).isNull();
                     assertThat(persona.ratingTypeSpec).isNull();
 
-                    persona.ratingTypeSpec = RatingUtil.getHome().getRatingTypeSpec();
+                    persona.ratingTypeSpec = RatingUtil.getHome().getRatingTypeUniversalSpec();
                 });
 
         When("the user begins editing the rating type",

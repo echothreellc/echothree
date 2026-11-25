@@ -18,36 +18,37 @@ package com.echothree.control.user.rating.server.command;
 
 import com.echothree.control.user.rating.common.edit.RatingEditFactory;
 import com.echothree.control.user.rating.common.edit.RatingTypeEdit;
-import com.echothree.control.user.rating.common.form.EditRatingTypeForm;
+import com.echothree.control.user.rating.common.result.EditRatingTypeResult;
 import com.echothree.control.user.rating.common.result.RatingResultFactory;
-import com.echothree.control.user.rating.common.spec.RatingTypeSpec;
+import com.echothree.control.user.rating.common.spec.RatingTypeUniversalSpec;
 import com.echothree.model.control.rating.server.control.RatingControl;
+import com.echothree.model.control.rating.server.logic.RatingTypeLogic;
 import com.echothree.model.control.sequence.common.SequenceTypes;
-import com.echothree.model.control.sequence.server.control.SequenceControl;
+import com.echothree.model.control.sequence.server.logic.SequenceLogic;
+import com.echothree.model.data.rating.server.entity.RatingType;
 import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class EditRatingTypeCommand
-        extends BaseEditCommand<RatingTypeSpec, RatingTypeEdit> {
-    
+        extends BaseAbstractEditCommand<RatingTypeUniversalSpec, RatingTypeEdit, EditRatingTypeResult, RatingType, RatingType> {
+
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
-                new FieldDefinition("RatingTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null),
+                new FieldDefinition("RatingTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
 
         EDIT_FIELD_DEFINITIONS = List.of(
@@ -58,127 +59,104 @@ public class EditRatingTypeCommand
         );
     }
 
+    private Sequence ratingSequence;
+
     @Inject
     RatingControl ratingControl;
 
     @Inject
-    SequenceControl sequenceControl;
+    RatingTypeLogic ratingTypeLogic;
 
+    @Inject
+    SequenceLogic sequenceLogic;
     
     /** Creates a new instance of EditRatingTypeCommand */
     public EditRatingTypeCommand() {
         super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = RatingResultFactory.getEditRatingTypeResult();
-        var componentVendorName = spec.getComponentVendorName();
-        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
-        
-        if(componentVendor != null) {
-            var entityTypeName = spec.getEntityTypeName();
-            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
-            
-            if(entityType != null) {
-                if(editMode.equals(EditMode.LOCK)) {
-                    var ratingTypeName = spec.getRatingTypeName();
-                    var ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
-                    
-                    if(ratingType != null) {
-                        result.setRatingType(ratingControl.getRatingTypeTransfer(getUserVisit(), ratingType));
-                        
-                        if(lockEntity(ratingType)) {
-                            var ratingTypeDescription = ratingControl.getRatingTypeDescription(ratingType, getPreferredLanguage());
-                            var edit = RatingEditFactory.getRatingTypeEdit();
-                            var ratingTypeDetail = ratingType.getLastDetail();
-                            var ratingSequence = ratingTypeDetail.getRatingSequence();
-                            
-                            result.setEdit(edit);
-                            edit.setRatingTypeName(ratingTypeDetail.getRatingTypeName());
-                            edit.setRatingSequenceName(ratingSequence == null? null: ratingSequence.getLastDetail().getSequenceName());
-                            edit.setSortOrder(ratingTypeDetail.getSortOrder().toString());
-                            
-                            if(ratingTypeDescription != null)
-                                edit.setDescription(ratingTypeDescription.getDescription());
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                        }
-                        
-                        result.setEntityLock(getEntityLockTransfer(ratingType));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownRatingTypeName.name(), ratingTypeName);
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var ratingTypeName = spec.getRatingTypeName();
-                    var ratingType = ratingControl.getRatingTypeByNameForUpdate(entityType, ratingTypeName);
-                    
-                    if(ratingType != null) {
-                        ratingTypeName = edit.getRatingTypeName();
-                        var duplicateRatingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
-                        
-                        if(duplicateRatingType == null || ratingType.equals(duplicateRatingType)) {
-                            var ratingSequenceName = edit.getRatingSequenceName();
-                            Sequence ratingSequence = null;
-                            
-                            if(ratingSequenceName != null) {
-                                var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.RATING.name());
-                                
-                                if(sequenceType != null) {
-                                    ratingSequence = sequenceControl.getSequenceByName(sequenceType, ratingSequenceName);
-                                } else {
-                                    addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.RATING.name());
-                                }
-                            }
-                            
-                            if(ratingSequenceName == null || ratingSequence != null) {
-                                if(lockEntityForUpdate(ratingType)) {
-                                    try {
-                                        var partyPK = getPartyPK();
-                                        var ratingTypeDetailValue = ratingControl.getRatingTypeDetailValueForUpdate(ratingType);
-                                        var ratingTypeDescription = ratingControl.getRatingTypeDescriptionForUpdate(ratingType, getPreferredLanguage());
-                                        var description = edit.getDescription();
-                                        
-                                        ratingTypeDetailValue.setRatingTypeName(edit.getRatingTypeName());
-                                        ratingTypeDetailValue.setRatingSequencePK(ratingSequence == null ? null : ratingSequence.getPrimaryKey());
-                                        ratingTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
-                                        
-                                        ratingControl.updateRatingTypeFromValue(ratingTypeDetailValue, partyPK);
-                                        
-                                        if(ratingTypeDescription == null && description != null) {
-                                            ratingControl.createRatingTypeDescription(ratingType, getPreferredLanguage(), description, partyPK);
-                                        } else if(ratingTypeDescription != null && description == null) {
-                                            ratingControl.deleteRatingTypeDescription(ratingTypeDescription, partyPK);
-                                        } else if(ratingTypeDescription != null && description != null) {
-                                            var ratingTypeDescriptionValue = ratingControl.getRatingTypeDescriptionValue(ratingTypeDescription);
-                                            
-                                            ratingTypeDescriptionValue.setDescription(description);
-                                            ratingControl.updateRatingTypeDescriptionFromValue(ratingTypeDescriptionValue, partyPK);
-                                        }
-                                    } finally {
-                                        unlockEntity(ratingType);
-                                    }
-                                } else {
-                                    addExecutionError(ExecutionErrors.EntityLockStale.name());
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownRatingSequenceName.name(), ratingSequenceName);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.DuplicateRatingTypeName.name(), ratingTypeName);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownRatingTypeName.name(), ratingTypeName);
-                    }
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), entityTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
-        }
-        
-        return result;
+    public EditRatingTypeResult getResult() {
+        return RatingResultFactory.getEditRatingTypeResult();
     }
-    
+
+    @Override
+    public RatingTypeEdit getEdit() {
+        return RatingEditFactory.getRatingTypeEdit();
+    }
+
+    @Override
+    public RatingType getEntity(EditRatingTypeResult result) {
+        return ratingTypeLogic.getRatingTypeByUniversalSpec(this, spec, editModeToEntityPermission(editMode));
+    }
+
+    @Override
+    public RatingType getLockEntity(RatingType ratingType) {
+        return ratingType;
+    }
+
+    @Override
+    public void fillInResult(EditRatingTypeResult result, RatingType ratingType) {
+        result.setRatingType(ratingControl.getRatingTypeTransfer(getUserVisit(), ratingType));
+    }
+
+    @Override
+    public void doLock(RatingTypeEdit edit, RatingType ratingType) {
+        var ratingTypeDescription = ratingControl.getRatingTypeDescription(ratingType, getPreferredLanguage());
+        var ratingTypeDetail = ratingType.getLastDetail();
+        var ratingSequence = ratingTypeDetail.getRatingSequence();
+
+        edit.setRatingTypeName(ratingTypeDetail.getRatingTypeName());
+        edit.setRatingSequenceName(ratingSequence == null? null: ratingSequence.getLastDetail().getSequenceName());
+        edit.setSortOrder(ratingTypeDetail.getSortOrder().toString());
+
+        if(ratingTypeDescription != null) {
+            edit.setDescription(ratingTypeDescription.getDescription());
+        }
+    }
+
+    @Override
+    public void canUpdate(RatingType ratingType) {
+        var entityType = ratingType.getLastDetail().getEntityType();
+        var ratingTypeName = edit.getRatingTypeName();
+        var duplicateRatingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
+        var ratingSequenceName = edit.getRatingSequenceName();
+
+        if(duplicateRatingType != null && !ratingType.equals(duplicateRatingType)) {
+            var entityTypeDetail = entityType.getLastDetail();
+
+            addExecutionError(ExecutionErrors.DuplicateRatingTypeName.name(),
+                    entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
+                    entityTypeDetail.getEntityTypeName(), ratingTypeName);
+        }
+
+        ratingSequence = ratingSequenceName == null ? null : sequenceLogic.getSequenceByName(this,
+                SequenceTypes.RATING.name(), ratingSequenceName);
+    }
+
+    @Override
+    public void doUpdate(RatingType ratingType) {
+        var partyPK = getPartyPK();
+        var ratingTypeDetailValue = ratingControl.getRatingTypeDetailValueForUpdate(ratingType);
+        var ratingTypeDescription = ratingControl.getRatingTypeDescriptionForUpdate(ratingType, getPreferredLanguage());
+        var description = edit.getDescription();
+
+        ratingTypeDetailValue.setRatingTypeName(edit.getRatingTypeName());
+        ratingTypeDetailValue.setRatingSequencePK(ratingSequence == null ? null : ratingSequence.getPrimaryKey());
+        ratingTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        ratingControl.updateRatingTypeFromValue(ratingTypeDetailValue, partyPK);
+
+        if(ratingTypeDescription == null && description != null) {
+            ratingControl.createRatingTypeDescription(ratingType, getPreferredLanguage(), description, partyPK);
+        } else if(ratingTypeDescription != null && description == null) {
+            ratingControl.deleteRatingTypeDescription(ratingTypeDescription, partyPK);
+        } else if(ratingTypeDescription != null && description != null) {
+            var ratingTypeDescriptionValue = ratingControl.getRatingTypeDescriptionValue(ratingTypeDescription);
+
+            ratingTypeDescriptionValue.setDescription(description);
+            ratingControl.updateRatingTypeDescriptionFromValue(ratingTypeDescriptionValue, partyPK);
+        }
+    }
+
 }

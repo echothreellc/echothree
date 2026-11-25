@@ -17,11 +17,11 @@
 package com.echothree.control.user.rating.common.form;
 
 import com.echothree.control.user.rating.common.edit.RatingTypeEdit;
-import com.echothree.control.user.rating.common.spec.RatingTypeSpec;
+import com.echothree.control.user.rating.common.spec.RatingTypeUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditRatingTypeForm
-        extends BaseEditForm<RatingTypeSpec, RatingTypeEdit> {
+        extends BaseEditForm<RatingTypeUniversalSpec, RatingTypeEdit> {
     
     // Nothing additional beyond BaseEditForm
     
