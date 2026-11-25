@@ -191,7 +191,7 @@ public class WorkEffortControl
         return getWorkEffortTypes(EntityPermission.READ_WRITE);
     }
     
-    private WorkEffortType getWorkEffortTypeByName(String workEffortTypeName, EntityPermission entityPermission) {
+    public WorkEffortType getWorkEffortTypeByName(String workEffortTypeName, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(WorkEffortTypes.fields())
                 .from(WorkEffortTypes)
@@ -303,7 +303,7 @@ public class WorkEffortControl
         return workEffortTypeDescription;
     }
     
-    private WorkEffortTypeDescription getWorkEffortTypeDescription(WorkEffortType workEffortType, Language language,
+    public WorkEffortTypeDescription getWorkEffortTypeDescription(WorkEffortType workEffortType, Language language,
             EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(WorkEffortTypeDescriptions.fields())

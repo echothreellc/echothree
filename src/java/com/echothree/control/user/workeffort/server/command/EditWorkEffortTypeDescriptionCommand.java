@@ -18,109 +18,106 @@ package com.echothree.control.user.workeffort.server.command;
 
 import com.echothree.control.user.workeffort.common.edit.WorkEffortEditFactory;
 import com.echothree.control.user.workeffort.common.edit.WorkEffortTypeDescriptionEdit;
+import com.echothree.control.user.workeffort.common.result.EditWorkEffortTypeDescriptionResult;
 import com.echothree.control.user.workeffort.common.result.WorkEffortResultFactory;
 import com.echothree.control.user.workeffort.common.spec.WorkEffortTypeDescriptionSpec;
-import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
+import com.echothree.model.control.workeffort.server.logic.WorkEffortTypeLogic;
+import com.echothree.model.data.workeffort.server.entity.WorkEffortType;
+import com.echothree.model.data.workeffort.server.entity.WorkEffortTypeDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class EditWorkEffortTypeDescriptionCommand
-        extends BaseEditCommand<WorkEffortTypeDescriptionSpec, WorkEffortTypeDescriptionEdit> {
-    
+        extends BaseAbstractEditCommand<WorkEffortTypeDescriptionSpec, WorkEffortTypeDescriptionEdit, EditWorkEffortTypeDescriptionResult, WorkEffortTypeDescription, WorkEffortType> {
+
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WorkEffortTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
 
     @Inject
-    PartyControl partyControl;
-
-    @Inject
     WorkEffortControl workEffortControl;
 
-    
+    @Inject
+    LanguageLogic languageLogic;
+
+    @Inject
+    WorkEffortTypeLogic workEffortTypeLogic;
+
     /** Creates a new instance of EditWorkEffortTypeDescriptionCommand */
     public EditWorkEffortTypeDescriptionCommand() {
         super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = WorkEffortResultFactory.getEditWorkEffortTypeDescriptionResult();
-        var workEffortTypeName = spec.getWorkEffortTypeName();
-        var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
-        
-        if(workEffortType != null) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = partyControl.getLanguageByIsoName(languageIsoName);
-            
-            if(language != null) {
-                if(editMode.equals(EditMode.LOCK)) {
-                    var workEffortTypeDescription = workEffortControl.getWorkEffortTypeDescription(workEffortType, language);
-                    
-                    if(workEffortTypeDescription != null) {
-                        result.setWorkEffortTypeDescription(workEffortControl.getWorkEffortTypeDescriptionTransfer(getUserVisit(), workEffortTypeDescription));
-                        
-                        if(lockEntity(workEffortType)) {
-                            var edit = WorkEffortEditFactory.getWorkEffortTypeDescriptionEdit();
-                            
-                            result.setEdit(edit);
-                            edit.setDescription(workEffortTypeDescription.getDescription());
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                        }
-                        
-                        result.setEntityLock(getEntityLockTransfer(workEffortType));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownWorkEffortTypeDescription.name());
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var workEffortTypeDescriptionValue = workEffortControl.getWorkEffortTypeDescriptionValueForUpdate(workEffortType, language);
-                    
-                    if(workEffortTypeDescriptionValue != null) {
-                        if(lockEntityForUpdate(workEffortType)) {
-                            try {
-                                var description = edit.getDescription();
-                                
-                                workEffortTypeDescriptionValue.setDescription(description);
-                                
-                                workEffortControl.updateWorkEffortTypeDescriptionFromValue(workEffortTypeDescriptionValue, getPartyPK());
-                            } finally {
-                                unlockEntity(workEffortType);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownWorkEffortTypeDescription.name());
-                    }
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownWorkEffortTypeName.name(), workEffortTypeName);
-        }
-        
-        return result;
+    public EditWorkEffortTypeDescriptionResult getResult() {
+        return WorkEffortResultFactory.getEditWorkEffortTypeDescriptionResult();
     }
-    
+
+    @Override
+    public WorkEffortTypeDescriptionEdit getEdit() {
+        return WorkEffortEditFactory.getWorkEffortTypeDescriptionEdit();
+    }
+
+    @Override
+    public WorkEffortTypeDescription getEntity(EditWorkEffortTypeDescriptionResult result) {
+        WorkEffortTypeDescription workEffortTypeDescription = null;
+        var workEffortTypeName = spec.getWorkEffortTypeName();
+        var languageIsoName = spec.getLanguageIsoName();
+        var workEffortType = workEffortTypeLogic.getWorkEffortTypeByName(this, workEffortTypeName);
+        var language = languageLogic.getLanguageByName(this, languageIsoName);
+
+        if(!hasExecutionErrors()) {
+            workEffortTypeDescription = workEffortControl.getWorkEffortTypeDescription(workEffortType, language,
+                    editModeToEntityPermission(editMode));
+
+            if(workEffortTypeDescription == null) {
+                addExecutionError(ExecutionErrors.UnknownWorkEffortTypeDescription.name(), workEffortTypeName, languageIsoName);
+            }
+        }
+
+        return workEffortTypeDescription;
+    }
+
+    @Override
+    public WorkEffortType getLockEntity(WorkEffortTypeDescription workEffortTypeDescription) {
+        return workEffortTypeDescription.getWorkEffortType();
+    }
+
+    @Override
+    public void fillInResult(EditWorkEffortTypeDescriptionResult result, WorkEffortTypeDescription workEffortTypeDescription) {
+        result.setWorkEffortTypeDescription(workEffortControl.getWorkEffortTypeDescriptionTransfer(getUserVisit(), workEffortTypeDescription));
+    }
+
+    @Override
+    public void doLock(WorkEffortTypeDescriptionEdit edit, WorkEffortTypeDescription workEffortTypeDescription) {
+        edit.setDescription(workEffortTypeDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(WorkEffortTypeDescription workEffortTypeDescription) {
+        var workEffortTypeDescriptionValue = workEffortControl.getWorkEffortTypeDescriptionValue(workEffortTypeDescription);
+
+        workEffortTypeDescriptionValue.setDescription(edit.getDescription());
+
+        workEffortControl.updateWorkEffortTypeDescriptionFromValue(workEffortTypeDescriptionValue, getPartyPK());
+    }
+
 }
