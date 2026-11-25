@@ -515,7 +515,7 @@ public class RatingControl
         return getRatingTypeListItemDetailValueForUpdate(getRatingTypeListItemByNameForUpdate(ratingType, ratingTypeListItemName));
     }
     
-    private RatingTypeListItem getDefaultRatingTypeListItem(RatingType ratingType, EntityPermission entityPermission) {
+    public RatingTypeListItem getDefaultRatingTypeListItem(RatingType ratingType, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(RatingTypeListItems.fields())
                 .from(RatingTypeListItems)
