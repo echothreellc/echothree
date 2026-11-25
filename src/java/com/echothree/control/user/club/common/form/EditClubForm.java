@@ -17,11 +17,11 @@
 package com.echothree.control.user.club.common.form;
 
 import com.echothree.control.user.club.common.edit.ClubEdit;
-import com.echothree.control.user.club.common.spec.ClubSpec;
+import com.echothree.control.user.club.common.spec.ClubUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditClubForm
-        extends BaseEditForm<ClubSpec, ClubEdit> {
+        extends BaseEditForm<ClubUniversalSpec, ClubEdit> {
     
     // Nothing additional beyond BaseEditForm
     

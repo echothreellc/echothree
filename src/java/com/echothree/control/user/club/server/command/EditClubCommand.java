@@ -18,29 +18,28 @@ package com.echothree.control.user.club.server.command;
 
 import com.echothree.control.user.club.common.edit.ClubEdit;
 import com.echothree.control.user.club.common.edit.ClubEditFactory;
-import com.echothree.control.user.club.common.form.EditClubForm;
 import com.echothree.control.user.club.common.result.ClubResultFactory;
-import com.echothree.control.user.club.common.spec.ClubSpec;
-import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.control.user.club.common.result.EditClubResult;
+import com.echothree.control.user.club.common.spec.ClubUniversalSpec;
+import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
 import com.echothree.model.control.club.server.control.ClubControl;
+import com.echothree.model.control.club.server.logic.ClubLogic;
 import com.echothree.model.control.filter.common.FilterKinds;
 import com.echothree.model.control.filter.common.FilterTypes;
-import com.echothree.model.control.filter.server.control.FilterControl;
-import com.echothree.model.control.filter.server.control.FilterKindControl;
-import com.echothree.model.control.filter.server.control.FilterTypeControl;
+import com.echothree.model.control.filter.server.logic.FilterLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.subscription.common.SubscriptionConstants;
-import com.echothree.model.control.subscription.server.control.SubscriptionControl;
+import com.echothree.model.control.subscription.server.logic.SubscriptionTypeLogic;
+import com.echothree.model.data.accounting.server.entity.Currency;
+import com.echothree.model.data.club.server.entity.Club;
 import com.echothree.model.data.filter.server.entity.Filter;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
+import com.echothree.model.data.subscription.server.entity.SubscriptionType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -50,12 +49,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditClubCommand
-        extends BaseEditCommand<ClubSpec, ClubEdit> {
+        extends BaseAbstractEditCommand<ClubUniversalSpec, ClubEdit, EditClubResult, Club, Club> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -65,9 +64,11 @@ public class EditClubCommand
         ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("ClubName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ClubName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ClubName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SubscriptionTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -79,154 +80,128 @@ public class EditClubCommand
         );
     }
 
-    @Inject
-    AccountingControl accountingControl;
+    private SubscriptionType subscriptionType;
+    private Filter clubPriceFilter;
+    private Currency currency;
 
     @Inject
     ClubControl clubControl;
 
     @Inject
-    FilterControl filterControl;
+    ClubLogic clubLogic;
 
     @Inject
-    FilterKindControl filterKindControl;
+    CurrencyLogic currencyLogic;
 
     @Inject
-    FilterTypeControl filterTypeControl;
+    FilterLogic filterLogic;
 
     @Inject
-    SubscriptionControl subscriptionControl;
+    SubscriptionTypeLogic subscriptionTypeLogic;
 
-    
     /** Creates a new instance of EditClubCommand */
     public EditClubCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = ClubResultFactory.getEditClubResult();
-        
-        if(editMode.equals(EditMode.LOCK)) {
-            var clubName = spec.getClubName();
-            var club = clubControl.getClubByName(clubName);
-            
-            if(club != null) {
-                result.setClub(clubControl.getClubTransfer(getUserVisit(), club));
-                
-                if(lockEntity(club)) {
-                    var clubDescription = clubControl.getClubDescription(club, getPreferredLanguage());
-                    var edit = ClubEditFactory.getClubEdit();
-                    var clubDetail = club.getLastDetail();
-                    var clubPriceFilter = clubDetail.getClubPriceFilter();
-                    var currency = clubDetail.getCurrency();
-                    
-                    result.setEdit(edit);
-                    edit.setClubName(clubDetail.getClubName());
-                    edit.setSubscriptionTypeName(clubDetail.getSubscriptionType().getLastDetail().getSubscriptionTypeName());
-                    edit.setClubPriceFilterName(clubPriceFilter == null? null: clubPriceFilter.getLastDetail().getFilterName());
-                    edit.setCurrencyIsoName(currency.getCurrencyIsoName());
-                    edit.setIsDefault(clubDetail.getIsDefault().toString());
-                    edit.setSortOrder(clubDetail.getSortOrder().toString());
-                    
-                    if(clubDescription != null) {
-                        edit.setDescription(clubDescription.getDescription());
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                }
-                
-                result.setEntityLock(getEntityLockTransfer(club));
-            } else {
-                addExecutionError(ExecutionErrors.UnknownClubName.name(), clubName);
-            }
-        } else if(editMode.equals(EditMode.UPDATE)) {
-            var clubName = spec.getClubName();
-            var club = clubControl.getClubByNameForUpdate(clubName);
-            
-            if(club != null) {
-                clubName = edit.getClubName();
-                var duplicateClub = clubControl.getClubByName(clubName);
-                
-                if(duplicateClub == null || club.equals(duplicateClub)) {
-                    var subscriptionKind = subscriptionControl.getSubscriptionKindByName(SubscriptionConstants.SubscriptionKind_CLUB);
-                    var subscriptionTypeName = edit.getSubscriptionTypeName();
-                    var subscriptionType = subscriptionControl.getSubscriptionTypeByName(subscriptionKind, subscriptionTypeName);
-                    
-                    if(subscriptionType != null) {
-                        club = clubControl.getClubBySubscriptionType(subscriptionType);
-                        
-                        if(club == null) {
-                            var clubPriceFilterName = edit.getClubPriceFilterName();
-                            Filter clubPriceFilter = null;
-                            
-                            if(clubPriceFilterName != null) {
-                                var filterKind = filterKindControl.getFilterKindByName(FilterKinds.PRICE.name());
-                                var filterType = filterTypeControl.getFilterTypeByName(filterKind, FilterTypes.CLUB.name());
-                                
-                                if(filterType != null) {
-                                    clubPriceFilter = filterControl.getFilterByName(filterType, clubPriceFilterName);
-                                }
-                            }
-                            
-                            if(clubPriceFilterName == null || clubPriceFilter != null) {
-                                var currencyIsoName = edit.getCurrencyIsoName();
-                                var currency = currencyIsoName == null? null: accountingControl.getCurrencyByIsoName(currencyIsoName);
-                                
-                                if(currencyIsoName == null || currency != null) {
-                                    if(lockEntityForUpdate(club)) {
-                                        try {
-                                            var partyPK = getPartyPK();
-                                            var clubDetailValue = clubControl.getClubDetailValueForUpdate(club);
-                                            var clubDescription = clubControl.getClubDescriptionForUpdate(club, getPreferredLanguage());
-                                            var description = edit.getDescription();
-                                            
-                                            clubDetailValue.setClubName(edit.getClubName());
-                                            clubDetailValue.setSubscriptionTypePK(subscriptionType.getPrimaryKey());
-                                            clubDetailValue.setClubPriceFilterPK(clubPriceFilter == null? null: clubPriceFilter.getPrimaryKey());
-                                            clubDetailValue.setCurrencyPK(currency.getPrimaryKey());
-                                            clubDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
-                                            clubDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
-                                            
-                                            clubControl.updateClubFromValue(clubDetailValue, partyPK);
-                                            
-                                            if(clubDescription == null && description != null) {
-                                                clubControl.createClubDescription(club, getPreferredLanguage(), description, partyPK);
-                                            } else if(clubDescription != null && description == null) {
-                                                clubControl.deleteClubDescription(clubDescription, partyPK);
-                                            } else if(clubDescription != null && description != null) {
-                                                var clubDescriptionValue = clubControl.getClubDescriptionValue(clubDescription);
-                                                
-                                                clubDescriptionValue.setDescription(description);
-                                                clubControl.updateClubDescriptionFromValue(clubDescriptionValue, partyPK);
-                                            }
-                                        } finally {
-                                            unlockEntity(club);
-                                        }
-                                    } else {
-                                        addExecutionError(ExecutionErrors.EntityLockStale.name());
-                                    }
-                                } else {
-                                    addExecutionError(ExecutionErrors.UnknownCurrencyIsoName.name(), currencyIsoName);
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownClubPriceFilterName.name(), clubPriceFilterName);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.DuplicateSubscriptionType.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownSubscriptionTypeName.name(), subscriptionTypeName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.DuplicateClubName.name(), clubName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownClubName.name(), clubName);
+    public EditClubResult getResult() {
+        return ClubResultFactory.getEditClubResult();
+    }
+
+    @Override
+    public ClubEdit getEdit() {
+        return ClubEditFactory.getClubEdit();
+    }
+
+    @Override
+    public Club getEntity(EditClubResult result) {
+        return clubLogic.getClubByUniversalSpec(this, spec, editModeToEntityPermission(editMode));
+    }
+
+    @Override
+    public Club getLockEntity(Club club) {
+        return club;
+    }
+
+    @Override
+    public void fillInResult(EditClubResult result, Club club) {
+        result.setClub(clubControl.getClubTransfer(getUserVisit(), club));
+    }
+
+    @Override
+    public void doLock(ClubEdit edit, Club club) {
+        var clubDescription = clubControl.getClubDescription(club, getPreferredLanguage());
+        var clubDetail = club.getLastDetail();
+        var clubPriceFilter = clubDetail.getClubPriceFilter();
+        var currency = clubDetail.getCurrency();
+
+        edit.setClubName(clubDetail.getClubName());
+        edit.setSubscriptionTypeName(clubDetail.getSubscriptionType().getLastDetail().getSubscriptionTypeName());
+        edit.setClubPriceFilterName(clubPriceFilter == null? null: clubPriceFilter.getLastDetail().getFilterName());
+        edit.setCurrencyIsoName(currency == null ? null : currency.getCurrencyIsoName());
+        edit.setIsDefault(clubDetail.getIsDefault().toString());
+        edit.setSortOrder(clubDetail.getSortOrder().toString());
+
+        if(clubDescription != null) {
+            edit.setDescription(clubDescription.getDescription());
+        }
+    }
+
+    @Override
+    public void canUpdate(Club club) {
+        var clubName = edit.getClubName();
+        var duplicateClub = clubControl.getClubByName(clubName);
+        var subscriptionTypeName = edit.getSubscriptionTypeName();
+        var clubPriceFilterName = edit.getClubPriceFilterName();
+        var currencyIsoName = edit.getCurrencyIsoName();
+
+        if(duplicateClub != null && !club.equals(duplicateClub)) {
+            addExecutionError(ExecutionErrors.DuplicateClubName.name(), clubName);
+        }
+
+        subscriptionType = subscriptionTypeLogic.getSubscriptionTypeByName(this,
+                SubscriptionConstants.SubscriptionKind_CLUB, subscriptionTypeName);
+        clubPriceFilter = clubPriceFilterName == null ? null : filterLogic.getFilterByName(this,
+                FilterKinds.PRICE.name(), FilterTypes.CLUB.name(), clubPriceFilterName);
+        currency = currencyIsoName == null ? null : currencyLogic.getCurrencyByName(this, currencyIsoName);
+
+        if(!hasExecutionErrors()) {
+            var clubBySubscriptionType = clubControl.getClubBySubscriptionType(subscriptionType);
+
+            if(clubBySubscriptionType != null && !club.equals(clubBySubscriptionType)) {
+                addExecutionError(ExecutionErrors.DuplicateSubscriptionType.name(),
+                        SubscriptionConstants.SubscriptionKind_CLUB, subscriptionTypeName);
             }
         }
-        
-        return result;
     }
-    
+
+    @Override
+    public void doUpdate(Club club) {
+        var partyPK = getPartyPK();
+        var clubDetailValue = clubControl.getClubDetailValueForUpdate(club);
+        var clubDescription = clubControl.getClubDescriptionForUpdate(club, getPreferredLanguage());
+        var description = edit.getDescription();
+
+        clubDetailValue.setClubName(edit.getClubName());
+        clubDetailValue.setSubscriptionTypePK(subscriptionType.getPrimaryKey());
+        clubDetailValue.setClubPriceFilterPK(clubPriceFilter == null? null: clubPriceFilter.getPrimaryKey());
+        clubDetailValue.setCurrencyPK(currency == null ? null : currency.getPrimaryKey());
+        clubDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+        clubDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        clubControl.updateClubFromValue(clubDetailValue, partyPK);
+
+        if(clubDescription == null && description != null) {
+            clubControl.createClubDescription(club, getPreferredLanguage(), description, partyPK);
+        } else if(clubDescription != null && description == null) {
+            clubControl.deleteClubDescription(clubDescription, partyPK);
+        } else if(clubDescription != null && description != null) {
+            var clubDescriptionValue = clubControl.getClubDescriptionValue(clubDescription);
+
+            clubDescriptionValue.setDescription(description);
+            clubControl.updateClubDescriptionFromValue(clubDescriptionValue, partyPK);
+        }
+    }
+
 }
