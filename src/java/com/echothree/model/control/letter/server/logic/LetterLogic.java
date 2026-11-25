@@ -16,7 +16,12 @@
 
 package com.echothree.model.control.letter.server.logic;
 
+import com.echothree.control.user.letter.common.spec.LetterUniversalSpec;
 import com.echothree.model.control.chain.server.logic.ChainTypeLogic;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.letter.common.exception.UnknownLetterNameException;
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.data.chain.server.entity.ChainType;
@@ -37,6 +42,9 @@ public class LetterLogic
 
     @Inject
     ChainTypeLogic chainTypeLogic;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     protected LetterLogic() {
         super();
@@ -84,6 +92,39 @@ public class LetterLogic
     public Letter getLetterByNameForUpdate(final ExecutionErrorAccumulator eea, final String chainKindName, final String chainTypeName,
             final String letterName) {
         return getLetterByName(eea, chainKindName, chainTypeName, letterName, EntityPermission.READ_WRITE);
+    }
+
+    public Letter getLetterByUniversalSpec(final ExecutionErrorAccumulator eea, final LetterUniversalSpec universalSpec,
+            final EntityPermission entityPermission) {
+        Letter letter = null;
+        var chainKindName = universalSpec.getChainKindName();
+        var chainTypeName = universalSpec.getChainTypeName();
+        var letterName = universalSpec.getLetterName();
+        var nameParameterCount = (chainKindName == null ? 0 : 1) + (chainTypeName == null ? 0 : 1) + (letterName == null ? 0 : 1);
+        var possibleEntitySpecs = entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
+
+        if(nameParameterCount == 3 && possibleEntitySpecs == 0) {
+            letter = getLetterByName(eea, chainKindName, chainTypeName, letterName, entityPermission);
+        } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
+                    ComponentVendors.ECHO_THREE.name(), EntityTypes.Letter.name());
+
+            if(!hasExecutionErrors(eea)) {
+                letter = letterControl.getLetterByEntityInstance(entityInstance, entityPermission);
+            }
+        } else {
+            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return letter;
+    }
+
+    public Letter getLetterByUniversalSpec(final ExecutionErrorAccumulator eea, final LetterUniversalSpec universalSpec) {
+        return getLetterByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+    }
+
+    public Letter getLetterByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final LetterUniversalSpec universalSpec) {
+        return getLetterByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
     }
 
 }

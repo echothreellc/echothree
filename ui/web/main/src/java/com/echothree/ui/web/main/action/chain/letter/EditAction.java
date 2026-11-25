@@ -57,7 +57,7 @@ public class EditAction
         var chainTypeName = request.getParameter(ParameterConstants.CHAIN_TYPE_NAME);
         var originalLetterName = request.getParameter(ParameterConstants.ORIGINAL_LETTER_NAME);
         var commandForm = LetterUtil.getHome().getEditLetterForm();
-        var spec = LetterUtil.getHome().getLetterSpec();
+        var spec = LetterUtil.getHome().getLetterUniversalSpec();
         
         if(chainKindName == null) {
             chainKindName = actionForm.getChainKindName();
