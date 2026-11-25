@@ -319,7 +319,7 @@ public class CommentControl
         return commentTypeDescription;
     }
     
-    private CommentTypeDescription getCommentTypeDescription(CommentType commentType, Language language, EntityPermission entityPermission) {
+    public CommentTypeDescription getCommentTypeDescription(CommentType commentType, Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(CommentTypeDescriptions.fields())
                 .from(CommentTypeDescriptions)

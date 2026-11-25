@@ -18,29 +18,29 @@ package com.echothree.control.user.comment.server.command;
 
 import com.echothree.control.user.comment.common.edit.CommentEditFactory;
 import com.echothree.control.user.comment.common.edit.CommentTypeDescriptionEdit;
-import com.echothree.control.user.comment.common.form.EditCommentTypeDescriptionForm;
 import com.echothree.control.user.comment.common.result.CommentResultFactory;
+import com.echothree.control.user.comment.common.result.EditCommentTypeDescriptionResult;
 import com.echothree.control.user.comment.common.spec.CommentTypeDescriptionSpec;
 import com.echothree.model.control.comment.server.control.CommentControl;
-import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
+import com.echothree.model.control.comment.server.logic.CommentTypeLogic;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
+import com.echothree.model.data.comment.server.entity.CommentType;
+import com.echothree.model.data.comment.server.entity.CommentTypeDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class EditCommentTypeDescriptionCommand
-        extends BaseEditCommand<CommentTypeDescriptionSpec, CommentTypeDescriptionEdit> {
-    
+        extends BaseAbstractEditCommand<CommentTypeDescriptionSpec, CommentTypeDescriptionEdit, EditCommentTypeDescriptionResult, CommentTypeDescription, CommentType> {
+
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
@@ -48,7 +48,7 @@ public class EditCommentTypeDescriptionCommand
                 new FieldDefinition("CommentTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
@@ -58,87 +58,70 @@ public class EditCommentTypeDescriptionCommand
     CommentControl commentControl;
 
     @Inject
-    PartyControl partyControl;
+    CommentTypeLogic commentTypeLogic;
 
-    
+    @Inject
+    LanguageLogic languageLogic;
+
     /** Creates a new instance of EditCommentTypeDescriptionCommand */
     public EditCommentTypeDescriptionCommand() {
         super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = CommentResultFactory.getEditCommentTypeDescriptionResult();
-        var componentVendorName = spec.getComponentVendorName();
-        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
-        
-        if(componentVendor != null) {
-            var entityTypeName = spec.getEntityTypeName();
-            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
-            
-            if(entityType != null) {
-                var commentTypeName = spec.getCommentTypeName();
-                var commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
-                
-                if(commentType != null) {
-                    var languageIsoName = spec.getLanguageIsoName();
-                    var language = partyControl.getLanguageByIsoName(languageIsoName);
-                    
-                    if(language != null) {
-                        if(editMode.equals(EditMode.LOCK)) {
-                            var commentTypeDescription = commentControl.getCommentTypeDescription(commentType, language);
-                            
-                            if(commentTypeDescription != null) {
-                                result.setCommentTypeDescription(commentControl.getCommentTypeDescriptionTransfer(getUserVisit(), commentTypeDescription));
-                                
-                                if(lockEntity(commentType)) {
-                                    var edit = CommentEditFactory.getCommentTypeDescriptionEdit();
-                                    
-                                    result.setEdit(edit);
-                                    edit.setDescription(commentTypeDescription.getDescription());
-                                } else {
-                                    addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                                }
-                                
-                                result.setEntityLock(getEntityLockTransfer(commentType));
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownCommentTypeDescription.name());
-                            }
-                        } else if(editMode.equals(EditMode.UPDATE)) {
-                            var commentTypeDescriptionValue = commentControl.getCommentTypeDescriptionValueForUpdate(commentType, language);
-                            
-                            if(commentTypeDescriptionValue != null) {
-                                if(lockEntityForUpdate(commentType)) {
-                                    try {
-                                        var description = edit.getDescription();
-                                        
-                                        commentTypeDescriptionValue.setDescription(description);
-                                        
-                                        commentControl.updateCommentTypeDescriptionFromValue(commentTypeDescriptionValue, getPartyPK());
-                                    } finally {
-                                        unlockEntity(commentType);
-                                    }
-                                } else {
-                                    addExecutionError(ExecutionErrors.EntityLockStale.name());
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownCommentTypeDescription.name());
-                            }
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownCommentTypeName.name(), commentTypeName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), entityTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
-        }
-        
-        return result;
+    public EditCommentTypeDescriptionResult getResult() {
+        return CommentResultFactory.getEditCommentTypeDescriptionResult();
     }
-    
+
+    @Override
+    public CommentTypeDescriptionEdit getEdit() {
+        return CommentEditFactory.getCommentTypeDescriptionEdit();
+    }
+
+    @Override
+    public CommentTypeDescription getEntity(EditCommentTypeDescriptionResult result) {
+        CommentTypeDescription commentTypeDescription = null;
+        var componentVendorName = spec.getComponentVendorName();
+        var entityTypeName = spec.getEntityTypeName();
+        var commentTypeName = spec.getCommentTypeName();
+        var languageIsoName = spec.getLanguageIsoName();
+        var commentType = commentTypeLogic.getCommentTypeByName(this, componentVendorName, entityTypeName, commentTypeName);
+        var language = languageLogic.getLanguageByName(this, languageIsoName);
+
+        if(!hasExecutionErrors()) {
+            commentTypeDescription = commentControl.getCommentTypeDescription(commentType, language,
+                    editModeToEntityPermission(editMode));
+
+            if(commentTypeDescription == null) {
+                addExecutionError(ExecutionErrors.UnknownCommentTypeDescription.name(), componentVendorName, entityTypeName, commentTypeName, languageIsoName);
+            }
+        }
+
+        return commentTypeDescription;
+    }
+
+    @Override
+    public CommentType getLockEntity(CommentTypeDescription commentTypeDescription) {
+        return commentTypeDescription.getCommentType();
+    }
+
+    @Override
+    public void fillInResult(EditCommentTypeDescriptionResult result, CommentTypeDescription commentTypeDescription) {
+        result.setCommentTypeDescription(commentControl.getCommentTypeDescriptionTransfer(getUserVisit(), commentTypeDescription));
+    }
+
+    @Override
+    public void doLock(CommentTypeDescriptionEdit edit, CommentTypeDescription commentTypeDescription) {
+        edit.setDescription(commentTypeDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(CommentTypeDescription commentTypeDescription) {
+        var commentTypeDescriptionValue = commentControl.getCommentTypeDescriptionValue(commentTypeDescription);
+
+        commentTypeDescriptionValue.setDescription(edit.getDescription());
+
+        commentControl.updateCommentTypeDescriptionFromValue(commentTypeDescriptionValue, getPartyPK());
+    }
+
 }
