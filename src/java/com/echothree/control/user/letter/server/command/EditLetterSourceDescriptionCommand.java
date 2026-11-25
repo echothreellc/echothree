@@ -18,21 +18,21 @@ package com.echothree.control.user.letter.server.command;
 
 import com.echothree.control.user.letter.common.edit.LetterEditFactory;
 import com.echothree.control.user.letter.common.edit.LetterSourceDescriptionEdit;
-import com.echothree.control.user.letter.common.form.EditLetterSourceDescriptionForm;
+import com.echothree.control.user.letter.common.result.EditLetterSourceDescriptionResult;
 import com.echothree.control.user.letter.common.result.LetterResultFactory;
 import com.echothree.control.user.letter.common.spec.LetterSourceDescriptionSpec;
 import com.echothree.model.control.letter.server.control.LetterControl;
+import com.echothree.model.control.letter.server.logic.LetterSourceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.letter.server.entity.LetterSource;
+import com.echothree.model.data.letter.server.entity.LetterSourceDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -42,12 +42,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditLetterSourceDescriptionCommand
-        extends BaseEditCommand<LetterSourceDescriptionSpec, LetterSourceDescriptionEdit> {
-    
+        extends BaseAbstractEditCommand<LetterSourceDescriptionSpec, LetterSourceDescriptionEdit, EditLetterSourceDescriptionResult, LetterSourceDescription, LetterSource> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -55,12 +55,12 @@ public class EditLetterSourceDescriptionCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.LetterSource.name(), SecurityRoles.Description.name())
                 ))
         ));
-        
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("LetterSourceName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
@@ -70,73 +70,68 @@ public class EditLetterSourceDescriptionCommand
     LetterControl letterControl;
 
     @Inject
-    PartyControl partyControl;
+    LanguageLogic languageLogic;
 
-    
+    @Inject
+    LetterSourceLogic letterSourceLogic;
+
     /** Creates a new instance of EditLetterSourceDescriptionCommand */
     public EditLetterSourceDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = LetterResultFactory.getEditLetterSourceDescriptionResult();
-        var letterSourceName = spec.getLetterSourceName();
-        var letterSource = letterControl.getLetterSourceByName(letterSourceName);
-        
-        if(letterSource != null) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = partyControl.getLanguageByIsoName(languageIsoName);
-            
-            if(language != null) {
-                if(editMode.equals(EditMode.LOCK)) {
-                    var letterSourceDescription = letterControl.getLetterSourceDescription(letterSource, language);
-                    
-                    if(letterSourceDescription != null) {
-                        result.setLetterSourceDescription(letterControl.getLetterSourceDescriptionTransfer(getUserVisit(), letterSourceDescription));
-                        
-                        if(lockEntity(letterSource)) {
-                            var edit = LetterEditFactory.getLetterSourceDescriptionEdit();
-                            
-                            result.setEdit(edit);
-                            edit.setDescription(letterSourceDescription.getDescription());
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                        }
-                        
-                        result.setEntityLock(getEntityLockTransfer(letterSource));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownLetterSourceDescription.name());
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var letterSourceDescriptionValue = letterControl.getLetterSourceDescriptionValueForUpdate(letterSource, language);
-                    
-                    if(letterSourceDescriptionValue != null) {
-                        if(lockEntityForUpdate(letterSource)) {
-                            try {
-                                var description = edit.getDescription();
-                                
-                                letterSourceDescriptionValue.setDescription(description);
-                                
-                                letterControl.updateLetterSourceDescriptionFromValue(letterSourceDescriptionValue, getPartyPK());
-                            } finally {
-                                unlockEntity(letterSource);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownLetterSourceDescription.name());
-                    }
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownLetterSourceName.name(), letterSourceName);
-        }
-        
-        return result;
+    public EditLetterSourceDescriptionResult getResult() {
+        return LetterResultFactory.getEditLetterSourceDescriptionResult();
     }
-    
+
+    @Override
+    public LetterSourceDescriptionEdit getEdit() {
+        return LetterEditFactory.getLetterSourceDescriptionEdit();
+    }
+
+    @Override
+    public LetterSourceDescription getEntity(EditLetterSourceDescriptionResult result) {
+        LetterSourceDescription letterSourceDescription = null;
+        var letterSourceName = spec.getLetterSourceName();
+        var languageIsoName = spec.getLanguageIsoName();
+        var letterSource = letterSourceLogic.getLetterSourceByName(this, letterSourceName);
+        var language = languageLogic.getLanguageByName(this, languageIsoName);
+
+        if(!hasExecutionErrors()) {
+            letterSourceDescription = letterControl.getLetterSourceDescription(letterSource, language,
+                    editModeToEntityPermission(editMode));
+
+            if(letterSourceDescription == null) {
+                addExecutionError(ExecutionErrors.UnknownLetterSourceDescription.name(), letterSourceName, languageIsoName);
+            }
+        }
+
+        return letterSourceDescription;
+    }
+
+    @Override
+    public LetterSource getLockEntity(LetterSourceDescription letterSourceDescription) {
+        return letterSourceDescription.getLetterSource();
+    }
+
+    @Override
+    public void fillInResult(EditLetterSourceDescriptionResult result, LetterSourceDescription letterSourceDescription) {
+        result.setLetterSourceDescription(letterControl.getLetterSourceDescriptionTransfer(getUserVisit(), letterSourceDescription));
+    }
+
+    @Override
+    public void doLock(LetterSourceDescriptionEdit edit, LetterSourceDescription letterSourceDescription) {
+        edit.setDescription(letterSourceDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(LetterSourceDescription letterSourceDescription) {
+        var letterSourceDescriptionValue = letterControl.getLetterSourceDescriptionValue(letterSourceDescription);
+
+        letterSourceDescriptionValue.setDescription(edit.getDescription());
+
+        letterControl.updateLetterSourceDescriptionFromValue(letterSourceDescriptionValue, getPartyPK());
+    }
+
 }

@@ -215,7 +215,7 @@ public class LetterControl
                 .orElse(0L);
     }
 
-    private LetterSource getLetterSourceByName(String letterSourceName, EntityPermission entityPermission) {
+    public LetterSource getLetterSourceByName(String letterSourceName, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(LetterSources.fields())
                 .from(LetterSources)
@@ -547,7 +547,7 @@ public class LetterControl
         return letterSourceDescription;
     }
     
-    private LetterSourceDescription getLetterSourceDescription(LetterSource letterSource, Language language, EntityPermission entityPermission) {
+    public LetterSourceDescription getLetterSourceDescription(LetterSource letterSource, Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(LetterSourceDescriptions.fields())
                 .from(LetterSourceDescriptions)
