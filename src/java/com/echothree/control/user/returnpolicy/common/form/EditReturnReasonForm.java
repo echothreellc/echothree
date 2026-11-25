@@ -17,11 +17,11 @@
 package com.echothree.control.user.returnpolicy.common.form;
 
 import com.echothree.control.user.returnpolicy.common.edit.ReturnReasonEdit;
-import com.echothree.control.user.returnpolicy.common.spec.ReturnReasonSpec;
+import com.echothree.control.user.returnpolicy.common.spec.ReturnReasonUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditReturnReasonForm
-        extends BaseEditForm<ReturnReasonSpec, ReturnReasonEdit> {
+        extends BaseEditForm<ReturnReasonUniversalSpec, ReturnReasonEdit> {
     
     // Nothing additional beyond BaseEditForm
     
