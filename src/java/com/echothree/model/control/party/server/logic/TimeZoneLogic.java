@@ -22,6 +22,7 @@ import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
@@ -35,9 +36,10 @@ public class TimeZoneLogic
     protected TimeZoneLogic() {
         super();
     }
-    
-    public TimeZone getTimeZoneByName(final ExecutionErrorAccumulator eea, final String javaTimeZoneName) {
-        var timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
+
+    public TimeZone getTimeZoneByName(final ExecutionErrorAccumulator eea, final String javaTimeZoneName,
+            final EntityPermission entityPermission) {
+        var timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName, entityPermission);
 
         if(timeZone == null) {
             handleExecutionError(UnknownJavaTimeZoneNameException.class, eea, ExecutionErrors.UnknownJavaTimeZoneName.name(), javaTimeZoneName);
@@ -45,5 +47,13 @@ public class TimeZoneLogic
 
         return timeZone;
     }
-    
+
+    public TimeZone getTimeZoneByName(final ExecutionErrorAccumulator eea, final String javaTimeZoneName) {
+        return getTimeZoneByName(eea, javaTimeZoneName, EntityPermission.READ_ONLY);
+    }
+
+    public TimeZone getTimeZoneByNameForUpdate(final ExecutionErrorAccumulator eea, final String javaTimeZoneName) {
+        return getTimeZoneByName(eea, javaTimeZoneName, EntityPermission.READ_WRITE);
+    }
+
 }
