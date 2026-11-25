@@ -54,7 +54,7 @@ public class EditAction
         var originalCompanyName = request.getParameter(ParameterConstants.ORIGINAL_COMPANY_NAME);
         var actionForm = (EditActionForm)form;
         var commandForm = PartyUtil.getHome().getEditCompanyForm();
-        var spec = PartyUtil.getHome().getCompanySpec();
+        var spec = PartyUtil.getHome().getCompanyUniversalSpec();
         
         if(originalCompanyName == null)
             originalCompanyName = actionForm.getOriginalCompanyName();
