@@ -18,22 +18,22 @@ package com.echothree.control.user.term.server.command;
 
 import com.echothree.control.user.term.common.edit.PartyCreditLimitEdit;
 import com.echothree.control.user.term.common.edit.TermEditFactory;
-import com.echothree.control.user.term.common.form.EditPartyCreditLimitForm;
+import com.echothree.control.user.term.common.result.EditPartyCreditLimitResult;
 import com.echothree.control.user.term.common.result.TermResultFactory;
 import com.echothree.control.user.term.common.spec.PartyCreditLimitSpec;
-import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.logic.PartyChainLogic;
+import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.term.server.control.TermControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.accounting.server.entity.Currency;
+import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.term.server.entity.PartyCreditLimit;
+import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.form.BaseForm;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.string.AmountUtils;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
@@ -42,121 +42,126 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditPartyCreditLimitCommand
-        extends BaseEditCommand<PartyCreditLimitSpec, PartyCreditLimitEdit> {
-    
+        extends BaseAbstractEditCommand<PartyCreditLimitSpec, PartyCreditLimitEdit, EditPartyCreditLimitResult, PartyCreditLimit, Party> {
+
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CreditLimit", FieldType.UNSIGNED_PRICE_LINE, false, null, null),
                 new FieldDefinition("PotentialCreditLimit", FieldType.UNSIGNED_PRICE_LINE, false, null, null)
         );
     }
 
-    @Inject
-    AccountingControl accountingControl;
-
-    @Inject
-    PartyControl partyControl;
+    private Currency currency;
+    private boolean currencyResolved;
 
     @Inject
     TermControl termControl;
 
     @Inject
+    CurrencyLogic currencyLogic;
+
+    @Inject
     PartyChainLogic partyChainLogic;
 
-    
+    @Inject
+    PartyLogic partyLogic;
+
     /** Creates a new instance of EditPartyCreditLimitCommand */
     public EditPartyCreditLimitCommand() {
         super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
+    private Currency resolveCurrency() {
+        if(!currencyResolved) {
+            currency = currencyLogic.getCurrencyByName(this, spec.getCurrencyIsoName());
+            currencyResolved = true;
+        }
+
+        return currency;
+    }
+
     @Override
     protected void setupValidatorForEdit(Validator validator, BaseForm specForm) {
-        var currencyIsoName = spec.getCurrencyIsoName();
-        validator.setCurrency(accountingControl.getCurrencyByIsoName(currencyIsoName));
+        validator.setCurrency(resolveCurrency());
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = TermResultFactory.getEditPartyCreditLimitResult();
-        var partyName = spec.getPartyName();
-        var party = partyControl.getPartyByName(partyName);
-        
-        if(party != null) {
-            var currencyIsoName = spec.getCurrencyIsoName();
-            var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
-            
-            if(currency != null) {
-                if(editMode.equals(EditMode.LOCK)) {
-                    var partyCreditLimit = termControl.getPartyCreditLimit(party, currency);
-                    
-                    if(partyCreditLimit != null) {
-                        result.setPartyCreditLimit(termControl.getPartyCreditLimitTransfer(getUserVisit(), partyCreditLimit));
-                        
-                        if(lockEntity(party)) {
-                            var edit = TermEditFactory.getPartyCreditLimitEdit();
-                            
-                            result.setEdit(edit);
-                            edit.setCreditLimit(AmountUtils.getInstance().formatPriceLine(currency, partyCreditLimit.getCreditLimit()));
-                            edit.setPotentialCreditLimit(AmountUtils.getInstance().formatPriceLine(currency, partyCreditLimit.getPotentialCreditLimit()));
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                        }
-                        
-                        result.setEntityLock(getEntityLockTransfer(party));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownPartyCreditLimit.name());
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var partyCreditLimitValue = termControl.getPartyCreditLimitValueForUpdate(party, currency);
-                    
-                    if(partyCreditLimitValue != null) {
-                        if(lockEntityForUpdate(party)) {
-                            var strCreditLimit = edit.getCreditLimit();
-                            var creditLimit = strCreditLimit == null? null: Long.valueOf(strCreditLimit);
-                            var strPotentialCreditLimit = edit.getPotentialCreditLimit();
-                            var potentialCreditLimit = strPotentialCreditLimit == null? null: Long.valueOf(strPotentialCreditLimit);
-                            
-                            try {
-                                partyCreditLimitValue.setCreditLimit(creditLimit);
-                                partyCreditLimitValue.setPotentialCreditLimit(potentialCreditLimit);
-                                
-                                if(partyCreditLimitValue.hasBeenModified()) {
-                                    var partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
-                                    var updatedBy = getPartyPK();
-                                    
-                                    termControl.updatePartyCreditLimitFromValue(partyCreditLimitValue, updatedBy);
-                                    
-                                    if(partyTypeName.equals(PartyTypes.CUSTOMER.name())) {
-                                        // ExecutionErrorAccumulator is passed in as null so that an Exception will be thrown if there is an error.
-                                        partyChainLogic.createPartyCreditLimitChangedChainInstance(null, party, updatedBy);
-                                    }
-                                }
-                            } finally {
-                                unlockEntity(party);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownPartyCreditLimit.name());
-                    }
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownCurrencyIsoName.name(), currencyIsoName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
-        }
-        
-        return result;
+    public EditPartyCreditLimitResult getResult() {
+        return TermResultFactory.getEditPartyCreditLimitResult();
     }
-    
+
+    @Override
+    public PartyCreditLimitEdit getEdit() {
+        return TermEditFactory.getPartyCreditLimitEdit();
+    }
+
+    @Override
+    public PartyCreditLimit getEntity(EditPartyCreditLimitResult result) {
+        PartyCreditLimit partyCreditLimit = null;
+        var partyName = spec.getPartyName();
+        var currencyIsoName = spec.getCurrencyIsoName();
+        var party = partyLogic.getPartyByName(this, partyName);
+        var currency = resolveCurrency();
+
+        if(!hasExecutionErrors()) {
+            partyCreditLimit = termControl.getPartyCreditLimit(party, currency, editModeToEntityPermission(editMode));
+
+            if(partyCreditLimit == null) {
+                addExecutionError(ExecutionErrors.UnknownPartyCreditLimit.name(), partyName, currencyIsoName);
+            }
+        }
+
+        return partyCreditLimit;
+    }
+
+    @Override
+    public Party getLockEntity(PartyCreditLimit partyCreditLimit) {
+        return partyCreditLimit.getParty();
+    }
+
+    @Override
+    public void fillInResult(EditPartyCreditLimitResult result, PartyCreditLimit partyCreditLimit) {
+        result.setPartyCreditLimit(termControl.getPartyCreditLimitTransfer(getUserVisit(), partyCreditLimit));
+    }
+
+    @Override
+    public void doLock(PartyCreditLimitEdit edit, PartyCreditLimit partyCreditLimit) {
+        var currency = partyCreditLimit.getCurrency();
+        var amountUtils = AmountUtils.getInstance();
+
+        edit.setCreditLimit(amountUtils.formatPriceLine(currency, partyCreditLimit.getCreditLimit()));
+        edit.setPotentialCreditLimit(amountUtils.formatPriceLine(currency, partyCreditLimit.getPotentialCreditLimit()));
+    }
+
+    @Override
+    public void doUpdate(PartyCreditLimit partyCreditLimit) {
+        var partyCreditLimitValue = termControl.getPartyCreditLimitValue(partyCreditLimit);
+        var creditLimit = edit.getCreditLimit();
+        var potentialCreditLimit = edit.getPotentialCreditLimit();
+
+        partyCreditLimitValue.setCreditLimit(creditLimit == null ? null : Long.valueOf(creditLimit));
+        partyCreditLimitValue.setPotentialCreditLimit(potentialCreditLimit == null ? null : Long.valueOf(potentialCreditLimit));
+
+        if(partyCreditLimitValue.hasBeenModified()) {
+            var party = partyCreditLimit.getParty();
+            var partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
+            var updatedBy = getPartyPK();
+
+            termControl.updatePartyCreditLimitFromValue(partyCreditLimitValue, updatedBy);
+
+            if(PartyTypes.CUSTOMER.name().equals(partyTypeName)) {
+                // Throw on chain errors so that the transaction is rolled back.
+                partyChainLogic.createPartyCreditLimitChangedChainInstance(null, party, updatedBy);
+            }
+        }
+    }
+
 }
