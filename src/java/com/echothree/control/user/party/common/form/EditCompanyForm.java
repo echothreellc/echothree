@@ -17,11 +17,11 @@
 package com.echothree.control.user.party.common.form;
 
 import com.echothree.control.user.party.common.edit.CompanyEdit;
-import com.echothree.control.user.party.common.spec.CompanySpec;
+import com.echothree.control.user.party.common.spec.CompanyUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditCompanyForm
-        extends BaseEditForm<CompanySpec, CompanyEdit> {
+        extends BaseEditForm<CompanyUniversalSpec, CompanyEdit> {
     
     // Nothing additional beyond BaseEditForm
     
