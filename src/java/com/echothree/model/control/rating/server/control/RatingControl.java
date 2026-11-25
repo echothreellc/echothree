@@ -288,7 +288,7 @@ public class RatingControl
         return ratingTypeDescription;
     }
     
-    private RatingTypeDescription getRatingTypeDescription(RatingType ratingType, Language language, EntityPermission entityPermission) {
+    public RatingTypeDescription getRatingTypeDescription(RatingType ratingType, Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(RatingTypeDescriptions.fields())
                 .from(RatingTypeDescriptions)
