@@ -603,7 +603,7 @@ public class TermControl
         return termDescription;
     }
     
-    private TermDescription getTermDescription(Term term, Language language, EntityPermission entityPermission) {
+    public TermDescription getTermDescription(Term term, Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(TermDescriptions.fields())
                 .from(TermDescriptions)
