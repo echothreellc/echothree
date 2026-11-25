@@ -18,21 +18,21 @@ package com.echothree.control.user.club.server.command;
 
 import com.echothree.control.user.club.common.edit.ClubDescriptionEdit;
 import com.echothree.control.user.club.common.edit.ClubEditFactory;
-import com.echothree.control.user.club.common.form.EditClubDescriptionForm;
 import com.echothree.control.user.club.common.result.ClubResultFactory;
+import com.echothree.control.user.club.common.result.EditClubDescriptionResult;
 import com.echothree.control.user.club.common.spec.ClubDescriptionSpec;
 import com.echothree.model.control.club.server.control.ClubControl;
+import com.echothree.model.control.club.server.logic.ClubLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.club.server.entity.Club;
+import com.echothree.model.data.club.server.entity.ClubDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -42,12 +42,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditClubDescriptionCommand
-        extends BaseEditCommand<ClubDescriptionSpec, ClubDescriptionEdit> {
+        extends BaseAbstractEditCommand<ClubDescriptionSpec, ClubDescriptionEdit, EditClubDescriptionResult, ClubDescription, Club> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -60,7 +60,7 @@ public class EditClubDescriptionCommand
                 new FieldDefinition("ClubName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
@@ -70,73 +70,68 @@ public class EditClubDescriptionCommand
     ClubControl clubControl;
 
     @Inject
-    PartyControl partyControl;
+    ClubLogic clubLogic;
 
-    
+    @Inject
+    LanguageLogic languageLogic;
+
     /** Creates a new instance of EditClubDescriptionCommand */
     public EditClubDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = ClubResultFactory.getEditClubDescriptionResult();
-        var clubName = spec.getClubName();
-        var club = clubControl.getClubByName(clubName);
-        
-        if(club != null) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = partyControl.getLanguageByIsoName(languageIsoName);
-            
-            if(language != null) {
-                if(editMode.equals(EditMode.LOCK)) {
-                    var clubDescription = clubControl.getClubDescription(club, language);
-                    
-                    if(clubDescription != null) {
-                        result.setClubDescription(clubControl.getClubDescriptionTransfer(getUserVisit(), clubDescription));
-                        
-                        if(lockEntity(club)) {
-                            var edit = ClubEditFactory.getClubDescriptionEdit();
-                            
-                            result.setEdit(edit);
-                            edit.setDescription(clubDescription.getDescription());
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                        }
-                        
-                        result.setEntityLock(getEntityLockTransfer(club));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownClubDescription.name());
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var clubDescriptionValue = clubControl.getClubDescriptionValueForUpdate(club, language);
-                    
-                    if(clubDescriptionValue != null) {
-                        if(lockEntityForUpdate(club)) {
-                            try {
-                                var description = edit.getDescription();
-                                
-                                clubDescriptionValue.setDescription(description);
-                                
-                                clubControl.updateClubDescriptionFromValue(clubDescriptionValue, getPartyPK());
-                            } finally {
-                                unlockEntity(club);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownClubDescription.name());
-                    }
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownClubName.name(), clubName);
-        }
-        
-        return result;
+    public EditClubDescriptionResult getResult() {
+        return ClubResultFactory.getEditClubDescriptionResult();
     }
-    
+
+    @Override
+    public ClubDescriptionEdit getEdit() {
+        return ClubEditFactory.getClubDescriptionEdit();
+    }
+
+    @Override
+    public ClubDescription getEntity(EditClubDescriptionResult result) {
+        ClubDescription clubDescription = null;
+        var clubName = spec.getClubName();
+        var languageIsoName = spec.getLanguageIsoName();
+        var club = clubLogic.getClubByName(this, clubName);
+        var language = languageLogic.getLanguageByName(this, languageIsoName);
+
+        if(!hasExecutionErrors()) {
+            clubDescription = clubControl.getClubDescription(club, language,
+                    editModeToEntityPermission(editMode));
+
+            if(clubDescription == null) {
+                addExecutionError(ExecutionErrors.UnknownClubDescription.name(), clubName, languageIsoName);
+            }
+        }
+
+        return clubDescription;
+    }
+
+    @Override
+    public Club getLockEntity(ClubDescription clubDescription) {
+        return clubDescription.getClub();
+    }
+
+    @Override
+    public void fillInResult(EditClubDescriptionResult result, ClubDescription clubDescription) {
+        result.setClubDescription(clubControl.getClubDescriptionTransfer(getUserVisit(), clubDescription));
+    }
+
+    @Override
+    public void doLock(ClubDescriptionEdit edit, ClubDescription clubDescription) {
+        edit.setDescription(clubDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(ClubDescription clubDescription) {
+        var clubDescriptionValue = clubControl.getClubDescriptionValue(clubDescription);
+
+        clubDescriptionValue.setDescription(edit.getDescription());
+
+        clubControl.updateClubDescriptionFromValue(clubDescriptionValue, getPartyPK());
+    }
+
 }

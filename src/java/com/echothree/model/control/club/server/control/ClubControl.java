@@ -401,7 +401,7 @@ public class ClubControl
         return clubDescription;
     }
     
-    private ClubDescription getClubDescription(Club club, Language language,
+    public ClubDescription getClubDescription(Club club, Language language,
             EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(ClubDescriptions.fields())
