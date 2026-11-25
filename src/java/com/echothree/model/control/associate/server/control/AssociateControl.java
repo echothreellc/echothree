@@ -436,7 +436,7 @@ public class AssociateControl
         return associateProgramDescription;
     }
     
-    private AssociateProgramDescription getAssociateProgramDescription(AssociateProgram associateProgram, Language language, EntityPermission entityPermission) {
+    public AssociateProgramDescription getAssociateProgramDescription(AssociateProgram associateProgram, Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(AssociateProgramDescriptions.fields())
                 .from(AssociateProgramDescriptions)
