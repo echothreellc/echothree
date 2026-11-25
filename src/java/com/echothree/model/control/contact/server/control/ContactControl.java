@@ -3723,7 +3723,7 @@ public class ContactControl
         return getDefaultPostalAddressFormatForUpdate().getLastDetailForUpdate().getPostalAddressFormatDetailValue().clone();
     }
     
-    private PostalAddressFormat getPostalAddressFormatByName(String postalAddressFormatName, EntityPermission entityPermission) {
+    public PostalAddressFormat getPostalAddressFormatByName(String postalAddressFormatName, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PostalAddressFormats.fields())
                 .from(PostalAddressFormats)
@@ -3900,7 +3900,7 @@ public class ContactControl
         return postalAddressFormatDescription;
     }
     
-    private PostalAddressFormatDescription getPostalAddressFormatDescription(PostalAddressFormat postalAddressFormat, Language language, EntityPermission entityPermission) {
+    public PostalAddressFormatDescription getPostalAddressFormatDescription(PostalAddressFormat postalAddressFormat, Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PostalAddressFormatDescriptions.fields())
                 .from(PostalAddressFormatDescriptions)

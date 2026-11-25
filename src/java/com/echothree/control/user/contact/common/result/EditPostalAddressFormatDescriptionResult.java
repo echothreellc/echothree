@@ -18,30 +18,12 @@ package com.echothree.control.user.contact.common.result;
 
 import com.echothree.control.user.contact.common.edit.PostalAddressFormatDescriptionEdit;
 import com.echothree.model.control.contact.common.transfer.PostalAddressFormatDescriptionTransfer;
-import com.echothree.model.control.contact.common.transfer.PostalAddressFormatTransfer;
-import com.echothree.model.control.core.common.transfer.EntityLockTransfer;
-import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.util.common.command.BaseEditResult;
 
 public interface EditPostalAddressFormatDescriptionResult
-        extends BaseEditResult {
-    
-    PostalAddressFormatTransfer getPostalAddressFormat();
-    void setPostalAddressFormat(PostalAddressFormatTransfer postalAddressFormat);
-    
-    LanguageTransfer getLanguage();
-    void setLanguage(LanguageTransfer language);
-    
+        extends BaseEditResult<PostalAddressFormatDescriptionEdit> {
+
     PostalAddressFormatDescriptionTransfer getPostalAddressFormatDescription();
     void setPostalAddressFormatDescription(PostalAddressFormatDescriptionTransfer postalAddressFormatDescription);
-    
-    @Override
-    PostalAddressFormatDescriptionEdit getEdit();
-    void setEdit(PostalAddressFormatDescriptionEdit edit);
-    
-    @Override
-    EntityLockTransfer getEntityLock();
-    @Override
-    void setEntityLock(EntityLockTransfer entityLock);
-    
+
 }
