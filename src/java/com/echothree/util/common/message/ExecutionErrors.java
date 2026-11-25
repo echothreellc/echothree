@@ -347,6 +347,7 @@ public enum ExecutionErrors {
     UnknownPrinterGroupUseTypeName,
     UnknownPrinterName,
     UnknownRatingTypeListItemName,
+    UnknownDefaultRatingTypeListItem,
     UnknownRatingTypeName,
     UnknownRecoveryQuestionName,
     UnknownRightSelectorNodeName,
