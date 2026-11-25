@@ -247,7 +247,7 @@ public class CommunicationControl
         return getCommunicationEventPurposeDetailValueForUpdate(getCommunicationEventPurposeByNameForUpdate(communicationEventPurposeName));
     }
     
-    private CommunicationEventPurpose getDefaultCommunicationEventPurpose(EntityPermission entityPermission) {
+    public CommunicationEventPurpose getDefaultCommunicationEventPurpose(EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(CommunicationEventPurposes.fields())
                 .from(CommunicationEventPurposes)

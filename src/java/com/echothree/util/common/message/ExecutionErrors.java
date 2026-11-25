@@ -865,6 +865,7 @@ public enum ExecutionErrors {
     UnknownCommunicationEventTypeName,
     DuplicateCommunicationEventTypeName,
     UnknownCommunicationEventPurposeName,
+    UnknownDefaultCommunicationEventPurpose,
     UnknownCommunicationEventPurposeDescription,
     DuplicateCommunicationEventPurposeDescription,
     DuplicateCommunicationEventPurposeName,

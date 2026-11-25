@@ -58,7 +58,7 @@ public class EditAction
             if(forwardKey == null) {
                 var actionForm = (EditActionForm)form;
                 var commandForm = CommunicationUtil.getHome().getEditCommunicationEventPurposeForm();
-                var spec = CommunicationUtil.getHome().getCommunicationEventPurposeSpec();
+                var spec = CommunicationUtil.getHome().getCommunicationEventPurposeUniversalSpec();
                 
                 if(originalCommunicationEventPurposeName == null)
                     originalCommunicationEventPurposeName = actionForm.getOriginalCommunicationEventPurposeName();
