@@ -16,8 +16,14 @@
 
 package com.echothree.model.control.party.server.logic;
 
+import com.echothree.control.user.party.common.spec.PersonalTitleUniversalSpec;
 import com.echothree.model.control.contact.server.control.ContactControl;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.exception.CannotDeletePersonalTitleInUseException;
+import com.echothree.model.control.party.common.exception.UnknownDefaultPersonalTitleException;
 import com.echothree.model.control.party.common.exception.UnknownPersonalTitleIdException;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
@@ -43,11 +49,14 @@ public class PersonalTitleLogic
     @Inject
     PartyPaymentMethodControl partyPaymentMethodControl;
 
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     protected PersonalTitleLogic() {
         super();
     }
 
-    private PersonalTitle getPersonalTitleById(final ExecutionErrorAccumulator eea, final String personalTitleId,
+    public PersonalTitle getPersonalTitleById(final ExecutionErrorAccumulator eea, final String personalTitleId,
             final EntityPermission entityPermission) {
         var personalTitle = partyControl.convertPersonalTitleIdToEntity(personalTitleId, entityPermission);
 
@@ -64,6 +73,52 @@ public class PersonalTitleLogic
 
     public PersonalTitle getPersonalTitleByIdForUpdate(final ExecutionErrorAccumulator eea, final String personalTitleId) {
         return getPersonalTitleById(eea, personalTitleId, EntityPermission.READ_WRITE);
+    }
+
+    public PersonalTitle getPersonalTitleByUniversalSpec(final ExecutionErrorAccumulator eea, final PersonalTitleUniversalSpec universalSpec,
+            final boolean allowDefault, final EntityPermission entityPermission) {
+        PersonalTitle personalTitle = null;
+        var personalTitleId = universalSpec.getPersonalTitleId();
+        var parameterCount = (personalTitleId == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
+
+        switch(parameterCount) {
+            case 0 -> {
+                if(allowDefault) {
+                    personalTitle = partyControl.getDefaultPersonalTitle(entityPermission);
+
+                    if(personalTitle == null) {
+                        handleExecutionError(UnknownDefaultPersonalTitleException.class, eea, ExecutionErrors.UnknownDefaultPersonalTitle.name());
+                    }
+                } else {
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                }
+            }
+            case 1 -> {
+                if(personalTitleId == null) {
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.PersonalTitle.name());
+
+                    if(!hasExecutionErrors(eea)) {
+                        personalTitle = partyControl.getPersonalTitleByEntityInstance(entityInstance, entityPermission);
+                    }
+                } else {
+                    personalTitle = getPersonalTitleById(eea, personalTitleId, entityPermission);
+                }
+            }
+            default -> handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return personalTitle;
+    }
+
+    public PersonalTitle getPersonalTitleByUniversalSpec(final ExecutionErrorAccumulator eea, final PersonalTitleUniversalSpec universalSpec,
+            final boolean allowDefault) {
+        return getPersonalTitleByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_ONLY);
+    }
+
+    public PersonalTitle getPersonalTitleByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final PersonalTitleUniversalSpec universalSpec,
+            final boolean allowDefault) {
+        return getPersonalTitleByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
     }
 
     public void deletePersonalTitle(final ExecutionErrorAccumulator eea, final PersonalTitle personalTitle, final PartyPK deletedBy) {
