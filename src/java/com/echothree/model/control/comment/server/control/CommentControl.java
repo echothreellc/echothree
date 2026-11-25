@@ -30,6 +30,7 @@ import com.echothree.model.control.comment.server.transfer.CommentUsageTransferC
 import com.echothree.model.control.comment.server.transfer.CommentUsageTypeDescriptionTransferCache;
 import com.echothree.model.control.comment.server.transfer.CommentUsageTypeTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.data.comment.common.pk.CommentPK;
 import com.echothree.model.data.comment.common.pk.CommentTypePK;
 import com.echothree.model.data.comment.common.pk.CommentUsageTypePK;
 import com.echothree.model.data.comment.server.entity.Comment;
@@ -805,7 +806,22 @@ public class CommentControl
         return comment;
     }
     
-    private Comment getCommentByName(String commentName, EntityPermission entityPermission) {
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Comment */
+    public Comment getCommentByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var commentPK = new CommentPK(entityInstance.getEntityUniqueId());
+
+        return commentFactory.getEntityFromPK(entityPermission, commentPK);
+    }
+
+    public Comment getCommentByEntityInstance(EntityInstance entityInstance) {
+        return getCommentByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Comment getCommentByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getCommentByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public Comment getCommentByName(String commentName, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(Comments.fields())
                 .from(Comments)

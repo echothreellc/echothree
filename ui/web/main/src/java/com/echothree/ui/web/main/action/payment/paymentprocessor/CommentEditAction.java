@@ -20,7 +20,7 @@ import com.echothree.control.user.comment.common.CommentUtil;
 import com.echothree.control.user.comment.common.edit.CommentEdit;
 import com.echothree.control.user.comment.common.form.EditCommentForm;
 import com.echothree.control.user.comment.common.result.EditCommentResult;
-import com.echothree.control.user.comment.common.spec.CommentSpec;
+import com.echothree.control.user.comment.common.spec.CommentUniversalSpec;
 import com.echothree.control.user.payment.common.PaymentUtil;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
@@ -47,12 +47,12 @@ import javax.servlet.http.HttpServletRequest;
     }
 )
 public class CommentEditAction
-        extends MainBaseEditAction<CommentEditActionForm, CommentSpec, CommentEdit, EditCommentForm, EditCommentResult> {
+        extends MainBaseEditAction<CommentEditActionForm, CommentUniversalSpec, CommentEdit, EditCommentForm, EditCommentResult> {
     
     @Override
-    protected CommentSpec getSpec(HttpServletRequest request, CommentEditActionForm actionForm)
+    protected CommentUniversalSpec getSpec(HttpServletRequest request, CommentEditActionForm actionForm)
             throws NamingException {
-        var spec = CommentUtil.getHome().getCommentSpec();
+        var spec = CommentUtil.getHome().getCommentUniversalSpec();
         var commentName = request.getParameter(ParameterConstants.COMMENT_NAME);
 
         if(commentName == null) {
@@ -84,7 +84,7 @@ public class CommentEditAction
     }
     
     @Override
-    protected void setupActionForm(HttpServletRequest request, CommentEditActionForm actionForm, EditCommentResult result, CommentSpec spec, CommentEdit edit) {
+    protected void setupActionForm(HttpServletRequest request, CommentEditActionForm actionForm, EditCommentResult result, CommentUniversalSpec spec, CommentEdit edit) {
         actionForm.setPaymentProcessorName(request.getParameter(ParameterConstants.PAYMENT_PROCESSOR_NAME));
         actionForm.setCommentName(spec.getCommentName());
         actionForm.setLanguageChoice(edit.getLanguageIsoName());
