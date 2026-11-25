@@ -1570,7 +1570,7 @@ public class ReturnPolicyControl
         return getReturnReasons(returnKind, EntityPermission.READ_WRITE);
     }
     
-    private ReturnReason getDefaultReturnReason(ReturnKind returnKind, EntityPermission entityPermission) {
+    public ReturnReason getDefaultReturnReason(ReturnKind returnKind, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(ReturnReasons.fields())
                 .from(ReturnReasons)

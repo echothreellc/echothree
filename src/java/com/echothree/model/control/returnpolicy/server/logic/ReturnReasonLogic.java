@@ -16,6 +16,13 @@
 
 package com.echothree.model.control.returnpolicy.server.logic;
 
+import com.echothree.control.user.returnpolicy.common.spec.ReturnReasonUniversalSpec;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.returnpolicy.common.exception.UnknownDefaultReturnKindException;
+import com.echothree.model.control.returnpolicy.common.exception.UnknownDefaultReturnReasonException;
 import com.echothree.model.control.returnpolicy.common.exception.UnknownReturnReasonNameException;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
@@ -33,6 +40,9 @@ public class ReturnReasonLogic
 
     @Inject
     ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     @Inject
     ReturnKindLogic returnKindLogic;
@@ -83,6 +93,70 @@ public class ReturnReasonLogic
     public ReturnReason getReturnReasonByNameForUpdate(final ExecutionErrorAccumulator eea, final String returnKindName,
             final String returnReasonName) {
         return getReturnReasonByName(eea, returnKindName, returnReasonName, EntityPermission.READ_WRITE);
+    }
+
+    public ReturnReason getReturnReasonByUniversalSpec(final ExecutionErrorAccumulator eea, final ReturnReasonUniversalSpec universalSpec,
+            final boolean allowDefault, final EntityPermission entityPermission) {
+        ReturnReason returnReason = null;
+        var returnKindName = universalSpec.getReturnKindName();
+        var returnReasonName = universalSpec.getReturnReasonName();
+        var possibleEntitySpecs = entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
+
+        if(possibleEntitySpecs == 0) {
+            ReturnKind returnKind = null;
+
+            if(returnKindName == null) {
+                if(allowDefault) {
+                    returnKind = returnPolicyControl.getDefaultReturnKind();
+
+                    if(returnKind == null) {
+                        handleExecutionError(UnknownDefaultReturnKindException.class, eea, ExecutionErrors.UnknownDefaultReturnKind.name());
+                    }
+                } else {
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                }
+            } else {
+                returnKind = returnKindLogic.getReturnKindByName(eea, returnKindName);
+            }
+
+            if(!hasExecutionErrors(eea)) {
+                if(returnReasonName == null) {
+                    if(allowDefault) {
+                        returnReason = returnPolicyControl.getDefaultReturnReason(returnKind, entityPermission);
+
+                        if(returnReason == null) {
+                            handleExecutionError(UnknownDefaultReturnReasonException.class, eea, ExecutionErrors.UnknownDefaultReturnReason.name(),
+                                    returnKind.getLastDetail().getReturnKindName());
+                        }
+                    } else {
+                        handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                    }
+                } else {
+                    returnReason = getReturnReasonByName(eea, returnKind, returnReasonName, entityPermission);
+                }
+            }
+        } else if(returnKindName == null && returnReasonName == null && possibleEntitySpecs == 1) {
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
+                    ComponentVendors.ECHO_THREE.name(), EntityTypes.ReturnReason.name());
+
+            if(!hasExecutionErrors(eea)) {
+                returnReason = returnPolicyControl.getReturnReasonByEntityInstance(entityInstance, entityPermission);
+            }
+        } else {
+            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return returnReason;
+    }
+
+    public ReturnReason getReturnReasonByUniversalSpec(final ExecutionErrorAccumulator eea, final ReturnReasonUniversalSpec universalSpec,
+            final boolean allowDefault) {
+        return getReturnReasonByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_ONLY);
+    }
+
+    public ReturnReason getReturnReasonByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final ReturnReasonUniversalSpec universalSpec,
+            final boolean allowDefault) {
+        return getReturnReasonByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
     }
 
 }
