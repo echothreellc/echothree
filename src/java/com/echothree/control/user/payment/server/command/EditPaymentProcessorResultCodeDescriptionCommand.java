@@ -18,21 +18,21 @@ package com.echothree.control.user.payment.server.command;
 
 import com.echothree.control.user.payment.common.edit.PaymentEditFactory;
 import com.echothree.control.user.payment.common.edit.PaymentProcessorResultCodeDescriptionEdit;
-import com.echothree.control.user.payment.common.form.EditPaymentProcessorResultCodeDescriptionForm;
+import com.echothree.control.user.payment.common.result.EditPaymentProcessorResultCodeDescriptionResult;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.control.user.payment.common.spec.PaymentProcessorResultCodeDescriptionSpec;
-import com.echothree.model.control.payment.server.control.PaymentProcessorResultCodeControl;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
+import com.echothree.model.control.payment.server.control.PaymentProcessorResultCodeControl;
+import com.echothree.model.control.payment.server.logic.PaymentProcessorResultCodeLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.payment.server.entity.PaymentProcessorResultCode;
+import com.echothree.model.data.payment.server.entity.PaymentProcessorResultCodeDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -42,12 +42,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditPaymentProcessorResultCodeDescriptionCommand
-        extends BaseEditCommand<PaymentProcessorResultCodeDescriptionSpec, PaymentProcessorResultCodeDescriptionEdit> {
-    
+        extends BaseAbstractEditCommand<PaymentProcessorResultCodeDescriptionSpec, PaymentProcessorResultCodeDescriptionEdit, EditPaymentProcessorResultCodeDescriptionResult, PaymentProcessorResultCodeDescription, PaymentProcessorResultCode> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -55,92 +55,83 @@ public class EditPaymentProcessorResultCodeDescriptionCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.PaymentProcessorResultCode.name(), SecurityRoles.Description.name())
                 ))
         ));
-        
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PaymentProcessorResultCodeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
 
     @Inject
-    PartyControl partyControl;
-
-    @Inject
     PaymentProcessorResultCodeControl paymentProcessorResultCodeControl;
 
-    
+    @Inject
+    LanguageLogic languageLogic;
+
+    @Inject
+    PaymentProcessorResultCodeLogic paymentProcessorResultCodeLogic;
+
     /** Creates a new instance of EditPaymentProcessorResultCodeDescriptionCommand */
     public EditPaymentProcessorResultCodeDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = PaymentResultFactory.getEditPaymentProcessorResultCodeDescriptionResult();
-        var paymentProcessorResultCodeName = spec.getPaymentProcessorResultCodeName();
-        var paymentProcessorResultCode = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeByName(paymentProcessorResultCodeName);
-        
-        if(paymentProcessorResultCode != null) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = partyControl.getLanguageByIsoName(languageIsoName);
-            
-            if(language != null) {
-                if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    var paymentProcessorResultCodeDescription = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeDescription(paymentProcessorResultCode, language);
-                    
-                    if(paymentProcessorResultCodeDescription != null) {
-                        if(editMode.equals(EditMode.LOCK)) {
-                            result.setPaymentProcessorResultCodeDescription(paymentProcessorResultCodeControl.getPaymentProcessorResultCodeDescriptionTransfer(getUserVisit(), paymentProcessorResultCodeDescription));
-
-                            if(lockEntity(paymentProcessorResultCode)) {
-                                var edit = PaymentEditFactory.getPaymentProcessorResultCodeDescriptionEdit();
-
-                                result.setEdit(edit);
-                                edit.setDescription(paymentProcessorResultCodeDescription.getDescription());
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                            }
-
-                            result.setEntityLock(getEntityLockTransfer(paymentProcessorResultCode));
-                        } else { // EditMode.ABANDON
-                            unlockEntity(paymentProcessorResultCode);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownPaymentProcessorResultCodeDescription.name());
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var paymentProcessorResultCodeDescriptionValue = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeDescriptionValueForUpdate(paymentProcessorResultCode, language);
-                    
-                    if(paymentProcessorResultCodeDescriptionValue != null) {
-                        if(lockEntityForUpdate(paymentProcessorResultCode)) {
-                            try {
-                                var description = edit.getDescription();
-                                
-                                paymentProcessorResultCodeDescriptionValue.setDescription(description);
-                                
-                                paymentProcessorResultCodeControl.updatePaymentProcessorResultCodeDescriptionFromValue(paymentProcessorResultCodeDescriptionValue, getPartyPK());
-                            } finally {
-                                unlockEntity(paymentProcessorResultCode);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownPaymentProcessorResultCodeDescription.name());
-                    }
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownPaymentProcessorResultCodeName.name(), paymentProcessorResultCodeName);
-        }
-        
-        return result;
+    public EditPaymentProcessorResultCodeDescriptionResult getResult() {
+        return PaymentResultFactory.getEditPaymentProcessorResultCodeDescriptionResult();
     }
-    
+
+    @Override
+    public PaymentProcessorResultCodeDescriptionEdit getEdit() {
+        return PaymentEditFactory.getPaymentProcessorResultCodeDescriptionEdit();
+    }
+
+    @Override
+    public PaymentProcessorResultCodeDescription getEntity(EditPaymentProcessorResultCodeDescriptionResult result) {
+        PaymentProcessorResultCodeDescription paymentProcessorResultCodeDescription = null;
+        var paymentProcessorResultCodeName = spec.getPaymentProcessorResultCodeName();
+        var languageIsoName = spec.getLanguageIsoName();
+        var paymentProcessorResultCode = paymentProcessorResultCodeLogic.getPaymentProcessorResultCodeByName(this, paymentProcessorResultCodeName);
+        var language = languageLogic.getLanguageByName(this, languageIsoName);
+
+        if(!hasExecutionErrors()) {
+            paymentProcessorResultCodeDescription = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeDescription(paymentProcessorResultCode, language,
+                    editModeToEntityPermission(editMode));
+
+            if(paymentProcessorResultCodeDescription == null) {
+                addExecutionError(ExecutionErrors.UnknownPaymentProcessorResultCodeDescription.name(), paymentProcessorResultCodeName, languageIsoName);
+            }
+        }
+
+        return paymentProcessorResultCodeDescription;
+    }
+
+    @Override
+    public PaymentProcessorResultCode getLockEntity(PaymentProcessorResultCodeDescription paymentProcessorResultCodeDescription) {
+        return paymentProcessorResultCodeDescription.getPaymentProcessorResultCode();
+    }
+
+    @Override
+    public void fillInResult(EditPaymentProcessorResultCodeDescriptionResult result, PaymentProcessorResultCodeDescription paymentProcessorResultCodeDescription) {
+        result.setPaymentProcessorResultCodeDescription(paymentProcessorResultCodeControl.getPaymentProcessorResultCodeDescriptionTransfer(getUserVisit(), paymentProcessorResultCodeDescription));
+    }
+
+    @Override
+    public void doLock(PaymentProcessorResultCodeDescriptionEdit edit, PaymentProcessorResultCodeDescription paymentProcessorResultCodeDescription) {
+        edit.setDescription(paymentProcessorResultCodeDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(PaymentProcessorResultCodeDescription paymentProcessorResultCodeDescription) {
+        var paymentProcessorResultCodeDescriptionValue = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeDescriptionValue(paymentProcessorResultCodeDescription);
+
+        paymentProcessorResultCodeDescriptionValue.setDescription(edit.getDescription());
+
+        paymentProcessorResultCodeControl.updatePaymentProcessorResultCodeDescriptionFromValue(paymentProcessorResultCodeDescriptionValue, getPartyPK());
+    }
+
 }
