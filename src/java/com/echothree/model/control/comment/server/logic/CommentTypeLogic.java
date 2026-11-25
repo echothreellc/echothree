@@ -16,8 +16,13 @@
 
 package com.echothree.model.control.comment.server.logic;
 
+import com.echothree.control.user.comment.common.spec.CommentTypeUniversalSpec;
 import com.echothree.model.control.comment.common.exception.UnknownCommentTypeNameException;
 import com.echothree.model.control.comment.server.control.CommentControl;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.data.comment.server.entity.CommentType;
 import com.echothree.model.data.core.server.entity.EntityType;
@@ -36,20 +41,24 @@ public class CommentTypeLogic
     CommentControl commentControl;
 
     @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
     EntityTypeLogic entityTypeLogic;
 
     protected CommentTypeLogic() {
         super();
     }
 
-    public CommentType getCommentTypeByName(final ExecutionErrorAccumulator eea, final EntityType entityType,
-            final String commentTypeName, final EntityPermission entityPermission) {
+    public CommentType getCommentTypeByName(final ExecutionErrorAccumulator eea, final EntityType entityType, final String commentTypeName,
+            final EntityPermission entityPermission) {
         var commentType = commentControl.getCommentTypeByName(entityType, commentTypeName, entityPermission);
 
         if(commentType == null) {
+            var entityTypeDetail = entityType.getLastDetail();
+
             handleExecutionError(UnknownCommentTypeNameException.class, eea, ExecutionErrors.UnknownCommentTypeName.name(),
-                    entityType.getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName(),
-                    entityType.getLastDetail().getEntityTypeName(), commentTypeName);
+                    entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(), commentTypeName);
         }
 
         return commentType;
@@ -70,7 +79,7 @@ public class CommentTypeLogic
         var entityType = entityTypeLogic.getEntityTypeByName(eea, componentVendorName, entityTypeName);
         CommentType commentType = null;
 
-        if(eea == null || !eea.hasExecutionErrors()) {
+        if(!hasExecutionErrors(eea)) {
             commentType = getCommentTypeByName(eea, entityType, commentTypeName, entityPermission);
         }
 
@@ -85,6 +94,40 @@ public class CommentTypeLogic
     public CommentType getCommentTypeByNameForUpdate(final ExecutionErrorAccumulator eea, final String componentVendorName,
             final String entityTypeName, final String commentTypeName) {
         return getCommentTypeByName(eea, componentVendorName, entityTypeName, commentTypeName, EntityPermission.READ_WRITE);
+    }
+
+    public CommentType getCommentTypeByUniversalSpec(final ExecutionErrorAccumulator eea, final CommentTypeUniversalSpec universalSpec,
+            final EntityPermission entityPermission) {
+        CommentType commentType = null;
+        var componentVendorName = universalSpec.getComponentVendorName();
+        var entityTypeName = universalSpec.getEntityTypeName();
+        var commentTypeName = universalSpec.getCommentTypeName();
+        var nameParameterCount = (componentVendorName == null ? 0 : 1) + (entityTypeName == null ? 0 : 1)
+                + (commentTypeName == null ? 0 : 1);
+        var possibleEntitySpecs = entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
+
+        if(nameParameterCount == 3 && possibleEntitySpecs == 0) {
+            commentType = getCommentTypeByName(eea, componentVendorName, entityTypeName, commentTypeName, entityPermission);
+        } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
+                    ComponentVendors.ECHO_THREE.name(), EntityTypes.CommentType.name());
+
+            if(!hasExecutionErrors(eea)) {
+                commentType = commentControl.getCommentTypeByEntityInstance(entityInstance, entityPermission);
+            }
+        } else {
+            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return commentType;
+    }
+
+    public CommentType getCommentTypeByUniversalSpec(final ExecutionErrorAccumulator eea, final CommentTypeUniversalSpec universalSpec) {
+        return getCommentTypeByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+    }
+
+    public CommentType getCommentTypeByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final CommentTypeUniversalSpec universalSpec) {
+        return getCommentTypeByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
     }
 
 }

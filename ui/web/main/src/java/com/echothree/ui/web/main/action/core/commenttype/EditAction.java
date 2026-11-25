@@ -62,7 +62,7 @@ public class EditAction
             if(forwardKey == null) {
                 var actionForm = (EditActionForm)form;
                 var commandForm = CommentUtil.getHome().getEditCommentTypeForm();
-                var spec = CommentUtil.getHome().getCommentTypeSpec();
+                var spec = CommentUtil.getHome().getCommentTypeUniversalSpec();
                 var originalTypeCommentName = request.getParameter(ParameterConstants.ORIGINAL_COMMENT_TYPE_NAME);
                 
                 if(componentVendorName == null)
