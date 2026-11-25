@@ -16,6 +16,11 @@
 
 package com.echothree.model.control.rating.server.logic;
 
+import com.echothree.control.user.rating.common.spec.RatingTypeUniversalSpec;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.rating.common.exception.UnknownRatingTypeNameException;
 import com.echothree.model.control.rating.server.control.RatingControl;
@@ -34,6 +39,9 @@ public class RatingTypeLogic
 
     @Inject
     RatingControl ratingControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
     @Inject
     EntityTypeLogic entityTypeLogic;
@@ -86,6 +94,40 @@ public class RatingTypeLogic
     public RatingType getRatingTypeByNameForUpdate(final ExecutionErrorAccumulator eea, final String componentVendorName,
             final String entityTypeName, final String ratingTypeName) {
         return getRatingTypeByName(eea, componentVendorName, entityTypeName, ratingTypeName, EntityPermission.READ_WRITE);
+    }
+
+    public RatingType getRatingTypeByUniversalSpec(final ExecutionErrorAccumulator eea, final RatingTypeUniversalSpec universalSpec,
+            final EntityPermission entityPermission) {
+        RatingType ratingType = null;
+        var componentVendorName = universalSpec.getComponentVendorName();
+        var entityTypeName = universalSpec.getEntityTypeName();
+        var ratingTypeName = universalSpec.getRatingTypeName();
+        var nameParameterCount = (componentVendorName == null ? 0 : 1) + (entityTypeName == null ? 0 : 1)
+                + (ratingTypeName == null ? 0 : 1);
+        var possibleEntitySpecs = entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
+
+        if(nameParameterCount == 3 && possibleEntitySpecs == 0) {
+            ratingType = getRatingTypeByName(eea, componentVendorName, entityTypeName, ratingTypeName, entityPermission);
+        } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
+            var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
+                    ComponentVendors.ECHO_THREE.name(), EntityTypes.RatingType.name());
+
+            if(!hasExecutionErrors(eea)) {
+                ratingType = ratingControl.getRatingTypeByEntityInstance(entityInstance, entityPermission);
+            }
+        } else {
+            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return ratingType;
+    }
+
+    public RatingType getRatingTypeByUniversalSpec(final ExecutionErrorAccumulator eea, final RatingTypeUniversalSpec universalSpec) {
+        return getRatingTypeByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+    }
+
+    public RatingType getRatingTypeByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final RatingTypeUniversalSpec universalSpec) {
+        return getRatingTypeByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
     }
 
 }
