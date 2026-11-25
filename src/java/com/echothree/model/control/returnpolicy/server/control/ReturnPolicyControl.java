@@ -2323,7 +2323,7 @@ public class ReturnPolicyControl
         return getDefaultReturnTypeForUpdate(returnKind).getLastDetailForUpdate().getReturnTypeDetailValue().clone();
     }
     
-    private ReturnType getReturnTypeByName(ReturnKind returnKind, String returnTypeName, EntityPermission entityPermission) {
+    public ReturnType getReturnTypeByName(ReturnKind returnKind, String returnTypeName, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(ReturnTypes.fields())
                 .from(ReturnTypes)
@@ -2670,7 +2670,7 @@ public class ReturnPolicyControl
         return returnTypeShippingMethod;
     }
     
-    private ReturnTypeShippingMethod getReturnTypeShippingMethod(ReturnType returnType, ShippingMethod shippingMethod, EntityPermission entityPermission) {
+    public ReturnTypeShippingMethod getReturnTypeShippingMethod(ReturnType returnType, ShippingMethod shippingMethod, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(ReturnTypeShippingMethods.fields())
                 .from(ReturnTypeShippingMethods)
