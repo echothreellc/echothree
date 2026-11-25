@@ -1350,7 +1350,7 @@ public class UserControl
         return getDefaultRecoveryQuestionForUpdate().getLastDetailForUpdate().getRecoveryQuestionDetailValue().clone();
     }
     
-    private RecoveryQuestion getRecoveryQuestionByName(String recoveryQuestionName, EntityPermission entityPermission) {
+    public RecoveryQuestion getRecoveryQuestionByName(String recoveryQuestionName, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(RecoveryQuestions.fields())
                 .from(RecoveryQuestions)

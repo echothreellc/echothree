@@ -17,11 +17,11 @@
 package com.echothree.control.user.user.common.form;
 
 import com.echothree.control.user.user.common.edit.RecoveryQuestionEdit;
-import com.echothree.control.user.user.common.spec.RecoveryQuestionSpec;
+import com.echothree.control.user.user.common.spec.RecoveryQuestionUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditRecoveryQuestionForm
-        extends BaseEditForm<RecoveryQuestionSpec, RecoveryQuestionEdit> {
+        extends BaseEditForm<RecoveryQuestionUniversalSpec, RecoveryQuestionEdit> {
     
     // Nothing additional beyond BaseEditForm
     

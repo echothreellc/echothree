@@ -58,7 +58,7 @@ public class EditAction
             if(forwardKey == null) {
                 var actionForm = (EditActionForm)form;
                 var commandForm = UserUtil.getHome().getEditRecoveryQuestionForm();
-                var spec = UserUtil.getHome().getRecoveryQuestionSpec();
+                var spec = UserUtil.getHome().getRecoveryQuestionUniversalSpec();
                 
                 if(originalRecoveryQuestionName == null)
                     originalRecoveryQuestionName = actionForm.getOriginalRecoveryQuestionName();
