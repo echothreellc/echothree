@@ -1073,7 +1073,7 @@ public class TaxControl
         return taxDescription;
     }
     
-    private TaxDescription getTaxDescription(Tax tax, Language language, EntityPermission entityPermission) {
+    public TaxDescription getTaxDescription(Tax tax, Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(TaxDescriptions.fields())
                 .from(TaxDescriptions)
