@@ -17,11 +17,11 @@
 package com.echothree.control.user.contact.common.form;
 
 import com.echothree.control.user.contact.common.edit.PostalAddressLineEdit;
-import com.echothree.control.user.contact.common.spec.PostalAddressLineSpec;
+import com.echothree.control.user.contact.common.spec.PostalAddressLineUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditPostalAddressLineForm
-        extends BaseEditForm<PostalAddressLineSpec, PostalAddressLineEdit> {
+        extends BaseEditForm<PostalAddressLineUniversalSpec, PostalAddressLineEdit> {
     
     // Nothing additional beyond BaseEditForm
     

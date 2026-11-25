@@ -4084,7 +4084,7 @@ public class ContactControl
                 .orElse(0L);
     }
 
-    private PostalAddressLine getPostalAddressLine(PostalAddressFormat postalAddressFormat, Integer postalAddressLineSortOrder,
+    public PostalAddressLine getPostalAddressLine(PostalAddressFormat postalAddressFormat, Integer postalAddressLineSortOrder,
             EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PostalAddressLines.fields())
