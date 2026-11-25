@@ -17,11 +17,11 @@
 package com.echothree.control.user.communication.common.form;
 
 import com.echothree.control.user.communication.common.edit.CommunicationEventPurposeEdit;
-import com.echothree.control.user.communication.common.spec.CommunicationEventPurposeSpec;
+import com.echothree.control.user.communication.common.spec.CommunicationEventPurposeUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditCommunicationEventPurposeForm
-        extends BaseEditForm<CommunicationEventPurposeSpec, CommunicationEventPurposeEdit> {
+        extends BaseEditForm<CommunicationEventPurposeUniversalSpec, CommunicationEventPurposeEdit> {
     
     // Nothing additional beyond BaseEditForm
     
