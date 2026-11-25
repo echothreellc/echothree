@@ -2670,7 +2670,7 @@ public class ReturnPolicyControl
         return returnTypeShippingMethod;
     }
     
-    private ReturnTypeShippingMethod getReturnTypeShippingMethod(ReturnType returnType, ShippingMethod shippingMethod, EntityPermission entityPermission) {
+    public ReturnTypeShippingMethod getReturnTypeShippingMethod(ReturnType returnType, ShippingMethod shippingMethod, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(ReturnTypeShippingMethods.fields())
                 .from(ReturnTypeShippingMethods)
