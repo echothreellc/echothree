@@ -555,7 +555,7 @@ public class MessageControl
         return getDefaultMessageForUpdate(messageType).getLastDetailForUpdate().getMessageDetailValue().clone();
     }
     
-    private Message getMessageByName(MessageType messageType, String messageName, EntityPermission entityPermission) {
+    public Message getMessageByName(MessageType messageType, String messageName, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(Messages.fields())
                 .from(Messages)
@@ -749,7 +749,7 @@ public class MessageControl
         return messageDescription;
     }
     
-    private MessageDescription getMessageDescription(Message message, Language language, EntityPermission entityPermission) {
+    public MessageDescription getMessageDescription(Message message, Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(MessageDescriptions.fields())
                 .from(MessageDescriptions)
