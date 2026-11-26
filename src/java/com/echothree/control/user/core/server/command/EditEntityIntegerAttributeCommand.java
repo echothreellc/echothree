@@ -159,7 +159,7 @@ public class EditEntityIntegerAttributeCommand
 
         entityIntegerAttributeValue.setIntegerAttribute(integerAttribute);
 
-        coreControl.updateEntityIntegerAttributeFromValue(entityIntegerAttributeValue, getPartyPK());
+        entityIntegerAttributeLogic.updateEntityIntegerAttributeFromValue(this, entityIntegerAttributeValue, getPartyPK());
     }
 
 }

@@ -23,6 +23,7 @@ import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityTimeDefaultResult;
 import com.echothree.control.user.core.common.spec.EntityTimeDefaultSpec;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityTimeAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityTimeDefault;
@@ -67,6 +68,9 @@ public class EditEntityTimeDefaultCommand
 
     @Inject
     EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    EntityTimeAttributeLogic entityTimeAttributeLogic;
 
     
     /** Creates a new instance of EditEntityTimeDefaultCommand */
@@ -127,7 +131,7 @@ public class EditEntityTimeDefaultCommand
 
         entityTimeDefaultValue.setTimeAttribute(Long.valueOf(edit.getTimeAttribute()));
 
-        coreControl.updateEntityTimeDefaultFromValue(entityTimeDefaultValue, getPartyPK());
+        entityTimeAttributeLogic.updateEntityTimeDefaultFromValue(this, entityTimeDefaultValue, getPartyPK());
     }
     
 }

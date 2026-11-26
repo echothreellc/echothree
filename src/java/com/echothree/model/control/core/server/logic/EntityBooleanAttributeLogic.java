@@ -26,6 +26,8 @@ import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityBooleanAttribute;
 import com.echothree.model.data.core.server.entity.EntityBooleanDefault;
 import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.core.server.value.EntityBooleanAttributeValue;
+import com.echothree.model.data.core.server.value.EntityBooleanDefaultValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -64,22 +66,6 @@ public class EntityBooleanAttributeLogic
         }
 
         return entityBooleanDefault;
-    }
-
-    public void deleteEntityBooleanDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final BasePK deletedBy) {
-        checkEntityType(eea, entityAttribute, EntityAttributeTypes.BOOLEAN);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var entityBooleanDefault = coreControl.getEntityBooleanDefaultForUpdate(entityAttribute);
-
-            if(entityBooleanDefault == null) {
-                handleExecutionError(UnknownEntityBooleanDefaultException.class, eea, ExecutionErrors.UnknownEntityBooleanDefault.name(),
-                        entityAttribute.getLastDetail().getEntityAttributeName());
-            } else {
-                coreControl.deleteEntityBooleanDefault(entityBooleanDefault, deletedBy);
-            }
-        }
     }
 
     public EntityBooleanAttribute createEntityBooleanAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
@@ -121,6 +107,32 @@ public class EntityBooleanAttributeLogic
     public EntityBooleanAttribute getEntityBooleanAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
             EntityInstance entityInstance) {
         return getEntityBooleanAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public void updateEntityBooleanDefaultFromValue(final ExecutionErrorAccumulator eea, final EntityBooleanDefaultValue entityBooleanDefaultValue,
+            final BasePK updatedBy) {
+        coreControl.updateEntityBooleanDefaultFromValue(entityBooleanDefaultValue, updatedBy);
+    }
+
+    public void updateEntityBooleanAttributeFromValue(final ExecutionErrorAccumulator eea, final EntityBooleanAttributeValue entityBooleanAttributeValue,
+            final BasePK updatedBy) {
+        coreControl.updateEntityBooleanAttributeFromValue(entityBooleanAttributeValue, updatedBy);
+    }
+
+    public void deleteEntityBooleanDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final BasePK deletedBy) {
+        checkEntityType(eea, entityAttribute, EntityAttributeTypes.BOOLEAN);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var entityBooleanDefault = coreControl.getEntityBooleanDefaultForUpdate(entityAttribute);
+
+            if(entityBooleanDefault == null) {
+                handleExecutionError(UnknownEntityBooleanDefaultException.class, eea, ExecutionErrors.UnknownEntityBooleanDefault.name(),
+                        entityAttribute.getLastDetail().getEntityAttributeName());
+            } else {
+                coreControl.deleteEntityBooleanDefault(entityBooleanDefault, deletedBy);
+            }
+        }
     }
 
     public void deleteEntityBooleanAttribute(final ExecutionErrorAccumulator eea, final EntityBooleanAttribute entityBooleanAttribute,

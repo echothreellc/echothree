@@ -23,6 +23,7 @@ import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityLongDefaultResult;
 import com.echothree.control.user.core.common.spec.EntityLongDefaultSpec;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityLongAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityLongDefault;
@@ -67,6 +68,9 @@ public class EditEntityLongDefaultCommand
 
     @Inject
     EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    EntityLongAttributeLogic entityLongAttributeLogic;
 
     
     /** Creates a new instance of EditEntityLongDefaultCommand */
@@ -127,7 +131,7 @@ public class EditEntityLongDefaultCommand
 
         entityLongDefaultValue.setLongAttribute(Long.valueOf(edit.getLongAttribute()));
 
-        coreControl.updateEntityLongDefaultFromValue(entityLongDefaultValue, getPartyPK());
+        entityLongAttributeLogic.updateEntityLongDefaultFromValue(this, entityLongDefaultValue, getPartyPK());
     }
     
 }

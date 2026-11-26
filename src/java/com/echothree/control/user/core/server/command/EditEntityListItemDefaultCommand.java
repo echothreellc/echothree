@@ -132,7 +132,7 @@ public class EditEntityListItemDefaultCommand
 
         entityListItemDefaultValue.setEntityListItemPK(entityListItem.getPrimaryKey());
 
-        coreControl.updateEntityListItemDefaultFromValue(entityListItemDefaultValue, getPartyPK());
+        entityListItemAttributeLogic.updateEntityListItemDefaultFromValue(this, entityListItemDefaultValue, getPartyPK());
     }
 
 }

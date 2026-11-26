@@ -167,7 +167,7 @@ public class EditEntityClobAttributeCommand
         entityClobAttributeValue.setClobAttribute(edit.getClobAttribute());
         entityClobAttributeValue.setMimeTypePK(mimeType.getPrimaryKey());
 
-        coreControl.updateEntityClobAttributeFromValue(entityClobAttributeValue, getPartyPK());
+        entityClobAttributeLogic.updateEntityClobAttributeFromValue(this, entityClobAttributeValue, getPartyPK());
     }
 
 }

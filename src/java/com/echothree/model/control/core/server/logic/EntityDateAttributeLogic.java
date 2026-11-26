@@ -26,6 +26,8 @@ import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityDateAttribute;
 import com.echothree.model.data.core.server.entity.EntityDateDefault;
 import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.core.server.value.EntityDateAttributeValue;
+import com.echothree.model.data.core.server.value.EntityDateDefaultValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -64,22 +66,6 @@ public class EntityDateAttributeLogic
         }
 
         return entityDateDefault;
-    }
-
-    public void deleteEntityDateDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final BasePK deletedBy) {
-        checkEntityType(eea, entityAttribute, EntityAttributeTypes.DATE);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var entityDateDefault = coreControl.getEntityDateDefaultForUpdate(entityAttribute);
-
-            if(entityDateDefault == null) {
-                handleExecutionError(UnknownEntityDateDefaultException.class, eea, ExecutionErrors.UnknownEntityDateDefault.name(),
-                        entityAttribute.getLastDetail().getEntityAttributeName());
-            } else {
-                coreControl.deleteEntityDateDefault(entityDateDefault, deletedBy);
-            }
-        }
     }
 
     public EntityDateAttribute createEntityDateAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
@@ -121,6 +107,32 @@ public class EntityDateAttributeLogic
     public EntityDateAttribute getEntityDateAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
             EntityInstance entityInstance) {
         return getEntityDateAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public void updateEntityDateDefaultFromValue(final ExecutionErrorAccumulator eea, final EntityDateDefaultValue entityDateDefaultValue,
+            final BasePK updatedBy) {
+        coreControl.updateEntityDateDefaultFromValue(entityDateDefaultValue, updatedBy);
+    }
+
+    public void updateEntityDateAttributeFromValue(final ExecutionErrorAccumulator eea, final EntityDateAttributeValue entityDateAttributeValue,
+            final BasePK updatedBy) {
+        coreControl.updateEntityDateAttributeFromValue(entityDateAttributeValue, updatedBy);
+    }
+
+    public void deleteEntityDateDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final BasePK deletedBy) {
+        checkEntityType(eea, entityAttribute, EntityAttributeTypes.DATE);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var entityDateDefault = coreControl.getEntityDateDefaultForUpdate(entityAttribute);
+
+            if(entityDateDefault == null) {
+                handleExecutionError(UnknownEntityDateDefaultException.class, eea, ExecutionErrors.UnknownEntityDateDefault.name(),
+                        entityAttribute.getLastDetail().getEntityAttributeName());
+            } else {
+                coreControl.deleteEntityDateDefault(entityDateDefault, deletedBy);
+            }
+        }
     }
 
     public void deleteEntityDateAttribute(final ExecutionErrorAccumulator eea, final EntityDateAttribute entityDateAttribute,

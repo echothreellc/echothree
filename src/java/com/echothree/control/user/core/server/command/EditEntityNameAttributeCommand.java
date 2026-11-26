@@ -155,7 +155,7 @@ public class EditEntityNameAttributeCommand
 
         entityNameAttributeValue.setNameAttribute(stringAttribute);
 
-        coreControl.updateEntityNameAttributeFromValue(entityNameAttributeValue, getPartyPK());
+        entityNameAttributeLogic.updateEntityNameAttributeFromValue(this, entityNameAttributeValue, getPartyPK());
     }
 
 }

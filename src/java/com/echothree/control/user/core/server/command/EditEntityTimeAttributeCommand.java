@@ -138,7 +138,7 @@ public class EditEntityTimeAttributeCommand
 
         entityTimeAttributeValue.setTimeAttribute(Long.valueOf(edit.getTimeAttribute()));
 
-        coreControl.updateEntityTimeAttributeFromValue(entityTimeAttributeValue, getPartyPK());
+        entityTimeAttributeLogic.updateEntityTimeAttributeFromValue(this, entityTimeAttributeValue, getPartyPK());
     }
 
 }

@@ -178,7 +178,7 @@ public class EditEntityGeoPointAttributeCommand
         entityGeoPointAttributeValue.setElevation(elevation);
         entityGeoPointAttributeValue.setAltitude(altitude);
 
-        coreControl.updateEntityGeoPointAttributeFromValue(entityGeoPointAttributeValue, getPartyPK());
+        entityGeoPointAttributeLogic.updateEntityGeoPointAttributeFromValue(this, entityGeoPointAttributeValue, getPartyPK());
     }
 
 }

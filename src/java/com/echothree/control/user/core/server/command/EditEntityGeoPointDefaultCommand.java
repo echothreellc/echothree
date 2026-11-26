@@ -23,6 +23,7 @@ import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityGeoPointDefaultResult;
 import com.echothree.control.user.core.common.spec.EntityGeoPointDefaultSpec;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityGeoPointAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
@@ -75,6 +76,9 @@ public class EditEntityGeoPointDefaultCommand
 
     @Inject
     EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    EntityGeoPointAttributeLogic entityGeoPointAttributeLogic;
 
     @Inject
     UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
@@ -166,7 +170,7 @@ public class EditEntityGeoPointDefaultCommand
         entityGeoPointDefaultValue.setElevation(elevation);
         entityGeoPointDefaultValue.setAltitude(altitude);
 
-        coreControl.updateEntityGeoPointDefaultFromValue(entityGeoPointDefaultValue, getPartyPK());
+        entityGeoPointAttributeLogic.updateEntityGeoPointDefaultFromValue(this, entityGeoPointDefaultValue, getPartyPK());
     }
     
 }

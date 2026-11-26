@@ -27,6 +27,8 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityListItem;
 import com.echothree.model.data.core.server.entity.EntityListItemAttribute;
 import com.echothree.model.data.core.server.entity.EntityListItemDefault;
+import com.echothree.model.data.core.server.value.EntityListItemAttributeValue;
+import com.echothree.model.data.core.server.value.EntityListItemDefaultValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -65,19 +67,6 @@ public class EntityListItemAttributeLogic
         }
 
         return entityListItemDefault;
-    }
-
-    public void deleteEntityListItemDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final BasePK deletedBy) {
-        checkEntityType(eea, entityAttribute, EntityAttributeTypes.LISTITEM);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var entityListItemDefault = getEntityListItemDefaultForUpdate(eea, entityAttribute);
-
-            if(entityListItemDefault != null) {
-                coreControl.deleteEntityListItemDefault(entityListItemDefault, deletedBy);
-            }
-        }
     }
 
     public EntityListItemAttribute createEntityListItemAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
@@ -138,6 +127,29 @@ public class EntityListItemAttributeLogic
     public EntityListItemAttribute getEntityListItemAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
             EntityInstance entityInstance) {
         return getEntityListItemAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public void updateEntityListItemDefaultFromValue(final ExecutionErrorAccumulator eea, final EntityListItemDefaultValue entityListItemDefaultValue,
+            final BasePK updatedBy) {
+        coreControl.updateEntityListItemDefaultFromValue(entityListItemDefaultValue, updatedBy);
+    }
+
+    public void updateEntityListItemAttributeFromValue(final ExecutionErrorAccumulator eea, final EntityListItemAttributeValue entityListItemAttributeValue,
+            final BasePK updatedBy) {
+        coreControl.updateEntityListItemAttributeFromValue(entityListItemAttributeValue, updatedBy);
+    }
+
+    public void deleteEntityListItemDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final BasePK deletedBy) {
+        checkEntityType(eea, entityAttribute, EntityAttributeTypes.LISTITEM);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var entityListItemDefault = getEntityListItemDefaultForUpdate(eea, entityAttribute);
+
+            if(entityListItemDefault != null) {
+                coreControl.deleteEntityListItemDefault(entityListItemDefault, deletedBy);
+            }
+        }
     }
 
     public void deleteEntityListItemAttribute(final ExecutionErrorAccumulator eea, final EntityListItemAttribute entityListItemAttribute,

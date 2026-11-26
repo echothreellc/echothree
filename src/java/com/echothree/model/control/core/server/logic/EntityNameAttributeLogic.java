@@ -21,6 +21,7 @@ import com.echothree.model.control.core.common.exception.UnknownEntityNameAttrib
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityNameAttribute;
+import com.echothree.model.data.core.server.value.EntityNameAttributeValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -74,6 +75,11 @@ public class EntityNameAttributeLogic
     public EntityNameAttribute getEntityNameAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
             EntityInstance entityInstance) {
         return getEntityNameAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public void updateEntityNameAttributeFromValue(final ExecutionErrorAccumulator eea, final EntityNameAttributeValue entityNameAttributeValue,
+            final BasePK updatedBy) {
+        coreControl.updateEntityNameAttributeFromValue(entityNameAttributeValue, updatedBy);
     }
 
     public void deleteEntityNameAttribute(final ExecutionErrorAccumulator eea, final EntityNameAttribute entityNameAttribute,

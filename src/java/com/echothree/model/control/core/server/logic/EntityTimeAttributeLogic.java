@@ -26,6 +26,8 @@ import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityTimeAttribute;
 import com.echothree.model.data.core.server.entity.EntityTimeDefault;
+import com.echothree.model.data.core.server.value.EntityTimeAttributeValue;
+import com.echothree.model.data.core.server.value.EntityTimeDefaultValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -64,22 +66,6 @@ public class EntityTimeAttributeLogic
         }
 
         return entityTimeDefault;
-    }
-
-    public void deleteEntityTimeDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final BasePK deletedBy) {
-        checkEntityType(eea, entityAttribute, EntityAttributeTypes.TIME);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var entityTimeDefault = coreControl.getEntityTimeDefaultForUpdate(entityAttribute);
-
-            if(entityTimeDefault == null) {
-                handleExecutionError(UnknownEntityTimeDefaultException.class, eea, ExecutionErrors.UnknownEntityTimeDefault.name(),
-                        entityAttribute.getLastDetail().getEntityAttributeName());
-            } else {
-                coreControl.deleteEntityTimeDefault(entityTimeDefault, deletedBy);
-            }
-        }
     }
 
     public EntityTimeAttribute createEntityTimeAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
@@ -121,6 +107,32 @@ public class EntityTimeAttributeLogic
     public EntityTimeAttribute getEntityTimeAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
             EntityInstance entityInstance) {
         return getEntityTimeAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public void updateEntityTimeDefaultFromValue(final ExecutionErrorAccumulator eea, final EntityTimeDefaultValue entityTimeDefaultValue,
+            final BasePK updatedBy) {
+        coreControl.updateEntityTimeDefaultFromValue(entityTimeDefaultValue, updatedBy);
+    }
+
+    public void updateEntityTimeAttributeFromValue(final ExecutionErrorAccumulator eea, final EntityTimeAttributeValue entityTimeAttributeValue,
+            final BasePK updatedBy) {
+        coreControl.updateEntityTimeAttributeFromValue(entityTimeAttributeValue, updatedBy);
+    }
+
+    public void deleteEntityTimeDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final BasePK deletedBy) {
+        checkEntityType(eea, entityAttribute, EntityAttributeTypes.TIME);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var entityTimeDefault = coreControl.getEntityTimeDefaultForUpdate(entityAttribute);
+
+            if(entityTimeDefault == null) {
+                handleExecutionError(UnknownEntityTimeDefaultException.class, eea, ExecutionErrors.UnknownEntityTimeDefault.name(),
+                        entityAttribute.getLastDetail().getEntityAttributeName());
+            } else {
+                coreControl.deleteEntityTimeDefault(entityTimeDefault, deletedBy);
+            }
+        }
     }
 
     public void deleteEntityTimeAttribute(final ExecutionErrorAccumulator eea, final EntityTimeAttribute entityTimeAttribute,

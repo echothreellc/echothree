@@ -167,7 +167,7 @@ public class EditEntityStringAttributeCommand
 
         entityStringAttributeValue.setStringAttribute(stringAttribute);
 
-        coreControl.updateEntityStringAttributeFromValue(entityStringAttributeValue, getPartyPK());
+        entityStringAttributeLogic.updateEntityStringAttributeFromValue(this, entityStringAttributeValue, getPartyPK());
     }
 
 }

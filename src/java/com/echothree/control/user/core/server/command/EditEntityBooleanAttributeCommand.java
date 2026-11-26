@@ -137,7 +137,7 @@ public class EditEntityBooleanAttributeCommand
 
         entityBooleanAttributeValue.setBooleanAttribute(Boolean.valueOf(edit.getBooleanAttribute()));
 
-        coreControl.updateEntityBooleanAttributeFromValue(entityBooleanAttributeValue, getPartyPK());
+        entityBooleanAttributeLogic.updateEntityBooleanAttributeFromValue(this, entityBooleanAttributeValue, getPartyPK());
     }
 
 }

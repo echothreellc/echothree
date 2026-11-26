@@ -161,7 +161,7 @@ public class EditEntityEntityAttributeCommand
 
         entityEntityAttributeValue.setEntityInstanceAttributePK(entityInstanceAttribute.getPrimaryKey());
 
-        coreControl.updateEntityEntityAttributeFromValue(entityEntityAttributeValue, getPartyPK());
+        entityEntityAttributeLogic.updateEntityEntityAttributeFromValue(this, entityEntityAttributeValue, getPartyPK());
     }
 
 }

@@ -150,7 +150,7 @@ public class EditEntityListItemAttributeCommand
 
         entityListItemAttributeValue.setEntityListItemPK(entityListItem.getPrimaryKey());
 
-        coreControl.updateEntityListItemAttributeFromValue(entityListItemAttributeValue, getPartyPK());
+        entityListItemAttributeLogic.updateEntityListItemAttributeFromValue(this, entityListItemAttributeValue, getPartyPK());
     }
 
 }

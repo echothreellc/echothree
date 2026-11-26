@@ -27,6 +27,8 @@ import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityStringAttribute;
 import com.echothree.model.data.core.server.entity.EntityStringDefault;
+import com.echothree.model.data.core.server.value.EntityStringAttributeValue;
+import com.echothree.model.data.core.server.value.EntityStringDefaultValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -67,23 +69,6 @@ public class EntityStringAttributeLogic
         }
 
         return entityStringDefault;
-    }
-
-    public void deleteEntityStringDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final Language language, final BasePK deletedBy) {
-        checkEntityType(eea, entityAttribute, EntityAttributeTypes.STRING);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var entityStringDefault = coreControl.getEntityStringDefaultForUpdate(entityAttribute, language);
-
-            if(entityStringDefault == null) {
-                handleExecutionError(UnknownEntityStringDefaultException.class, eea, ExecutionErrors.UnknownEntityStringDefault.name(),
-                        entityAttribute.getLastDetail().getEntityAttributeName(),
-                        language.getLanguageIsoName());
-            } else {
-                coreControl.deleteEntityStringDefault(entityStringDefault, deletedBy);
-            }
-        }
     }
 
     public EntityStringAttribute createEntityStringAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
@@ -141,6 +126,33 @@ public class EntityStringAttributeLogic
     public EntityStringAttribute getEntityStringAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
             EntityInstance entityInstance, Language language) {
         return getEntityStringAttribute(eea, entityAttribute, entityInstance, language, EntityPermission.READ_WRITE);
+    }
+
+    public void updateEntityStringDefaultFromValue(final ExecutionErrorAccumulator eea, final EntityStringDefaultValue entityStringDefaultValue,
+            final BasePK updatedBy) {
+        coreControl.updateEntityStringDefaultFromValue(entityStringDefaultValue, updatedBy);
+    }
+
+    public void updateEntityStringAttributeFromValue(final ExecutionErrorAccumulator eea, final EntityStringAttributeValue entityStringAttributeValue,
+            final BasePK updatedBy) {
+        coreControl.updateEntityStringAttributeFromValue(entityStringAttributeValue, updatedBy);
+    }
+
+    public void deleteEntityStringDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final Language language, final BasePK deletedBy) {
+        checkEntityType(eea, entityAttribute, EntityAttributeTypes.STRING);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var entityStringDefault = coreControl.getEntityStringDefaultForUpdate(entityAttribute, language);
+
+            if(entityStringDefault == null) {
+                handleExecutionError(UnknownEntityStringDefaultException.class, eea, ExecutionErrors.UnknownEntityStringDefault.name(),
+                        entityAttribute.getLastDetail().getEntityAttributeName(),
+                        language.getLanguageIsoName());
+            } else {
+                coreControl.deleteEntityStringDefault(entityStringDefault, deletedBy);
+            }
+        }
     }
 
     public void deleteEntityStringAttribute(final ExecutionErrorAccumulator eea, final EntityStringAttribute entityStringAttribute,

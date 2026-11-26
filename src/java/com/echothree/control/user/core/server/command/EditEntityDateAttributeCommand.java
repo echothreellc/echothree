@@ -138,7 +138,7 @@ public class EditEntityDateAttributeCommand
 
         entityDateAttributeValue.setDateAttribute(Integer.valueOf(edit.getDateAttribute()));
 
-        coreControl.updateEntityDateAttributeFromValue(entityDateAttributeValue, getPartyPK());
+        entityDateAttributeLogic.updateEntityDateAttributeFromValue(this, entityDateAttributeValue, getPartyPK());
     }
 
 }

@@ -20,6 +20,7 @@ import com.echothree.model.control.core.common.exception.UnknownEntityBlobAttrib
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityBlobAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.core.server.value.EntityBlobAttributeValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -53,6 +54,11 @@ public class EntityBlobAttributeLogic
     public EntityBlobAttribute getEntityBlobAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
             EntityInstance entityInstance, Language language) {
         return getEntityBlobAttribute(eea, entityAttribute, entityInstance, language, EntityPermission.READ_WRITE);
+    }
+
+    public void updateEntityBlobAttributeFromValue(final ExecutionErrorAccumulator eea, final EntityBlobAttributeValue entityBlobAttributeValue,
+            final BasePK updatedBy) {
+        coreControl.updateEntityBlobAttributeFromValue(entityBlobAttributeValue, updatedBy);
     }
 
     public void deleteEntityBlobAttribute(final ExecutionErrorAccumulator eea, final EntityBlobAttribute entityBlobAttribute,

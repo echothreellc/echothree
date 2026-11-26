@@ -28,6 +28,8 @@ import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityIntegerAttribute;
 import com.echothree.model.data.core.server.entity.EntityIntegerDefault;
+import com.echothree.model.data.core.server.value.EntityIntegerAttributeValue;
+import com.echothree.model.data.core.server.value.EntityIntegerDefaultValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -85,22 +87,6 @@ public class EntityIntegerAttributeLogic
         }
 
         return entityIntegerDefault;
-    }
-
-    public void deleteEntityIntegerDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final BasePK deletedBy) {
-        checkEntityType(eea, entityAttribute, EntityAttributeTypes.INTEGER);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var entityIntegerDefault = coreControl.getEntityIntegerDefaultForUpdate(entityAttribute);
-
-            if(entityIntegerDefault == null) {
-                handleExecutionError(UnknownEntityIntegerDefaultException.class, eea, ExecutionErrors.UnknownEntityIntegerDefault.name(),
-                        entityAttribute.getLastDetail().getEntityAttributeName());
-            } else {
-                coreControl.deleteEntityIntegerDefault(entityIntegerDefault, deletedBy);
-            }
-        }
     }
 
     public EntityIntegerAttribute createEntityIntegerAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
@@ -161,6 +147,32 @@ public class EntityIntegerAttributeLogic
     public EntityIntegerAttribute getEntityIntegerAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
             EntityInstance entityInstance) {
         return getEntityIntegerAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public void updateEntityIntegerDefaultFromValue(final ExecutionErrorAccumulator eea, final EntityIntegerDefaultValue entityIntegerDefaultValue,
+            final BasePK updatedBy) {
+        coreControl.updateEntityIntegerDefaultFromValue(entityIntegerDefaultValue, updatedBy);
+    }
+
+    public void updateEntityIntegerAttributeFromValue(final ExecutionErrorAccumulator eea, final EntityIntegerAttributeValue entityIntegerAttributeValue,
+            final BasePK updatedBy) {
+        coreControl.updateEntityIntegerAttributeFromValue(entityIntegerAttributeValue, updatedBy);
+    }
+
+    public void deleteEntityIntegerDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final BasePK deletedBy) {
+        checkEntityType(eea, entityAttribute, EntityAttributeTypes.INTEGER);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var entityIntegerDefault = coreControl.getEntityIntegerDefaultForUpdate(entityAttribute);
+
+            if(entityIntegerDefault == null) {
+                handleExecutionError(UnknownEntityIntegerDefaultException.class, eea, ExecutionErrors.UnknownEntityIntegerDefault.name(),
+                        entityAttribute.getLastDetail().getEntityAttributeName());
+            } else {
+                coreControl.deleteEntityIntegerDefault(entityIntegerDefault, deletedBy);
+            }
+        }
     }
 
     public void deleteEntityIntegerAttribute(final ExecutionErrorAccumulator eea, final EntityIntegerAttribute entityIntegerAttribute,

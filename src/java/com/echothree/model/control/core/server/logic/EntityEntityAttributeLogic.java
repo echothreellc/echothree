@@ -21,6 +21,7 @@ import com.echothree.model.control.core.common.exception.UnknownEntityEntityAttr
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityEntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.core.server.value.EntityEntityAttributeValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -61,6 +62,11 @@ public class EntityEntityAttributeLogic
     public EntityEntityAttribute getEntityEntityAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
             EntityInstance entityInstance) {
         return getEntityEntityAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public void updateEntityEntityAttributeFromValue(final ExecutionErrorAccumulator eea, final EntityEntityAttributeValue entityEntityAttributeValue,
+            final BasePK updatedBy) {
+        coreControl.updateEntityEntityAttributeFromValue(entityEntityAttributeValue, updatedBy);
     }
 
     public void deleteEntityEntityAttribute(final ExecutionErrorAccumulator eea, final EntityEntityAttribute entityEntityAttribute,

@@ -28,6 +28,8 @@ import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityLongAttribute;
 import com.echothree.model.data.core.server.entity.EntityLongDefault;
+import com.echothree.model.data.core.server.value.EntityLongAttributeValue;
+import com.echothree.model.data.core.server.value.EntityLongDefaultValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -85,22 +87,6 @@ public class EntityLongAttributeLogic
         }
 
         return entityLongDefault;
-    }
-
-    public void deleteEntityLongDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final BasePK deletedBy) {
-        checkEntityType(eea, entityAttribute, EntityAttributeTypes.LONG);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var entityLongDefault = coreControl.getEntityLongDefaultForUpdate(entityAttribute);
-
-            if(entityLongDefault == null) {
-                handleExecutionError(UnknownEntityLongDefaultException.class, eea, ExecutionErrors.UnknownEntityLongDefault.name(),
-                        entityAttribute.getLastDetail().getEntityAttributeName());
-            } else {
-                coreControl.deleteEntityLongDefault(entityLongDefault, deletedBy);
-            }
-        }
     }
 
     public EntityLongAttribute createEntityLongAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
@@ -161,6 +147,32 @@ public class EntityLongAttributeLogic
     public EntityLongAttribute getEntityLongAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
             EntityInstance entityInstance) {
         return getEntityLongAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public void updateEntityLongDefaultFromValue(final ExecutionErrorAccumulator eea, final EntityLongDefaultValue entityLongDefaultValue,
+            final BasePK updatedBy) {
+        coreControl.updateEntityLongDefaultFromValue(entityLongDefaultValue, updatedBy);
+    }
+
+    public void updateEntityLongAttributeFromValue(final ExecutionErrorAccumulator eea, final EntityLongAttributeValue entityLongAttributeValue,
+            final BasePK updatedBy) {
+        coreControl.updateEntityLongAttributeFromValue(entityLongAttributeValue, updatedBy);
+    }
+
+    public void deleteEntityLongDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final BasePK deletedBy) {
+        checkEntityType(eea, entityAttribute, EntityAttributeTypes.LONG);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var entityLongDefault = coreControl.getEntityLongDefaultForUpdate(entityAttribute);
+
+            if(entityLongDefault == null) {
+                handleExecutionError(UnknownEntityLongDefaultException.class, eea, ExecutionErrors.UnknownEntityLongDefault.name(),
+                        entityAttribute.getLastDetail().getEntityAttributeName());
+            } else {
+                coreControl.deleteEntityLongDefault(entityLongDefault, deletedBy);
+            }
+        }
     }
 
     public void deleteEntityLongAttribute(final ExecutionErrorAccumulator eea, final EntityLongAttribute entityLongAttribute,

@@ -26,6 +26,8 @@ import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityGeoPointAttribute;
 import com.echothree.model.data.core.server.entity.EntityGeoPointDefault;
 import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.core.server.value.EntityGeoPointAttributeValue;
+import com.echothree.model.data.core.server.value.EntityGeoPointDefaultValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -64,22 +66,6 @@ public class EntityGeoPointAttributeLogic
         }
 
         return entityGeoPointDefault;
-    }
-
-    public void deleteEntityGeoPointDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final BasePK deletedBy) {
-        checkEntityType(eea, entityAttribute, EntityAttributeTypes.GEOPOINT);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var entityGeoPointDefault = coreControl.getEntityGeoPointDefaultForUpdate(entityAttribute);
-
-            if(entityGeoPointDefault == null) {
-                handleExecutionError(UnknownEntityGeoPointDefaultException.class, eea, ExecutionErrors.UnknownEntityGeoPointDefault.name(),
-                        entityAttribute.getLastDetail().getEntityAttributeName());
-            } else {
-                coreControl.deleteEntityGeoPointDefault(entityGeoPointDefault, deletedBy);
-            }
-        }
     }
 
     public EntityGeoPointAttribute createEntityGeoPointAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
@@ -121,6 +107,32 @@ public class EntityGeoPointAttributeLogic
     public EntityGeoPointAttribute getEntityGeoPointAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
             EntityInstance entityInstance) {
         return getEntityGeoPointAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public void updateEntityGeoPointDefaultFromValue(final ExecutionErrorAccumulator eea, final EntityGeoPointDefaultValue entityGeoPointDefaultValue,
+            final BasePK updatedBy) {
+        coreControl.updateEntityGeoPointDefaultFromValue(entityGeoPointDefaultValue, updatedBy);
+    }
+
+    public void updateEntityGeoPointAttributeFromValue(final ExecutionErrorAccumulator eea, final EntityGeoPointAttributeValue entityGeoPointAttributeValue,
+            final BasePK updatedBy) {
+        coreControl.updateEntityGeoPointAttributeFromValue(entityGeoPointAttributeValue, updatedBy);
+    }
+
+    public void deleteEntityGeoPointDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final BasePK deletedBy) {
+        checkEntityType(eea, entityAttribute, EntityAttributeTypes.GEOPOINT);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var entityGeoPointDefault = coreControl.getEntityGeoPointDefaultForUpdate(entityAttribute);
+
+            if(entityGeoPointDefault == null) {
+                handleExecutionError(UnknownEntityGeoPointDefaultException.class, eea, ExecutionErrors.UnknownEntityGeoPointDefault.name(),
+                        entityAttribute.getLastDetail().getEntityAttributeName());
+            } else {
+                coreControl.deleteEntityGeoPointDefault(entityGeoPointDefault, deletedBy);
+            }
+        }
     }
 
     public void deleteEntityGeoPointAttribute(final ExecutionErrorAccumulator eea, final EntityGeoPointAttribute entityGeoPointAttribute,

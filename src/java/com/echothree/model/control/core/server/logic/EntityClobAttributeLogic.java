@@ -22,6 +22,7 @@ import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityClobAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.MimeType;
+import com.echothree.model.data.core.server.value.EntityClobAttributeValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -78,6 +79,11 @@ public class EntityClobAttributeLogic
     public EntityClobAttribute getEntityClobAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
             EntityInstance entityInstance, Language language) {
         return getEntityClobAttribute(eea, entityAttribute, entityInstance, language, EntityPermission.READ_WRITE);
+    }
+
+    public void updateEntityClobAttributeFromValue(final ExecutionErrorAccumulator eea, final EntityClobAttributeValue entityClobAttributeValue,
+            final BasePK updatedBy) {
+        coreControl.updateEntityClobAttributeFromValue(entityClobAttributeValue, updatedBy);
     }
 
     public void deleteEntityClobAttribute(final ExecutionErrorAccumulator eea, final EntityClobAttribute entityClobAttribute,

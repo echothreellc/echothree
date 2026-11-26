@@ -159,7 +159,7 @@ public class EditEntityLongAttributeCommand
 
         entityLongAttributeValue.setLongAttribute(longAttribute);
 
-        coreControl.updateEntityLongAttributeFromValue(entityLongAttributeValue, getPartyPK());
+        entityLongAttributeLogic.updateEntityLongAttributeFromValue(this, entityLongAttributeValue, getPartyPK());
     }
 
 }
