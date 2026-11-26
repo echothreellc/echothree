@@ -16,7 +16,6 @@
 
 package com.echothree.util.server.validation.fieldtype;
 
-import com.echothree.util.common.string.DecimalUtils;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.message.Messages;
@@ -33,15 +32,7 @@ public class LatitudeFieldType
     
     @Override
     public String validate() {
-        var hadErrors = false;
-        
-        fieldValue = DecimalUtils.getInstance().parse("-", ".", 6, fieldValue);
-        
-        if(!hadErrors) {
-            hadErrors = !isValidSignedInteger(-90000000L, 90000000L);
-        }
-        
-        return hadErrors? null: fieldValue;
+        return validateDecimal("-", ".", 6, true, -90000000L, 90000000L);
     }
     
 }

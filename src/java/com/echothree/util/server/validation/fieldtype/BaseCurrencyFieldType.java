@@ -29,6 +29,9 @@ public abstract class BaseCurrencyFieldType
     private static final String CURRENCY_ISO_NAME = "CurrencyIsoName";
     private static final String VENDOR_NAME = "VendorName";
     
+    private boolean currencyResolved;
+    private Currency resolvedCurrency;
+
     /** Creates a new instance of BaseCurrencyFieldType */
     public BaseCurrencyFieldType(Validator validator, BaseForm baseForm, Messages validationMessages, String fieldValue, String[] splitFieldName,
             FieldDefinition fieldDefinition) {
@@ -36,36 +39,51 @@ public abstract class BaseCurrencyFieldType
     }
     
     public Currency getCurrency() {
-        var currency = validator.getCurrency();
-        
-        if(currency == null) {
-            var parameters = getSplitFieldNameParameters();
-            
-            if(fieldValue != null) {
-                var currencyIsoName = getParameterValue(parameters, CURRENCY_ISO_NAME); // beware nulls
-                var vendorName = getParameterValue(parameters, VENDOR_NAME); // beware nulls
-                
-                if(currencyIsoName != null) {
-                    currency = validator.getAccountingControl().getCurrencyByIsoName(currencyIsoName);
-                    
-                    if(currency == null) {
-                        validationMessages.add(fieldName, new Message(Validator.ERROR_UNKNOWN_CURRENCY_ISO_NAME, currencyIsoName));
-                    }
-                } else if(vendorName != null) {
-                    var vendor = validator.getVendorControl().getVendorByName(vendorName);
-                    
-                    if(vendor != null) {
-                        currency = validator.getPartyControl().getPreferredCurrency(vendor.getParty());
+        if(!currencyResolved) {
+            currencyResolved = true;
+            resolvedCurrency = validator.getCurrency();
+
+            if(resolvedCurrency == null && validator.isCurrencySpecified()) {
+                validationMessages.add(fieldName, new Message(Validator.ERROR_MISSING_CURRENCY));
+            } else if(resolvedCurrency == null) {
+                var parameters = getSplitFieldNameParameters();
+
+                if(parameters.containsKey(CURRENCY_ISO_NAME)) {
+                    var currencyIsoName = getParameterValue(parameters, CURRENCY_ISO_NAME);
+
+                    if(currencyIsoName == null || currencyIsoName.isBlank()) {
+                        validationMessages.add(fieldName, new Message(Validator.ERROR_MISSING_CURRENCY));
                     } else {
+                        resolvedCurrency = validator.getAccountingControl().getCurrencyByIsoName(currencyIsoName);
+
+                        if(resolvedCurrency == null) {
+                            validationMessages.add(fieldName, new Message(Validator.ERROR_UNKNOWN_CURRENCY_ISO_NAME, currencyIsoName));
+                        }
+                    }
+                } else if(parameters.containsKey(VENDOR_NAME)) {
+                    var vendorName = getParameterValue(parameters, VENDOR_NAME);
+                    var vendor = vendorName == null ? null : validator.getVendorControl().getVendorByName(vendorName);
+
+                    if(vendor == null) {
                         validationMessages.add(fieldName, new Message(Validator.ERROR_UNKNOWN_VENDOR_NAME, vendorName));
+                    } else {
+                        resolvedCurrency = validator.getPartyControl().getPreferredCurrency(vendor.getParty());
+
+                        if(resolvedCurrency == null) {
+                            validationMessages.add(fieldName, new Message(Validator.ERROR_MISSING_CURRENCY));
+                        }
                     }
                 } else {
-                    currency = validator.getAccountingControl().getDefaultCurrency();
+                    resolvedCurrency = validator.getAccountingControl().getDefaultCurrency();
+
+                    if(resolvedCurrency == null) {
+                        validationMessages.add(fieldName, new Message(Validator.ERROR_MISSING_CURRENCY));
+                    }
                 }
             }
         }
-        
-        return currency;
+
+        return resolvedCurrency;
     }
-    
+
 }

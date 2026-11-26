@@ -16,12 +16,9 @@
 
 package com.echothree.util.server.validation.fieldtype;
 
-import com.echothree.util.common.string.DecimalUtils;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.form.BaseForm;
-import com.echothree.util.common.message.Message;
 import com.echothree.util.common.message.Messages;
-import com.echothree.util.server.validation.Patterns;
 import com.echothree.util.server.validation.Validator;
 
 public class FractionalPercentFieldType
@@ -38,25 +35,11 @@ public class FractionalPercentFieldType
     
     @Override
     public String validate() {
-        var hadErrors = false;
+        // A single trailing percent symbol is part of this field's established input syntax.
+        var decimalValue = fieldValue.endsWith("%") ? fieldValue.substring(0, fieldValue.length() - 1) : fieldValue;
+        fieldValue = decimalValue;
 
-        var m = Patterns.FractionalPercent.matcher(fieldValue);
-        if(!m.matches()) {
-            validationMessages.add(fieldName, new Message(Validator.ERROR_INVALID_FORMAT));
-            hadErrors = true;
-        }
-        
-        if(!hadErrors) {
-            fieldValue = DecimalUtils.getInstance().parse(minusSign, separator, fractionDigits, fieldValue);
-
-            var testPercent = Integer.valueOf(fieldValue);
-            if(testPercent > 100000) {
-                validationMessages.add(fieldName, new Message(Validator.ERROR_MAXIMUM_VALUE, "100.000%"));
-                hadErrors = true;
-            }
-        }
-        
-        return hadErrors? null: fieldValue;
+        return validateDecimal(minusSign, separator, fractionDigits, false, 0L, 100000L);
     }
     
 }

@@ -24,6 +24,10 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.message.Message;
+import com.echothree.util.common.message.Messages;
+import com.echothree.util.common.form.ValidationResult;
+import com.echothree.util.common.string.DecimalUtils;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
@@ -31,6 +35,7 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.validation.Validator;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -38,6 +43,9 @@ import javax.inject.Inject;
 @Dependent
 public class CreateCurrencyCommand
         extends BaseSimpleCommand<CreateCurrencyForm> {
+
+    /** Supported precision cap for currencies whose amounts use signed Long storage (19 decimal digits). */
+    private static final long MAXIMUM_FRACTION_DIGITS = 19L;
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -61,11 +69,11 @@ public class CreateCurrencyCommand
                 new FieldDefinition("GroupingSeparator", FieldType.STRING, true, 1L, 1L),
                 new FieldDefinition("GroupingSize", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("FractionSeparator", FieldType.STRING, false, 1L, 1L),
-                new FieldDefinition("DefaultFractionDigits", FieldType.SIGNED_INTEGER, false, null, null),
-                new FieldDefinition("PriceUnitFractionDigits", FieldType.SIGNED_INTEGER, false, null, null),
-                new FieldDefinition("PriceLineFractionDigits", FieldType.SIGNED_INTEGER, false, null, null),
-                new FieldDefinition("CostUnitFractionDigits", FieldType.SIGNED_INTEGER, false, null, null),
-                new FieldDefinition("CostLineFractionDigits", FieldType.SIGNED_INTEGER, false, null, null),
+                new FieldDefinition("DefaultFractionDigits", FieldType.SIGNED_INTEGER, false, 0L, MAXIMUM_FRACTION_DIGITS),
+                new FieldDefinition("PriceUnitFractionDigits", FieldType.SIGNED_INTEGER, false, 0L, MAXIMUM_FRACTION_DIGITS),
+                new FieldDefinition("PriceLineFractionDigits", FieldType.SIGNED_INTEGER, false, 0L, MAXIMUM_FRACTION_DIGITS),
+                new FieldDefinition("CostUnitFractionDigits", FieldType.SIGNED_INTEGER, false, 0L, MAXIMUM_FRACTION_DIGITS),
+                new FieldDefinition("CostLineFractionDigits", FieldType.SIGNED_INTEGER, false, 0L, MAXIMUM_FRACTION_DIGITS),
                 new FieldDefinition("MinusSign", FieldType.STRING, true, 1L, 1L),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
@@ -83,6 +91,49 @@ public class CreateCurrencyCommand
     public CreateCurrencyCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
+
+    private boolean isValidDecimalConfiguration(String minusSign, String fractionSeparator) {
+        var valid = true;
+
+        try {
+            // Precision bounds and conditional presence are checked separately; zero checks only the tokens.
+            DecimalUtils.getInstance().validateConfiguration(minusSign, fractionSeparator, 0);
+        } catch(DecimalUtils.ParseException exception) {
+            valid = false;
+        }
+
+        return valid;
+    }
+
+    @Override
+    protected ValidationResult validate(Validator validator) {
+        var validationResult = super.validate(validator);
+
+        if(!validationResult.getHasErrors()) {
+            var validationMessages = new Messages();
+            var minusSign = form.getMinusSign();
+            var fractionSeparator = form.getFractionSeparator();
+
+            if(!isValidDecimalConfiguration(minusSign, null)) {
+                validationMessages.add("MinusSign", new Message(Validator.ERROR_INVALID_DECIMAL_CONFIGURATION));
+            }
+
+            if(!isValidDecimalConfiguration(null, fractionSeparator)) {
+                validationMessages.add("FractionSeparator", new Message(Validator.ERROR_INVALID_DECIMAL_CONFIGURATION));
+            }
+
+            if(validationMessages.isEmpty() && !isValidDecimalConfiguration(minusSign, fractionSeparator)) {
+                validationMessages.add("MinusSign", new Message(Validator.ERROR_INVALID_DECIMAL_CONFIGURATION));
+                validationMessages.add("FractionSeparator", new Message(Validator.ERROR_INVALID_DECIMAL_CONFIGURATION));
+            }
+
+            if(!validationMessages.isEmpty()) {
+                validationResult = new ValidationResult(validationMessages);
+            }
+        }
+
+        return validationResult;
+    }
     
     @Override
     protected BaseResult execute() {
@@ -99,54 +150,65 @@ public class CreateCurrencyCommand
                 var isDefault = Boolean.valueOf(form.getIsDefault());
                 var sortOrder = Integer.valueOf(form.getSortOrder());
                 var symbol = form.getSymbol();
-                var symbolOnListStart = symbol == null? null: Boolean.valueOf(form.getSymbolOnListStart());
-                var symbolOnListMember = symbol == null? null: Boolean.valueOf(form.getSymbolOnListMember());
-                var symbolOnSubtotal = symbol == null? null: Boolean.valueOf(form.getSymbolOnSubtotal());
-                var symbolOnTotal = symbol == null? null: Boolean.valueOf(form.getSymbolOnTotal());
+                var symbolOnListStartInput = form.getSymbolOnListStart();
+                var symbolOnListMemberInput = form.getSymbolOnListMember();
+                var symbolOnSubtotalInput = form.getSymbolOnSubtotal();
+                var symbolOnTotalInput = form.getSymbolOnTotal();
 
-                if(symbol == null || (symbol != null && symbolOnListStart != null && symbolOnListMember != null
-                        && symbolOnSubtotal != null && symbolOnTotal != null)) {
+                if(symbol == null || (symbolOnListStartInput != null && symbolOnListMemberInput != null
+                        && symbolOnSubtotalInput != null && symbolOnTotalInput != null)) {
+                    var symbolOnListStart = symbol == null ? null : Boolean.valueOf(symbolOnListStartInput);
+                    var symbolOnListMember = symbol == null ? null : Boolean.valueOf(symbolOnListMemberInput);
+                    var symbolOnSubtotal = symbol == null ? null : Boolean.valueOf(symbolOnSubtotalInput);
+                    var symbolOnTotal = symbol == null ? null : Boolean.valueOf(symbolOnTotalInput);
+
                     var fractionSeparator = form.getFractionSeparator();
-                    var defaultFractionDigits = fractionSeparator == null? null: Integer.valueOf(form.getDefaultFractionDigits());
-                    var priceUnitFractionDigits = fractionSeparator == null? null: Integer.valueOf(form.getPriceUnitFractionDigits());
-                    var priceLineFractionDigits = fractionSeparator == null? null: Integer.valueOf(form.getPriceLineFractionDigits());
-                    var costUnitFractionDigits = fractionSeparator == null? null: Integer.valueOf(form.getCostUnitFractionDigits());
-                    var costLineFractionDigits = fractionSeparator == null? null: Integer.valueOf(form.getCostLineFractionDigits());
+                    var defaultFractionDigitsInput = form.getDefaultFractionDigits();
+                    var priceUnitFractionDigitsInput = form.getPriceUnitFractionDigits();
+                    var priceLineFractionDigitsInput = form.getPriceLineFractionDigits();
+                    var costUnitFractionDigitsInput = form.getCostUnitFractionDigits();
+                    var costLineFractionDigitsInput = form.getCostLineFractionDigits();
 
-                    if(fractionSeparator == null || (defaultFractionDigits != null && priceUnitFractionDigits != null
-                            && priceLineFractionDigits != null && costUnitFractionDigits != null && costLineFractionDigits != null)) {
+                    if(fractionSeparator == null || (defaultFractionDigitsInput != null && priceUnitFractionDigitsInput != null
+                            && priceLineFractionDigitsInput != null && costUnitFractionDigitsInput != null && costLineFractionDigitsInput != null)) {
+                        var defaultFractionDigits = fractionSeparator == null ? null : Integer.valueOf(defaultFractionDigitsInput);
+                        var priceUnitFractionDigits = fractionSeparator == null ? null : Integer.valueOf(priceUnitFractionDigitsInput);
+                        var priceLineFractionDigits = fractionSeparator == null ? null : Integer.valueOf(priceLineFractionDigitsInput);
+                        var costUnitFractionDigits = fractionSeparator == null ? null : Integer.valueOf(costUnitFractionDigitsInput);
+                        var costLineFractionDigits = fractionSeparator == null ? null : Integer.valueOf(costLineFractionDigitsInput);
+
                         accountingControl.createCurrency(currencyIsoName, symbol, symbolPosition, symbolOnListStart, symbolOnListMember,
                                 symbolOnSubtotal, symbolOnTotal, groupingSeparator, groupingSize, fractionSeparator, defaultFractionDigits,
                                 priceUnitFractionDigits, priceLineFractionDigits, costUnitFractionDigits, costLineFractionDigits, minusSign,
                                 isDefault, sortOrder, getPartyPK());
                     } else {
-                        if(defaultFractionDigits == null) {
+                        if(defaultFractionDigitsInput == null) {
                             addExecutionError(ExecutionErrors.MissingDefaultFractionDigits.name());
                         }
-                        if(priceUnitFractionDigits == null) {
+                        if(priceUnitFractionDigitsInput == null) {
                             addExecutionError(ExecutionErrors.MissingPriceUnitFractionDigits.name());
                         }
-                        if(priceLineFractionDigits == null) {
+                        if(priceLineFractionDigitsInput == null) {
                             addExecutionError(ExecutionErrors.MissingPriceLineFractionDigits.name());
                         }
-                        if(costUnitFractionDigits == null) {
+                        if(costUnitFractionDigitsInput == null) {
                             addExecutionError(ExecutionErrors.MissingCostUnitFractionDigits.name());
                         }
-                        if(costLineFractionDigits == null) {
+                        if(costLineFractionDigitsInput == null) {
                             addExecutionError(ExecutionErrors.MissingCostLineFractionDigits.name());
                         }
                     }
                 } else {
-                    if(symbolOnListStart == null) {
+                    if(symbolOnListStartInput == null) {
                         addExecutionError(ExecutionErrors.MissingSymbolOnListStart.name());
                     }
-                    if(symbolOnListMember == null) {
+                    if(symbolOnListMemberInput == null) {
                         addExecutionError(ExecutionErrors.MissingSymbolOnListMember.name());
                     }
-                    if(symbolOnSubtotal == null) {
+                    if(symbolOnSubtotalInput == null) {
                         addExecutionError(ExecutionErrors.MissingSymbolOnSubtotal.name());
                     }
-                    if(symbolOnTotal == null) {
+                    if(symbolOnTotalInput == null) {
                         addExecutionError(ExecutionErrors.MissingSymbolOnTotal.name());
                     }
                 }
