@@ -123,4 +123,9 @@ public class EntityGeoPointAttributeLogic
         return getEntityGeoPointAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public void deleteEntityGeoPointAttribute(final ExecutionErrorAccumulator eea, final EntityGeoPointAttribute entityGeoPointAttribute,
+            final BasePK deletedBy) {
+        coreControl.deleteEntityGeoPointAttribute(entityGeoPointAttribute, deletedBy);
+    }
+
 }

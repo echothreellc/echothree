@@ -123,4 +123,9 @@ public class EntityDateAttributeLogic
         return getEntityDateAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public void deleteEntityDateAttribute(final ExecutionErrorAccumulator eea, final EntityDateAttribute entityDateAttribute,
+            final BasePK deletedBy) {
+        coreControl.deleteEntityDateAttribute(entityDateAttribute, deletedBy);
+    }
+
 }

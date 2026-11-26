@@ -140,4 +140,9 @@ public class EntityListItemAttributeLogic
         return getEntityListItemAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public void deleteEntityListItemAttribute(final ExecutionErrorAccumulator eea, final EntityListItemAttribute entityListItemAttribute,
+            final BasePK deletedBy) {
+        coreControl.deleteEntityListItemAttribute(entityListItemAttribute, deletedBy);
+    }
+
 }

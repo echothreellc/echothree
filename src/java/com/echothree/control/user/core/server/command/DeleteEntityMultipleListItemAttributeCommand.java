@@ -21,6 +21,7 @@ import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.core.server.logic.EntityListItemLogic;
+import com.echothree.model.control.core.server.logic.EntityMultipleListItemAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -66,6 +67,9 @@ public class DeleteEntityMultipleListItemAttributeCommand
     @Inject
     EntityListItemLogic entityListItemLogic;
 
+    @Inject
+    EntityMultipleListItemAttributeLogic entityMultipleListItemAttributeLogic;
+
     
     /** Creates a new instance of DeleteEntityMultipleListItemAttributeCommand */
     public DeleteEntityMultipleListItemAttributeCommand() {
@@ -87,7 +91,7 @@ public class DeleteEntityMultipleListItemAttributeCommand
                     var entityListItemAttribute = coreControl.getEntityMultipleListItemAttributeForUpdate(entityAttribute, entityInstance, entityListItem);
 
                     if(entityListItemAttribute != null) {
-                        coreControl.deleteEntityMultipleListItemAttribute(entityListItemAttribute, getPartyPK());
+                        entityMultipleListItemAttributeLogic.deleteEntityMultipleListItemAttribute(this, entityListItemAttribute, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownEntityMultipleListItemAttribute.name());
                     }

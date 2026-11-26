@@ -163,4 +163,9 @@ public class EntityIntegerAttributeLogic
         return getEntityIntegerAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public void deleteEntityIntegerAttribute(final ExecutionErrorAccumulator eea, final EntityIntegerAttribute entityIntegerAttribute,
+            final BasePK deletedBy) {
+        coreControl.deleteEntityIntegerAttribute(entityIntegerAttribute, deletedBy);
+    }
+
 }

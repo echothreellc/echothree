@@ -84,7 +84,7 @@ public class DeleteEntityBlobAttributeCommand
                     var entityBlobAttribute = entityBlobAttributeLogic.getEntityBlobAttributeForUpdate(this, entityAttribute, entityInstance, language);
                     
                     if(entityBlobAttribute != null) {
-                        coreControl.deleteEntityBlobAttribute(entityBlobAttribute, getPartyPK());
+                        entityBlobAttributeLogic.deleteEntityBlobAttribute(this, entityBlobAttribute, getPartyPK());
                     }
                 } else {
                     addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);

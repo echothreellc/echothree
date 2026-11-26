@@ -143,4 +143,9 @@ public class EntityStringAttributeLogic
         return getEntityStringAttribute(eea, entityAttribute, entityInstance, language, EntityPermission.READ_WRITE);
     }
 
+    public void deleteEntityStringAttribute(final ExecutionErrorAccumulator eea, final EntityStringAttribute entityStringAttribute,
+            final BasePK deletedBy) {
+        coreControl.deleteEntityStringAttribute(entityStringAttribute, deletedBy);
+    }
+
 }

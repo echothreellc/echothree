@@ -109,7 +109,7 @@ public class DeleteEntityStringAttributeCommand
                                     var entityStringAttribute = entityStringAttributeLogic.getEntityStringAttributeForUpdate(this, entityAttribute, entityInstance, language);
 
                                     if(entityStringAttribute != null) {
-                                        coreControl.deleteEntityStringAttribute(entityStringAttribute, getPartyPK());
+                                        entityStringAttributeLogic.deleteEntityStringAttribute(this, entityStringAttribute, getPartyPK());
                                     }
                                 }
                             } else {

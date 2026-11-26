@@ -123,4 +123,9 @@ public class EntityTimeAttributeLogic
         return getEntityTimeAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public void deleteEntityTimeAttribute(final ExecutionErrorAccumulator eea, final EntityTimeAttribute entityTimeAttribute,
+            final BasePK deletedBy) {
+        coreControl.deleteEntityTimeAttribute(entityTimeAttribute, deletedBy);
+    }
+
 }

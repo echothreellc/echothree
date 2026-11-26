@@ -123,4 +123,9 @@ public class EntityBooleanAttributeLogic
         return getEntityBooleanAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public void deleteEntityBooleanAttribute(final ExecutionErrorAccumulator eea, final EntityBooleanAttribute entityBooleanAttribute,
+            final BasePK deletedBy) {
+        coreControl.deleteEntityBooleanAttribute(entityBooleanAttribute, deletedBy);
+    }
+
 }

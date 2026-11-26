@@ -82,7 +82,7 @@ public class DeleteEntityListItemAttributeCommand
                 var entityListItemAttribute = entityListItemAttributeLogic.getEntityListItemAttributeForUpdate(this, entityAttribute, entityInstance);
                 
                 if(entityListItemAttribute != null) {
-                    coreControl.deleteEntityListItemAttribute(entityListItemAttribute, getPartyPK());
+                    entityListItemAttributeLogic.deleteEntityListItemAttribute(this, entityListItemAttribute, getPartyPK());
                 }
             }
         }

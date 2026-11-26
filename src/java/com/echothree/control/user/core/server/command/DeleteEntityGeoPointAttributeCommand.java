@@ -92,7 +92,7 @@ public class DeleteEntityGeoPointAttributeCommand
                             var entityGeoPointAttribute = entityGeoPointAttributeLogic.getEntityGeoPointAttributeForUpdate(this, entityAttribute, entityInstance);
 
                             if(entityGeoPointAttribute != null) {
-                                coreControl.deleteEntityGeoPointAttribute(entityGeoPointAttribute, getPartyPK());
+                                entityGeoPointAttributeLogic.deleteEntityGeoPointAttribute(this, entityGeoPointAttribute, getPartyPK());
                             }
                         } else {
                             addExecutionError(ExecutionErrors.MismatchedEntityType.name());

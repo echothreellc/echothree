@@ -103,4 +103,9 @@ public class EntityMultipleListItemAttributeLogic
         return entityMultipleListItemAttribute;
     }
 
+    public void deleteEntityMultipleListItemAttribute(final ExecutionErrorAccumulator eea, final EntityMultipleListItemAttribute entityMultipleListItemAttribute,
+            final BasePK deletedBy) {
+        coreControl.deleteEntityMultipleListItemAttribute(entityMultipleListItemAttribute, deletedBy);
+    }
+
 }

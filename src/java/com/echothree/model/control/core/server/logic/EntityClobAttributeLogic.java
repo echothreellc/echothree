@@ -80,4 +80,9 @@ public class EntityClobAttributeLogic
         return getEntityClobAttribute(eea, entityAttribute, entityInstance, language, EntityPermission.READ_WRITE);
     }
 
+    public void deleteEntityClobAttribute(final ExecutionErrorAccumulator eea, final EntityClobAttribute entityClobAttribute,
+            final BasePK deletedBy) {
+        coreControl.deleteEntityClobAttribute(entityClobAttribute, deletedBy);
+    }
+
 }

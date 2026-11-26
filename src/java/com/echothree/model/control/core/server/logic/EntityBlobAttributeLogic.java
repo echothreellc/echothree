@@ -22,6 +22,7 @@ import com.echothree.model.data.core.server.entity.EntityBlobAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
@@ -52,6 +53,11 @@ public class EntityBlobAttributeLogic
     public EntityBlobAttribute getEntityBlobAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
             EntityInstance entityInstance, Language language) {
         return getEntityBlobAttribute(eea, entityAttribute, entityInstance, language, EntityPermission.READ_WRITE);
+    }
+
+    public void deleteEntityBlobAttribute(final ExecutionErrorAccumulator eea, final EntityBlobAttribute entityBlobAttribute,
+            final BasePK deletedBy) {
+        coreControl.deleteEntityBlobAttribute(entityBlobAttribute, deletedBy);
     }
 
 }

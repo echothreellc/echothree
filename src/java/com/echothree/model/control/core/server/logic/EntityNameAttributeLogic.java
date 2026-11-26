@@ -76,4 +76,9 @@ public class EntityNameAttributeLogic
         return getEntityNameAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public void deleteEntityNameAttribute(final ExecutionErrorAccumulator eea, final EntityNameAttribute entityNameAttribute,
+            final BasePK deletedBy) {
+        coreControl.deleteEntityNameAttribute(entityNameAttribute, deletedBy);
+    }
+
 }

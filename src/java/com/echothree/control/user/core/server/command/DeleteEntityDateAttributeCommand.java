@@ -92,7 +92,7 @@ public class DeleteEntityDateAttributeCommand
                             var entityDateAttribute = entityDateAttributeLogic.getEntityDateAttributeForUpdate(this, entityAttribute, entityInstance);
 
                             if(entityDateAttribute != null) {
-                                coreControl.deleteEntityDateAttribute(entityDateAttribute, getPartyPK());
+                                entityDateAttributeLogic.deleteEntityDateAttribute(this, entityDateAttribute, getPartyPK());
                             }
                         } else {
                             addExecutionError(ExecutionErrors.MismatchedEntityType.name());

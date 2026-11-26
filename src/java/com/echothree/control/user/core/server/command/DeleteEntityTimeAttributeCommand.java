@@ -92,7 +92,7 @@ public class DeleteEntityTimeAttributeCommand
                             var entityTimeAttribute = entityTimeAttributeLogic.getEntityTimeAttributeForUpdate(this, entityAttribute, entityInstance);
 
                             if(entityTimeAttribute != null) {
-                                coreControl.deleteEntityTimeAttribute(entityTimeAttribute, getPartyPK());
+                                entityTimeAttributeLogic.deleteEntityTimeAttribute(this, entityTimeAttribute, getPartyPK());
                             }
                         } else {
                             addExecutionError(ExecutionErrors.MismatchedEntityType.name());

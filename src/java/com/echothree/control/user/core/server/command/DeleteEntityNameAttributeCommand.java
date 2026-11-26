@@ -92,7 +92,7 @@ public class DeleteEntityNameAttributeCommand
                             var entityNameAttribute = entityNameAttributeLogic.getEntityNameAttributeForUpdate(this, entityAttribute, entityInstance);
 
                             if(entityNameAttribute != null) {
-                                coreControl.deleteEntityNameAttribute(entityNameAttribute, getPartyPK());
+                                entityNameAttributeLogic.deleteEntityNameAttribute(this, entityNameAttribute, getPartyPK());
                             }
                         } else {
                             addExecutionError(ExecutionErrors.MismatchedEntityType.name());

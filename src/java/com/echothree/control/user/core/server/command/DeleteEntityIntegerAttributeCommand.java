@@ -92,7 +92,7 @@ public class DeleteEntityIntegerAttributeCommand
                             var entityIntegerAttribute = entityIntegerAttributeLogic.getEntityIntegerAttributeForUpdate(this, entityAttribute, entityInstance);
 
                             if(entityIntegerAttribute != null) {
-                                coreControl.deleteEntityIntegerAttribute(entityIntegerAttribute, getPartyPK());
+                                entityIntegerAttributeLogic.deleteEntityIntegerAttribute(this, entityIntegerAttribute, getPartyPK());
                             }
                         } else {
                             addExecutionError(ExecutionErrors.MismatchedEntityType.name());

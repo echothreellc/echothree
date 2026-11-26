@@ -92,7 +92,7 @@ public class DeleteEntityBooleanAttributeCommand
                             var entityBooleanAttribute = entityBooleanAttributeLogic.getEntityBooleanAttributeForUpdate(this, entityAttribute, entityInstance);
 
                             if(entityBooleanAttribute != null) {
-                                coreControl.deleteEntityBooleanAttribute(entityBooleanAttribute, getPartyPK());
+                                entityBooleanAttributeLogic.deleteEntityBooleanAttribute(this, entityBooleanAttribute, getPartyPK());
                             }
                         } else {
                             addExecutionError(ExecutionErrors.MismatchedEntityType.name());

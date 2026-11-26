@@ -92,7 +92,7 @@ public class DeleteEntityLongAttributeCommand
                             var entityLongAttribute = entityLongAttributeLogic.getEntityLongAttributeForUpdate(this, entityAttribute, entityInstance);
 
                             if(entityLongAttribute != null) {
-                                coreControl.deleteEntityLongAttribute(entityLongAttribute, getPartyPK());
+                                entityLongAttributeLogic.deleteEntityLongAttribute(this, entityLongAttribute, getPartyPK());
                             }
                         } else {
                             addExecutionError(ExecutionErrors.MismatchedEntityType.name());

@@ -87,7 +87,7 @@ public class DeleteEntityClobAttributeCommand
             var entityClobAttribute = entityClobAttributeLogic.getEntityClobAttributeForUpdate(this, entityAttribute, entityInstance, language);
 
             if(entityClobAttribute != null) {
-                coreControl.deleteEntityClobAttribute(entityClobAttribute, getPartyPK());
+                entityClobAttributeLogic.deleteEntityClobAttribute(this, entityClobAttribute, getPartyPK());
             }
         }
         

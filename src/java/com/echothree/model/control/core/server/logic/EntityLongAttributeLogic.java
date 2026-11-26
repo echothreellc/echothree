@@ -163,4 +163,9 @@ public class EntityLongAttributeLogic
         return getEntityLongAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public void deleteEntityLongAttribute(final ExecutionErrorAccumulator eea, final EntityLongAttribute entityLongAttribute,
+            final BasePK deletedBy) {
+        coreControl.deleteEntityLongAttribute(entityLongAttribute, deletedBy);
+    }
+
 }
