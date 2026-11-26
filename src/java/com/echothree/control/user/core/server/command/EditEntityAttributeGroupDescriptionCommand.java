@@ -144,7 +144,7 @@ public class EditEntityAttributeGroupDescriptionCommand
         
         entityAttributeGroupDescriptionValue.setDescription(edit.getDescription());
         
-        entityAttributeGroupControl.updateEntityAttributeGroupDescriptionFromValue(entityAttributeGroupDescriptionValue, getPartyPK());
+        entityAttributeGroupLogic.updateEntityAttributeGroupDescriptionFromValue(this, entityAttributeGroupDescriptionValue, getPartyPK());
     }
 
     

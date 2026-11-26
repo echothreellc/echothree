@@ -151,16 +151,16 @@ public class EditEntityListItemCommand
         entityListItemLogic.updateEntityListItemFromValue(session, entityListItemDetailValue, partyPK);
 
         if(entityListItemDescription == null && description != null) {
-            coreControl.createEntityListItemDescription(entityListItem, getPreferredLanguage(), description, partyPK);
+            entityListItemLogic.createEntityListItemDescription(this, entityListItem, getPreferredLanguage(), description, partyPK);
         } else {
             if(entityListItemDescription != null && description == null) {
-                coreControl.deleteEntityListItemDescription(entityListItemDescription, partyPK);
+                entityListItemLogic.deleteEntityListItemDescription(this, entityListItemDescription, partyPK);
             } else {
                 if(entityListItemDescription != null && description != null) {
                     var entityListItemDescriptionValue = coreControl.getEntityListItemDescriptionValue(entityListItemDescription);
 
                     entityListItemDescriptionValue.setDescription(description);
-                    coreControl.updateEntityListItemDescriptionFromValue(entityListItemDescriptionValue, partyPK);
+                    entityListItemLogic.updateEntityListItemDescriptionFromValue(this, entityListItemDescriptionValue, partyPK);
                 }
             }
         }

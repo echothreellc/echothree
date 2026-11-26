@@ -22,6 +22,7 @@ import com.echothree.control.user.core.common.spec.EntityAttributeUuid;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.DuplicateEntityAttributeDescriptionException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityAttributeNameException;
 import com.echothree.model.control.core.common.exception.DuplicateWorkflowUsageInEntityAttributeException;
 import com.echothree.model.control.core.common.exception.EntityTypeIsNotExtensibleException;
@@ -45,6 +46,7 @@ import com.echothree.model.control.core.server.database.EntityInstancePKsByNameE
 import com.echothree.model.control.core.server.database.EntityInstancePKsByStringEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancePKsByTimeEntityAttributeQuery;
 import com.echothree.model.control.index.server.control.IndexControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.queue.common.QueueTypes;
 import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.control.queue.server.logic.QueueTypeLogic;
@@ -55,9 +57,11 @@ import com.echothree.model.control.workflow.common.exception.UnknownWorkflowEnti
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
+import com.echothree.model.data.core.server.entity.EntityAttributeDescription;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
+import com.echothree.model.data.core.server.value.EntityAttributeDescriptionValue;
 import com.echothree.model.data.core.server.value.EntityAttributeDetailValue;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
@@ -97,6 +101,9 @@ public class EntityAttributeLogic
 
     @Inject
     protected EntityTypeLogic entityTypeLogic;
+
+    @Inject
+    protected LanguageLogic languageLogic;
 
     @Inject
     protected QueueTypeLogic queueTypeLogic;
@@ -156,7 +163,7 @@ public class EntityAttributeLogic
                             trackRevisions, sortOrder, createdBy);
 
                     if(description != null) {
-                        coreControl.createEntityAttributeDescription(entityAttribute, language, description, createdBy);
+                        createEntityAttributeDescription(eea, entityAttribute, language, description, createdBy);
                     }
 
                     switch(entityAttributeTypeEnum) {
@@ -464,6 +471,50 @@ public class EntityAttributeLogic
     public void deleteEntityAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
             final PartyPK deletedByPK) {
         coreControl.deleteEntityAttribute(entityAttribute, deletedByPK);
+    }
+
+    public EntityAttributeDescription createEntityAttributeDescription(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final Language language, final String description, final BasePK createdBy) {
+        var entityAttributeDescription = coreControl.getEntityAttributeDescription(entityAttribute, language);
+
+        if(entityAttributeDescription == null) {
+            entityAttributeDescription = coreControl.createEntityAttributeDescription(entityAttribute, language, description, createdBy);
+        } else {
+            var entityAttributeDetail = entityAttribute.getLastDetail();
+            var entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
+
+            handleExecutionError(DuplicateEntityAttributeDescriptionException.class, eea, ExecutionErrors.DuplicateEntityAttributeDescription.name(),
+                    entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(),
+                    entityAttributeDetail.getEntityAttributeName(), language.getLanguageIsoName());
+        }
+
+        return entityAttributeDescription;
+    }
+
+    public EntityAttributeDescription createEntityAttributeDescription(final ExecutionErrorAccumulator eea, final String componentVendorName,
+            final String entityTypeName, final String entityAttributeName, final String languageIsoName, final String description, final BasePK createdBy) {
+        EntityAttributeDescription entityAttributeDescription = null;
+        var entityAttribute = getEntityAttributeByName(eea, componentVendorName, entityTypeName, entityAttributeName);
+
+        if(!hasExecutionErrors(eea)) {
+            var language = languageLogic.getLanguageByName(eea, languageIsoName);
+
+            if(!hasExecutionErrors(eea)) {
+                entityAttributeDescription = createEntityAttributeDescription(eea, entityAttribute, language, description, createdBy);
+            }
+        }
+
+        return entityAttributeDescription;
+    }
+
+    public void updateEntityAttributeDescriptionFromValue(final ExecutionErrorAccumulator eea, final EntityAttributeDescriptionValue entityAttributeDescriptionValue,
+            final BasePK updatedBy) {
+        coreControl.updateEntityAttributeDescriptionFromValue(entityAttributeDescriptionValue, updatedBy);
+    }
+
+    public void deleteEntityAttributeDescription(final ExecutionErrorAccumulator eea, final EntityAttributeDescription entityAttributeDescription,
+            final BasePK deletedBy) {
+        coreControl.deleteEntityAttributeDescription(entityAttributeDescription, deletedBy);
     }
 
 }

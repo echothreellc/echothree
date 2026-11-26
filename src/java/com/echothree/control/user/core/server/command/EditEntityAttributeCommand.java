@@ -461,15 +461,15 @@ public class EditEntityAttributeCommand
         }
         
         if(entityAttributeDescription == null && description != null) {
-            coreControl.createEntityAttributeDescription(entityAttribute, getPreferredLanguage(), description, partyPK);
+            entityAttributeLogic.createEntityAttributeDescription(this, entityAttribute, getPreferredLanguage(), description, partyPK);
         } else if(entityAttributeDescription != null) {
             if(description == null) {
-                coreControl.deleteEntityAttributeDescription(entityAttributeDescription, partyPK);
+                entityAttributeLogic.deleteEntityAttributeDescription(this, entityAttributeDescription, partyPK);
             } else {
                 var entityAttributeDescriptionValue = coreControl.getEntityAttributeDescriptionValue(entityAttributeDescription);
 
                 entityAttributeDescriptionValue.setDescription(description);
-                coreControl.updateEntityAttributeDescriptionFromValue(entityAttributeDescriptionValue, partyPK);
+                entityAttributeLogic.updateEntityAttributeDescriptionFromValue(this, entityAttributeDescriptionValue, partyPK);
             }
         }
     }

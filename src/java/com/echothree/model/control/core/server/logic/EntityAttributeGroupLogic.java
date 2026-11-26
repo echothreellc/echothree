@@ -19,15 +19,20 @@ package com.echothree.model.control.core.server.logic;
 import com.echothree.control.user.core.common.spec.EntityAttributeGroupUniversalSpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.DuplicateEntityAttributeGroupDescriptionException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityAttributeGroupNameException;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.common.exception.UnknownEntityAttributeGroupNameException;
 import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
+import com.echothree.model.data.core.server.entity.EntityAttributeGroupDescription;
 import com.echothree.model.data.core.server.entity.EntityType;
+import com.echothree.model.data.core.server.value.EntityAttributeGroupDescriptionValue;
+import com.echothree.model.data.core.server.value.EntityAttributeGroupDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -54,6 +59,9 @@ public class EntityAttributeGroupLogic
     protected EntityTypeLogic entityTypeLogic;
 
     @Inject
+    protected LanguageLogic languageLogic;
+
+    @Inject
     protected SequenceGeneratorLogic sequenceGeneratorLogic;
 
     protected EntityAttributeGroupLogic() {
@@ -74,7 +82,7 @@ public class EntityAttributeGroupLogic
             entityAttributeGroup = entityAttributeGroupControl.createEntityAttributeGroup(entityType, entityAttributeGroupName, isDefault, sortOrder, createdBy);
 
             if(description != null) {
-                entityAttributeGroupControl.createEntityAttributeGroupDescription(entityAttributeGroup, language, description, createdBy);
+                createEntityAttributeGroupDescription(eea, entityAttributeGroup, language, description, createdBy);
             }
         } else {
             handleExecutionError(DuplicateEntityAttributeGroupNameException.class, eea, ExecutionErrors.DuplicateEntityAttributeGroupName.name(),
@@ -184,9 +192,57 @@ public class EntityAttributeGroupLogic
         return getEntityAttributeGroupByUuid(eea, uuid, EntityPermission.READ_WRITE);
     }
 
+    public void updateEntityAttributeGroupFromValue(final ExecutionErrorAccumulator eea, final EntityAttributeGroupDetailValue entityAttributeGroupDetailValue,
+            final BasePK updatedBy) {
+        entityAttributeGroupControl.updateEntityAttributeGroupFromValue(entityAttributeGroupDetailValue, updatedBy);
+    }
+
     public void deleteEntityAttributeGroup(final ExecutionErrorAccumulator eea, final EntityAttributeGroup entityAttributeGroup,
             final BasePK deletedBy) {
         entityAttributeGroupControl.deleteEntityAttributeGroup(entityAttributeGroup, deletedBy);
+    }
+
+    public EntityAttributeGroupDescription createEntityAttributeGroupDescription(final ExecutionErrorAccumulator eea, final EntityAttributeGroup entityAttributeGroup,
+            final Language language, final String description, final BasePK createdBy) {
+        var entityAttributeGroupDescription = entityAttributeGroupControl.getEntityAttributeGroupDescription(entityAttributeGroup, language);
+
+        if(entityAttributeGroupDescription == null) {
+            entityAttributeGroupDescription = entityAttributeGroupControl.createEntityAttributeGroupDescription(entityAttributeGroup, language, description, createdBy);
+        } else {
+            var entityTypeDetail = entityAttributeGroup.getLastDetail().getEntityType().getLastDetail();
+
+            handleExecutionError(DuplicateEntityAttributeGroupDescriptionException.class, eea, ExecutionErrors.DuplicateEntityAttributeGroupDescription.name(),
+                    entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
+                    entityTypeDetail.getEntityTypeName(), entityAttributeGroup.getLastDetail().getEntityAttributeGroupName(), language.getLanguageIsoName());
+        }
+
+        return entityAttributeGroupDescription;
+    }
+
+    public EntityAttributeGroupDescription createEntityAttributeGroupDescription(final ExecutionErrorAccumulator eea, final String componentVendorName,
+            final String entityTypeName, final String entityAttributeGroupName, final String languageIsoName, final String description, final BasePK createdBy) {
+        EntityAttributeGroupDescription entityAttributeGroupDescription = null;
+        var entityAttributeGroup = getEntityAttributeGroupByName(eea, componentVendorName, entityTypeName, entityAttributeGroupName);
+
+        if(!hasExecutionErrors(eea)) {
+            var language = languageLogic.getLanguageByName(eea, languageIsoName);
+
+            if(!hasExecutionErrors(eea)) {
+                entityAttributeGroupDescription = createEntityAttributeGroupDescription(eea, entityAttributeGroup, language, description, createdBy);
+            }
+        }
+
+        return entityAttributeGroupDescription;
+    }
+
+    public void updateEntityAttributeGroupDescriptionFromValue(final ExecutionErrorAccumulator eea, final EntityAttributeGroupDescriptionValue entityAttributeGroupDescriptionValue,
+            final BasePK updatedBy) {
+        entityAttributeGroupControl.updateEntityAttributeGroupDescriptionFromValue(entityAttributeGroupDescriptionValue, updatedBy);
+    }
+
+    public void deleteEntityAttributeGroupDescription(final ExecutionErrorAccumulator eea, final EntityAttributeGroupDescription entityAttributeGroupDescription,
+            final BasePK deletedBy) {
+        entityAttributeGroupControl.deleteEntityAttributeGroupDescription(entityAttributeGroupDescription, deletedBy);
     }
 
 }

@@ -22,6 +22,7 @@ import com.echothree.control.user.core.common.form.EditEntityListItemDescription
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityListItemDescriptionResult;
 import com.echothree.control.user.core.common.spec.EntityListItemDescriptionSpec;
+import com.echothree.model.control.core.server.logic.EntityListItemLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -29,10 +30,10 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.EntityListItem;
 import com.echothree.model.data.core.server.entity.EntityListItemDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -72,6 +73,9 @@ public class EditEntityListItemDescriptionCommand
 
     @Inject
     PartyControl partyControl;
+
+    @Inject
+    EntityListItemLogic entityListItemLogic;
 
     
     /** Creates a new instance of EditEntityListItemDescriptionCommand */
@@ -163,7 +167,7 @@ public class EditEntityListItemDescriptionCommand
         
         entityListItemDescriptionValue.setDescription(edit.getDescription());
 
-        coreControl.updateEntityListItemDescriptionFromValue(entityListItemDescriptionValue, getPartyPK());
+        entityListItemLogic.updateEntityListItemDescriptionFromValue(this, entityListItemDescriptionValue, getPartyPK());
     }
     
 }

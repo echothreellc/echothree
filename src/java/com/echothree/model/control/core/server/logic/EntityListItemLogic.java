@@ -22,12 +22,14 @@ import com.echothree.control.user.core.common.spec.EntityListItemUuid;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.DuplicateEntityListItemDescriptionException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityListItemNameException;
 import com.echothree.model.control.core.common.exception.InvalidEntityAttributeTypeException;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.common.exception.MismatchedEntityListItemException;
 import com.echothree.model.control.core.common.exception.UnknownEntityListItemNameException;
 import com.echothree.model.control.index.server.control.IndexControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.queue.common.QueueTypes;
 import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.control.queue.server.logic.QueueTypeLogic;
@@ -36,6 +38,8 @@ import com.echothree.model.control.sequence.common.exception.MissingDefaultSeque
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityListItem;
+import com.echothree.model.data.core.server.entity.EntityListItemDescription;
+import com.echothree.model.data.core.server.value.EntityListItemDescriptionValue;
 import com.echothree.model.data.core.server.value.EntityListItemDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.queue.server.value.QueuedEntityValue;
@@ -65,6 +69,9 @@ public class EntityListItemLogic
 
     @Inject
     protected EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    protected LanguageLogic languageLogic;
 
     @Inject
     protected QueueTypeLogic queueTypeLogic;
@@ -108,7 +115,7 @@ public class EntityListItemLogic
                             createdBy);
 
                     if(description != null) {
-                        coreControl.createEntityListItemDescription(entityListItem, language, description, createdBy);
+                        createEntityListItemDescription(eea, entityListItem, language, description, createdBy);
                     }
                 } else {
                     var entityAttributeDetail = entityAttribute.getLastDetail();
@@ -143,7 +150,7 @@ public class EntityListItemLogic
 
             handleExecutionError(UnknownEntityListItemNameException.class, eea, ExecutionErrors.UnknownEntityListItemName.name(),
                     entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                    entityTypeDetail.getEntityTypeName(), entityListItemName);
+                    entityTypeDetail.getEntityTypeName(), entityAttributeDetail.getEntityAttributeName(), entityListItemName);
         }
 
         return entityListItem;
@@ -326,6 +333,50 @@ public class EntityListItemLogic
 
     public void deleteEntityListItem(final ExecutionErrorAccumulator eea, EntityListItem entityListItem, BasePK deletedBy) {
         coreControl.deleteEntityListItem(entityListItem, deletedBy);
+    }
+
+    public EntityListItemDescription createEntityListItemDescription(final ExecutionErrorAccumulator eea, final EntityListItem entityListItem,
+            final Language language, final String description, final BasePK createdBy) {
+        var entityListItemDescription = coreControl.getEntityListItemDescription(entityListItem, language);
+
+        if(entityListItemDescription == null) {
+            entityListItemDescription = coreControl.createEntityListItemDescription(entityListItem, language, description, createdBy);
+        } else {
+            var entityAttributeDetail = entityListItem.getLastDetail().getEntityAttribute().getLastDetail();
+            var entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
+
+            handleExecutionError(DuplicateEntityListItemDescriptionException.class, eea, ExecutionErrors.DuplicateEntityListItemDescription.name(),
+                    entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(),
+                    entityAttributeDetail.getEntityAttributeName(), entityListItem.getLastDetail().getEntityListItemName(), language.getLanguageIsoName());
+        }
+
+        return entityListItemDescription;
+    }
+
+    public EntityListItemDescription createEntityListItemDescription(final ExecutionErrorAccumulator eea, final String componentVendorName,
+            final String entityTypeName, final String entityAttributeName, final String entityListItemName, final String languageIsoName, final String description, final BasePK createdBy) {
+        EntityListItemDescription entityListItemDescription = null;
+        var entityListItem = getEntityListItemByName(eea, componentVendorName, entityTypeName, entityAttributeName, entityListItemName);
+
+        if(!hasExecutionErrors(eea)) {
+            var language = languageLogic.getLanguageByName(eea, languageIsoName);
+
+            if(!hasExecutionErrors(eea)) {
+                entityListItemDescription = createEntityListItemDescription(eea, entityListItem, language, description, createdBy);
+            }
+        }
+
+        return entityListItemDescription;
+    }
+
+    public void updateEntityListItemDescriptionFromValue(final ExecutionErrorAccumulator eea, final EntityListItemDescriptionValue entityListItemDescriptionValue,
+            final BasePK updatedBy) {
+        coreControl.updateEntityListItemDescriptionFromValue(entityListItemDescriptionValue, updatedBy);
+    }
+
+    public void deleteEntityListItemDescription(final ExecutionErrorAccumulator eea, final EntityListItemDescription entityListItemDescription,
+            final BasePK deletedBy) {
+        coreControl.deleteEntityListItemDescription(entityListItemDescription, deletedBy);
     }
 
 }
