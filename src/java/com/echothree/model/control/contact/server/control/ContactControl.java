@@ -1503,7 +1503,7 @@ public class ContactControl
         return getContactMechanismAliasesByContactMechanismAliasType(contactMechanismAliasType, EntityPermission.READ_WRITE);
     }
 
-    private ContactMechanismAlias getContactMechanismAliasByAlias(ContactMechanismAliasType contactMechanismAliasType,
+    public ContactMechanismAlias getContactMechanismAliasByAlias(ContactMechanismAliasType contactMechanismAliasType,
             String alias, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(ContactMechanismAliases.fields())

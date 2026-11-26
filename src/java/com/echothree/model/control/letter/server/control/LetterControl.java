@@ -246,7 +246,7 @@ public class LetterControl
         return getLetterSourceDetailValueForUpdate(getLetterSourceByNameForUpdate(letterSourceName));
     }
     
-    private LetterSource getDefaultLetterSource(EntityPermission entityPermission) {
+    public LetterSource getDefaultLetterSource(EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(LetterSources.fields())
                 .from(LetterSources)
