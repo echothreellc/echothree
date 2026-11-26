@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -62,6 +63,9 @@ public class EntityEditLifecycleTest {
         boolean rejectEdit;
         boolean denyEdit;
         boolean failResult;
+        String lockFailurePoint;
+        Throwable lockFailure;
+        RuntimeException unlockFailure;
         final EntityLockTransfer acquiredLock = new EntityLockTransfer(null, null, 1000L, "locked", 2000L, "expires");
         final EntityLockTransfer existingLock = new EntityLockTransfer(null, null, 500L, "locked", 1500L, "expires");
         EntityLockTransfer currentLock = existingLock;
@@ -88,6 +92,7 @@ public class EntityEditLifecycleTest {
                 public long lockEntity(BasePK target, BasePK actor) {
                     assertEquals(1, results, "Current-value transfer must be built before locking");
                     check("lock", target, actor);
+                    failLockAt("acquire");
                     if(lockAllowed) {
                         currentLock = acquiredLock;
                     }
@@ -103,6 +108,10 @@ public class EntityEditLifecycleTest {
                 @Override
                 public boolean unlockEntity(BasePK target, BasePK actor) {
                     check("unlock", target, actor);
+                    if(unlockFailure != null) {
+                        throw unlockFailure;
+                    }
+                    currentLock = null;
                     return true;
                 }
 
@@ -115,9 +124,20 @@ public class EntityEditLifecycleTest {
                 @Override
                 public EntityLockTransfer getEntityLockTransfer(UserVisit visit, BasePK target) {
                     check("transfer", target, new PartyPK(99L));
+                    failLockAt("transfer");
                     return currentLock;
                 }
             });
+        }
+
+        private void failLockAt(String failurePoint) {
+            if(failurePoint.equals(lockFailurePoint)) {
+                if(lockFailure instanceof RuntimeException runtimeException) {
+                    throw runtimeException;
+                } else {
+                    throw (Error)lockFailure;
+                }
+            }
         }
 
         @Override
@@ -143,6 +163,7 @@ public class EntityEditLifecycleTest {
 
         @Override
         protected EntityAppearanceEdit getEdit() {
+            failLockAt("edit");
             return CoreEditFactory.getEntityAppearanceEdit();
         }
 
@@ -167,6 +188,7 @@ public class EntityEditLifecycleTest {
         @Override
         protected void doLock(EntityAppearanceEdit edit, EntityAppearance entity) {
             operations.add("copy");
+            failLockAt("copy");
         }
 
         @Override
@@ -205,6 +227,63 @@ public class EntityEditLifecycleTest {
 
     static Stream<Arguments> modes() {
         return Stream.of("Item", "Party", "default").flatMap(type -> Stream.of(EditMode.values()).map(mode -> Arguments.of(type, mode)));
+    }
+
+    static Stream<Arguments> lockFailures() {
+        return Stream.of("Item", "Party", "default").flatMap(type -> Stream.of("edit", "copy", "transfer")
+                .flatMap(failurePoint -> Stream.of(false, true).map(failWithError -> Arguments.of(type, failurePoint, failWithError))));
+    }
+
+    @ParameterizedTest
+    @MethodSource("lockFailures")
+    public void lockPreparationFailuresReleaseTheAcquiredKey(String type, String failurePoint, boolean failWithError) {
+        var command = new TestCommand(EditMode.LOCK, type.equals("default") ? null : type);
+        command.lockFailurePoint = failurePoint;
+        command.lockFailure = failWithError ? new AssertionError("lock preparation failed") : new IllegalStateException("lock preparation failed");
+
+        Throwable failure = failWithError ? assertThrows(Error.class, command::executeEdit)
+                : assertThrows(RuntimeException.class, command::executeEdit);
+
+        assertSame(command.lockFailure, failure);
+        assertEquals(switch(failurePoint) {
+            case "edit" -> List.of("lock", "unlock");
+            case "copy" -> List.of("lock", "copy", "unlock");
+            case "transfer" -> List.of("lock", "copy", "transfer", "unlock");
+            default -> throw new AssertionError(failurePoint);
+        }, command.operations);
+        assertNull(command.currentLock);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"Item", "Party", "default"})
+    public void unlockFailuresAreSuppressedWithoutReplacingTheLockFailure(String type) {
+        for(var sameFailure : List.of(false, true)) {
+            var command = new TestCommand(EditMode.LOCK, type.equals("default") ? null : type);
+            command.lockFailurePoint = "copy";
+            command.lockFailure = new IllegalStateException("lock preparation failed");
+            command.unlockFailure = sameFailure ? (RuntimeException)command.lockFailure : new IllegalStateException("unlock failed");
+
+            var failure = assertThrows(IllegalStateException.class, command::executeEdit);
+
+            assertSame(command.lockFailure, failure);
+            assertEquals(sameFailure ? List.of() : List.of(command.unlockFailure), List.of(failure.getSuppressed()));
+            assertEquals(List.of("lock", "copy", "unlock"), command.operations);
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"Item", "Party", "default"})
+    public void failuresWithoutSuccessfulAcquisitionLeaveExistingLocksAlone(String type) {
+        for(var failurePoint : List.of("acquire", "transfer")) {
+            var command = new TestCommand(EditMode.LOCK, type.equals("default") ? null : type);
+            command.lockAllowed = false;
+            command.lockFailurePoint = failurePoint;
+            command.lockFailure = new IllegalStateException("lock failed");
+
+            assertSame(command.lockFailure, assertThrows(IllegalStateException.class, command::executeEdit));
+            assertEquals(failurePoint.equals("acquire") ? List.of("lock") : List.of("lock", "transfer"), command.operations);
+            assertSame(command.existingLock, command.currentLock);
+        }
     }
 
     @ParameterizedTest

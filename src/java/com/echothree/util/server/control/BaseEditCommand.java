@@ -199,6 +199,7 @@ public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit, R 
     protected abstract void doUpdate(BE baseEntity);
 
     @Override
+    @SuppressWarnings("ReferenceEquality") // Throwable.addSuppressed rejects self-suppression by identity.
     protected BaseResult execute() {
         var result = getResult();
         var baseEntity = getEntity(result);
@@ -217,17 +218,35 @@ public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit, R 
                         // construction failure cannot leave a newly acquired lock behind.
                         fillInResult(result, baseEntity);
 
-                        if(!hasExecutionErrors()) {
-                            if(lockEntity(lockEntity)) {
-                                edit = getEdit();
-                                result.setEdit(edit);
-                                doLock(edit, baseEntity);
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                            }
-                        }
+                        var lockAcquired = false;
 
-                        result.setEntityLock(getEntityLockTransfer(lockEntity));
+                        try {
+                            if(!hasExecutionErrors()) {
+                                lockAcquired = lockEntity(lockEntity);
+
+                                if(lockAcquired) {
+                                    edit = getEdit();
+                                    result.setEdit(edit);
+                                    doLock(edit, baseEntity);
+                                } else {
+                                    addExecutionError(ExecutionErrors.EntityLockFailed.name());
+                                }
+                            }
+
+                            result.setEntityLock(getEntityLockTransfer(lockEntity));
+                        } catch(RuntimeException | Error lockFailure) {
+                            if(lockAcquired) {
+                                try {
+                                    unlockEntity(lockEntity);
+                                } catch(RuntimeException | Error unlockFailure) {
+                                    if(unlockFailure != lockFailure) {
+                                        lockFailure.addSuppressed(unlockFailure);
+                                    }
+                                }
+                            }
+
+                            throw lockFailure;
+                        }
                     }
                 }
                 case ABANDON -> unlockEntity(lockEntity);
