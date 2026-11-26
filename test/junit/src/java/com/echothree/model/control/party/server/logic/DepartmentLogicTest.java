@@ -64,6 +64,12 @@ public class DepartmentLogicTest {
         private final PartyDepartment department;
         private int departmentLookups;
         private int partyLookups;
+        private String missingDefault;
+        private int companyDefaults;
+        private int divisionDefaults;
+        private int departmentDefaults;
+        private EntityPermission companyPermission = EntityPermission.READ_ONLY;
+        private EntityPermission divisionPermission = EntityPermission.READ_ONLY;
 
         private Party party(long id, String typeName) {
             var type = new PartyType(new PartyTypeValue(new PartyTypePK(id), typeName, null, null, false, false, false, 0),
@@ -100,9 +106,30 @@ public class DepartmentLogicTest {
                     divisionParty.getPrimaryKey(), "DEPARTMENT", false, 0, 0L, Long.MAX_VALUE), EntityPermission.READ_WRITE);
             partyControl = new PartyControl() {
                 @Override
+                public PartyCompany getDefaultPartyCompany(EntityPermission permission) {
+                    companyDefaults++;
+                    assertEquals(companyPermission, permission);
+                    return "company".equals(missingDefault) ? null : company;
+                }
+                @Override
+                public PartyDivision getDefaultPartyDivision(Party party, EntityPermission permission) {
+                    divisionDefaults++;
+                    assertSame(companyParty, party);
+                    assertEquals(divisionPermission, permission);
+                    return "division".equals(missingDefault) ? null : division;
+                }
+                @Override
+                public PartyDepartment getDefaultPartyDepartment(Party party, EntityPermission permission) {
+                    departmentDefaults++;
+                    assertSame(divisionParty, party);
+                    assertEquals(expectedPermission, permission);
+                    return "department".equals(missingDefault) ? null : department;
+                }
+
+                @Override
                 public PartyCompany getPartyCompanyByName(String name, EntityPermission permission) {
                     assertEquals("COMPANY", name);
-                    assertEquals(EntityPermission.READ_ONLY, permission);
+                    assertEquals(companyPermission, permission);
                     return "company".equals(failure) ? null : company;
                 }
                 @Override
@@ -114,7 +141,7 @@ public class DepartmentLogicTest {
                 public PartyDivision getPartyDivisionByName(Party party, String name, EntityPermission permission) {
                     assertSame(companyParty, party);
                     assertEquals("DIVISION", name);
-                    assertEquals(EntityPermission.READ_ONLY, permission);
+                    assertEquals(divisionPermission, permission);
                     return "division".equals(failure) ? null : division;
                 }
                 @Override
@@ -265,6 +292,125 @@ public class DepartmentLogicTest {
         assertNull(logic.getPartyDepartmentByName(errors, (Party)null, null, null, null, false));
         assertFalse(errors.hasExecutionErrors());
         assertEquals(0, logic.departmentLookups);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 0, 1, 2, 3, 4, 5, 6, 7 })
+    public void allowDefaultResolvesEveryOmittedNameCombination(int nameMask) {
+        for(var permission : EntityPermission.values()) {
+            var logic = new TestLogic(null, permission);
+            var errors = new DummyExecutionErrorAccumulator();
+            var result = permission == EntityPermission.READ_ONLY
+                    ? logic.getPartyDepartmentByUniversalSpec(errors, spec(nameMask), true)
+                    : logic.getPartyDepartmentByUniversalSpecForUpdate(errors, spec(nameMask), true);
+            assertSame(logic.department, result);
+            assertFalse(errors.hasExecutionErrors());
+            assertEquals((nameMask & 1) == 0 ? 1 : 0, logic.companyDefaults);
+            assertEquals((nameMask & 2) == 0 ? 1 : 0, logic.divisionDefaults);
+            assertEquals((nameMask & 4) == 0 ? 1 : 0, logic.departmentDefaults);
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "company", "division", "department" })
+    public void missingDefaultStopsAtItsLevelWithResolvedParentNames(String missingDefault) {
+        var logic = new TestLogic(null, EntityPermission.READ_WRITE);
+        logic.missingDefault = missingDefault;
+        var errors = new DummyExecutionErrorAccumulator();
+        assertNull(logic.getPartyDepartmentByUniversalSpecForUpdate(errors, spec(0), true));
+        var error = errors.getExecutionErrors().get(Messages.EXECUTION_ERROR).next();
+        var expected = switch(missingDefault) {
+            case "company" -> ExecutionErrors.UnknownDefaultCompany;
+            case "division" -> ExecutionErrors.UnknownDefaultDivision;
+            case "department" -> ExecutionErrors.UnknownDefaultDepartment;
+            default -> throw new IllegalArgumentException();
+        };
+        var names = switch(missingDefault) {
+            case "company" -> new Object[] { };
+            case "division" -> new Object[] { "COMPANY" };
+            case "department" -> new Object[] { "COMPANY", "DIVISION" };
+            default -> throw new IllegalArgumentException();
+        };
+        assertEquals(expected.name(), error.getKey());
+        assertArrayEquals(names, error.getValues());
+        assertEquals(1, logic.companyDefaults);
+        assertEquals("company".equals(missingDefault) ? 0 : 1, logic.divisionDefaults);
+        assertEquals("department".equals(missingDefault) ? 1 : 0, logic.departmentDefaults);
+        assertEquals(0, logic.departmentLookups);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 0, 1, 2, 3 })
+    public void divisionDefaultsHonorParentSelectionAndTargetPermission(int nameMask) {
+        for(var permission : EntityPermission.values()) {
+            var logic = new TestLogic(null, EntityPermission.READ_ONLY);
+            logic.divisionPermission = permission;
+            var divisionSpec = PartySpecFactory.getDivisionUniversalSpec();
+            if((nameMask & 1) != 0) { divisionSpec.setCompanyName("COMPANY"); }
+            if((nameMask & 2) != 0) { divisionSpec.setDivisionName("DIVISION"); }
+            var errors = new DummyExecutionErrorAccumulator();
+            var result = permission == EntityPermission.READ_ONLY
+                    ? logic.divisionLogic.getPartyDivisionByUniversalSpec(errors, divisionSpec, true)
+                    : logic.divisionLogic.getPartyDivisionByUniversalSpecForUpdate(errors, divisionSpec, true);
+            assertSame(logic.division, result);
+            assertFalse(errors.hasExecutionErrors());
+            assertEquals((nameMask & 1) == 0 ? 1 : 0, logic.companyDefaults);
+            assertEquals((nameMask & 2) == 0 ? 1 : 0, logic.divisionDefaults);
+            assertEquals(0, logic.departmentDefaults);
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void companyDefaultHonorsPermissionAndCanBeDisabled(boolean allowDefault) {
+        for(var permission : EntityPermission.values()) {
+            var logic = new TestLogic(null, EntityPermission.READ_ONLY);
+            logic.companyPermission = permission;
+            var errors = new DummyExecutionErrorAccumulator();
+            var companySpec = PartySpecFactory.getCompanyUniversalSpec();
+            var result = permission == EntityPermission.READ_ONLY
+                    ? logic.divisionLogic.companyLogic.getPartyCompanyByUniversalSpec(errors, companySpec, allowDefault)
+                    : logic.divisionLogic.companyLogic.getPartyCompanyByUniversalSpecForUpdate(errors, companySpec, allowDefault);
+            if(allowDefault) {
+                assertSame(logic.company, result);
+                assertFalse(errors.hasExecutionErrors());
+            } else {
+                assertNull(result);
+                assertEquals(ExecutionErrors.InvalidParameterCount.name(),
+                        errors.getExecutionErrors().get(Messages.EXECUTION_ERROR).next().getKey());
+            }
+            assertEquals(allowDefault ? 1 : 0, logic.companyDefaults);
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "company", "division", "department", "party", "entity" })
+    public void explicitLookupFailuresNeverFallBackToDefaults(String failure) {
+        var logic = new TestLogic(failure, EntityPermission.READ_ONLY);
+        var errors = new DummyExecutionErrorAccumulator();
+        var mask = switch(failure) {
+            case "party" -> 8;
+            case "entity" -> 16;
+            default -> 7;
+        };
+        assertNull(logic.getPartyDepartmentByUniversalSpec(errors, spec(mask), true));
+        assertTrue(errors.hasExecutionErrors());
+        assertEquals(0, logic.companyDefaults);
+        assertEquals(0, logic.divisionDefaults);
+        assertEquals(0, logic.departmentDefaults);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 9, 15, 23, 39, 24, 40, 48, 63 })
+    public void allowDefaultStillRejectsMixedIdentifiers(int mask) {
+        var logic = new TestLogic(null, EntityPermission.READ_ONLY);
+        var errors = new DummyExecutionErrorAccumulator();
+        assertNull(logic.getPartyDepartmentByUniversalSpec(errors, spec(mask), true));
+        assertEquals(ExecutionErrors.InvalidParameterCount.name(),
+                errors.getExecutionErrors().get(Messages.EXECUTION_ERROR).next().getKey());
+        assertEquals(0, logic.companyDefaults);
+        assertEquals(0, logic.divisionDefaults);
+        assertEquals(0, logic.departmentDefaults);
     }
 
 }

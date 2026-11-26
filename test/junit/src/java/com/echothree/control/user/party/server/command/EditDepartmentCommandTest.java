@@ -158,8 +158,9 @@ public class EditDepartmentCommandTest {
             setPreferences(true);
             departmentLogic = new DepartmentLogic() {
                 @Override
-                public PartyDepartment getPartyDepartmentByUniversalSpec(ExecutionErrorAccumulator eea, DepartmentUniversalSpec universalSpec, EntityPermission permission) {
+                public PartyDepartment getPartyDepartmentByUniversalSpec(ExecutionErrorAccumulator eea, DepartmentUniversalSpec universalSpec, boolean allowDefault, EntityPermission permission) {
                     assertSame(spec, universalSpec);
+                    assertFalse(allowDefault);
                     assertEquals(mode == EditMode.UPDATE ? EntityPermission.READ_WRITE : EntityPermission.READ_ONLY, permission);
                     if(missingDepartment) {
                         eea.addExecutionError(ExecutionErrors.UnknownDepartmentName.name(), "COMPANY", "DIVISION", "DEPARTMENT");

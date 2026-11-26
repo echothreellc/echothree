@@ -18,11 +18,13 @@ package com.echothree.model.control.party.server.logic;
 
 import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 import com.echothree.control.user.party.common.spec.DivisionUniversalSpec;
+import com.echothree.control.user.party.common.spec.PartySpecFactory;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.party.common.exception.UnknownDefaultDivisionException;
 import com.echothree.model.control.party.common.exception.UnknownDivisionNameException;
 import com.echothree.model.control.party.common.exception.UseOfDivisionNameRequiresCompanyNameException;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -140,15 +142,34 @@ public class DivisionLogic
     }
 
     public PartyDivision getPartyDivisionByUniversalSpec(final ExecutionErrorAccumulator eea, final DivisionUniversalSpec universalSpec,
-            final EntityPermission entityPermission) {
+            final boolean allowDefault, final EntityPermission entityPermission) {
         var companyName = universalSpec.getCompanyName();
         var divisionName = universalSpec.getDivisionName();
         var partyName = universalSpec.getPartyName();
         var possibleEntitySpecs = entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         PartyDivision partyDivision = null;
 
-        if(companyName != null && divisionName != null && partyName == null && possibleEntitySpecs == 0) {
-            partyDivision = getPartyDivisionByName(eea, companyName, divisionName, null, null, true, entityPermission);
+        if(partyName == null && possibleEntitySpecs == 0 && (allowDefault || (companyName != null && divisionName != null))) {
+            var companySpec = PartySpecFactory.getCompanyUniversalSpec();
+
+            companySpec.setCompanyName(companyName);
+
+            var partyCompany = companyLogic.getPartyCompanyByUniversalSpec(eea, companySpec, allowDefault);
+
+            if(!hasExecutionErrors(eea)) {
+                var companyParty = partyCompany.getParty();
+
+                if(divisionName == null) {
+                    partyDivision = partyControl.getDefaultPartyDivision(companyParty, entityPermission);
+
+                    if(partyDivision == null) {
+                        handleExecutionError(UnknownDefaultDivisionException.class, eea, ExecutionErrors.UnknownDefaultDivision.name(),
+                                partyCompany.getPartyCompanyName());
+                    }
+                } else {
+                    partyDivision = getPartyDivisionByName(eea, companyParty, divisionName, null, null, true, entityPermission);
+                }
+            }
         } else if(companyName == null && divisionName == null && (partyName == null ? 0 : 1) + possibleEntitySpecs == 1) {
             partyDivision = getPartyDivisionByName(eea, (Party)null, null, partyName, universalSpec, true, entityPermission);
         } else if(companyName == null && divisionName != null && partyName == null && possibleEntitySpecs == 0) {
@@ -160,12 +181,27 @@ public class DivisionLogic
         return partyDivision;
     }
 
+    public PartyDivision getPartyDivisionByUniversalSpec(final ExecutionErrorAccumulator eea, final DivisionUniversalSpec universalSpec,
+            final EntityPermission entityPermission) {
+        return getPartyDivisionByUniversalSpec(eea, universalSpec, false, entityPermission);
+    }
+
+    public PartyDivision getPartyDivisionByUniversalSpec(final ExecutionErrorAccumulator eea, final DivisionUniversalSpec universalSpec,
+            final boolean allowDefault) {
+        return getPartyDivisionByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_ONLY);
+    }
+
+    public PartyDivision getPartyDivisionByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final DivisionUniversalSpec universalSpec,
+            final boolean allowDefault) {
+        return getPartyDivisionByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
+    }
+
     public PartyDivision getPartyDivisionByUniversalSpec(final ExecutionErrorAccumulator eea, final DivisionUniversalSpec universalSpec) {
-        return getPartyDivisionByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+        return getPartyDivisionByUniversalSpec(eea, universalSpec, false);
     }
 
     public PartyDivision getPartyDivisionByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final DivisionUniversalSpec universalSpec) {
-        return getPartyDivisionByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
+        return getPartyDivisionByUniversalSpecForUpdate(eea, universalSpec, false);
     }
 
 }

@@ -18,11 +18,13 @@ package com.echothree.model.control.party.server.logic;
 
 import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 import com.echothree.control.user.party.common.spec.DepartmentUniversalSpec;
+import com.echothree.control.user.party.common.spec.PartySpecFactory;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.party.common.exception.UnknownDefaultDepartmentException;
 import com.echothree.model.control.party.common.exception.UnknownDepartmentNameException;
 import com.echothree.model.control.party.common.exception.UseOfDepartmentNameRequiresDivisionNameException;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -142,7 +144,7 @@ public class DepartmentLogic
     }
 
     public PartyDepartment getPartyDepartmentByUniversalSpec(final ExecutionErrorAccumulator eea, final DepartmentUniversalSpec universalSpec,
-            final EntityPermission entityPermission) {
+            final boolean allowDefault, final EntityPermission entityPermission) {
         var companyName = universalSpec.getCompanyName();
         var divisionName = universalSpec.getDivisionName();
         var departmentName = universalSpec.getDepartmentName();
@@ -150,8 +152,31 @@ public class DepartmentLogic
         var possibleEntitySpecs = entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         PartyDepartment partyDepartment = null;
 
-        if(companyName != null && divisionName != null && departmentName != null && partyName == null && possibleEntitySpecs == 0) {
-            partyDepartment = getPartyDepartmentByName(eea, companyName, divisionName, departmentName, null, null, true, entityPermission);
+        if(partyName == null && possibleEntitySpecs == 0
+                && (allowDefault || (companyName != null && divisionName != null && departmentName != null))) {
+            var divisionSpec = PartySpecFactory.getDivisionUniversalSpec();
+
+            divisionSpec.setCompanyName(companyName);
+            divisionSpec.setDivisionName(divisionName);
+
+            var partyDivision = divisionLogic.getPartyDivisionByUniversalSpec(eea, divisionSpec, allowDefault);
+
+            if(!hasExecutionErrors(eea)) {
+                var divisionParty = partyDivision.getParty();
+
+                if(departmentName == null) {
+                    partyDepartment = partyControl.getDefaultPartyDepartment(divisionParty, entityPermission);
+
+                    if(partyDepartment == null) {
+                        var partyCompany = partyControl.getPartyCompany(partyDivision.getCompanyParty());
+
+                        handleExecutionError(UnknownDefaultDepartmentException.class, eea, ExecutionErrors.UnknownDefaultDepartment.name(),
+                                partyCompany.getPartyCompanyName(), partyDivision.getPartyDivisionName());
+                    }
+                } else {
+                    partyDepartment = getPartyDepartmentByName(eea, divisionParty, departmentName, null, null, true, entityPermission);
+                }
+            }
         } else if(companyName == null && divisionName == null && departmentName == null
                 && (partyName == null ? 0 : 1) + possibleEntitySpecs == 1) {
             partyDepartment = getPartyDepartmentByName(eea, (Party)null, null, partyName, universalSpec, true, entityPermission);
@@ -164,12 +189,27 @@ public class DepartmentLogic
         return partyDepartment;
     }
 
+    public PartyDepartment getPartyDepartmentByUniversalSpec(final ExecutionErrorAccumulator eea, final DepartmentUniversalSpec universalSpec,
+            final EntityPermission entityPermission) {
+        return getPartyDepartmentByUniversalSpec(eea, universalSpec, false, entityPermission);
+    }
+
+    public PartyDepartment getPartyDepartmentByUniversalSpec(final ExecutionErrorAccumulator eea, final DepartmentUniversalSpec universalSpec,
+            final boolean allowDefault) {
+        return getPartyDepartmentByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_ONLY);
+    }
+
+    public PartyDepartment getPartyDepartmentByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final DepartmentUniversalSpec universalSpec,
+            final boolean allowDefault) {
+        return getPartyDepartmentByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
+    }
+
     public PartyDepartment getPartyDepartmentByUniversalSpec(final ExecutionErrorAccumulator eea, final DepartmentUniversalSpec universalSpec) {
-        return getPartyDepartmentByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+        return getPartyDepartmentByUniversalSpec(eea, universalSpec, false);
     }
 
     public PartyDepartment getPartyDepartmentByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final DepartmentUniversalSpec universalSpec) {
-        return getPartyDepartmentByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
+        return getPartyDepartmentByUniversalSpecForUpdate(eea, universalSpec, false);
     }
 
 }

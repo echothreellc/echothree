@@ -19,6 +19,7 @@ package com.echothree.model.control.party.server.logic;
 import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 import com.echothree.control.user.party.common.spec.DivisionUniversalSpec;
 import com.echothree.control.user.party.common.spec.PartySpecFactory;
+import com.echothree.control.user.party.common.spec.CompanyUniversalSpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
@@ -91,6 +92,12 @@ public class DivisionLogicTest {
                 public Party getParty() { return companyParty; }
             };
             companyLogic = new CompanyLogic() {
+                @Override
+                public PartyCompany getPartyCompanyByUniversalSpec(ExecutionErrorAccumulator eea, CompanyUniversalSpec spec, boolean allowDefault) {
+                    assertFalse(allowDefault);
+                    return getPartyCompanyByName(eea, spec.getCompanyName(), null, null, true);
+                }
+
                 @Override
                 public PartyCompany getPartyCompanyByName(ExecutionErrorAccumulator eea, String companyName, String partyName,
                         UniversalEntitySpec spec, boolean required) {

@@ -110,7 +110,7 @@ public class EditDepartmentCommand
 
     @Override
     public PartyDepartment getEntity(EditDepartmentResult result) {
-        return departmentLogic.getPartyDepartmentByUniversalSpec(this, spec, editModeToEntityPermission(editMode));
+        return departmentLogic.getPartyDepartmentByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
     }
 
     @Override

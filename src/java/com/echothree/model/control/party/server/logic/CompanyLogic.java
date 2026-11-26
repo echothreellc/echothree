@@ -24,6 +24,7 @@ import com.echothree.model.control.core.common.exception.InvalidParameterCountEx
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.common.exception.UnknownCompanyNameException;
+import com.echothree.model.control.party.common.exception.UnknownDefaultCompanyException;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.PartyCompany;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -93,16 +94,45 @@ public class CompanyLogic
     }
 
     public PartyCompany getPartyCompanyByUniversalSpec(final ExecutionErrorAccumulator eea, final CompanyUniversalSpec universalSpec,
+            final boolean allowDefault, final EntityPermission entityPermission) {
+        PartyCompany partyCompany;
+        var parameterCount = (universalSpec.getCompanyName() == null ? 0 : 1) + (universalSpec.getPartyName() == null ? 0 : 1)
+                + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
+
+        if(parameterCount == 0 && allowDefault) {
+            partyCompany = partyControl.getDefaultPartyCompany(entityPermission);
+
+            if(partyCompany == null) {
+                handleExecutionError(UnknownDefaultCompanyException.class, eea, ExecutionErrors.UnknownDefaultCompany.name());
+            }
+        } else {
+            partyCompany = getPartyCompanyByName(eea, universalSpec.getCompanyName(), universalSpec.getPartyName(), universalSpec, true, entityPermission);
+        }
+
+        return partyCompany;
+    }
+
+    public PartyCompany getPartyCompanyByUniversalSpec(final ExecutionErrorAccumulator eea, final CompanyUniversalSpec universalSpec,
             final EntityPermission entityPermission) {
-        return getPartyCompanyByName(eea, universalSpec.getCompanyName(), universalSpec.getPartyName(), universalSpec, true, entityPermission);
+        return getPartyCompanyByUniversalSpec(eea, universalSpec, false, entityPermission);
+    }
+
+    public PartyCompany getPartyCompanyByUniversalSpec(final ExecutionErrorAccumulator eea, final CompanyUniversalSpec universalSpec,
+            final boolean allowDefault) {
+        return getPartyCompanyByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_ONLY);
+    }
+
+    public PartyCompany getPartyCompanyByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final CompanyUniversalSpec universalSpec,
+            final boolean allowDefault) {
+        return getPartyCompanyByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
     }
 
     public PartyCompany getPartyCompanyByUniversalSpec(final ExecutionErrorAccumulator eea, final CompanyUniversalSpec universalSpec) {
-        return getPartyCompanyByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+        return getPartyCompanyByUniversalSpec(eea, universalSpec, false);
     }
 
     public PartyCompany getPartyCompanyByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final CompanyUniversalSpec universalSpec) {
-        return getPartyCompanyByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
+        return getPartyCompanyByUniversalSpecForUpdate(eea, universalSpec, false);
     }
 
 }

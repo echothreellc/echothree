@@ -108,7 +108,7 @@ public class EditCompanyCommand
 
     @Override
     public PartyCompany getEntity(EditCompanyResult result) {
-        return companyLogic.getPartyCompanyByUniversalSpec(this, spec, editModeToEntityPermission(editMode));
+        return companyLogic.getPartyCompanyByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
     }
 
     @Override
