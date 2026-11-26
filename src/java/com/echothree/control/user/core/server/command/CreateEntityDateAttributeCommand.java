@@ -19,6 +19,7 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.CreateEntityDateAttributeForm;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityDateAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -58,6 +59,9 @@ public class CreateEntityDateAttributeCommand
     EntityAttributeLogic entityAttributeLogic;
 
     @Inject
+    EntityDateAttributeLogic entityDateAttributeLogic;
+
+    @Inject
     EntityInstanceLogic entityInstanceLogic;
 
     
@@ -77,7 +81,7 @@ public class CreateEntityDateAttributeCommand
             if(!hasExecutionErrors()) {
                 var dateAttribute = Integer.valueOf(form.getDateAttribute());
 
-                entityAttributeLogic.createEntityDateAttribute(this, entityAttribute, entityInstance, dateAttribute,
+                entityDateAttributeLogic.createEntityDateAttribute(this, entityAttribute, entityInstance, dateAttribute,
                         getPartyPK());
             }
         }

@@ -22,13 +22,14 @@ import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityBooleanAttributeResult;
 import com.echothree.control.user.core.common.spec.EntityBooleanAttributeSpec;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityBooleanAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityBooleanAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
@@ -70,6 +71,9 @@ public class EditEntityBooleanAttributeCommand
     EntityAttributeLogic entityAttributeLogic;
 
     @Inject
+    EntityBooleanAttributeLogic entityBooleanAttributeLogic;
+
+    @Inject
     EntityInstanceLogic entityInstanceLogic;
 
     private EntityInstance entityInstance;
@@ -101,7 +105,7 @@ public class EditEntityBooleanAttributeCommand
         }
 
         if(!hasExecutionErrors()) {
-            entity = entityAttributeLogic.getEntityBooleanAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
+            entity = entityBooleanAttributeLogic.getEntityBooleanAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
         }
 
         return entity;
@@ -133,7 +137,7 @@ public class EditEntityBooleanAttributeCommand
 
         entityBooleanAttributeValue.setBooleanAttribute(Boolean.valueOf(edit.getBooleanAttribute()));
 
-        coreControl.updateEntityBooleanAttributeFromValue(entityBooleanAttributeValue, getPartyPK());
+        entityBooleanAttributeLogic.updateEntityBooleanAttributeFromValue(this, entityBooleanAttributeValue, getPartyPK());
     }
 
 }

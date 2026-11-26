@@ -19,6 +19,7 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.CreateEntityGeoPointAttributeForm;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityGeoPointAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.uom.common.UomConstants;
@@ -66,6 +67,9 @@ public class CreateEntityGeoPointAttributeCommand
     EntityAttributeLogic entityAttributeLogic;
 
     @Inject
+    EntityGeoPointAttributeLogic entityGeoPointAttributeLogic;
+
+    @Inject
     EntityInstanceLogic entityInstanceLogic;
 
     @Inject
@@ -101,7 +105,7 @@ public class CreateEntityGeoPointAttributeCommand
                         var latitude = Integer.valueOf(form.getLatitude());
                         var longitude = Integer.valueOf(form.getLongitude());
 
-                        entityAttributeLogic.createEntityGeoPointAttribute(this, entityAttribute, entityInstance, latitude, longitude, elevation, altitude, getPartyPK());
+                        entityGeoPointAttributeLogic.createEntityGeoPointAttribute(this, entityAttribute, entityInstance, latitude, longitude, elevation, altitude, getPartyPK());
                     }
                 }
             }

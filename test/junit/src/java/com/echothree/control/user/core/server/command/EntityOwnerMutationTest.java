@@ -22,7 +22,7 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.control.core.server.logic.AppearanceLogic;
-import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityBlobAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.Appearance;
@@ -42,13 +42,13 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import java.util.stream.Stream;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 
 /** Exercise the shared deletion-aware resolver through attached-data mutation commands. */
 public class EntityOwnerMutationTest {
@@ -258,10 +258,10 @@ public class EntityOwnerMutationTest {
                     }
                 };
                 EntityEditFixture.inject(delete, "coreControl", core);
-                var attributes = new EntityAttributeLogic() { };
+                var attributes = new EntityBlobAttributeLogic() { };
                 EntityEditFixture.inject(attributes, "coreControl", core);
                 EntityEditFixture.inject(attributes, "entityInstanceLogic", environment.logic);
-                EntityEditFixture.inject(delete, "entityAttributeLogic", attributes);
+                EntityEditFixture.inject(delete, "entityBlobAttributeLogic", attributes);
                 EntityEditFixture.inject(delete, "partyControl", new PartyControl() {
                     @Override
                     public Language getLanguageByIsoName(String languageIsoName) {

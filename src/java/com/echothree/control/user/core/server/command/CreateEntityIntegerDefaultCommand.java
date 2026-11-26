@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateEntityIntegerDefaultForm;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityIntegerAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -57,6 +58,9 @@ public class CreateEntityIntegerDefaultCommand
     @Inject
     EntityAttributeLogic entityAttributeLogic;
 
+    @Inject
+    EntityIntegerAttributeLogic entityIntegerAttributeLogic;
+
     /** Creates a new instance of CreateEntityIntegerDefaultCommand */
     public CreateEntityIntegerDefaultCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -70,7 +74,7 @@ public class CreateEntityIntegerDefaultCommand
             var integerAttribute = Integer.valueOf(form.getIntegerAttribute());
             var addMissingAttributes = Boolean.parseBoolean(form.getAddMissingAttributes());
 
-            entityAttributeLogic.createEntityIntegerDefault(this, entityAttribute,
+            entityIntegerAttributeLogic.createEntityIntegerDefault(this, entityAttribute,
                     integerAttribute, addMissingAttributes, getPartyPK());
         }
 

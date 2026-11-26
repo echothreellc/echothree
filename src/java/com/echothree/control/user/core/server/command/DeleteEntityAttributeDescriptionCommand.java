@@ -17,15 +17,16 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityAttributeDescriptionForm;
+import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -60,6 +61,9 @@ public class DeleteEntityAttributeDescriptionCommand
     @Inject
     PartyControl partyControl;
 
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
     
     /** Creates a new instance of DeleteEntityAttributeDescriptionCommand */
     public DeleteEntityAttributeDescriptionCommand() {
@@ -87,7 +91,7 @@ public class DeleteEntityAttributeDescriptionCommand
                         var entityAttributeDescription = coreControl.getEntityAttributeDescriptionForUpdate(entityAttribute, language);
                         
                         if(entityAttributeDescription != null) {
-                            coreControl.deleteEntityAttributeDescription(entityAttributeDescription, getPartyPK());
+                            entityAttributeLogic.deleteEntityAttributeDescription(this, entityAttributeDescription, getPartyPK());
                         } else {
                             addExecutionError(ExecutionErrors.UnknownEntityAttributeDescription.name(), componentVendorName, entityTypeName, entityAttributeName,
                                     languageIsoName);

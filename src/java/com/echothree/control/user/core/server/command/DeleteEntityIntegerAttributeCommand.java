@@ -19,12 +19,13 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.DeleteEntityIntegerAttributeForm;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.core.server.logic.EntityIntegerAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -59,6 +60,9 @@ public class DeleteEntityIntegerAttributeCommand
     @Inject
     EntityInstanceLogic entityInstanceLogic;
 
+    @Inject
+    EntityIntegerAttributeLogic entityIntegerAttributeLogic;
+
     
     /** Creates a new instance of DeleteEntityIntegerAttributeCommand */
     public DeleteEntityIntegerAttributeCommand() {
@@ -85,10 +89,10 @@ public class DeleteEntityIntegerAttributeCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            var entityIntegerAttribute = entityAttributeLogic.getEntityIntegerAttributeForUpdate(this, entityAttribute, entityInstance);
+                            var entityIntegerAttribute = entityIntegerAttributeLogic.getEntityIntegerAttributeForUpdate(this, entityAttribute, entityInstance);
 
                             if(entityIntegerAttribute != null) {
-                                coreControl.deleteEntityIntegerAttribute(entityIntegerAttribute, getPartyPK());
+                                entityIntegerAttributeLogic.deleteEntityIntegerAttribute(this, entityIntegerAttribute, getPartyPK());
                             }
                         } else {
                             addExecutionError(ExecutionErrors.MismatchedEntityType.name());

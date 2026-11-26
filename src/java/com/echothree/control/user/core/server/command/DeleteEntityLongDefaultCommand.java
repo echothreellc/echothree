@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityLongDefaultForm;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityLongAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -55,6 +56,9 @@ public class DeleteEntityLongDefaultCommand
     @Inject
     EntityAttributeLogic entityAttributeLogic;
 
+    @Inject
+    EntityLongAttributeLogic entityLongAttributeLogic;
+
     /** Creates a new instance of CreateEntityLongDefaultCommand */
     public DeleteEntityLongDefaultCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -65,7 +69,7 @@ public class DeleteEntityLongDefaultCommand
         var entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, form);
 
         if(!hasExecutionErrors()) {
-            entityAttributeLogic.deleteEntityLongDefault(this, entityAttribute, getPartyPK());
+            entityLongAttributeLogic.deleteEntityLongDefault(this, entityAttribute, getPartyPK());
         }
 
         return null;

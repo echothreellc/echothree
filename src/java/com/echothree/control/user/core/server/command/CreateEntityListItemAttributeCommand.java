@@ -20,11 +20,13 @@ import com.echothree.control.user.core.common.form.CreateEntityListItemAttribute
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.core.server.logic.EntityListItemAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityListItemLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -61,6 +63,12 @@ public class CreateEntityListItemAttributeCommand
     @Inject
     EntityInstanceLogic entityInstanceLogic;
 
+    @Inject
+    EntityListItemAttributeLogic entityListItemAttributeLogic;
+
+    @Inject
+    EntityListItemLogic entityListItemLogic;
+
     
     /** Creates a new instance of CreateEntityListItemAttributeCommand */
     public CreateEntityListItemAttributeCommand() {
@@ -76,10 +84,10 @@ public class CreateEntityListItemAttributeCommand
                     EntityAttributeTypes.LISTITEM);
 
             if(!hasExecutionErrors()) {
-                var entityListItem = entityAttributeLogic.getEntityListItem(this, entityAttribute, form);
+                var entityListItem = entityListItemLogic.getEntityListItem(this, entityAttribute, form);
                 
                 if(!hasExecutionErrors()) {
-                    entityAttributeLogic.createEntityListItemAttribute(this, entityAttribute, entityInstance,
+                    entityListItemAttributeLogic.createEntityListItemAttribute(this, entityAttribute, entityInstance,
                             entityListItem, getPartyPK());
                 }
             }

@@ -18,6 +18,8 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateEntityMultipleListItemDefaultForm;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityListItemLogic;
+import com.echothree.model.control.core.server.logic.EntityMultipleListItemAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -58,6 +60,12 @@ public class CreateEntityMultipleListItemDefaultCommand
     @Inject
     EntityAttributeLogic entityAttributeLogic;
 
+    @Inject
+    EntityListItemLogic entityListItemLogic;
+
+    @Inject
+    EntityMultipleListItemAttributeLogic entityMultipleListItemAttributeLogic;
+
     /** Creates a new instance of CreateEntityListItemDefaultCommand */
     public CreateEntityMultipleListItemDefaultCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -68,12 +76,12 @@ public class CreateEntityMultipleListItemDefaultCommand
         var entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, form);
 
         if(!hasExecutionErrors()) {
-            var entityListItem = entityAttributeLogic.getEntityListItem(this, entityAttribute, form);
+            var entityListItem = entityListItemLogic.getEntityListItem(this, entityAttribute, form);
 
             if(!hasExecutionErrors()) {
                 var addMissingAttributes = Boolean.parseBoolean(form.getAddMissingAttributes());
 
-                entityAttributeLogic.createEntityMultipleListItemDefault(this, entityAttribute,
+                entityMultipleListItemAttributeLogic.createEntityMultipleListItemDefault(this, entityAttribute,
                         entityListItem, addMissingAttributes, getPartyPK());
             }
         }

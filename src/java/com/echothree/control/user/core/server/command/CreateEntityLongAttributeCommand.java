@@ -20,11 +20,12 @@ import com.echothree.control.user.core.common.form.CreateEntityLongAttributeForm
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.core.server.logic.EntityLongAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -60,6 +61,9 @@ public class CreateEntityLongAttributeCommand
     @Inject
     EntityInstanceLogic entityInstanceLogic;
 
+    @Inject
+    EntityLongAttributeLogic entityLongAttributeLogic;
+
     
     /** Creates a new instance of CreateEntityLongAttributeCommand */
     public CreateEntityLongAttributeCommand() {
@@ -77,7 +81,7 @@ public class CreateEntityLongAttributeCommand
             if(!hasExecutionErrors()) {
                 var longAttribute = Long.valueOf(form.getLongAttribute());
                 
-                entityAttributeLogic.createEntityLongAttribute(this, entityAttribute, entityInstance,
+                entityLongAttributeLogic.createEntityLongAttribute(this, entityAttribute, entityInstance,
                         longAttribute, getPartyPK());
             }
         }

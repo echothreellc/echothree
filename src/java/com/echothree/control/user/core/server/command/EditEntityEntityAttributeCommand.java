@@ -23,6 +23,7 @@ import com.echothree.control.user.core.common.result.EditEntityEntityAttributeRe
 import com.echothree.control.user.core.common.spec.EntityEntityAttributeSpec;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityEntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
@@ -72,6 +73,9 @@ public class EditEntityEntityAttributeCommand
     EntityAttributeLogic entityAttributeLogic;
 
     @Inject
+    EntityEntityAttributeLogic entityEntityAttributeLogic;
+
+    @Inject
     EntityInstanceLogic entityInstanceLogic;
 
     private EntityInstance entityInstance;
@@ -104,7 +108,7 @@ public class EditEntityEntityAttributeCommand
         }
 
         if(!hasExecutionErrors()) {
-            entity = entityAttributeLogic.getEntityEntityAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
+            entity = entityEntityAttributeLogic.getEntityEntityAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
         }
 
         return entity;
@@ -132,7 +136,7 @@ public class EditEntityEntityAttributeCommand
 
     @Override
     protected void canUpdate(EntityEntityAttribute entityEntityAttribute) {
-        entityInstanceAttribute = entityAttributeLogic.getEntityInstanceAttribute(this, edit);
+        entityInstanceAttribute = entityInstanceLogic.getEntityInstanceAttribute(this, edit);
 
         if(!hasExecutionErrors() && coreControl.countEntityAttributeEntityTypesByEntityAttribute(entityAttribute) > 0) {
             var allowedEntityType = entityInstanceAttribute.getEntityType();
@@ -157,7 +161,7 @@ public class EditEntityEntityAttributeCommand
 
         entityEntityAttributeValue.setEntityInstanceAttributePK(entityInstanceAttribute.getPrimaryKey());
 
-        coreControl.updateEntityEntityAttributeFromValue(entityEntityAttributeValue, getPartyPK());
+        entityEntityAttributeLogic.updateEntityEntityAttributeFromValue(this, entityEntityAttributeValue, getPartyPK());
     }
 
 }

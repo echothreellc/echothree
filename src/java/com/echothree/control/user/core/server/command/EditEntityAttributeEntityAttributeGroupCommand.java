@@ -22,6 +22,7 @@ import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityAttributeEntityAttributeGroupResult;
 import com.echothree.control.user.core.common.spec.EntityAttributeEntityAttributeGroupSpec;
 import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
+import com.echothree.model.control.core.server.logic.EntityAttributeGroupLogic;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -72,6 +73,9 @@ public class EditEntityAttributeEntityAttributeGroupCommand
     protected EntityAttributeGroupControl entityAttributeGroupControl;
 
     @Inject
+    EntityAttributeGroupLogic entityAttributeGroupLogic;
+
+    @Inject
     EntityAttributeLogic entityAttributeLogic;
 
     
@@ -96,7 +100,7 @@ public class EditEntityAttributeEntityAttributeGroupCommand
         var entityAttribute = entityAttributeLogic.getEntityAttributeByName(this, spec.getComponentVendorName(), spec.getEntityTypeName(), spec.getEntityAttributeName());
         
         if(!hasExecutionErrors()) {
-            var entityAttributeGroup = entityAttributeLogic.getEntityAttributeGroupByName(this, entityAttribute.getLastDetail().getEntityType(), spec.getEntityAttributeGroupName());
+            var entityAttributeGroup = entityAttributeGroupLogic.getEntityAttributeGroupByName(this, entityAttribute.getLastDetail().getEntityType(), spec.getEntityAttributeGroupName());
             
             if(!hasExecutionErrors()) {
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

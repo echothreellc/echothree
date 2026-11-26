@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityAttributeEntityAttributeGroupForm;
 import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
+import com.echothree.model.control.core.server.logic.EntityAttributeGroupLogic;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -61,6 +62,9 @@ public class DeleteEntityAttributeEntityAttributeGroupCommand
     protected EntityAttributeGroupControl entityAttributeGroupControl;
 
     @Inject
+    EntityAttributeGroupLogic entityAttributeGroupLogic;
+
+    @Inject
     EntityAttributeLogic entityAttributeLogic;
 
     
@@ -74,7 +78,7 @@ public class DeleteEntityAttributeEntityAttributeGroupCommand
         var entityAttribute = entityAttributeLogic.getEntityAttributeByName(this, form.getComponentVendorName(), form.getEntityTypeName(), form.getEntityAttributeName());
         
         if(!hasExecutionErrors()) {
-            var entityAttributeGroup = entityAttributeLogic.getEntityAttributeGroupByName(this, entityAttribute.getLastDetail().getEntityType(), form.getEntityAttributeGroupName());
+            var entityAttributeGroup = entityAttributeGroupLogic.getEntityAttributeGroupByName(this, entityAttribute.getLastDetail().getEntityType(), form.getEntityAttributeGroupName());
             
             if(!hasExecutionErrors()) {
                 var entityAttributeEntityAttributeGroup = entityAttributeGroupControl.getEntityAttributeEntityAttributeGroupForUpdate(entityAttribute, entityAttributeGroup);

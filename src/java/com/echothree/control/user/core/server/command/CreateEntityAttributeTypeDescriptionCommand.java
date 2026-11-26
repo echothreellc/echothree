@@ -17,15 +17,13 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateEntityAttributeTypeDescriptionForm;
+import com.echothree.model.control.core.server.logic.EntityAttributeTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -57,7 +55,7 @@ public class CreateEntityAttributeTypeDescriptionCommand
     }
 
     @Inject
-    PartyControl partyControl;
+    protected EntityAttributeTypeLogic entityAttributeTypeLogic;
 
     
     /** Creates a new instance of CreateEntityAttributeTypeDescriptionCommand */
@@ -67,30 +65,8 @@ public class CreateEntityAttributeTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var entityAttributeTypeName = form.getEntityAttributeTypeName();
-        var entityAttributeType = coreControl.getEntityAttributeTypeByName(entityAttributeTypeName);
-        
-        if(entityAttributeType != null) {
-            var languageIsoName = form.getLanguageIsoName();
-            var language = partyControl.getLanguageByIsoName(languageIsoName);
-            
-            if(language != null) {
-                var entityAttributeTypeDescription = coreControl.getEntityAttributeTypeDescription(entityAttributeType, language);
-                
-                if(entityAttributeTypeDescription == null) {
-                    var description = form.getDescription();
-                    
-                    coreControl.createEntityAttributeTypeDescription(entityAttributeType, language, description);
-                } else {
-                    addExecutionError(ExecutionErrors.DuplicateEntityAttributeTypeDescription.name(), entityAttributeTypeName, languageIsoName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownEntityAttributeTypeName.name(), entityAttributeTypeName);
-        }
-        
+        entityAttributeTypeLogic.createEntityAttributeTypeDescription(this, form.getEntityAttributeTypeName(), form.getLanguageIsoName(), form.getDescription());
+
         return null;
     }
     

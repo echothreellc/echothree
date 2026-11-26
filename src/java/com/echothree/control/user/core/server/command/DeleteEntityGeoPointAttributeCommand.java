@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityGeoPointAttributeForm;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityGeoPointAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -57,6 +58,9 @@ public class DeleteEntityGeoPointAttributeCommand
     EntityAttributeLogic entityAttributeLogic;
 
     @Inject
+    EntityGeoPointAttributeLogic entityGeoPointAttributeLogic;
+
+    @Inject
     EntityInstanceLogic entityInstanceLogic;
 
     
@@ -85,10 +89,10 @@ public class DeleteEntityGeoPointAttributeCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            var entityGeoPointAttribute = entityAttributeLogic.getEntityGeoPointAttributeForUpdate(this, entityAttribute, entityInstance);
+                            var entityGeoPointAttribute = entityGeoPointAttributeLogic.getEntityGeoPointAttributeForUpdate(this, entityAttribute, entityInstance);
 
                             if(entityGeoPointAttribute != null) {
-                                coreControl.deleteEntityGeoPointAttribute(entityGeoPointAttribute, getPartyPK());
+                                entityGeoPointAttributeLogic.deleteEntityGeoPointAttribute(this, entityGeoPointAttribute, getPartyPK());
                             }
                         } else {
                             addExecutionError(ExecutionErrors.MismatchedEntityType.name());

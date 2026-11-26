@@ -42,7 +42,20 @@ import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.logic.AppearanceLogic;
 import com.echothree.model.control.core.server.logic.EntityAliasTypeLogic;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityBlobAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityBooleanAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityClobAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityDateAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityEntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityGeoPointAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.core.server.logic.EntityIntegerAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityListItemAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityListItemLogic;
+import com.echothree.model.control.core.server.logic.EntityLongAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityNameAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityStringAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityTimeAttributeLogic;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
@@ -131,6 +144,7 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.control.BaseCommand;
 import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.BaseValue;
@@ -2320,16 +2334,6 @@ class EntityEditFixture {
                 return entityAttribute;
             }
 
-            @Override
-            public EntityListItem getEntityListItemByName(ExecutionErrorAccumulator eea, EntityAttribute attribute, String name, EntityPermission permission) {
-                assertSame(entityAttribute, attribute);
-                return entityListItem;
-            }
-
-            @Override
-            public EntityListItem getEntityListItemByUuid(ExecutionErrorAccumulator eea, String uuid, EntityPermission permission) {
-                return entityListItem;
-            }
 
         };
         inject(attributes, "coreControl", core);
@@ -2346,6 +2350,179 @@ class EntityEditFixture {
                 return instanceLogic.getEntityInstance(eea, ref, uuid, vendor, types);
             }
         });
+        var listItems = new EntityListItemLogic() {
+            @Override
+            public EntityListItem getEntityListItemByName(ExecutionErrorAccumulator eea, EntityAttribute attribute, String name, EntityPermission permission) {
+                assertSame(entityAttribute, attribute);
+                return entityListItem;
+            }
+
+            @Override
+            public EntityListItem getEntityListItemByUuid(ExecutionErrorAccumulator eea, String uuid, EntityPermission permission) {
+                return entityListItem;
+            }
+
+        };
+        inject(listItems, "coreControl", core);
+        inject(listItems, "entityAttributeLogic", attributes);
+        inject(listItems, "entityInstanceLogic", instanceLogic);
+        var attributeValues = new HashMap<String, BaseLogic>();
+        var entityBooleanAttributeLogic = new EntityBooleanAttributeLogic() {
+            @Override
+            public void handleExecutionError(Class<? extends BaseException> exceptionClass, ExecutionErrorAccumulator eea, String key, Object... arguments) {
+                if(eea == null) {
+                    throwLookupException(exceptionClass, key);
+                } else {
+                    super.handleExecutionError(exceptionClass, eea, key, arguments);
+                }
+            }
+        };
+        inject(entityBooleanAttributeLogic, "coreControl", core);
+        inject(entityBooleanAttributeLogic, "entityInstanceLogic", instanceLogic);
+        attributeValues.put("entityBooleanAttributeLogic", entityBooleanAttributeLogic);
+        var entityIntegerAttributeLogic = new EntityIntegerAttributeLogic() {
+            @Override
+            public void handleExecutionError(Class<? extends BaseException> exceptionClass, ExecutionErrorAccumulator eea, String key, Object... arguments) {
+                if(eea == null) {
+                    throwLookupException(exceptionClass, key);
+                } else {
+                    super.handleExecutionError(exceptionClass, eea, key, arguments);
+                }
+            }
+        };
+        inject(entityIntegerAttributeLogic, "coreControl", core);
+        inject(entityIntegerAttributeLogic, "entityInstanceLogic", instanceLogic);
+        attributeValues.put("entityIntegerAttributeLogic", entityIntegerAttributeLogic);
+        var entityLongAttributeLogic = new EntityLongAttributeLogic() {
+            @Override
+            public void handleExecutionError(Class<? extends BaseException> exceptionClass, ExecutionErrorAccumulator eea, String key, Object... arguments) {
+                if(eea == null) {
+                    throwLookupException(exceptionClass, key);
+                } else {
+                    super.handleExecutionError(exceptionClass, eea, key, arguments);
+                }
+            }
+        };
+        inject(entityLongAttributeLogic, "coreControl", core);
+        inject(entityLongAttributeLogic, "entityInstanceLogic", instanceLogic);
+        attributeValues.put("entityLongAttributeLogic", entityLongAttributeLogic);
+        var entityNameAttributeLogic = new EntityNameAttributeLogic() {
+            @Override
+            public void handleExecutionError(Class<? extends BaseException> exceptionClass, ExecutionErrorAccumulator eea, String key, Object... arguments) {
+                if(eea == null) {
+                    throwLookupException(exceptionClass, key);
+                } else {
+                    super.handleExecutionError(exceptionClass, eea, key, arguments);
+                }
+            }
+        };
+        inject(entityNameAttributeLogic, "coreControl", core);
+        inject(entityNameAttributeLogic, "entityInstanceLogic", instanceLogic);
+        attributeValues.put("entityNameAttributeLogic", entityNameAttributeLogic);
+        var entityStringAttributeLogic = new EntityStringAttributeLogic() {
+            @Override
+            public void handleExecutionError(Class<? extends BaseException> exceptionClass, ExecutionErrorAccumulator eea, String key, Object... arguments) {
+                if(eea == null) {
+                    throwLookupException(exceptionClass, key);
+                } else {
+                    super.handleExecutionError(exceptionClass, eea, key, arguments);
+                }
+            }
+        };
+        inject(entityStringAttributeLogic, "coreControl", core);
+        inject(entityStringAttributeLogic, "entityInstanceLogic", instanceLogic);
+        attributeValues.put("entityStringAttributeLogic", entityStringAttributeLogic);
+        var entityDateAttributeLogic = new EntityDateAttributeLogic() {
+            @Override
+            public void handleExecutionError(Class<? extends BaseException> exceptionClass, ExecutionErrorAccumulator eea, String key, Object... arguments) {
+                if(eea == null) {
+                    throwLookupException(exceptionClass, key);
+                } else {
+                    super.handleExecutionError(exceptionClass, eea, key, arguments);
+                }
+            }
+        };
+        inject(entityDateAttributeLogic, "coreControl", core);
+        inject(entityDateAttributeLogic, "entityInstanceLogic", instanceLogic);
+        attributeValues.put("entityDateAttributeLogic", entityDateAttributeLogic);
+        var entityTimeAttributeLogic = new EntityTimeAttributeLogic() {
+            @Override
+            public void handleExecutionError(Class<? extends BaseException> exceptionClass, ExecutionErrorAccumulator eea, String key, Object... arguments) {
+                if(eea == null) {
+                    throwLookupException(exceptionClass, key);
+                } else {
+                    super.handleExecutionError(exceptionClass, eea, key, arguments);
+                }
+            }
+        };
+        inject(entityTimeAttributeLogic, "coreControl", core);
+        inject(entityTimeAttributeLogic, "entityInstanceLogic", instanceLogic);
+        attributeValues.put("entityTimeAttributeLogic", entityTimeAttributeLogic);
+        var entityBlobAttributeLogic = new EntityBlobAttributeLogic() {
+            @Override
+            public void handleExecutionError(Class<? extends BaseException> exceptionClass, ExecutionErrorAccumulator eea, String key, Object... arguments) {
+                if(eea == null) {
+                    throwLookupException(exceptionClass, key);
+                } else {
+                    super.handleExecutionError(exceptionClass, eea, key, arguments);
+                }
+            }
+        };
+        inject(entityBlobAttributeLogic, "coreControl", core);
+        inject(entityBlobAttributeLogic, "entityInstanceLogic", instanceLogic);
+        attributeValues.put("entityBlobAttributeLogic", entityBlobAttributeLogic);
+        var entityClobAttributeLogic = new EntityClobAttributeLogic() {
+            @Override
+            public void handleExecutionError(Class<? extends BaseException> exceptionClass, ExecutionErrorAccumulator eea, String key, Object... arguments) {
+                if(eea == null) {
+                    throwLookupException(exceptionClass, key);
+                } else {
+                    super.handleExecutionError(exceptionClass, eea, key, arguments);
+                }
+            }
+        };
+        inject(entityClobAttributeLogic, "coreControl", core);
+        inject(entityClobAttributeLogic, "entityInstanceLogic", instanceLogic);
+        attributeValues.put("entityClobAttributeLogic", entityClobAttributeLogic);
+        var entityEntityAttributeLogic = new EntityEntityAttributeLogic() {
+            @Override
+            public void handleExecutionError(Class<? extends BaseException> exceptionClass, ExecutionErrorAccumulator eea, String key, Object... arguments) {
+                if(eea == null) {
+                    throwLookupException(exceptionClass, key);
+                } else {
+                    super.handleExecutionError(exceptionClass, eea, key, arguments);
+                }
+            }
+        };
+        inject(entityEntityAttributeLogic, "coreControl", core);
+        inject(entityEntityAttributeLogic, "entityInstanceLogic", instanceLogic);
+        attributeValues.put("entityEntityAttributeLogic", entityEntityAttributeLogic);
+        var entityListItemAttributeLogic = new EntityListItemAttributeLogic() {
+            @Override
+            public void handleExecutionError(Class<? extends BaseException> exceptionClass, ExecutionErrorAccumulator eea, String key, Object... arguments) {
+                if(eea == null) {
+                    throwLookupException(exceptionClass, key);
+                } else {
+                    super.handleExecutionError(exceptionClass, eea, key, arguments);
+                }
+            }
+        };
+        inject(entityListItemAttributeLogic, "coreControl", core);
+        inject(entityListItemAttributeLogic, "entityInstanceLogic", instanceLogic);
+        attributeValues.put("entityListItemAttributeLogic", entityListItemAttributeLogic);
+        var entityGeoPointAttributeLogic = new EntityGeoPointAttributeLogic() {
+            @Override
+            public void handleExecutionError(Class<? extends BaseException> exceptionClass, ExecutionErrorAccumulator eea, String key, Object... arguments) {
+                if(eea == null) {
+                    throwLookupException(exceptionClass, key);
+                } else {
+                    super.handleExecutionError(exceptionClass, eea, key, arguments);
+                }
+            }
+        };
+        inject(entityGeoPointAttributeLogic, "coreControl", core);
+        inject(entityGeoPointAttributeLogic, "entityInstanceLogic", instanceLogic);
+        attributeValues.put("entityGeoPointAttributeLogic", entityGeoPointAttributeLogic);
         var aliasTypes = new EntityAliasTypeLogic() {
             @Override
             public void handleExecutionError(Class<? extends BaseException> exceptionClass, ExecutionErrorAccumulator eea, String key, Object... arguments) {
@@ -2415,11 +2592,13 @@ class EntityEditFixture {
                 "entityAliasTypeLogic", aliasTypes, "languageLogic", languages, "mimeTypeLogic", mimeTypes,
                 "appearanceLogic", appearanceLogic, "entityInstanceControl", instances, "partyControl", parties,
                 "appearanceControl", appearances, "entityAliasControl", aliases));
+        dependencies.put("entityListItemLogic", listItems);
+        dependencies.putAll(attributeValues);
         dependencies.put("coreControl", core);
         lookupLogic = switch(kind) {
             case "EntityAppearance" -> appearanceLogic;
             case "EntityAlias" -> aliasTypes;
-            default -> attributes;
+            default -> attributeValues.get("entity" + kind.substring(6).replace("Default", "Attribute") + "Logic");
         };
         dependencies.put("unitOfMeasureTypeLogic", EntityEditUnits.logic());
         injectCommandDependencies(command);

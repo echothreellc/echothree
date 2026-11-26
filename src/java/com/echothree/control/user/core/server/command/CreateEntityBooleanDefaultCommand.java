@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateEntityBooleanDefaultForm;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityBooleanAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -57,6 +58,9 @@ public class CreateEntityBooleanDefaultCommand
     @Inject
     EntityAttributeLogic entityAttributeLogic;
 
+    @Inject
+    EntityBooleanAttributeLogic entityBooleanAttributeLogic;
+
     /** Creates a new instance of CreateEntityBooleanDefaultCommand */
     public CreateEntityBooleanDefaultCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -70,7 +74,7 @@ public class CreateEntityBooleanDefaultCommand
             var booleanAttribute = Boolean.valueOf(form.getBooleanAttribute());
             var addMissingAttributes = Boolean.parseBoolean(form.getAddMissingAttributes());
 
-            entityAttributeLogic.createEntityBooleanDefault(this, entityAttribute,
+            entityBooleanAttributeLogic.createEntityBooleanDefault(this, entityAttribute,
                     booleanAttribute, addMissingAttributes, getPartyPK());
         }
 

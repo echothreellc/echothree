@@ -23,6 +23,7 @@ import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityStringDefaultResult;
 import com.echothree.control.user.core.common.spec.EntityStringDefaultSpec;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityStringAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
@@ -70,6 +71,9 @@ public class EditEntityStringDefaultCommand
 
     @Inject
     EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    EntityStringAttributeLogic entityStringAttributeLogic;
 
     @Inject
     LanguageLogic languageLogic;
@@ -134,7 +138,7 @@ public class EditEntityStringDefaultCommand
 
         entityStringDefaultValue.setStringAttribute(String.valueOf(edit.getStringAttribute()));
 
-        coreControl.updateEntityStringDefaultFromValue(entityStringDefaultValue, getPartyPK());
+        entityStringAttributeLogic.updateEntityStringDefaultFromValue(this, entityStringDefaultValue, getPartyPK());
     }
     
 }

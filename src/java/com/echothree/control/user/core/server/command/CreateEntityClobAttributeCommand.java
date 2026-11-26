@@ -19,6 +19,7 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.CreateEntityClobAttributeForm;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityClobAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -63,6 +64,9 @@ public class CreateEntityClobAttributeCommand
     EntityAttributeLogic entityAttributeLogic;
 
     @Inject
+    EntityClobAttributeLogic entityClobAttributeLogic;
+
+    @Inject
     EntityInstanceLogic entityInstanceLogic;
 
     @Inject
@@ -86,7 +90,7 @@ public class CreateEntityClobAttributeCommand
         var mimeType = mimeTypeLogic.getMimeTypeByName(this, form.getMimeTypeName());
 
         if(!hasExecutionErrors()) {
-            entityAttributeLogic.createEntityClobAttribute(this, entityAttribute, entityInstance, language,
+            entityClobAttributeLogic.createEntityClobAttribute(this, entityAttribute, entityInstance, language,
                     form.getClobAttribute(), mimeType, getPartyPK());
         }
 

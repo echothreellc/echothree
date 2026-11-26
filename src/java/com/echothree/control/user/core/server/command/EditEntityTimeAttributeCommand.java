@@ -23,12 +23,13 @@ import com.echothree.control.user.core.common.result.EditEntityTimeAttributeResu
 import com.echothree.control.user.core.common.spec.EntityTimeAttributeSpec;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.core.server.logic.EntityTimeAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityTimeAttribute;
-import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
@@ -73,6 +74,9 @@ public class EditEntityTimeAttributeCommand
     @Inject
     EntityInstanceLogic entityInstanceLogic;
 
+    @Inject
+    EntityTimeAttributeLogic entityTimeAttributeLogic;
+
     private EntityInstance entityInstance;
     private EntityAttribute entityAttribute;
 
@@ -102,7 +106,7 @@ public class EditEntityTimeAttributeCommand
         }
 
         if(!hasExecutionErrors()) {
-            entity = entityAttributeLogic.getEntityTimeAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
+            entity = entityTimeAttributeLogic.getEntityTimeAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
         }
 
         return entity;
@@ -134,7 +138,7 @@ public class EditEntityTimeAttributeCommand
 
         entityTimeAttributeValue.setTimeAttribute(Long.valueOf(edit.getTimeAttribute()));
 
-        coreControl.updateEntityTimeAttributeFromValue(entityTimeAttributeValue, getPartyPK());
+        entityTimeAttributeLogic.updateEntityTimeAttributeFromValue(this, entityTimeAttributeValue, getPartyPK());
     }
 
 }

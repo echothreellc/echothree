@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityIntegerDefaultForm;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityIntegerAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -55,6 +56,9 @@ public class DeleteEntityIntegerDefaultCommand
     @Inject
     EntityAttributeLogic entityAttributeLogic;
 
+    @Inject
+    EntityIntegerAttributeLogic entityIntegerAttributeLogic;
+
     /** Creates a new instance of CreateEntityIntegerDefaultCommand */
     public DeleteEntityIntegerDefaultCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -65,7 +69,7 @@ public class DeleteEntityIntegerDefaultCommand
         var entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, form);
 
         if(!hasExecutionErrors()) {
-            entityAttributeLogic.deleteEntityIntegerDefault(this, entityAttribute, getPartyPK());
+            entityIntegerAttributeLogic.deleteEntityIntegerDefault(this, entityAttribute, getPartyPK());
         }
 
         return null;

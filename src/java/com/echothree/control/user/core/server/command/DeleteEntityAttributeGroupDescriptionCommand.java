@@ -86,7 +86,7 @@ public class DeleteEntityAttributeGroupDescriptionCommand
                 var entityAttributeGroupDescription = entityAttributeGroupControl.getEntityAttributeGroupDescriptionForUpdate(entityAttributeGroup, language);
                 
                 if(entityAttributeGroupDescription != null) {
-                    entityAttributeGroupControl.deleteEntityAttributeGroupDescription(entityAttributeGroupDescription, getPartyPK());
+                    entityAttributeGroupLogic.deleteEntityAttributeGroupDescription(this, entityAttributeGroupDescription, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownEntityAttributeGroupDescription.name(), form.getComponentVendorName(), form.getEntityTypeName(), entityAttributeGroupName, languageIsoName);
                 }

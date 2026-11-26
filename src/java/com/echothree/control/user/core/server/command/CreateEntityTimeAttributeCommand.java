@@ -20,6 +20,7 @@ import com.echothree.control.user.core.common.form.CreateEntityTimeAttributeForm
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.core.server.logic.EntityTimeAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -60,6 +61,9 @@ public class CreateEntityTimeAttributeCommand
     @Inject
     EntityInstanceLogic entityInstanceLogic;
 
+    @Inject
+    EntityTimeAttributeLogic entityTimeAttributeLogic;
+
     
     /** Creates a new instance of CreateEntityTimeAttributeCommand */
     public CreateEntityTimeAttributeCommand() {
@@ -77,7 +81,7 @@ public class CreateEntityTimeAttributeCommand
             if(!hasExecutionErrors()) {
                 var timeAttribute = Long.valueOf(form.getTimeAttribute());
 
-                entityAttributeLogic.createEntityTimeAttribute(this, entityAttribute, entityInstance, timeAttribute,
+                entityTimeAttributeLogic.createEntityTimeAttribute(this, entityAttribute, entityInstance, timeAttribute,
                         getPartyPK());
             }
         }

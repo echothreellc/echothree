@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateEntityDateDefaultForm;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityDateAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -57,6 +58,9 @@ public class CreateEntityDateDefaultCommand
     @Inject
     EntityAttributeLogic entityAttributeLogic;
 
+    @Inject
+    EntityDateAttributeLogic entityDateAttributeLogic;
+
     /** Creates a new instance of CreateEntityDateDefaultCommand */
     public CreateEntityDateDefaultCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -70,7 +74,7 @@ public class CreateEntityDateDefaultCommand
             var dateAttribute = Integer.valueOf(form.getDateAttribute());
             var addMissingAttributes = Boolean.parseBoolean(form.getAddMissingAttributes());
 
-            entityAttributeLogic.createEntityDateDefault(this, entityAttribute,
+            entityDateAttributeLogic.createEntityDateDefault(this, entityAttribute,
                     dateAttribute, addMissingAttributes, getPartyPK());
         }
 
