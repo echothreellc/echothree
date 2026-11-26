@@ -1241,7 +1241,7 @@ public class TermControl
                 .orElse(0L);
     }
 
-    private PartyTerm getPartyTerm(Party party, EntityPermission entityPermission) {
+    public PartyTerm getPartyTerm(Party party, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PartyTerms.fields())
                 .from(PartyTerms)
