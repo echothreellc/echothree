@@ -4911,7 +4911,7 @@ public class PartyControl
         return partyTypePasswordStringPolicy;
     }
     
-    private PartyTypePasswordStringPolicy getPartyTypePasswordStringPolicy(PartyType partyType, EntityPermission entityPermission) {
+    public PartyTypePasswordStringPolicy getPartyTypePasswordStringPolicy(PartyType partyType, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PartyTypePasswordStringPolicies.fields())
                 .from(PartyTypePasswordStringPolicies)

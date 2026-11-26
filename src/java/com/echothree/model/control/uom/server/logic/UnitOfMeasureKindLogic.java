@@ -16,6 +16,8 @@
 
 package com.echothree.model.control.uom.server.logic;
 
+import com.echothree.model.control.uom.common.UomConstants;
+import com.echothree.model.control.uom.common.exception.UnknownTimeUnitOfMeasureKindException;
 import com.echothree.model.control.uom.common.exception.UnknownUnitOfMeasureKindNameException;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
@@ -42,6 +44,16 @@ public class UnitOfMeasureKindLogic
 
         if(unitOfMeasureKind == null) {
             handleExecutionError(UnknownUnitOfMeasureKindNameException.class, eea, ExecutionErrors.UnknownUnitOfMeasureKindName.name(), unitOfMeasureKindName);
+        }
+
+        return unitOfMeasureKind;
+    }
+
+    public UnitOfMeasureKind getTimeUnitOfMeasureKind(final ExecutionErrorAccumulator eea) {
+        var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+
+        if(unitOfMeasureKind == null) {
+            handleExecutionError(UnknownTimeUnitOfMeasureKindException.class, eea, ExecutionErrors.UnknownTimeUnitOfMeasureKind.name());
         }
 
         return unitOfMeasureKind;
