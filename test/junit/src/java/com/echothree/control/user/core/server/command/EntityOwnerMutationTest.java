@@ -22,6 +22,7 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.control.core.server.logic.AppearanceLogic;
+import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.Appearance;
@@ -150,6 +151,12 @@ public class EntityOwnerMutationTest {
         var fixture = environment.fixture;
         var appearances = new AppearanceControl() {
             @Override
+            public EntityAppearance getEntityAppearance(EntityInstance entityInstance, EntityPermission entityPermission) {
+                assertEquals(EntityPermission.READ_WRITE, entityPermission);
+                return getEntityAppearanceForUpdate(entityInstance);
+            }
+
+            @Override
             public EntityAppearance getEntityAppearance(EntityInstance entityInstance) {
                 assertSame(fixture.entityInstance, entityInstance);
                 environment.dependentLookups++;
@@ -225,7 +232,14 @@ public class EntityOwnerMutationTest {
                 form.setEntityAttributeName("ATTRIBUTE");
                 form.setLanguageIsoName("en");
                 EntityEditFixture.inject(delete, "form", form);
-                EntityEditFixture.inject(delete, "coreControl", new CoreControl() {
+                var core = new CoreControl() {
+                    @Override
+                    public EntityBlobAttribute getEntityBlobAttribute(EntityAttribute attribute, EntityInstance entityInstance,
+                            Language language, EntityPermission entityPermission) {
+                        assertEquals(EntityPermission.READ_WRITE, entityPermission);
+                        return getEntityBlobAttributeForUpdate(attribute, entityInstance, language);
+                    }
+
                     @Override
                     public EntityAttribute getEntityAttributeByName(EntityType entityType, String entityAttributeName) {
                         environment.dependentLookups++;
@@ -242,7 +256,12 @@ public class EntityOwnerMutationTest {
                         assertSame(fixture.entityBlobAttribute, entityBlobAttribute);
                         environment.writes++;
                     }
-                });
+                };
+                EntityEditFixture.inject(delete, "coreControl", core);
+                var attributes = new EntityAttributeLogic() { };
+                EntityEditFixture.inject(attributes, "coreControl", core);
+                EntityEditFixture.inject(attributes, "entityInstanceLogic", environment.logic);
+                EntityEditFixture.inject(delete, "entityAttributeLogic", attributes);
                 EntityEditFixture.inject(delete, "partyControl", new PartyControl() {
                     @Override
                     public Language getLanguageByIsoName(String languageIsoName) {
@@ -257,6 +276,12 @@ public class EntityOwnerMutationTest {
         EntityEditFixture.inject(command, "entityInstanceLogic", environment.logic);
         if(!operation.equals("deleteBlob")) {
             EntityEditFixture.inject(command, "appearanceControl", appearances);
+            if(operation.equals("deleteAppearance")) {
+                var appearanceLogic = new AppearanceLogic() { };
+                EntityEditFixture.inject(appearanceLogic, "appearanceControl", appearances);
+                EntityEditFixture.inject(appearanceLogic, "entityInstanceLogic", environment.logic);
+                EntityEditFixture.inject(command, "appearanceLogic", appearanceLogic);
+            }
         }
         execute.run();
         if(environment.rejected(state)) {

@@ -114,15 +114,7 @@ public class EditEntityGeoPointAttributeCommand
         }
 
         if(!hasExecutionErrors()) {
-            entity = coreControl.getEntityGeoPointAttribute(entityAttribute, entityInstance, editModeToEntityPermission(editMode));
-
-            if(entity == null) {
-                var entityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
-
-                addExecutionError(ExecutionErrors.UnknownEntityGeoPointAttribute.name(),
-                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                        entityTypeDetail.getEntityTypeName(), entityAttribute.getLastDetail().getEntityAttributeName());
-            }
+            entity = entityAttributeLogic.getEntityGeoPointAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
         }
 
         return entity;

@@ -92,15 +92,7 @@ public class EditEntityListItemDefaultCommand
         entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, spec);
 
         if(!hasExecutionErrors()) {
-            entity = coreControl.getEntityListItemDefault(entityAttribute, editModeToEntityPermission(editMode));
-
-            if(entity == null) {
-                var entityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
-
-                addExecutionError(ExecutionErrors.UnknownEntityListItemDefault.name(),
-                        entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                        entityTypeDetail.getEntityTypeName(), entityAttribute.getLastDetail().getEntityAttributeName());
-            }
+            entity = entityAttributeLogic.getEntityListItemDefault(this, entityAttribute, editModeToEntityPermission(editMode));
         }
 
         return entity;

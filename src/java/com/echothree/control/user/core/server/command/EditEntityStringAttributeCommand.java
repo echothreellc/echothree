@@ -115,15 +115,7 @@ public class EditEntityStringAttributeCommand
         }
 
         if(!hasExecutionErrors()) {
-            entity = coreControl.getEntityStringAttribute(entityAttribute, entityInstance, language, editModeToEntityPermission(editMode));
-
-            if(entity == null) {
-                var entityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
-
-                addExecutionError(ExecutionErrors.UnknownEntityStringAttribute.name(),
-                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                        entityTypeDetail.getEntityTypeName(), entityAttribute.getLastDetail().getEntityAttributeName(), language.getLanguageIsoName());
-            }
+            entity = entityAttributeLogic.getEntityStringAttribute(this, entityAttribute, entityInstance, language, editModeToEntityPermission(editMode));
         }
 
         return entity;

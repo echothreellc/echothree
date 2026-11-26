@@ -111,12 +111,7 @@ public class EditEntityAliasCommand
         }
 
         if(!hasExecutionErrors()) {
-            entity = entityAliasControl.getEntityAlias(entityInstance, entityAliasType, editModeToEntityPermission(editMode));
-
-            if(entity == null) {
-                addExecutionError(ExecutionErrors.UnknownEntityAlias.name(),
-                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityAliasType.getLastDetail().getEntityAliasTypeName());
-            }
+            entity = entityAliasTypeLogic.getEntityAlias(this, entityInstance, entityAliasType, editModeToEntityPermission(editMode));
         }
 
         return entity;

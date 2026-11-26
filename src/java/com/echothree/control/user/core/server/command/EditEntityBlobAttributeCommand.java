@@ -117,15 +117,7 @@ public class EditEntityBlobAttributeCommand
         }
 
         if(!hasExecutionErrors()) {
-            entity = coreControl.getEntityBlobAttribute(entityAttribute, entityInstance, language, editModeToEntityPermission(editMode));
-
-            if(entity == null) {
-                var entityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
-
-                addExecutionError(ExecutionErrors.UnknownEntityBlobAttribute.name(),
-                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                        entityTypeDetail.getEntityTypeName(), entityAttribute.getLastDetail().getEntityAttributeName(), language.getLanguageIsoName());
-            }
+            entity = entityAttributeLogic.getEntityBlobAttribute(this, entityAttribute, entityInstance, language, editModeToEntityPermission(editMode));
         }
 
         return entity;

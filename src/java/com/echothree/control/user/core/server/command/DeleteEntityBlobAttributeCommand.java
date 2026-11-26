@@ -17,6 +17,7 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityBlobAttributeForm;
+import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -28,6 +29,7 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.persistence.EntityPermission;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -56,6 +58,9 @@ public class DeleteEntityBlobAttributeCommand
     PartyControl partyControl;
 
     @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
     EntityInstanceLogic entityInstanceLogic;
 
     /** Creates a new instance of DeleteEntityBlobAttributeCommand */
@@ -77,12 +82,10 @@ public class DeleteEntityBlobAttributeCommand
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    var entityBlobAttribute = coreControl.getEntityBlobAttributeForUpdate(entityAttribute, entityInstance, language);
+                    var entityBlobAttribute = entityAttributeLogic.getEntityBlobAttribute(this, entityAttribute, entityInstance, language, EntityPermission.READ_WRITE);
                     
                     if(entityBlobAttribute != null) {
                         coreControl.deleteEntityBlobAttribute(entityBlobAttribute, getPartyPK());
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownEntityBlobAttribute.name());
                     }
                 } else {
                     addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);

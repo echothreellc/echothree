@@ -32,6 +32,7 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.EntityPermission;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -93,12 +94,10 @@ public class DeleteEntityAliasCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAliasType.getLastDetail().getEntityType())) {
-                            var entityAlias = entityAliasControl.getEntityAliasForUpdate(entityInstance, entityAliasType);
+                            var entityAlias = entityAliasTypeLogic.getEntityAlias(this, entityInstance, entityAliasType, EntityPermission.READ_WRITE);
 
                             if(entityAlias != null) {
                                 entityAliasControl.deleteEntityAlias(entityAlias, getPartyPK());
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownEntityAlias.name());
                             }
                         } else {
                             addExecutionError(ExecutionErrors.MismatchedEntityType.name());

@@ -124,6 +124,7 @@ import com.echothree.model.data.party.server.value.LanguageValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.form.BaseEdit;
 import com.echothree.util.common.form.BaseSpec;
 import com.echothree.util.common.persistence.BasePK;
@@ -155,6 +156,9 @@ class EntityEditFixture {
 
     final String kind;
     BaseEditCommand command;
+    Object lookupLogic;
+    final List<String> deletions = new ArrayList<>();
+    Map<String, Object> dependencies;
     BaseSpec spec;
     BaseEdit edit;
     boolean missingValue;
@@ -186,6 +190,27 @@ class EntityEditFixture {
     BaseValue writtenValue;
     final PartyPK updatedBy = new PartyPK(99L);
     final Map<String, Object> values = new HashMap<>();
+
+    // Null-accumulator tests isolate server-backed exception message localization.
+    static void throwLookupException(Class<? extends BaseException> exceptionClass, String key) {
+        BaseException exception;
+        try {
+            exception = exceptionClass.getConstructor(String.class).newInstance(key);
+        } catch(ReflectiveOperationException reflectionException) {
+            throw new LinkageError(reflectionException.getMessage(), reflectionException);
+        }
+        throw exception;
+    }
+
+    void injectCommandDependencies(Object target) {
+        for(var type = target.getClass(); type != null; type = type.getSuperclass()) {
+            for(var field : type.getDeclaredFields()) {
+                if(dependencies.containsKey(field.getName())) {
+                    inject(target, field.getName(), dependencies.get(field.getName()));
+                }
+            }
+        }
+    }
 
     static void inject(Object target, String name, Object value) {
         Class<?> type = target.getClass();
@@ -1234,6 +1259,97 @@ class EntityEditFixture {
         public EntityGeoPointAttributeTransfer getEntityGeoPointAttributeTransfer(UserVisit visit, EntityGeoPointAttribute entity, EntityInstance owner) {
             return (EntityGeoPointAttributeTransfer)transfer(EntityGeoPointAttributeTransfer.class);
         }
+
+        @Override
+        public void deleteEntityBooleanAttribute(EntityBooleanAttribute entity, BasePK deletedBy) {
+            assertSame(entityBooleanAttribute, entity);
+            assertEquals(updatedBy, deletedBy);
+            deletions.add("EntityBooleanAttribute");
+        }
+
+        @Override
+        public void deleteEntityIntegerAttribute(EntityIntegerAttribute entity, BasePK deletedBy) {
+            assertSame(entityIntegerAttribute, entity);
+            assertEquals(updatedBy, deletedBy);
+            deletions.add("EntityIntegerAttribute");
+        }
+
+        @Override
+        public void deleteEntityLongAttribute(EntityLongAttribute entity, BasePK deletedBy) {
+            assertSame(entityLongAttribute, entity);
+            assertEquals(updatedBy, deletedBy);
+            deletions.add("EntityLongAttribute");
+        }
+
+        @Override
+        public void deleteEntityNameAttribute(EntityNameAttribute entity, BasePK deletedBy) {
+            assertSame(entityNameAttribute, entity);
+            assertEquals(updatedBy, deletedBy);
+            deletions.add("EntityNameAttribute");
+        }
+
+        @Override
+        public void deleteEntityStringAttribute(EntityStringAttribute entity, BasePK deletedBy) {
+            assertSame(entityStringAttribute, entity);
+            assertEquals(updatedBy, deletedBy);
+            deletions.add("EntityStringAttribute");
+        }
+
+        @Override
+        public void deleteEntityDateAttribute(EntityDateAttribute entity, BasePK deletedBy) {
+            assertSame(entityDateAttribute, entity);
+            assertEquals(updatedBy, deletedBy);
+            deletions.add("EntityDateAttribute");
+        }
+
+        @Override
+        public void deleteEntityTimeAttribute(EntityTimeAttribute entity, BasePK deletedBy) {
+            assertSame(entityTimeAttribute, entity);
+            assertEquals(updatedBy, deletedBy);
+            deletions.add("EntityTimeAttribute");
+        }
+
+        @Override
+        public void deleteEntityBlobAttribute(EntityBlobAttribute entity, BasePK deletedBy) {
+            assertSame(entityBlobAttribute, entity);
+            assertEquals(updatedBy, deletedBy);
+            deletions.add("EntityBlobAttribute");
+        }
+
+        @Override
+        public void deleteEntityClobAttribute(EntityClobAttribute entity, BasePK deletedBy) {
+            assertSame(entityClobAttribute, entity);
+            assertEquals(updatedBy, deletedBy);
+            deletions.add("EntityClobAttribute");
+        }
+
+        @Override
+        public void deleteEntityEntityAttribute(EntityEntityAttribute entity, BasePK deletedBy) {
+            assertSame(entityEntityAttribute, entity);
+            assertEquals(updatedBy, deletedBy);
+            deletions.add("EntityEntityAttribute");
+        }
+
+        @Override
+        public void deleteEntityListItemAttribute(EntityListItemAttribute entity, BasePK deletedBy) {
+            assertSame(entityListItemAttribute, entity);
+            assertEquals(updatedBy, deletedBy);
+            deletions.add("EntityListItemAttribute");
+        }
+
+        @Override
+        public void deleteEntityGeoPointAttribute(EntityGeoPointAttribute entity, BasePK deletedBy) {
+            assertSame(entityGeoPointAttribute, entity);
+            assertEquals(updatedBy, deletedBy);
+            deletions.add("EntityGeoPointAttribute");
+        }
+
+        @Override
+        public void deleteEntityListItemDefault(EntityListItemDefault entity, BasePK deletedBy) {
+            assertSame(entityListItemDefault, entity);
+            assertEquals(updatedBy, deletedBy);
+            deletions.add("EntityListItemDefault");
+        }
     };
 
     final AppearanceControl appearances = new AppearanceControl() {
@@ -1266,6 +1382,14 @@ class EntityEditFixture {
         public EntityAppearanceTransfer getEntityAppearanceTransfer(UserVisit visit, EntityAppearance entity) {
             return (EntityAppearanceTransfer)transfer(EntityAppearanceTransfer.class);
         }
+
+        @Override
+        public void deleteEntityAppearance(EntityAppearance entity, BasePK deletedBy) {
+            assertSame(entityAppearance, entity);
+            assertEquals(updatedBy, deletedBy);
+            deletions.add("EntityAppearance");
+        }
+
     };
     final EntityAliasControl aliases = new EntityAliasControl() {
         @Override
@@ -1305,6 +1429,14 @@ class EntityEditFixture {
         public EntityAliasTransfer getEntityAliasTransfer(UserVisit visit, EntityAlias entity) {
             return (EntityAliasTransfer)transfer(EntityAliasTransfer.class);
         }
+
+        @Override
+        public void deleteEntityAlias(EntityAlias entity, BasePK deletedBy) {
+            assertSame(entityAlias, entity);
+            assertEquals(updatedBy, deletedBy);
+            deletions.add("EntityAlias");
+        }
+
     };
 
     EntityEditFixture(String kind, EditMode mode) {
@@ -2167,6 +2299,15 @@ class EntityEditFixture {
         };
         var attributes = new EntityAttributeLogic() {
             @Override
+            public void handleExecutionError(Class<? extends BaseException> exceptionClass, ExecutionErrorAccumulator eea, String key, Object... arguments) {
+                if(eea == null) {
+                    throwLookupException(exceptionClass, key);
+                } else {
+                    super.handleExecutionError(exceptionClass, eea, key, arguments);
+                }
+            }
+
+            @Override
             public EntityAttribute getEntityAttributeByUuid(ExecutionErrorAccumulator eea, String uuid, EntityPermission permission) {
                 return entityAttribute;
             }
@@ -2207,11 +2348,21 @@ class EntityEditFixture {
         });
         var aliasTypes = new EntityAliasTypeLogic() {
             @Override
+            public void handleExecutionError(Class<? extends BaseException> exceptionClass, ExecutionErrorAccumulator eea, String key, Object... arguments) {
+                if(eea == null) {
+                    throwLookupException(exceptionClass, key);
+                } else {
+                    super.handleExecutionError(exceptionClass, eea, key, arguments);
+                }
+            }
+
+            @Override
             public EntityAliasType getEntityAliasTypeByUuid(ExecutionErrorAccumulator eea, String uuid, EntityPermission permission) {
                 return entityAliasType;
             }
         };
         inject(aliasTypes, "entityAliasControl", aliases);
+        inject(aliasTypes, "entityInstanceLogic", instanceLogic);
         var languages = new LanguageLogic() {
             @Override
             public Language getLanguageByName(ExecutionErrorAccumulator eea, String name, EntityPermission permission) {
@@ -2236,8 +2387,18 @@ class EntityEditFixture {
             }
         };
         var appearanceLogic = new AppearanceLogic() {
+            @Override
+            public void handleExecutionError(Class<? extends BaseException> exceptionClass, ExecutionErrorAccumulator eea, String key, Object... arguments) {
+                if(eea == null) {
+                    throwLookupException(exceptionClass, key);
+                } else {
+                    super.handleExecutionError(exceptionClass, eea, key, arguments);
+                }
+            }
+
         };
         inject(appearanceLogic, "appearanceControl", appearances);
+        inject(appearanceLogic, "entityInstanceLogic", instanceLogic);
         var instances = new EntityInstanceControl() {
             @Override
             public EntityInstance getEntityInstanceByEntityRef(String ref) {
@@ -2250,18 +2411,18 @@ class EntityEditFixture {
                 return language;
             }
         };
-        Map<String, Object> dependencies = new HashMap<>(Map.of("entityAttributeLogic", attributes, "entityInstanceLogic", instanceLogic,
+        dependencies = new HashMap<>(Map.of("entityAttributeLogic", attributes, "entityInstanceLogic", instanceLogic,
                 "entityAliasTypeLogic", aliasTypes, "languageLogic", languages, "mimeTypeLogic", mimeTypes,
                 "appearanceLogic", appearanceLogic, "entityInstanceControl", instances, "partyControl", parties,
                 "appearanceControl", appearances, "entityAliasControl", aliases));
-        inject(command, "coreControl", core);
+        dependencies.put("coreControl", core);
+        lookupLogic = switch(kind) {
+            case "EntityAppearance" -> appearanceLogic;
+            case "EntityAlias" -> aliasTypes;
+            default -> attributes;
+        };
         dependencies.put("unitOfMeasureTypeLogic", EntityEditUnits.logic());
-        for(var type = command.getClass().getSuperclass(); type != null; type = type.getSuperclass()) {
-            for(var field : type.getDeclaredFields())
-                if(dependencies.containsKey(field.getName())) {
-                    inject(command, field.getName(), dependencies.get(field.getName()));
-                }
-        }
+        injectCommandDependencies(command);
         String property = switch(kind) {
             case "EntityAppearance" -> "AppearanceName";
             case "EntityAlias" -> "Alias";

@@ -105,15 +105,7 @@ public class EditEntityListItemAttributeCommand
         }
 
         if(!hasExecutionErrors()) {
-            entity = coreControl.getEntityListItemAttribute(entityAttribute, entityInstance, editModeToEntityPermission(editMode));
-
-            if(entity == null) {
-                var entityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
-
-                addExecutionError(ExecutionErrors.UnknownEntityListItemAttribute.name(),
-                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                        entityTypeDetail.getEntityTypeName(), entityAttribute.getLastDetail().getEntityAttributeName());
-            }
+            entity = entityAttributeLogic.getEntityListItemAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
         }
 
         return entity;

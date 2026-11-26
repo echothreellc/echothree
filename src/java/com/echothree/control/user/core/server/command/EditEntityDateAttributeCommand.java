@@ -102,15 +102,7 @@ public class EditEntityDateAttributeCommand
         }
 
         if(!hasExecutionErrors()) {
-            entity = coreControl.getEntityDateAttribute(entityAttribute, entityInstance, editModeToEntityPermission(editMode));
-
-            if(entity == null) {
-                var entityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
-
-                addExecutionError(ExecutionErrors.UnknownEntityDateAttribute.name(),
-                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                        entityTypeDetail.getEntityTypeName(), entityAttribute.getLastDetail().getEntityAttributeName());
-            }
+            entity = entityAttributeLogic.getEntityDateAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
         }
 
         return entity;

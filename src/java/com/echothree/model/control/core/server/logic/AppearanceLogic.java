@@ -21,8 +21,11 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.common.exception.UnknownAppearanceNameException;
+import com.echothree.model.control.core.common.exception.UnknownEntityAppearanceException;
 import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.data.core.server.entity.Appearance;
+import com.echothree.model.data.core.server.entity.EntityAppearance;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -98,5 +101,17 @@ public class AppearanceLogic
             final AppearanceUniversalSpec universalSpec) {
         return getAppearanceByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
     }
-    
+
+    public EntityAppearance getEntityAppearance(ExecutionErrorAccumulator eea, EntityInstance entityInstance,
+            EntityPermission entityPermission) {
+        var entityAppearance = appearanceControl.getEntityAppearance(entityInstance, entityPermission);
+
+        if(entityAppearance == null) {
+            handleExecutionError(UnknownEntityAppearanceException.class, eea, ExecutionErrors.UnknownEntityAppearance.name(),
+                    entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance));
+        }
+
+        return entityAppearance;
+    }
+
 }

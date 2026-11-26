@@ -28,6 +28,7 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.persistence.EntityPermission;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -85,12 +86,10 @@ public class DeleteEntityDateAttributeCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            var entityDateAttribute = coreControl.getEntityDateAttributeForUpdate(entityAttribute, entityInstance);
+                            var entityDateAttribute = entityAttributeLogic.getEntityDateAttribute(this, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
 
                             if(entityDateAttribute != null) {
                                 coreControl.deleteEntityDateAttribute(entityDateAttribute, getPartyPK());
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownEntityDateAttribute.name());
                             }
                         } else {
                             addExecutionError(ExecutionErrors.MismatchedEntityType.name());

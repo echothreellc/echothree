@@ -30,6 +30,7 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.persistence.EntityPermission;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -80,12 +81,10 @@ public class DeleteEntityClobAttributeCommand
                 EntityAttributeTypes.CLOB);
 
         if(!hasExecutionErrors()) {
-            var entityClobAttribute = coreControl.getEntityClobAttributeForUpdate(entityAttribute, entityInstance, language);
+            var entityClobAttribute = entityAttributeLogic.getEntityClobAttribute(this, entityAttribute, entityInstance, language, EntityPermission.READ_WRITE);
 
             if(entityClobAttribute != null) {
                 coreControl.deleteEntityClobAttribute(entityClobAttribute, getPartyPK());
-            } else {
-                addExecutionError(ExecutionErrors.UnknownEntityClobAttribute.name());
             }
         }
         

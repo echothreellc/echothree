@@ -28,6 +28,7 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.persistence.EntityPermission;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -85,12 +86,10 @@ public class DeleteEntityLongAttributeCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            var entityLongAttribute = coreControl.getEntityLongAttributeForUpdate(entityAttribute, entityInstance);
+                            var entityLongAttribute = entityAttributeLogic.getEntityLongAttribute(this, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
 
                             if(entityLongAttribute != null) {
                                 coreControl.deleteEntityLongAttribute(entityLongAttribute, getPartyPK());
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownEntityLongAttribute.name());
                             }
                         } else {
                             addExecutionError(ExecutionErrors.MismatchedEntityType.name());

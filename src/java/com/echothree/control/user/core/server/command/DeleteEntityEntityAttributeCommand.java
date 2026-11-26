@@ -29,7 +29,7 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.PersistenceUtils;
+import com.echothree.util.server.persistence.EntityPermission;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -76,17 +76,10 @@ public class DeleteEntityEntityAttributeCommand
                     EntityAttributeTypes.ENTITY);
 
             if(!hasExecutionErrors()) {
-                var entityEntityAttribute = coreControl.getEntityEntityAttributeForUpdate(entityAttribute, entityInstance);
+                var entityEntityAttribute = entityAttributeLogic.getEntityEntityAttribute(this, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
                 
                 if(entityEntityAttribute != null) {
                     coreControl.deleteEntityEntityAttribute(entityEntityAttribute, getPartyPK());
-                } else {
-                    var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
-                    var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
-
-                    addExecutionError(ExecutionErrors.UnknownEntityEntityAttribute.name(), basePK.getEntityRef(),
-                            entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                            entityTypeDetail.getEntityTypeName(), entityAttribute.getLastDetail().getEntityAttributeName());
                 }
             }
         }

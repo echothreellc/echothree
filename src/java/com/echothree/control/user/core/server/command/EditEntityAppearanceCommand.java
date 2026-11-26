@@ -103,12 +103,7 @@ public class EditEntityAppearanceCommand
         entityInstance = entityInstanceLogic.getEntityInstanceByEntityRef(this, spec.getEntityRef());
 
         if(!hasExecutionErrors()) {
-            entity = appearanceControl.getEntityAppearance(entityInstance, editModeToEntityPermission(editMode));
-
-            if(entity == null) {
-                addExecutionError(ExecutionErrors.UnknownEntityAppearance.name(),
-                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance));
-            }
+            entity = appearanceLogic.getEntityAppearance(this, entityInstance, editModeToEntityPermission(editMode));
         }
 
         return entity;
