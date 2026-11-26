@@ -198,8 +198,18 @@ public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit, R 
 
     protected abstract void doUpdate(BE baseEntity);
 
-    @Override
     @SuppressWarnings("ReferenceEquality") // Throwable.addSuppressed rejects self-suppression by identity.
+    private void unlockEntityAfterFailure(LE lockEntity, Throwable failure) {
+        try {
+            unlockEntity(lockEntity);
+        } catch(RuntimeException | Error unlockFailure) {
+            if(unlockFailure != failure) {
+                failure.addSuppressed(unlockFailure);
+            }
+        }
+    }
+
+    @Override
     protected BaseResult execute() {
         var result = getResult();
         var baseEntity = getEntity(result);
@@ -236,13 +246,7 @@ public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit, R 
                             result.setEntityLock(getEntityLockTransfer(lockEntity));
                         } catch(RuntimeException | Error lockFailure) {
                             if(lockAcquired) {
-                                try {
-                                    unlockEntity(lockEntity);
-                                } catch(RuntimeException | Error unlockFailure) {
-                                    if(unlockFailure != lockFailure) {
-                                        lockFailure.addSuppressed(unlockFailure);
-                                    }
-                                }
+                                unlockEntityAfterFailure(lockEntity, lockFailure);
                             }
 
                             throw lockFailure;
@@ -262,9 +266,13 @@ public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit, R 
                                 if(lockEntityForUpdate(lockEntity)) {
                                     try {
                                         doUpdate(baseEntity);
-                                    } finally {
-                                        unlockEntity(lockEntity);
+                                    } catch(RuntimeException | Error updateFailure) {
+                                        unlockEntityAfterFailure(lockEntity, updateFailure);
+
+                                        throw updateFailure;
                                     }
+
+                                    unlockEntity(lockEntity);
                                 } else {
                                     addExecutionError(ExecutionErrors.EntityLockStale.name());
                                 }

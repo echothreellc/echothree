@@ -58,14 +58,14 @@ public class EntityEditLifecycleTest {
         final List<String> operations = new ArrayList<>();
         final boolean translated;
         boolean lockAllowed = true;
-        boolean failUpdate;
+        Throwable updateFailure;
         boolean rejectUpdate;
         boolean rejectEdit;
         boolean denyEdit;
         boolean failResult;
         String lockFailurePoint;
         Throwable lockFailure;
-        RuntimeException unlockFailure;
+        Throwable unlockFailure;
         final EntityLockTransfer acquiredLock = new EntityLockTransfer(null, null, 1000L, "locked", 2000L, "expires");
         final EntityLockTransfer existingLock = new EntityLockTransfer(null, null, 500L, "locked", 1500L, "expires");
         EntityLockTransfer currentLock = existingLock;
@@ -109,7 +109,7 @@ public class EntityEditLifecycleTest {
                 public boolean unlockEntity(BasePK target, BasePK actor) {
                     check("unlock", target, actor);
                     if(unlockFailure != null) {
-                        throw unlockFailure;
+                        throwFailure(unlockFailure);
                     }
                     currentLock = null;
                     return true;
@@ -132,11 +132,15 @@ public class EntityEditLifecycleTest {
 
         private void failLockAt(String failurePoint) {
             if(failurePoint.equals(lockFailurePoint)) {
-                if(lockFailure instanceof RuntimeException runtimeException) {
-                    throw runtimeException;
-                } else {
-                    throw (Error)lockFailure;
-                }
+                throwFailure(lockFailure);
+            }
+        }
+
+        private void throwFailure(Throwable failure) {
+            if(failure instanceof RuntimeException runtimeException) {
+                throw runtimeException;
+            } else {
+                throw (Error)failure;
             }
         }
 
@@ -210,8 +214,8 @@ public class EntityEditLifecycleTest {
         @Override
         protected void doUpdate(EntityAppearance entity) {
             operations.add("write");
-            if(failUpdate) {
-                throw new IllegalStateException("write failed");
+            if(updateFailure != null) {
+                throwFailure(updateFailure);
             }
         }
 
@@ -261,7 +265,7 @@ public class EntityEditLifecycleTest {
             var command = new TestCommand(EditMode.LOCK, type.equals("default") ? null : type);
             command.lockFailurePoint = "copy";
             command.lockFailure = new IllegalStateException("lock preparation failed");
-            command.unlockFailure = sameFailure ? (RuntimeException)command.lockFailure : new IllegalStateException("unlock failed");
+            command.unlockFailure = sameFailure ? command.lockFailure : new IllegalStateException("unlock failed");
 
             var failure = assertThrows(IllegalStateException.class, command::executeEdit);
 
@@ -359,10 +363,57 @@ public class EntityEditLifecycleTest {
     @ValueSource(strings = {"Item", "Party", "default"})
     public void persistenceFailureAlwaysReleasesTheSameKey(String type) {
         var command = new TestCommand(EditMode.UPDATE, type.equals("default") ? null : type);
-        command.failUpdate = true;
+        command.updateFailure = new IllegalStateException("write failed");
         assertThrows(IllegalStateException.class, command::executeEdit);
         assertEquals(List.of("update", "write", "unlock"), command.operations);
         assertEquals(0, command.results);
+    }
+
+    static Stream<Arguments> updateFailures() {
+        return Stream.of("Item", "Party", "default").flatMap(type -> Stream.of(false, true)
+                .flatMap(failWithError -> Stream.of("none", "exception", "error", "same")
+                        .map(unlockFailureType -> Arguments.of(type, failWithError, unlockFailureType))));
+    }
+
+    @ParameterizedTest
+    @MethodSource("updateFailures")
+    public void updateFailuresRemainPrimaryWhenUnlockAlsoFails(String type, boolean failWithError, String unlockFailureType) {
+        var command = new TestCommand(EditMode.UPDATE, type.equals("default") ? null : type);
+        command.updateFailure = failWithError ? new AssertionError("write failed") : new IllegalStateException("write failed");
+        command.unlockFailure = switch(unlockFailureType) {
+            case "none" -> null;
+            case "exception" -> new IllegalStateException("unlock failed");
+            case "error" -> new AssertionError("unlock failed");
+            case "same" -> command.updateFailure;
+            default -> throw new AssertionError(unlockFailureType);
+        };
+
+        Throwable failure = failWithError ? assertThrows(Error.class, command::executeEdit)
+                : assertThrows(RuntimeException.class, command::executeEdit);
+
+        assertSame(command.updateFailure, failure);
+        assertEquals(unlockFailureType.equals("none") || unlockFailureType.equals("same")
+                ? List.of() : List.of(command.unlockFailure), List.of(failure.getSuppressed()));
+        assertEquals(List.of("update", "write", "unlock"), command.operations);
+        if(unlockFailureType.equals("none")) {
+            assertNull(command.currentLock);
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"Item", "Party", "default"})
+    public void unlockFailuresAfterSuccessfulUpdatesAreStillPropagated(String type) {
+        for(var failWithError : List.of(false, true)) {
+            var command = new TestCommand(EditMode.UPDATE, type.equals("default") ? null : type);
+            command.unlockFailure = failWithError ? new AssertionError("unlock failed") : new IllegalStateException("unlock failed");
+
+            Throwable failure = failWithError ? assertThrows(Error.class, command::executeEdit)
+                    : assertThrows(RuntimeException.class, command::executeEdit);
+
+            assertSame(command.unlockFailure, failure);
+            assertEquals(List.of(), List.of(failure.getSuppressed()));
+            assertEquals(List.of("update", "write", "unlock"), command.operations);
+        }
     }
 
     @ParameterizedTest
