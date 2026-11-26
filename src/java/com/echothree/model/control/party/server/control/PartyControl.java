@@ -3478,7 +3478,7 @@ public class PartyControl
         return partyCompany == null? null: partyCompany.getPartyCompanyValue().clone();
     }
     
-    private PartyCompany getPartyCompany(Party party, EntityPermission entityPermission) {
+    public PartyCompany getPartyCompany(Party party, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PartyCompanies.fields())
                 .from(PartyCompanies)
@@ -3534,7 +3534,7 @@ public class PartyControl
         return getPartyCompanyValueForUpdate(getDefaultPartyCompanyForUpdate());
     }
     
-    private PartyCompany getPartyCompanyByName(String partyCompanyName, EntityPermission entityPermission) {
+    public PartyCompany getPartyCompanyByName(String partyCompanyName, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PartyCompanies.fields())
                 .from(PartyCompanies)
