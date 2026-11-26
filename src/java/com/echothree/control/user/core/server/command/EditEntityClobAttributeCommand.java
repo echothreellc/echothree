@@ -23,7 +23,6 @@ import com.echothree.control.user.core.common.result.EditEntityClobAttributeResu
 import com.echothree.control.user.core.common.spec.EntityClobAttributeSpec;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
-import com.echothree.model.control.core.server.logic.EntityDataLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -79,9 +78,6 @@ public class EditEntityClobAttributeCommand
     EntityAttributeLogic entityAttributeLogic;
 
     @Inject
-    EntityDataLogic entityDataLogic;
-
-    @Inject
     EntityInstanceLogic entityInstanceLogic;
 
     @Inject
@@ -122,7 +118,15 @@ public class EditEntityClobAttributeCommand
         }
 
         if(!hasExecutionErrors()) {
-            entity = entityDataLogic.getEntityClobAttribute(this, entityAttribute, entityInstance, language, editModeToEntityPermission(editMode));
+            entity = coreControl.getEntityClobAttribute(entityAttribute, entityInstance, language, editModeToEntityPermission(editMode));
+
+            if(entity == null) {
+                var entityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
+
+                addExecutionError(ExecutionErrors.UnknownEntityClobAttribute.name(),
+                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
+                        entityTypeDetail.getEntityTypeName(), entityAttribute.getLastDetail().getEntityAttributeName(), language.getLanguageIsoName());
+            }
         }
 
         return entity;

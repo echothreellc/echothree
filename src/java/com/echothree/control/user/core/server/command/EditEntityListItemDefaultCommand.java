@@ -22,11 +22,11 @@ import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityListItemDefaultResult;
 import com.echothree.control.user.core.common.spec.EntityListItemDefaultSpec;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
-import com.echothree.model.control.core.server.logic.EntityDataLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityListItem;
 import com.echothree.model.data.core.server.entity.EntityListItemDefault;
+import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
@@ -67,9 +67,6 @@ public class EditEntityListItemDefaultCommand
     @Inject
     EntityAttributeLogic entityAttributeLogic;
 
-    @Inject
-    EntityDataLogic entityDataLogic;
-
     private EntityAttribute entityAttribute;
     private EntityListItem entityListItem;
 
@@ -95,7 +92,15 @@ public class EditEntityListItemDefaultCommand
         entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, spec);
 
         if(!hasExecutionErrors()) {
-            entity = entityDataLogic.getEntityListItemDefault(this, entityAttribute, editModeToEntityPermission(editMode));
+            entity = coreControl.getEntityListItemDefault(entityAttribute, editModeToEntityPermission(editMode));
+
+            if(entity == null) {
+                var entityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
+
+                addExecutionError(ExecutionErrors.UnknownEntityListItemDefault.name(),
+                        entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
+                        entityTypeDetail.getEntityTypeName(), entityAttribute.getLastDetail().getEntityAttributeName());
+            }
         }
 
         return entity;

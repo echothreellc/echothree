@@ -22,7 +22,6 @@ import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityGeoPointAttributeResult;
 import com.echothree.control.user.core.common.spec.EntityGeoPointAttributeSpec;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
-import com.echothree.model.control.core.server.logic.EntityDataLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.uom.common.UomConstants;
@@ -79,9 +78,6 @@ public class EditEntityGeoPointAttributeCommand
     EntityAttributeLogic entityAttributeLogic;
 
     @Inject
-    EntityDataLogic entityDataLogic;
-
-    @Inject
     EntityInstanceLogic entityInstanceLogic;
 
     @Inject
@@ -118,7 +114,15 @@ public class EditEntityGeoPointAttributeCommand
         }
 
         if(!hasExecutionErrors()) {
-            entity = entityDataLogic.getEntityGeoPointAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
+            entity = coreControl.getEntityGeoPointAttribute(entityAttribute, entityInstance, editModeToEntityPermission(editMode));
+
+            if(entity == null) {
+                var entityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
+
+                addExecutionError(ExecutionErrors.UnknownEntityGeoPointAttribute.name(),
+                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
+                        entityTypeDetail.getEntityTypeName(), entityAttribute.getLastDetail().getEntityAttributeName());
+            }
         }
 
         return entity;

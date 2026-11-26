@@ -18,10 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.Messages;
-import com.echothree.util.server.message.DummyExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.EntityPermission;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -29,8 +25,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -43,18 +37,14 @@ public class EntityEditLookupTest {
         return EntityEditCompatibilityTest.kinds().flatMap(kind -> Stream.of(EditMode.values()).map(mode -> Arguments.of(kind, mode)));
     }
 
-    static Stream<Arguments> resolverPermissions() {
-        return EntityEditCompatibilityTest.kinds().flatMap(kind -> Stream.of(EntityPermission.values()).map(permission -> Arguments.of(kind, permission)));
-    }
-
     static Stream<String> kinds() {
         return EntityEditCompatibilityTest.kinds();
     }
 
     static Stream<Arguments> ownerFailures() {
         return kinds().filter(kind -> !kind.equals("EntityListItemDefault")).flatMap(kind -> {
-            boolean legacy = kind.equals("EntityAppearance") || kind.equals("EntityBlobAttribute");
-            return Stream.of(false, true).filter(uuid -> !legacy || !uuid).flatMap(uuid ->
+            boolean entityRefOnly = kind.equals("EntityAppearance") || kind.equals("EntityBlobAttribute");
+            return Stream.of(false, true).filter(uuid -> !entityRefOnly || !uuid).flatMap(uuid ->
                     Stream.of(false, true).map(deleted -> Arguments.of(kind, uuid, deleted)));
         });
     }
@@ -88,44 +78,18 @@ public class EntityEditLookupTest {
         assertTrue(fixture.locks.isEmpty());
     }
 
-    static Object resolve(EntityEditFixture fixture, Object errors, EntityPermission permission) {
-        var arguments = new ArrayList<Object>();
-        arguments.add(errors);
-        switch(fixture.kind) {
-            case "EntityAppearance" -> arguments.add(fixture.entityInstance);
-            case "EntityAlias" -> {
-                arguments.add(fixture.entityInstance);
-                arguments.add(fixture.entityAliasType);
-            }
-            default -> {
-                arguments.add(fixture.entityAttribute);
-                if(!fixture.kind.equals("EntityListItemDefault")) {
-                    arguments.add(fixture.entityInstance);
-                }
-                if(List.of("EntityStringAttribute", "EntityClobAttribute", "EntityBlobAttribute").contains(fixture.kind)) {
-                    arguments.add(fixture.language);
-                }
-            }
-        }
-        arguments.add(permission);
-        return EntityEditFixture.call(fixture.dataLogic, "get" + fixture.kind, arguments.toArray());
-    }
-
     @ParameterizedTest
-    @MethodSource("resolverPermissions")
-    public void resolversHonorPermissionsAndSupportNullAccumulators(String kind, EntityPermission permission) {
-        var fixture = new EntityEditFixture(kind, EditMode.LOCK);
-        assertNotNull(resolve(fixture, null, permission));
-        assertEquals(permission == EntityPermission.READ_WRITE ? 1 : 0, fixture.readWriteLookups);
-    }
-
-    @ParameterizedTest
-    @MethodSource("kinds")
-    public void missingValuesSelectSpecificExceptionsWithoutAccumulator(String kind) {
-        var fixture = new EntityEditFixture(kind, EditMode.LOCK);
-        fixture.missingValue = true;
-        var exception = assertThrows(RuntimeException.class, () -> resolve(fixture, null, EntityPermission.READ_ONLY));
-        assertEquals("Unknown" + kind + "Exception", exception.getClass().getSimpleName());
+    @MethodSource("missingValues")
+    public void currentValueLookupUsesEditModePermissionWithoutLocking(String kind, EditMode mode) {
+        var fixture = new EntityEditFixture(kind, mode);
+        var result = EntityEditFixture.call(fixture.command, "getResult");
+        assertNotNull(EntityEditFixture.call(fixture.command, "getEntity", result));
+        assertFalse(fixture.command.hasExecutionErrors());
+        assertEquals(1, fixture.valueLookups);
+        assertEquals(mode == EditMode.UPDATE ? 1 : 0, fixture.readWriteLookups);
+        assertEquals(0, fixture.transfers);
+        assertEquals(0, fixture.updates);
+        assertTrue(fixture.locks.isEmpty());
     }
 
     @ParameterizedTest

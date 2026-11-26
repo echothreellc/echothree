@@ -42,7 +42,6 @@ import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.logic.AppearanceLogic;
 import com.echothree.model.control.core.server.logic.EntityAliasTypeLogic;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
-import com.echothree.model.control.core.server.logic.EntityDataLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -125,7 +124,6 @@ import com.echothree.model.data.party.server.value.LanguageValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.form.BaseEdit;
 import com.echothree.util.common.form.BaseSpec;
 import com.echothree.util.common.persistence.BasePK;
@@ -180,7 +178,6 @@ class EntityEditFixture {
     boolean restrictReferencedTypes;
     boolean referencedTypeAllowed;
     final List<String> persistenceOperations = new ArrayList<>();
-    EntityDataLogic dataLogic;
     int updates;
     int transfers;
     int valueLookups;
@@ -2257,29 +2254,7 @@ class EntityEditFixture {
                 "entityAliasTypeLogic", aliasTypes, "languageLogic", languages, "mimeTypeLogic", mimeTypes,
                 "appearanceLogic", appearanceLogic, "entityInstanceControl", instances, "partyControl", parties,
                 "appearanceControl", appearances, "entityAliasControl", aliases));
-        dataLogic = new EntityDataLogic() {
-            @Override
-            public void handleExecutionError(Class<? extends BaseException> type, ExecutionErrorAccumulator eea, String key, Object... arguments) {
-                if(eea == null) {
-                    // Isolate server-backed exception localization, retaining the selected exception type.
-                    BaseException exception;
-                    try {
-                        exception = type.getConstructor(String.class).newInstance(key);
-                    } catch(ReflectiveOperationException reflectionException) {
-                        throw new LinkageError(reflectionException.getMessage(), reflectionException);
-                    }
-                    throw exception;
-                } else {
-                    super.handleExecutionError(type, eea, key, arguments);
-                }
-            }
-        };
-        inject(dataLogic, "coreControl", core);
-        inject(dataLogic, "appearanceControl", appearances);
-        inject(dataLogic, "entityAliasControl", aliases);
-        inject(dataLogic, "entityInstanceLogic", instanceLogic);
         inject(command, "coreControl", core);
-        dependencies.put("entityDataLogic", dataLogic);
         dependencies.put("unitOfMeasureTypeLogic", EntityEditUnits.logic());
         for(var type = command.getClass().getSuperclass(); type != null; type = type.getSuperclass()) {
             for(var field : type.getDeclaredFields())

@@ -22,7 +22,6 @@ import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityIntegerAttributeResult;
 import com.echothree.control.user.core.common.spec.EntityIntegerAttributeSpec;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
-import com.echothree.model.control.core.server.logic.EntityDataLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
@@ -71,9 +70,6 @@ public class EditEntityIntegerAttributeCommand
     EntityAttributeLogic entityAttributeLogic;
 
     @Inject
-    EntityDataLogic entityDataLogic;
-
-    @Inject
     EntityInstanceLogic entityInstanceLogic;
 
     private EntityInstance entityInstance;
@@ -106,7 +102,15 @@ public class EditEntityIntegerAttributeCommand
         }
 
         if(!hasExecutionErrors()) {
-            entity = entityDataLogic.getEntityIntegerAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
+            entity = coreControl.getEntityIntegerAttribute(entityAttribute, entityInstance, editModeToEntityPermission(editMode));
+
+            if(entity == null) {
+                var entityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
+
+                addExecutionError(ExecutionErrors.UnknownEntityIntegerAttribute.name(),
+                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
+                        entityTypeDetail.getEntityTypeName(), entityAttribute.getLastDetail().getEntityAttributeName());
+            }
         }
 
         return entity;

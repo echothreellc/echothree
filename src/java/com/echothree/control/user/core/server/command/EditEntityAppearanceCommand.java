@@ -23,7 +23,6 @@ import com.echothree.control.user.core.common.result.EditEntityAppearanceResult;
 import com.echothree.control.user.core.common.spec.EntityRefSpec;
 import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.control.core.server.logic.AppearanceLogic;
-import com.echothree.model.control.core.server.logic.EntityDataLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -32,6 +31,7 @@ import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.EntityAppearance;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
@@ -76,9 +76,6 @@ public class EditEntityAppearanceCommand
     AppearanceLogic appearanceLogic;
 
     @Inject
-    EntityDataLogic entityDataLogic;
-
-    @Inject
     EntityInstanceLogic entityInstanceLogic;
 
     private EntityInstance entityInstance;
@@ -106,7 +103,12 @@ public class EditEntityAppearanceCommand
         entityInstance = entityInstanceLogic.getEntityInstanceByEntityRef(this, spec.getEntityRef());
 
         if(!hasExecutionErrors()) {
-            entity = entityDataLogic.getEntityAppearance(this, entityInstance, editModeToEntityPermission(editMode));
+            entity = appearanceControl.getEntityAppearance(entityInstance, editModeToEntityPermission(editMode));
+
+            if(entity == null) {
+                addExecutionError(ExecutionErrors.UnknownEntityAppearance.name(),
+                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance));
+            }
         }
 
         return entity;

@@ -23,7 +23,6 @@ import com.echothree.control.user.core.common.result.EditEntityAliasResult;
 import com.echothree.control.user.core.common.spec.EntityAliasSpec;
 import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.core.server.logic.EntityAliasTypeLogic;
-import com.echothree.model.control.core.server.logic.EntityDataLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -81,9 +80,6 @@ public class EditEntityAliasCommand
     EntityAliasTypeLogic entityAliasTypeLogic;
 
     @Inject
-    EntityDataLogic entityDataLogic;
-
-    @Inject
     EntityInstanceLogic entityInstanceLogic;
 
     private EntityInstance entityInstance;
@@ -115,7 +111,12 @@ public class EditEntityAliasCommand
         }
 
         if(!hasExecutionErrors()) {
-            entity = entityDataLogic.getEntityAlias(this, entityInstance, entityAliasType, editModeToEntityPermission(editMode));
+            entity = entityAliasControl.getEntityAlias(entityInstance, entityAliasType, editModeToEntityPermission(editMode));
+
+            if(entity == null) {
+                addExecutionError(ExecutionErrors.UnknownEntityAlias.name(),
+                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityAliasType.getLastDetail().getEntityAliasTypeName());
+            }
         }
 
         return entity;
