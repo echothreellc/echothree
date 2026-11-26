@@ -29,22 +29,28 @@ public class AmountFormatter {
         this.amountFormatType = amountFormatType;
     }
     
+    /** Retains the Integer entry point, including calls with an untyped null. */
     public String format(Integer amount) {
-        String result = null;
-        
-        if(amountFormatType.equals(AmountFormatType.AMOUNT)) {
-            result = AmountUtils.getInstance().formatAmount(currency, amount);
-        } else if(amountFormatType.equals(AmountFormatType.PRICE_UNIT)) {
-            result = AmountUtils.getInstance().formatPriceUnit(currency, amount);
-        } else if(amountFormatType.equals(AmountFormatType.PRICE_LINE)) {
-            result = AmountUtils.getInstance().formatPriceLine(currency, amount);
-        } else if(amountFormatType.equals(AmountFormatType.COST_UNIT)) {
-            result = AmountUtils.getInstance().formatCostUnit(currency, amount);
-        } else if(amountFormatType.equals(AmountFormatType.COST_LINE)) {
-            result = AmountUtils.getInstance().formatCostLine(currency, amount);
-        }
-        
-        return result;
+        return format((Number)amount);
     }
-    
+
+    /**
+     * Formats a scaled integral value according to this formatter's amount type.
+     *
+     * @param amount scaled Byte, Short, Integer, or Long value, or null
+     * @return exact plain decimal text, or null for an absent value
+     * @throws DecimalUtils.ParseException if the value has an unsupported numeric type or its format settings are invalid
+     */
+    public String format(Number amount) {
+        var amountUtils = AmountUtils.getInstance();
+
+        return switch(amountFormatType) {
+            case AMOUNT -> amountUtils.formatAmount(currency, amount);
+            case PRICE_UNIT -> amountUtils.formatPriceUnit(currency, amount);
+            case PRICE_LINE -> amountUtils.formatPriceLine(currency, amount);
+            case COST_UNIT -> amountUtils.formatCostUnit(currency, amount);
+            case COST_LINE -> amountUtils.formatCostLine(currency, amount);
+        };
+    }
+
 }

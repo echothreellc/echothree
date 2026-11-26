@@ -16,7 +16,6 @@
 
 package com.echothree.util.server.validation.fieldtype;
 
-import com.echothree.util.common.string.DecimalUtils;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.message.Messages;
@@ -34,21 +33,10 @@ public class UnsignedPriceLineFieldType
     
     @Override
     public String validate() {
-        var hadErrors = false;
         var currency = getCurrency();
-        
-        if(currency == null) {
-            hadErrors = true;
-        } else {
-            fieldValue = DecimalUtils.getInstance().parse(null, currency.getFractionSeparator(), currency.getPriceLineFractionDigits(),
-                    fieldValue);
-        }
-        
-        if(!hadErrors) {
-            hadErrors = !isValidUnsignedInteger(null, null);
-        }
-        
-        return hadErrors? null: fieldValue;
+
+        return currency == null ? null : validateDecimal(currency.getMinusSign(), currency.getFractionSeparator(),
+                currency.getPriceLineFractionDigits(), false, Long.MIN_VALUE, Long.MAX_VALUE);
     }
     
     @Override

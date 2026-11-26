@@ -17,8 +17,7 @@
 package com.echothree.util.server.string;
 
 import com.echothree.model.data.accounting.server.entity.Currency;
-import com.google.common.math.IntMath;
-import java.util.Formatter;
+import com.echothree.util.common.string.DecimalUtils;
 
 public class AmountUtils {
 
@@ -35,112 +34,28 @@ public class AmountUtils {
     }
 
     public String formatAmount(Currency currency, Long amount) {
-        String result = null;
-
-        if(amount != null) {
-            int fractionDigits = currency.getDefaultFractionDigits();
-
-            if(fractionDigits == 0) {
-                result = amount.toString();
-            } else {
-                long rawAmount = amount;
-                var i = IntMath.checkedPow(10, fractionDigits);
-                var builtResult = new StringBuilder().append(rawAmount / i).append(currency.getFractionSeparator());
-
-                new Formatter(builtResult).format("%0" + fractionDigits + "d", Math.abs(rawAmount) % i);
-                result = builtResult.toString();
-            }
-        }
-
-        return result;
+        return amount == null ? null : DecimalUtils.getInstance().format(currency.getMinusSign(), currency.getFractionSeparator(),
+                currency.getDefaultFractionDigits(), amount);
     }
 
     public String formatPriceUnit(Currency currency, Long priceUnit) {
-        String result = null;
-
-        if(priceUnit != null) {
-            var priceUnitFractionDigits = currency.getPriceUnitFractionDigits();
-            var fractionDigits = priceUnitFractionDigits == null ? 0 : priceUnitFractionDigits;
-
-            if(fractionDigits == 0) {
-                result = priceUnit.toString();
-            } else {
-                long rawPriceUnit = priceUnit;
-                var i = IntMath.checkedPow(10, fractionDigits);
-                var builtResult = new StringBuilder().append(rawPriceUnit / i).append(currency.getFractionSeparator());
-
-                new Formatter(builtResult).format("%0" + fractionDigits + "d", Math.abs(rawPriceUnit) % i);
-                result = builtResult.toString();
-            }
-        }
-
-        return result;
+        return priceUnit == null ? null : DecimalUtils.getInstance().format(currency.getMinusSign(), currency.getFractionSeparator(),
+                currency.getPriceUnitFractionDigits(), priceUnit);
     }
 
     public String formatPriceLine(Currency currency, Long priceLine) {
-        String result = null;
-
-        if(priceLine != null) {
-            var priceLineFractionDigits = currency.getPriceLineFractionDigits();
-            var fractionDigits = priceLineFractionDigits == null ? 0 : priceLineFractionDigits;
-
-            if(fractionDigits == 0) {
-                result = priceLine.toString();
-            } else {
-                long rawPriceLine = priceLine;
-                var i = IntMath.checkedPow(10, fractionDigits);
-                var builtResult = new StringBuilder().append(rawPriceLine / i).append(currency.getFractionSeparator());
-
-                new Formatter(builtResult).format("%0" + fractionDigits + 'd', Math.abs(rawPriceLine) % i);
-                result = builtResult.toString();
-            }
-        }
-
-        return result;
+        return priceLine == null ? null : DecimalUtils.getInstance().format(currency.getMinusSign(), currency.getFractionSeparator(),
+                currency.getPriceLineFractionDigits(), priceLine);
     }
 
     public String formatCostUnit(Currency currency, Long costUnit) {
-        String result = null;
-
-        if(costUnit != null) {
-            var costUnitFractionDigits = currency.getCostUnitFractionDigits();
-            var fractionDigits = costUnitFractionDigits == null ? 0 : costUnitFractionDigits;
-
-            if(fractionDigits == 0) {
-                result = costUnit.toString();
-            } else {
-                long rawCostUnit = costUnit;
-                var i = IntMath.checkedPow(10, fractionDigits);
-                var builtResult = new StringBuilder().append(rawCostUnit / i).append(currency.getFractionSeparator());
-
-                new Formatter(builtResult).format("%0" + fractionDigits + 'd', Math.abs(rawCostUnit) % i);
-                result = builtResult.toString();
-            }
-        }
-
-        return result;
+        return costUnit == null ? null : DecimalUtils.getInstance().format(currency.getMinusSign(), currency.getFractionSeparator(),
+                currency.getCostUnitFractionDigits(), costUnit);
     }
 
     public String formatCostLine(Currency currency, Long costLine) {
-        String result = null;
-
-        if(costLine != null) {
-            var costLineFractionDigits = currency.getCostLineFractionDigits();
-            var fractionDigits = costLineFractionDigits == null ? 0 : costLineFractionDigits;
-
-            if(fractionDigits == 0) {
-                result = costLine.toString();
-            } else {
-                long rawCostLine = costLine;
-                var i = IntMath.checkedPow(10, fractionDigits);
-                var builtResult = new StringBuilder().append(rawCostLine / i).append(currency.getFractionSeparator());
-
-                new Formatter(builtResult).format("%0" + fractionDigits + 'd', Math.abs(rawCostLine) % i);
-                result = builtResult.toString();
-            }
-        }
-
-        return result;
+        return costLine == null ? null : DecimalUtils.getInstance().format(currency.getMinusSign(), currency.getFractionSeparator(),
+                currency.getCostLineFractionDigits(), costLine);
     }
 
 }

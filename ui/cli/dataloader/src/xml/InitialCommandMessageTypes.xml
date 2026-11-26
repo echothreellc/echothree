@@ -162,6 +162,21 @@
         </commandMessageType>
         <commandMessageType commandMessageTypeName="Validation" isDefault="false" sortOrder="1">
             <commandMessageTypeDescription languageIsoName="en" description="Validation" />
+            <commandMessage commandMessageKey="ExcessFractionalDigits">
+                <commandMessageTranslation languageIsoName="en" translation="The value may have at most {0} fractional digits." />
+            </commandMessage>
+            <commandMessage commandMessageKey="InvalidDecimalConfiguration">
+                <commandMessageTranslation languageIsoName="en" translation="The decimal format or range configuration is invalid." />
+            </commandMessage>
+            <commandMessage commandMessageKey="MissingCurrency">
+                <commandMessageTranslation languageIsoName="en" translation="A currency could not be resolved for this value." />
+            </commandMessage>
+            <commandMessage commandMessageKey="UnknownCurrencyIsoName">
+                <commandMessageTranslation languageIsoName="en" translation="The currency name, {0}, is not known." />
+            </commandMessage>
+            <commandMessage commandMessageKey="UnknownVendorName">
+                <commandMessageTranslation languageIsoName="en" translation="The vendor name, {0}, is not known." />
+            </commandMessage>
             <commandMessage commandMessageKey="InternalError">
                 <commandMessageTranslation languageIsoName="en" translation="Internal error." />
             </commandMessage>

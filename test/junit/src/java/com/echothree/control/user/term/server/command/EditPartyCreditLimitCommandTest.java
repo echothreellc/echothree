@@ -40,6 +40,7 @@ import com.echothree.model.data.term.common.pk.PartyCreditLimitPK;
 import com.echothree.model.data.term.server.entity.PartyCreditLimit;
 import com.echothree.model.data.term.server.value.PartyCreditLimitValue;
 import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.message.Messages;
 import com.echothree.util.common.persistence.BasePK;
@@ -49,6 +50,7 @@ import com.echothree.util.server.validation.Validator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.provider.CsvSource;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SuppressWarnings("UnnecessaryAssignment") // Supply CDI dependencies without a container.
@@ -127,6 +129,10 @@ public class EditPartyCreditLimitCommandTest {
                     return "limit".equals(missingEntity) ? null : selectedCreditLimit;
                 }
                 @Override
+                public com.echothree.model.control.term.common.transfer.PartyCreditLimitTransfer getPartyCreditLimitTransfer(
+                        com.echothree.model.data.user.server.entity.UserVisit userVisit, PartyCreditLimit partyCreditLimit) { return null; }
+
+                @Override
                 public PartyCreditLimitValue getPartyCreditLimitValue(PartyCreditLimit partyCreditLimit) {
                     return selectedCreditLimit.getPartyCreditLimitValue().clone();
                 }
@@ -146,6 +152,28 @@ public class EditPartyCreditLimitCommandTest {
                 }
             };
         }
+
+        void setField(String fieldName, String value) { edit.set(fieldName, value); }
+        String getField(String fieldName) { return (String)edit.get(fieldName); }
+
+        ValidationResult submitUpdate() {
+            var validationResult = validate();
+            if(!validationResult.getHasErrors()) {
+                execute();
+            }
+            return validationResult;
+        }
+
+        @Override
+        public boolean lockEntityForUpdate(com.echothree.util.server.persistence.BaseEntity lockEntity) { return true; }
+        @Override
+        public boolean unlockEntity(com.echothree.util.server.persistence.BaseEntity lockEntity) { return true; }
+
+        @Override
+        public com.echothree.model.data.user.server.entity.UserVisit getUserVisit() { return null; }
+        @Override
+        public com.echothree.model.control.core.common.transfer.EntityLockTransfer getEntityLockTransfer(
+                com.echothree.util.server.persistence.BaseEntity lockEntity) { return null; }
 
         void setLimits(String creditLimit, String potentialCreditLimit) {
             edit.setCreditLimit(creditLimit);
@@ -229,4 +257,50 @@ public class EditPartyCreditLimitCommandTest {
         assertEquals(1, command.chains);
     }
 
+
+    @ParameterizedTest
+    @CsvSource({"abc,InvalidFormat", "-1.00,MinimumValue", "1.234,ExcessFractionalDigits",
+            "92233720368547758.08,MaximumValue", "1a2,InvalidFormat", "1.2.3,InvalidFormat"})
+    public void invalidLimitsFailValidationBeforeAnyWriteAndRetainInput(String input, String errorKey) {
+        for(var fieldName : new String[]{"CreditLimit", "PotentialCreditLimit"}) {
+            var command = new TestCommand(null, "CUSTOMER");
+            command.setLimits("12.34", "56.78");
+            command.setField(fieldName, input);
+            var result = command.submitUpdate();
+            assertTrue(result.getHasErrors());
+            assertTrue(result.getValidationMessages().containsKey(fieldName, errorKey));
+            assertEquals(input, command.getField(fieldName));
+            assertEquals(0, command.updates);
+            assertNull(command.savedValue);
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"21474836.48", "92233720368547758.07", "0"})
+    public void validatedLongAmountsReachTheUpdateWithoutLoss(String input) {
+        var command = new TestCommand(null, "CUSTOMER");
+        command.setLimits(input, "56.78");
+        assertFalse(command.submitUpdate().getHasErrors());
+        assertEquals(new java.math.BigDecimal(input).movePointRight(2).longValueExact(), command.savedValue.getCreditLimit());
+        assertEquals(1, command.updates);
+    }
+
+    @Test
+    public void validatedBlankAndZeroLimitsRemainDistinct() {
+        var command = new TestCommand(null, "CUSTOMER");
+        command.setLimits("  ", "0");
+        assertFalse(command.submitUpdate().getHasErrors());
+        assertNull(command.savedValue.getCreditLimit());
+        assertEquals(0L, command.savedValue.getPotentialCreditLimit());
+    }
+
+    @Test
+    public void unresolvedCommandCurrencyFailsWithoutDefaultCurrencyFallback() {
+        var command = new TestCommand("currency", "CUSTOMER");
+        command.setLimits("1", "2");
+        assertTrue(command.submitUpdate().getHasErrors());
+        assertTrue(command.hasExecutionErrors());
+        assertEquals(0, command.updates);
+        assertEquals("1", command.getField("CreditLimit"));
+    }
 }

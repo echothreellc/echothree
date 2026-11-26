@@ -25,7 +25,7 @@ public class FormatAmountTag
         extends BaseTag {
     
     protected AmountFormatter amountFormatter;
-    protected Integer amount;
+    protected Long amount;
     protected String var;
     protected int scope;
     
@@ -52,7 +52,16 @@ public class FormatAmountTag
         this.amountFormatter = amountFormatter;
     }
 
+    /** Exposes the Long property type to JSP bean introspection alongside the legacy Integer setter. */
+    public Long getAmount() {
+        return amount;
+    }
+
     public void setAmount(Integer amount) {
+        this.amount = amount == null ? null : amount.longValue();
+    }
+
+    public void setAmount(Long amount) {
         this.amount = amount;
     }
     

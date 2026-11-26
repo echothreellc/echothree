@@ -17,8 +17,6 @@
 package com.echothree.util.common.string;
 
 import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
-import com.google.common.math.IntMath;
-import java.util.Formatter;
 
 public class AmountUtils {
 
@@ -34,113 +32,111 @@ public class AmountUtils {
         return AmountUtilsHolder.instance;
     }
 
-    public String formatAmount(CurrencyTransfer currency, Integer amount) {
-        String result = null;
+    /**
+     * Converts integral wrapper values without narrowing; rejects other Number implementations rather than truncating.
+     */
+    private Long toLong(Number amount) {
+        Long result = null;
 
         if(amount != null) {
-            int fractionDigits = currency.getDefaultFractionDigits();
-
-            if(fractionDigits == 0) {
-                result = amount.toString();
+            if(amount instanceof Byte || amount instanceof Short || amount instanceof Integer || amount instanceof Long) {
+                result = amount.longValue();
             } else {
-                int rawAmount = amount;
-                var i = IntMath.checkedPow(10, fractionDigits);
-                var builtResult = new StringBuilder().append(rawAmount / i).append(currency.getFractionSeparator());
-
-                new Formatter(builtResult).format("%0" + fractionDigits + "d", Math.abs(rawAmount) % i);
-                result = builtResult.toString();
+                throw new DecimalUtils.ParseException(DecimalUtils.ParseError.INVALID_FORMAT);
             }
         }
 
         return result;
     }
 
+    /** Retains the Integer entry point; delegates to the exact integral-value formatter. */
+    public String formatAmount(CurrencyTransfer currency, Integer amount) {
+        return formatAmount(currency, (Number)amount);
+    }
+
+    /**
+     * Formats a scaled integral value with the currency's defaultFractionDigits precision.
+     *
+     * @param currency currency format settings; unused when the value is null
+     * @param amount scaled Byte, Short, Integer, or Long value, or null
+     * @return exact plain decimal text, or null for an absent value
+     * @throws DecimalUtils.ParseException if the value has an unsupported numeric type or its format settings are invalid
+     */
+    public String formatAmount(CurrencyTransfer currency, Number amount) {
+        return amount == null ? null : DecimalUtils.getInstance().format(currency.getMinusSign(), currency.getFractionSeparator(),
+                currency.getDefaultFractionDigits(), toLong(amount));
+    }
+
+    /** Retains the Integer entry point; delegates to the exact integral-value formatter. */
     public String formatPriceUnit(CurrencyTransfer currency, Integer priceUnit) {
-        String result = null;
-
-        if(priceUnit != null) {
-            var priceUnitFractionDigits = currency.getPriceUnitFractionDigits();
-            var fractionDigits = priceUnitFractionDigits == null ? 0 : priceUnitFractionDigits;
-
-            if(fractionDigits == 0) {
-                result = priceUnit.toString();
-            } else {
-                int rawPriceUnit = priceUnit;
-                var i = IntMath.checkedPow(10, fractionDigits);
-                var builtResult = new StringBuilder().append(rawPriceUnit / i).append(currency.getFractionSeparator());
-
-                new Formatter(builtResult).format("%0" + fractionDigits + "d", Math.abs(rawPriceUnit) % i);
-                result = builtResult.toString();
-            }
-        }
-
-        return result;
+        return formatPriceUnit(currency, (Number)priceUnit);
     }
 
+    /**
+     * Formats a scaled integral value with the currency's priceUnitFractionDigits precision.
+     *
+     * @param currency currency format settings; unused when the value is null
+     * @param priceUnit scaled Byte, Short, Integer, or Long value, or null
+     * @return exact plain decimal text, or null for an absent value
+     * @throws DecimalUtils.ParseException if the value has an unsupported numeric type or its format settings are invalid
+     */
+    public String formatPriceUnit(CurrencyTransfer currency, Number priceUnit) {
+        return priceUnit == null ? null : DecimalUtils.getInstance().format(currency.getMinusSign(), currency.getFractionSeparator(),
+                currency.getPriceUnitFractionDigits(), toLong(priceUnit));
+    }
+
+    /** Retains the Integer entry point; delegates to the exact integral-value formatter. */
     public String formatPriceLine(CurrencyTransfer currency, Integer priceLine) {
-        String result = null;
-
-        if(priceLine != null) {
-            var priceLineFractionDigits = currency.getPriceLineFractionDigits();
-            var fractionDigits = priceLineFractionDigits == null ? 0 : priceLineFractionDigits;
-
-            if(fractionDigits == 0) {
-                result = priceLine.toString();
-            } else {
-                int rawPriceLine = priceLine;
-                var i = IntMath.checkedPow(10, fractionDigits);
-                var builtResult = new StringBuilder().append(rawPriceLine / i).append(currency.getFractionSeparator());
-
-                new Formatter(builtResult).format("%0" + fractionDigits + 'd', Math.abs(rawPriceLine) % i);
-                result = builtResult.toString();
-            }
-        }
-
-        return result;
+        return formatPriceLine(currency, (Number)priceLine);
     }
 
+    /**
+     * Formats a scaled integral value with the currency's priceLineFractionDigits precision.
+     *
+     * @param currency currency format settings; unused when the value is null
+     * @param priceLine scaled Byte, Short, Integer, or Long value, or null
+     * @return exact plain decimal text, or null for an absent value
+     * @throws DecimalUtils.ParseException if the value has an unsupported numeric type or its format settings are invalid
+     */
+    public String formatPriceLine(CurrencyTransfer currency, Number priceLine) {
+        return priceLine == null ? null : DecimalUtils.getInstance().format(currency.getMinusSign(), currency.getFractionSeparator(),
+                currency.getPriceLineFractionDigits(), toLong(priceLine));
+    }
+
+    /** Retains the Integer entry point; delegates to the exact integral-value formatter. */
     public String formatCostUnit(CurrencyTransfer currency, Integer costUnit) {
-        String result = null;
-
-        if(costUnit != null) {
-            var costUnitFractionDigits = currency.getCostUnitFractionDigits();
-            var fractionDigits = costUnitFractionDigits == null ? 0 : costUnitFractionDigits;
-
-            if(fractionDigits == 0) {
-                result = costUnit.toString();
-            } else {
-                int rawCostUnit = costUnit;
-                var i = IntMath.checkedPow(10, fractionDigits);
-                var builtResult = new StringBuilder().append(rawCostUnit / i).append(currency.getFractionSeparator());
-
-                new Formatter(builtResult).format("%0" + fractionDigits + 'd', Math.abs(rawCostUnit) % i);
-                result = builtResult.toString();
-            }
-        }
-
-        return result;
+        return formatCostUnit(currency, (Number)costUnit);
     }
 
+    /**
+     * Formats a scaled integral value with the currency's costUnitFractionDigits precision.
+     *
+     * @param currency currency format settings; unused when the value is null
+     * @param costUnit scaled Byte, Short, Integer, or Long value, or null
+     * @return exact plain decimal text, or null for an absent value
+     * @throws DecimalUtils.ParseException if the value has an unsupported numeric type or its format settings are invalid
+     */
+    public String formatCostUnit(CurrencyTransfer currency, Number costUnit) {
+        return costUnit == null ? null : DecimalUtils.getInstance().format(currency.getMinusSign(), currency.getFractionSeparator(),
+                currency.getCostUnitFractionDigits(), toLong(costUnit));
+    }
+
+    /** Retains the Integer entry point; delegates to the exact integral-value formatter. */
     public String formatCostLine(CurrencyTransfer currency, Integer costLine) {
-        String result = null;
+        return formatCostLine(currency, (Number)costLine);
+    }
 
-        if(costLine != null) {
-            var costLineFractionDigits = currency.getCostLineFractionDigits();
-            var fractionDigits = costLineFractionDigits == null ? 0 : costLineFractionDigits;
-
-            if(fractionDigits == 0) {
-                result = costLine.toString();
-            } else {
-                int rawCostLine = costLine;
-                var i = IntMath.checkedPow(10, fractionDigits);
-                var builtResult = new StringBuilder().append(rawCostLine / i).append(currency.getFractionSeparator());
-
-                new Formatter(builtResult).format("%0" + fractionDigits + 'd', Math.abs(rawCostLine) % i);
-                result = builtResult.toString();
-            }
-        }
-
-        return result;
+    /**
+     * Formats a scaled integral value with the currency's costLineFractionDigits precision.
+     *
+     * @param currency currency format settings; unused when the value is null
+     * @param costLine scaled Byte, Short, Integer, or Long value, or null
+     * @return exact plain decimal text, or null for an absent value
+     * @throws DecimalUtils.ParseException if the value has an unsupported numeric type or its format settings are invalid
+     */
+    public String formatCostLine(CurrencyTransfer currency, Number costLine) {
+        return costLine == null ? null : DecimalUtils.getInstance().format(currency.getMinusSign(), currency.getFractionSeparator(),
+                currency.getCostLineFractionDigits(), toLong(costLine));
     }
 
     public AmountFormatter getAmountFormatter(CurrencyTransfer currency, AmountFormatType amountFormatType) {

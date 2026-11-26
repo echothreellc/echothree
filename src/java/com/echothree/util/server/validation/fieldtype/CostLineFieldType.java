@@ -16,10 +16,8 @@
 
 package com.echothree.util.server.validation.fieldtype;
 
-import com.echothree.util.common.string.DecimalUtils;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.form.BaseForm;
-import com.echothree.util.common.message.Message;
 import com.echothree.util.common.message.Messages;
 import com.echothree.util.server.string.AmountUtils;
 import com.echothree.util.server.validation.Validator;
@@ -35,22 +33,10 @@ public class CostLineFieldType
     
     @Override
     public String validate() {
-        var hadErrors = false;
         var currency = getCurrency();
-        
-        if(currency == null) {
-            validationMessages.add(fieldName, new Message(Validator.ERROR_UNKNOWN_CURRENCY_ISO_NAME));
-            hadErrors = true;
-        } else {
-            fieldValue = DecimalUtils.getInstance().parse(currency.getMinusSign(), currency.getFractionSeparator(),
-                    currency.getCostLineFractionDigits(), fieldValue);
-        }
-        
-        if(!hadErrors) {
-            hadErrors = !isValidSignedInteger(null, null);
-        }
-        
-        return hadErrors? null: fieldValue;
+
+        return currency == null ? null : validateDecimal(currency.getMinusSign(), currency.getFractionSeparator(),
+                currency.getCostLineFractionDigits(), true, Long.MIN_VALUE, Long.MAX_VALUE);
     }
     
     @Override
