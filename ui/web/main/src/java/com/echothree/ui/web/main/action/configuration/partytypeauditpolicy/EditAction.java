@@ -52,7 +52,7 @@ public class EditAction
         String forwardKey;
         var partyTypeName = request.getParameter(ParameterConstants.PARTY_TYPE_NAME);
         var commandForm = PartyUtil.getHome().getEditPartyTypeAuditPolicyForm();
-        var spec = PartyUtil.getHome().getPartyTypeSpec();
+        var spec = PartyUtil.getHome().getPartyTypeUniversalSpec();
         
         if(partyTypeName == null) {
             partyTypeName = actionForm.getPartyTypeName();
