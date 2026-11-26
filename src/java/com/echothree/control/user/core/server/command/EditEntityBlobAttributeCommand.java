@@ -24,6 +24,7 @@ import com.echothree.control.user.core.common.spec.EntityBlobAttributeSpec;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityDataLogic;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
@@ -77,6 +78,9 @@ public class EditEntityBlobAttributeCommand
     EntityDataLogic entityDataLogic;
 
     @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
     LanguageLogic languageLogic;
 
     @Inject
@@ -106,7 +110,7 @@ public class EditEntityBlobAttributeCommand
     public EntityBlobAttribute getEntity(EditEntityBlobAttributeResult result) {
         EntityBlobAttribute entity = null;
 
-        entityInstance = entityDataLogic.getEntityInstanceByEntityRef(this, spec.getEntityRef());
+        entityInstance = entityInstanceLogic.getEntityInstanceByEntityRef(this, spec.getEntityRef());
 
         if(!hasExecutionErrors()) {
             entityAttribute = entityAttributeLogic.getEntityAttributeByName(this, entityInstance.getEntityType(), spec.getEntityAttributeName());

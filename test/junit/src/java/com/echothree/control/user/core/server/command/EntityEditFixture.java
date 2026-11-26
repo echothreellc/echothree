@@ -2277,7 +2277,6 @@ class EntityEditFixture {
         inject(dataLogic, "coreControl", core);
         inject(dataLogic, "appearanceControl", appearances);
         inject(dataLogic, "entityAliasControl", aliases);
-        inject(dataLogic, "entityInstanceControl", instances);
         inject(dataLogic, "entityInstanceLogic", instanceLogic);
         inject(command, "coreControl", core);
         dependencies.put("entityDataLogic", dataLogic);

@@ -55,7 +55,7 @@ public class EntityEditLookupTest {
         return kinds().filter(kind -> !kind.equals("EntityListItemDefault")).flatMap(kind -> {
             boolean legacy = kind.equals("EntityAppearance") || kind.equals("EntityBlobAttribute");
             return Stream.of(false, true).filter(uuid -> !legacy || !uuid).flatMap(uuid ->
-                    Stream.of(false, true).filter(deleted -> !legacy || !deleted).map(deleted -> Arguments.of(kind, uuid, deleted)));
+                    Stream.of(false, true).map(deleted -> Arguments.of(kind, uuid, deleted)));
         });
     }
 
@@ -126,25 +126,6 @@ public class EntityEditLookupTest {
         fixture.missingValue = true;
         var exception = assertThrows(RuntimeException.class, () -> resolve(fixture, null, EntityPermission.READ_ONLY));
         assertEquals("Unknown" + kind + "Exception", exception.getClass().getSimpleName());
-    }
-
-    @ParameterizedTest
-    @ValueSource(booleans = {false, true})
-    public void appearanceAndBlobOwnerLookupRetainsExistenceOnlyBehavior(boolean missingOwner) {
-        var fixture = new EntityEditFixture("EntityAppearance", EditMode.LOCK);
-        fixture.missingOwner = missingOwner;
-        fixture.deletedOwner = true;
-        var errors = new DummyExecutionErrorAccumulator();
-        var result = fixture.dataLogic.getEntityInstanceByEntityRef(errors, "ECHO_THREE.Item.777");
-        if(missingOwner) {
-            assertNull(result);
-            assertEquals("UnknownEntityRef", errors.getExecutionErrors().get(Messages.EXECUTION_ERROR).next().getKey());
-            var exception = assertThrows(RuntimeException.class, () -> fixture.dataLogic.getEntityInstanceByEntityRef(null, "ECHO_THREE.Item.777"));
-            assertEquals("UnknownEntityRefException", exception.getClass().getSimpleName());
-        } else {
-            assertSame(fixture.entityInstance, result);
-            assertFalse(errors.hasExecutionErrors());
-        }
     }
 
     @ParameterizedTest

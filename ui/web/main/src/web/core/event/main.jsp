@@ -111,12 +111,14 @@
                     <c:choose>
                         <c:when test="${entityInstance.entityAppearance == null}">
                             <i><fmt:message key="phrase.notSet" /></i>
-                            <et:hasSecurityRole securityRole="EntityAppearance.Create">
-                                <c:url var="addUrl" value="/action/Core/Event/EntityAppearanceAdd">
-                                    <c:param name="EntityRef" value="${entityInstance.entityRef}" />
-                                </c:url>
-                                [<a href="${addUrl}">Add</a>]
-                            </et:hasSecurityRole>
+                            <c:if test="${entityInstance.entityTime == null || entityInstance.entityTime.unformattedDeletedTime == null}">
+                                <et:hasSecurityRole securityRole="EntityAppearance.Create">
+                                    <c:url var="addUrl" value="/action/Core/Event/EntityAppearanceAdd">
+                                        <c:param name="EntityRef" value="${entityInstance.entityRef}" />
+                                    </c:url>
+                                    [<a href="${addUrl}">Add</a>]
+                                </et:hasSecurityRole>
+                            </c:if>
                         </c:when>
                         <c:otherwise>
                             <c:choose>
@@ -130,18 +132,20 @@
                                     <c:out value="${entityInstance.entityAppearance.appearance.description}" />
                                 </c:otherwise>
                             </c:choose>
-                            <et:hasSecurityRole securityRole="EntityAppearance.Edit">
-                                <c:url var="editUrl" value="/action/Core/Event/EntityAppearanceEdit">
-                                    <c:param name="EntityRef" value="${entityInstance.entityRef}" />
-                                </c:url>
-                                [<a href="${editUrl}">Edit</a>]
-                            </et:hasSecurityRole>
-                            <et:hasSecurityRole securityRole="EntityAppearance.Delete">
-                                <c:url var="clearUrl" value="/action/Core/Event/EntityAppearanceDelete">
-                                    <c:param name="EntityRef" value="${entityInstance.entityRef}" />
-                                </c:url>
-                                [<a href="${clearUrl}">Clear</a>]
-                            </et:hasSecurityRole>
+                            <c:if test="${entityInstance.entityTime == null || entityInstance.entityTime.unformattedDeletedTime == null}">
+                                <et:hasSecurityRole securityRole="EntityAppearance.Edit">
+                                    <c:url var="editUrl" value="/action/Core/Event/EntityAppearanceEdit">
+                                        <c:param name="EntityRef" value="${entityInstance.entityRef}" />
+                                    </c:url>
+                                    [<a href="${editUrl}">Edit</a>]
+                                </et:hasSecurityRole>
+                                <et:hasSecurityRole securityRole="EntityAppearance.Delete">
+                                    <c:url var="clearUrl" value="/action/Core/Event/EntityAppearanceDelete">
+                                        <c:param name="EntityRef" value="${entityInstance.entityRef}" />
+                                    </c:url>
+                                    [<a href="${clearUrl}">Clear</a>]
+                                </et:hasSecurityRole>
+                            </c:if>
                         </c:otherwise>
                     </c:choose>
                     <br />

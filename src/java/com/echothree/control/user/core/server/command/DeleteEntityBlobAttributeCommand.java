@@ -17,7 +17,7 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityBlobAttributeForm;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -53,12 +53,11 @@ public class DeleteEntityBlobAttributeCommand
     }
 
     @Inject
-    EntityInstanceControl entityInstanceControl;
-
-    @Inject
     PartyControl partyControl;
 
-    
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     /** Creates a new instance of DeleteEntityBlobAttributeCommand */
     public DeleteEntityBlobAttributeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -67,7 +66,7 @@ public class DeleteEntityBlobAttributeCommand
     @Override
     protected BaseResult execute() {
         var entityRef = form.getEntityRef();
-        var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
+        var entityInstance = entityInstanceLogic.getEntityInstanceByEntityRef(this, entityRef);
         
         if(entityInstance != null) {
             var entityAttributeName = form.getEntityAttributeName();
@@ -94,8 +93,6 @@ public class DeleteEntityBlobAttributeCommand
                 addExecutionError(ExecutionErrors.UnknownEntityAttributeName.name(), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
                         entityTypeDetail.getEntityTypeName(), entityAttributeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownEntityRef.name(), entityRef);
         }
         
         return null;

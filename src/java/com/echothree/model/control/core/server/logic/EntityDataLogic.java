@@ -29,12 +29,10 @@ import com.echothree.model.control.core.common.exception.UnknownEntityListItemAt
 import com.echothree.model.control.core.common.exception.UnknownEntityListItemDefaultException;
 import com.echothree.model.control.core.common.exception.UnknownEntityLongAttributeException;
 import com.echothree.model.control.core.common.exception.UnknownEntityNameAttributeException;
-import com.echothree.model.control.core.common.exception.UnknownEntityRefException;
 import com.echothree.model.control.core.common.exception.UnknownEntityStringAttributeException;
 import com.echothree.model.control.core.common.exception.UnknownEntityTimeAttributeException;
 import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.control.core.server.control.EntityAliasControl;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.core.server.entity.EntityAlias;
 import com.echothree.model.data.core.server.entity.EntityAliasType;
 import com.echothree.model.data.core.server.entity.EntityAppearance;
@@ -71,24 +69,10 @@ public class EntityDataLogic extends BaseLogic {
     EntityAliasControl entityAliasControl;
 
     @Inject
-    EntityInstanceControl entityInstanceControl;
-
-    @Inject
     EntityInstanceLogic entityInstanceLogic;
 
     protected EntityDataLogic() {
         super();
-    }
-
-    /** Preserve the existence-only lookup used by Appearance and Blob edits. */
-    public EntityInstance getEntityInstanceByEntityRef(ExecutionErrorAccumulator eea, String entityRef) {
-        var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
-
-        if(entityInstance == null) {
-            handleExecutionError(UnknownEntityRefException.class, eea, ExecutionErrors.UnknownEntityRef.name(), entityRef);
-        }
-
-        return entityInstance;
     }
 
     public EntityAppearance getEntityAppearance(ExecutionErrorAccumulator eea, EntityInstance entityInstance,

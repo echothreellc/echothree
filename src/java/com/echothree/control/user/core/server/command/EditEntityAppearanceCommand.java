@@ -24,6 +24,7 @@ import com.echothree.control.user.core.common.spec.EntityRefSpec;
 import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.control.core.server.logic.AppearanceLogic;
 import com.echothree.model.control.core.server.logic.EntityDataLogic;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -77,6 +78,9 @@ public class EditEntityAppearanceCommand
     @Inject
     EntityDataLogic entityDataLogic;
 
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     private EntityInstance entityInstance;
     private Appearance appearance;
 
@@ -99,7 +103,7 @@ public class EditEntityAppearanceCommand
     public EntityAppearance getEntity(EditEntityAppearanceResult result) {
         EntityAppearance entity = null;
 
-        entityInstance = entityDataLogic.getEntityInstanceByEntityRef(this, spec.getEntityRef());
+        entityInstance = entityInstanceLogic.getEntityInstanceByEntityRef(this, spec.getEntityRef());
 
         if(!hasExecutionErrors()) {
             entity = entityDataLogic.getEntityAppearance(this, entityInstance, editModeToEntityPermission(editMode));
