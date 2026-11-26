@@ -38,6 +38,9 @@ import javax.inject.Inject;
 @Dependent
 public class CreateCurrencyCommand
         extends BaseSimpleCommand<CreateCurrencyForm> {
+
+    /** Supported precision cap for currencies whose amounts use signed Long storage (19 decimal digits). */
+    private static final long MAXIMUM_FRACTION_DIGITS = 19L;
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -61,11 +64,11 @@ public class CreateCurrencyCommand
                 new FieldDefinition("GroupingSeparator", FieldType.STRING, true, 1L, 1L),
                 new FieldDefinition("GroupingSize", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("FractionSeparator", FieldType.STRING, false, 1L, 1L),
-                new FieldDefinition("DefaultFractionDigits", FieldType.SIGNED_INTEGER, false, null, null),
-                new FieldDefinition("PriceUnitFractionDigits", FieldType.SIGNED_INTEGER, false, null, null),
-                new FieldDefinition("PriceLineFractionDigits", FieldType.SIGNED_INTEGER, false, null, null),
-                new FieldDefinition("CostUnitFractionDigits", FieldType.SIGNED_INTEGER, false, null, null),
-                new FieldDefinition("CostLineFractionDigits", FieldType.SIGNED_INTEGER, false, null, null),
+                new FieldDefinition("DefaultFractionDigits", FieldType.SIGNED_INTEGER, false, 0L, MAXIMUM_FRACTION_DIGITS),
+                new FieldDefinition("PriceUnitFractionDigits", FieldType.SIGNED_INTEGER, false, 0L, MAXIMUM_FRACTION_DIGITS),
+                new FieldDefinition("PriceLineFractionDigits", FieldType.SIGNED_INTEGER, false, 0L, MAXIMUM_FRACTION_DIGITS),
+                new FieldDefinition("CostUnitFractionDigits", FieldType.SIGNED_INTEGER, false, 0L, MAXIMUM_FRACTION_DIGITS),
+                new FieldDefinition("CostLineFractionDigits", FieldType.SIGNED_INTEGER, false, 0L, MAXIMUM_FRACTION_DIGITS),
                 new FieldDefinition("MinusSign", FieldType.STRING, true, 1L, 1L),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
