@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.edit.EntityGeoPointAttributeEdit;
 import com.echothree.model.data.core.server.value.EntityGeoPointAttributeValue;
+import com.echothree.util.common.command.BaseEditResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.Messages;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -30,6 +31,8 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.ResourceLock;
@@ -163,6 +166,48 @@ public class EntityEditValueTest {
         messages = new Messages();
         new UuidFieldType(null, null, messages, "11111111-1111-4111-8111-111111111111", new String[]{"LanguageUuid"}, definition).validate();
         assertTrue(messages.isEmpty());
+    }
+
+    static Stream<Arguments> updates() {
+        return kinds().flatMap(kind -> Stream.of(
+                Arguments.of(kind, false), Arguments.of(kind, true)));
+    }
+
+    @ParameterizedTest
+    @MethodSource("updates")
+    public void successfulUpdatesAndPersistenceFailuresAlwaysUnlockCorrectOwner(String kind, boolean failUpdate) {
+        var fixture = new EntityEditFixture(kind, EditMode.UPDATE);
+        fixture.failUpdate = failUpdate;
+        fixture.failTransfer = true;
+        if(failUpdate) {
+            assertThrows(IllegalStateException.class, fixture::execute);
+        } else {
+            var result = (BaseEditResult<?>)fixture.execute();
+            assertNull(result.getEdit());
+            assertNull(result.getEntityLock());
+            assertNull(EntityEditFixture.call(result, "get" + kind));
+            assertFalse(fixture.command.hasExecutionErrors());
+            assertEquals(0, fixture.transfers);
+        }
+        assertEquals(java.util.List.of("update", "unlock"), fixture.locks);
+        assertEquals(1, fixture.updates);
+        assertEquals(1, fixture.readWriteLookups);
+    }
+
+    @ParameterizedTest
+    @MethodSource("kinds")
+    public void abandonUnlocksOwnerWithoutPopulatingResult(String kind) {
+        var fixture = new EntityEditFixture(kind, EditMode.ABANDON);
+        fixture.failTransfer = true;
+        var result = (BaseEditResult<?>)fixture.execute();
+        assertNull(result.getEdit());
+        assertNull(result.getEntityLock());
+        assertNull(EntityEditFixture.call(result, "get" + kind));
+        assertFalse(fixture.command.hasExecutionErrors());
+        assertEquals(java.util.List.of("unlock"), fixture.locks);
+        assertEquals(0, fixture.updates);
+        assertEquals(0, fixture.transfers);
+        assertEquals(0, fixture.readWriteLookups);
     }
 
 }

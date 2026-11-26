@@ -55,16 +55,14 @@ public class EntityEditLifecycleTest {
         final EntityEditFixture fixture = new EntityEditFixture("EntityAppearance", EditMode.ABANDON);
         final List<String> operations = new ArrayList<>();
         final boolean translated;
-        final boolean legacyResults;
         boolean lockAllowed = true;
         boolean failUpdate;
         boolean rejectUpdate;
         int results;
 
-        TestCommand(EditMode mode, String representedType, boolean legacyResults) {
+        TestCommand(EditMode mode, String representedType) {
             super(null, List.of(), List.of());
             this.translated = representedType != null;
-            this.legacyResults = legacyResults;
             if(translated) {
                 fixture.property("EntityTypeDetail", "entityTypeName", representedType);
             }
@@ -172,11 +170,6 @@ public class EntityEditLifecycleTest {
             }
         }
 
-        @Override
-        protected boolean includeResultAfterSuccessfulEdit() {
-            return legacyResults;
-        }
-
         void executeEdit() {
             execute();
         }
@@ -188,35 +181,34 @@ public class EntityEditLifecycleTest {
     }
 
     static Stream<Arguments> modes() {
-        return Stream.of("Item", "Party", "default").flatMap(type -> Stream.of(EditMode.values()).flatMap(mode ->
-                Stream.of(Arguments.of(type, mode, false), Arguments.of(type, mode, true))));
+        return Stream.of("Item", "Party", "default").flatMap(type -> Stream.of(EditMode.values()).map(mode -> Arguments.of(type, mode)));
     }
 
     @ParameterizedTest
     @MethodSource("modes")
-    public void routesAllModesToOneKeyAndRetainsDefaultResultContract(String type, EditMode mode, boolean legacyResults) {
-        var command = new TestCommand(mode, type.equals("default") ? null : type, legacyResults);
+    public void routesAllModesToOneKeyAndRetainsDefaultResultContract(String type, EditMode mode) {
+        var command = new TestCommand(mode, type.equals("default") ? null : type);
         command.executeEdit();
         assertEquals(switch(mode) {
             case LOCK -> List.of("lock", "copy", "transfer");
             case UPDATE -> List.of("update", "write", "unlock");
             case ABANDON -> List.of("unlock");
         }, command.operations);
-        assertEquals(mode == EditMode.LOCK || legacyResults ? 1 : 0, command.results);
+        assertEquals(mode == EditMode.LOCK ? 1 : 0, command.results);
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"Item", "Party", "default"})
     public void failedAndStaleLocksAndUpdateRejectionReturnCorrectLock(String type) {
         for(var mode : List.of(EditMode.LOCK, EditMode.UPDATE)) {
-            var command = new TestCommand(mode, type.equals("default") ? null : type, false);
+            var command = new TestCommand(mode, type.equals("default") ? null : type);
             command.lockAllowed = false;
             command.executeEdit();
             assertEquals(List.of(mode == EditMode.LOCK ? "lock" : "update", "transfer"), command.operations);
             assertTrue(command.hasExecutionErrors());
             assertEquals(1, command.results);
         }
-        var rejected = new TestCommand(EditMode.UPDATE, type.equals("default") ? null : type, true);
+        var rejected = new TestCommand(EditMode.UPDATE, type.equals("default") ? null : type);
         rejected.rejectUpdate = true;
         rejected.executeEdit();
         assertEquals(List.of("transfer"), rejected.operations);
@@ -226,7 +218,7 @@ public class EntityEditLifecycleTest {
     @ParameterizedTest
     @ValueSource(strings = {"Item", "Party", "default"})
     public void persistenceFailureAlwaysReleasesTheSameKey(String type) {
-        var command = new TestCommand(EditMode.UPDATE, type.equals("default") ? null : type, true);
+        var command = new TestCommand(EditMode.UPDATE, type.equals("default") ? null : type);
         command.failUpdate = true;
         assertThrows(IllegalStateException.class, command::executeEdit);
         assertEquals(List.of("update", "write", "unlock"), command.operations);
@@ -236,7 +228,7 @@ public class EntityEditLifecycleTest {
     @ParameterizedTest
     @ValueSource(strings = {"Item", "Party", "default"})
     public void validatorRecoveryAndLockInspectionUseTheSameKey(String type) {
-        var command = new TestCommand(EditMode.UPDATE, type.equals("default") ? null : type, false);
+        var command = new TestCommand(EditMode.UPDATE, type.equals("default") ? null : type);
         command.recoverValidatorResult();
         assertTrue(command.isEntityLocked(command.fixture.entityInstance));
         assertEquals(List.of("transfer", "isLocked"), command.operations);

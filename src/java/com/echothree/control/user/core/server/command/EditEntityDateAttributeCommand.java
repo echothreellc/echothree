@@ -153,11 +153,6 @@ public class EditEntityDateAttributeCommand
     }
 
     @Override
-    protected boolean includeResultAfterSuccessfulEdit() {
-        return true;
-    }
-
-    @Override
     protected void saveResultAfterEditValidatorErrors() {
         // Preserve the existing absence of a result when edit field validation fails.
     }

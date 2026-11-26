@@ -34,7 +34,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 /**
@@ -42,6 +41,7 @@ import org.junit.jupiter.params.provider.MethodSource;
  */
 @ResourceLock("ValueCacheProvider")
 public class EntityEditCompatibilityTest {
+
     @ParameterizedTest
     @MethodSource("kinds")
     public void transferFailuresOccurBeforeAcquiringALock(String kind) {
@@ -52,9 +52,11 @@ public class EntityEditCompatibilityTest {
         assertEquals(0, fixture.updates);
         assertEquals(1, fixture.transfers);
     }
+
     @ParameterizedTest
     @MethodSource("kinds")
-    public void invalidEditFieldsRetainTheLegacyAbsenceOfARecoveryResult(String kind) throws Exception {
+    public void invalidEditFieldsRetainTheLegacyAbsenceOfARecoveryResult(String kind)
+            throws Exception {
         var fixture = new EntityEditFixture(kind, EditMode.UPDATE);
         var factory = com.echothree.control.user.core.common.edit.CoreEditFactory.class.getMethod("get"
                 + (kind.equals("EntityListItemDefault") ? "EntityListItemAttribute" : kind) + "Edit");
@@ -79,40 +81,6 @@ public class EntityEditCompatibilityTest {
 
     static Stream<String> kinds() {
         return Stream.of("EntityAppearance", "EntityAlias", "EntityListItemDefault", "EntityBooleanAttribute", "EntityIntegerAttribute", "EntityLongAttribute", "EntityNameAttribute", "EntityStringAttribute", "EntityDateAttribute", "EntityTimeAttribute", "EntityBlobAttribute", "EntityClobAttribute", "EntityEntityAttribute", "EntityListItemAttribute", "EntityGeoPointAttribute");
-    }
-
-    static Stream<Arguments> updates() {
-        return kinds().flatMap(kind -> Stream.of(
-                Arguments.of(kind, false), Arguments.of(kind, true)));
-    }
-
-    @ParameterizedTest
-    @MethodSource("updates")
-    public void successfulUpdatesAndPersistenceFailuresAlwaysUnlockCorrectOwner(String kind, boolean failUpdate) {
-        var fixture = new EntityEditFixture(kind, EditMode.UPDATE);
-        fixture.failUpdate = failUpdate;
-        if(failUpdate) {
-            assertThrows(IllegalStateException.class, fixture::execute);
-        } else {
-            assertNotNull(fixture.execute());
-            assertFalse(fixture.command.hasExecutionErrors());
-            assertTrue(fixture.transfers > 0);
-        }
-        assertEquals(java.util.List.of("update", "unlock"), fixture.locks);
-        assertEquals(1, fixture.updates);
-        assertEquals(1, fixture.readWriteLookups);
-    }
-
-    @ParameterizedTest
-    @MethodSource("kinds")
-    public void abandonUnlocksOwnerAndReturnsCurrentValue(String kind) {
-        var fixture = new EntityEditFixture(kind, EditMode.ABANDON);
-        fixture.execute();
-        assertFalse(fixture.command.hasExecutionErrors());
-        assertEquals(java.util.List.of("unlock"), fixture.locks);
-        assertEquals(0, fixture.updates);
-        assertTrue(fixture.transfers > 0);
-        assertEquals(0, fixture.readWriteLookups);
     }
 
     @ParameterizedTest
