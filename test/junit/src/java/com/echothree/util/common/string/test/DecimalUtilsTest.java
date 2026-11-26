@@ -107,4 +107,15 @@ public class DecimalUtilsTest {
         }
         assertNull(decimalUtils.format("-", ".", precision, null));
     }
+
+    @Test
+    public void configurationCanBeValidatedWithoutParsingAnAmount() {
+        assertEquals(0, decimalUtils.validateConfiguration(null, null, null));
+        assertEquals(19, decimalUtils.validateConfiguration("~", ",", 19));
+        for(var symbols : new String[][]{{"a", "."}, {"-", "1"}, {"+", "."}, {"-", "-"}, {"--", "-"}, {"-", "--"}}) {
+            assertEquals(DecimalUtils.ParseError.INVALID_CONFIGURATION,
+                    assertThrows(DecimalUtils.ParseException.class,
+                            () -> decimalUtils.validateConfiguration(symbols[0], symbols[1], 2)).getError());
+        }
+    }
 }

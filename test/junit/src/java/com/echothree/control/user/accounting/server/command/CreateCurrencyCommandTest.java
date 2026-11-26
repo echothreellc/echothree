@@ -27,6 +27,7 @@ import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.common.message.Messages;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.common.string.DecimalUtils;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import java.util.Arrays;
@@ -46,6 +47,8 @@ public class CreateCurrencyCommandTest {
 
     private static final List<String> PRECISION_FIELDS = List.of("DefaultFractionDigits", "PriceUnitFractionDigits",
             "PriceLineFractionDigits", "CostUnitFractionDigits", "CostLineFractionDigits");
+    private static final List<String> SYMBOL_FLAG_FIELDS = List.of("SymbolOnListStart", "SymbolOnListMember",
+            "SymbolOnSubtotal", "SymbolOnTotal");
     private static final PartyPK CREATED_BY = new PartyPK(99L);
 
     private static class TestCommand extends CreateCurrencyCommand {
@@ -56,6 +59,8 @@ public class CreateCurrencyCommandTest {
         private int currencyLookups;
         private List<Integer> savedPrecisions;
         private String savedFractionSeparator;
+        private String savedMinusSign;
+        private List<Boolean> savedSymbolFlags;
 
         TestCommand() {
             accountingControl = new AccountingControl() {
@@ -77,6 +82,8 @@ public class CreateCurrencyCommandTest {
                     assertEquals(CREATED_BY, createdBy);
                     creates++;
                     savedFractionSeparator = fractionSeparator;
+                    savedMinusSign = minusSign;
+                    savedSymbolFlags = Arrays.asList(symbolOnListStart, symbolOnListMember, symbolOnSubtotal, symbolOnTotal);
                     savedPrecisions = Arrays.asList(defaultFractionDigits, priceUnitFractionDigits, priceLineFractionDigits,
                             costUnitFractionDigits, costLineFractionDigits);
                     return null;
@@ -103,6 +110,9 @@ public class CreateCurrencyCommandTest {
 
         void setPrecision(String fieldName, String value) { form.set(fieldName, value); }
         void setFractionSeparator(String value) { form.setFractionSeparator(value); }
+        void setMinusSign(String value) { form.setMinusSign(value); }
+        void setSymbol(String value) { form.setSymbol(value); }
+        void setSymbolFlag(String fieldName, String value) { form.set(fieldName, value); }
 
         ValidationResult submit() {
             var validationResult = validate();
@@ -233,5 +243,187 @@ public class CreateCurrencyCommandTest {
         }
         assertEquals(0, command.creates);
         assertNull(command.savedPrecisions);
+    }
+
+    private static Stream<Arguments> invalidDecimalSymbols() {
+        return Stream.of("a", "5", "+", "é", "１", "\u00a0", "\u2003")
+                .flatMap(symbol -> Stream.of(Arguments.of("MinusSign", symbol), Arguments.of("FractionSeparator", symbol)));
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidDecimalSymbols")
+    public void invalidDecimalSymbolsReportTheAffectedFieldBeforeExecution(String fieldName, String symbol) {
+        var command = new TestCommand();
+        if(fieldName.equals("MinusSign")) {
+            command.setMinusSign(symbol);
+        } else {
+            command.setFractionSeparator(symbol);
+        }
+        var result = assertDoesNotThrow(command::submit);
+        assertTrue(result.getHasErrors());
+        assertEquals(1, result.getValidationMessages().size());
+        assertTrue(result.getValidationMessages().containsKey(fieldName, "InvalidDecimalConfiguration"));
+        assertEquals(0, command.executions);
+        assertEquals(0, command.currencyLookups);
+        assertEquals(0, command.creates);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"-", ".", ","})
+    public void identicalSignAndSeparatorReportBothFields(String symbol) {
+        var command = new TestCommand();
+        command.setMinusSign(symbol);
+        command.setFractionSeparator(symbol);
+        var result = command.submit();
+        assertTrue(result.getHasErrors());
+        assertEquals(2, result.getValidationMessages().size());
+        assertTrue(result.getValidationMessages().containsKey("MinusSign", "InvalidDecimalConfiguration"));
+        assertTrue(result.getValidationMessages().containsKey("FractionSeparator", "InvalidDecimalConfiguration"));
+        assertEquals(0, command.executions);
+        assertEquals(0, command.creates);
+    }
+
+    @Test
+    public void independentlyInvalidTokensAreReportedTogether() {
+        var command = new TestCommand();
+        command.setMinusSign("+");
+        command.setFractionSeparator("a");
+        var result = command.submit();
+        assertTrue(result.getHasErrors());
+        assertEquals(2, result.getValidationMessages().size());
+        assertTrue(result.getValidationMessages().containsKey("MinusSign", "InvalidDecimalConfiguration"));
+        assertTrue(result.getValidationMessages().containsKey("FractionSeparator", "InvalidDecimalConfiguration"));
+        assertEquals(0, command.creates);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"-", "~", "−"})
+    public void supportedTokensAreSavedUnchangedAndRoundTripNegativeAmounts(String minusSign) {
+        for(var separator : new String[]{".", ","}) {
+            var command = new TestCommand();
+            command.setMinusSign(minusSign);
+            command.setFractionSeparator(separator);
+            assertFalse(command.submit().getHasErrors());
+            assertFalse(command.hasExecutionErrors());
+            assertEquals(1, command.creates);
+            assertEquals(minusSign, command.savedMinusSign);
+            assertEquals(separator, command.savedFractionSeparator);
+            for(var precision : command.savedPrecisions) {
+                var formatted = DecimalUtils.getInstance().format(command.savedMinusSign, command.savedFractionSeparator,
+                        precision, Long.MIN_VALUE);
+                assertEquals(Long.toString(Long.MIN_VALUE), DecimalUtils.getInstance().parse(command.savedMinusSign,
+                        command.savedFractionSeparator, precision, formatted));
+            }
+        }
+    }
+
+    @Test
+    public void integerOnlyCurrenciesStillValidateTheirMinusSign() {
+        var command = new TestCommand();
+        command.setFractionSeparator(null);
+        PRECISION_FIELDS.forEach(fieldName -> command.setPrecision(fieldName, null));
+        command.setMinusSign("+");
+        var result = command.submit();
+        assertTrue(result.getHasErrors());
+        assertTrue(result.getValidationMessages().containsKey("MinusSign", "InvalidDecimalConfiguration"));
+        assertEquals(0, command.creates);
+    }
+
+    @Test
+    public void zeroPrecisionDoesNotAllowAnInvalidSeparator() {
+        var command = new TestCommand();
+        PRECISION_FIELDS.forEach(fieldName -> command.setPrecision(fieldName, "0"));
+        command.setFractionSeparator("1");
+        var result = command.submit();
+        assertTrue(result.getHasErrors());
+        assertTrue(result.getValidationMessages().containsKey("FractionSeparator", "InvalidDecimalConfiguration"));
+        assertEquals(0, command.creates);
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {"  "})
+    public void missingMinusSignRetainsItsRequiredFieldError(String minusSign) {
+        var command = new TestCommand();
+        command.setMinusSign(minusSign);
+        var result = command.submit();
+        assertTrue(result.getHasErrors());
+        assertEquals(1, result.getValidationMessages().size());
+        assertTrue(result.getValidationMessages().containsKey("MinusSign", "RequiredField"));
+        assertEquals(0, command.creates);
+    }
+
+    private static Stream<Arguments> missingSymbolFlags() {
+        return SYMBOL_FLAG_FIELDS.stream().flatMap(fieldName -> Stream.of(null, "", "  ")
+                .map(input -> Arguments.of(fieldName, input)));
+    }
+
+    @ParameterizedTest
+    @MethodSource("missingSymbolFlags")
+    public void missingSymbolFlagsDoNotSilentlyBecomeFalse(String fieldName, String input) {
+        var command = new TestCommand();
+        command.setSymbol("$");
+        SYMBOL_FLAG_FIELDS.forEach(flagField -> command.setSymbolFlag(flagField, "false"));
+        command.setSymbolFlag(fieldName, input);
+        assertFalse(command.submit().getHasErrors());
+        assertTrue(command.hasExecutionErrors());
+        assertEquals(1, command.getExecutionErrors().size());
+        assertTrue(command.getExecutionErrors().containsKey(Messages.EXECUTION_ERROR, "Missing" + fieldName));
+        assertEquals(0, command.creates);
+    }
+
+    private static IntStream missingSymbolFlagCombinations() {
+        return IntStream.range(1, 1 << SYMBOL_FLAG_FIELDS.size());
+    }
+
+    @ParameterizedTest
+    @MethodSource("missingSymbolFlagCombinations")
+    public void reportsAllMissingSymbolFlagsAndPreventsCreation(int missingFlags) {
+        var command = new TestCommand();
+        command.setSymbol("$");
+        for(var index = 0; index < SYMBOL_FLAG_FIELDS.size(); index++) {
+            command.setSymbolFlag(SYMBOL_FLAG_FIELDS.get(index), (missingFlags & (1 << index)) == 0 ? "false" : null);
+        }
+        assertFalse(command.submit().getHasErrors());
+        var errors = command.getExecutionErrors();
+        assertNotNull(errors);
+        assertEquals(Integer.bitCount(missingFlags), errors.size());
+        for(var index = 0; index < SYMBOL_FLAG_FIELDS.size(); index++) {
+            assertEquals((missingFlags & (1 << index)) != 0,
+                    errors.containsKey(Messages.EXECUTION_ERROR, "Missing" + SYMBOL_FLAG_FIELDS.get(index)));
+        }
+        assertEquals(0, command.creates);
+    }
+
+    private static IntStream suppliedSymbolFlagCombinations() {
+        return IntStream.range(0, 1 << SYMBOL_FLAG_FIELDS.size());
+    }
+
+    @ParameterizedTest
+    @MethodSource("suppliedSymbolFlagCombinations")
+    public void explicitTrueAndFalseSymbolFlagsReachCreationUnchanged(int enabledFlags) {
+        var command = new TestCommand();
+        command.setSymbol("$");
+        for(var index = 0; index < SYMBOL_FLAG_FIELDS.size(); index++) {
+            command.setSymbolFlag(SYMBOL_FLAG_FIELDS.get(index), Boolean.toString((enabledFlags & (1 << index)) != 0));
+        }
+        assertFalse(command.submit().getHasErrors());
+        assertFalse(command.hasExecutionErrors());
+        assertEquals(1, command.creates);
+        for(var index = 0; index < SYMBOL_FLAG_FIELDS.size(); index++) {
+            assertEquals((enabledFlags & (1 << index)) != 0, command.savedSymbolFlags.get(index));
+        }
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {"  "})
+    public void absentSymbolsDoNotRequireFlagsAndStoreThemAsNull(String symbol) {
+        var command = new TestCommand();
+        command.setSymbol(symbol);
+        assertFalse(command.submit().getHasErrors());
+        assertFalse(command.hasExecutionErrors());
+        assertEquals(1, command.creates);
+        assertEquals(Arrays.asList(null, null, null, null), command.savedSymbolFlags);
     }
 }

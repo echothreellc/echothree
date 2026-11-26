@@ -24,6 +24,10 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.message.Message;
+import com.echothree.util.common.message.Messages;
+import com.echothree.util.common.form.ValidationResult;
+import com.echothree.util.common.string.DecimalUtils;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
@@ -31,6 +35,7 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.validation.Validator;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -86,6 +91,49 @@ public class CreateCurrencyCommand
     public CreateCurrencyCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
+
+    private boolean isValidDecimalConfiguration(String minusSign, String fractionSeparator) {
+        var valid = true;
+
+        try {
+            // Precision bounds and conditional presence are checked separately; zero checks only the tokens.
+            DecimalUtils.getInstance().validateConfiguration(minusSign, fractionSeparator, 0);
+        } catch(DecimalUtils.ParseException exception) {
+            valid = false;
+        }
+
+        return valid;
+    }
+
+    @Override
+    protected ValidationResult validate(Validator validator) {
+        var validationResult = super.validate(validator);
+
+        if(!validationResult.getHasErrors()) {
+            var validationMessages = new Messages();
+            var minusSign = form.getMinusSign();
+            var fractionSeparator = form.getFractionSeparator();
+
+            if(!isValidDecimalConfiguration(minusSign, null)) {
+                validationMessages.add("MinusSign", new Message(Validator.ERROR_INVALID_DECIMAL_CONFIGURATION));
+            }
+
+            if(!isValidDecimalConfiguration(null, fractionSeparator)) {
+                validationMessages.add("FractionSeparator", new Message(Validator.ERROR_INVALID_DECIMAL_CONFIGURATION));
+            }
+
+            if(validationMessages.isEmpty() && !isValidDecimalConfiguration(minusSign, fractionSeparator)) {
+                validationMessages.add("MinusSign", new Message(Validator.ERROR_INVALID_DECIMAL_CONFIGURATION));
+                validationMessages.add("FractionSeparator", new Message(Validator.ERROR_INVALID_DECIMAL_CONFIGURATION));
+            }
+
+            if(!validationMessages.isEmpty()) {
+                validationResult = new ValidationResult(validationMessages);
+            }
+        }
+
+        return validationResult;
+    }
     
     @Override
     protected BaseResult execute() {
@@ -102,13 +150,18 @@ public class CreateCurrencyCommand
                 var isDefault = Boolean.valueOf(form.getIsDefault());
                 var sortOrder = Integer.valueOf(form.getSortOrder());
                 var symbol = form.getSymbol();
-                var symbolOnListStart = symbol == null? null: Boolean.valueOf(form.getSymbolOnListStart());
-                var symbolOnListMember = symbol == null? null: Boolean.valueOf(form.getSymbolOnListMember());
-                var symbolOnSubtotal = symbol == null? null: Boolean.valueOf(form.getSymbolOnSubtotal());
-                var symbolOnTotal = symbol == null? null: Boolean.valueOf(form.getSymbolOnTotal());
+                var symbolOnListStartInput = form.getSymbolOnListStart();
+                var symbolOnListMemberInput = form.getSymbolOnListMember();
+                var symbolOnSubtotalInput = form.getSymbolOnSubtotal();
+                var symbolOnTotalInput = form.getSymbolOnTotal();
 
-                if(symbol == null || (symbol != null && symbolOnListStart != null && symbolOnListMember != null
-                        && symbolOnSubtotal != null && symbolOnTotal != null)) {
+                if(symbol == null || (symbolOnListStartInput != null && symbolOnListMemberInput != null
+                        && symbolOnSubtotalInput != null && symbolOnTotalInput != null)) {
+                    var symbolOnListStart = symbol == null ? null : Boolean.valueOf(symbolOnListStartInput);
+                    var symbolOnListMember = symbol == null ? null : Boolean.valueOf(symbolOnListMemberInput);
+                    var symbolOnSubtotal = symbol == null ? null : Boolean.valueOf(symbolOnSubtotalInput);
+                    var symbolOnTotal = symbol == null ? null : Boolean.valueOf(symbolOnTotalInput);
+
                     var fractionSeparator = form.getFractionSeparator();
                     var defaultFractionDigitsInput = form.getDefaultFractionDigits();
                     var priceUnitFractionDigitsInput = form.getPriceUnitFractionDigits();
@@ -146,16 +199,16 @@ public class CreateCurrencyCommand
                         }
                     }
                 } else {
-                    if(symbolOnListStart == null) {
+                    if(symbolOnListStartInput == null) {
                         addExecutionError(ExecutionErrors.MissingSymbolOnListStart.name());
                     }
-                    if(symbolOnListMember == null) {
+                    if(symbolOnListMemberInput == null) {
                         addExecutionError(ExecutionErrors.MissingSymbolOnListMember.name());
                     }
-                    if(symbolOnSubtotal == null) {
+                    if(symbolOnSubtotalInput == null) {
                         addExecutionError(ExecutionErrors.MissingSymbolOnSubtotal.name());
                     }
-                    if(symbolOnTotal == null) {
+                    if(symbolOnTotalInput == null) {
                         addExecutionError(ExecutionErrors.MissingSymbolOnTotal.name());
                     }
                 }

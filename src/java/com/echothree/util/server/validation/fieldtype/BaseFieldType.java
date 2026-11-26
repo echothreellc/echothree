@@ -144,7 +144,7 @@ public abstract class BaseFieldType {
             }
 
             // Validate configuration even for range markers.
-            DecimalUtils.getInstance().parse(minusSign, fractionSeparator, fractionDigits, "0");
+            DecimalUtils.getInstance().validateConfiguration(minusSign, fractionSeparator, fractionDigits);
             var maximumMarker = fieldValue.equalsIgnoreCase("MAX_VALUE");
             var minimumMarker = signed && fieldValue.equalsIgnoreCase("MIN_VALUE");
             var scaled = maximumMarker ? BigInteger.valueOf(maximum) : minimumMarker ? BigInteger.valueOf(minimum)

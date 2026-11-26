@@ -108,7 +108,7 @@ public class DecimalUtils {
      * @return the effective fractional-digit count
      * @throws ParseException with {@link ParseError#INVALID_CONFIGURATION} if the settings are invalid
      */
-    private int validateConfiguration(String minusSign, String fractionSeparator, Integer fractionDigits) {
+    public int validateConfiguration(String minusSign, String fractionSeparator, Integer fractionDigits) {
         var precision = fractionDigits == null ? 0 : fractionDigits;
 
         if(precision < 0 || (precision > 0 && fractionSeparator == null) || invalidSymbol(minusSign)
