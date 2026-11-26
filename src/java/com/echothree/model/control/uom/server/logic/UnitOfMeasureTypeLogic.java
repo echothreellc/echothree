@@ -51,15 +51,21 @@ public class UnitOfMeasureTypeLogic
     }
     
     public UnitOfMeasureType getUnitOfMeasureTypeByName(final ExecutionErrorAccumulator eea, final UnitOfMeasureKind unitOfMeasureKind,
-            final String unitOfMeasureTypeName) {
+            final String unitOfMeasureTypeName, final Class<? extends BaseException> unknownErrorClass, final String unknownErrorKey) {
         var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
 
         if(unitOfMeasureType == null) {
-            handleExecutionError(UnknownUnitOfMeasureTypeNameException.class, eea, ExecutionErrors.UnknownUnitOfMeasureTypeName.name(),
+            handleExecutionError(unknownErrorClass, eea, unknownErrorKey,
                     unitOfMeasureKind.getLastDetail().getUnitOfMeasureKindName(), unitOfMeasureTypeName);
         }
 
         return unitOfMeasureType;
+    }
+
+    public UnitOfMeasureType getUnitOfMeasureTypeByName(final ExecutionErrorAccumulator eea, final UnitOfMeasureKind unitOfMeasureKind,
+            final String unitOfMeasureTypeName) {
+        return getUnitOfMeasureTypeByName(eea, unitOfMeasureKind, unitOfMeasureTypeName,
+                UnknownUnitOfMeasureTypeNameException.class, ExecutionErrors.UnknownUnitOfMeasureTypeName.name());
     }
 
     public UnitOfMeasureType getUnitOfMeasureTypeByName(final ExecutionErrorAccumulator eea, final String unitOfMeasureKindName,
