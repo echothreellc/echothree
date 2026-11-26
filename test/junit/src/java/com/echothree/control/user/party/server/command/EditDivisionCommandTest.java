@@ -148,8 +148,9 @@ public class EditDivisionCommandTest {
             setPreferences(true);
             divisionLogic = new DivisionLogic() {
                 @Override
-                public PartyDivision getPartyDivisionByUniversalSpec(ExecutionErrorAccumulator eea, DivisionUniversalSpec universalSpec, EntityPermission permission) {
+                public PartyDivision getPartyDivisionByUniversalSpec(ExecutionErrorAccumulator eea, DivisionUniversalSpec universalSpec, boolean allowDefault, EntityPermission permission) {
                     assertSame(spec, universalSpec);
+                    assertFalse(allowDefault);
                     assertEquals(mode == EditMode.UPDATE ? EntityPermission.READ_WRITE : EntityPermission.READ_ONLY, permission);
                     if(missingDivision) {
                         eea.addExecutionError(ExecutionErrors.UnknownDivisionName.name(), "COMPANY", "DIVISION");

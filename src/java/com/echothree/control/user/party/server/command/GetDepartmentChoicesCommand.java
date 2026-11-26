@@ -65,12 +65,12 @@ public class GetDepartmentChoicesCommand
     protected BaseResult execute() {
         var result = PartyResultFactory.getGetDepartmentChoicesResult();
         var companyName = form.getCompanyName();
-        var partyCompany = companyLogic.getPartyCompanyByName(this, companyName, null, null, false);
+        var partyCompany = companyName == null ? null : companyLogic.getPartyCompanyByName(this, companyName, null, null);
 
         if(!hasExecutionErrors()) {
             var divisionName = form.getDivisionName();
             var partyName = form.getPartyName();
-            var partyDivision = divisionLogic.getPartyDivisionByName(this, partyCompany == null ? null : partyCompany.getParty(), divisionName, partyName, null, true);
+            var partyDivision = divisionLogic.getPartyDivisionByName(this, partyCompany == null ? null : partyCompany.getParty(), divisionName, partyName, null);
 
             if(!hasExecutionErrors()) {
                 var defaultDepartmentChoice = form.getDefaultDepartmentChoice();

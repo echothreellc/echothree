@@ -76,7 +76,7 @@ public class GetCompanyCommand
     protected PartyCompany getEntity() {
         var companyName = form.getCompanyName();
         var partyName = form.getPartyName();
-        var partyCompany = companyLogic.getPartyCompanyByName(this, companyName, partyName, form, true);
+        var partyCompany = companyLogic.getPartyCompanyByName(this, companyName, partyName, form);
 
         if(partyCompany != null) {
             sendEvent(partyCompany.getPartyPK(), EventTypes.READ, null, null, getPartyPK());

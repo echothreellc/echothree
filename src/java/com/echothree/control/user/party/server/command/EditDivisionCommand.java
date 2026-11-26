@@ -109,7 +109,7 @@ public class EditDivisionCommand
 
     @Override
     public PartyDivision getEntity(EditDivisionResult result) {
-        return divisionLogic.getPartyDivisionByUniversalSpec(this, spec, editModeToEntityPermission(editMode));
+        return divisionLogic.getPartyDivisionByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
     }
 
     @Override

@@ -79,7 +79,7 @@ public class GetDepartmentCommand
         var departmentName = form.getDepartmentName();
         var partyName = form.getPartyName();
         var partyDepartment = departmentLogic.getPartyDepartmentByName(this, companyName,
-                divisionName, departmentName, partyName, form, true);
+                divisionName, departmentName, partyName, form);
 
         if(partyDepartment != null) {
             sendEvent(partyDepartment.getPartyPK(), EventTypes.READ, null, null, getPartyPK());

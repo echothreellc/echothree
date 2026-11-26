@@ -107,7 +107,7 @@ public class GetInventoryCostingPoolsCommand
             } else if(inventoryConditionName != null) {
                 filter = inventoryConditionLogic.getInventoryConditionByName(this, inventoryConditionName);
             } else {
-                var company = companyLogic.getPartyCompanyByName(this, companyName, partyName, null, true);
+                var company = companyLogic.getPartyCompanyByName(this, companyName, partyName, null);
 
                 if(!hasExecutionErrors()) {
                     filter = company.getParty();

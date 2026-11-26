@@ -17,11 +17,11 @@
 package com.echothree.control.user.party.common.form;
 
 import com.echothree.control.user.party.common.edit.DepartmentEdit;
-import com.echothree.control.user.party.common.spec.DepartmentSpec;
+import com.echothree.control.user.party.common.spec.DepartmentUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditDepartmentForm
-        extends BaseEditForm<DepartmentSpec, DepartmentEdit> {
+        extends BaseEditForm<DepartmentUniversalSpec, DepartmentEdit> {
     
     // Nothing additional beyond BaseEditForm
     

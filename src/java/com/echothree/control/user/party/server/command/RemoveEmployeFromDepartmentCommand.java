@@ -74,15 +74,15 @@ public class RemoveEmployeFromDepartmentCommand
 
         if(!hasExecutionErrors()) {
             var companyName = form.getCompanyName();
-            var partyCompany = companyLogic.getPartyCompanyByName(this, companyName, null, null, false);
+            var partyCompany = companyName == null ? null : companyLogic.getPartyCompanyByName(this, companyName, null, null);
 
             if(!hasExecutionErrors()) {
                 var divisionName = form.getDivisionName();
-                var partyDivision = divisionLogic.getPartyDivisionByName(this, partyCompany == null ? null : partyCompany.getParty(), divisionName, null, null, false);
+                var partyDivision = divisionName == null ? null : divisionLogic.getPartyDivisionByName(this, partyCompany == null ? null : partyCompany.getParty(), divisionName, null, null);
 
                 if(!hasExecutionErrors()) {
                     var departmentName = form.getDepartmentName();
-                    var partyDepartment = departmentLogic.getPartyDepartmentByName(this, partyDivision == null ? null : partyDivision.getParty(), departmentName, null, null, true);
+                    var partyDepartment = departmentLogic.getPartyDepartmentByName(this, partyDivision == null ? null : partyDivision.getParty(), departmentName, null, null);
 
                     if(!hasExecutionErrors()) {
                         var departmentParty = partyDepartment.getParty();

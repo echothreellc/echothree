@@ -19,6 +19,7 @@ package com.echothree.model.control.party.server.logic;
 import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 import com.echothree.control.user.party.common.spec.DivisionUniversalSpec;
 import com.echothree.control.user.party.common.spec.PartySpecFactory;
+import com.echothree.control.user.party.common.spec.CompanyUniversalSpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
@@ -92,8 +93,14 @@ public class DivisionLogicTest {
             };
             companyLogic = new CompanyLogic() {
                 @Override
+                public PartyCompany getPartyCompanyByUniversalSpec(ExecutionErrorAccumulator eea, CompanyUniversalSpec spec, boolean allowDefault) {
+                    assertFalse(allowDefault);
+                    return getPartyCompanyByName(eea, spec.getCompanyName(), null, null);
+                }
+
+                @Override
                 public PartyCompany getPartyCompanyByName(ExecutionErrorAccumulator eea, String companyName, String partyName,
-                        UniversalEntitySpec spec, boolean required) {
+                        UniversalEntitySpec spec) {
                     assertEquals("COMPANY", companyName);
                     if("company".equals(failure)) {
                         eea.addExecutionError(ExecutionErrors.UnknownCompanyName.name(), companyName);
@@ -228,11 +235,11 @@ public class DivisionLogicTest {
     }
 
     @Test
-    public void existingOptionalLookupCanOmitDivision() {
+    public void byNameRequiresDivisionIdentifier() {
         var logic = new TestLogic(null, EntityPermission.READ_ONLY);
         var errors = new DummyExecutionErrorAccumulator();
-        assertNull(logic.getPartyDivisionByName(errors, (Party)null, null, null, null, false));
-        assertFalse(errors.hasExecutionErrors());
+        assertNull(logic.getPartyDivisionByName(errors, (Party)null, null, null, null));
+        assertEquals(ExecutionErrors.InvalidParameterCount.name(), errors.getExecutionErrors().get(Messages.EXECUTION_ERROR).next().getKey());
         assertEquals(0, logic.divisionLookups);
     }
 
