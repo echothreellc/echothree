@@ -35,7 +35,7 @@ import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -47,7 +47,7 @@ import org.apache.commons.codec.language.Soundex;
 
 @Dependent
 public class EditPartyPaymentMethodCommand
-        extends BaseAbstractEditCommand<PartyPaymentMethodSpec, PartyPaymentMethodEdit, EditPartyPaymentMethodResult, PartyPaymentMethod, PartyPaymentMethod> {
+        extends BaseEditCommand<PartyPaymentMethodSpec, PartyPaymentMethodEdit, EditPartyPaymentMethodResult, PartyPaymentMethod, PartyPaymentMethod> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;

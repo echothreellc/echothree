@@ -19,26 +19,28 @@ package com.echothree.util.server.control;
 import com.echothree.model.control.core.common.transfer.EntityLockTransfer;
 import com.echothree.model.control.core.server.control.EntityLockControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseEditResult;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.exception.EntityLockException;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.exception.EntityLockException;
 import com.echothree.util.common.form.BaseEdit;
 import com.echothree.util.common.form.BaseEditForm;
 import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.form.BaseSpec;
 import com.echothree.util.common.form.ValidationResult;
+import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.BaseValue;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
 import java.util.concurrent.Future;
 import javax.inject.Inject;
 
-public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit>
+public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit, R extends BaseEditResult<E>, BE extends BaseEntity, LE extends BaseEntity>
         extends BaseCommand {
 
     @Inject
@@ -49,11 +51,11 @@ public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit>
     protected EditMode editMode = null;
     protected S spec = null;
     protected E edit = null;
-    
-    protected BaseEditCommand(CommandSecurityDefinition commandSecurityDefinition,
-            List<FieldDefinition> specFieldDefinitions, List<FieldDefinition> editFieldDefinitions) {
+
+    protected BaseEditCommand(CommandSecurityDefinition commandSecurityDefinition, List<FieldDefinition> specFieldDefinitions,
+            List<FieldDefinition> editFieldDefinitions) {
         super(commandSecurityDefinition);
-        
+
         this.specFieldDefinitions = specFieldDefinitions;
         this.editFieldDefinitions = editFieldDefinitions;
     }
@@ -66,13 +68,13 @@ public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit>
         }
     }
 
-    public <R extends BaseResult> Future<CommandResult<R>> runAsync(UserVisitPK userVisitPK, BaseEditForm<S, E> editForm) {
+    public <Result extends BaseResult> Future<CommandResult<Result>> runAsync(UserVisitPK userVisitPK, BaseEditForm<S, E> editForm) {
         initForRun(editForm);
 
         return super.runAsync(userVisitPK);
     }
 
-    public <R extends BaseResult> CommandResult<R> run(UserVisitPK userVisitPK, BaseEditForm<S, E> editForm) {
+    public <Result extends BaseResult> CommandResult<Result> run(UserVisitPK userVisitPK, BaseEditForm<S, E> editForm) {
         initForRun(editForm);
 
         return super.run(userVisitPK);
@@ -81,80 +83,232 @@ public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit>
     protected void setupValidatorForSpec(Validator validator) {
         // Nothing.
     }
-    
+
     protected void setupValidatorForEdit(Validator validator, BaseForm specForm) {
         // Nothing.
     }
-    
+
     protected ValidationResult validateSpec(Validator validator) {
         return validator.validate(spec, getSpecFieldDefinitions());
     }
-    
+
     protected ValidationResult validateEdit(Validator validator) {
         return validator.validate(edit, getEditFieldDefinitions());
     }
-    
+
     protected ValidationResult validateLock() {
         var validator = new Validator(this);
-        
+
         setupValidatorForSpec(validator);
-        
+
         return validateSpec(validator);
     }
-    
-    protected void saveResultAfterEditValidatorErrors() {
-        // Nothing.
-    }
-    
+
     protected ValidationResult validateUpdate() {
         var validator = new Validator(this);
         ValidationResult validationResult;
         BaseForm specForm = spec;
-        
+
         setupValidatorForSpec(validator);
         validationResult = validateSpec(validator);
-        
+
         if(!validationResult.getHasErrors()) {
             setupValidatorForEdit(validator, specForm);
             validationResult = validateEdit(validator);
-            
+
             if(validationResult.getHasErrors()) {
                 saveResultAfterEditValidatorErrors();
             }
         }
-        
+
         return validationResult;
     }
-    
+
     @Override
     protected ValidationResult validate() {
         ValidationResult validationResult = null;
-        
+
         if(editMode.equals(EditMode.LOCK)) {
             validationResult = validateLock();
         } else if(editMode.equals(EditMode.UPDATE)) {
             validationResult = validateUpdate();
         }
-        
+
         return validationResult;
     }
-    
+
     protected List<FieldDefinition> getSpecFieldDefinitions() {
         return specFieldDefinitions;
     }
-    
+
     protected void setSpecFieldDefinitions(List<FieldDefinition> specFieldDefinitions) {
         this.specFieldDefinitions = specFieldDefinitions;
     }
-    
+
     protected List<FieldDefinition> getEditFieldDefinitions() {
         return editFieldDefinitions;
     }
-    
+
     protected void setEditFieldDefinitions(List<FieldDefinition> editFieldDefinitions) {
         this.editFieldDefinitions = editFieldDefinitions;
     }
-    
+
+    protected abstract R getResult();
+
+    protected abstract E getEdit();
+
+    protected EntityPermission editModeToEntityPermission(EditMode editMode) {
+        EntityPermission entityPermission;
+
+        if(editMode == EditMode.UPDATE) {
+            entityPermission = EntityPermission.READ_WRITE;
+        } else {
+            // EditMode.LOCK & EditMode.ABANDON
+            entityPermission = EntityPermission.READ_ONLY;
+        }
+
+        return entityPermission;
+    }
+
+    protected abstract BE getEntity(R result);
+
+    protected abstract LE getLockEntity(BE baseEntity);
+
+    protected abstract void fillInResult(R result, BE baseEntity);
+
+    private void fillInResult(R result, BE baseEntity, LE lockEntity) {
+        fillInResult(result, baseEntity);
+
+        if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.UPDATE)) {
+            result.setEntityLock(getEntityLockTransfer(lockEntity));
+        }
+    }
+
+    protected abstract void doLock(E edit, BE baseEntity);
+
+    // This check is called for both EditMode.LOCK and EditMode.UPDATE.
+    protected void canEdit(BE baseEntity) {
+        // Nothing.
+    }
+
+    // This check is called for EditMode.UPDATE, after canEdit(...) is called.
+    protected void canUpdate(BE baseEntity) {
+        // Nothing.
+    }
+
+    protected abstract void doUpdate(BE baseEntity);
+
+    @SuppressWarnings("ReferenceEquality") // Throwable.addSuppressed rejects self-suppression by identity.
+    private void unlockEntityAfterFailure(LE lockEntity, Throwable failure) {
+        try {
+            unlockEntity(lockEntity);
+        } catch(RuntimeException | Error unlockFailure) {
+            if(unlockFailure != failure) {
+                failure.addSuppressed(unlockFailure);
+            }
+        }
+    }
+
+    @Override
+    protected BaseResult execute() {
+        var result = getResult();
+        var baseEntity = getEntity(result);
+
+        // getEntity(...) may set both SecurityMessages and ExecutionErrors.
+        if(!hasSecurityMessages() && !hasExecutionErrors()) {
+            var lockEntity = getLockEntity(baseEntity);
+
+            switch(editMode) {
+                case LOCK -> {
+                    canEdit(baseEntity);
+
+                    // canEdit(...) may set both SecurityMessages and ExecutionErrors.
+                    if(!hasSecurityMessages()) {
+                        // Build the current-value transfer before acquiring a lock, so a transfer
+                        // construction failure cannot leave a newly acquired lock behind.
+                        fillInResult(result, baseEntity);
+
+                        var lockAcquired = false;
+
+                        try {
+                            if(!hasExecutionErrors()) {
+                                lockAcquired = lockEntity(lockEntity);
+
+                                if(lockAcquired) {
+                                    edit = getEdit();
+                                    result.setEdit(edit);
+                                    doLock(edit, baseEntity);
+                                } else {
+                                    addExecutionError(ExecutionErrors.EntityLockFailed.name());
+                                }
+                            }
+
+                            result.setEntityLock(getEntityLockTransfer(lockEntity));
+                        } catch(RuntimeException | Error lockFailure) {
+                            if(lockAcquired) {
+                                unlockEntityAfterFailure(lockEntity, lockFailure);
+                            }
+
+                            throw lockFailure;
+                        }
+                    }
+                }
+                case ABANDON -> unlockEntity(lockEntity);
+                case UPDATE -> {
+                    canEdit(baseEntity);
+
+                    // canEdit(...) may set both SecurityMessages and ExecutionErrors.
+                    if(!hasSecurityMessages()) {
+                        if(!hasExecutionErrors()) {
+                            canUpdate(baseEntity);
+
+                            if(!hasExecutionErrors()) {
+                                if(lockEntityForUpdate(lockEntity)) {
+                                    try {
+                                        doUpdate(baseEntity);
+                                    } catch(RuntimeException | Error updateFailure) {
+                                        unlockEntityAfterFailure(lockEntity, updateFailure);
+
+                                        throw updateFailure;
+                                    }
+
+                                    unlockEntity(lockEntity);
+                                } else {
+                                    addExecutionError(ExecutionErrors.EntityLockStale.name());
+                                }
+                            }
+                        }
+
+                        if(hasExecutionErrors()) {
+                            fillInResult(result, baseEntity, lockEntity);
+                        }
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
+    R errorResult = null;
+
+    protected void saveResultAfterEditValidatorErrors() {
+        errorResult = getResult();
+
+        var baseEntity = getEntity(errorResult);
+
+        if(baseEntity != null) {
+            var lockEntity = getLockEntity(baseEntity);
+
+            fillInResult(errorResult, baseEntity, lockEntity);
+        }
+    }
+
+    @Override
+    protected BaseResult getBaseResultAfterErrors() {
+        return errorResult;
+    }
+
     /** Selects the entity represented by a lock target; metadata-backed editors may override this mapping. */
     protected BasePK getLockTargetPK(BaseEntity lockTarget) {
         return lockTarget.getPrimaryKey();
@@ -170,7 +324,7 @@ public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit>
         return entityLockControl.getEntityLockTransfer(getUserVisit(), lockTarget);
     }
 
-    public EntityLockTransfer getEntityLockTransfer(BaseValue lockTarget)
+    public EntityLockTransfer getEntityLockTransfer(BaseValue<?> lockTarget)
             throws EntityLockException {
         return entityLockControl.getEntityLockTransfer(getUserVisit(), lockTarget);
     }
@@ -185,7 +339,7 @@ public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit>
         return entityLockControl.lockEntity(lockTarget, getPartyPK()) != 0;
     }
 
-    public boolean lockEntity(BaseValue lockTarget)
+    public boolean lockEntity(BaseValue<?> lockTarget)
             throws EntityLockException {
         return entityLockControl.lockEntity(lockTarget, getPartyPK()) != 0;
     }
@@ -200,7 +354,7 @@ public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit>
         return entityLockControl.lockEntityForUpdate(lockTarget, getPartyPK());
     }
 
-    public boolean lockEntityForUpdate(BaseValue lockTarget)
+    public boolean lockEntityForUpdate(BaseValue<?> lockTarget)
             throws EntityLockException {
         return entityLockControl.lockEntityForUpdate(lockTarget, getPartyPK());
     }
@@ -215,7 +369,7 @@ public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit>
         return entityLockControl.unlockEntity(lockTarget, getPartyPK());
     }
 
-    public boolean unlockEntity(BaseValue lockTarget)
+    public boolean unlockEntity(BaseValue<?> lockTarget)
             throws EntityLockException {
         return entityLockControl.unlockEntity(lockTarget, getPartyPK());
     }
@@ -230,9 +384,9 @@ public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit>
         return entityLockControl.isEntityLocked(lockTarget, getPartyPK());
     }
 
-    public boolean isEntityLocked(BaseValue lockTarget)
+    public boolean isEntityLocked(BaseValue<?> lockTarget)
             throws EntityLockException {
         return entityLockControl.isEntityLocked(lockTarget, getPartyPK());
     }
-    
+
 }

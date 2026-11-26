@@ -28,14 +28,14 @@ import com.echothree.model.data.rating.server.entity.Rating;
 import com.echothree.model.data.rating.server.entity.RatingTypeListItem;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.control.BaseEditCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class EditRatingCommand
-        extends BaseAbstractEditCommand<RatingUniversalSpec, RatingEdit, EditRatingResult, Rating, Rating> {
+        extends BaseEditCommand<RatingUniversalSpec, RatingEdit, EditRatingResult, Rating, Rating> {
 
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;

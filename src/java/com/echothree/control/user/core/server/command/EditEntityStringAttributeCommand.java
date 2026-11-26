@@ -34,7 +34,7 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.persistence.BaseEntity;
@@ -46,7 +46,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditEntityStringAttributeCommand
-        extends BaseAbstractEditCommand<EntityStringAttributeSpec, EntityStringAttributeEdit, EditEntityStringAttributeResult, EntityStringAttribute, EntityInstance> {
+        extends BaseEditCommand<EntityStringAttributeSpec, EntityStringAttributeEdit, EditEntityStringAttributeResult, EntityStringAttribute, EntityInstance> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;

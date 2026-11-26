@@ -32,7 +32,7 @@ import com.echothree.model.data.cancellationpolicy.server.entity.CancellationRea
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -42,7 +42,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditCancellationReasonDescriptionCommand
-        extends BaseAbstractEditCommand<CancellationReasonDescriptionSpec, CancellationReasonDescriptionEdit, EditCancellationReasonDescriptionResult,
+        extends BaseEditCommand<CancellationReasonDescriptionSpec, CancellationReasonDescriptionEdit, EditCancellationReasonDescriptionResult,
                 CancellationReasonDescription, CancellationReason> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;

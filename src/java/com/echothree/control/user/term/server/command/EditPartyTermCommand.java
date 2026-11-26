@@ -31,14 +31,14 @@ import com.echothree.model.data.term.server.entity.PartyTerm;
 import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.control.BaseEditCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class EditPartyTermCommand
-        extends BaseAbstractEditCommand<PartyTermSpec, PartyTermEdit, EditPartyTermResult, PartyTerm, Party> {
+        extends BaseEditCommand<PartyTermSpec, PartyTermEdit, EditPartyTermResult, PartyTerm, Party> {
 
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> CUSTOMER_EDIT_FIELD_DEFINITIONS;
