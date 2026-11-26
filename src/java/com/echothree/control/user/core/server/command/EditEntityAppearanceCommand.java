@@ -30,7 +30,6 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.EntityAppearance;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -104,10 +103,6 @@ public class EditEntityAppearanceCommand
 
         if(!hasExecutionErrors()) {
             entity = entityDataLogic.getEntityAppearance(this, entityInstance, editModeToEntityPermission(editMode));
-        }
-
-        if(entity != null && editMode == EditMode.LOCK) {
-            fillInResult(result, entity);
         }
 
         return entity;

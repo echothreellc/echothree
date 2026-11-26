@@ -28,7 +28,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityNameAttribute;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -109,10 +108,6 @@ public class EditEntityNameAttributeCommand
 
         if(!hasExecutionErrors()) {
             entity = entityDataLogic.getEntityNameAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
-        }
-
-        if(entity != null && editMode == EditMode.LOCK) {
-            fillInResult(result, entity);
         }
 
         return entity;

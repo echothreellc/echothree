@@ -30,7 +30,6 @@ import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityGeoPointAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.string.GeoPointUtils;
@@ -120,10 +119,6 @@ public class EditEntityGeoPointAttributeCommand
 
         if(!hasExecutionErrors()) {
             entity = entityDataLogic.getEntityGeoPointAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
-        }
-
-        if(entity != null && editMode == EditMode.LOCK) {
-            fillInResult(result, entity);
         }
 
         return entity;

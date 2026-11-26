@@ -31,7 +31,6 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.EntityAlias;
 import com.echothree.model.data.core.server.entity.EntityAliasType;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -117,10 +116,6 @@ public class EditEntityAliasCommand
 
         if(!hasExecutionErrors()) {
             entity = entityDataLogic.getEntityAlias(this, entityInstance, entityAliasType, editModeToEntityPermission(editMode));
-        }
-
-        if(entity != null && editMode == EditMode.LOCK) {
-            fillInResult(result, entity);
         }
 
         return entity;

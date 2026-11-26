@@ -28,7 +28,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityBooleanAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -106,10 +105,6 @@ public class EditEntityBooleanAttributeCommand
 
         if(!hasExecutionErrors()) {
             entity = entityDataLogic.getEntityBooleanAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
-        }
-
-        if(entity != null && editMode == EditMode.LOCK) {
-            fillInResult(result, entity);
         }
 
         return entity;

@@ -32,7 +32,6 @@ import com.echothree.model.data.core.server.entity.EntityBlobAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -119,10 +118,6 @@ public class EditEntityBlobAttributeCommand
 
         if(!hasExecutionErrors()) {
             entity = entityDataLogic.getEntityBlobAttribute(this, entityAttribute, entityInstance, language, editModeToEntityPermission(editMode));
-        }
-
-        if(entity != null && editMode == EditMode.LOCK) {
-            fillInResult(result, entity);
         }
 
         return entity;

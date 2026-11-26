@@ -27,7 +27,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityListItem;
 import com.echothree.model.data.core.server.entity.EntityListItemDefault;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
@@ -97,10 +96,6 @@ public class EditEntityListItemDefaultCommand
 
         if(!hasExecutionErrors()) {
             entity = entityDataLogic.getEntityListItemDefault(this, entityAttribute, editModeToEntityPermission(editMode));
-        }
-
-        if(entity != null && editMode == EditMode.LOCK) {
-            fillInResult(result, entity);
         }
 
         return entity;

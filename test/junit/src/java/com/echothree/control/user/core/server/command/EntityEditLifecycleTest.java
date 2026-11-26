@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -58,6 +59,12 @@ public class EntityEditLifecycleTest {
         boolean lockAllowed = true;
         boolean failUpdate;
         boolean rejectUpdate;
+        boolean rejectEdit;
+        boolean denyEdit;
+        boolean failResult;
+        final EntityLockTransfer acquiredLock = new EntityLockTransfer(null, null, 1000L, "locked", 2000L, "expires");
+        final EntityLockTransfer existingLock = new EntityLockTransfer(null, null, 500L, "locked", 1500L, "expires");
+        EntityLockTransfer currentLock = existingLock;
         int results;
 
         TestCommand(EditMode mode, String representedType) {
@@ -79,7 +86,11 @@ public class EntityEditLifecycleTest {
 
                 @Override
                 public long lockEntity(BasePK target, BasePK actor) {
+                    assertEquals(1, results, "Current-value transfer must be built before locking");
                     check("lock", target, actor);
+                    if(lockAllowed) {
+                        currentLock = acquiredLock;
+                    }
                     return lockAllowed ? 1000L : 0L;
                 }
 
@@ -104,7 +115,7 @@ public class EntityEditLifecycleTest {
                 @Override
                 public EntityLockTransfer getEntityLockTransfer(UserVisit visit, BasePK target) {
                     check("transfer", target, new PartyPK(99L));
-                    return null;
+                    return currentLock;
                 }
             });
         }
@@ -148,11 +159,23 @@ public class EntityEditLifecycleTest {
         @Override
         protected void fillInResult(EditEntityAppearanceResult result, EntityAppearance entity) {
             results++;
+            if(failResult) {
+                throw new IllegalStateException("transfer failed");
+            }
         }
 
         @Override
         protected void doLock(EntityAppearanceEdit edit, EntityAppearance entity) {
             operations.add("copy");
+        }
+
+        @Override
+        protected void canEdit(EntityAppearance entity) {
+            if(denyEdit) {
+                addSecurityMessage("InsufficientSecurity");
+            } else if(rejectEdit) {
+                addExecutionError("Rejected");
+            }
         }
 
         @Override
@@ -170,8 +193,8 @@ public class EntityEditLifecycleTest {
             }
         }
 
-        void executeEdit() {
-            execute();
+        EditEntityAppearanceResult executeEdit() {
+            return (EditEntityAppearanceResult)execute();
         }
 
         void recoverValidatorResult() {
@@ -188,13 +211,16 @@ public class EntityEditLifecycleTest {
     @MethodSource("modes")
     public void routesAllModesToOneKeyAndRetainsDefaultResultContract(String type, EditMode mode) {
         var command = new TestCommand(mode, type.equals("default") ? null : type);
-        command.executeEdit();
+        var result = command.executeEdit();
         assertEquals(switch(mode) {
             case LOCK -> List.of("lock", "copy", "transfer");
             case UPDATE -> List.of("update", "write", "unlock");
             case ABANDON -> List.of("unlock");
         }, command.operations);
         assertEquals(mode == EditMode.LOCK ? 1 : 0, command.results);
+        if(mode == EditMode.LOCK) {
+            assertSame(command.acquiredLock, result.getEntityLock());
+        }
     }
 
     @ParameterizedTest
@@ -203,16 +229,51 @@ public class EntityEditLifecycleTest {
         for(var mode : List.of(EditMode.LOCK, EditMode.UPDATE)) {
             var command = new TestCommand(mode, type.equals("default") ? null : type);
             command.lockAllowed = false;
-            command.executeEdit();
+            var result = command.executeEdit();
             assertEquals(List.of(mode == EditMode.LOCK ? "lock" : "update", "transfer"), command.operations);
             assertTrue(command.hasExecutionErrors());
             assertEquals(1, command.results);
+            assertSame(command.existingLock, result.getEntityLock());
         }
         var rejected = new TestCommand(EditMode.UPDATE, type.equals("default") ? null : type);
         rejected.rejectUpdate = true;
         rejected.executeEdit();
         assertEquals(List.of("transfer"), rejected.operations);
         assertEquals(1, rejected.results);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"Item", "Party", "default"})
+    public void transferFailureDoesNotAcquireOrReleaseAnExistingLock(String type) {
+        var command = new TestCommand(EditMode.LOCK, type.equals("default") ? null : type);
+        command.failResult = true;
+        assertThrows(IllegalStateException.class, command::executeEdit);
+        assertEquals(List.of(), command.operations);
+        assertEquals(1, command.results);
+        assertSame(command.existingLock, command.currentLock);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"Item", "Party", "default"})
+    public void editRejectionReturnsCurrentValueAndExistingLockWithoutAcquiring(String type) {
+        var command = new TestCommand(EditMode.LOCK, type.equals("default") ? null : type);
+        command.rejectEdit = true;
+        var result = command.executeEdit();
+        assertEquals(List.of("transfer"), command.operations);
+        assertEquals(1, command.results);
+        assertSame(command.existingLock, result.getEntityLock());
+        assertTrue(command.hasExecutionErrors());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"Item", "Party", "default"})
+    public void securityRejectionDoesNotPopulateCurrentValueOrInspectLocks(String type) {
+        var command = new TestCommand(EditMode.LOCK, type.equals("default") ? null : type);
+        command.denyEdit = true;
+        command.executeEdit();
+        assertEquals(List.of(), command.operations);
+        assertEquals(0, command.results);
+        assertTrue(command.hasSecurityMessages());
     }
 
     @ParameterizedTest

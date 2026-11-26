@@ -66,7 +66,7 @@ public class EntityEditCompatibilityTest {
         assertEquals("EntityLockFailed", fixture.command.getExecutionErrors().get(Messages.EXECUTION_ERROR).next().getKey());
         assertEquals(java.util.List.of("lock", "transfer"), fixture.locks);
         assertEquals(0, fixture.updates);
-        assertTrue(fixture.transfers > 0);
+        assertEquals(1, fixture.transfers);
         assertEquals(0, fixture.readWriteLookups);
     }
 
@@ -82,6 +82,8 @@ public class EntityEditCompatibilityTest {
             assertNotNull(result.getEdit());
             assertEquals(List.of("lock", "transfer"), fixture.locks);
             assertEquals(0, fixture.updates);
+            assertEquals(1, fixture.transfers);
+            assertEquals(fixture.ownerLockTransfer, result.getEntityLock());
             switch(kind) {
                 case "EntityDateAttribute" ->
                         assertEquals("2026-11-25", ((EntityDateAttributeEdit)result.getEdit()).getDateAttribute());
