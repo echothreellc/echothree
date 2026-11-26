@@ -164,6 +164,8 @@ class EntityEditFixture {
     boolean failTransfer;
     boolean allowLock = true;
     boolean duplicateAlias;
+    int duplicateAliasLookups;
+    final EntityLockTransfer ownerLockTransfer = new EntityLockTransfer(null, null, 100L, "locked", 1000L, "expires");
     boolean sameAlias;
     boolean wrongListItem;
     boolean missingOwner;
@@ -291,7 +293,9 @@ class EntityEditFixture {
 
     Object transfer(Class<?> type) {
         transfers++;
-        if(failTransfer) throw new IllegalStateException("transfer failure");
+        if(failTransfer) {
+            throw new IllegalStateException("transfer failure");
+        }
         return construct(type);
     }
 
@@ -1289,6 +1293,7 @@ class EntityEditFixture {
 
         @Override
         public EntityAlias getEntityAliasByEntityAliasTypeAndAlias(EntityAliasType type, String alias) {
+            duplicateAliasLookups++;
             assertSame(entityAliasType, type);
             return sameAlias ? entityAlias : duplicateAlias ? new EntityAlias(new EntityAliasValue(new EntityAliasPK(999L),
                     entityInstance.getPrimaryKey(), entityAliasType.getPrimaryKey(), alias, 0L, Long.MAX_VALUE), EntityPermission.READ_ONLY) : null;
@@ -1355,7 +1360,7 @@ class EntityEditFixture {
                 @Override
                 public EntityLockTransfer getEntityLockTransfer(BasePK key) {
                     lock("transfer", key);
-                    return null;
+                    return EntityEditFixture.this.ownerLockTransfer;
                 }
 
                 @Override
@@ -1408,7 +1413,7 @@ class EntityEditFixture {
                 @Override
                 public EntityLockTransfer getEntityLockTransfer(BasePK key) {
                     lock("transfer", key);
-                    return null;
+                    return EntityEditFixture.this.ownerLockTransfer;
                 }
 
                 @Override
@@ -1461,7 +1466,7 @@ class EntityEditFixture {
                 @Override
                 public EntityLockTransfer getEntityLockTransfer(BasePK key) {
                     lock("transfer", key);
-                    return null;
+                    return EntityEditFixture.this.ownerLockTransfer;
                 }
 
                 @Override
@@ -1514,7 +1519,7 @@ class EntityEditFixture {
                 @Override
                 public EntityLockTransfer getEntityLockTransfer(BasePK key) {
                     lock("transfer", key);
-                    return null;
+                    return EntityEditFixture.this.ownerLockTransfer;
                 }
 
                 @Override
@@ -1567,7 +1572,7 @@ class EntityEditFixture {
                 @Override
                 public EntityLockTransfer getEntityLockTransfer(BasePK key) {
                     lock("transfer", key);
-                    return null;
+                    return EntityEditFixture.this.ownerLockTransfer;
                 }
 
                 @Override
@@ -1620,7 +1625,7 @@ class EntityEditFixture {
                 @Override
                 public EntityLockTransfer getEntityLockTransfer(BasePK key) {
                     lock("transfer", key);
-                    return null;
+                    return EntityEditFixture.this.ownerLockTransfer;
                 }
 
                 @Override
@@ -1673,7 +1678,7 @@ class EntityEditFixture {
                 @Override
                 public EntityLockTransfer getEntityLockTransfer(BasePK key) {
                     lock("transfer", key);
-                    return null;
+                    return EntityEditFixture.this.ownerLockTransfer;
                 }
 
                 @Override
@@ -1726,7 +1731,7 @@ class EntityEditFixture {
                 @Override
                 public EntityLockTransfer getEntityLockTransfer(BasePK key) {
                     lock("transfer", key);
-                    return null;
+                    return EntityEditFixture.this.ownerLockTransfer;
                 }
 
                 @Override
@@ -1779,7 +1784,7 @@ class EntityEditFixture {
                 @Override
                 public EntityLockTransfer getEntityLockTransfer(BasePK key) {
                     lock("transfer", key);
-                    return null;
+                    return EntityEditFixture.this.ownerLockTransfer;
                 }
 
                 @Override
@@ -1832,7 +1837,7 @@ class EntityEditFixture {
                 @Override
                 public EntityLockTransfer getEntityLockTransfer(BasePK key) {
                     lock("transfer", key);
-                    return null;
+                    return EntityEditFixture.this.ownerLockTransfer;
                 }
 
                 @Override
@@ -1885,7 +1890,7 @@ class EntityEditFixture {
                 @Override
                 public EntityLockTransfer getEntityLockTransfer(BasePK key) {
                     lock("transfer", key);
-                    return null;
+                    return EntityEditFixture.this.ownerLockTransfer;
                 }
 
                 @Override
@@ -1938,7 +1943,7 @@ class EntityEditFixture {
                 @Override
                 public EntityLockTransfer getEntityLockTransfer(BasePK key) {
                     lock("transfer", key);
-                    return null;
+                    return EntityEditFixture.this.ownerLockTransfer;
                 }
 
                 @Override
@@ -1991,7 +1996,7 @@ class EntityEditFixture {
                 @Override
                 public EntityLockTransfer getEntityLockTransfer(BasePK key) {
                     lock("transfer", key);
-                    return null;
+                    return EntityEditFixture.this.ownerLockTransfer;
                 }
 
                 @Override
@@ -2044,7 +2049,7 @@ class EntityEditFixture {
                 @Override
                 public EntityLockTransfer getEntityLockTransfer(BasePK key) {
                     lock("transfer", key);
-                    return null;
+                    return EntityEditFixture.this.ownerLockTransfer;
                 }
 
                 @Override
@@ -2097,7 +2102,7 @@ class EntityEditFixture {
                 @Override
                 public EntityLockTransfer getEntityLockTransfer(BasePK key) {
                     lock("transfer", key);
-                    return null;
+                    return EntityEditFixture.this.ownerLockTransfer;
                 }
 
                 @Override

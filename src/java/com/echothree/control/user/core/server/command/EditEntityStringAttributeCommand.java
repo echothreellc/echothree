@@ -119,34 +119,12 @@ public class EditEntityStringAttributeCommand
             language = languageLogic.getLanguage(this, spec, spec);
         }
 
-        var ownerResolved = !hasExecutionErrors();
-
-        if(!hasExecutionErrors() && editMode == EditMode.UPDATE) {
-            var entityAttributeString = coreControl.getEntityAttributeString(entityAttribute);
-            var validationPattern = entityAttributeString == null ? null : entityAttributeString.getValidationPattern();
-            stringAttribute = edit.getStringAttribute();
-
-            if(validationPattern != null) {
-                var pattern = Pattern.compile(validationPattern);
-                var m = pattern.matcher(stringAttribute);
-
-                if(!m.matches()) {
-                    addExecutionError(ExecutionErrors.InvalidStringAttribute.name(), stringAttribute);
-                }
-            }
-        }
-
         if(!hasExecutionErrors()) {
             entity = entityDataLogic.getEntityStringAttribute(this, entityAttribute, entityInstance, language, editModeToEntityPermission(editMode));
         }
 
         if(entity != null && editMode == EditMode.LOCK) {
             fillInResult(result, entity);
-        }
-
-        // Legacy results include owner lock information even when the value lookup or replacement validation fails.
-        if(hasExecutionErrors() && ownerResolved) {
-            result.setEntityLock(getEntityLockTransfer(PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance)));
         }
 
         return entity;
@@ -173,17 +151,28 @@ public class EditEntityStringAttributeCommand
     }
 
     @Override
+    protected void canUpdate(EntityStringAttribute entityStringAttribute) {
+        var entityAttributeString = coreControl.getEntityAttributeString(entityAttribute);
+        var validationPattern = entityAttributeString == null ? null : entityAttributeString.getValidationPattern();
+        stringAttribute = edit.getStringAttribute();
+
+        if(validationPattern != null) {
+            var pattern = Pattern.compile(validationPattern);
+            var m = pattern.matcher(stringAttribute);
+
+            if(!m.matches()) {
+                addExecutionError(ExecutionErrors.InvalidStringAttribute.name(), stringAttribute);
+            }
+        }
+    }
+
+    @Override
     public void doUpdate(EntityStringAttribute entityStringAttribute) {
         var entityStringAttributeValue = coreControl.getEntityStringAttributeValueForUpdate(entityStringAttribute);
 
         entityStringAttributeValue.setStringAttribute(stringAttribute);
 
         coreControl.updateEntityStringAttributeFromValue(entityStringAttributeValue, getPartyPK());
-    }
-
-    @Override
-    protected void saveResultAfterEditValidatorErrors() {
-        // Preserve the existing absence of a result when edit field validation fails.
     }
 
 }

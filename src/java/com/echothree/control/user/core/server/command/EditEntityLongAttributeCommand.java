@@ -106,39 +106,12 @@ public class EditEntityLongAttributeCommand
             entityAttribute = entityAttributeLogic.getEntityAttribute(this, entityInstance, spec, spec);
         }
 
-        var ownerResolved = !hasExecutionErrors();
-
-        if(!hasExecutionErrors() && editMode == EditMode.UPDATE) {
-            var entityAttributeLong = coreControl.getEntityAttributeLong(entityAttribute);
-            longAttribute = Long.valueOf(edit.getLongAttribute());
-
-            if(entityAttributeLong != null) {
-                var upperRangeLongValue = entityAttributeLong.getUpperRangeLongValue();
-                var lowerRangeLongValue = entityAttributeLong.getLowerRangeLongValue();
-
-                if(upperRangeLongValue != null && longAttribute > upperRangeLongValue) {
-                    addExecutionError(ExecutionErrors.UpperRangeExceeded.name(),
-                            upperRangeLongValue, longAttribute);
-                }
-
-                if(lowerRangeLongValue != null && longAttribute < lowerRangeLongValue) {
-                    addExecutionError(ExecutionErrors.LowerRangeExceeded.name(),
-                            lowerRangeLongValue, longAttribute);
-                }
-            }
-        }
-
         if(!hasExecutionErrors()) {
             entity = entityDataLogic.getEntityLongAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
         }
 
         if(entity != null && editMode == EditMode.LOCK) {
             fillInResult(result, entity);
-        }
-
-        // Legacy results include owner lock information even when the value lookup or replacement validation fails.
-        if(hasExecutionErrors() && ownerResolved) {
-            result.setEntityLock(getEntityLockTransfer(PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance)));
         }
 
         return entity;
@@ -165,17 +138,33 @@ public class EditEntityLongAttributeCommand
     }
 
     @Override
+    protected void canUpdate(EntityLongAttribute entityLongAttribute) {
+        var entityAttributeLong = coreControl.getEntityAttributeLong(entityAttribute);
+        longAttribute = Long.valueOf(edit.getLongAttribute());
+
+        if(entityAttributeLong != null) {
+            var upperRangeLongValue = entityAttributeLong.getUpperRangeLongValue();
+            var lowerRangeLongValue = entityAttributeLong.getLowerRangeLongValue();
+
+            if(upperRangeLongValue != null && longAttribute > upperRangeLongValue) {
+                addExecutionError(ExecutionErrors.UpperRangeExceeded.name(),
+                        upperRangeLongValue, longAttribute);
+            }
+
+            if(lowerRangeLongValue != null && longAttribute < lowerRangeLongValue) {
+                addExecutionError(ExecutionErrors.LowerRangeExceeded.name(),
+                        lowerRangeLongValue, longAttribute);
+            }
+        }
+    }
+
+    @Override
     public void doUpdate(EntityLongAttribute entityLongAttribute) {
         var entityLongAttributeValue = coreControl.getEntityLongAttributeValueForUpdate(entityLongAttribute);
 
         entityLongAttributeValue.setLongAttribute(longAttribute);
 
         coreControl.updateEntityLongAttributeFromValue(entityLongAttributeValue, getPartyPK());
-    }
-
-    @Override
-    protected void saveResultAfterEditValidatorErrors() {
-        // Preserve the existing absence of a result when edit field validation fails.
     }
 
 }

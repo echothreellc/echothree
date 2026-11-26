@@ -95,23 +95,12 @@ public class EditEntityListItemDefaultCommand
 
         entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, spec);
 
-        var ownerResolved = !hasExecutionErrors();
-
-        if(!hasExecutionErrors() && editMode == EditMode.UPDATE) {
-            entityListItem = entityAttributeLogic.getEntityListItem(this, entityAttribute, edit);
-        }
-
         if(!hasExecutionErrors()) {
             entity = entityDataLogic.getEntityListItemDefault(this, entityAttribute, editModeToEntityPermission(editMode));
         }
 
         if(entity != null && editMode == EditMode.LOCK) {
             fillInResult(result, entity);
-        }
-
-        // Legacy results include owner lock information even when the value lookup or replacement validation fails.
-        if(hasExecutionErrors() && ownerResolved) {
-            result.setEntityLock(getEntityLockTransfer(entityAttribute));
         }
 
         return entity;
@@ -133,17 +122,17 @@ public class EditEntityListItemDefaultCommand
     }
 
     @Override
+    protected void canUpdate(EntityListItemDefault entityListItemDefault) {
+        entityListItem = entityAttributeLogic.getEntityListItem(this, entityAttribute, edit);
+    }
+
+    @Override
     public void doUpdate(EntityListItemDefault entityListItemDefault) {
         var entityListItemDefaultValue = coreControl.getEntityListItemDefaultValueForUpdate(entityListItemDefault);
 
         entityListItemDefaultValue.setEntityListItemPK(entityListItem.getPrimaryKey());
 
         coreControl.updateEntityListItemDefaultFromValue(entityListItemDefaultValue, getPartyPK());
-    }
-
-    @Override
-    protected void saveResultAfterEditValidatorErrors() {
-        // Preserve the existing absence of a result when edit field validation fails.
     }
 
 }

@@ -152,9 +152,12 @@ public class EntityEditLookupTest {
     public void missingRowsReportCompleteResolvedKeysAndNeverAcquireLocks(String kind, EditMode mode) {
         var fixture = new EntityEditFixture(kind, mode);
         fixture.missingValue = true;
-        assertDoesNotThrow(fixture::execute); // Includes the previously unsafe EntityEntity UPDATE path.
+        var result = (com.echothree.util.common.command.BaseEditResult<?>)assertDoesNotThrow(fixture::execute);
+        assertNull(result.getEntityLock());
+        assertNull(EntityEditFixture.call(result, "get" + kind));
         assertEquals("Unknown" + kind, EntityEditValidationTest.error(fixture));
-        assertEquals(List.of("transfer"), fixture.locks);
+        assertTrue(fixture.locks.isEmpty());
+        assertEquals(0, fixture.transfers);
         assertEquals(0, fixture.updates);
         var values = fixture.command.getExecutionErrors().get(Messages.EXECUTION_ERROR).next().getValues();
         Object[] expected = switch(kind) {

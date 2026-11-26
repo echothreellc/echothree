@@ -102,23 +102,12 @@ public class EditEntityAppearanceCommand
 
         entityInstance = entityDataLogic.getEntityInstanceByEntityRef(this, spec.getEntityRef());
 
-        var ownerResolved = !hasExecutionErrors();
-
-        if(!hasExecutionErrors() && editMode == EditMode.UPDATE) {
-            appearance = appearanceLogic.getAppearanceByName(this, edit.getAppearanceName());
-        }
-
         if(!hasExecutionErrors()) {
             entity = entityDataLogic.getEntityAppearance(this, entityInstance, editModeToEntityPermission(editMode));
         }
 
         if(entity != null && editMode == EditMode.LOCK) {
             fillInResult(result, entity);
-        }
-
-        // Legacy results include owner lock information even when the value lookup or replacement validation fails.
-        if(hasExecutionErrors() && ownerResolved) {
-            result.setEntityLock(getEntityLockTransfer(PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance)));
         }
 
         return entity;
@@ -145,17 +134,17 @@ public class EditEntityAppearanceCommand
     }
 
     @Override
+    protected void canUpdate(EntityAppearance entityAppearance) {
+        appearance = appearanceLogic.getAppearanceByName(this, edit.getAppearanceName());
+    }
+
+    @Override
     public void doUpdate(EntityAppearance entityAppearance) {
         var entityAppearanceValue = appearanceControl.getEntityAppearanceValue(entityAppearance);
 
         entityAppearanceValue.setAppearancePK(appearance.getPrimaryKey());
 
         appearanceControl.updateEntityAppearanceFromValue(entityAppearanceValue, getPartyPK());
-    }
-
-    @Override
-    protected void saveResultAfterEditValidatorErrors() {
-        // Preserve the existing absence of a result when edit field validation fails.
     }
 
 }

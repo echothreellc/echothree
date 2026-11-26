@@ -105,19 +105,12 @@ public class EditEntityTimeAttributeCommand
             entityAttribute = entityAttributeLogic.getEntityAttribute(this, entityInstance, spec, spec);
         }
 
-        var ownerResolved = !hasExecutionErrors();
-
         if(!hasExecutionErrors()) {
             entity = entityDataLogic.getEntityTimeAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
         }
 
         if(entity != null && editMode == EditMode.LOCK) {
             fillInResult(result, entity);
-        }
-
-        // Legacy results include owner lock information even when the value lookup or replacement validation fails.
-        if(hasExecutionErrors() && ownerResolved) {
-            result.setEntityLock(getEntityLockTransfer(PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance)));
         }
 
         return entity;
@@ -150,11 +143,6 @@ public class EditEntityTimeAttributeCommand
         entityTimeAttributeValue.setTimeAttribute(Long.valueOf(edit.getTimeAttribute()));
 
         coreControl.updateEntityTimeAttributeFromValue(entityTimeAttributeValue, getPartyPK());
-    }
-
-    @Override
-    protected void saveResultAfterEditValidatorErrors() {
-        // Preserve the existing absence of a result when edit field validation fails.
     }
 
 }

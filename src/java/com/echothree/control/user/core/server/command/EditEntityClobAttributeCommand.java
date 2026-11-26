@@ -122,19 +122,12 @@ public class EditEntityClobAttributeCommand
             entityAttribute = entityAttributeLogic.getEntityAttribute(this, entityInstance, spec, spec, EntityAttributeTypes.CLOB);
         }
 
-        var ownerResolved = !hasExecutionErrors();
-
         if(!hasExecutionErrors()) {
             entity = entityDataLogic.getEntityClobAttribute(this, entityAttribute, entityInstance, language, editModeToEntityPermission(editMode));
         }
 
         if(entity != null && editMode == EditMode.LOCK) {
             fillInResult(result, entity);
-        }
-
-        // Legacy results include owner lock information even when the value lookup or replacement validation fails.
-        if(hasExecutionErrors() && ownerResolved) {
-            result.setEntityLock(getEntityLockTransfer(PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance)));
         }
 
         return entity;
@@ -180,11 +173,6 @@ public class EditEntityClobAttributeCommand
         entityClobAttributeValue.setMimeTypePK(mimeType.getPrimaryKey());
 
         coreControl.updateEntityClobAttributeFromValue(entityClobAttributeValue, getPartyPK());
-    }
-
-    @Override
-    protected void saveResultAfterEditValidatorErrors() {
-        // Preserve the existing absence of a result when edit field validation fails.
     }
 
 }

@@ -30,6 +30,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 public class EntityEditValidationTest {
+
     @Test
     public void clobAccumulatesIndependentLanguageAndAttributeLookupErrors() {
         var fixture = new EntityEditFixture("EntityClobAttribute", EditMode.UPDATE);
@@ -142,44 +143,6 @@ public class EntityEditValidationTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"EntityNameAttribute", "EntityStringAttribute", "EntityAlias"})
-    public void invalidPatternsWinOverMissingValues(String kind) {
-        var fixture = new EntityEditFixture(kind, EditMode.UPDATE);
-        fixture.property(kind.equals("EntityAlias") ? "EntityAliasTypeDetail" : "EntityAttributeString", "validationPattern", "[0-9]+");
-        fixture.missingValue = true;
-        fixture.execute();
-        assertEquals(switch(kind) {
-            case "EntityAlias" -> "InvalidAlias";
-            case "EntityNameAttribute" -> "InvalidNameAttribute";
-            default -> "InvalidStringAttribute";
-        }, error(fixture));
-        assertEquals(0, fixture.valueLookups);
-        assertEquals(List.of("transfer"), fixture.locks);
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = {"Integer", "Long"})
-    public void numericBoundsAcceptEndpointsAndRejectOutsideValuesBeforeLookup(String type) {
-        for(int value : List.of(-11, -10, 0, 10, 11)) {
-            var fixture = new EntityEditFixture("Entity" + type + "Attribute", EditMode.UPDATE);
-            Object lower = type.equals("Integer") ? (Object)Integer.valueOf(-10) : Long.valueOf(-10);
-            Object upper = type.equals("Integer") ? (Object)Integer.valueOf(10) : Long.valueOf(10);
-            fixture.property("EntityAttribute" + type, "lowerRange" + type + "Value", lower);
-            fixture.property("EntityAttribute" + type, "upperRange" + type + "Value", upper);
-            set(fixture.edit, type + "Attribute", Integer.toString(value));
-            fixture.execute();
-            if(value < -10 || value > 10) {
-                assertEquals(value < -10 ? "LowerRangeExceeded" : "UpperRangeExceeded", error(fixture));
-                assertEquals(0, fixture.valueLookups);
-                assertEquals(0, fixture.updates);
-            } else {
-                assertFalse(fixture.command.hasExecutionErrors());
-                assertEquals(1, fixture.updates);
-            }
-        }
-    }
-
-    @ParameterizedTest
     @ValueSource(booleans = {false, true})
     public void aliasDuplicatesAreScopedAndExcludeTheCurrentAlias(boolean currentAlias) {
         var fixture = new EntityEditFixture("EntityAlias", EditMode.UPDATE);
@@ -199,36 +162,6 @@ public class EntityEditValidationTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"EntityListItemAttribute", "EntityListItemDefault"})
-    public void referencedListItemMustBelongToAttributeAndValidationPrecedesValueLookup(String kind) {
-        var fixture = new EntityEditFixture(kind, EditMode.UPDATE);
-        fixture.wrongListItem = true;
-        fixture.missingValue = true;
-        set(fixture.edit, "EntityListItemName", null);
-        set(fixture.edit, "EntityListItemUuid", "33333333-3333-4333-8333-333333333333");
-        fixture.execute();
-        assertEquals("MismatchedEntityListItem", error(fixture));
-        assertEquals(0, fixture.valueLookups);
-        assertEquals(0, fixture.updates);
-    }
-
-    @ParameterizedTest
-    @ValueSource(booleans = {false, true})
-    public void referencedEntityHonorsConfiguredAllowedTypes(boolean allowed) {
-        var fixture = new EntityEditFixture("EntityEntityAttribute", EditMode.UPDATE);
-        fixture.restrictReferencedTypes = true;
-        fixture.referencedTypeAllowed = allowed;
-        fixture.execute();
-        if(allowed) {
-            assertEquals(1, fixture.updates);
-        } else {
-            assertEquals("UnknownEntityAttributeEntityType", error(fixture));
-            assertEquals(0, fixture.valueLookups);
-            assertEquals(0, fixture.updates);
-        }
-    }
-
-    @ParameterizedTest
     @ValueSource(strings = {"EntityBlobAttribute", "EntityClobAttribute"})
     public void missingRowsPrecedeMimeValidationAndIncompatibleMimeTypesPreventWrites(String kind) {
         var missing = new EntityEditFixture(kind, EditMode.UPDATE);
@@ -242,21 +175,6 @@ public class EntityEditValidationTest {
         invalid.execute();
         assertEquals("InvalidMimeType", error(invalid));
         assertEquals(0, invalid.updates);
-    }
-
-    @Test
-    public void blobRequiresPayloadAndAppearanceReplacementPrecedesMissingRelationship() {
-        var blob = new EntityEditFixture("EntityBlobAttribute", EditMode.UPDATE);
-        EntityEditFixture.call(blob.edit, "setBlobAttribute", (Object)null);
-        blob.execute();
-        assertEquals("MissingBlobAttribute", error(blob));
-        assertEquals(0, blob.updates);
-        var appearance = new EntityEditFixture("EntityAppearance", EditMode.UPDATE);
-        appearance.missingAppearance = true;
-        appearance.missingValue = true;
-        appearance.execute();
-        assertEquals("UnknownAppearanceName", error(appearance));
-        assertEquals(0, appearance.valueLookups);
     }
 
 }

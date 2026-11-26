@@ -108,39 +108,12 @@ public class EditEntityEntityAttributeCommand
             entityAttribute = entityAttributeLogic.getEntityAttribute(this, entityInstance, spec, spec, EntityAttributeTypes.ENTITY);
         }
 
-        var ownerResolved = !hasExecutionErrors();
-
-        if(!hasExecutionErrors() && editMode == EditMode.UPDATE) {
-            entityInstanceAttribute = entityAttributeLogic.getEntityInstanceAttribute(this, edit);
-
-            if(!hasExecutionErrors() && coreControl.countEntityAttributeEntityTypesByEntityAttribute(entityAttribute) > 0) {
-                var allowedEntityType = entityInstanceAttribute.getEntityType();
-
-                if(!coreControl.entityAttributeEntityTypeExists(entityAttribute, allowedEntityType)) {
-                    var entityAttributeDetail = entityAttribute.getLastDetail();
-                    var entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
-                    var allowedEntityTypeDetail = allowedEntityType.getLastDetail();
-
-                    addExecutionError(ExecutionErrors.UnknownEntityAttributeEntityType.name(),
-                            entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                            entityTypeDetail.getEntityTypeName(), entityAttributeDetail.getEntityAttributeName(),
-                            allowedEntityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                            allowedEntityTypeDetail.getEntityTypeName());
-                }
-            }
-        }
-
         if(!hasExecutionErrors()) {
             entity = entityDataLogic.getEntityEntityAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
         }
 
         if(entity != null && editMode == EditMode.LOCK) {
             fillInResult(result, entity);
-        }
-
-        // Legacy results include owner lock information even when the value lookup or replacement validation fails.
-        if(hasExecutionErrors() && ownerResolved) {
-            result.setEntityLock(getEntityLockTransfer(PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance)));
         }
 
         return entity;
@@ -167,17 +140,33 @@ public class EditEntityEntityAttributeCommand
     }
 
     @Override
+    protected void canUpdate(EntityEntityAttribute entityEntityAttribute) {
+        entityInstanceAttribute = entityAttributeLogic.getEntityInstanceAttribute(this, edit);
+
+        if(!hasExecutionErrors() && coreControl.countEntityAttributeEntityTypesByEntityAttribute(entityAttribute) > 0) {
+            var allowedEntityType = entityInstanceAttribute.getEntityType();
+
+            if(!coreControl.entityAttributeEntityTypeExists(entityAttribute, allowedEntityType)) {
+                var entityAttributeDetail = entityAttribute.getLastDetail();
+                var entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
+                var allowedEntityTypeDetail = allowedEntityType.getLastDetail();
+
+                addExecutionError(ExecutionErrors.UnknownEntityAttributeEntityType.name(),
+                        entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
+                        entityTypeDetail.getEntityTypeName(), entityAttributeDetail.getEntityAttributeName(),
+                        allowedEntityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
+                        allowedEntityTypeDetail.getEntityTypeName());
+            }
+        }
+    }
+
+    @Override
     public void doUpdate(EntityEntityAttribute entityEntityAttribute) {
         var entityEntityAttributeValue = coreControl.getEntityEntityAttributeValueForUpdate(entityEntityAttribute);
 
         entityEntityAttributeValue.setEntityInstanceAttributePK(entityInstanceAttribute.getPrimaryKey());
 
         coreControl.updateEntityEntityAttributeFromValue(entityEntityAttributeValue, getPartyPK());
-    }
-
-    @Override
-    protected void saveResultAfterEditValidatorErrors() {
-        // Preserve the existing absence of a result when edit field validation fails.
     }
 
 }

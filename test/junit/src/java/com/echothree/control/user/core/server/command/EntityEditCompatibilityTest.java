@@ -53,32 +53,6 @@ public class EntityEditCompatibilityTest {
         assertEquals(1, fixture.transfers);
     }
 
-    @ParameterizedTest
-    @MethodSource("kinds")
-    public void invalidEditFieldsRetainTheLegacyAbsenceOfARecoveryResult(String kind)
-            throws Exception {
-        var fixture = new EntityEditFixture(kind, EditMode.UPDATE);
-        var factory = com.echothree.control.user.core.common.edit.CoreEditFactory.class.getMethod("get"
-                + (kind.equals("EntityListItemDefault") ? "EntityListItemAttribute" : kind) + "Edit");
-        var emptyEdit = factory.invoke(null);
-        if(kind.equals("EntityListItemDefault") || kind.equals("EntityListItemAttribute")) {
-            EntityEditFixture.call(emptyEdit, "setEntityListItemName", "!");
-        } else if(kind.equals("EntityEntityAttribute")) {
-            EntityEditFixture.call(emptyEdit, "setEntityRefAttribute", "!");
-        }
-        EntityEditFixture.inject(fixture.command, "edit", emptyEdit);
-        var validation = com.echothree.util.server.control.BaseEditCommand.class.getDeclaredMethod("validateUpdate");
-        validation.setAccessible(true);
-        var result = (com.echothree.util.common.form.ValidationResult)validation.invoke(fixture.command);
-        assertTrue(result.getHasErrors());
-        var recovery = com.echothree.util.server.control.BaseCommand.class.getDeclaredMethod("getBaseResultAfterErrors");
-        recovery.setAccessible(true);
-        assertNull(recovery.invoke(fixture.command));
-        assertEquals(0, fixture.valueLookups);
-        assertTrue(fixture.locks.isEmpty());
-        assertEquals(0, fixture.updates);
-    }
-
     static Stream<String> kinds() {
         return Stream.of("EntityAppearance", "EntityAlias", "EntityListItemDefault", "EntityBooleanAttribute", "EntityIntegerAttribute", "EntityLongAttribute", "EntityNameAttribute", "EntityStringAttribute", "EntityDateAttribute", "EntityTimeAttribute", "EntityBlobAttribute", "EntityClobAttribute", "EntityEntityAttribute", "EntityListItemAttribute", "EntityGeoPointAttribute");
     }

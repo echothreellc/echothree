@@ -115,33 +115,12 @@ public class EditEntityAliasCommand
             entityAliasType = entityAliasTypeLogic.getEntityAliasType(this, entityInstance, spec, spec);
         }
 
-        var ownerResolved = !hasExecutionErrors();
-
-        if(!hasExecutionErrors() && editMode == EditMode.UPDATE) {
-            var validationPattern = entityAliasType.getLastDetail().getValidationPattern();
-            var alias = edit.getAlias();
-
-            if(validationPattern != null) {
-                var pattern = Pattern.compile(validationPattern);
-                var matcher = pattern.matcher(alias);
-
-                if(!matcher.matches()) {
-                    addExecutionError(ExecutionErrors.InvalidAlias.name(), alias);
-                }
-            }
-        }
-
         if(!hasExecutionErrors()) {
             entity = entityDataLogic.getEntityAlias(this, entityInstance, entityAliasType, editModeToEntityPermission(editMode));
         }
 
         if(entity != null && editMode == EditMode.LOCK) {
             fillInResult(result, entity);
-        }
-
-        // Legacy results include owner lock information even when the value lookup or replacement validation fails.
-        if(hasExecutionErrors() && ownerResolved) {
-            result.setEntityLock(getEntityLockTransfer(PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance)));
         }
 
         return entity;
@@ -169,13 +148,26 @@ public class EditEntityAliasCommand
 
     @Override
     protected void canUpdate(EntityAlias entityAlias) {
+        var validationPattern = entityAliasType.getLastDetail().getValidationPattern();
         var alias = edit.getAlias();
-        var duplicateEntityAlias = entityAliasControl.getEntityAliasByEntityAliasTypeAndAlias(entityAliasType, alias);
 
-        if(duplicateEntityAlias != null && !entityAlias.equals(duplicateEntityAlias)) {
-            addExecutionError(ExecutionErrors.DuplicateEntityAlias.name(),
-                    entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
-                    entityAliasType.getLastDetail().getEntityAliasTypeName(), alias);
+        if(validationPattern != null) {
+            var pattern = Pattern.compile(validationPattern);
+            var matcher = pattern.matcher(alias);
+
+            if(!matcher.matches()) {
+                addExecutionError(ExecutionErrors.InvalidAlias.name(), alias);
+            }
+        }
+
+        if(!hasExecutionErrors()) {
+            var duplicateEntityAlias = entityAliasControl.getEntityAliasByEntityAliasTypeAndAlias(entityAliasType, alias);
+
+            if(duplicateEntityAlias != null && !entityAlias.equals(duplicateEntityAlias)) {
+                addExecutionError(ExecutionErrors.DuplicateEntityAlias.name(),
+                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
+                        entityAliasType.getLastDetail().getEntityAliasTypeName(), alias);
+            }
         }
     }
 
@@ -186,11 +178,6 @@ public class EditEntityAliasCommand
         entityAliasValue.setAlias(edit.getAlias());
 
         entityAliasControl.updateEntityAliasFromValue(entityAliasValue, getPartyPK());
-    }
-
-    @Override
-    protected void saveResultAfterEditValidatorErrors() {
-        // Preserve the existing absence of a result when edit field validation fails.
     }
 
 }
