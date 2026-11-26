@@ -16,7 +16,10 @@
 
 package com.echothree.model.control.core.server.logic;
 
+import com.echothree.model.control.core.common.exception.DuplicateEntityAttributeGroupDescriptionException;
+import com.echothree.model.control.core.common.exception.UnknownEntityAttributeGroupNameException;
 import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
+import com.echothree.model.control.party.common.exception.UnknownLanguageIsoNameException;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.data.core.common.pk.ComponentVendorPK;
 import com.echothree.model.data.core.common.pk.EntityAttributeGroupDescriptionPK;
@@ -47,9 +50,13 @@ import com.echothree.util.server.message.DummyExecutionErrorAccumulator;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceLock;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SuppressWarnings("UnnecessaryAssignment") // Supply CDI dependencies without a container.
+@ResourceLock("CDIProvider")
 public class EntityAttributeGroupDescriptionLogicTest {
 
     private static class TestLogic extends EntityAttributeGroupLogic {
@@ -107,7 +114,7 @@ public class EntityAttributeGroupDescriptionLogicTest {
                     assertEquals("en", name);
                     languageLookups++;
                     if(missingLanguage) {
-                        eea.addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), name);
+                        TestLogic.this.handleExecutionError(UnknownLanguageIsoNameException.class, eea, ExecutionErrors.UnknownLanguageIsoName.name(), name);
                     }
                     return missingLanguage ? null : language;
                 }
@@ -139,7 +146,7 @@ public class EntityAttributeGroupDescriptionLogicTest {
             assertEquals("TYPE", type);
             assertEquals("GROUP", group);
             if(missingGroup) {
-                eea.addExecutionError(ExecutionErrors.UnknownEntityAttributeGroupName.name(), vendor, type, group);
+                handleExecutionError(UnknownEntityAttributeGroupNameException.class, eea, ExecutionErrors.UnknownEntityAttributeGroupName.name(), vendor, type, group);
             }
             return missingGroup ? null : entityAttributeGroup;
         }
@@ -194,6 +201,27 @@ public class EntityAttributeGroupDescriptionLogicTest {
         assertArrayEquals(new Object[]{"VENDOR", "TYPE", "GROUP", "en"}, error.getValues());
         assertEquals(1, logic.descriptionLookups);
         assertEquals(0, logic.writes);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "success", "owner", "language", "duplicate" })
+    void nullAccumulatorCreatesOrThrowsMatchingException(String scenario) {
+        var logic = new TestLogic();
+        logic.missingGroup = scenario.equals("owner");
+        logic.missingLanguage = scenario.equals("language");
+        logic.duplicate = scenario.equals("duplicate");
+
+        try(var messages = new LogicExceptionTestSupport()) {
+            switch(scenario) {
+                case "owner" -> messages.assertException(UnknownEntityAttributeGroupNameException.class, "UnknownEntityAttributeGroupName", () -> logic.create(null));
+                case "language" -> messages.assertException(UnknownLanguageIsoNameException.class, "UnknownLanguageIsoName", () -> logic.create(null));
+                case "duplicate" -> messages.assertException(DuplicateEntityAttributeGroupDescriptionException.class, "DuplicateEntityAttributeGroupDescription", () -> logic.create(null));
+                default -> assertSame(logic.entityAttributeGroupDescription, logic.create(null));
+            }
+        }
+        assertEquals(scenario.equals("owner") ? 0 : 1, logic.languageLookups);
+        assertEquals(scenario.equals("owner") || scenario.equals("language") ? 0 : 1, logic.descriptionLookups);
+        assertEquals(scenario.equals("success") ? 1 : 0, logic.writes);
     }
 
 }

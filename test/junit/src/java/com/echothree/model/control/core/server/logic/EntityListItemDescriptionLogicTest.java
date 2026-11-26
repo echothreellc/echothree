@@ -16,7 +16,10 @@
 
 package com.echothree.model.control.core.server.logic;
 
+import com.echothree.model.control.core.common.exception.DuplicateEntityListItemDescriptionException;
+import com.echothree.model.control.core.common.exception.UnknownEntityListItemNameException;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.party.common.exception.UnknownLanguageIsoNameException;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.data.core.common.pk.ComponentVendorPK;
 import com.echothree.model.data.core.common.pk.EntityAttributePK;
@@ -53,9 +56,13 @@ import com.echothree.util.server.message.DummyExecutionErrorAccumulator;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceLock;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SuppressWarnings("UnnecessaryAssignment") // Supply CDI dependencies without a container.
+@ResourceLock("CDIProvider")
 public class EntityListItemDescriptionLogicTest {
 
     private static class TestLogic extends EntityListItemLogic {
@@ -126,7 +133,7 @@ public class EntityListItemDescriptionLogicTest {
                     assertEquals("en", name);
                     languageLookups++;
                     if(missingLanguage) {
-                        eea.addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), name);
+                        TestLogic.this.handleExecutionError(UnknownLanguageIsoNameException.class, eea, ExecutionErrors.UnknownLanguageIsoName.name(), name);
                     }
                     return missingLanguage ? null : language;
                 }
@@ -159,7 +166,7 @@ public class EntityListItemDescriptionLogicTest {
             assertEquals("ATTRIBUTE", attribute);
             assertEquals("LIST_ITEM", group);
             if(missingListItem) {
-                eea.addExecutionError(ExecutionErrors.UnknownEntityListItemName.name(), vendor, type, attribute, group);
+                handleExecutionError(UnknownEntityListItemNameException.class, eea, ExecutionErrors.UnknownEntityListItemName.name(), vendor, type, attribute, group);
             }
             return missingListItem ? null : entityListItem;
         }
@@ -214,6 +221,27 @@ public class EntityListItemDescriptionLogicTest {
         assertArrayEquals(new Object[]{"VENDOR", "TYPE", "ATTRIBUTE", "LIST_ITEM", "en"}, error.getValues());
         assertEquals(1, logic.descriptionLookups);
         assertEquals(0, logic.writes);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "success", "owner", "language", "duplicate" })
+    void nullAccumulatorCreatesOrThrowsMatchingException(String scenario) {
+        var logic = new TestLogic();
+        logic.missingListItem = scenario.equals("owner");
+        logic.missingLanguage = scenario.equals("language");
+        logic.duplicate = scenario.equals("duplicate");
+
+        try(var messages = new LogicExceptionTestSupport()) {
+            switch(scenario) {
+                case "owner" -> messages.assertException(UnknownEntityListItemNameException.class, "UnknownEntityListItemName", () -> logic.create(null));
+                case "language" -> messages.assertException(UnknownLanguageIsoNameException.class, "UnknownLanguageIsoName", () -> logic.create(null));
+                case "duplicate" -> messages.assertException(DuplicateEntityListItemDescriptionException.class, "DuplicateEntityListItemDescription", () -> logic.create(null));
+                default -> assertSame(logic.entityListItemDescription, logic.create(null));
+            }
+        }
+        assertEquals(scenario.equals("owner") ? 0 : 1, logic.languageLookups);
+        assertEquals(scenario.equals("owner") || scenario.equals("language") ? 0 : 1, logic.descriptionLookups);
+        assertEquals(scenario.equals("success") ? 1 : 0, logic.writes);
     }
 
 }

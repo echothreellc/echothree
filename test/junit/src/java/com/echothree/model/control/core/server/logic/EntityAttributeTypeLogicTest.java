@@ -16,7 +16,11 @@
 
 package com.echothree.model.control.core.server.logic;
 
+import com.echothree.model.control.core.common.exception.DuplicateEntityAttributeTypeDescriptionException;
+import com.echothree.model.control.core.common.exception.DuplicateEntityAttributeTypeNameException;
+import com.echothree.model.control.core.common.exception.UnknownEntityAttributeTypeNameException;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.party.common.exception.UnknownLanguageIsoNameException;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.data.core.common.pk.EntityAttributeTypeDescriptionPK;
 import com.echothree.model.data.core.common.pk.EntityAttributeTypePK;
@@ -33,9 +37,13 @@ import com.echothree.util.server.message.DummyExecutionErrorAccumulator;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceLock;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SuppressWarnings("UnnecessaryAssignment") // Supply CDI dependencies without a container.
+@ResourceLock("CDIProvider")
 public class EntityAttributeTypeLogicTest {
 
     private static class TestLogic extends EntityAttributeTypeLogic {
@@ -89,7 +97,7 @@ public class EntityAttributeTypeLogicTest {
                     assertEquals("en", name);
                     languageLookups++;
                     if(missingLanguage) {
-                        eea.addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), name);
+                        TestLogic.this.handleExecutionError(UnknownLanguageIsoNameException.class, eea, ExecutionErrors.UnknownLanguageIsoName.name(), name);
                     }
                     return missingLanguage ? null : language;
                 }
@@ -163,6 +171,45 @@ public class EntityAttributeTypeLogicTest {
         logic.createEntityAttributeTypeDescription(errors, "TYPE", "en", "Description");
         assertError(errors, ExecutionErrors.DuplicateEntityAttributeTypeDescription, "TYPE", "en");
         assertEquals(0, logic.descriptionWrites);
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    void nullAccumulatorCreatesTypeOrThrowsDuplicate(boolean duplicate) {
+        var logic = new TestLogic();
+        logic.missingType = !duplicate;
+        try(var messages = new LogicExceptionTestSupport()) {
+            if(duplicate) {
+                messages.assertException(DuplicateEntityAttributeTypeNameException.class, "DuplicateEntityAttributeTypeName",
+                        () -> logic.createEntityAttributeType(null, "TYPE"));
+            } else {
+                assertSame(logic.entityAttributeType, logic.createEntityAttributeType(null, "TYPE"));
+            }
+        }
+        assertEquals(duplicate ? 0 : 1, logic.typeWrites);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "success", "owner", "language", "duplicate" })
+    void nullAccumulatorCreatesDescriptionOrThrowsMatchingException(String scenario) {
+        var logic = new TestLogic();
+        logic.missingType = scenario.equals("owner");
+        logic.missingLanguage = scenario.equals("language");
+        logic.duplicateDescription = scenario.equals("duplicate");
+        try(var messages = new LogicExceptionTestSupport()) {
+            switch(scenario) {
+                case "owner" -> messages.assertException(UnknownEntityAttributeTypeNameException.class, "UnknownEntityAttributeTypeName",
+                        () -> logic.createEntityAttributeTypeDescription(null, "TYPE", "en", "Description"));
+                case "language" -> messages.assertException(UnknownLanguageIsoNameException.class, "UnknownLanguageIsoName",
+                        () -> logic.createEntityAttributeTypeDescription(null, "TYPE", "en", "Description"));
+                case "duplicate" -> messages.assertException(DuplicateEntityAttributeTypeDescriptionException.class, "DuplicateEntityAttributeTypeDescription",
+                        () -> logic.createEntityAttributeTypeDescription(null, "TYPE", "en", "Description"));
+                default -> assertSame(logic.entityAttributeTypeDescription, logic.createEntityAttributeTypeDescription(null, "TYPE", "en", "Description"));
+            }
+        }
+        assertEquals(scenario.equals("owner") ? 0 : 1, logic.languageLookups);
+        assertEquals(scenario.equals("owner") || scenario.equals("language") ? 0 : 1, logic.descriptionLookups);
+        assertEquals(scenario.equals("success") ? 1 : 0, logic.descriptionWrites);
     }
 
 }
