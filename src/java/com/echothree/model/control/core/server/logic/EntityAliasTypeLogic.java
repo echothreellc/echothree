@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.core.server.logic;
 
-import com.google.re2j.Pattern;
 import com.echothree.control.user.core.common.spec.EntityAliasTypeSpec;
 import com.echothree.control.user.core.common.spec.EntityAliasTypeUniversalSpec;
 import com.echothree.control.user.core.common.spec.EntityAliasTypeUuid;
@@ -51,6 +50,7 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import com.google.re2j.Pattern;
 import java.util.ArrayList;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -362,6 +362,23 @@ public class EntityAliasTypeLogic
         }
 
         return entityAlias;
+    }
+
+    public EntityAlias getEntityAlias(ExecutionErrorAccumulator eea, EntityInstance entityInstance, EntityAliasType entityAliasType,
+            EntityPermission entityPermission) {
+        var entityAlias = entityAliasControl.getEntityAlias(entityInstance, entityAliasType, entityPermission);
+
+        if(entityAlias == null) {
+            handleExecutionError(UnknownEntityAliasException.class, eea, ExecutionErrors.UnknownEntityAlias.name(),
+                    entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityAliasType.getLastDetail().getEntityAliasTypeName());
+        }
+
+        return entityAlias;
+    }
+
+    public EntityAlias getEntityAliasForUpdate(ExecutionErrorAccumulator eea, EntityInstance entityInstance,
+            EntityAliasType entityAliasType) {
+        return getEntityAlias(eea, entityInstance, entityAliasType, EntityPermission.READ_WRITE);
     }
 
 }

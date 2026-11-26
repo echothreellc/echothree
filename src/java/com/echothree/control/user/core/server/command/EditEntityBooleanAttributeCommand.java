@@ -18,22 +18,23 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.edit.CoreEditFactory;
 import com.echothree.control.user.core.common.edit.EntityBooleanAttributeEdit;
-import com.echothree.control.user.core.common.form.EditEntityBooleanAttributeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.control.user.core.common.result.EditEntityBooleanAttributeResult;
 import com.echothree.control.user.core.common.spec.EntityBooleanAttributeSpec;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityBooleanAttribute;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -41,12 +42,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditEntityBooleanAttributeCommand
-        extends BaseEditCommand<EntityBooleanAttributeSpec, EntityBooleanAttributeEdit> {
+        extends BaseAbstractEditCommand<EntityBooleanAttributeSpec, EntityBooleanAttributeEdit, EditEntityBooleanAttributeResult, EntityBooleanAttribute, EntityInstance> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -59,7 +60,7 @@ public class EditEntityBooleanAttributeCommand
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeUuid", FieldType.UUID, false, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("BooleanAttribute", FieldType.BOOLEAN, true, null, null)
         );
@@ -71,103 +72,68 @@ public class EditEntityBooleanAttributeCommand
     @Inject
     EntityInstanceLogic entityInstanceLogic;
 
-    
+    private EntityInstance entityInstance;
+    private EntityAttribute entityAttribute;
+
     /** Creates a new instance of EditEntityBooleanAttributeCommand */
     public EditEntityBooleanAttributeCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = CoreResultFactory.getEditEntityBooleanAttributeResult();
-        var parameterCount = entityInstanceLogic.countPossibleEntitySpecs(spec);
+    public EditEntityBooleanAttributeResult getResult() {
+        return CoreResultFactory.getEditEntityBooleanAttributeResult();
+    }
 
-        if(parameterCount == 1) {
-            var entityInstance = entityInstanceLogic.getEntityInstance(this, spec);
+    @Override
+    public EntityBooleanAttributeEdit getEdit() {
+        return CoreEditFactory.getEntityBooleanAttributeEdit();
+    }
 
-            if(!hasExecutionErrors()) {
-                var entityAttributeName = spec.getEntityAttributeName();
-                var entityAttributeUuid = spec.getEntityAttributeUuid();
-                
-                parameterCount = (entityAttributeName == null ? 0 : 1) + (entityAttributeUuid == null ? 0 : 1);
-                
-                if(parameterCount == 1) {
-                    var entityAttribute = entityAttributeName == null ?
-                            entityAttributeLogic.getEntityAttributeByUuid(this, entityAttributeUuid) :
-                            entityAttributeLogic.getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
+    @Override
+    public EntityBooleanAttribute getEntity(EditEntityBooleanAttributeResult result) {
+        EntityBooleanAttribute entity = null;
 
-                    if(!hasExecutionErrors()) {
-                        if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            EntityBooleanAttribute entityBooleanAttribute = null;
-                            var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
+        entityInstance = entityInstanceLogic.getEntityInstance(this, spec);
 
-                            if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                                entityBooleanAttribute = coreControl.getEntityBooleanAttribute(entityAttribute, entityInstance);
-
-                                if(entityBooleanAttribute != null) {
-                                    if(editMode.equals(EditMode.LOCK)) {
-                                        result.setEntityBooleanAttribute(coreControl.getEntityBooleanAttributeTransfer(getUserVisit(), entityBooleanAttribute, entityInstance));
-
-                                        if(lockEntity(basePK)) {
-                                            var edit = CoreEditFactory.getEntityBooleanAttributeEdit();
-
-                                            result.setEdit(edit);
-                                            edit.setBooleanAttribute(entityBooleanAttribute.getBooleanAttribute().toString());
-                                        } else {
-                                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                                        }
-                                    } else { // EditMode.ABANDON
-                                        unlockEntity(basePK);
-                                        basePK = null;
-                                    }
-                                } else {
-                                    addExecutionError(ExecutionErrors.UnknownEntityBooleanAttribute.name(),
-                                            entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityAttributeName);
-                                }
-                            } else if(editMode.equals(EditMode.UPDATE)) {
-                                entityBooleanAttribute = coreControl.getEntityBooleanAttributeForUpdate(entityAttribute, entityInstance);
-
-                                if(entityBooleanAttribute != null) {
-                                    if(lockEntityForUpdate(basePK)) {
-                                        try {
-                                            var entityBooleanAttributeValue = coreControl.getEntityBooleanAttributeValueForUpdate(entityBooleanAttribute);
-
-                                            entityBooleanAttributeValue.setBooleanAttribute(Boolean.valueOf(edit.getBooleanAttribute()));
-
-                                            coreControl.updateEntityBooleanAttributeFromValue(entityBooleanAttributeValue, getPartyPK());
-                                        } finally {
-                                            unlockEntity(basePK);
-                                            basePK = null;
-                                        }
-                                    } else {
-                                        addExecutionError(ExecutionErrors.EntityLockStale.name());
-                                    }
-                                } else {
-                                    addExecutionError(ExecutionErrors.UnknownEntityBooleanAttribute.name(),
-                                            entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityAttributeName);
-                                }
-                            }
-
-                            if(basePK != null) {
-                                result.setEntityLock(getEntityLockTransfer(basePK));
-                            }
-
-                            if(entityBooleanAttribute != null) {
-                                result.setEntityBooleanAttribute(coreControl.getEntityBooleanAttributeTransfer(getUserVisit(), entityBooleanAttribute, entityInstance));
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.MismatchedEntityType.name());
-                        }
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.InvalidParameterCount.name());
-                }
-            }
-        } else {
-            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        if(!hasExecutionErrors()) {
+            entityAttribute = entityAttributeLogic.getEntityAttribute(this, entityInstance, spec, spec);
         }
 
-        return result;
+        if(!hasExecutionErrors()) {
+            entity = entityAttributeLogic.getEntityBooleanAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
+        }
+
+        return entity;
     }
-    
+
+    @Override
+    public EntityInstance getLockEntity(EntityBooleanAttribute entityBooleanAttribute) {
+        return entityInstance;
+    }
+
+    @Override
+    protected BasePK getLockTargetPK(BaseEntity lockTarget) {
+        return PersistenceUtils.getInstance().getBasePKFromEntityInstance((EntityInstance)lockTarget);
+    }
+
+    @Override
+    public void fillInResult(EditEntityBooleanAttributeResult result, EntityBooleanAttribute entityBooleanAttribute) {
+        result.setEntityBooleanAttribute(coreControl.getEntityBooleanAttributeTransfer(getUserVisit(), entityBooleanAttribute, entityInstance));
+    }
+
+    @Override
+    public void doLock(EntityBooleanAttributeEdit edit, EntityBooleanAttribute entityBooleanAttribute) {
+        edit.setBooleanAttribute(entityBooleanAttribute.getBooleanAttribute().toString());
+    }
+
+    @Override
+    public void doUpdate(EntityBooleanAttribute entityBooleanAttribute) {
+        var entityBooleanAttributeValue = coreControl.getEntityBooleanAttributeValueForUpdate(entityBooleanAttribute);
+
+        entityBooleanAttributeValue.setBooleanAttribute(Boolean.valueOf(edit.getBooleanAttribute()));
+
+        coreControl.updateEntityBooleanAttributeFromValue(entityBooleanAttributeValue, getPartyPK());
+    }
+
 }

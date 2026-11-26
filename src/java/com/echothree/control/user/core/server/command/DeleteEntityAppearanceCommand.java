@@ -18,13 +18,13 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityAppearanceForm;
 import com.echothree.model.control.core.server.control.AppearanceControl;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.control.core.server.logic.AppearanceLogic;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
@@ -59,9 +59,11 @@ public class DeleteEntityAppearanceCommand
     AppearanceControl appearanceControl;
 
     @Inject
-    EntityInstanceControl entityInstanceControl;
+    AppearanceLogic appearanceLogic;
 
-    
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     /** Creates a new instance of DeleteEntityAppearanceCommand */
     public DeleteEntityAppearanceCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -70,18 +72,14 @@ public class DeleteEntityAppearanceCommand
     @Override
     protected BaseResult execute() {
         var entityRef = form.getEntityRef();
-        var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
+        var entityInstance = entityInstanceLogic.getEntityInstanceByEntityRef(this, entityRef);
 
         if(entityInstance != null) {
-            var entityAppearance = appearanceControl.getEntityAppearanceForUpdate(entityInstance);
+            var entityAppearance = appearanceLogic.getEntityAppearanceForUpdate(this, entityInstance);
 
             if(entityAppearance != null) {
                 appearanceControl.deleteEntityAppearance(entityAppearance, getPartyPK());
-            } else {
-                addExecutionError(ExecutionErrors.UnknownEntityAppearance.name(), entityRef);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownEntityRef.name(), entityRef);
         }
 
         return null;

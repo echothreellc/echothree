@@ -3199,7 +3199,7 @@ public class CoreControl
         return entityBooleanAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
     
-    private EntityBooleanAttribute getEntityBooleanAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
+    public EntityBooleanAttribute getEntityBooleanAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(EntityBooleanAttributes.fields())
@@ -3468,7 +3468,7 @@ public class CoreControl
         return entityDateAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
-    private EntityDateAttribute getEntityDateAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance, EntityPermission entityPermission) {
+    public EntityDateAttribute getEntityDateAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(EntityDateAttributes.fields())
                 .from(EntityDateAttributes)
@@ -3736,7 +3736,7 @@ public class CoreControl
         return entityIntegerAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
-    private EntityIntegerAttribute getEntityIntegerAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
+    public EntityIntegerAttribute getEntityIntegerAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(EntityIntegerAttributes.fields())
@@ -3881,7 +3881,7 @@ public class CoreControl
         return entityListItemDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
-    private EntityListItemDefault getEntityListItemDefault(EntityAttribute entityAttribute,
+    public EntityListItemDefault getEntityListItemDefault(EntityAttribute entityAttribute,
             EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(EntityListItemDefaults.fields())
@@ -4027,7 +4027,7 @@ public class CoreControl
         return entityListItemAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
-    private EntityListItemAttribute getEntityListItemAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
+    public EntityListItemAttribute getEntityListItemAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(EntityListItemAttributes.fields())
@@ -4314,7 +4314,7 @@ public class CoreControl
         return entityLongAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
-    private EntityLongAttribute getEntityLongAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
+    public EntityLongAttribute getEntityLongAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(EntityLongAttributes.fields())
@@ -4789,7 +4789,7 @@ public class CoreControl
         return entityNameAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
-    private EntityNameAttribute getEntityNameAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
+    public EntityNameAttribute getEntityNameAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(EntityNameAttributes.fields())
@@ -5115,7 +5115,7 @@ public class CoreControl
         return entityStringAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
-    private EntityStringAttribute getEntityStringAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
+    public EntityStringAttribute getEntityStringAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(EntityStringAttributes.fields())
@@ -5398,7 +5398,7 @@ public class CoreControl
         return entityGeoPointAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
-    private EntityGeoPointAttribute getEntityGeoPointAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
+    public EntityGeoPointAttribute getEntityGeoPointAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(EntityGeoPointAttributes.fields())
@@ -5668,7 +5668,7 @@ public class CoreControl
         return entityTimeAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
-    private EntityTimeAttribute getEntityTimeAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance, EntityPermission entityPermission) {
+    public EntityTimeAttribute getEntityTimeAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(EntityTimeAttributes.fields())
                 .from(EntityTimeAttributes)
@@ -5793,7 +5793,7 @@ public class CoreControl
         return entityBlobAttribute;
     }
     
-    private EntityBlobAttribute getEntityBlobAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
+    public EntityBlobAttribute getEntityBlobAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(EntityBlobAttributes.fields())
@@ -5953,7 +5953,7 @@ public class CoreControl
         return entityClobAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
-    private EntityClobAttribute getEntityClobAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
+    public EntityClobAttribute getEntityClobAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(EntityClobAttributes.fields())
@@ -6291,7 +6291,7 @@ public class CoreControl
         return entityEntityAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
-    private EntityEntityAttribute getEntityEntityAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance, EntityPermission entityPermission) {
+    public EntityEntityAttribute getEntityEntityAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(EntityEntityAttributes.fields())
                 .from(EntityEntityAttributes)

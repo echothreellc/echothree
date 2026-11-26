@@ -85,14 +85,10 @@ public class DeleteEntityGeoPointAttributeCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            var entityGeoPointAttribute = coreControl.getEntityGeoPointAttributeForUpdate(entityAttribute, entityInstance);
+                            var entityGeoPointAttribute = entityAttributeLogic.getEntityGeoPointAttributeForUpdate(this, entityAttribute, entityInstance);
 
                             if(entityGeoPointAttribute != null) {
                                 coreControl.deleteEntityGeoPointAttribute(entityGeoPointAttribute, getPartyPK());
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownEntityGeoPointAttribute.name(),
-                                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
-                                        entityAttribute.getLastDetail().getEntityAttributeName());
                             }
                         } else {
                             addExecutionError(ExecutionErrors.MismatchedEntityType.name());

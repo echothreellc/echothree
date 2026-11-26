@@ -93,12 +93,10 @@ public class DeleteEntityAliasCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAliasType.getLastDetail().getEntityType())) {
-                            var entityAlias = entityAliasControl.getEntityAliasForUpdate(entityInstance, entityAliasType);
+                            var entityAlias = entityAliasTypeLogic.getEntityAliasForUpdate(this, entityInstance, entityAliasType);
 
                             if(entityAlias != null) {
                                 entityAliasControl.deleteEntityAlias(entityAlias, getPartyPK());
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownEntityAlias.name());
                             }
                         } else {
                             addExecutionError(ExecutionErrors.MismatchedEntityType.name());

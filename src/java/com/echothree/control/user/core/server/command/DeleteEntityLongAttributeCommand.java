@@ -85,12 +85,10 @@ public class DeleteEntityLongAttributeCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            var entityLongAttribute = coreControl.getEntityLongAttributeForUpdate(entityAttribute, entityInstance);
+                            var entityLongAttribute = entityAttributeLogic.getEntityLongAttributeForUpdate(this, entityAttribute, entityInstance);
 
                             if(entityLongAttribute != null) {
                                 coreControl.deleteEntityLongAttribute(entityLongAttribute, getPartyPK());
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownEntityLongAttribute.name());
                             }
                         } else {
                             addExecutionError(ExecutionErrors.MismatchedEntityType.name());

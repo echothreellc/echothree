@@ -85,12 +85,10 @@ public class DeleteEntityNameAttributeCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            var entityNameAttribute = coreControl.getEntityNameAttributeForUpdate(entityAttribute, entityInstance);
+                            var entityNameAttribute = entityAttributeLogic.getEntityNameAttributeForUpdate(this, entityAttribute, entityInstance);
 
                             if(entityNameAttribute != null) {
                                 coreControl.deleteEntityNameAttribute(entityNameAttribute, getPartyPK());
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownEntityNameAttribute.name());
                             }
                         } else {
                             addExecutionError(ExecutionErrors.MismatchedEntityType.name());

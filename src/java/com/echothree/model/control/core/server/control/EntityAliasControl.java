@@ -624,7 +624,7 @@ public class EntityAliasControl
         return entityAliasFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, query);
     }
 
-    private EntityAlias getEntityAlias(EntityInstance entityInstance, EntityAliasType entityAliasType,
+    public EntityAlias getEntityAlias(EntityInstance entityInstance, EntityAliasType entityAliasType,
             EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(EntityAliases.fields())

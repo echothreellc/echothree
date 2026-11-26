@@ -80,12 +80,10 @@ public class DeleteEntityClobAttributeCommand
                 EntityAttributeTypes.CLOB);
 
         if(!hasExecutionErrors()) {
-            var entityClobAttribute = coreControl.getEntityClobAttributeForUpdate(entityAttribute, entityInstance, language);
+            var entityClobAttribute = entityAttributeLogic.getEntityClobAttributeForUpdate(this, entityAttribute, entityInstance, language);
 
             if(entityClobAttribute != null) {
                 coreControl.deleteEntityClobAttribute(entityClobAttribute, getPartyPK());
-            } else {
-                addExecutionError(ExecutionErrors.UnknownEntityClobAttribute.name());
             }
         }
         

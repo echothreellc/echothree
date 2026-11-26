@@ -60,7 +60,7 @@ public class EditEntityStringDefaultCommand
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("LanguageUuid", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("LanguageUuid", FieldType.UUID, false, null, null)
         );
 
         EDIT_FIELD_DEFINITIONS = List.of(
