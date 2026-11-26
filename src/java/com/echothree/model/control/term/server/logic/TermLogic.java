@@ -138,8 +138,8 @@ public class TermLogic
         return getTermByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
     }
 
-    public PartyTerm getPartyTerm(final ExecutionErrorAccumulator eea, final Party party) {
-        var partyTerm = termControl.getPartyTerm(party);
+    public PartyTerm getPartyTerm(final ExecutionErrorAccumulator eea, final Party party, final EntityPermission entityPermission) {
+        var partyTerm = termControl.getPartyTerm(party, entityPermission);
 
         if(partyTerm == null) {
             handleExecutionError(UnknownPartyTermException.class, eea, ExecutionErrors.UnknownPartyTerm.name(), party.getLastDetail().getPartyName());
@@ -148,6 +148,14 @@ public class TermLogic
         return partyTerm;
     }
     
+    public PartyTerm getPartyTerm(final ExecutionErrorAccumulator eea, final Party party) {
+        return getPartyTerm(eea, party, EntityPermission.READ_ONLY);
+    }
+
+    public PartyTerm getPartyTermForUpdate(final ExecutionErrorAccumulator eea, final Party party) {
+        return getPartyTerm(eea, party, EntityPermission.READ_WRITE);
+    }
+
     public Term getDefaultTerm(final ExecutionErrorAccumulator eea) {
         var term = termControl.getDefaultTerm();
 
