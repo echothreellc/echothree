@@ -17,11 +17,11 @@
 package com.echothree.control.user.party.common.form;
 
 import com.echothree.control.user.party.common.edit.PartyTypeLockoutPolicyEdit;
-import com.echothree.control.user.party.common.spec.PartyTypeSpec;
+import com.echothree.control.user.party.common.spec.PartyTypeUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditPartyTypeLockoutPolicyForm
-        extends BaseEditForm<PartyTypeSpec, PartyTypeLockoutPolicyEdit> {
+        extends BaseEditForm<PartyTypeUniversalSpec, PartyTypeLockoutPolicyEdit> {
     
     // Nothing additional beyond BaseEditForm
     

@@ -54,7 +54,7 @@ public class EditAction
         var partyTypeName = request.getParameter(ParameterConstants.PARTY_TYPE_NAME);
         var actionForm = (EditActionForm)form;
         var commandForm = PartyUtil.getHome().getEditPartyTypeLockoutPolicyForm();
-        var spec = PartyUtil.getHome().getPartyTypeSpec();
+        var spec = PartyUtil.getHome().getPartyTypeUniversalSpec();
         
         if(partyTypeName == null)
             partyTypeName = actionForm.getPartyTypeName();

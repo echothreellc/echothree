@@ -4799,7 +4799,7 @@ public class PartyControl
         return partyTypeLockoutPolicy;
     }
     
-    private PartyTypeLockoutPolicy getPartyTypeLockoutPolicy(PartyType partyType, EntityPermission entityPermission) {
+    public PartyTypeLockoutPolicy getPartyTypeLockoutPolicy(PartyType partyType, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PartyTypeLockoutPolicies.fields())
                 .from(PartyTypeLockoutPolicies)
