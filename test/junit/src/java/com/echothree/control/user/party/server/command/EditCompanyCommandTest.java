@@ -139,8 +139,9 @@ public class EditCompanyCommandTest {
             setPreferences(true);
             companyLogic = new CompanyLogic() {
                 @Override
-                public PartyCompany getPartyCompanyByUniversalSpec(ExecutionErrorAccumulator eea, CompanyUniversalSpec universalSpec, EntityPermission permission) {
+                public PartyCompany getPartyCompanyByUniversalSpec(ExecutionErrorAccumulator eea, CompanyUniversalSpec universalSpec, boolean allowDefault, EntityPermission permission) {
                     assertSame(spec, universalSpec);
+                    assertFalse(allowDefault);
                     assertEquals(mode == EditMode.UPDATE ? EntityPermission.READ_WRITE : EntityPermission.READ_ONLY, permission);
                     if(missingCompany) {
                         eea.addExecutionError(ExecutionErrors.UnknownCompanyName.name(), "COMPANY");

@@ -93,7 +93,7 @@ public class InventoryCostingPoolLogic
 
     public InventoryCostingPool getInventoryCostingPoolByName(final ExecutionErrorAccumulator eea, final String companyName,
             final String partyName, final String itemName, final String inventoryConditionName, final EntityPermission entityPermission) {
-        var company = companyLogic.getPartyCompanyByName(eea, companyName, partyName, null, true);
+        var company = companyLogic.getPartyCompanyByName(eea, companyName, partyName, null);
         var item = itemLogic.getItemByName(eea, itemName);
         var inventoryCondition = inventoryConditionLogic.getInventoryConditionByName(eea, inventoryConditionName);
         InventoryCostingPool inventoryCostingPool = null;

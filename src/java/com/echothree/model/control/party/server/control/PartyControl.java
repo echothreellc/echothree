@@ -3505,7 +3505,7 @@ public class PartyControl
         return getPartyCompanyValueForUpdate(getPartyCompanyForUpdate(party));
     }
     
-    private PartyCompany getDefaultPartyCompany(EntityPermission entityPermission) {
+    public PartyCompany getDefaultPartyCompany(EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PartyCompanies.fields())
                 .from(PartyCompanies)
@@ -3759,7 +3759,7 @@ public class PartyControl
         return getPartyDivisionValueForUpdate(getPartyDivisionForUpdate(party));
     }
     
-    private PartyDivision getDefaultPartyDivision(Party companyParty, EntityPermission entityPermission) {
+    public PartyDivision getDefaultPartyDivision(Party companyParty, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PartyDivisions.fields())
                 .from(PartyDivisions)
@@ -4017,7 +4017,7 @@ public class PartyControl
         return partyDepartment == null? null: partyDepartment.getPartyDepartmentValue().clone();
     }
     
-    private PartyDepartment getPartyDepartment(Party party, EntityPermission entityPermission) {
+    public PartyDepartment getPartyDepartment(Party party, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PartyDepartments.fields())
                 .from(PartyDepartments)
@@ -4044,7 +4044,7 @@ public class PartyControl
         return getPartyDepartmentValueForUpdate(getPartyDepartmentForUpdate(party));
     }
     
-    private PartyDepartment getDefaultPartyDepartment(Party divisionParty, EntityPermission entityPermission) {
+    public PartyDepartment getDefaultPartyDepartment(Party divisionParty, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PartyDepartments.fields())
                 .from(PartyDepartments)
@@ -4074,7 +4074,7 @@ public class PartyControl
         return getPartyDepartmentValueForUpdate(getDefaultPartyDepartmentForUpdate(divisionParty));
     }
     
-    private PartyDepartment getPartyDepartmentByName(Party divisionParty, String partyDepartmentName,
+    public PartyDepartment getPartyDepartmentByName(Party divisionParty, String partyDepartmentName,
             EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PartyDepartments.fields())

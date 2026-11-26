@@ -79,7 +79,7 @@ public class GetDepartmentsCommand
         var companyName = form.getCompanyName();
         var divisionName = form.getDivisionName();
 
-        partyDivision = divisionLogic.getPartyDivisionByName(this, companyName, divisionName, null, null, true);
+        partyDivision = divisionLogic.getPartyDivisionByName(this, companyName, divisionName, null, null);
     }
 
     @Override
