@@ -32,6 +32,7 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.rating.common.pk.RatingTypeListItemPK;
+import com.echothree.model.data.rating.common.pk.RatingPK;
 import com.echothree.model.data.rating.common.pk.RatingTypePK;
 import com.echothree.model.data.rating.server.entity.Rating;
 import com.echothree.model.data.rating.server.entity.RatingDetail;
@@ -887,7 +888,22 @@ public class RatingControl
         return rating;
     }
     
-    private Rating getRatingByName(String ratingName, EntityPermission entityPermission) {
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Rating */
+    public Rating getRatingByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var ratingPK = new RatingPK(entityInstance.getEntityUniqueId());
+
+        return ratingFactory.getEntityFromPK(entityPermission, ratingPK);
+    }
+
+    public Rating getRatingByEntityInstance(EntityInstance entityInstance) {
+        return getRatingByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Rating getRatingByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getRatingByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public Rating getRatingByName(String ratingName, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(Ratings.fields())
                 .from(Ratings)
