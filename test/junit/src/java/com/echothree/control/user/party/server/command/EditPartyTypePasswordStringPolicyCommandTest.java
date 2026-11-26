@@ -65,19 +65,22 @@ public class EditPartyTypePasswordStringPolicyCommandTest {
     @ParameterizedTest
     @ValueSource(strings = { "UnknownUuid", "DeletedUuid", "UnknownEntityRef", "DeletedEntityRef", "InvalidEntityType", "InvalidVendor" })
     public void identifierResolutionFailureStopsPolicyLookup(String errorKey) throws Exception {
-        var command = new PasswordStringPolicyCommandFixture(EditMode.UPDATE, "entity:" + errorKey);
-        command.identifierMask(errorKey.endsWith("EntityRef") ? 4 : 2);
-        command.executeEdit();
-        if(errorKey.startsWith("Invalid")) {
-            assertError(command, ExecutionErrors.InvalidEntityType, "InvalidVendor".equals(errorKey) ? "OTHER" : "ECHO_THREE",
-                    "InvalidVendor".equals(errorKey) ? "PartyType" : "PartyTypePasswordStringPolicy");
-        } else {
-            assertError(command, ExecutionErrors.valueOf(errorKey), errorKey.endsWith("EntityRef")
-                    ? PasswordStringPolicyCommandFixture.ENTITY_REF : PasswordStringPolicyCommandFixture.UUID);
+        var masks = errorKey.startsWith("Invalid") ? new int[] { 2, 4 } : new int[] { errorKey.endsWith("EntityRef") ? 4 : 2 };
+        for(var mask : masks) {
+            var command = new PasswordStringPolicyCommandFixture(EditMode.UPDATE, "entity:" + errorKey);
+            command.identifierMask(mask);
+            command.executeEdit();
+            if(errorKey.startsWith("Invalid")) {
+                assertError(command, ExecutionErrors.InvalidEntityType, "InvalidVendor".equals(errorKey) ? "OTHER" : "ECHO_THREE",
+                        "InvalidVendor".equals(errorKey) ? "PartyType" : "PartyTypePasswordStringPolicy");
+            } else {
+                assertError(command, ExecutionErrors.valueOf(errorKey), errorKey.endsWith("EntityRef")
+                        ? PasswordStringPolicyCommandFixture.ENTITY_REF : PasswordStringPolicyCommandFixture.UUID);
+            }
+            assertEquals(0, command.parentLookups);
+            assertEquals(0, command.policyLookups);
+            assertEquals(0, command.writes);
         }
-        assertEquals(0, command.parentLookups);
-        assertEquals(0, command.policyLookups);
-        assertEquals(0, command.writes);
     }
 
     @ParameterizedTest
