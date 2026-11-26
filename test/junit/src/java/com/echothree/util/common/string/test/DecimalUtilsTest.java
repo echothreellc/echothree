@@ -76,6 +76,30 @@ public class DecimalUtilsTest {
 
     @ParameterizedTest
     @ValueSource(ints = {0, 2, 6, 10, 19})
+    public void nullMinusSignRejectsNegativeValuesInBothDirections(int precision) {
+        for(var amount : new long[]{Long.MIN_VALUE, -100, -1}) {
+            var formatException = assertThrows(DecimalUtils.ParseException.class,
+                    () -> decimalUtils.format(null, ".", precision, amount));
+            assertEquals(DecimalUtils.ParseError.INVALID_FORMAT, formatException.getError());
+            var signedValue = decimalUtils.format("-", ".", precision, amount);
+            var parseException = assertThrows(DecimalUtils.ParseException.class,
+                    () -> decimalUtils.parse(null, ".", precision, signedValue));
+            assertEquals(DecimalUtils.ParseError.INVALID_FORMAT, parseException.getError());
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, 2, 6, 10, 19})
+    public void nullMinusSignPreservesNonnegativeRoundTripsAndAbsentValues(int precision) {
+        for(var amount : new long[]{0, 1, 100, Long.MAX_VALUE}) {
+            var formatted = decimalUtils.format(null, ",", precision, amount);
+            assertEquals(Long.toString(amount), decimalUtils.parse(null, ",", precision, formatted));
+        }
+        assertNull(decimalUtils.format(null, ",", precision, null));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, 2, 6, 10, 19})
     public void roundTripsFullLongRangeAndSubUnitNegatives(int precision) {
         for(var amount : new long[]{Long.MIN_VALUE, Long.MIN_VALUE + 1, -100, -1, 0, 1, 100, Long.MAX_VALUE}) {
             var formatted = decimalUtils.format("~", ",", precision, amount);

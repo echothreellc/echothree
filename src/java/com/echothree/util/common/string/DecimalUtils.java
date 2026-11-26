@@ -112,16 +112,27 @@ public class DecimalUtils {
         return scaled.toString();
     }
 
-    /** Formats scaled storage values exactly, including Long.MIN_VALUE and negative values smaller than one. */
+    /**
+     * Formats scaled storage values exactly, including Long.MIN_VALUE and negative values smaller than one.
+     * A null minus sign disables negative values, matching parse; formatting a negative value then throws
+     * ParseException with INVALID_FORMAT. Nonnegative values remain supported, and a null value returns null.
+     */
     public String format(String minusSign, String fractionSeparator, Integer fractionDigits, Long value) {
         String result = null;
 
         if(value != null) {
             var precision = validateConfiguration(minusSign, fractionSeparator, fractionDigits);
+
+            if(value < 0 && minusSign == null) {
+                throw new ParseException(ParseError.INVALID_FORMAT);
+            }
+
             result = BigDecimal.valueOf(value, precision).toPlainString();
+
             if(precision > 0) {
                 result = result.replace(".", fractionSeparator);
             }
+
             if(value < 0 && minusSign != null) {
                 result = minusSign + result.substring(1);
             }
