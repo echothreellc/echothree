@@ -114,4 +114,8 @@ public class AppearanceLogic
         return entityAppearance;
     }
 
+    public EntityAppearance getEntityAppearanceForUpdate(ExecutionErrorAccumulator eea, EntityInstance entityInstance) {
+        return getEntityAppearance(eea, entityInstance, EntityPermission.READ_WRITE);
+    }
+
 }

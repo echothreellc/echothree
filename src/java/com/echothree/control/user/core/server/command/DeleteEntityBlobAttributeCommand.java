@@ -29,7 +29,6 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.EntityPermission;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -82,7 +81,7 @@ public class DeleteEntityBlobAttributeCommand
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    var entityBlobAttribute = entityAttributeLogic.getEntityBlobAttribute(this, entityAttribute, entityInstance, language, EntityPermission.READ_WRITE);
+                    var entityBlobAttribute = entityAttributeLogic.getEntityBlobAttributeForUpdate(this, entityAttribute, entityInstance, language);
                     
                     if(entityBlobAttribute != null) {
                         coreControl.deleteEntityBlobAttribute(entityBlobAttribute, getPartyPK());

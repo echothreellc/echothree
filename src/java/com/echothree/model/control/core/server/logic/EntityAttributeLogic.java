@@ -1518,7 +1518,7 @@ public class EntityAttributeLogic
         checkEntityType(eea, entityAttribute, EntityAttributeTypes.LISTITEM);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var entityListItemDefault = getEntityListItemDefault(eea, entityAttribute, EntityPermission.READ_WRITE);
+            var entityListItemDefault = getEntityListItemDefaultForUpdate(eea, entityAttribute);
 
             if(entityListItemDefault != null) {
                 coreControl.deleteEntityListItemDefault(entityListItemDefault, deletedBy);
@@ -1626,6 +1626,10 @@ public class EntityAttributeLogic
         return entityListItemDefault;
     }
 
+    public EntityListItemDefault getEntityListItemDefaultForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute) {
+        return getEntityListItemDefault(eea, entityAttribute, EntityPermission.READ_WRITE);
+    }
+
     public EntityBooleanAttribute getEntityBooleanAttribute(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
         var entityBooleanAttribute = coreControl.getEntityBooleanAttribute(entityAttribute, entityInstance, entityPermission);
@@ -1639,6 +1643,11 @@ public class EntityAttributeLogic
         }
 
         return entityBooleanAttribute;
+    }
+
+    public EntityBooleanAttribute getEntityBooleanAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
+            EntityInstance entityInstance) {
+        return getEntityBooleanAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
     }
 
     public EntityIntegerAttribute getEntityIntegerAttribute(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute, EntityInstance entityInstance,
@@ -1656,6 +1665,11 @@ public class EntityAttributeLogic
         return entityIntegerAttribute;
     }
 
+    public EntityIntegerAttribute getEntityIntegerAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
+            EntityInstance entityInstance) {
+        return getEntityIntegerAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
+    }
+
     public EntityLongAttribute getEntityLongAttribute(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
         var entityLongAttribute = coreControl.getEntityLongAttribute(entityAttribute, entityInstance, entityPermission);
@@ -1669,6 +1683,11 @@ public class EntityAttributeLogic
         }
 
         return entityLongAttribute;
+    }
+
+    public EntityLongAttribute getEntityLongAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
+            EntityInstance entityInstance) {
+        return getEntityLongAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
     }
 
     public EntityNameAttribute getEntityNameAttribute(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute, EntityInstance entityInstance,
@@ -1686,6 +1705,11 @@ public class EntityAttributeLogic
         return entityNameAttribute;
     }
 
+    public EntityNameAttribute getEntityNameAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
+            EntityInstance entityInstance) {
+        return getEntityNameAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
+    }
+
     public EntityStringAttribute getEntityStringAttribute(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute, EntityInstance entityInstance, Language language,
             EntityPermission entityPermission) {
         var entityStringAttribute = coreControl.getEntityStringAttribute(entityAttribute, entityInstance, language, entityPermission);
@@ -1699,6 +1723,11 @@ public class EntityAttributeLogic
         }
 
         return entityStringAttribute;
+    }
+
+    public EntityStringAttribute getEntityStringAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
+            EntityInstance entityInstance, Language language) {
+        return getEntityStringAttribute(eea, entityAttribute, entityInstance, language, EntityPermission.READ_WRITE);
     }
 
     public EntityDateAttribute getEntityDateAttribute(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute, EntityInstance entityInstance,
@@ -1716,6 +1745,11 @@ public class EntityAttributeLogic
         return entityDateAttribute;
     }
 
+    public EntityDateAttribute getEntityDateAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
+            EntityInstance entityInstance) {
+        return getEntityDateAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
+    }
+
     public EntityTimeAttribute getEntityTimeAttribute(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
         var entityTimeAttribute = coreControl.getEntityTimeAttribute(entityAttribute, entityInstance, entityPermission);
@@ -1729,6 +1763,11 @@ public class EntityAttributeLogic
         }
 
         return entityTimeAttribute;
+    }
+
+    public EntityTimeAttribute getEntityTimeAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
+            EntityInstance entityInstance) {
+        return getEntityTimeAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
     }
 
     public EntityBlobAttribute getEntityBlobAttribute(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute, EntityInstance entityInstance, Language language,
@@ -1746,6 +1785,11 @@ public class EntityAttributeLogic
         return entityBlobAttribute;
     }
 
+    public EntityBlobAttribute getEntityBlobAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
+            EntityInstance entityInstance, Language language) {
+        return getEntityBlobAttribute(eea, entityAttribute, entityInstance, language, EntityPermission.READ_WRITE);
+    }
+
     public EntityClobAttribute getEntityClobAttribute(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute, EntityInstance entityInstance, Language language,
             EntityPermission entityPermission) {
         var entityClobAttribute = coreControl.getEntityClobAttribute(entityAttribute, entityInstance, language, entityPermission);
@@ -1759,6 +1803,11 @@ public class EntityAttributeLogic
         }
 
         return entityClobAttribute;
+    }
+
+    public EntityClobAttribute getEntityClobAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
+            EntityInstance entityInstance, Language language) {
+        return getEntityClobAttribute(eea, entityAttribute, entityInstance, language, EntityPermission.READ_WRITE);
     }
 
     public EntityEntityAttribute getEntityEntityAttribute(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute, EntityInstance entityInstance,
@@ -1776,6 +1825,11 @@ public class EntityAttributeLogic
         return entityEntityAttribute;
     }
 
+    public EntityEntityAttribute getEntityEntityAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
+            EntityInstance entityInstance) {
+        return getEntityEntityAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
+    }
+
     public EntityListItemAttribute getEntityListItemAttribute(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
         var entityListItemAttribute = coreControl.getEntityListItemAttribute(entityAttribute, entityInstance, entityPermission);
@@ -1791,6 +1845,11 @@ public class EntityAttributeLogic
         return entityListItemAttribute;
     }
 
+    public EntityListItemAttribute getEntityListItemAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
+            EntityInstance entityInstance) {
+        return getEntityListItemAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
+    }
+
     public EntityGeoPointAttribute getEntityGeoPointAttribute(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
         var entityGeoPointAttribute = coreControl.getEntityGeoPointAttribute(entityAttribute, entityInstance, entityPermission);
@@ -1804,6 +1863,11 @@ public class EntityAttributeLogic
         }
 
         return entityGeoPointAttribute;
+    }
+
+    public EntityGeoPointAttribute getEntityGeoPointAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
+            EntityInstance entityInstance) {
+        return getEntityGeoPointAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
     }
 
 }

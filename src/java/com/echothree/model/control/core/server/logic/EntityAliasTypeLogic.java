@@ -376,4 +376,9 @@ public class EntityAliasTypeLogic
         return entityAlias;
     }
 
+    public EntityAlias getEntityAliasForUpdate(ExecutionErrorAccumulator eea, EntityInstance entityInstance,
+            EntityAliasType entityAliasType) {
+        return getEntityAlias(eea, entityInstance, entityAliasType, EntityPermission.READ_WRITE);
+    }
+
 }

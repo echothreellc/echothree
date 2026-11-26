@@ -29,7 +29,6 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.EntityPermission;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -103,7 +102,7 @@ public class DeleteEntityStringAttributeCommand
                                         languageLogic.getLanguageByName(this, languageIsoName);
 
                                 if(!hasExecutionErrors()) {
-                                    var entityStringAttribute = entityAttributeLogic.getEntityStringAttribute(this, entityAttribute, entityInstance, language, EntityPermission.READ_WRITE);
+                                    var entityStringAttribute = entityAttributeLogic.getEntityStringAttributeForUpdate(this, entityAttribute, entityInstance, language);
 
                                     if(entityStringAttribute != null) {
                                         coreControl.deleteEntityStringAttribute(entityStringAttribute, getPartyPK());

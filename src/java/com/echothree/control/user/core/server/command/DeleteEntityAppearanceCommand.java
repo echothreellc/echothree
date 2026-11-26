@@ -31,7 +31,6 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.EntityPermission;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -76,7 +75,7 @@ public class DeleteEntityAppearanceCommand
         var entityInstance = entityInstanceLogic.getEntityInstanceByEntityRef(this, entityRef);
 
         if(entityInstance != null) {
-            var entityAppearance = appearanceLogic.getEntityAppearance(this, entityInstance, EntityPermission.READ_WRITE);
+            var entityAppearance = appearanceLogic.getEntityAppearanceForUpdate(this, entityInstance);
 
             if(entityAppearance != null) {
                 appearanceControl.deleteEntityAppearance(entityAppearance, getPartyPK());

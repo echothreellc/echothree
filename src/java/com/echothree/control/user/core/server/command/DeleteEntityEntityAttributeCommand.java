@@ -29,7 +29,6 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.EntityPermission;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -76,7 +75,7 @@ public class DeleteEntityEntityAttributeCommand
                     EntityAttributeTypes.ENTITY);
 
             if(!hasExecutionErrors()) {
-                var entityEntityAttribute = entityAttributeLogic.getEntityEntityAttribute(this, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
+                var entityEntityAttribute = entityAttributeLogic.getEntityEntityAttributeForUpdate(this, entityAttribute, entityInstance);
                 
                 if(entityEntityAttribute != null) {
                     coreControl.deleteEntityEntityAttribute(entityEntityAttribute, getPartyPK());

@@ -29,7 +29,6 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.EntityPermission;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -76,7 +75,7 @@ public class DeleteEntityListItemAttributeCommand
                     EntityAttributeTypes.LISTITEM);
 
             if(!hasExecutionErrors()) {
-                var entityListItemAttribute = entityAttributeLogic.getEntityListItemAttribute(this, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
+                var entityListItemAttribute = entityAttributeLogic.getEntityListItemAttributeForUpdate(this, entityAttribute, entityInstance);
                 
                 if(entityListItemAttribute != null) {
                     coreControl.deleteEntityListItemAttribute(entityListItemAttribute, getPartyPK());
