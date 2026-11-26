@@ -23,6 +23,7 @@ import com.echothree.control.user.core.common.result.EditEntityStringAttributeRe
 import com.echothree.control.user.core.common.spec.EntityStringAttributeSpec;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.core.server.logic.EntityStringAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
@@ -78,6 +79,9 @@ public class EditEntityStringAttributeCommand
     EntityInstanceLogic entityInstanceLogic;
 
     @Inject
+    EntityStringAttributeLogic entityStringAttributeLogic;
+
+    @Inject
     LanguageLogic languageLogic;
 
     private EntityInstance entityInstance;
@@ -115,7 +119,7 @@ public class EditEntityStringAttributeCommand
         }
 
         if(!hasExecutionErrors()) {
-            entity = entityAttributeLogic.getEntityStringAttribute(this, entityAttribute, entityInstance, language, editModeToEntityPermission(editMode));
+            entity = entityStringAttributeLogic.getEntityStringAttribute(this, entityAttribute, entityInstance, language, editModeToEntityPermission(editMode));
         }
 
         return entity;

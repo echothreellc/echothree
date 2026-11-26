@@ -22,6 +22,8 @@ import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityListItemDefaultResult;
 import com.echothree.control.user.core.common.spec.EntityListItemDefaultSpec;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityListItemAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityListItemLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityListItem;
@@ -67,6 +69,12 @@ public class EditEntityListItemDefaultCommand
     @Inject
     EntityAttributeLogic entityAttributeLogic;
 
+    @Inject
+    EntityListItemAttributeLogic entityListItemAttributeLogic;
+
+    @Inject
+    EntityListItemLogic entityListItemLogic;
+
     private EntityAttribute entityAttribute;
     private EntityListItem entityListItem;
 
@@ -92,7 +100,7 @@ public class EditEntityListItemDefaultCommand
         entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, spec);
 
         if(!hasExecutionErrors()) {
-            entity = entityAttributeLogic.getEntityListItemDefault(this, entityAttribute, editModeToEntityPermission(editMode));
+            entity = entityListItemAttributeLogic.getEntityListItemDefault(this, entityAttribute, editModeToEntityPermission(editMode));
         }
 
         return entity;
@@ -115,7 +123,7 @@ public class EditEntityListItemDefaultCommand
 
     @Override
     protected void canUpdate(EntityListItemDefault entityListItemDefault) {
-        entityListItem = entityAttributeLogic.getEntityListItem(this, entityAttribute, edit);
+        entityListItem = entityListItemLogic.getEntityListItem(this, entityAttribute, edit);
     }
 
     @Override

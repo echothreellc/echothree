@@ -20,6 +20,7 @@ import com.echothree.control.user.core.common.form.CreateEntityStringAttributeFo
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.core.server.logic.EntityStringAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -64,6 +65,9 @@ public class CreateEntityStringAttributeCommand
     EntityInstanceLogic entityInstanceLogic;
 
     @Inject
+    EntityStringAttributeLogic entityStringAttributeLogic;
+
+    @Inject
     LanguageLogic languageLogic;
 
     
@@ -82,7 +86,7 @@ public class CreateEntityStringAttributeCommand
                     EntityAttributeTypes.STRING);
 
             if(!hasExecutionErrors()) {
-                entityAttributeLogic.createEntityStringAttribute(this, entityAttribute, entityInstance, language,
+                entityStringAttributeLogic.createEntityStringAttribute(this, entityAttribute, entityInstance, language,
                         form.getStringAttribute(), getPartyPK());
             }
         }

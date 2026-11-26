@@ -19,6 +19,7 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.CreateEntityBooleanDefaultForm;
 import com.echothree.control.user.core.common.form.DeleteEntityBooleanDefaultForm;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityBooleanAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -56,6 +57,9 @@ public class DeleteEntityBooleanDefaultCommand
     @Inject
     EntityAttributeLogic entityAttributeLogic;
 
+    @Inject
+    EntityBooleanAttributeLogic entityBooleanAttributeLogic;
+
     /** Creates a new instance of CreateEntityBooleanDefaultCommand */
     public DeleteEntityBooleanDefaultCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -66,7 +70,7 @@ public class DeleteEntityBooleanDefaultCommand
         var entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, form);
 
         if(!hasExecutionErrors()) {
-            entityAttributeLogic.deleteEntityBooleanDefault(this, entityAttribute, getPartyPK());
+            entityBooleanAttributeLogic.deleteEntityBooleanDefault(this, entityAttribute, getPartyPK());
         }
 
         return null;

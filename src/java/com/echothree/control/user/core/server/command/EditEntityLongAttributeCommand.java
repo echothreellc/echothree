@@ -23,6 +23,7 @@ import com.echothree.control.user.core.common.result.EditEntityLongAttributeResu
 import com.echothree.control.user.core.common.spec.EntityLongAttributeSpec;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.core.server.logic.EntityLongAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -72,6 +73,9 @@ public class EditEntityLongAttributeCommand
     @Inject
     EntityInstanceLogic entityInstanceLogic;
 
+    @Inject
+    EntityLongAttributeLogic entityLongAttributeLogic;
+
     private EntityInstance entityInstance;
     private EntityAttribute entityAttribute;
     private Long longAttribute;
@@ -102,7 +106,7 @@ public class EditEntityLongAttributeCommand
         }
 
         if(!hasExecutionErrors()) {
-            entity = entityAttributeLogic.getEntityLongAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
+            entity = entityLongAttributeLogic.getEntityLongAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
         }
 
         return entity;

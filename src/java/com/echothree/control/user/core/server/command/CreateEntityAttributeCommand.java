@@ -21,6 +21,7 @@ import com.echothree.control.user.core.common.form.CreateEntityAttributeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityAttributeTypeLogic;
 import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -230,6 +231,9 @@ public class CreateEntityAttributeCommand
     EntityAttributeLogic entityAttributeLogic;
 
     @Inject
+    EntityAttributeTypeLogic entityAttributeTypeLogic;
+
+    @Inject
     EntityTypeLogic entityTypeLogic;
 
     @Inject
@@ -266,7 +270,7 @@ public class CreateEntityAttributeCommand
         var validationResult = validator.validate(form, FORM_FIELD_DEFINITIONS);
         
         if(!validationResult.getHasErrors()) {
-            var entityAttributeType = entityAttributeLogic.getEntityAttributeTypeByName(this, form.getEntityAttributeTypeName());
+            var entityAttributeType = entityAttributeTypeLogic.getEntityAttributeTypeByName(this, form.getEntityAttributeTypeName());
             
             if(!hasExecutionErrors()) {
                 validationResult = AdditionalEntityAttributeValidation(form, validator, entityAttributeType);
@@ -289,7 +293,7 @@ public class CreateEntityAttributeCommand
             if(parameterCount == 0 || parameterCount == 2) {
                 var entityType = entityTypeLogic.getEntityTypeByUniversalSpec(this, form);
                 var entityAttributeTypeName = form.getEntityAttributeTypeName();
-                var entityAttributeType = entityAttributeLogic.getEntityAttributeTypeByName(this, entityAttributeTypeName);
+                var entityAttributeType = entityAttributeTypeLogic.getEntityAttributeTypeByName(this, entityAttributeTypeName);
 
                 if(!hasExecutionErrors()) {
                     var entityListItemSequenceName = entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())

@@ -22,13 +22,14 @@ import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityDateAttributeResult;
 import com.echothree.control.user.core.common.spec.EntityDateAttributeSpec;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityDateAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityDateAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
@@ -71,6 +72,9 @@ public class EditEntityDateAttributeCommand
     EntityAttributeLogic entityAttributeLogic;
 
     @Inject
+    EntityDateAttributeLogic entityDateAttributeLogic;
+
+    @Inject
     EntityInstanceLogic entityInstanceLogic;
 
     private EntityInstance entityInstance;
@@ -102,7 +106,7 @@ public class EditEntityDateAttributeCommand
         }
 
         if(!hasExecutionErrors()) {
-            entity = entityAttributeLogic.getEntityDateAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
+            entity = entityDateAttributeLogic.getEntityDateAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
         }
 
         return entity;

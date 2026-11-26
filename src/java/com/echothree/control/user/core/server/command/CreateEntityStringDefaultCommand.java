@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateEntityStringDefaultForm;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityStringAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -60,6 +61,9 @@ public class CreateEntityStringDefaultCommand
     EntityAttributeLogic entityAttributeLogic;
 
     @Inject
+    EntityStringAttributeLogic entityStringAttributeLogic;
+
+    @Inject
     LanguageLogic languageLogic;
 
     
@@ -77,7 +81,7 @@ public class CreateEntityStringDefaultCommand
             var stringAttribute = String.valueOf(form.getStringAttribute());
             var addMissingAttributes = Boolean.parseBoolean(form.getAddMissingAttributes());
 
-            entityAttributeLogic.createEntityStringDefault(this, entityAttribute, language,
+            entityStringAttributeLogic.createEntityStringDefault(this, entityAttribute, language,
                     stringAttribute, addMissingAttributes, getPartyPK());
         }
         

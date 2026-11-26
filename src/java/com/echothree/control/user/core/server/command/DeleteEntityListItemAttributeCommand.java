@@ -20,12 +20,13 @@ import com.echothree.control.user.core.common.form.DeleteEntityListItemAttribute
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.core.server.logic.EntityListItemAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -60,6 +61,9 @@ public class DeleteEntityListItemAttributeCommand
     @Inject
     EntityInstanceLogic entityInstanceLogic;
 
+    @Inject
+    EntityListItemAttributeLogic entityListItemAttributeLogic;
+
     
     /** Creates a new instance of DeleteEntityListItemAttributeCommand */
     public DeleteEntityListItemAttributeCommand() {
@@ -75,7 +79,7 @@ public class DeleteEntityListItemAttributeCommand
                     EntityAttributeTypes.LISTITEM);
 
             if(!hasExecutionErrors()) {
-                var entityListItemAttribute = entityAttributeLogic.getEntityListItemAttributeForUpdate(this, entityAttribute, entityInstance);
+                var entityListItemAttribute = entityListItemAttributeLogic.getEntityListItemAttributeForUpdate(this, entityAttribute, entityInstance);
                 
                 if(entityListItemAttribute != null) {
                     coreControl.deleteEntityListItemAttribute(entityListItemAttribute, getPartyPK());

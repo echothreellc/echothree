@@ -24,13 +24,15 @@ import com.echothree.control.user.core.common.spec.EntityListItemAttributeSpec;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.core.server.logic.EntityListItemAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityListItemLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityListItem;
 import com.echothree.model.data.core.server.entity.EntityListItemAttribute;
-import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
@@ -75,6 +77,12 @@ public class EditEntityListItemAttributeCommand
     @Inject
     EntityInstanceLogic entityInstanceLogic;
 
+    @Inject
+    EntityListItemAttributeLogic entityListItemAttributeLogic;
+
+    @Inject
+    EntityListItemLogic entityListItemLogic;
+
     private EntityInstance entityInstance;
     private EntityAttribute entityAttribute;
     private EntityListItem entityListItem;
@@ -105,7 +113,7 @@ public class EditEntityListItemAttributeCommand
         }
 
         if(!hasExecutionErrors()) {
-            entity = entityAttributeLogic.getEntityListItemAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
+            entity = entityListItemAttributeLogic.getEntityListItemAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
         }
 
         return entity;
@@ -133,7 +141,7 @@ public class EditEntityListItemAttributeCommand
 
     @Override
     protected void canUpdate(EntityListItemAttribute entityListItemAttribute) {
-        entityListItem = entityAttributeLogic.getEntityListItem(this, entityAttribute, edit);
+        entityListItem = entityListItemLogic.getEntityListItem(this, entityAttribute, edit);
     }
 
     @Override

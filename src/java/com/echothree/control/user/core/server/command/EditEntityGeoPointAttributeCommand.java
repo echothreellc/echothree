@@ -22,6 +22,7 @@ import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityGeoPointAttributeResult;
 import com.echothree.control.user.core.common.spec.EntityGeoPointAttributeSpec;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityGeoPointAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.uom.common.UomConstants;
@@ -78,6 +79,9 @@ public class EditEntityGeoPointAttributeCommand
     EntityAttributeLogic entityAttributeLogic;
 
     @Inject
+    EntityGeoPointAttributeLogic entityGeoPointAttributeLogic;
+
+    @Inject
     EntityInstanceLogic entityInstanceLogic;
 
     @Inject
@@ -114,7 +118,7 @@ public class EditEntityGeoPointAttributeCommand
         }
 
         if(!hasExecutionErrors()) {
-            entity = entityAttributeLogic.getEntityGeoPointAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
+            entity = entityGeoPointAttributeLogic.getEntityGeoPointAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
         }
 
         return entity;

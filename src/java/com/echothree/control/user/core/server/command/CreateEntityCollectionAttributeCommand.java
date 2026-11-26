@@ -19,6 +19,7 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.CreateEntityCollectionAttributeForm;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityEntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -60,6 +61,9 @@ public class CreateEntityCollectionAttributeCommand
     EntityAttributeLogic entityAttributeLogic;
 
     @Inject
+    EntityEntityAttributeLogic entityEntityAttributeLogic;
+
+    @Inject
     EntityInstanceLogic entityInstanceLogic;
 
     
@@ -77,7 +81,7 @@ public class CreateEntityCollectionAttributeCommand
                     EntityAttributeTypes.COLLECTION);
 
             if(!hasExecutionErrors()) {
-                var entityInstanceAttribute = entityAttributeLogic.getEntityInstanceAttribute(this, form);
+                var entityInstanceAttribute = entityEntityAttributeLogic.getEntityInstanceAttribute(this, form);
 
                 if(!hasExecutionErrors()) {
                     var entityCollectionAttribute = coreControl.getEntityCollectionAttribute(entityAttribute, entityInstance, entityInstanceAttribute);

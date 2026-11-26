@@ -19,6 +19,7 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.GetEntityAttributeEntityAttributeGroupForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
+import com.echothree.model.control.core.server.logic.EntityAttributeGroupLogic;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -63,6 +64,9 @@ public class GetEntityAttributeEntityAttributeGroupCommand
     protected EntityAttributeGroupControl entityAttributeGroupControl;
 
     @Inject
+    EntityAttributeGroupLogic entityAttributeGroupLogic;
+
+    @Inject
     EntityAttributeLogic entityAttributeLogic;
     
     /** Creates a new instance of GetEntityAttributeEntityAttributeGroupCommand */
@@ -76,7 +80,7 @@ public class GetEntityAttributeEntityAttributeGroupCommand
         EntityAttributeEntityAttributeGroup result = null;
 
         if(!hasExecutionErrors()) {
-            var entityAttributeGroup = entityAttributeLogic.getEntityAttributeGroupByName(this, entityAttribute.getLastDetail().getEntityType(), form.getEntityAttributeGroupName());
+            var entityAttributeGroup = entityAttributeGroupLogic.getEntityAttributeGroupByName(this, entityAttribute.getLastDetail().getEntityType(), form.getEntityAttributeGroupName());
 
             if(!hasExecutionErrors()) {
                 result = entityAttributeGroupControl.getEntityAttributeEntityAttributeGroup(entityAttribute, entityAttributeGroup);

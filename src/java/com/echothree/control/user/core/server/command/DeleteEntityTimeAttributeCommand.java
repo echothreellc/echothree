@@ -19,6 +19,7 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.DeleteEntityTimeAttributeForm;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.core.server.logic.EntityTimeAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -59,6 +60,9 @@ public class DeleteEntityTimeAttributeCommand
     @Inject
     EntityInstanceLogic entityInstanceLogic;
 
+    @Inject
+    EntityTimeAttributeLogic entityTimeAttributeLogic;
+
     
     /** Creates a new instance of DeleteEntityTimeAttributeCommand */
     public DeleteEntityTimeAttributeCommand() {
@@ -85,7 +89,7 @@ public class DeleteEntityTimeAttributeCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            var entityTimeAttribute = entityAttributeLogic.getEntityTimeAttributeForUpdate(this, entityAttribute, entityInstance);
+                            var entityTimeAttribute = entityTimeAttributeLogic.getEntityTimeAttributeForUpdate(this, entityAttribute, entityInstance);
 
                             if(entityTimeAttribute != null) {
                                 coreControl.deleteEntityTimeAttribute(entityTimeAttribute, getPartyPK());

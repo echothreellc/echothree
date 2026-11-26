@@ -20,6 +20,8 @@ import com.echothree.control.user.core.common.form.CreateEntityListItemDefaultFo
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.core.server.logic.EntityListItemAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityListItemLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -60,6 +62,12 @@ public class CreateEntityListItemDefaultCommand
     @Inject
     EntityAttributeLogic entityAttributeLogic;
 
+    @Inject
+    EntityListItemAttributeLogic entityListItemAttributeLogic;
+
+    @Inject
+    EntityListItemLogic entityListItemLogic;
+
     
     /** Creates a new instance of CreateEntityListItemDefaultCommand */
     public CreateEntityListItemDefaultCommand() {
@@ -71,12 +79,12 @@ public class CreateEntityListItemDefaultCommand
         var entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, form);
 
         if(!hasExecutionErrors()) {
-            var entityListItem = entityAttributeLogic.getEntityListItem(this, entityAttribute, form);
+            var entityListItem = entityListItemLogic.getEntityListItem(this, entityAttribute, form);
 
             if(!hasExecutionErrors()) {
                 var addMissingAttributes = Boolean.parseBoolean(form.getAddMissingAttributes());
 
-                entityAttributeLogic.createEntityListItemDefault(this, entityAttribute,
+                entityListItemAttributeLogic.createEntityListItemDefault(this, entityAttribute,
                         entityListItem, addMissingAttributes, getPartyPK());
             }
         }

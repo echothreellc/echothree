@@ -19,6 +19,7 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.DeleteEntityEntityAttributeForm;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityEntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -58,6 +59,9 @@ public class DeleteEntityEntityAttributeCommand
     EntityAttributeLogic entityAttributeLogic;
 
     @Inject
+    EntityEntityAttributeLogic entityEntityAttributeLogic;
+
+    @Inject
     EntityInstanceLogic entityInstanceLogic;
 
     
@@ -75,7 +79,7 @@ public class DeleteEntityEntityAttributeCommand
                     EntityAttributeTypes.ENTITY);
 
             if(!hasExecutionErrors()) {
-                var entityEntityAttribute = entityAttributeLogic.getEntityEntityAttributeForUpdate(this, entityAttribute, entityInstance);
+                var entityEntityAttribute = entityEntityAttributeLogic.getEntityEntityAttributeForUpdate(this, entityAttribute, entityInstance);
                 
                 if(entityEntityAttribute != null) {
                     coreControl.deleteEntityEntityAttribute(entityEntityAttribute, getPartyPK());

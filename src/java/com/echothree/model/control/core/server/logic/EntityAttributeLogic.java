@@ -16,73 +16,19 @@
 
 package com.echothree.model.control.core.server.logic;
 
-import com.echothree.control.user.core.common.edit.EntityListItemAttributeEdit;
 import com.echothree.control.user.core.common.spec.EntityAttributeSpec;
 import com.echothree.control.user.core.common.spec.EntityAttributeUniversalSpec;
 import com.echothree.control.user.core.common.spec.EntityAttributeUuid;
-import com.echothree.control.user.core.common.spec.EntityInstanceAttributeSpec;
-import com.echothree.control.user.core.common.spec.EntityListItemUniversalSpec;
-import com.echothree.control.user.core.common.spec.EntityListItemUuid;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.DuplicateEntityAttributeNameException;
-import com.echothree.model.control.core.common.exception.DuplicateEntityBooleanAttributeException;
-import com.echothree.model.control.core.common.exception.DuplicateEntityBooleanDefaultException;
-import com.echothree.model.control.core.common.exception.DuplicateEntityClobAttributeException;
-import com.echothree.model.control.core.common.exception.DuplicateEntityDateAttributeException;
-import com.echothree.model.control.core.common.exception.DuplicateEntityDateDefaultException;
-import com.echothree.model.control.core.common.exception.DuplicateEntityGeoPointAttributeException;
-import com.echothree.model.control.core.common.exception.DuplicateEntityGeoPointDefaultException;
-import com.echothree.model.control.core.common.exception.DuplicateEntityIntegerAttributeException;
-import com.echothree.model.control.core.common.exception.DuplicateEntityIntegerDefaultException;
-import com.echothree.model.control.core.common.exception.DuplicateEntityListItemAttributeException;
-import com.echothree.model.control.core.common.exception.DuplicateEntityListItemDefaultException;
-import com.echothree.model.control.core.common.exception.DuplicateEntityListItemNameException;
-import com.echothree.model.control.core.common.exception.DuplicateEntityLongAttributeException;
-import com.echothree.model.control.core.common.exception.DuplicateEntityLongDefaultException;
-import com.echothree.model.control.core.common.exception.DuplicateEntityMultipleListItemAttributeException;
-import com.echothree.model.control.core.common.exception.DuplicateEntityMultipleListItemDefaultException;
-import com.echothree.model.control.core.common.exception.DuplicateEntityNameAttributeException;
-import com.echothree.model.control.core.common.exception.DuplicateEntityStringAttributeException;
-import com.echothree.model.control.core.common.exception.DuplicateEntityStringDefaultException;
-import com.echothree.model.control.core.common.exception.DuplicateEntityTimeAttributeException;
-import com.echothree.model.control.core.common.exception.DuplicateEntityTimeDefaultException;
 import com.echothree.model.control.core.common.exception.DuplicateWorkflowUsageInEntityAttributeException;
 import com.echothree.model.control.core.common.exception.EntityTypeIsNotExtensibleException;
-import com.echothree.model.control.core.common.exception.InvalidEntityAttributeTypeException;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
-import com.echothree.model.control.core.common.exception.InvalidStringAttributeException;
-import com.echothree.model.control.core.common.exception.LowerRangeExceededException;
 import com.echothree.model.control.core.common.exception.MismatchedEntityAttributeTypeException;
-import com.echothree.model.control.core.common.exception.MismatchedEntityListItemException;
 import com.echothree.model.control.core.common.exception.MismatchedEntityTypeException;
 import com.echothree.model.control.core.common.exception.UnknownEntityAttributeNameException;
-import com.echothree.model.control.core.common.exception.UnknownEntityAttributeTypeNameException;
-import com.echothree.model.control.core.common.exception.UnknownEntityBlobAttributeException;
-import com.echothree.model.control.core.common.exception.UnknownEntityBooleanAttributeException;
-import com.echothree.model.control.core.common.exception.UnknownEntityBooleanDefaultException;
-import com.echothree.model.control.core.common.exception.UnknownEntityClobAttributeException;
-import com.echothree.model.control.core.common.exception.UnknownEntityDateAttributeException;
-import com.echothree.model.control.core.common.exception.UnknownEntityDateDefaultException;
-import com.echothree.model.control.core.common.exception.UnknownEntityEntityAttributeException;
-import com.echothree.model.control.core.common.exception.UnknownEntityGeoPointAttributeException;
-import com.echothree.model.control.core.common.exception.UnknownEntityGeoPointDefaultException;
-import com.echothree.model.control.core.common.exception.UnknownEntityIntegerAttributeException;
-import com.echothree.model.control.core.common.exception.UnknownEntityIntegerDefaultException;
-import com.echothree.model.control.core.common.exception.UnknownEntityListItemAttributeException;
-import com.echothree.model.control.core.common.exception.UnknownEntityListItemDefaultException;
-import com.echothree.model.control.core.common.exception.UnknownEntityListItemNameException;
-import com.echothree.model.control.core.common.exception.UnknownEntityLongAttributeException;
-import com.echothree.model.control.core.common.exception.UnknownEntityLongDefaultException;
-import com.echothree.model.control.core.common.exception.UnknownEntityMultipleListItemDefaultException;
-import com.echothree.model.control.core.common.exception.UnknownEntityNameAttributeException;
-import com.echothree.model.control.core.common.exception.UnknownEntityStringAttributeException;
-import com.echothree.model.control.core.common.exception.UnknownEntityStringDefaultException;
-import com.echothree.model.control.core.common.exception.UnknownEntityTimeAttributeException;
-import com.echothree.model.control.core.common.exception.UnknownEntityTimeDefaultException;
-import com.echothree.model.control.core.common.exception.UpperRangeExceededException;
-import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
 import com.echothree.model.control.core.server.database.EntityInstancePKResult;
 import com.echothree.model.control.core.server.database.EntityInstancePKsByBlobEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancePKsByBooleanEntityAttributeQuery;
@@ -98,57 +44,21 @@ import com.echothree.model.control.core.server.database.EntityInstancePKsByMulti
 import com.echothree.model.control.core.server.database.EntityInstancePKsByNameEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancePKsByStringEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancePKsByTimeEntityAttributeQuery;
-import com.echothree.model.control.core.server.database.EntityInstancesMissingBooleanEntityAttributeQuery;
-import com.echothree.model.control.core.server.database.EntityInstancesMissingDateEntityAttributeQuery;
-import com.echothree.model.control.core.server.database.EntityInstancesMissingGeoPointEntityAttributeQuery;
-import com.echothree.model.control.core.server.database.EntityInstancesMissingIntegerEntityAttributeQuery;
-import com.echothree.model.control.core.server.database.EntityInstancesMissingListItemEntityAttributeQuery;
-import com.echothree.model.control.core.server.database.EntityInstancesMissingLongEntityAttributeQuery;
-import com.echothree.model.control.core.server.database.EntityInstancesMissingMultipleListItemEntityAttributeQuery;
-import com.echothree.model.control.core.server.database.EntityInstancesMissingStringEntityAttributeQuery;
-import com.echothree.model.control.core.server.database.EntityInstancesMissingTimeEntityAttributeQuery;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.queue.common.QueueTypes;
 import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.control.queue.server.logic.QueueTypeLogic;
 import com.echothree.model.control.sequence.common.SequenceTypes;
-import com.echothree.model.control.sequence.common.exception.MissingDefaultSequenceException;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.workflow.common.exception.UnknownWorkflowEntityTypeException;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
-import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
-import com.echothree.model.data.core.server.entity.EntityBlobAttribute;
-import com.echothree.model.data.core.server.entity.EntityBooleanAttribute;
-import com.echothree.model.data.core.server.entity.EntityBooleanDefault;
-import com.echothree.model.data.core.server.entity.EntityClobAttribute;
-import com.echothree.model.data.core.server.entity.EntityDateAttribute;
-import com.echothree.model.data.core.server.entity.EntityDateDefault;
-import com.echothree.model.data.core.server.entity.EntityEntityAttribute;
-import com.echothree.model.data.core.server.entity.EntityGeoPointAttribute;
-import com.echothree.model.data.core.server.entity.EntityGeoPointDefault;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.EntityIntegerAttribute;
-import com.echothree.model.data.core.server.entity.EntityIntegerDefault;
-import com.echothree.model.data.core.server.entity.EntityListItem;
-import com.echothree.model.data.core.server.entity.EntityListItemAttribute;
-import com.echothree.model.data.core.server.entity.EntityListItemDefault;
-import com.echothree.model.data.core.server.entity.EntityLongAttribute;
-import com.echothree.model.data.core.server.entity.EntityLongDefault;
-import com.echothree.model.data.core.server.entity.EntityMultipleListItemAttribute;
-import com.echothree.model.data.core.server.entity.EntityMultipleListItemDefault;
-import com.echothree.model.data.core.server.entity.EntityNameAttribute;
-import com.echothree.model.data.core.server.entity.EntityStringAttribute;
-import com.echothree.model.data.core.server.entity.EntityStringDefault;
-import com.echothree.model.data.core.server.entity.EntityTimeAttribute;
-import com.echothree.model.data.core.server.entity.EntityTimeDefault;
 import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.value.EntityAttributeDetailValue;
-import com.echothree.model.data.core.server.value.EntityListItemDetailValue;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.queue.server.value.QueuedEntityValue;
@@ -161,7 +71,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import com.google.re2j.Pattern;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
@@ -172,95 +81,33 @@ public class EntityAttributeLogic
         extends BaseLogic {
 
     @Inject
-    protected EntityAttributeGroupControl entityAttributeGroupControl;
+    protected IndexControl indexControl;
 
     @Inject
-    IndexControl indexControl;
+    protected QueueControl queueControl;
 
     @Inject
-    QueueControl queueControl;
+    protected SequenceControl sequenceControl;
 
     @Inject
-    SequenceControl sequenceControl;
+    protected WorkflowControl workflowControl;
 
     @Inject
-    WorkflowControl workflowControl;
+    protected EntityInstanceLogic entityInstanceLogic;
 
     @Inject
-    protected EntityAttributeGroupLogic entityAttributeGroupLogic;
+    protected EntityTypeLogic entityTypeLogic;
 
     @Inject
-    EntityInstanceLogic entityInstanceLogic;
+    protected QueueTypeLogic queueTypeLogic;
 
     @Inject
-    EntityTypeLogic entityTypeLogic;
-
-    @Inject
-    QueueTypeLogic queueTypeLogic;
-
-    @Inject
-    SequenceGeneratorLogic sequenceGeneratorLogic;
+    protected SequenceGeneratorLogic sequenceGeneratorLogic;
 
     protected EntityAttributeLogic() {
         super();
     }
-    
-    public EntityAttributeType getEntityAttributeTypeByName(final ExecutionErrorAccumulator eea, final String entityAttributeTypeName) {
-        var entityAttributeType = coreControl.getEntityAttributeTypeByName(entityAttributeTypeName);
 
-        if(entityAttributeType == null) {
-            handleExecutionError(UnknownEntityAttributeTypeNameException.class, eea, ExecutionErrors.UnknownEntityAttributeTypeName.name(), entityAttributeTypeName);
-        }
-
-        return entityAttributeType;
-    }
-
-    public EntityAttributeType getEntityAttributeTypeByUuid(final ExecutionErrorAccumulator eea, final String uuid, final EntityPermission entityPermission) {
-        EntityAttributeType entityAttributeType = null;
-        
-        var entityInstance = entityInstanceLogic.getEntityInstance(eea, (String)null, uuid,
-                ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityAttributeType.name());
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            entityAttributeType = coreControl.getEntityAttributeTypeByEntityInstance(entityInstance, entityPermission);
-        }
-
-        return entityAttributeType;
-    }
-    
-    public EntityAttributeType getEntityAttributeTypeByUuid(final ExecutionErrorAccumulator eea, final String uuid) {
-        return getEntityAttributeTypeByUuid(eea, uuid, EntityPermission.READ_ONLY);
-    }
-    
-    public EntityAttributeType getEntityAttributeTypeByUuidForUpdate(final ExecutionErrorAccumulator eea, final String uuid) {
-        return getEntityAttributeTypeByUuid(eea, uuid, EntityPermission.READ_WRITE);
-    }
-    
-    public EntityAttributeGroup getEntityAttributeGroupByName(final ExecutionErrorAccumulator eea, final EntityType entityType, final String entityAttributeGroupName) {
-        return entityAttributeGroupLogic.getEntityAttributeGroupByName(eea, entityType, entityAttributeGroupName);
-    }
-
-    public EntityAttributeGroup getEntityAttributeGroupByUuid(final ExecutionErrorAccumulator eea, final String uuid, final EntityPermission entityPermission) {
-        EntityAttributeGroup entityAttributeGroup = null;
-        
-        var entityInstance = entityInstanceLogic.getEntityInstance(eea, (String)null, uuid,
-                ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityAttributeGroup.name());
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            entityAttributeGroup = entityAttributeGroupControl.getEntityAttributeGroupByEntityInstance(entityInstance, entityPermission);
-        }
-
-        return entityAttributeGroup;
-    }
-    
-    public EntityAttributeGroup getEntityAttributeGroupByUuid(final ExecutionErrorAccumulator eea, final String uuid) {
-        return getEntityAttributeGroupByUuid(eea, uuid, EntityPermission.READ_ONLY);
-    }
-    
-    public EntityAttributeGroup getEntityAttributeGroupByUuidForUpdate(final ExecutionErrorAccumulator eea, final String uuid) {
-        return getEntityAttributeGroupByUuid(eea, uuid, EntityPermission.READ_WRITE);
-    }
-    
     public EntityAttribute createEntityAttribute(final ExecutionErrorAccumulator eea, final EntityType entityType,
             String entityAttributeName, final EntityAttributeType entityAttributeType, final Boolean trackRevisions,
             final Boolean checkContentWebAddress, final String validationPattern, final Integer upperRangeIntegerValue,
@@ -364,7 +211,7 @@ public class EntityAttributeLogic
         
         return entityAttribute;
     }
-    
+
     public EntityAttribute getEntityAttributeByName(final ExecutionErrorAccumulator eea, final EntityType entityType,
             final String entityAttributeName, EntityPermission entityPermission) {
         var entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName, entityPermission);
@@ -383,12 +230,12 @@ public class EntityAttributeLogic
             final String entityAttributeName) {
         return getEntityAttributeByName(eea, entityType, entityAttributeName, EntityPermission.READ_ONLY);
     }
-    
+
     public EntityAttribute getEntityAttributeByNameForUpdate(final ExecutionErrorAccumulator eea, final EntityType entityType,
             final String entityAttributeName) {
         return getEntityAttributeByName(eea, entityType, entityAttributeName, EntityPermission.READ_WRITE);
     }
-    
+
     public EntityAttribute getEntityAttributeByName(final ExecutionErrorAccumulator eea, final ComponentVendor componentVendor,
             final String entityTypeName, final String entityAttributeName, EntityPermission entityPermission) {
         var entityType = entityTypeLogic.getEntityTypeByName(eea, componentVendor, entityTypeName);
@@ -405,12 +252,12 @@ public class EntityAttributeLogic
             final String entityTypeName, final String entityAttributeName) {
         return getEntityAttributeByName(eea, componentVendor, entityTypeName, entityAttributeName, EntityPermission.READ_ONLY);
     }
-    
+
     public EntityAttribute getEntityAttributeByNameForUpdate(final ExecutionErrorAccumulator eea, final ComponentVendor componentVendor,
             final String entityTypeName, final String entityAttributeName) {
         return getEntityAttributeByName(eea, componentVendor, entityTypeName, entityAttributeName, EntityPermission.READ_WRITE);
     }
-    
+
     public EntityAttribute getEntityAttributeByName(final ExecutionErrorAccumulator eea, final String componentVendorName,
             final String entityTypeName, final String entityAttributeName, EntityPermission entityPermission) {
         var entityType = entityTypeLogic.getEntityTypeByName(eea, componentVendorName, entityTypeName);
@@ -422,17 +269,17 @@ public class EntityAttributeLogic
 
         return entityAttribute;
     }
-    
+
     public EntityAttribute getEntityAttributeByName(final ExecutionErrorAccumulator eea, final String componentVendorName,
             final String entityTypeName, final String entityAttributeName) {
         return getEntityAttributeByName(eea, componentVendorName, entityTypeName, entityAttributeName, EntityPermission.READ_ONLY);
     }
-    
+
     public EntityAttribute getEntityAttributeByNameForUpdate(final ExecutionErrorAccumulator eea, final String componentVendorName,
             final String entityTypeName, final String entityAttributeName) {
         return getEntityAttributeByName(eea, componentVendorName, entityTypeName, entityAttributeName, EntityPermission.READ_WRITE);
     }
-    
+
     public EntityAttribute getEntityAttributeByUuid(final ExecutionErrorAccumulator eea, final String uuid,
             final EntityPermission entityPermission) {
         EntityAttribute entityAttribute = null;
@@ -446,16 +293,15 @@ public class EntityAttributeLogic
 
         return entityAttribute;
     }
-    
+
     public EntityAttribute getEntityAttributeByUuid(final ExecutionErrorAccumulator eea, final String uuid) {
         return getEntityAttributeByUuid(eea, uuid, EntityPermission.READ_ONLY);
     }
-    
+
     public EntityAttribute getEntityAttributeByUuidForUpdate(final ExecutionErrorAccumulator eea, final String uuid) {
         return getEntityAttributeByUuid(eea, uuid, EntityPermission.READ_WRITE);
     }
 
-    // For when we need to determine the EntityType from what the user passes in:
     public EntityAttribute getEntityAttributeByUniversalSpec(final ExecutionErrorAccumulator eea, final EntityAttributeUniversalSpec universalSpec,
             final EntityPermission entityPermission) {
         EntityAttribute entityAttribute = null;
@@ -495,7 +341,6 @@ public class EntityAttributeLogic
         return getEntityAttributeByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
     }
 
-    // For when we can get the EntityType from the EntityInstance:
     public EntityAttribute getEntityAttribute(final ExecutionErrorAccumulator eea, final EntityInstance entityInstance,
             final EntityAttributeSpec spec, final EntityAttributeUuid uuid, final EntityPermission entityPermission,
             final EntityAttributeTypes... entityAttributeTypes) {
@@ -558,14 +403,6 @@ public class EntityAttributeLogic
         return getEntityAttribute(eea, entityInstance, spec, uuid, EntityPermission.READ_WRITE, entityAttributeTypes);
     }
 
-    public EntityInstance getEntityInstanceAttribute(final ExecutionErrorAccumulator eea,
-            final EntityInstanceAttributeSpec entityInstanceAttributeSpec) {
-        var entityRef = entityInstanceAttributeSpec.getEntityRefAttribute();
-        var uuid = entityInstanceAttributeSpec.getUuidAttribute();
-
-        return entityInstanceLogic.getEntityInstance(eea, entityRef, uuid, null);
-    }
-
     private List<EntityInstancePKResult> getEntityInstanceResultsByEntityAttributeTypeName(EntityAttribute entityAttribute) {
         List<EntityInstancePKResult> entityInstanceResults = null;
         var entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
@@ -602,7 +439,7 @@ public class EntityAttributeLogic
 
         return entityInstanceResults;
     }
-    
+
     public void updateEntityAttributeFromValue(final Session session, final EntityAttributeDetailValue entityAttributeDetailValue,
             final BasePK updatedBy) {
         if(entityAttributeDetailValue.getEntityAttributeNameHasBeenModified()) {
@@ -623,1251 +460,10 @@ public class EntityAttributeLogic
         
         coreControl.updateEntityAttributeFromValue(entityAttributeDetailValue, updatedBy);
     }
-    
+
     public void deleteEntityAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
             final PartyPK deletedByPK) {
         coreControl.deleteEntityAttribute(entityAttribute, deletedByPK);
-    }
-
-    public EntityListItem createEntityListItem(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            String entityListItemName, final Boolean isDefault, final Integer sortOrder, final BasePK createdBy,
-            final Language language, final String description) {
-        EntityListItem entityListItem = null;
-        var entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
-
-        if(entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())
-                || entityAttributeTypeName.equals(EntityAttributeTypes.MULTIPLELISTITEM.name())) {
-            if(entityListItemName == null) {
-                var entityAttributeListItem = coreControl.getEntityAttributeListItem(entityAttribute);
-                var entityListItemSequence = entityAttributeListItem == null ? null : entityAttributeListItem.getEntityListItemSequence();
-
-                if(entityListItemSequence == null) {
-                    entityListItemSequence = sequenceGeneratorLogic.getDefaultSequence(eea, SequenceTypes.ENTITY_LIST_ITEM.name());
-                }
-
-                if(eea != null && !hasExecutionErrors(eea)) {
-                    entityListItemName = sequenceGeneratorLogic.getNextSequenceValue(eea, entityListItemSequence);
-                } else {
-                    handleExecutionError(MissingDefaultSequenceException.class, eea, ExecutionErrors.MissingDefaultSequence.name(),
-                            SequenceTypes.ENTITY_LIST_ITEM.name());
-                }
-            }
-            
-            if(eea != null && !hasExecutionErrors(eea)) {
-                entityListItem = entityListItemName == null ? null : coreControl.getEntityListItemByName(entityAttribute, entityListItemName);
-
-                if(entityListItem == null) {
-                    entityListItem = coreControl.createEntityListItem(entityAttribute, entityListItemName, isDefault, sortOrder,
-                            createdBy);
-
-                    if(description != null) {
-                        coreControl.createEntityListItemDescription(entityListItem, language, description, createdBy);
-                    }
-                } else {
-                    var entityAttributeDetail = entityAttribute.getLastDetail();
-                    var entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
-                    
-                    handleExecutionError(DuplicateEntityListItemNameException.class, eea, ExecutionErrors.DuplicateEntityListItemName.name(),
-                            entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                            entityTypeDetail.getEntityTypeName(), entityAttributeDetail.getEntityAttributeName(),
-                            entityListItemName);
-                }
-            }
-        } else {
-            var entityAttributeDetail = entityAttribute.getLastDetail();
-            var entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
-                    
-            handleExecutionError(InvalidEntityAttributeTypeException.class, eea, ExecutionErrors.InvalidEntityAttributeType.name(), 
-                            entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                            entityTypeDetail.getEntityTypeName(), entityAttributeDetail.getEntityAttributeName(),
-                            entityAttributeTypeName);
-        }
-        
-        return entityListItem;
-    }
-    
-    public EntityListItem getEntityListItemByName(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final String entityListItemName, final EntityPermission entityPermission) {
-        var entityListItem = coreControl.getEntityListItemByName(entityAttribute, entityListItemName, entityPermission);
-
-        if(entityListItem == null) {
-            var entityAttributeDetail = entityAttribute.getLastDetail();
-            var entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
-            
-            handleExecutionError(UnknownEntityListItemNameException.class, eea, ExecutionErrors.UnknownEntityListItemName.name(),
-                    entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                    entityTypeDetail.getEntityTypeName(), entityListItemName);
-        }
-
-        return entityListItem;
-    }
-
-    public EntityListItem getEntityListItemByName(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final String entityListItemName) {
-        return getEntityListItemByName(eea, entityAttribute, entityListItemName, EntityPermission.READ_ONLY);
-    }
-    
-    public EntityListItem getEntityListItemByNameForUpdate(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final String entityListItemName) {
-        return getEntityListItemByName(eea, entityAttribute, entityListItemName, EntityPermission.READ_WRITE);
-    }
-        
-    public EntityListItem getEntityListItemByName(final ExecutionErrorAccumulator eea, final String componentVendorName,
-            final String entityTypeName, final String entityAttributeName, final String entityListItemName,
-            final EntityPermission entityPermission) {
-        var entityAttribute = this.getEntityAttributeByName(eea, componentVendorName,
-                entityTypeName, entityAttributeName);
-        EntityListItem entityListItem = null;
-        
-        if(eea == null || !eea.hasExecutionErrors()) {
-            entityListItem = getEntityListItemByName(eea, entityAttribute, entityListItemName, entityPermission);
-        }
-
-        return entityListItem;
-    }
-    
-    public EntityListItem getEntityListItemByName(final ExecutionErrorAccumulator eea, final String componentVendorName,
-            final String entityTypeName, final String entityAttributeName, final String entityListItemName) {
-        return getEntityListItemByName(eea, componentVendorName, entityTypeName, entityAttributeName, entityListItemName,
-                EntityPermission.READ_ONLY);
-    }
-    
-    public EntityListItem getEntityListItemByNameForUpdate(final ExecutionErrorAccumulator eea, final String componentVendorName,
-            final String entityTypeName, final String entityAttributeName, final String entityListItemName) {
-        return getEntityListItemByName(eea, componentVendorName, entityTypeName, entityAttributeName, entityListItemName,
-                EntityPermission.READ_WRITE);
-    }
-        
-    public EntityListItem getEntityListItemByUuid(final ExecutionErrorAccumulator eea, final String uuid, final EntityPermission entityPermission) {
-        EntityListItem entityListItem = null;
-        
-        var entityInstance = entityInstanceLogic.getEntityInstance(eea, (String)null, uuid,
-                ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityListItem.name());
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            entityListItem = coreControl.getEntityListItemByEntityInstance(entityInstance, entityPermission);
-        }
-
-        return entityListItem;
-    }
-    
-    public EntityListItem getEntityListItemByUuid(final ExecutionErrorAccumulator eea, final String uuid) {
-        return getEntityListItemByUuid(eea, uuid, EntityPermission.READ_ONLY);
-    }
-    
-    public EntityListItem getEntityListItemByUuidForUpdate(final ExecutionErrorAccumulator eea, final String uuid) {
-        return getEntityListItemByUuid(eea, uuid, EntityPermission.READ_WRITE);
-    }
-
-    public EntityListItem getEntityListItemByUniversalSpec(final ExecutionErrorAccumulator eea, final EntityListItemUniversalSpec universalSpec,
-            final EntityPermission entityPermission) {
-        EntityListItem entityListItem = null;
-        var componentVendorName = universalSpec.getComponentVendorName();
-        var entityTypeName = universalSpec.getEntityTypeName();
-        var entityAttributeName = universalSpec.getEntityAttributeName();
-        var entityListItemName = universalSpec.getEntityListItemName();
-        var universalSpecCount = entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
-        var parameterCount = (componentVendorName == null && entityTypeName == null && entityAttributeName == null && entityListItemName == null ? 0 : 1)
-                + universalSpecCount;
-
-        switch(parameterCount) {
-            case 1 -> {
-                if(universalSpecCount == 1) {
-                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityListItem.name());
-
-                    if(eea == null || !eea.hasExecutionErrors()) {
-                        entityListItem = coreControl.getEntityListItemByEntityInstance(entityInstance, entityPermission);
-                    }
-                } else {
-                    entityListItem = getEntityListItemByName(eea, componentVendorName, entityTypeName, entityAttributeName,
-                            entityListItemName, entityPermission);
-                }
-            }
-            default -> {
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-            }
-        }
-
-        return entityListItem;
-    }
-
-    public EntityListItem getEntityListItemByUniversalSpec(final ExecutionErrorAccumulator eea, final EntityListItemUniversalSpec universalSpec) {
-        return getEntityListItemByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
-    }
-
-    public EntityListItem getEntityListItemByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final EntityListItemUniversalSpec universalSpec) {
-        return getEntityListItemByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
-    }
-
-    public EntityListItem getEntityListItem(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final EntityListItemAttributeEdit edit, final EntityPermission entityPermission) {
-        EntityListItem entityListItem = null;
-        var entityListItemName = edit.getEntityListItemName();
-        var entityListItemUuid = edit.getEntityListItemUuid();
-        var parameterCount = (entityListItemName == null ? 0 : 1) + (entityListItemUuid == null ? 0 : 1);
-
-        if (parameterCount == 1) {
-            entityListItem = entityListItemName == null
-                    ? getEntityListItemByUuid(eea, entityListItemUuid, entityPermission)
-                    : getEntityListItemByName(eea, entityAttribute, entityListItemName, entityPermission);
-        } else {
-            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-        }
-        
-        if((eea == null || !eea.hasExecutionErrors()) && entityListItemUuid != null) {
-            var foundEntityAttribute = entityListItem.getLastDetail().getEntityAttribute();
-
-            if(!foundEntityAttribute.equals(entityAttribute)) {
-                handleExecutionError(MismatchedEntityListItemException.class, eea, ExecutionErrors.MismatchedEntityListItem.name(),
-                        entityAttribute.getLastDetail().getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName(),
-                        entityAttribute.getLastDetail().getEntityType().getLastDetail().getEntityTypeName(),
-                        entityAttribute.getLastDetail().getEntityAttributeName(),
-                        foundEntityAttribute.getLastDetail().getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName(),
-                        foundEntityAttribute.getLastDetail().getEntityType().getLastDetail().getEntityTypeName(),
-                        foundEntityAttribute.getLastDetail().getEntityAttributeName(),
-                        entityListItem.getLastDetail().getEntityListItem());
-            }
-        }
-        
-        return entityListItem;
-    }
-    
-    public EntityListItem getEntityListItem(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final EntityListItemAttributeEdit edit) {
-        return getEntityListItem(eea, entityAttribute, edit, EntityPermission.READ_ONLY);
-    }
-    
-    public EntityListItem getEntityListItemForUpdate(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final EntityListItemAttributeEdit edit, final EntityListItemUuid uuid) {
-        return getEntityListItem(eea, entityAttribute, edit, EntityPermission.READ_WRITE);
-    }
-    
-    public void updateEntityListItemFromValue(final Session session, EntityListItemDetailValue entityListItemDetailValue, BasePK updatedBy) {
-        if(entityListItemDetailValue.getEntityListItemNameHasBeenModified()) {
-            var entityListItem = coreControl.getEntityListItemByPK(entityListItemDetailValue.getEntityListItemPK());
-            var entityAttributeDetail = entityListItem.getLastDetail().getEntityAttribute().getLastDetail();
-            
-            if(indexControl.countIndexTypesByEntityType(entityAttributeDetail.getEntityType()) > 0) {
-                var queueTypePK = queueTypeLogic.getQueueTypeByName(null, QueueTypes.INDEXING.name()).getPrimaryKey();
-                var entityAttributeTypeName = entityAttributeDetail.getEntityAttributeType().getEntityAttributeTypeName();
-
-                if(entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())) {
-                    var entityListItemAttributes = coreControl.getEntityListItemAttributesByEntityListItem(entityListItem);
-                    List<QueuedEntityValue> queuedEntities = new ArrayList<>(entityListItemAttributes.size());
-
-                    entityListItemAttributes.forEach((entityListItemAttribute) -> {
-                        queuedEntities.add(new QueuedEntityValue(queueTypePK, entityListItemAttribute.getEntityInstancePK(), session.getStartTime()));
-                    });
-
-                    queueControl.createQueuedEntities(queuedEntities);
-                } else if(entityAttributeTypeName.equals(EntityAttributeTypes.MULTIPLELISTITEM.name())) {
-                    var entityMultipleListItemAttributes = coreControl.getEntityMultipleListItemAttributesByEntityListItem(entityListItem);
-                    List<QueuedEntityValue> queuedEntities = new ArrayList<>(entityMultipleListItemAttributes.size());
-
-                    entityMultipleListItemAttributes.forEach((entityMultipleListItemAttribute) -> {
-                        queuedEntities.add(new QueuedEntityValue(queueTypePK, entityMultipleListItemAttribute.getEntityInstancePK(), session.getStartTime()));
-                    });
-
-                    queueControl.createQueuedEntities(queuedEntities);
-                }
-            }
-        }
-
-        coreControl.updateEntityListItemFromValue(entityListItemDetailValue, updatedBy);
-    }
-    
-    public void deleteEntityListItem(final ExecutionErrorAccumulator eea, EntityListItem entityListItem, BasePK deletedBy) {
-        coreControl.deleteEntityListItem(entityListItem, deletedBy);
-    }
-
-    private void checkEntityType(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final EntityInstance entityInstance) {
-        if(!entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-            var expectedEntityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
-            var suppliedEntityTypeDetail = entityInstance.getEntityType().getLastDetail();
-
-            handleExecutionError(MismatchedEntityTypeException.class, eea, ExecutionErrors.MismatchedEntityType.name(),
-                    expectedEntityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                    expectedEntityTypeDetail.getEntityTypeName(),
-                    suppliedEntityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                    suppliedEntityTypeDetail.getEntityTypeName());
-        }
-    }
-
-    private void checkEntityType(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final EntityAttributeTypes entityAttributeType) {
-        var entityAttributeTypeName = entityAttributeType.name();
-
-        if(!entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName().equals(entityAttributeTypeName)) {
-            var expectedEntityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
-
-            handleExecutionError(MismatchedEntityAttributeTypeException.class, eea, ExecutionErrors.MismatchedEntityAttributeType.name(),
-                    expectedEntityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                    expectedEntityTypeDetail.getEntityTypeName(),
-                    entityAttributeTypeName);
-        }
-    }
-
-    public EntityBooleanDefault createEntityBooleanDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final Boolean booleanAttribute, final boolean addMissingAttributes, final BasePK createdBy) {
-        EntityBooleanDefault entityBooleanDefault = null;
-
-        checkEntityType(eea, entityAttribute, EntityAttributeTypes.BOOLEAN);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            entityBooleanDefault = coreControl.getEntityBooleanDefault(entityAttribute);
-
-            if(entityBooleanDefault == null) {
-                coreControl.createEntityBooleanDefault(entityAttribute, booleanAttribute, createdBy);
-
-                if(addMissingAttributes) {
-                    new EntityInstancesMissingBooleanEntityAttributeQuery().execute(entityAttribute).forEach(entityInstanceResult ->
-                            coreControl.createEntityBooleanAttribute(entityAttribute.getPrimaryKey(),
-                                    entityInstanceResult.getEntityInstance(), booleanAttribute, createdBy));
-                }
-            } else {
-                handleExecutionError(DuplicateEntityBooleanDefaultException.class, eea, ExecutionErrors.DuplicateEntityBooleanDefault.name(),
-                        entityAttribute.getLastDetail().getEntityAttributeName());
-            }
-        }
-
-        return entityBooleanDefault;
-    }
-
-    public void deleteEntityBooleanDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final BasePK deletedBy) {
-        checkEntityType(eea, entityAttribute, EntityAttributeTypes.BOOLEAN);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var entityBooleanDefault = coreControl.getEntityBooleanDefaultForUpdate(entityAttribute);
-
-            if(entityBooleanDefault == null) {
-                handleExecutionError(UnknownEntityBooleanDefaultException.class, eea, ExecutionErrors.UnknownEntityBooleanDefault.name(),
-                        entityAttribute.getLastDetail().getEntityAttributeName());
-            } else {
-                coreControl.deleteEntityBooleanDefault(entityBooleanDefault, deletedBy);
-            }
-        }
-    }
-
-    public EntityBooleanAttribute createEntityBooleanAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final EntityInstance entityInstance, final Boolean booleanAttribute, final BasePK createdBy) {
-        EntityBooleanAttribute entityBooleanAttribute = null;
-
-        checkEntityType(eea, entityAttribute, entityInstance);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            entityBooleanAttribute = coreControl.getEntityBooleanAttribute(entityAttribute, entityInstance);
-
-            if(entityBooleanAttribute == null) {
-                coreControl.createEntityBooleanAttribute(entityAttribute, entityInstance, booleanAttribute, createdBy);
-            } else {
-                handleExecutionError(DuplicateEntityBooleanAttributeException.class, eea, ExecutionErrors.DuplicateEntityBooleanAttribute.name(),
-                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
-                        entityAttribute.getLastDetail().getEntityAttributeName());
-            }
-        }
-
-        return entityBooleanAttribute;
-    }
-
-    public EntityIntegerDefault createEntityIntegerDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final Integer integerAttribute, final boolean addMissingAttributes, final BasePK createdBy) {
-        EntityIntegerDefault entityIntegerDefault = null;
-
-        checkEntityType(eea, entityAttribute, EntityAttributeTypes.INTEGER);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var entityAttributeInteger = coreControl.getEntityAttributeInteger(entityAttribute);
-
-            if(entityAttributeInteger != null) {
-                var upperRangeIntegerValue = entityAttributeInteger.getUpperRangeIntegerValue();
-                var lowerRangeIntegerValue = entityAttributeInteger.getLowerRangeIntegerValue();
-
-                if(upperRangeIntegerValue != null && integerAttribute > upperRangeIntegerValue){
-                    handleExecutionError(UpperRangeExceededException.class, eea, ExecutionErrors.UpperRangeExceeded.name(),
-                            upperRangeIntegerValue, integerAttribute);
-                }
-
-                if(lowerRangeIntegerValue != null && integerAttribute < lowerRangeIntegerValue) {
-                    handleExecutionError(LowerRangeExceededException.class, eea, ExecutionErrors.LowerRangeExceeded.name(),
-                            lowerRangeIntegerValue, integerAttribute);
-                }
-            }
-
-            if(eea == null || !eea.hasExecutionErrors()) {
-                entityIntegerDefault = coreControl.getEntityIntegerDefault(entityAttribute);
-
-                if(entityIntegerDefault == null) {
-                    coreControl.createEntityIntegerDefault(entityAttribute, integerAttribute, createdBy);
-
-                    if(addMissingAttributes) {
-                        new EntityInstancesMissingIntegerEntityAttributeQuery().execute(entityAttribute).forEach(entityInstanceResult ->
-                                coreControl.createEntityIntegerAttribute(entityAttribute.getPrimaryKey(),
-                                        entityInstanceResult.getEntityInstance(), integerAttribute, createdBy));
-                    }
-                } else {
-                    handleExecutionError(DuplicateEntityIntegerDefaultException.class, eea, ExecutionErrors.DuplicateEntityIntegerDefault.name(),
-                            entityAttribute.getLastDetail().getEntityAttributeName());
-                }
-            }
-        }
-
-        return entityIntegerDefault;
-    }
-
-    public void deleteEntityIntegerDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final BasePK deletedBy) {
-        checkEntityType(eea, entityAttribute, EntityAttributeTypes.INTEGER);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var entityIntegerDefault = coreControl.getEntityIntegerDefaultForUpdate(entityAttribute);
-
-            if(entityIntegerDefault == null) {
-                handleExecutionError(UnknownEntityIntegerDefaultException.class, eea, ExecutionErrors.UnknownEntityIntegerDefault.name(),
-                        entityAttribute.getLastDetail().getEntityAttributeName());
-            } else {
-                coreControl.deleteEntityIntegerDefault(entityIntegerDefault, deletedBy);
-            }
-        }
-    }
-
-    public EntityIntegerAttribute createEntityIntegerAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final EntityInstance entityInstance, final Integer integerAttribute, final BasePK createdBy) {
-        EntityIntegerAttribute entityIntegerAttribute = null;
-        
-        checkEntityType(eea, entityAttribute, entityInstance);
-        
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var entityAttributeInteger = coreControl.getEntityAttributeInteger(entityAttribute);
-            
-            if(entityAttributeInteger != null) {
-                var upperRangeIntegerValue = entityAttributeInteger.getUpperRangeIntegerValue();
-                var lowerRangeIntegerValue = entityAttributeInteger.getLowerRangeIntegerValue();
-                
-                if(upperRangeIntegerValue != null && integerAttribute > upperRangeIntegerValue){
-                    handleExecutionError(UpperRangeExceededException.class, eea, ExecutionErrors.UpperRangeExceeded.name(),
-                            upperRangeIntegerValue, integerAttribute);
-                }
-                
-                if(lowerRangeIntegerValue != null && integerAttribute < lowerRangeIntegerValue) {
-                    handleExecutionError(LowerRangeExceededException.class, eea, ExecutionErrors.LowerRangeExceeded.name(),
-                            lowerRangeIntegerValue, integerAttribute);
-                }
-            }
-            
-            if(eea == null || !eea.hasExecutionErrors()) {
-                entityIntegerAttribute = coreControl.getEntityIntegerAttribute(entityAttribute, entityInstance);
-
-                if(entityIntegerAttribute == null) {
-                    coreControl.createEntityIntegerAttribute(entityAttribute, entityInstance, integerAttribute, createdBy);
-                } else {
-                    handleExecutionError(DuplicateEntityIntegerAttributeException.class, eea, ExecutionErrors.DuplicateEntityIntegerAttribute.name(),
-                            entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
-                            entityAttribute.getLastDetail().getEntityAttributeName());
-                }
-            }
-        }
-
-        return entityIntegerAttribute;
-    }
-
-    public EntityLongDefault createEntityLongDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final Long longAttribute, final boolean addMissingAttributes, BasePK createdBy) {
-        EntityLongDefault entityLongDefault = null;
-
-        checkEntityType(eea, entityAttribute, EntityAttributeTypes.LONG);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var entityAttributeLong = coreControl.getEntityAttributeLong(entityAttribute);
-
-            if(entityAttributeLong != null) {
-                var upperRangeLongValue = entityAttributeLong.getUpperRangeLongValue();
-                var lowerRangeLongValue = entityAttributeLong.getLowerRangeLongValue();
-
-                if(upperRangeLongValue != null && longAttribute > upperRangeLongValue){
-                    handleExecutionError(UpperRangeExceededException.class, eea, ExecutionErrors.UpperRangeExceeded.name(),
-                            upperRangeLongValue, longAttribute);
-                }
-
-                if(lowerRangeLongValue != null && longAttribute < lowerRangeLongValue) {
-                    handleExecutionError(LowerRangeExceededException.class, eea, ExecutionErrors.LowerRangeExceeded.name(),
-                            lowerRangeLongValue, longAttribute);
-                }
-            }
-
-            if(eea == null || !eea.hasExecutionErrors()) {
-                entityLongDefault = coreControl.getEntityLongDefault(entityAttribute);
-
-                if(entityLongDefault == null) {
-                    coreControl.createEntityLongDefault(entityAttribute, longAttribute, createdBy);
-
-                    if(addMissingAttributes) {
-                        new EntityInstancesMissingLongEntityAttributeQuery().execute(entityAttribute).forEach(entityInstanceResult ->
-                                coreControl.createEntityLongAttribute(entityAttribute.getPrimaryKey(),
-                                        entityInstanceResult.getEntityInstance(), longAttribute, createdBy));
-                    }
-                } else {
-                    handleExecutionError(DuplicateEntityLongDefaultException.class, eea, ExecutionErrors.DuplicateEntityLongDefault.name(),
-                            entityAttribute.getLastDetail().getEntityAttributeName());
-                }
-            }
-        }
-
-        return entityLongDefault;
-    }
-
-    public void deleteEntityLongDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final BasePK deletedBy) {
-        checkEntityType(eea, entityAttribute, EntityAttributeTypes.LONG);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var entityLongDefault = coreControl.getEntityLongDefaultForUpdate(entityAttribute);
-
-            if(entityLongDefault == null) {
-                handleExecutionError(UnknownEntityLongDefaultException.class, eea, ExecutionErrors.UnknownEntityLongDefault.name(),
-                        entityAttribute.getLastDetail().getEntityAttributeName());
-            } else {
-                coreControl.deleteEntityLongDefault(entityLongDefault, deletedBy);
-            }
-        }
-    }
-
-    public EntityLongAttribute createEntityLongAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final EntityInstance entityInstance, final Long longAttribute, final BasePK createdBy) {
-        EntityLongAttribute entityLongAttribute = null;
-        
-        checkEntityType(eea, entityAttribute, entityInstance);
-        
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var entityAttributeLong = coreControl.getEntityAttributeLong(entityAttribute);
-            
-            if(entityAttributeLong != null) {
-                var upperRangeLongValue = entityAttributeLong.getUpperRangeLongValue();
-                var lowerRangeLongValue = entityAttributeLong.getLowerRangeLongValue();
-                
-                if(upperRangeLongValue != null && longAttribute > upperRangeLongValue){
-                    handleExecutionError(UpperRangeExceededException.class, eea, ExecutionErrors.UpperRangeExceeded.name(),
-                            upperRangeLongValue, longAttribute);
-                }
-                
-                if(lowerRangeLongValue != null && longAttribute < lowerRangeLongValue) {
-                    handleExecutionError(LowerRangeExceededException.class, eea, ExecutionErrors.LowerRangeExceeded.name(),
-                            lowerRangeLongValue, longAttribute);
-                }
-            }
-            
-            if(eea == null || !eea.hasExecutionErrors()) {
-                entityLongAttribute = coreControl.getEntityLongAttribute(entityAttribute, entityInstance);
-
-                if(entityLongAttribute == null) {
-                    coreControl.createEntityLongAttribute(entityAttribute, entityInstance, longAttribute, createdBy);
-                } else {
-                    handleExecutionError(DuplicateEntityLongAttributeException.class, eea, ExecutionErrors.DuplicateEntityLongAttribute.name(),
-                            entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
-                            entityAttribute.getLastDetail().getEntityAttributeName());
-                }
-            }
-        }
-
-        return entityLongAttribute;
-    }
-
-    public EntityStringDefault createEntityStringDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final Language language, final String stringAttribute, final boolean addMissingAttributes, final BasePK createdBy) {
-        EntityStringDefault entityStringDefault = null;
-
-        checkEntityType(eea, entityAttribute, EntityAttributeTypes.STRING);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            entityStringDefault = coreControl.getEntityStringDefault(entityAttribute, language);
-
-            if(entityStringDefault == null) {
-                coreControl.createEntityStringDefault(entityAttribute, language, stringAttribute, createdBy);
-
-                if(addMissingAttributes) {
-                    new EntityInstancesMissingStringEntityAttributeQuery().execute(entityAttribute, language).forEach(entityInstanceResult ->
-                            coreControl.createEntityStringAttribute(entityAttribute.getPrimaryKey(),
-                                    entityInstanceResult.getEntityInstance(), language, stringAttribute, createdBy));
-                }
-            } else {
-                handleExecutionError(DuplicateEntityStringDefaultException.class, eea, ExecutionErrors.DuplicateEntityStringDefault.name(),
-                        entityAttribute.getLastDetail().getEntityAttributeName());
-            }
-        }
-
-        return entityStringDefault;
-    }
-
-    public void deleteEntityStringDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final Language language, final BasePK deletedBy) {
-        checkEntityType(eea, entityAttribute, EntityAttributeTypes.STRING);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var entityStringDefault = coreControl.getEntityStringDefaultForUpdate(entityAttribute, language);
-
-            if(entityStringDefault == null) {
-                handleExecutionError(UnknownEntityStringDefaultException.class, eea, ExecutionErrors.UnknownEntityStringDefault.name(),
-                        entityAttribute.getLastDetail().getEntityAttributeName(),
-                        language.getLanguageIsoName());
-            } else {
-                coreControl.deleteEntityStringDefault(entityStringDefault, deletedBy);
-            }
-        }
-    }
-
-    public EntityStringAttribute createEntityStringAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final EntityInstance entityInstance, final Language language, final String stringAttribute, final BasePK createdBy) {
-        EntityStringAttribute entityStringAttribute = null;
-
-        checkEntityType(eea, entityAttribute, entityInstance);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var entityAttributeString = coreControl.getEntityAttributeString(entityAttribute);
-            var validationPattern = entityAttributeString == null ? null : entityAttributeString.getValidationPattern();
-
-            if(validationPattern != null) {
-                var pattern = Pattern.compile(validationPattern);
-                var m = pattern.matcher(stringAttribute);
-
-                if(!m.matches()) {
-                    handleExecutionError(InvalidStringAttributeException.class, eea, ExecutionErrors.InvalidStringAttribute.name(),
-                            stringAttribute);
-                }
-            }
-
-            if(eea == null || !eea.hasExecutionErrors()) {
-                entityStringAttribute = coreControl.getEntityStringAttribute(entityAttribute, entityInstance, language);
-
-                if(entityStringAttribute == null) {
-                    coreControl.createEntityStringAttribute(entityAttribute, entityInstance, language, stringAttribute, createdBy);
-                } else {
-                    handleExecutionError(DuplicateEntityStringAttributeException.class, eea, ExecutionErrors.DuplicateEntityStringAttribute.name(),
-                            entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
-                            entityAttribute.getLastDetail().getEntityAttributeName(),
-                            language.getLanguageIsoName());
-                }
-            }
-        }
-
-        return entityStringAttribute;
-    }
-
-    public EntityClobAttribute createEntityClobAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final EntityInstance entityInstance, final Language language, final String clobAttribute, final MimeType mimeType,
-            final BasePK createdBy) {
-        EntityClobAttribute entityClobAttribute = null;
-
-        checkEntityType(eea, entityAttribute, entityInstance);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            entityClobAttribute = coreControl.getEntityClobAttribute(entityAttribute, entityInstance, language);
-
-            if(entityClobAttribute == null) {
-                coreControl.createEntityClobAttribute(entityAttribute, entityInstance, language, clobAttribute, mimeType, createdBy);
-            } else {
-                handleExecutionError(DuplicateEntityClobAttributeException.class, eea, ExecutionErrors.DuplicateEntityClobAttribute.name(),
-                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
-                        entityAttribute.getLastDetail().getEntityAttributeName(),
-                        language.getLanguageIsoName());
-            }
-        }
-
-        return entityClobAttribute;
-    }
-
-    public EntityNameAttribute createEntityNameAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final String nameAttribute, final EntityInstance entityInstance, final BasePK createdBy) {
-        EntityNameAttribute entityNameAttribute = null;
-
-        checkEntityType(eea, entityAttribute, entityInstance);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            entityNameAttribute = coreControl.getEntityNameAttribute(entityAttribute, entityInstance);
-
-            if(entityNameAttribute == null) {
-                coreControl.createEntityNameAttribute(entityAttribute, nameAttribute, entityInstance, createdBy);
-            } else {
-                handleExecutionError(DuplicateEntityNameAttributeException.class, eea, ExecutionErrors.DuplicateEntityNameAttribute.name(),
-                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
-                        entityAttribute.getLastDetail().getEntityAttributeName());
-            }
-        }
-
-        return entityNameAttribute;
-    }
-
-    public EntityDateDefault createEntityDateDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final Integer dateAttribute, final boolean addMissingAttributes, BasePK createdBy) {
-        EntityDateDefault entityDateDefault = null;
-
-        checkEntityType(eea, entityAttribute, EntityAttributeTypes.DATE);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            entityDateDefault = coreControl.getEntityDateDefault(entityAttribute);
-
-            if(entityDateDefault == null) {
-                coreControl.createEntityDateDefault(entityAttribute, dateAttribute, createdBy);
-
-                if(addMissingAttributes) {
-                    new EntityInstancesMissingDateEntityAttributeQuery().execute(entityAttribute).forEach(entityInstanceResult ->
-                            coreControl.createEntityDateAttribute(entityAttribute.getPrimaryKey(),
-                                    entityInstanceResult.getEntityInstance(), dateAttribute, createdBy));
-                }
-            } else {
-                handleExecutionError(DuplicateEntityDateDefaultException.class, eea, ExecutionErrors.DuplicateEntityDateDefault.name(),
-                        entityAttribute.getLastDetail().getEntityAttributeName());
-            }
-        }
-
-        return entityDateDefault;
-    }
-
-    public void deleteEntityDateDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final BasePK deletedBy) {
-        checkEntityType(eea, entityAttribute, EntityAttributeTypes.DATE);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var entityDateDefault = coreControl.getEntityDateDefaultForUpdate(entityAttribute);
-
-            if(entityDateDefault == null) {
-                handleExecutionError(UnknownEntityDateDefaultException.class, eea, ExecutionErrors.UnknownEntityDateDefault.name(),
-                        entityAttribute.getLastDetail().getEntityAttributeName());
-            } else {
-                coreControl.deleteEntityDateDefault(entityDateDefault, deletedBy);
-            }
-        }
-    }
-
-    public EntityDateAttribute createEntityDateAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final EntityInstance entityInstance, final Integer dateAttribute, final BasePK createdBy) {
-        EntityDateAttribute entityDateAttribute = null;
-
-        checkEntityType(eea, entityAttribute, entityInstance);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            entityDateAttribute = coreControl.getEntityDateAttribute(entityAttribute, entityInstance);
-
-            if(entityDateAttribute == null) {
-                coreControl.createEntityDateAttribute(entityAttribute, entityInstance, dateAttribute, createdBy);
-            } else {
-                handleExecutionError(DuplicateEntityDateAttributeException.class, eea, ExecutionErrors.DuplicateEntityDateAttribute.name(),
-                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
-                        entityAttribute.getLastDetail().getEntityAttributeName());
-            }
-        }
-
-        return entityDateAttribute;
-    }
-
-    public EntityTimeDefault createEntityTimeDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final Long timeAttribute, final boolean addMissingAttributes, BasePK createdBy) {
-        EntityTimeDefault entityTimeDefault = null;
-
-        checkEntityType(eea, entityAttribute, EntityAttributeTypes.TIME);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            entityTimeDefault = coreControl.getEntityTimeDefault(entityAttribute);
-
-            if(entityTimeDefault == null) {
-                coreControl.createEntityTimeDefault(entityAttribute, timeAttribute, createdBy);
-
-                if(addMissingAttributes) {
-                    new EntityInstancesMissingTimeEntityAttributeQuery().execute(entityAttribute).forEach(entityInstanceResult ->
-                            coreControl.createEntityTimeAttribute(entityAttribute.getPrimaryKey(),
-                                    entityInstanceResult.getEntityInstance(), timeAttribute, createdBy));
-                }
-            } else {
-                handleExecutionError(DuplicateEntityTimeDefaultException.class, eea, ExecutionErrors.DuplicateEntityTimeDefault.name(),
-                        entityAttribute.getLastDetail().getEntityAttributeName());
-            }
-        }
-
-        return entityTimeDefault;
-    }
-
-    public void deleteEntityTimeDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final BasePK deletedBy) {
-        checkEntityType(eea, entityAttribute, EntityAttributeTypes.TIME);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var entityTimeDefault = coreControl.getEntityTimeDefaultForUpdate(entityAttribute);
-
-            if(entityTimeDefault == null) {
-                handleExecutionError(UnknownEntityTimeDefaultException.class, eea, ExecutionErrors.UnknownEntityTimeDefault.name(),
-                        entityAttribute.getLastDetail().getEntityAttributeName());
-            } else {
-                coreControl.deleteEntityTimeDefault(entityTimeDefault, deletedBy);
-            }
-        }
-    }
-
-    public EntityTimeAttribute createEntityTimeAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final EntityInstance entityInstance, final Long timeAttribute, final BasePK createdBy) {
-        EntityTimeAttribute entityTimeAttribute = null;
-
-        checkEntityType(eea, entityAttribute, entityInstance);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            entityTimeAttribute = coreControl.getEntityTimeAttribute(entityAttribute, entityInstance);
-
-            if(entityTimeAttribute == null) {
-                coreControl.createEntityTimeAttribute(entityAttribute, entityInstance, timeAttribute, createdBy);
-            } else {
-                handleExecutionError(DuplicateEntityTimeAttributeException.class, eea, ExecutionErrors.DuplicateEntityTimeAttribute.name(),
-                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
-                        entityAttribute.getLastDetail().getEntityAttributeName());
-            }
-        }
-
-        return entityTimeAttribute;
-    }
-
-    public EntityGeoPointDefault createEntityGeoPointDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final Integer latitude, final Integer longitude, final Long elevation, final Long altitude, final boolean addMissingAttributes, BasePK createdBy) {
-        EntityGeoPointDefault entityGeoPointDefault = null;
-
-        checkEntityType(eea, entityAttribute, EntityAttributeTypes.GEOPOINT);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            entityGeoPointDefault = coreControl.getEntityGeoPointDefault(entityAttribute);
-
-            if(entityGeoPointDefault == null) {
-                coreControl.createEntityGeoPointDefault(entityAttribute, latitude, longitude, elevation, altitude, createdBy);
-
-                if(addMissingAttributes) {
-                    new EntityInstancesMissingGeoPointEntityAttributeQuery().execute(entityAttribute).forEach(entityInstanceResult ->
-                            coreControl.createEntityGeoPointAttribute(entityAttribute.getPrimaryKey(),
-                                    entityInstanceResult.getEntityInstance(), latitude, longitude, elevation, altitude, createdBy));
-                }
-            } else {
-                handleExecutionError(DuplicateEntityGeoPointDefaultException.class, eea, ExecutionErrors.DuplicateEntityGeoPointDefault.name(),
-                        entityAttribute.getLastDetail().getEntityAttributeName());
-            }
-        }
-
-        return entityGeoPointDefault;
-    }
-
-    public void deleteEntityGeoPointDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final BasePK deletedBy) {
-        checkEntityType(eea, entityAttribute, EntityAttributeTypes.GEOPOINT);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var entityGeoPointDefault = coreControl.getEntityGeoPointDefaultForUpdate(entityAttribute);
-
-            if(entityGeoPointDefault == null) {
-                handleExecutionError(UnknownEntityGeoPointDefaultException.class, eea, ExecutionErrors.UnknownEntityGeoPointDefault.name(),
-                        entityAttribute.getLastDetail().getEntityAttributeName());
-            } else {
-                coreControl.deleteEntityGeoPointDefault(entityGeoPointDefault, deletedBy);
-            }
-        }
-    }
-
-    public EntityGeoPointAttribute createEntityGeoPointAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final EntityInstance entityInstance, final Integer latitude, final Integer longitude, final Long elevation, final Long altitude, final BasePK createdBy) {
-        EntityGeoPointAttribute entityGeoPointAttribute = null;
-
-        checkEntityType(eea, entityAttribute, entityInstance);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            entityGeoPointAttribute = coreControl.getEntityGeoPointAttribute(entityAttribute, entityInstance);
-
-            if(entityGeoPointAttribute == null) {
-                coreControl.createEntityGeoPointAttribute(entityAttribute, entityInstance, latitude, longitude, elevation, altitude, createdBy);
-            } else {
-                handleExecutionError(DuplicateEntityGeoPointAttributeException.class, eea, ExecutionErrors.DuplicateEntityGeoPointAttribute.name(),
-                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
-                        entityAttribute.getLastDetail().getEntityAttributeName());
-            }
-        }
-
-        return entityGeoPointAttribute;
-    }
-
-    public EntityListItemDefault createEntityListItemDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final EntityListItem entityListItem, final boolean addMissingAttributes, final BasePK createdBy) {
-        EntityListItemDefault entityListItemDefault = null;
-
-        checkEntityType(eea, entityAttribute, EntityAttributeTypes.LISTITEM);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            entityListItemDefault = coreControl.getEntityListItemDefault(entityAttribute);
-
-            if(entityListItemDefault == null) {
-                coreControl.createEntityListItemDefault(entityAttribute, entityListItem, createdBy);
-
-                if(addMissingAttributes) {
-                    new EntityInstancesMissingListItemEntityAttributeQuery().execute(entityAttribute).forEach(entityInstanceResult ->
-                            coreControl.createEntityListItemAttribute(entityAttribute.getPrimaryKey(),
-                                    entityInstanceResult.getEntityInstance(), entityListItem, createdBy));
-                }
-            } else {
-                handleExecutionError(DuplicateEntityListItemDefaultException.class, eea, ExecutionErrors.DuplicateEntityListItemDefault.name(),
-                        entityAttribute.getLastDetail().getEntityAttributeName());
-            }
-        }
-
-        return entityListItemDefault;
-    }
-
-    public void deleteEntityListItemDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final BasePK deletedBy) {
-        checkEntityType(eea, entityAttribute, EntityAttributeTypes.LISTITEM);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var entityListItemDefault = getEntityListItemDefaultForUpdate(eea, entityAttribute);
-
-            if(entityListItemDefault != null) {
-                coreControl.deleteEntityListItemDefault(entityListItemDefault, deletedBy);
-            }
-        }
-    }
-
-    public EntityListItemAttribute createEntityListItemAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-        final EntityInstance entityInstance, final EntityListItem entityListItem, final BasePK createdBy) {
-        EntityListItemAttribute entityListItemAttribute = null;
-        
-        checkEntityType(eea, entityAttribute, entityInstance);
-        
-        if(eea == null || !eea.hasExecutionErrors()) {
-            entityListItemAttribute = coreControl.getEntityListItemAttribute(entityAttribute, entityInstance);
-
-            if(entityListItemAttribute == null) {
-                entityListItemAttribute = coreControl.createEntityListItemAttribute(entityAttribute, entityInstance, entityListItem, createdBy);
-            } else {
-                handleExecutionError(DuplicateEntityListItemAttributeException.class, eea, ExecutionErrors.DuplicateEntityListItemAttribute.name(),
-                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
-                        entityAttribute.getLastDetail().getEntityAttributeName());
-            }
-        }
-        
-        return entityListItemAttribute;
-    }
-
-    public EntityMultipleListItemDefault createEntityMultipleListItemDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final EntityListItem entityListItem, final boolean addMissingAttributes, final BasePK createdBy) {
-        EntityMultipleListItemDefault entityListItemDefault = null;
-
-        checkEntityType(eea, entityAttribute, EntityAttributeTypes.MULTIPLELISTITEM);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            entityListItemDefault = coreControl.getEntityMultipleListItemDefault(entityAttribute, entityListItem);
-
-            if(entityListItemDefault == null) {
-                coreControl.createEntityMultipleListItemDefault(entityAttribute, entityListItem, createdBy);
-
-                if(addMissingAttributes) {
-                    new EntityInstancesMissingMultipleListItemEntityAttributeQuery().execute(entityAttribute, entityListItem).forEach(entityInstanceResult ->
-                            coreControl.createEntityMultipleListItemAttribute(entityAttribute.getPrimaryKey(),
-                                    entityInstanceResult.getEntityInstance(), entityListItem, createdBy));
-                }
-            } else {
-                handleExecutionError(DuplicateEntityMultipleListItemDefaultException.class, eea, ExecutionErrors.DuplicateEntityMultipleListItemDefault.name(),
-                        entityAttribute.getLastDetail().getEntityAttributeName(), entityListItem.getLastDetail().getEntityListItemName());
-            }
-        }
-
-        return entityListItemDefault;
-    }
-
-    public void deleteEntityMultipleListItemDefault(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final EntityListItem entityListItem, final BasePK deletedBy) {
-        checkEntityType(eea, entityAttribute, EntityAttributeTypes.MULTIPLELISTITEM);
-
-        if(eea == null || !eea.hasExecutionErrors()) {
-            var entityListItemDefault = coreControl.getEntityMultipleListItemDefaultForUpdate(entityAttribute, entityListItem);
-
-            if(entityListItemDefault == null) {
-                handleExecutionError(UnknownEntityMultipleListItemDefaultException.class, eea, ExecutionErrors.UnknownEntityMultipleListItemDefault.name(),
-                        entityAttribute.getLastDetail().getEntityAttributeName(), entityListItem.getLastDetail().getEntityListItemName());
-            } else {
-                coreControl.deleteEntityMultipleListItemDefault(entityListItemDefault, deletedBy);
-            }
-        }
-    }
-
-    public EntityMultipleListItemAttribute createEntityMultipleListItemAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-        final EntityInstance entityInstance, final EntityListItem entityListItem, final BasePK createdBy) {
-        EntityMultipleListItemAttribute entityMultipleListItemAttribute = null;
-        
-        checkEntityType(eea, entityAttribute, entityInstance);
-        
-        if(eea == null || !eea.hasExecutionErrors()) {
-            entityMultipleListItemAttribute = coreControl.getEntityMultipleListItemAttribute(entityAttribute, entityInstance, entityListItem);
-
-            if(entityMultipleListItemAttribute == null) {
-                entityMultipleListItemAttribute = coreControl.createEntityMultipleListItemAttribute(entityAttribute, entityInstance, entityListItem, createdBy);
-            } else {
-                handleExecutionError(DuplicateEntityMultipleListItemAttributeException.class, eea, ExecutionErrors.DuplicateEntityMultipleListItemAttribute.name(),
-                    entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
-                    entityAttribute.getLastDetail().getEntityAttributeName(),
-                    entityListItem.getLastDetail().getEntityListItemName());
-            }
-        }
-
-        return entityMultipleListItemAttribute;
-    }
-    
-    public EntityListItemDefault getEntityListItemDefault(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
-            EntityPermission entityPermission) {
-        var entityListItemDefault = coreControl.getEntityListItemDefault(entityAttribute, entityPermission);
-
-        if(entityListItemDefault == null) {
-            var entityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
-
-            handleExecutionError(UnknownEntityListItemDefaultException.class, eea, ExecutionErrors.UnknownEntityListItemDefault.name(),
-                    entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                    entityTypeDetail.getEntityTypeName(), entityAttribute.getLastDetail().getEntityAttributeName());
-        }
-
-        return entityListItemDefault;
-    }
-
-    public EntityListItemDefault getEntityListItemDefaultForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute) {
-        return getEntityListItemDefault(eea, entityAttribute, EntityPermission.READ_WRITE);
-    }
-
-    public EntityBooleanAttribute getEntityBooleanAttribute(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute, EntityInstance entityInstance,
-            EntityPermission entityPermission) {
-        var entityBooleanAttribute = coreControl.getEntityBooleanAttribute(entityAttribute, entityInstance, entityPermission);
-
-        if(entityBooleanAttribute == null) {
-            var entityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
-
-            handleExecutionError(UnknownEntityBooleanAttributeException.class, eea, ExecutionErrors.UnknownEntityBooleanAttribute.name(),
-                    entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                    entityTypeDetail.getEntityTypeName(), entityAttribute.getLastDetail().getEntityAttributeName());
-        }
-
-        return entityBooleanAttribute;
-    }
-
-    public EntityBooleanAttribute getEntityBooleanAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
-            EntityInstance entityInstance) {
-        return getEntityBooleanAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
-    }
-
-    public EntityIntegerAttribute getEntityIntegerAttribute(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute, EntityInstance entityInstance,
-            EntityPermission entityPermission) {
-        var entityIntegerAttribute = coreControl.getEntityIntegerAttribute(entityAttribute, entityInstance, entityPermission);
-
-        if(entityIntegerAttribute == null) {
-            var entityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
-
-            handleExecutionError(UnknownEntityIntegerAttributeException.class, eea, ExecutionErrors.UnknownEntityIntegerAttribute.name(),
-                    entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                    entityTypeDetail.getEntityTypeName(), entityAttribute.getLastDetail().getEntityAttributeName());
-        }
-
-        return entityIntegerAttribute;
-    }
-
-    public EntityIntegerAttribute getEntityIntegerAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
-            EntityInstance entityInstance) {
-        return getEntityIntegerAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
-    }
-
-    public EntityLongAttribute getEntityLongAttribute(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute, EntityInstance entityInstance,
-            EntityPermission entityPermission) {
-        var entityLongAttribute = coreControl.getEntityLongAttribute(entityAttribute, entityInstance, entityPermission);
-
-        if(entityLongAttribute == null) {
-            var entityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
-
-            handleExecutionError(UnknownEntityLongAttributeException.class, eea, ExecutionErrors.UnknownEntityLongAttribute.name(),
-                    entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                    entityTypeDetail.getEntityTypeName(), entityAttribute.getLastDetail().getEntityAttributeName());
-        }
-
-        return entityLongAttribute;
-    }
-
-    public EntityLongAttribute getEntityLongAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
-            EntityInstance entityInstance) {
-        return getEntityLongAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
-    }
-
-    public EntityNameAttribute getEntityNameAttribute(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute, EntityInstance entityInstance,
-            EntityPermission entityPermission) {
-        var entityNameAttribute = coreControl.getEntityNameAttribute(entityAttribute, entityInstance, entityPermission);
-
-        if(entityNameAttribute == null) {
-            var entityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
-
-            handleExecutionError(UnknownEntityNameAttributeException.class, eea, ExecutionErrors.UnknownEntityNameAttribute.name(),
-                    entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                    entityTypeDetail.getEntityTypeName(), entityAttribute.getLastDetail().getEntityAttributeName());
-        }
-
-        return entityNameAttribute;
-    }
-
-    public EntityNameAttribute getEntityNameAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
-            EntityInstance entityInstance) {
-        return getEntityNameAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
-    }
-
-    public EntityStringAttribute getEntityStringAttribute(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute, EntityInstance entityInstance, Language language,
-            EntityPermission entityPermission) {
-        var entityStringAttribute = coreControl.getEntityStringAttribute(entityAttribute, entityInstance, language, entityPermission);
-
-        if(entityStringAttribute == null) {
-            var entityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
-
-            handleExecutionError(UnknownEntityStringAttributeException.class, eea, ExecutionErrors.UnknownEntityStringAttribute.name(),
-                    entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                    entityTypeDetail.getEntityTypeName(), entityAttribute.getLastDetail().getEntityAttributeName(), language.getLanguageIsoName());
-        }
-
-        return entityStringAttribute;
-    }
-
-    public EntityStringAttribute getEntityStringAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
-            EntityInstance entityInstance, Language language) {
-        return getEntityStringAttribute(eea, entityAttribute, entityInstance, language, EntityPermission.READ_WRITE);
-    }
-
-    public EntityDateAttribute getEntityDateAttribute(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute, EntityInstance entityInstance,
-            EntityPermission entityPermission) {
-        var entityDateAttribute = coreControl.getEntityDateAttribute(entityAttribute, entityInstance, entityPermission);
-
-        if(entityDateAttribute == null) {
-            var entityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
-
-            handleExecutionError(UnknownEntityDateAttributeException.class, eea, ExecutionErrors.UnknownEntityDateAttribute.name(),
-                    entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                    entityTypeDetail.getEntityTypeName(), entityAttribute.getLastDetail().getEntityAttributeName());
-        }
-
-        return entityDateAttribute;
-    }
-
-    public EntityDateAttribute getEntityDateAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
-            EntityInstance entityInstance) {
-        return getEntityDateAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
-    }
-
-    public EntityTimeAttribute getEntityTimeAttribute(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute, EntityInstance entityInstance,
-            EntityPermission entityPermission) {
-        var entityTimeAttribute = coreControl.getEntityTimeAttribute(entityAttribute, entityInstance, entityPermission);
-
-        if(entityTimeAttribute == null) {
-            var entityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
-
-            handleExecutionError(UnknownEntityTimeAttributeException.class, eea, ExecutionErrors.UnknownEntityTimeAttribute.name(),
-                    entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                    entityTypeDetail.getEntityTypeName(), entityAttribute.getLastDetail().getEntityAttributeName());
-        }
-
-        return entityTimeAttribute;
-    }
-
-    public EntityTimeAttribute getEntityTimeAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
-            EntityInstance entityInstance) {
-        return getEntityTimeAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
-    }
-
-    public EntityBlobAttribute getEntityBlobAttribute(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute, EntityInstance entityInstance, Language language,
-            EntityPermission entityPermission) {
-        var entityBlobAttribute = coreControl.getEntityBlobAttribute(entityAttribute, entityInstance, language, entityPermission);
-
-        if(entityBlobAttribute == null) {
-            var entityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
-
-            handleExecutionError(UnknownEntityBlobAttributeException.class, eea, ExecutionErrors.UnknownEntityBlobAttribute.name(),
-                    entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                    entityTypeDetail.getEntityTypeName(), entityAttribute.getLastDetail().getEntityAttributeName(), language.getLanguageIsoName());
-        }
-
-        return entityBlobAttribute;
-    }
-
-    public EntityBlobAttribute getEntityBlobAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
-            EntityInstance entityInstance, Language language) {
-        return getEntityBlobAttribute(eea, entityAttribute, entityInstance, language, EntityPermission.READ_WRITE);
-    }
-
-    public EntityClobAttribute getEntityClobAttribute(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute, EntityInstance entityInstance, Language language,
-            EntityPermission entityPermission) {
-        var entityClobAttribute = coreControl.getEntityClobAttribute(entityAttribute, entityInstance, language, entityPermission);
-
-        if(entityClobAttribute == null) {
-            var entityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
-
-            handleExecutionError(UnknownEntityClobAttributeException.class, eea, ExecutionErrors.UnknownEntityClobAttribute.name(),
-                    entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                    entityTypeDetail.getEntityTypeName(), entityAttribute.getLastDetail().getEntityAttributeName(), language.getLanguageIsoName());
-        }
-
-        return entityClobAttribute;
-    }
-
-    public EntityClobAttribute getEntityClobAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
-            EntityInstance entityInstance, Language language) {
-        return getEntityClobAttribute(eea, entityAttribute, entityInstance, language, EntityPermission.READ_WRITE);
-    }
-
-    public EntityEntityAttribute getEntityEntityAttribute(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute, EntityInstance entityInstance,
-            EntityPermission entityPermission) {
-        var entityEntityAttribute = coreControl.getEntityEntityAttribute(entityAttribute, entityInstance, entityPermission);
-
-        if(entityEntityAttribute == null) {
-            var entityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
-
-            handleExecutionError(UnknownEntityEntityAttributeException.class, eea, ExecutionErrors.UnknownEntityEntityAttribute.name(),
-                    entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                    entityTypeDetail.getEntityTypeName(), entityAttribute.getLastDetail().getEntityAttributeName());
-        }
-
-        return entityEntityAttribute;
-    }
-
-    public EntityEntityAttribute getEntityEntityAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
-            EntityInstance entityInstance) {
-        return getEntityEntityAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
-    }
-
-    public EntityListItemAttribute getEntityListItemAttribute(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute, EntityInstance entityInstance,
-            EntityPermission entityPermission) {
-        var entityListItemAttribute = coreControl.getEntityListItemAttribute(entityAttribute, entityInstance, entityPermission);
-
-        if(entityListItemAttribute == null) {
-            var entityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
-
-            handleExecutionError(UnknownEntityListItemAttributeException.class, eea, ExecutionErrors.UnknownEntityListItemAttribute.name(),
-                    entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                    entityTypeDetail.getEntityTypeName(), entityAttribute.getLastDetail().getEntityAttributeName());
-        }
-
-        return entityListItemAttribute;
-    }
-
-    public EntityListItemAttribute getEntityListItemAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
-            EntityInstance entityInstance) {
-        return getEntityListItemAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
-    }
-
-    public EntityGeoPointAttribute getEntityGeoPointAttribute(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute, EntityInstance entityInstance,
-            EntityPermission entityPermission) {
-        var entityGeoPointAttribute = coreControl.getEntityGeoPointAttribute(entityAttribute, entityInstance, entityPermission);
-
-        if(entityGeoPointAttribute == null) {
-            var entityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
-
-            handleExecutionError(UnknownEntityGeoPointAttributeException.class, eea, ExecutionErrors.UnknownEntityGeoPointAttribute.name(),
-                    entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                    entityTypeDetail.getEntityTypeName(), entityAttribute.getLastDetail().getEntityAttributeName());
-        }
-
-        return entityGeoPointAttribute;
-    }
-
-    public EntityGeoPointAttribute getEntityGeoPointAttributeForUpdate(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute,
-            EntityInstance entityInstance) {
-        return getEntityGeoPointAttribute(eea, entityAttribute, entityInstance, EntityPermission.READ_WRITE);
     }
 
 }

@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateEntityLongDefaultForm;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityLongAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -57,6 +58,9 @@ public class CreateEntityLongDefaultCommand
     @Inject
     EntityAttributeLogic entityAttributeLogic;
 
+    @Inject
+    EntityLongAttributeLogic entityLongAttributeLogic;
+
     /** Creates a new instance of CreateEntityLongDefaultCommand */
     public CreateEntityLongDefaultCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -70,7 +74,7 @@ public class CreateEntityLongDefaultCommand
             var longAttribute = Long.valueOf(form.getLongAttribute());
             var addMissingAttributes = Boolean.parseBoolean(form.getAddMissingAttributes());
 
-            entityAttributeLogic.createEntityLongDefault(this, entityAttribute,
+            entityLongAttributeLogic.createEntityLongDefault(this, entityAttribute,
                     longAttribute, addMissingAttributes, getPartyPK());
         }
 

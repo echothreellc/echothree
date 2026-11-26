@@ -163,4 +163,25 @@ public class EntityAttributeGroupLogic
         return getEntityAttributeGroupByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
     }
 
+    public EntityAttributeGroup getEntityAttributeGroupByUuid(final ExecutionErrorAccumulator eea, final String uuid, final EntityPermission entityPermission) {
+        EntityAttributeGroup entityAttributeGroup = null;
+
+        var entityInstance = entityInstanceLogic.getEntityInstance(eea, (String)null, uuid,
+                ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityAttributeGroup.name());
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            entityAttributeGroup = entityAttributeGroupControl.getEntityAttributeGroupByEntityInstance(entityInstance, entityPermission);
+        }
+
+        return entityAttributeGroup;
+    }
+
+    public EntityAttributeGroup getEntityAttributeGroupByUuid(final ExecutionErrorAccumulator eea, final String uuid) {
+        return getEntityAttributeGroupByUuid(eea, uuid, EntityPermission.READ_ONLY);
+    }
+
+    public EntityAttributeGroup getEntityAttributeGroupByUuidForUpdate(final ExecutionErrorAccumulator eea, final String uuid) {
+        return getEntityAttributeGroupByUuid(eea, uuid, EntityPermission.READ_WRITE);
+    }
+
 }

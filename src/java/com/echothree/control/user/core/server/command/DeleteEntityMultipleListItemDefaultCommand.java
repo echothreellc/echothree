@@ -18,6 +18,8 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityMultipleListItemDefaultForm;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityListItemLogic;
+import com.echothree.model.control.core.server.logic.EntityMultipleListItemAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -57,6 +59,12 @@ public class DeleteEntityMultipleListItemDefaultCommand
     @Inject
     EntityAttributeLogic entityAttributeLogic;
 
+    @Inject
+    EntityListItemLogic entityListItemLogic;
+
+    @Inject
+    EntityMultipleListItemAttributeLogic entityMultipleListItemAttributeLogic;
+
     /** Creates a new instance of DeleteEntityListItemDefaultCommand */
     public DeleteEntityMultipleListItemDefaultCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -67,10 +75,10 @@ public class DeleteEntityMultipleListItemDefaultCommand
         var entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, form);
 
         if(!hasExecutionErrors()) {
-            var entityListItem = entityAttributeLogic.getEntityListItem(this, entityAttribute, form);
+            var entityListItem = entityListItemLogic.getEntityListItem(this, entityAttribute, form);
 
             if(!hasExecutionErrors()) {
-                entityAttributeLogic.deleteEntityMultipleListItemDefault(this, entityAttribute,
+                entityMultipleListItemAttributeLogic.deleteEntityMultipleListItemDefault(this, entityAttribute,
                         entityListItem, getPartyPK());
             }
         }

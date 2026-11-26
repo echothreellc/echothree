@@ -20,6 +20,7 @@ import com.echothree.control.user.core.common.form.CreateEntityNameAttributeForm
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.core.server.logic.EntityNameAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -60,6 +61,9 @@ public class CreateEntityNameAttributeCommand
     @Inject
     EntityInstanceLogic entityInstanceLogic;
 
+    @Inject
+    EntityNameAttributeLogic entityNameAttributeLogic;
+
     
     /** Creates a new instance of CreateEntityNameAttributeCommand */
     public CreateEntityNameAttributeCommand() {
@@ -75,7 +79,7 @@ public class CreateEntityNameAttributeCommand
                     EntityAttributeTypes.NAME);
 
             if(!hasExecutionErrors()) {
-                entityAttributeLogic.createEntityNameAttribute(this, entityAttribute, form.getNameAttribute(), entityInstance,
+                entityNameAttributeLogic.createEntityNameAttribute(this, entityAttribute, form.getNameAttribute(), entityInstance,
                         getPartyPK());
             }
         }

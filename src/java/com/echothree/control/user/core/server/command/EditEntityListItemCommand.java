@@ -22,7 +22,7 @@ import com.echothree.control.user.core.common.form.EditEntityListItemForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityListItemResult;
 import com.echothree.control.user.core.common.spec.EntityListItemUniversalSpec;
-import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityListItemLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -73,7 +73,7 @@ public class EditEntityListItemCommand
     }
 
     @Inject
-    EntityAttributeLogic entityAttributeLogic;
+    EntityListItemLogic entityListItemLogic;
 
     
     /** Creates a new instance of EditEntityListItemCommand */
@@ -95,7 +95,7 @@ public class EditEntityListItemCommand
     
     @Override
     public EntityListItem getEntity(EditEntityListItemResult result) {
-        entityListItem = entityAttributeLogic.getEntityListItemByUniversalSpec(this,
+        entityListItem = entityListItemLogic.getEntityListItemByUniversalSpec(this,
                 spec, editModeToEntityPermission(editMode));
 
         return entityListItem;
@@ -148,7 +148,7 @@ public class EditEntityListItemCommand
         entityListItemDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         entityListItemDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        entityAttributeLogic.updateEntityListItemFromValue(session, entityListItemDetailValue, partyPK);
+        entityListItemLogic.updateEntityListItemFromValue(session, entityListItemDetailValue, partyPK);
 
         if(entityListItemDescription == null && description != null) {
             coreControl.createEntityListItemDescription(entityListItem, getPreferredLanguage(), description, partyPK);
