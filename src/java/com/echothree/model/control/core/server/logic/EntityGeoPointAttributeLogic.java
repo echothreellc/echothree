@@ -61,6 +61,8 @@ public class EntityGeoPointAttributeLogic
                 }
             } else {
                 handleExecutionError(DuplicateEntityGeoPointDefaultException.class, eea, ExecutionErrors.DuplicateEntityGeoPointDefault.name(),
+                        entityAttribute.getLastDetail().getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName(),
+                        entityAttribute.getLastDetail().getEntityType().getLastDetail().getEntityTypeName(),
                         entityAttribute.getLastDetail().getEntityAttributeName());
             }
         }
@@ -128,6 +130,8 @@ public class EntityGeoPointAttributeLogic
 
             if(entityGeoPointDefault == null) {
                 handleExecutionError(UnknownEntityGeoPointDefaultException.class, eea, ExecutionErrors.UnknownEntityGeoPointDefault.name(),
+                        entityAttribute.getLastDetail().getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName(),
+                        entityAttribute.getLastDetail().getEntityType().getLastDetail().getEntityTypeName(),
                         entityAttribute.getLastDetail().getEntityAttributeName());
             } else {
                 coreControl.deleteEntityGeoPointDefault(entityGeoPointDefault, deletedBy);

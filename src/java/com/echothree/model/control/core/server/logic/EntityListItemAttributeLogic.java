@@ -62,6 +62,8 @@ public class EntityListItemAttributeLogic
                 }
             } else {
                 handleExecutionError(DuplicateEntityListItemDefaultException.class, eea, ExecutionErrors.DuplicateEntityListItemDefault.name(),
+                        entityAttribute.getLastDetail().getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName(),
+                        entityAttribute.getLastDetail().getEntityType().getLastDetail().getEntityTypeName(),
                         entityAttribute.getLastDetail().getEntityAttributeName());
             }
         }

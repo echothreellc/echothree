@@ -61,6 +61,8 @@ public class EntityBooleanAttributeLogic
                 }
             } else {
                 handleExecutionError(DuplicateEntityBooleanDefaultException.class, eea, ExecutionErrors.DuplicateEntityBooleanDefault.name(),
+                        entityAttribute.getLastDetail().getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName(),
+                        entityAttribute.getLastDetail().getEntityType().getLastDetail().getEntityTypeName(),
                         entityAttribute.getLastDetail().getEntityAttributeName());
             }
         }
@@ -128,6 +130,8 @@ public class EntityBooleanAttributeLogic
 
             if(entityBooleanDefault == null) {
                 handleExecutionError(UnknownEntityBooleanDefaultException.class, eea, ExecutionErrors.UnknownEntityBooleanDefault.name(),
+                        entityAttribute.getLastDetail().getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName(),
+                        entityAttribute.getLastDetail().getEntityType().getLastDetail().getEntityTypeName(),
                         entityAttribute.getLastDetail().getEntityAttributeName());
             } else {
                 coreControl.deleteEntityBooleanDefault(entityBooleanDefault, deletedBy);

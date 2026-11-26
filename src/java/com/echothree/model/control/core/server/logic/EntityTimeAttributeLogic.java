@@ -61,6 +61,8 @@ public class EntityTimeAttributeLogic
                 }
             } else {
                 handleExecutionError(DuplicateEntityTimeDefaultException.class, eea, ExecutionErrors.DuplicateEntityTimeDefault.name(),
+                        entityAttribute.getLastDetail().getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName(),
+                        entityAttribute.getLastDetail().getEntityType().getLastDetail().getEntityTypeName(),
                         entityAttribute.getLastDetail().getEntityAttributeName());
             }
         }
@@ -128,6 +130,8 @@ public class EntityTimeAttributeLogic
 
             if(entityTimeDefault == null) {
                 handleExecutionError(UnknownEntityTimeDefaultException.class, eea, ExecutionErrors.UnknownEntityTimeDefault.name(),
+                        entityAttribute.getLastDetail().getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName(),
+                        entityAttribute.getLastDetail().getEntityType().getLastDetail().getEntityTypeName(),
                         entityAttribute.getLastDetail().getEntityAttributeName());
             } else {
                 coreControl.deleteEntityTimeDefault(entityTimeDefault, deletedBy);

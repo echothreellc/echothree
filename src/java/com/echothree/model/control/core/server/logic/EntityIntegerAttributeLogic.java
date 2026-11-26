@@ -81,6 +81,8 @@ public class EntityIntegerAttributeLogic
                     }
                 } else {
                     handleExecutionError(DuplicateEntityIntegerDefaultException.class, eea, ExecutionErrors.DuplicateEntityIntegerDefault.name(),
+                            entityAttribute.getLastDetail().getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName(),
+                            entityAttribute.getLastDetail().getEntityType().getLastDetail().getEntityTypeName(),
                             entityAttribute.getLastDetail().getEntityAttributeName());
                 }
             }
@@ -168,6 +170,8 @@ public class EntityIntegerAttributeLogic
 
             if(entityIntegerDefault == null) {
                 handleExecutionError(UnknownEntityIntegerDefaultException.class, eea, ExecutionErrors.UnknownEntityIntegerDefault.name(),
+                        entityAttribute.getLastDetail().getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName(),
+                        entityAttribute.getLastDetail().getEntityType().getLastDetail().getEntityTypeName(),
                         entityAttribute.getLastDetail().getEntityAttributeName());
             } else {
                 coreControl.deleteEntityIntegerDefault(entityIntegerDefault, deletedBy);

@@ -58,7 +58,10 @@ public class EntityMultipleListItemAttributeLogic
                 }
             } else {
                 handleExecutionError(DuplicateEntityMultipleListItemDefaultException.class, eea, ExecutionErrors.DuplicateEntityMultipleListItemDefault.name(),
-                        entityAttribute.getLastDetail().getEntityAttributeName(), entityListItem.getLastDetail().getEntityListItemName());
+                        entityAttribute.getLastDetail().getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName(),
+                        entityAttribute.getLastDetail().getEntityType().getLastDetail().getEntityTypeName(),
+                        entityAttribute.getLastDetail().getEntityAttributeName(),
+                        entityListItem.getLastDetail().getEntityListItemName());
             }
         }
 
@@ -74,7 +77,10 @@ public class EntityMultipleListItemAttributeLogic
 
             if(entityListItemDefault == null) {
                 handleExecutionError(UnknownEntityMultipleListItemDefaultException.class, eea, ExecutionErrors.UnknownEntityMultipleListItemDefault.name(),
-                        entityAttribute.getLastDetail().getEntityAttributeName(), entityListItem.getLastDetail().getEntityListItemName());
+                        entityAttribute.getLastDetail().getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName(),
+                        entityAttribute.getLastDetail().getEntityType().getLastDetail().getEntityTypeName(),
+                        entityAttribute.getLastDetail().getEntityAttributeName(),
+                        entityListItem.getLastDetail().getEntityListItemName());
             } else {
                 coreControl.deleteEntityMultipleListItemDefault(entityListItemDefault, deletedBy);
             }
