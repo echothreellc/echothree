@@ -4017,7 +4017,7 @@ public class PartyControl
         return partyDepartment == null? null: partyDepartment.getPartyDepartmentValue().clone();
     }
     
-    private PartyDepartment getPartyDepartment(Party party, EntityPermission entityPermission) {
+    public PartyDepartment getPartyDepartment(Party party, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PartyDepartments.fields())
                 .from(PartyDepartments)
@@ -4074,7 +4074,7 @@ public class PartyControl
         return getPartyDepartmentValueForUpdate(getDefaultPartyDepartmentForUpdate(divisionParty));
     }
     
-    private PartyDepartment getPartyDepartmentByName(Party divisionParty, String partyDepartmentName,
+    public PartyDepartment getPartyDepartmentByName(Party divisionParty, String partyDepartmentName,
             EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PartyDepartments.fields())

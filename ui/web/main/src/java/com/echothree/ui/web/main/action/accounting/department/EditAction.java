@@ -57,7 +57,7 @@ public class EditAction
         var divisionName = request.getParameter(ParameterConstants.DIVISION_NAME);
         var originalDepartmentName = request.getParameter(ParameterConstants.ORIGINAL_DEPARTMENT_NAME);
         var commandForm = PartyUtil.getHome().getEditDepartmentForm();
-        var spec = PartyUtil.getHome().getDepartmentSpec();
+        var spec = PartyUtil.getHome().getDepartmentUniversalSpec();
         
         if(companyName == null)
             companyName = actionForm.getCompanyName();
