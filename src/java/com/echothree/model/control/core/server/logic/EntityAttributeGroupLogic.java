@@ -184,4 +184,9 @@ public class EntityAttributeGroupLogic
         return getEntityAttributeGroupByUuid(eea, uuid, EntityPermission.READ_WRITE);
     }
 
+    public void deleteEntityAttributeGroup(final ExecutionErrorAccumulator eea, final EntityAttributeGroup entityAttributeGroup,
+            final BasePK deletedBy) {
+        entityAttributeGroupControl.deleteEntityAttributeGroup(entityAttributeGroup, deletedBy);
+    }
+
 }
