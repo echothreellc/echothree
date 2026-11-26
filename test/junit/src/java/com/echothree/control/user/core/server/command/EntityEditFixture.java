@@ -142,8 +142,8 @@ import com.echothree.util.common.form.BaseEdit;
 import com.echothree.util.common.form.BaseSpec;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.persistence.type.ByteArray;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.BaseCommand;
-import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.BaseEntity;
@@ -169,7 +169,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 class EntityEditFixture {
 
     final String kind;
-    BaseEditCommand command;
+    BaseAbstractEditCommand command;
     Object lookupLogic;
     final List<String> deletions = new ArrayList<>();
     Map<String, Object> dependencies;
@@ -300,7 +300,7 @@ class EntityEditFixture {
 
     BasePK lockKey(BaseEntity entity) {
         try {
-            var method = BaseEditCommand.class.getDeclaredMethod("getLockTargetPK", BaseEntity.class);
+            var method = BaseAbstractEditCommand.class.getDeclaredMethod("getLockTargetPK", BaseEntity.class);
             method.setAccessible(true);
             return (BasePK)method.invoke(command, entity);
         } catch(NoSuchMethodException exception) {

@@ -46,7 +46,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 /**
- * Exercise the actual BaseEditCommand-to-Control routing, without overriding lock operations.
+ * Exercise the actual BaseAbstractEditCommand-to-Control routing, without overriding lock operations.
  */
 public class EntityEditLifecycleTest {
 

@@ -21,8 +21,8 @@ import com.echothree.util.common.command.BaseEditResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.form.BaseEdit;
 import com.echothree.util.common.form.ValidationResult;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.BaseCommand;
-import com.echothree.util.server.control.BaseEditCommand;
 import java.util.List;
 import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -47,7 +47,7 @@ public class EntityEditRecoveryTest {
 
     private static ValidationResult validate(EntityEditFixture fixture)
             throws Exception {
-        var method = BaseEditCommand.class.getDeclaredMethod("validateUpdate");
+        var method = BaseAbstractEditCommand.class.getDeclaredMethod("validateUpdate");
         method.setAccessible(true);
         return assertDoesNotThrow(() -> (ValidationResult)method.invoke(fixture.command));
     }
