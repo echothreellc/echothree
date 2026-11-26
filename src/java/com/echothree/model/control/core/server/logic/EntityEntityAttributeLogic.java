@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.core.server.logic;
 
-import com.echothree.control.user.core.common.spec.EntityInstanceAttributeSpec;
 import com.echothree.model.control.core.common.exception.UnknownEntityEntityAttributeException;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityEntityAttribute;
@@ -34,14 +33,6 @@ public class EntityEntityAttributeLogic
 
     protected EntityEntityAttributeLogic() {
         super();
-    }
-
-    public EntityInstance getEntityInstanceAttribute(final ExecutionErrorAccumulator eea,
-            final EntityInstanceAttributeSpec entityInstanceAttributeSpec) {
-        var entityRef = entityInstanceAttributeSpec.getEntityRefAttribute();
-        var uuid = entityInstanceAttributeSpec.getUuidAttribute();
-
-        return entityInstanceLogic.getEntityInstance(eea, entityRef, uuid, null);
     }
 
     public EntityEntityAttribute getEntityEntityAttribute(ExecutionErrorAccumulator eea, EntityAttribute entityAttribute, EntityInstance entityInstance,

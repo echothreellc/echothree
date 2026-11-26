@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.core.server.logic;
 
+import com.echothree.control.user.core.common.spec.EntityInstanceAttributeSpec;
 import com.echothree.control.user.core.common.spec.EntityRefSpec;
 import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 import com.echothree.control.user.core.common.spec.UuidSpec;
@@ -92,6 +93,14 @@ public class EntityInstanceLogic
         return wasDeleted;
     }
     
+    public EntityInstance getEntityInstanceAttribute(final ExecutionErrorAccumulator eea,
+            final EntityInstanceAttributeSpec entityInstanceAttributeSpec) {
+        var entityRef = entityInstanceAttributeSpec.getEntityRefAttribute();
+        var uuid = entityInstanceAttributeSpec.getUuidAttribute();
+
+        return getEntityInstance(eea, entityRef, uuid, null);
+    }
+
     public EntityInstance getEntityInstanceByEntityRef(final ExecutionErrorAccumulator eea, final String entityRef) {
         var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
 

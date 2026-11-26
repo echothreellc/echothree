@@ -136,7 +136,7 @@ public class EditEntityEntityAttributeCommand
 
     @Override
     protected void canUpdate(EntityEntityAttribute entityEntityAttribute) {
-        entityInstanceAttribute = entityEntityAttributeLogic.getEntityInstanceAttribute(this, edit);
+        entityInstanceAttribute = entityInstanceLogic.getEntityInstanceAttribute(this, edit);
 
         if(!hasExecutionErrors() && coreControl.countEntityAttributeEntityTypesByEntityAttribute(entityAttribute) > 0) {
             var allowedEntityType = entityInstanceAttribute.getEntityType();
