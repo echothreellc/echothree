@@ -4695,7 +4695,7 @@ public class PartyControl
         return partyTypeAuditPolicy;
     }
     
-    private PartyTypeAuditPolicy getPartyTypeAuditPolicy(PartyType partyType, EntityPermission entityPermission) {
+    public PartyTypeAuditPolicy getPartyTypeAuditPolicy(PartyType partyType, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PartyTypeAuditPolicies.fields())
                 .from(PartyTypeAuditPolicies)
@@ -4745,8 +4745,8 @@ public class PartyControl
 
             var partyTypeAuditPolicyPK = partyTypeAuditPolicyDetail.getPartyTypeAuditPolicyPK();
             var partyTypePK = partyTypeAuditPolicyDetail.getPartyTypePK(); // Not updated
-            var auditCommands = partyTypeAuditPolicyDetail.getAuditCommands();
-            var retainUserVisitsTime = partyTypeAuditPolicyDetail.getRetainUserVisitsTime();
+            var auditCommands = partyTypeAuditPolicyDetailValue.getAuditCommands();
+            var retainUserVisitsTime = partyTypeAuditPolicyDetailValue.getRetainUserVisitsTime();
 
             partyTypeAuditPolicyDetail = partyTypeAuditPolicyDetailFactory.create(partyTypeAuditPolicyPK, partyTypePK, auditCommands, retainUserVisitsTime,
                     session.getStartTime(), Session.MAX_TIME);
