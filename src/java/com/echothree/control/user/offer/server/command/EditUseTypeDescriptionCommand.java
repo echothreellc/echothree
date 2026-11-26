@@ -18,21 +18,19 @@ package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.edit.OfferEditFactory;
 import com.echothree.control.user.offer.common.edit.UseTypeDescriptionEdit;
-import com.echothree.control.user.offer.common.form.EditUseTypeDescriptionForm;
+import com.echothree.control.user.offer.common.result.EditUseTypeDescriptionResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.control.user.offer.common.spec.UseTypeDescriptionSpec;
 import com.echothree.model.control.offer.server.control.UseTypeControl;
+import com.echothree.model.control.offer.server.logic.UseTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.data.offer.server.entity.UseType;
+import com.echothree.model.data.offer.server.entity.UseTypeDescription;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -42,12 +40,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditUseTypeDescriptionCommand
-        extends BaseEditCommand<UseTypeDescriptionSpec, UseTypeDescriptionEdit> {
-    
+        extends BaseAbstractEditCommand<UseTypeDescriptionSpec, UseTypeDescriptionEdit, EditUseTypeDescriptionResult, UseTypeDescription, UseType> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -55,92 +53,65 @@ public class EditUseTypeDescriptionCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.UseType.name(), SecurityRoles.Description.name())
                 ))
         ));
-        
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("UseTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
 
     @Inject
-    PartyControl partyControl;
-
-    @Inject
     UseTypeControl useTypeControl;
 
-    
+    @Inject
+    UseTypeLogic useTypeLogic;
+
     /** Creates a new instance of EditUseTypeDescriptionCommand */
     public EditUseTypeDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = OfferResultFactory.getEditUseTypeDescriptionResult();
-        var useTypeName = spec.getUseTypeName();
-        var useType = useTypeControl.getUseTypeByName(useTypeName);
-        
-        if(useType != null) {
-            var languageIsoName = spec.getLanguageIsoName();
-            var language = partyControl.getLanguageByIsoName(languageIsoName);
-            
-            if(language != null) {
-                if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    var useTypeDescription = useTypeControl.getUseTypeDescription(useType, language);
-                    
-                    if(useTypeDescription != null) {
-                        if(editMode.equals(EditMode.LOCK)) {
-                            result.setUseTypeDescription(useTypeControl.getUseTypeDescriptionTransfer(getUserVisit(), useTypeDescription));
-
-                            if(lockEntity(useType)) {
-                                var edit = OfferEditFactory.getUseTypeDescriptionEdit();
-
-                                result.setEdit(edit);
-                                edit.setDescription(useTypeDescription.getDescription());
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                            }
-
-                            result.setEntityLock(getEntityLockTransfer(useType));
-                        } else { // EditMode.ABANDON
-                            unlockEntity(useType);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownUseTypeDescription.name());
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var useTypeDescriptionValue = useTypeControl.getUseTypeDescriptionValueForUpdate(useType, language);
-                    
-                    if(useTypeDescriptionValue != null) {
-                        if(lockEntityForUpdate(useType)) {
-                            try {
-                                var description = edit.getDescription();
-                                
-                                useTypeDescriptionValue.setDescription(description);
-                                
-                                useTypeControl.updateUseTypeDescriptionFromValue(useTypeDescriptionValue, getPartyPK());
-                            } finally {
-                                unlockEntity(useType);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownUseTypeDescription.name());
-                    }
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownUseTypeName.name(), useTypeName);
-        }
-        
-        return result;
+    public EditUseTypeDescriptionResult getResult() {
+        return OfferResultFactory.getEditUseTypeDescriptionResult();
     }
-    
+
+    @Override
+    public UseTypeDescriptionEdit getEdit() {
+        return OfferEditFactory.getUseTypeDescriptionEdit();
+    }
+
+    @Override
+    public UseTypeDescription getEntity(EditUseTypeDescriptionResult result) {
+        return useTypeLogic.getUseTypeDescriptionBySpec(this, spec, editModeToEntityPermission(editMode));
+    }
+
+    @Override
+    public UseType getLockEntity(UseTypeDescription useTypeDescription) {
+        return useTypeDescription.getUseType();
+    }
+
+    @Override
+    public void fillInResult(EditUseTypeDescriptionResult result, UseTypeDescription useTypeDescription) {
+        result.setUseTypeDescription(useTypeControl.getUseTypeDescriptionTransfer(getUserVisit(), useTypeDescription));
+    }
+
+    @Override
+    public void doLock(UseTypeDescriptionEdit edit, UseTypeDescription useTypeDescription) {
+        edit.setDescription(useTypeDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(UseTypeDescription useTypeDescription) {
+        var useTypeDescriptionValue = useTypeControl.getUseTypeDescriptionValue(useTypeDescription);
+
+        useTypeDescriptionValue.setDescription(edit.getDescription());
+
+        useTypeControl.updateUseTypeDescriptionFromValue(useTypeDescriptionValue, getPartyPK());
+    }
+
 }
