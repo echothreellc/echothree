@@ -79,10 +79,6 @@ public abstract class BaseCurrencyFieldType
                     if(resolvedCurrency == null) {
                         validationMessages.add(fieldName, new Message(Validator.ERROR_MISSING_CURRENCY));
                     }
-
-                    if(resolvedCurrency == null) {
-                        validationMessages.add(fieldName, new Message(Validator.ERROR_MISSING_CURRENCY));
-                    }
                 }
             }
         }
