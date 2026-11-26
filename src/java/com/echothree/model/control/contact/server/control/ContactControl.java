@@ -4252,7 +4252,7 @@ public class ContactControl
                 .orElse(0L);
     }
 
-    private PostalAddressLineElement getPostalAddressLineElement(PostalAddressLine postalAddressLine,
+    public PostalAddressLineElement getPostalAddressLineElement(PostalAddressLine postalAddressLine,
             Integer postalAddressLineElementSortOrder, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PostalAddressLineElements.fields())
