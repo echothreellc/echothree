@@ -3732,7 +3732,7 @@ public class PartyControl
         return partyDivision == null? null: partyDivision.getPartyDivisionValue().clone();
     }
     
-    private PartyDivision getPartyDivision(Party party, EntityPermission entityPermission) {
+    public PartyDivision getPartyDivision(Party party, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PartyDivisions.fields())
                 .from(PartyDivisions)
@@ -3789,7 +3789,7 @@ public class PartyControl
         return getPartyDivisionValueForUpdate(getDefaultPartyDivisionForUpdate(companyParty));
     }
     
-    private PartyDivision getPartyDivisionByName(Party companyParty, String partyDivisionName, EntityPermission entityPermission) {
+    public PartyDivision getPartyDivisionByName(Party companyParty, String partyDivisionName, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(PartyDivisions.fields())
                 .from(PartyDivisions)
