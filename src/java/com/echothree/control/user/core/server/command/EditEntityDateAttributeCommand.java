@@ -18,22 +18,24 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.edit.CoreEditFactory;
 import com.echothree.control.user.core.common.edit.EntityDateAttributeEdit;
-import com.echothree.control.user.core.common.form.EditEntityDateAttributeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.control.user.core.common.result.EditEntityDateAttributeResult;
 import com.echothree.control.user.core.common.spec.EntityDateAttributeSpec;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityDataLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityDateAttribute;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.command.BaseResult;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import com.echothree.util.server.string.DateUtils;
 import java.util.List;
@@ -42,12 +44,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditEntityDateAttributeCommand
-        extends BaseEditCommand<EntityDateAttributeSpec, EntityDateAttributeEdit> {
+        extends BaseAbstractEditCommand<EntityDateAttributeSpec, EntityDateAttributeEdit, EditEntityDateAttributeResult, EntityDateAttribute, EntityInstance> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -60,7 +62,7 @@ public class EditEntityDateAttributeCommand
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeUuid", FieldType.UUID, false, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DateAttribute", FieldType.DATE, true, null, null)
         );
@@ -70,106 +72,94 @@ public class EditEntityDateAttributeCommand
     EntityAttributeLogic entityAttributeLogic;
 
     @Inject
+    EntityDataLogic entityDataLogic;
+
+    @Inject
     EntityInstanceLogic entityInstanceLogic;
 
-    
+    private EntityInstance entityInstance;
+    private EntityAttribute entityAttribute;
+
     /** Creates a new instance of EditEntityDateAttributeCommand */
     public EditEntityDateAttributeCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = CoreResultFactory.getEditEntityDateAttributeResult();
-        var parameterCount = entityInstanceLogic.countPossibleEntitySpecs(spec);
+    public EditEntityDateAttributeResult getResult() {
+        return CoreResultFactory.getEditEntityDateAttributeResult();
+    }
 
-        if(parameterCount == 1) {
-            var entityInstance = entityInstanceLogic.getEntityInstance(this, spec);
+    @Override
+    public EntityDateAttributeEdit getEdit() {
+        return CoreEditFactory.getEntityDateAttributeEdit();
+    }
 
-            if(!hasExecutionErrors()) {
-                var entityAttributeName = spec.getEntityAttributeName();
-                var entityAttributeUuid = spec.getEntityAttributeUuid();
+    @Override
+    public EntityDateAttribute getEntity(EditEntityDateAttributeResult result) {
+        EntityDateAttribute entity = null;
 
-                parameterCount = (entityAttributeName == null ? 0 : 1) + (entityAttributeUuid == null ? 0 : 1);
+        entityInstance = entityInstanceLogic.getEntityInstance(this, spec);
 
-                if(parameterCount == 1) {
-                    var entityAttribute = entityAttributeName == null ?
-                            entityAttributeLogic.getEntityAttributeByUuid(this, entityAttributeUuid) :
-                            entityAttributeLogic.getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
-
-                    if(!hasExecutionErrors()) {
-                        if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            EntityDateAttribute entityDateAttribute = null;
-                            var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
-
-                            if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                                entityDateAttribute = coreControl.getEntityDateAttribute(entityAttribute, entityInstance);
-
-                                if(entityDateAttribute != null) {
-                                    if(editMode.equals(EditMode.LOCK)) {
-                                        result.setEntityDateAttribute(coreControl.getEntityDateAttributeTransfer(getUserVisit(),
-                                                entityDateAttribute, entityInstance));
-
-                                        if(lockEntity(basePK)) {
-                                            var edit = CoreEditFactory.getEntityDateAttributeEdit();
-
-                                            result.setEdit(edit);
-                                            edit.setDateAttribute(DateUtils.getInstance().formatDate(getUserVisit(), entityDateAttribute.getDateAttribute()));
-                                        } else {
-                                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                                        }
-                                    } else { // EditMode.ABANDON
-                                        unlockEntity(basePK);
-                                        basePK = null;
-                                    }
-                                } else {
-                                    addExecutionError(ExecutionErrors.UnknownEntityDateAttribute.name(),
-                                            entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityAttributeName);
-                                }
-                            } else if(editMode.equals(EditMode.UPDATE)) {
-                                entityDateAttribute = coreControl.getEntityDateAttributeForUpdate(entityAttribute, entityInstance);
-
-                                if(entityDateAttribute != null) {
-                                    if(lockEntityForUpdate(basePK)) {
-                                        try {
-                                            var entityDateAttributeValue = coreControl.getEntityDateAttributeValueForUpdate(entityDateAttribute);
-
-                                            entityDateAttributeValue.setDateAttribute(Integer.valueOf(edit.getDateAttribute()));
-
-                                            coreControl.updateEntityDateAttributeFromValue(entityDateAttributeValue, getPartyPK());
-                                        } finally {
-                                            unlockEntity(basePK);
-                                            basePK = null;
-                                        }
-                                    } else {
-                                        addExecutionError(ExecutionErrors.EntityLockStale.name());
-                                    }
-                                } else {
-                                    addExecutionError(ExecutionErrors.UnknownEntityDateAttribute.name(),
-                                            entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityAttributeName);
-                                }
-                            }
-
-                            if(basePK != null) {
-                                result.setEntityLock(getEntityLockTransfer(basePK));
-                            }
-
-                            if(entityDateAttribute != null) {
-                                result.setEntityDateAttribute(coreControl.getEntityDateAttributeTransfer(getUserVisit(), entityDateAttribute, entityInstance));
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.MismatchedEntityType.name());
-                        }
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.InvalidParameterCount.name());
-                }
-            }
-        } else {
-            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        if(!hasExecutionErrors()) {
+            entityAttribute = entityAttributeLogic.getEntityAttribute(this, entityInstance, spec, spec);
         }
 
-        return result;
+        var ownerResolved = !hasExecutionErrors();
+
+        if(!hasExecutionErrors()) {
+            entity = entityDataLogic.getEntityDateAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
+        }
+
+        if(entity != null && editMode == EditMode.LOCK) {
+            fillInResult(result, entity);
+        }
+
+        // Legacy results include owner lock information even when the value lookup or replacement validation fails.
+        if(hasExecutionErrors() && ownerResolved) {
+            result.setEntityLock(getEntityLockTransfer(PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance)));
+        }
+
+        return entity;
     }
-    
+
+    @Override
+    public EntityInstance getLockEntity(EntityDateAttribute entityDateAttribute) {
+        return entityInstance;
+    }
+
+    @Override
+    protected BasePK getLockTargetPK(BaseEntity lockTarget) {
+        return PersistenceUtils.getInstance().getBasePKFromEntityInstance((EntityInstance)lockTarget);
+    }
+
+    @Override
+    public void fillInResult(EditEntityDateAttributeResult result, EntityDateAttribute entityDateAttribute) {
+        result.setEntityDateAttribute(coreControl.getEntityDateAttributeTransfer(getUserVisit(), entityDateAttribute, entityInstance));
+    }
+
+    @Override
+    public void doLock(EntityDateAttributeEdit edit, EntityDateAttribute entityDateAttribute) {
+        edit.setDateAttribute(DateUtils.getInstance().formatDate(getUserVisit(), entityDateAttribute.getDateAttribute()));
+    }
+
+    @Override
+    public void doUpdate(EntityDateAttribute entityDateAttribute) {
+        var entityDateAttributeValue = coreControl.getEntityDateAttributeValueForUpdate(entityDateAttribute);
+
+        entityDateAttributeValue.setDateAttribute(Integer.valueOf(edit.getDateAttribute()));
+
+        coreControl.updateEntityDateAttributeFromValue(entityDateAttributeValue, getPartyPK());
+    }
+
+    @Override
+    protected boolean includeResultAfterSuccessfulEdit() {
+        return true;
+    }
+
+    @Override
+    protected void saveResultAfterEditValidatorErrors() {
+        // Preserve the existing absence of a result when edit field validation fails.
+    }
+
 }

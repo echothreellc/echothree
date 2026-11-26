@@ -18,24 +18,29 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.edit.CoreEditFactory;
 import com.echothree.control.user.core.common.edit.EntityBlobAttributeEdit;
-import com.echothree.control.user.core.common.form.EditEntityBlobAttributeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.control.user.core.common.result.EditEntityBlobAttributeResult;
 import com.echothree.control.user.core.common.spec.EntityBlobAttributeSpec;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityDataLogic;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
+import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityBlobAttribute;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.command.BaseResult;
+import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.core.server.entity.MimeType;
+import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -43,12 +48,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditEntityBlobAttributeCommand
-        extends BaseEditCommand<EntityBlobAttributeSpec, EntityBlobAttributeEdit> {
+        extends BaseAbstractEditCommand<EntityBlobAttributeSpec, EntityBlobAttributeEdit, EditEntityBlobAttributeResult, EntityBlobAttribute, EntityInstance> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -60,135 +65,127 @@ public class EditEntityBlobAttributeCommand
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, true, null, null)
         );
     }
 
     @Inject
-    EntityInstanceControl entityInstanceControl;
+    EntityAttributeLogic entityAttributeLogic;
 
     @Inject
-    PartyControl partyControl;
+    EntityDataLogic entityDataLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
 
     @Inject
     MimeTypeLogic mimeTypeLogic;
 
-    
+    private EntityInstance entityInstance;
+    private EntityAttribute entityAttribute;
+    private Language language;
+    private MimeType mimeType;
+
     /** Creates a new instance of EditEntityBlobAttributeCommand */
     public EditEntityBlobAttributeCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = CoreResultFactory.getEditEntityBlobAttributeResult();
-        var entityRef = spec.getEntityRef();
-        var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
+    public EditEntityBlobAttributeResult getResult() {
+        return CoreResultFactory.getEditEntityBlobAttributeResult();
+    }
 
-        if(entityInstance != null) {
-            var entityAttributeName = spec.getEntityAttributeName();
-            var entityAttribute = coreControl.getEntityAttributeByName(entityInstance.getEntityType(), entityAttributeName);
+    @Override
+    public EntityBlobAttributeEdit getEdit() {
+        return CoreEditFactory.getEntityBlobAttributeEdit();
+    }
 
-            if(entityAttribute != null) {
-                var languageIsoName = spec.getLanguageIsoName();
-                var language = partyControl.getLanguageByIsoName(languageIsoName);
+    @Override
+    public EntityBlobAttribute getEntity(EditEntityBlobAttributeResult result) {
+        EntityBlobAttribute entity = null;
 
-                if(language != null) {
-                    EntityBlobAttribute entityBlobAttribute = null;
-                    var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
-                    
-                    if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                        entityBlobAttribute = coreControl.getEntityBlobAttribute(entityAttribute, entityInstance, language);
+        entityInstance = entityDataLogic.getEntityInstanceByEntityRef(this, spec.getEntityRef());
 
-                        if(entityBlobAttribute != null) {
-                            if(editMode.equals(EditMode.LOCK)) {
-                                result.setEntityBlobAttribute(coreControl.getEntityBlobAttributeTransfer(getUserVisit(),
-                                        entityBlobAttribute, entityInstance));
-
-                                if(lockEntity(basePK)) {
-                                    var edit = CoreEditFactory.getEntityBlobAttributeEdit();
-
-                                    result.setEdit(edit);
-                                    edit.setMimeTypeName(entityBlobAttribute.getMimeType().getLastDetail().getMimeTypeName());
-                                } else {
-                                    addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                                }
-                            } else { // EditMode.ABANDON
-                                unlockEntity(basePK);
-                                basePK = null;
-                            }
-                        } else {
-                            var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
-
-                            addExecutionError(ExecutionErrors.UnknownEntityBlobAttribute.name(), entityRef,
-                                    entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                                    entityTypeDetail.getEntityTypeName(), entityAttributeName, languageIsoName);
-                        }
-                    } else if(editMode.equals(EditMode.UPDATE)) {
-                        entityBlobAttribute = coreControl.getEntityBlobAttributeForUpdate(entityAttribute, entityInstance, language);
-
-                        if(entityBlobAttribute != null) {
-                            var mimeType = mimeTypeLogic.getMimeTypeByName(this, edit.getMimeTypeName());
-
-                            if(!hasExecutionErrors()) {
-                                if(mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName().equals(EntityAttributeTypes.BLOB.name())) {
-                                    var blobAttribute = edit.getBlobAttribute();
-
-                                    if(blobAttribute != null) {
-                                        if(lockEntityForUpdate(basePK)) {
-                                            try {
-                                                var entityBlobAttributeValue = coreControl.getEntityBlobAttributeValueForUpdate(entityBlobAttribute);
-
-                                                entityBlobAttributeValue.setBlobAttribute(blobAttribute);
-                                                entityBlobAttributeValue.setMimeTypePK(mimeType.getPrimaryKey());
-
-                                                coreControl.updateEntityBlobAttributeFromValue(entityBlobAttributeValue, getPartyPK());
-                                            } finally {
-                                                unlockEntity(basePK);
-                                                basePK = null;
-                                            }
-                                        } else {
-                                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                                        }
-                                    } else {
-                                        addExecutionError(ExecutionErrors.MissingBlobAttribute.name());
-                                    }
-                                } else {
-                                    addExecutionError(ExecutionErrors.InvalidMimeType.name(), mimeType.getLastDetail().getMimeTypeName());
-                                }
-                            }
-                        } else {
-                            var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
-
-                            addExecutionError(ExecutionErrors.UnknownEntityBlobAttribute.name(), entityRef,
-                                    entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                                    entityTypeDetail.getEntityTypeName(), entityAttributeName, languageIsoName);
-                        }
-                    }
-                    
-                    if(basePK != null) {
-                        result.setEntityLock(getEntityLockTransfer(basePK));
-                    }
-
-                    if(entityBlobAttribute != null) {
-                        result.setEntityBlobAttribute(coreControl.getEntityBlobAttributeTransfer(getUserVisit(), entityBlobAttribute, entityInstance));
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
-                }
-            } else {
-                var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
-
-                addExecutionError(ExecutionErrors.UnknownEntityAttributeName.name(), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                        entityTypeDetail.getEntityTypeName(), entityAttributeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownEntityRef.name(), entityRef);
+        if(!hasExecutionErrors()) {
+            entityAttribute = entityAttributeLogic.getEntityAttributeByName(this, entityInstance.getEntityType(), spec.getEntityAttributeName());
         }
 
-        return result;
+        if(!hasExecutionErrors()) {
+            language = languageLogic.getLanguageByName(this, spec.getLanguageIsoName());
+        }
+
+        var ownerResolved = !hasExecutionErrors();
+
+        if(!hasExecutionErrors()) {
+            entity = entityDataLogic.getEntityBlobAttribute(this, entityAttribute, entityInstance, language, editModeToEntityPermission(editMode));
+        }
+
+        if(entity != null && editMode == EditMode.LOCK) {
+            fillInResult(result, entity);
+        }
+
+        // Legacy results include owner lock information even when the value lookup or replacement validation fails.
+        if(hasExecutionErrors() && ownerResolved) {
+            result.setEntityLock(getEntityLockTransfer(PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance)));
+        }
+
+        return entity;
     }
-    
+
+    @Override
+    public EntityInstance getLockEntity(EntityBlobAttribute entityBlobAttribute) {
+        return entityInstance;
+    }
+
+    @Override
+    protected BasePK getLockTargetPK(BaseEntity lockTarget) {
+        return PersistenceUtils.getInstance().getBasePKFromEntityInstance((EntityInstance)lockTarget);
+    }
+
+    @Override
+    public void fillInResult(EditEntityBlobAttributeResult result, EntityBlobAttribute entityBlobAttribute) {
+        result.setEntityBlobAttribute(coreControl.getEntityBlobAttributeTransfer(getUserVisit(), entityBlobAttribute, entityInstance));
+    }
+
+    @Override
+    public void doLock(EntityBlobAttributeEdit edit, EntityBlobAttribute entityBlobAttribute) {
+        edit.setMimeTypeName(entityBlobAttribute.getMimeType().getLastDetail().getMimeTypeName());
+    }
+
+    @Override
+    protected void canUpdate(EntityBlobAttribute entityBlobAttribute) {
+        mimeType = mimeTypeLogic.getMimeTypeByName(this, edit.getMimeTypeName());
+
+        if(!hasExecutionErrors()) {
+            if(!mimeType.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName().equals(EntityAttributeTypes.BLOB.name())) {
+                addExecutionError(ExecutionErrors.InvalidMimeType.name(), mimeType.getLastDetail().getMimeTypeName());
+            } else if(edit.getBlobAttribute() == null) {
+                addExecutionError(ExecutionErrors.MissingBlobAttribute.name());
+            }
+        }
+    }
+
+    @Override
+    public void doUpdate(EntityBlobAttribute entityBlobAttribute) {
+        var entityBlobAttributeValue = coreControl.getEntityBlobAttributeValueForUpdate(entityBlobAttribute);
+
+        entityBlobAttributeValue.setBlobAttribute(edit.getBlobAttribute());
+        entityBlobAttributeValue.setMimeTypePK(mimeType.getPrimaryKey());
+
+        coreControl.updateEntityBlobAttributeFromValue(entityBlobAttributeValue, getPartyPK());
+    }
+
+    @Override
+    protected boolean includeResultAfterSuccessfulEdit() {
+        return true;
+    }
+
+    @Override
+    protected void saveResultAfterEditValidatorErrors() {
+        // Preserve the existing absence of a result when edit field validation fails.
+    }
+
 }

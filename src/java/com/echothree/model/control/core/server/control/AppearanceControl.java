@@ -1065,7 +1065,7 @@ public class AppearanceControl
                 .orElse(0L);
     }
 
-    private EntityAppearance getEntityAppearance(EntityInstance entityInstance, EntityPermission entityPermission) {
+    public EntityAppearance getEntityAppearance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(EntityAppearances.fields())
                 .from(EntityAppearances)

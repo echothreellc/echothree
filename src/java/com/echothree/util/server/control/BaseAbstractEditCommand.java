@@ -79,6 +79,11 @@ public abstract class BaseAbstractEditCommand<S extends BaseSpec, E extends Base
     }
     
     protected abstract void doUpdate(BE baseEntity);
+
+    /** Allows existing editors to retain their successful UPDATE and ABANDON result contract. */
+    protected boolean includeResultAfterSuccessfulEdit() {
+        return false;
+    }
     
     @Override
     protected BaseResult execute() {
@@ -108,7 +113,13 @@ public abstract class BaseAbstractEditCommand<S extends BaseSpec, E extends Base
                         fillInResult(result, baseEntity, lockEntity);
                     }
                 }
-                case ABANDON -> unlockEntity(lockEntity);
+                case ABANDON -> {
+                    unlockEntity(lockEntity);
+
+                    if(includeResultAfterSuccessfulEdit()) {
+                        fillInResult(result, baseEntity);
+                    }
+                }
                 case UPDATE -> {
                     canEdit(baseEntity);
 
@@ -132,6 +143,8 @@ public abstract class BaseAbstractEditCommand<S extends BaseSpec, E extends Base
 
                         if(hasExecutionErrors()) {
                             fillInResult(result, baseEntity, lockEntity);
+                        } else if(includeResultAfterSuccessfulEdit()) {
+                            fillInResult(result, baseEntity);
                         }
                     }
                 }

@@ -18,25 +18,28 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.edit.CoreEditFactory;
 import com.echothree.control.user.core.common.edit.EntityGeoPointAttributeEdit;
-import com.echothree.control.user.core.common.form.EditEntityGeoPointAttributeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.control.user.core.common.result.EditEntityGeoPointAttributeResult;
 import com.echothree.control.user.core.common.spec.EntityGeoPointAttributeSpec;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityDataLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
+import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityGeoPointAttribute;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.command.BaseResult;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.string.GeoPointUtils;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -44,12 +47,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditEntityGeoPointAttributeCommand
-        extends BaseEditCommand<EntityGeoPointAttributeSpec, EntityGeoPointAttributeEdit> {
+        extends BaseAbstractEditCommand<EntityGeoPointAttributeSpec, EntityGeoPointAttributeEdit, EditEntityGeoPointAttributeResult, EntityGeoPointAttribute, EntityInstance> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -62,7 +65,7 @@ public class EditEntityGeoPointAttributeCommand
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeUuid", FieldType.UUID, false, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Latitude", FieldType.LATITUDE, true, null, null),
                 new FieldDefinition("Longitude", FieldType.LONGITUDE, true, null, null),
@@ -77,136 +80,127 @@ public class EditEntityGeoPointAttributeCommand
     EntityAttributeLogic entityAttributeLogic;
 
     @Inject
+    EntityDataLogic entityDataLogic;
+
+    @Inject
     EntityInstanceLogic entityInstanceLogic;
 
     @Inject
     UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
 
-    
+    private EntityInstance entityInstance;
+    private EntityAttribute entityAttribute;
+    private Long elevation;
+    private Long altitude;
+
     /** Creates a new instance of EditEntityGeoPointAttributeCommand */
     public EditEntityGeoPointAttributeCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = CoreResultFactory.getEditEntityGeoPointAttributeResult();
-        var parameterCount = entityInstanceLogic.countPossibleEntitySpecs(spec);
+    public EditEntityGeoPointAttributeResult getResult() {
+        return CoreResultFactory.getEditEntityGeoPointAttributeResult();
+    }
 
-        if(parameterCount == 1) {
-            var entityInstance = entityInstanceLogic.getEntityInstance(this, spec);
+    @Override
+    public EntityGeoPointAttributeEdit getEdit() {
+        return CoreEditFactory.getEntityGeoPointAttributeEdit();
+    }
 
-            if(!hasExecutionErrors()) {
-                var entityAttributeName = spec.getEntityAttributeName();
-                var entityAttributeUuid = spec.getEntityAttributeUuid();
+    @Override
+    public EntityGeoPointAttribute getEntity(EditEntityGeoPointAttributeResult result) {
+        EntityGeoPointAttribute entity = null;
 
-                parameterCount = (entityAttributeName == null ? 0 : 1) + (entityAttributeUuid == null ? 0 : 1);
+        entityInstance = entityInstanceLogic.getEntityInstance(this, spec);
 
-                if(parameterCount == 1) {
-                    var entityAttribute = entityAttributeName == null ?
-                            entityAttributeLogic.getEntityAttributeByUuid(this, entityAttributeUuid) :
-                            entityAttributeLogic.getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
-
-                    if(!hasExecutionErrors()) {
-                        if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            EntityGeoPointAttribute entityGeoPointAttribute = null;
-                            var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
-
-                            if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                                entityGeoPointAttribute = coreControl.getEntityGeoPointAttribute(entityAttribute, entityInstance);
-
-                                if(entityGeoPointAttribute != null) {
-                                    if(editMode.equals(EditMode.LOCK)) {
-                                        result.setEntityGeoPointAttribute(coreControl.getEntityGeoPointAttributeTransfer(getUserVisit(), entityGeoPointAttribute, entityInstance));
-
-                                        if(lockEntity(basePK)) {
-                                            var geoPointUtils = GeoPointUtils.getInstance();
-                                            var edit = CoreEditFactory.getEntityGeoPointAttributeEdit();
-                                            UnitOfMeasureTypeLogic.StringUnitOfMeasure stringUnitOfMeasure;
-
-                                            result.setEdit(edit);
-                                            edit.setLatitude(geoPointUtils.formatDegrees(entityGeoPointAttribute.getLatitude()));
-                                            edit.setLongitude(geoPointUtils.formatDegrees(entityGeoPointAttribute.getLongitude()));
-                                            stringUnitOfMeasure = unitOfMeasureTypeLogic.unitOfMeasureToString(this, UomConstants.UnitOfMeasureKindUseType_ELEVATION, entityGeoPointAttribute.getElevation());
-                                            edit.setElevationUnitOfMeasureTypeName(stringUnitOfMeasure.getUnitOfMeasureTypeName());
-                                            edit.setElevation(stringUnitOfMeasure.getValue());
-                                            stringUnitOfMeasure = unitOfMeasureTypeLogic.unitOfMeasureToString(this, UomConstants.UnitOfMeasureKindUseType_ALTITUDE, entityGeoPointAttribute.getAltitude());
-                                            edit.setAltitudeUnitOfMeasureTypeName(stringUnitOfMeasure.getUnitOfMeasureTypeName());
-                                            edit.setAltitude(stringUnitOfMeasure.getValue());
-                                        } else {
-                                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                                        }
-                                    } else { // EditMode.ABANDON
-                                        unlockEntity(basePK);
-                                        basePK = null;
-                                    }
-                                } else {
-                                    addExecutionError(ExecutionErrors.UnknownEntityGeoPointAttribute.name(),
-                                            entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
-                                            entityAttribute.getLastDetail().getEntityAttributeName());
-                                }
-                            } else if(editMode.equals(EditMode.UPDATE)) {
-                                entityGeoPointAttribute = coreControl.getEntityGeoPointAttributeForUpdate(entityAttribute, entityInstance);
-
-                                if(entityGeoPointAttribute != null) {
-                                    var elevation = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_ELEVATION,
-                                            edit.getElevation(), edit.getElevationUnitOfMeasureTypeName(),
-                                            null, ExecutionErrors.MissingRequiredElevation.name(), null, ExecutionErrors.MissingRequiredElevationUnitOfMeasureTypeName.name(),
-                                            null, ExecutionErrors.UnknownElevationUnitOfMeasureTypeName.name());
-
-                                    if(!hasExecutionErrors()) {
-                                        var altitude = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_ALTITUDE,
-                                                edit.getAltitude(), edit.getAltitudeUnitOfMeasureTypeName(),
-                                                null, ExecutionErrors.MissingRequiredAltitude.name(), null, ExecutionErrors.MissingRequiredAltitudeUnitOfMeasureTypeName.name(),
-                                                null, ExecutionErrors.UnknownAltitudeUnitOfMeasureTypeName.name());
-
-                                        if(!hasExecutionErrors()) {
-                                            if(lockEntityForUpdate(basePK)) {
-                                                try {
-                                                    var entityGeoPointAttributeValue = coreControl.getEntityGeoPointAttributeValueForUpdate(entityGeoPointAttribute);
-
-                                                    entityGeoPointAttributeValue.setLatitude(Integer.valueOf(edit.getLatitude()));
-                                                    entityGeoPointAttributeValue.setLongitude(Integer.valueOf(edit.getLongitude()));
-                                                    entityGeoPointAttributeValue.setElevation(elevation);
-                                                    entityGeoPointAttributeValue.setAltitude(altitude);
-
-                                                    coreControl.updateEntityGeoPointAttributeFromValue(entityGeoPointAttributeValue, getPartyPK());
-                                                } finally {
-                                                    unlockEntity(basePK);
-                                                    basePK = null;
-                                                }
-                                            } else {
-                                                addExecutionError(ExecutionErrors.EntityLockStale.name());
-                                            }
-                                        }
-                                    }
-                                } else {
-                                    addExecutionError(ExecutionErrors.UnknownEntityGeoPointAttribute.name(),
-                                            entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
-                                            entityAttribute.getLastDetail().getEntityAttributeName());
-                                }
-                            }
-
-                            if(basePK != null) {
-                                result.setEntityLock(getEntityLockTransfer(basePK));
-                            }
-
-                            if(entityGeoPointAttribute != null) {
-                                result.setEntityGeoPointAttribute(coreControl.getEntityGeoPointAttributeTransfer(getUserVisit(), entityGeoPointAttribute, entityInstance));
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.MismatchedEntityType.name());
-                        }
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.InvalidParameterCount.name());
-                }
-            }
-        } else {
-            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        if(!hasExecutionErrors()) {
+            entityAttribute = entityAttributeLogic.getEntityAttribute(this, entityInstance, spec, spec);
         }
 
-        return result;
+        var ownerResolved = !hasExecutionErrors();
+
+        if(!hasExecutionErrors()) {
+            entity = entityDataLogic.getEntityGeoPointAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
+        }
+
+        if(entity != null && editMode == EditMode.LOCK) {
+            fillInResult(result, entity);
+        }
+
+        // Legacy results include owner lock information even when the value lookup or replacement validation fails.
+        if(hasExecutionErrors() && ownerResolved) {
+            result.setEntityLock(getEntityLockTransfer(PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance)));
+        }
+
+        return entity;
     }
-    
+
+    @Override
+    public EntityInstance getLockEntity(EntityGeoPointAttribute entityGeoPointAttribute) {
+        return entityInstance;
+    }
+
+    @Override
+    protected BasePK getLockTargetPK(BaseEntity lockTarget) {
+        return PersistenceUtils.getInstance().getBasePKFromEntityInstance((EntityInstance)lockTarget);
+    }
+
+    @Override
+    public void fillInResult(EditEntityGeoPointAttributeResult result, EntityGeoPointAttribute entityGeoPointAttribute) {
+        result.setEntityGeoPointAttribute(coreControl.getEntityGeoPointAttributeTransfer(getUserVisit(), entityGeoPointAttribute, entityInstance));
+    }
+
+    @Override
+    public void doLock(EntityGeoPointAttributeEdit edit, EntityGeoPointAttribute entityGeoPointAttribute) {
+        var geoPointUtils = GeoPointUtils.getInstance();
+        UnitOfMeasureTypeLogic.StringUnitOfMeasure stringUnitOfMeasure;
+
+        edit.setLatitude(geoPointUtils.formatDegrees(entityGeoPointAttribute.getLatitude()));
+        edit.setLongitude(geoPointUtils.formatDegrees(entityGeoPointAttribute.getLongitude()));
+        stringUnitOfMeasure = unitOfMeasureTypeLogic.unitOfMeasureToString(this, UomConstants.UnitOfMeasureKindUseType_ELEVATION, entityGeoPointAttribute.getElevation());
+        edit.setElevationUnitOfMeasureTypeName(stringUnitOfMeasure.getUnitOfMeasureTypeName());
+        edit.setElevation(stringUnitOfMeasure.getValue());
+        stringUnitOfMeasure = unitOfMeasureTypeLogic.unitOfMeasureToString(this, UomConstants.UnitOfMeasureKindUseType_ALTITUDE, entityGeoPointAttribute.getAltitude());
+        edit.setAltitudeUnitOfMeasureTypeName(stringUnitOfMeasure.getUnitOfMeasureTypeName());
+        edit.setAltitude(stringUnitOfMeasure.getValue());
+    }
+
+    @Override
+    protected void canUpdate(EntityGeoPointAttribute entityGeoPointAttribute) {
+        elevation = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_ELEVATION,
+                edit.getElevation(), edit.getElevationUnitOfMeasureTypeName(),
+                null, ExecutionErrors.MissingRequiredElevation.name(), null, ExecutionErrors.MissingRequiredElevationUnitOfMeasureTypeName.name(),
+                null, ExecutionErrors.UnknownElevationUnitOfMeasureTypeName.name());
+
+        if(!hasExecutionErrors()) {
+            altitude = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_ALTITUDE,
+                    edit.getAltitude(), edit.getAltitudeUnitOfMeasureTypeName(),
+                    null, ExecutionErrors.MissingRequiredAltitude.name(), null, ExecutionErrors.MissingRequiredAltitudeUnitOfMeasureTypeName.name(),
+                    null, ExecutionErrors.UnknownAltitudeUnitOfMeasureTypeName.name());
+        }
+    }
+
+    @Override
+    public void doUpdate(EntityGeoPointAttribute entityGeoPointAttribute) {
+        var entityGeoPointAttributeValue = coreControl.getEntityGeoPointAttributeValueForUpdate(entityGeoPointAttribute);
+
+        entityGeoPointAttributeValue.setLatitude(Integer.valueOf(edit.getLatitude()));
+        entityGeoPointAttributeValue.setLongitude(Integer.valueOf(edit.getLongitude()));
+        entityGeoPointAttributeValue.setElevation(elevation);
+        entityGeoPointAttributeValue.setAltitude(altitude);
+
+        coreControl.updateEntityGeoPointAttributeFromValue(entityGeoPointAttributeValue, getPartyPK());
+    }
+
+    @Override
+    protected boolean includeResultAfterSuccessfulEdit() {
+        return true;
+    }
+
+    @Override
+    protected void saveResultAfterEditValidatorErrors() {
+        // Preserve the existing absence of a result when edit field validation fails.
+    }
+
 }
