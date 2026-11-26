@@ -30,7 +30,7 @@ import com.echothree.model.data.employee.server.entity.TerminationType;
 import com.echothree.model.data.employee.server.entity.TerminationTypeDescription;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -40,7 +40,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditTerminationTypeDescriptionCommand
-        extends BaseAbstractEditCommand<TerminationTypeDescriptionSpec, TerminationTypeDescriptionEdit, EditTerminationTypeDescriptionResult, TerminationTypeDescription, TerminationType> {
+        extends BaseEditCommand<TerminationTypeDescriptionSpec, TerminationTypeDescriptionEdit, EditTerminationTypeDescriptionResult, TerminationTypeDescription, TerminationType> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;

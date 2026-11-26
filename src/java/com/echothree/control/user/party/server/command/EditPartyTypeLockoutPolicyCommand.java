@@ -36,14 +36,14 @@ import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.control.BaseEditCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class EditPartyTypeLockoutPolicyCommand
-        extends BaseAbstractEditCommand<PartyTypeUniversalSpec, PartyTypeLockoutPolicyEdit,
+        extends BaseEditCommand<PartyTypeUniversalSpec, PartyTypeLockoutPolicyEdit,
                 EditPartyTypeLockoutPolicyResult, PartyTypeLockoutPolicy, PartyTypeLockoutPolicy> {
 
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;

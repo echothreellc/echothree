@@ -33,7 +33,7 @@ import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.string.AmountUtils;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
@@ -42,7 +42,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditPartyCreditLimitCommand
-        extends BaseAbstractEditCommand<PartyCreditLimitSpec, PartyCreditLimitEdit, EditPartyCreditLimitResult, PartyCreditLimit, Party> {
+        extends BaseEditCommand<PartyCreditLimitSpec, PartyCreditLimitEdit, EditPartyCreditLimitResult, PartyCreditLimit, Party> {
 
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;

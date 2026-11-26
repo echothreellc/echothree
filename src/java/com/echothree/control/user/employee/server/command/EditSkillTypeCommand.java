@@ -26,14 +26,14 @@ import com.echothree.model.control.employee.server.logic.SkillTypeLogic;
 import com.echothree.model.data.employee.server.entity.SkillType;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.control.BaseEditCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class EditSkillTypeCommand
-        extends BaseAbstractEditCommand<SkillTypeSpec, SkillTypeEdit, EditSkillTypeResult, SkillType, SkillType> {
+        extends BaseEditCommand<SkillTypeSpec, SkillTypeEdit, EditSkillTypeResult, SkillType, SkillType> {
 
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;

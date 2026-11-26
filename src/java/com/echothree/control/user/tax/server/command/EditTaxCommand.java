@@ -32,7 +32,7 @@ import com.echothree.model.data.tax.server.entity.Tax;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.string.PercentUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -40,7 +40,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditTaxCommand
-        extends BaseAbstractEditCommand<TaxUniversalSpec, TaxEdit, EditTaxResult, Tax, Tax> {
+        extends BaseEditCommand<TaxUniversalSpec, TaxEdit, EditTaxResult, Tax, Tax> {
 
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;

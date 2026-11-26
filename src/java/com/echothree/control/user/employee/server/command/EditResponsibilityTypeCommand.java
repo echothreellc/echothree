@@ -26,14 +26,14 @@ import com.echothree.model.control.employee.server.logic.ResponsibilityTypeLogic
 import com.echothree.model.data.employee.server.entity.ResponsibilityType;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.control.BaseEditCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class EditResponsibilityTypeCommand
-        extends BaseAbstractEditCommand<ResponsibilityTypeSpec, ResponsibilityTypeEdit, EditResponsibilityTypeResult, ResponsibilityType, ResponsibilityType> {
+        extends BaseEditCommand<ResponsibilityTypeSpec, ResponsibilityTypeEdit, EditResponsibilityTypeResult, ResponsibilityType, ResponsibilityType> {
 
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;

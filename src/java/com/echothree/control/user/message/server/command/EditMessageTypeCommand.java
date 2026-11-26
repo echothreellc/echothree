@@ -27,14 +27,14 @@ import com.echothree.model.data.message.server.entity.MessageType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.control.BaseEditCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class EditMessageTypeCommand
-        extends BaseAbstractEditCommand<MessageTypeUniversalSpec, MessageTypeEdit, EditMessageTypeResult, MessageType, MessageType> {
+        extends BaseEditCommand<MessageTypeUniversalSpec, MessageTypeEdit, EditMessageTypeResult, MessageType, MessageType> {
 
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
