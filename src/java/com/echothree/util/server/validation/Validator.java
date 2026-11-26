@@ -51,6 +51,7 @@ public class Validator {
     protected final Logger log = LoggerFactory.getLogger(this.getClass());
     
     private Currency currency = null;
+    private boolean currencySpecified;
     
     public static final String ERROR_REQUIRED_FIELD            = "RequiredField";
     public static final String ERROR_MINIMUM_LENGTH            = "MinimumLength";
@@ -61,6 +62,9 @@ public class Validator {
     public static final String ERROR_UNKNOWN_CURRENCY_ISO_NAME = "UnknownCurrencyIsoName";
     public static final String ERROR_UNKNOWN_VENDOR_NAME       = "UnknownVendorName";
     public static final String ERROR_INTERNAL_ERROR            = "InternalError";
+    public static final String ERROR_EXCESS_FRACTIONAL_DIGITS = "ExcessFractionalDigits";
+    public static final String ERROR_INVALID_DECIMAL_CONFIGURATION = "InvalidDecimalConfiguration";
+    public static final String ERROR_MISSING_CURRENCY = "MissingCurrency";
     public static final String ERROR_INVALID_FORMAT            = "InvalidFormat";
     public static final String ERROR_INVALID_OPTION            = "InvalidOption";
     public static final String ERROR_INVALID_LIMIT             = "InvalidLimit";
@@ -158,7 +162,12 @@ public class Validator {
         return currency;
     }
 
+    public boolean isCurrencySpecified() {
+        return currencySpecified;
+    }
+
     public void setCurrency(Currency currency) {
+        currencySpecified = true;
         this.currency = currency;
     }
 
@@ -166,6 +175,14 @@ public class Validator {
      * Returns An ArrayList if there are errors found, otherwise null.
      * @return An ArrayList if there are errors found, otherwise null
      */
+    private boolean preservesInvalidDecimalInput(FieldType fieldType) {
+        return switch(fieldType) {
+            case COST_LINE, COST_UNIT, PRICE_LINE, PRICE_UNIT, UNSIGNED_COST_LINE, UNSIGNED_COST_UNIT,
+                    UNSIGNED_PRICE_LINE, UNSIGNED_PRICE_UNIT, LATITUDE, LONGITUDE, FRACTIONAL_PERCENT -> true;
+            default -> false;
+        };
+    }
+
     public Messages validateField(BaseForm form, FieldDefinition fieldDefinition) {
         var validationMessages = new Messages();
         var splitFieldName = Splitter.on(':').trimResults().omitEmptyStrings().splitToList(fieldDefinition.getFieldName()).toArray(new String[0]);
@@ -202,8 +219,8 @@ public class Validator {
             }
         }
         
-        // Put back the value we've cleaned up.
-        if(form != null) {
+        // Preserve rejected decimal input for correction; retain other field types' existing behavior.
+        if(form != null && (validationMessages.isEmpty() || !preservesInvalidDecimalInput(fieldDefinition.getFieldType()))) {
             form.set(fieldName, fieldValue);
         }
         

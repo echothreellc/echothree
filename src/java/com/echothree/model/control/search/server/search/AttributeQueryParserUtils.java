@@ -326,14 +326,30 @@ public class AttributeQueryParserUtils
         return result;
     }
 
+    private Integer degreeValueOf(final String fieldValue, final int minimumValue, final int maximumValue) {
+        Integer result = null;
+
+        try {
+            // Search explicitly supports markers, bounded to the coordinate domain.
+            var scaledValue = fieldValue.equalsIgnoreCase("MAX_VALUE") ? Integer.toString(maximumValue)
+                    : fieldValue.equalsIgnoreCase("MIN_VALUE") ? Integer.toString(minimumValue)
+                    : DecimalUtils.getInstance().parse("-", ".", 6, fieldValue);
+            result = intValueOf(scaledValue, minimumValue, maximumValue);
+        } catch(DecimalUtils.ParseException exception) {
+            handleExecutionError(InvalidFormatException.class, eea, ExecutionErrors.InvalidFormat.name(), fieldValue);
+        }
+
+        return result;
+    }
+
     protected Integer latitudeValueOf(final String fieldValue) {
-        return intValueOf(DecimalUtils.getInstance().parse("-", ".", 6, fieldValue), -90000000, 90000000);
+        return degreeValueOf(fieldValue, -90000000, 90000000);
     }
-    
+
     protected Integer longitudeValueOf(final String fieldValue) {
-        return intValueOf(DecimalUtils.getInstance().parse("-", ".", 6, fieldValue), -180000000, 180000000);
+        return degreeValueOf(fieldValue, -180000000, 180000000);
     }
-    
+
     protected Long measurementValueOf(final String unitOfMeasureKindUseTypeName, final String rawFieldValue) {
         Long value = null;
         var space = StringUtils.getInstance().getSpace(rawFieldValue);

@@ -21,6 +21,7 @@ import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.string.DecimalUtils;
 import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.message.Message;
 import com.echothree.util.common.message.Messages;
@@ -28,6 +29,7 @@ import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.ThreadSession;
 import com.echothree.util.server.validation.Validator;
 import com.google.common.base.Splitter;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -121,6 +123,55 @@ public abstract class BaseFieldType {
         }
         
         return valid;
+    }
+
+    /**
+     * Validate decimals before replacing input. Bounds use scaled storage units. MAX_VALUE selects the effective
+     * maximum; signed MIN_VALUE selects the effective minimum. Unsigned MIN_VALUE is not supported.
+     */
+    protected String validateDecimal(String minusSign, String fractionSeparator, Integer fractionDigits, boolean signed,
+            long storageMinimum, long storageMaximum) {
+        String result = null;
+
+        var minimum = Math.max(signed ? storageMinimum : 0L,
+                fieldDefinition.getMinimumValue() == null ? storageMinimum : fieldDefinition.getMinimumValue());
+        var maximum = Math.min(storageMaximum,
+                fieldDefinition.getMaximumValue() == null ? storageMaximum : fieldDefinition.getMaximumValue());
+
+        try {
+            if(minimum > maximum) {
+                throw new DecimalUtils.ParseException(DecimalUtils.ParseError.INVALID_CONFIGURATION);
+            }
+
+            // Validate configuration even for range markers.
+            DecimalUtils.getInstance().parse(minusSign, fractionSeparator, fractionDigits, "0");
+            var maximumMarker = fieldValue.equalsIgnoreCase("MAX_VALUE");
+            var minimumMarker = signed && fieldValue.equalsIgnoreCase("MIN_VALUE");
+            var scaled = maximumMarker ? BigInteger.valueOf(maximum) : minimumMarker ? BigInteger.valueOf(minimum)
+                    : new BigInteger(DecimalUtils.getInstance().parse(minusSign, fractionSeparator, fractionDigits, fieldValue));
+            var negativeUnsigned = !signed && minusSign != null && fieldValue.strip().startsWith(minusSign);
+
+            if(negativeUnsigned || scaled.compareTo(BigInteger.valueOf(minimum)) < 0) {
+                validationMessages.add(fieldName, new Message(Validator.ERROR_MINIMUM_VALUE,
+                        DecimalUtils.getInstance().format(minusSign, fractionSeparator, fractionDigits, minimum)));
+            } else if(scaled.compareTo(BigInteger.valueOf(maximum)) > 0) {
+                validationMessages.add(fieldName, new Message(Validator.ERROR_MAXIMUM_VALUE,
+                        DecimalUtils.getInstance().format(minusSign, fractionSeparator, fractionDigits, maximum)));
+            } else {
+                result = scaled.toString();
+            }
+        } catch(DecimalUtils.ParseException exception) {
+            switch(exception.getError()) {
+                case INVALID_FORMAT ->
+                        validationMessages.add(fieldName, new Message(Validator.ERROR_INVALID_FORMAT));
+                case EXCESS_FRACTIONAL_DIGITS ->
+                        validationMessages.add(fieldName, new Message(Validator.ERROR_EXCESS_FRACTIONAL_DIGITS, fractionDigits == null ? 0 : fractionDigits));
+                case INVALID_CONFIGURATION ->
+                        validationMessages.add(fieldName, new Message(Validator.ERROR_INVALID_DECIMAL_CONFIGURATION));
+            }
+        }
+
+        return result;
     }
 
     protected boolean isValidSignedInteger(final Long minimumValue, final Long maximumValue) {
