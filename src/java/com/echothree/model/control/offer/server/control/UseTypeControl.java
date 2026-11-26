@@ -374,7 +374,7 @@ public class UseTypeControl
         return useTypeDescription;
     }
     
-    private UseTypeDescription getUseTypeDescription(UseType useType, Language language, EntityPermission entityPermission) {
+    public UseTypeDescription getUseTypeDescription(UseType useType, Language language, EntityPermission entityPermission) {
         var baseQuery = session.getDslContext()
                 .select(UseTypeDescriptions.fields())
                 .from(UseTypeDescriptions)

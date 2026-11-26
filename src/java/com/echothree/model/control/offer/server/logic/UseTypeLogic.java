@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.offer.server.logic;
 
+import com.echothree.control.user.offer.common.spec.UseTypeDescriptionSpec;
 import com.echothree.control.user.offer.common.spec.UseTypeUniversalSpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
@@ -24,10 +25,13 @@ import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.offer.common.exception.CannotDeleteUseTypeInUseException;
 import com.echothree.model.control.offer.common.exception.DuplicateUseTypeNameException;
 import com.echothree.model.control.offer.common.exception.UnknownDefaultUseTypeException;
+import com.echothree.model.control.offer.common.exception.UnknownUseTypeDescriptionException;
 import com.echothree.model.control.offer.common.exception.UnknownUseTypeNameException;
 import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.offer.server.control.UseTypeControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.data.offer.server.entity.UseType;
+import com.echothree.model.data.offer.server.entity.UseTypeDescription;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -49,6 +53,9 @@ public class UseTypeLogic
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    LanguageLogic languageLogic;
 
     protected UseTypeLogic() {
         super();
@@ -136,6 +143,28 @@ public class UseTypeLogic
     public UseType getUseTypeByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
             final UseTypeUniversalSpec universalSpec, boolean allowDefault) {
         return getUseTypeByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
+    }
+
+    public UseTypeDescription getUseTypeDescriptionBySpec(final ExecutionErrorAccumulator eea,
+            final UseTypeDescriptionSpec spec, final EntityPermission entityPermission) {
+        UseTypeDescription useTypeDescription = null;
+        var useTypeName = spec.getUseTypeName();
+        var useType = getUseTypeByName(eea, useTypeName);
+
+        if(!hasExecutionErrors(eea)) {
+            var languageIsoName = spec.getLanguageIsoName();
+            var language = languageLogic.getLanguageByName(eea, languageIsoName);
+
+            if(!hasExecutionErrors(eea)) {
+                useTypeDescription = useTypeControl.getUseTypeDescription(useType, language, entityPermission);
+
+                if(useTypeDescription == null) {
+                    handleExecutionError(UnknownUseTypeDescriptionException.class, eea, ExecutionErrors.UnknownUseTypeDescription.name(), useTypeName, languageIsoName);
+                }
+            }
+        }
+
+        return useTypeDescription;
     }
 
     public void deleteUseType(final ExecutionErrorAccumulator eea, final UseType useType,
