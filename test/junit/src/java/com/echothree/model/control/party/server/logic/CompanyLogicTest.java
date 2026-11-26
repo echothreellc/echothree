@@ -188,11 +188,11 @@ public class CompanyLogicTest {
     }
 
     @Test
-    public void existingOptionalLookupCanOmitCompany() {
+    public void byNameRequiresCompanyIdentifier() {
         var logic = new TestLogic(null, EntityPermission.READ_ONLY);
         var errors = new DummyExecutionErrorAccumulator();
-        assertNull(logic.getPartyCompanyByName(errors, null, null, null, false));
-        assertFalse(errors.hasExecutionErrors());
+        assertNull(logic.getPartyCompanyByName(errors, null, null, null));
+        assertEquals(ExecutionErrors.InvalidParameterCount.name(), errors.getExecutionErrors().get(Messages.EXECUTION_ERROR).next().getKey());
         assertEquals(0, logic.companyLookups);
     }
 

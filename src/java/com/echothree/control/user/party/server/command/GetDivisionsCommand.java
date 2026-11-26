@@ -73,7 +73,7 @@ public class GetDivisionsCommand
 
     @Override
     protected void handleForm() {
-        partyCompany = companyLogic.getPartyCompanyByName(this, form.getCompanyName(), null, null, true);
+        partyCompany = companyLogic.getPartyCompanyByName(this, form.getCompanyName(), null, null);
     }
 
     @Override

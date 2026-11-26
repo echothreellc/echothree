@@ -106,7 +106,8 @@ public class SearchLeavesCommand
                 var party = partyName == null ? null : partyLogic.getPartyByName(this, partyName);
 
                 if(!hasExecutionErrors()) {
-                    var partyCompany = companyLogic.getPartyCompanyByName(this, form.getCompanyName(), null, null, false);
+                    var companyName = form.getCompanyName();
+                    var partyCompany = companyName == null ? null : companyLogic.getPartyCompanyByName(this, companyName, null, null);
 
                     if(!hasExecutionErrors()) {
                         var leaveTypeName = form.getLeaveTypeName();

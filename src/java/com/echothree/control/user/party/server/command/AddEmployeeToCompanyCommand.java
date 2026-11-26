@@ -66,7 +66,7 @@ public class AddEmployeeToCompanyCommand
         
         if(!hasExecutionErrors()) {
             var companyName = form.getCompanyName();
-            var partyCompany = companyLogic.getPartyCompanyByName(this, companyName, null, null, true);
+            var partyCompany = companyLogic.getPartyCompanyByName(this, companyName, null, null);
 
             if(!hasExecutionErrors()) {
                 var companyParty = partyCompany.getParty();

@@ -52,7 +52,7 @@ public class CompanyLogic
     }
 
     public PartyCompany getPartyCompanyByName(final ExecutionErrorAccumulator eea, final String companyName,
-            final String partyName, final UniversalEntitySpec universalEntitySpec, final boolean required, final EntityPermission entityPermission) {
+            final String partyName, final UniversalEntitySpec universalEntitySpec, final EntityPermission entityPermission) {
         var parameterCount = (companyName == null ? 0 : 1) + (partyName == null ? 0 : 1)
                 + entityInstanceLogic.countPossibleEntitySpecs(universalEntitySpec);
         PartyCompany partyCompany = null;
@@ -81,7 +81,7 @@ public class CompanyLogic
                     partyCompany = partyControl.getPartyCompany(party, entityPermission);
                 }
             }
-        } else if(required) {
+        } else {
             handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
@@ -89,8 +89,8 @@ public class CompanyLogic
     }
 
     public PartyCompany getPartyCompanyByName(final ExecutionErrorAccumulator eea, final String companyName,
-            final String partyName, final UniversalEntitySpec universalEntitySpec, final boolean required) {
-        return getPartyCompanyByName(eea, companyName, partyName, universalEntitySpec, required, EntityPermission.READ_ONLY);
+            final String partyName, final UniversalEntitySpec universalEntitySpec) {
+        return getPartyCompanyByName(eea, companyName, partyName, universalEntitySpec, EntityPermission.READ_ONLY);
     }
 
     public PartyCompany getPartyCompanyByUniversalSpec(final ExecutionErrorAccumulator eea, final CompanyUniversalSpec universalSpec,
@@ -106,7 +106,7 @@ public class CompanyLogic
                 handleExecutionError(UnknownDefaultCompanyException.class, eea, ExecutionErrors.UnknownDefaultCompany.name());
             }
         } else {
-            partyCompany = getPartyCompanyByName(eea, universalSpec.getCompanyName(), universalSpec.getPartyName(), universalSpec, true, entityPermission);
+            partyCompany = getPartyCompanyByName(eea, universalSpec.getCompanyName(), universalSpec.getPartyName(), universalSpec, entityPermission);
         }
 
         return partyCompany;

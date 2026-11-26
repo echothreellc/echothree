@@ -70,11 +70,11 @@ public class AddEmployeeToDivisionCommand
 
         if(!hasExecutionErrors()) {
             var companyName = form.getCompanyName();
-            var partyCompany = companyLogic.getPartyCompanyByName(this, companyName, null, null, false);
+            var partyCompany = companyName == null ? null : companyLogic.getPartyCompanyByName(this, companyName, null, null);
 
             if(!hasExecutionErrors()) {
                 var divisionName = form.getDivisionName();
-                var partyDivision = divisionLogic.getPartyDivisionByName(this, partyCompany == null ? null : partyCompany.getParty(), divisionName, null, null, true);
+                var partyDivision = divisionLogic.getPartyDivisionByName(this, partyCompany == null ? null : partyCompany.getParty(), divisionName, null, null);
 
                 if(!hasExecutionErrors()) {
                     var division = partyDivision.getParty();

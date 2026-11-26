@@ -59,12 +59,12 @@ public class DepartmentLogic
 
     public PartyDepartment getPartyDepartmentByName(final ExecutionErrorAccumulator eea, final String companyName,
             final String divisionName, final String departmentName, final String partyName,
-            final UniversalEntitySpec universalEntitySpec, final boolean required, final EntityPermission entityPermission) {
+            final UniversalEntitySpec universalEntitySpec, final EntityPermission entityPermission) {
         PartyDepartment partyDepartment = null;
         Party divisionParty = null;
 
         if(companyName != null || divisionName != null) {
-            var partyDivision = divisionLogic.getPartyDivisionByName(eea, companyName, divisionName, null, null, true);
+            var partyDivision = divisionLogic.getPartyDivisionByName(eea, companyName, divisionName, null, null);
 
             if(!hasExecutionErrors(eea)) {
                 divisionParty = partyDivision.getParty();
@@ -72,7 +72,7 @@ public class DepartmentLogic
         }
 
         if(!hasExecutionErrors(eea)) {
-            partyDepartment = getPartyDepartmentByName(eea, divisionParty, departmentName, partyName, universalEntitySpec, required, entityPermission);
+            partyDepartment = getPartyDepartmentByName(eea, divisionParty, departmentName, partyName, universalEntitySpec, entityPermission);
         }
 
         return partyDepartment;
@@ -80,13 +80,12 @@ public class DepartmentLogic
 
     public PartyDepartment getPartyDepartmentByName(final ExecutionErrorAccumulator eea, final String companyName,
             final String divisionName, final String departmentName, final String partyName,
-            final UniversalEntitySpec universalEntitySpec, final boolean required) {
-        return getPartyDepartmentByName(eea, companyName, divisionName, departmentName, partyName, universalEntitySpec, required, EntityPermission.READ_ONLY);
+            final UniversalEntitySpec universalEntitySpec) {
+        return getPartyDepartmentByName(eea, companyName, divisionName, departmentName, partyName, universalEntitySpec, EntityPermission.READ_ONLY);
     }
 
     public PartyDepartment getPartyDepartmentByName(final ExecutionErrorAccumulator eea, final Party divisionParty,
-            final String departmentName, final String partyName, final UniversalEntitySpec universalEntitySpec,
-            final boolean required, final EntityPermission entityPermission) {
+            final String departmentName, final String partyName, final UniversalEntitySpec universalEntitySpec, final EntityPermission entityPermission) {
         var parameterCount = (departmentName == null ? 0 : 1) + (partyName == null ? 0 : 1)
                 + entityInstanceLogic.countPossibleEntitySpecs(universalEntitySpec);
         PartyDepartment partyDepartment = null;
@@ -130,7 +129,7 @@ public class DepartmentLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-            } else if(required) {
+            } else {
                 handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
             }
         }
@@ -139,8 +138,8 @@ public class DepartmentLogic
     }
 
     public PartyDepartment getPartyDepartmentByName(final ExecutionErrorAccumulator eea, final Party divisionParty,
-            final String departmentName, final String partyName, final UniversalEntitySpec universalEntitySpec, final boolean required) {
-        return getPartyDepartmentByName(eea, divisionParty, departmentName, partyName, universalEntitySpec, required, EntityPermission.READ_ONLY);
+            final String departmentName, final String partyName, final UniversalEntitySpec universalEntitySpec) {
+        return getPartyDepartmentByName(eea, divisionParty, departmentName, partyName, universalEntitySpec, EntityPermission.READ_ONLY);
     }
 
     public PartyDepartment getPartyDepartmentByUniversalSpec(final ExecutionErrorAccumulator eea, final DepartmentUniversalSpec universalSpec,
@@ -174,12 +173,12 @@ public class DepartmentLogic
                                 partyCompany.getPartyCompanyName(), partyDivision.getPartyDivisionName());
                     }
                 } else {
-                    partyDepartment = getPartyDepartmentByName(eea, divisionParty, departmentName, null, null, true, entityPermission);
+                    partyDepartment = getPartyDepartmentByName(eea, divisionParty, departmentName, null, null, entityPermission);
                 }
             }
         } else if(companyName == null && divisionName == null && departmentName == null
                 && (partyName == null ? 0 : 1) + possibleEntitySpecs == 1) {
-            partyDepartment = getPartyDepartmentByName(eea, (Party)null, null, partyName, universalSpec, true, entityPermission);
+            partyDepartment = getPartyDepartmentByName(eea, (Party)null, null, partyName, universalSpec, entityPermission);
         } else if(companyName == null && divisionName == null && departmentName != null && partyName == null && possibleEntitySpecs == 0) {
             handleExecutionError(UseOfDepartmentNameRequiresDivisionNameException.class, eea, ExecutionErrors.UseOfDepartmentNameRequiresDivisionName.name());
         } else {

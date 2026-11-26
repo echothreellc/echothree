@@ -95,12 +95,12 @@ public class DivisionLogicTest {
                 @Override
                 public PartyCompany getPartyCompanyByUniversalSpec(ExecutionErrorAccumulator eea, CompanyUniversalSpec spec, boolean allowDefault) {
                     assertFalse(allowDefault);
-                    return getPartyCompanyByName(eea, spec.getCompanyName(), null, null, true);
+                    return getPartyCompanyByName(eea, spec.getCompanyName(), null, null);
                 }
 
                 @Override
                 public PartyCompany getPartyCompanyByName(ExecutionErrorAccumulator eea, String companyName, String partyName,
-                        UniversalEntitySpec spec, boolean required) {
+                        UniversalEntitySpec spec) {
                     assertEquals("COMPANY", companyName);
                     if("company".equals(failure)) {
                         eea.addExecutionError(ExecutionErrors.UnknownCompanyName.name(), companyName);
@@ -235,11 +235,11 @@ public class DivisionLogicTest {
     }
 
     @Test
-    public void existingOptionalLookupCanOmitDivision() {
+    public void byNameRequiresDivisionIdentifier() {
         var logic = new TestLogic(null, EntityPermission.READ_ONLY);
         var errors = new DummyExecutionErrorAccumulator();
-        assertNull(logic.getPartyDivisionByName(errors, (Party)null, null, null, null, false));
-        assertFalse(errors.hasExecutionErrors());
+        assertNull(logic.getPartyDivisionByName(errors, (Party)null, null, null, null));
+        assertEquals(ExecutionErrors.InvalidParameterCount.name(), errors.getExecutionErrors().get(Messages.EXECUTION_ERROR).next().getKey());
         assertEquals(0, logic.divisionLookups);
     }
 

@@ -58,13 +58,12 @@ public class DivisionLogic
     }
 
     public PartyDivision getPartyDivisionByName(final ExecutionErrorAccumulator eea, final String companyName,
-            final String divisionName, final String partyName, final UniversalEntitySpec universalEntitySpec,
-            final boolean required, final EntityPermission entityPermission) {
+            final String divisionName, final String partyName, final UniversalEntitySpec universalEntitySpec, final EntityPermission entityPermission) {
         PartyDivision partyDivision = null;
         Party companyParty = null;
 
         if(companyName != null) {
-            var partyCompany = companyLogic.getPartyCompanyByName(eea, companyName, null, null, true);
+            var partyCompany = companyLogic.getPartyCompanyByName(eea, companyName, null, null);
 
             if(!hasExecutionErrors(eea)) {
                 companyParty = partyCompany.getParty();
@@ -72,20 +71,19 @@ public class DivisionLogic
         }
 
         if(!hasExecutionErrors(eea)) {
-            partyDivision = getPartyDivisionByName(eea, companyParty, divisionName, partyName, universalEntitySpec, required, entityPermission);
+            partyDivision = getPartyDivisionByName(eea, companyParty, divisionName, partyName, universalEntitySpec, entityPermission);
         }
 
         return partyDivision;
     }
 
     public PartyDivision getPartyDivisionByName(final ExecutionErrorAccumulator eea, final String companyName,
-            final String divisionName, final String partyName, final UniversalEntitySpec universalEntitySpec, final boolean required) {
-        return getPartyDivisionByName(eea, companyName, divisionName, partyName, universalEntitySpec, required, EntityPermission.READ_ONLY);
+            final String divisionName, final String partyName, final UniversalEntitySpec universalEntitySpec) {
+        return getPartyDivisionByName(eea, companyName, divisionName, partyName, universalEntitySpec, EntityPermission.READ_ONLY);
     }
 
     public PartyDivision getPartyDivisionByName(final ExecutionErrorAccumulator eea, final Party companyParty,
-            final String divisionName, final String partyName, final UniversalEntitySpec universalEntitySpec,
-            final boolean required, final EntityPermission entityPermission) {
+            final String divisionName, final String partyName, final UniversalEntitySpec universalEntitySpec, final EntityPermission entityPermission) {
         var possibleEntitySpecs = entityInstanceLogic.countPossibleEntitySpecs(universalEntitySpec);
         var parameterCount = (divisionName == null ? 0 : 1) + (partyName == null ? 0 : 1) + possibleEntitySpecs;
         PartyDivision partyDivision = null;
@@ -128,7 +126,7 @@ public class DivisionLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-            } else if(required) {
+            } else {
                 handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
             }
         }
@@ -137,8 +135,8 @@ public class DivisionLogic
     }
 
     public PartyDivision getPartyDivisionByName(final ExecutionErrorAccumulator eea, final Party companyParty,
-            final String divisionName, final String partyName, final UniversalEntitySpec universalEntitySpec, final boolean required) {
-        return getPartyDivisionByName(eea, companyParty, divisionName, partyName, universalEntitySpec, required, EntityPermission.READ_ONLY);
+            final String divisionName, final String partyName, final UniversalEntitySpec universalEntitySpec) {
+        return getPartyDivisionByName(eea, companyParty, divisionName, partyName, universalEntitySpec, EntityPermission.READ_ONLY);
     }
 
     public PartyDivision getPartyDivisionByUniversalSpec(final ExecutionErrorAccumulator eea, final DivisionUniversalSpec universalSpec,
@@ -167,11 +165,11 @@ public class DivisionLogic
                                 partyCompany.getPartyCompanyName());
                     }
                 } else {
-                    partyDivision = getPartyDivisionByName(eea, companyParty, divisionName, null, null, true, entityPermission);
+                    partyDivision = getPartyDivisionByName(eea, companyParty, divisionName, null, null, entityPermission);
                 }
             }
         } else if(companyName == null && divisionName == null && (partyName == null ? 0 : 1) + possibleEntitySpecs == 1) {
-            partyDivision = getPartyDivisionByName(eea, (Party)null, null, partyName, universalSpec, true, entityPermission);
+            partyDivision = getPartyDivisionByName(eea, (Party)null, null, partyName, universalSpec, entityPermission);
         } else if(companyName == null && divisionName != null && partyName == null && possibleEntitySpecs == 0) {
             handleExecutionError(UseOfDivisionNameRequiresCompanyNameException.class, eea, ExecutionErrors.UseOfDivisionNameRequiresCompanyName.name());
         } else {
