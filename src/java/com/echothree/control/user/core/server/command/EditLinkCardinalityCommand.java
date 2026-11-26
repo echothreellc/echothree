@@ -30,7 +30,7 @@ import com.echothree.model.data.core.server.entity.LinkCardinality;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -40,7 +40,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditLinkCardinalityCommand
-        extends BaseAbstractEditCommand<LinkCardinalityUniversalSpec, LinkCardinalityEdit, EditLinkCardinalityResult, LinkCardinality, LinkCardinality> {
+        extends BaseEditCommand<LinkCardinalityUniversalSpec, LinkCardinalityEdit, EditLinkCardinalityResult, LinkCardinality, LinkCardinality> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;

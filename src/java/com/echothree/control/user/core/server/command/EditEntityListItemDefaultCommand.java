@@ -31,7 +31,7 @@ import com.echothree.model.data.core.server.entity.EntityListItemDefault;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
@@ -40,7 +40,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditEntityListItemDefaultCommand
-        extends BaseAbstractEditCommand<EntityListItemDefaultSpec, EntityListItemAttributeEdit, EditEntityListItemDefaultResult, EntityListItemDefault, EntityAttribute> {
+        extends BaseEditCommand<EntityListItemDefaultSpec, EntityListItemAttributeEdit, EditEntityListItemDefaultResult, EntityListItemDefault, EntityAttribute> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;

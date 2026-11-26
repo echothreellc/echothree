@@ -5,7 +5,7 @@
   - For Command classes getting a single entity extend BaseSingleEntityCommand
   - getUserVisit should only be called once and then reused
 - For Command classes that Edit specific types of entities:
-  - Extend BaseAbstractEditCommand
+  - Extend BaseEditCommand
   - Use `editModeToEntityPermission(editMode)` with a permission-aware Logic or Control lookup instead of branching between read-only and for-update lookup methods.
   - For description edits, use the description as the edited entity and its owning entity as the lock entity.
 - Prefer Logic-class `ByName` methods when available. Group independent `ByName` lookups together, with one `!hasExecutionErrors()` check before dependent work. After a direct Control lookup, test the returned entity for `null`.

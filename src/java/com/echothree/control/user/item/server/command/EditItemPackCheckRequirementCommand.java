@@ -31,14 +31,14 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.control.BaseEditCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class EditItemPackCheckRequirementCommand
-        extends BaseAbstractEditCommand<ItemPackCheckRequirementSpec, ItemPackCheckRequirementEdit, EditItemPackCheckRequirementResult, ItemPackCheckRequirement, Item> {
+        extends BaseEditCommand<ItemPackCheckRequirementSpec, ItemPackCheckRequirementEdit, EditItemPackCheckRequirementResult, ItemPackCheckRequirement, Item> {
     
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;

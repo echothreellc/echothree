@@ -40,7 +40,7 @@ import java.util.List;
 import java.util.concurrent.Future;
 import javax.inject.Inject;
 
-public abstract class BaseAbstractEditCommand<S extends BaseSpec, E extends BaseEdit, R extends BaseEditResult<E>, BE extends BaseEntity, LE extends BaseEntity>
+public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit, R extends BaseEditResult<E>, BE extends BaseEntity, LE extends BaseEntity>
         extends BaseCommand {
 
     @Inject
@@ -52,7 +52,7 @@ public abstract class BaseAbstractEditCommand<S extends BaseSpec, E extends Base
     protected S spec = null;
     protected E edit = null;
 
-    protected BaseAbstractEditCommand(CommandSecurityDefinition commandSecurityDefinition, List<FieldDefinition> specFieldDefinitions,
+    protected BaseEditCommand(CommandSecurityDefinition commandSecurityDefinition, List<FieldDefinition> specFieldDefinitions,
             List<FieldDefinition> editFieldDefinitions) {
         super(commandSecurityDefinition);
 

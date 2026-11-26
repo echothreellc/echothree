@@ -30,7 +30,7 @@ import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.persistence.BasePK;
-import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import java.util.ArrayList;
@@ -46,11 +46,11 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 /**
- * Exercise the actual BaseAbstractEditCommand-to-Control routing, without overriding lock operations.
+ * Exercise the actual BaseEditCommand-to-Control routing, without overriding lock operations.
  */
 public class EntityEditLifecycleTest {
 
-    private static class TestCommand extends BaseAbstractEditCommand<EntityRefSpec, EntityAppearanceEdit,
+    private static class TestCommand extends BaseEditCommand<EntityRefSpec, EntityAppearanceEdit,
             EditEntityAppearanceResult, EntityAppearance, EntityInstance> {
 
         final EntityEditFixture fixture = new EntityEditFixture("EntityAppearance", EditMode.ABANDON);
