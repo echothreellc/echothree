@@ -17,20 +17,20 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateEntityAttributeTypeForm;
+import com.echothree.model.control.core.server.logic.EntityAttributeTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateEntityAttributeTypeCommand
@@ -52,6 +52,9 @@ public class CreateEntityAttributeTypeCommand
         );
     }
     
+    @Inject
+    protected EntityAttributeTypeLogic entityAttributeTypeLogic;
+
     /** Creates a new instance of CreateEntityAttributeTypeCommand */
     public CreateEntityAttributeTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -59,15 +62,8 @@ public class CreateEntityAttributeTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var entityAttributeTypeName = form.getEntityAttributeTypeName();
-        var entityAttributeType = coreControl.getEntityAttributeTypeByName(entityAttributeTypeName);
-        
-        if(entityAttributeType == null) {
-            coreControl.createEntityAttributeType(entityAttributeTypeName);
-        } else {
-            addExecutionError(ExecutionErrors.DuplicateEntityAttributeTypeName.name(), entityAttributeTypeName);
-        }
-        
+        entityAttributeTypeLogic.createEntityAttributeType(this, form.getEntityAttributeTypeName());
+
         return null;
     }
     

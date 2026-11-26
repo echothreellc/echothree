@@ -18,8 +18,13 @@ package com.echothree.model.control.core.server.logic;
 
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.DuplicateEntityAttributeTypeDescriptionException;
+import com.echothree.model.control.core.common.exception.DuplicateEntityAttributeTypeNameException;
 import com.echothree.model.control.core.common.exception.UnknownEntityAttributeTypeNameException;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
+import com.echothree.model.data.core.server.entity.EntityAttributeTypeDescription;
+import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -34,8 +39,23 @@ public class EntityAttributeTypeLogic
     @Inject
     protected EntityInstanceLogic entityInstanceLogic;
 
+    @Inject
+    protected LanguageLogic languageLogic;
+
     protected EntityAttributeTypeLogic() {
         super();
+    }
+
+    public EntityAttributeType createEntityAttributeType(final ExecutionErrorAccumulator eea, final String entityAttributeTypeName) {
+        var entityAttributeType = coreControl.getEntityAttributeTypeByName(entityAttributeTypeName);
+
+        if(entityAttributeType == null) {
+            entityAttributeType = coreControl.createEntityAttributeType(entityAttributeTypeName);
+        } else {
+            handleExecutionError(DuplicateEntityAttributeTypeNameException.class, eea, ExecutionErrors.DuplicateEntityAttributeTypeName.name(), entityAttributeTypeName);
+        }
+
+        return entityAttributeType;
     }
 
     public EntityAttributeType getEntityAttributeTypeByName(final ExecutionErrorAccumulator eea, final String entityAttributeTypeName) {
@@ -67,6 +87,36 @@ public class EntityAttributeTypeLogic
 
     public EntityAttributeType getEntityAttributeTypeByUuidForUpdate(final ExecutionErrorAccumulator eea, final String uuid) {
         return getEntityAttributeTypeByUuid(eea, uuid, EntityPermission.READ_WRITE);
+    }
+
+    public EntityAttributeTypeDescription createEntityAttributeTypeDescription(final ExecutionErrorAccumulator eea, final EntityAttributeType entityAttributeType,
+            final Language language, final String description) {
+        var entityAttributeTypeDescription = coreControl.getEntityAttributeTypeDescription(entityAttributeType, language);
+
+        if(entityAttributeTypeDescription == null) {
+            entityAttributeTypeDescription = coreControl.createEntityAttributeTypeDescription(entityAttributeType, language, description);
+        } else {
+            handleExecutionError(DuplicateEntityAttributeTypeDescriptionException.class, eea, ExecutionErrors.DuplicateEntityAttributeTypeDescription.name(),
+                    entityAttributeType.getEntityAttributeTypeName(), language.getLanguageIsoName());
+        }
+
+        return entityAttributeTypeDescription;
+    }
+
+    public EntityAttributeTypeDescription createEntityAttributeTypeDescription(final ExecutionErrorAccumulator eea, final String entityAttributeTypeName,
+            final String languageIsoName, final String description) {
+        EntityAttributeTypeDescription entityAttributeTypeDescription = null;
+        var entityAttributeType = getEntityAttributeTypeByName(eea, entityAttributeTypeName);
+
+        if(!hasExecutionErrors(eea)) {
+            var language = languageLogic.getLanguageByName(eea, languageIsoName);
+
+            if(!hasExecutionErrors(eea)) {
+                entityAttributeTypeDescription = createEntityAttributeTypeDescription(eea, entityAttributeType, language, description);
+            }
+        }
+
+        return entityAttributeTypeDescription;
     }
 
 }
