@@ -110,32 +110,38 @@ public class CreateCurrencyCommand
                 if(symbol == null || (symbol != null && symbolOnListStart != null && symbolOnListMember != null
                         && symbolOnSubtotal != null && symbolOnTotal != null)) {
                     var fractionSeparator = form.getFractionSeparator();
-                    var defaultFractionDigits = fractionSeparator == null? null: Integer.valueOf(form.getDefaultFractionDigits());
-                    var priceUnitFractionDigits = fractionSeparator == null? null: Integer.valueOf(form.getPriceUnitFractionDigits());
-                    var priceLineFractionDigits = fractionSeparator == null? null: Integer.valueOf(form.getPriceLineFractionDigits());
-                    var costUnitFractionDigits = fractionSeparator == null? null: Integer.valueOf(form.getCostUnitFractionDigits());
-                    var costLineFractionDigits = fractionSeparator == null? null: Integer.valueOf(form.getCostLineFractionDigits());
+                    var defaultFractionDigitsInput = form.getDefaultFractionDigits();
+                    var priceUnitFractionDigitsInput = form.getPriceUnitFractionDigits();
+                    var priceLineFractionDigitsInput = form.getPriceLineFractionDigits();
+                    var costUnitFractionDigitsInput = form.getCostUnitFractionDigits();
+                    var costLineFractionDigitsInput = form.getCostLineFractionDigits();
 
-                    if(fractionSeparator == null || (defaultFractionDigits != null && priceUnitFractionDigits != null
-                            && priceLineFractionDigits != null && costUnitFractionDigits != null && costLineFractionDigits != null)) {
+                    if(fractionSeparator == null || (defaultFractionDigitsInput != null && priceUnitFractionDigitsInput != null
+                            && priceLineFractionDigitsInput != null && costUnitFractionDigitsInput != null && costLineFractionDigitsInput != null)) {
+                        var defaultFractionDigits = fractionSeparator == null ? null : Integer.valueOf(defaultFractionDigitsInput);
+                        var priceUnitFractionDigits = fractionSeparator == null ? null : Integer.valueOf(priceUnitFractionDigitsInput);
+                        var priceLineFractionDigits = fractionSeparator == null ? null : Integer.valueOf(priceLineFractionDigitsInput);
+                        var costUnitFractionDigits = fractionSeparator == null ? null : Integer.valueOf(costUnitFractionDigitsInput);
+                        var costLineFractionDigits = fractionSeparator == null ? null : Integer.valueOf(costLineFractionDigitsInput);
+
                         accountingControl.createCurrency(currencyIsoName, symbol, symbolPosition, symbolOnListStart, symbolOnListMember,
                                 symbolOnSubtotal, symbolOnTotal, groupingSeparator, groupingSize, fractionSeparator, defaultFractionDigits,
                                 priceUnitFractionDigits, priceLineFractionDigits, costUnitFractionDigits, costLineFractionDigits, minusSign,
                                 isDefault, sortOrder, getPartyPK());
                     } else {
-                        if(defaultFractionDigits == null) {
+                        if(defaultFractionDigitsInput == null) {
                             addExecutionError(ExecutionErrors.MissingDefaultFractionDigits.name());
                         }
-                        if(priceUnitFractionDigits == null) {
+                        if(priceUnitFractionDigitsInput == null) {
                             addExecutionError(ExecutionErrors.MissingPriceUnitFractionDigits.name());
                         }
-                        if(priceLineFractionDigits == null) {
+                        if(priceLineFractionDigitsInput == null) {
                             addExecutionError(ExecutionErrors.MissingPriceLineFractionDigits.name());
                         }
-                        if(costUnitFractionDigits == null) {
+                        if(costUnitFractionDigitsInput == null) {
                             addExecutionError(ExecutionErrors.MissingCostUnitFractionDigits.name());
                         }
-                        if(costLineFractionDigits == null) {
+                        if(costLineFractionDigitsInput == null) {
                             addExecutionError(ExecutionErrors.MissingCostLineFractionDigits.name());
                         }
                     }

@@ -25,11 +25,13 @@ import com.echothree.model.data.accounting.server.entity.SymbolPosition;
 import com.echothree.model.data.accounting.server.value.SymbolPositionValue;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.util.common.form.ValidationResult;
+import com.echothree.util.common.message.Messages;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -186,5 +188,50 @@ public class CreateCurrencyCommandTest {
         assertEquals(1, command.creates);
         assertNull(command.savedFractionSeparator);
         assertEquals(Arrays.asList(null, null, null, null, null), command.savedPrecisions);
+    }
+
+    private static Stream<Arguments> missingPrecisions() {
+        return PRECISION_FIELDS.stream().flatMap(fieldName -> Stream.of(null, "", "  ")
+                .map(input -> Arguments.of(fieldName, input)));
+    }
+
+    @ParameterizedTest
+    @MethodSource("missingPrecisions")
+    public void missingPrecisionWithASeparatorReportsItsExistingErrorWithoutThrowing(String fieldName, String input) {
+        var command = new TestCommand();
+        command.setPrecision(fieldName, input);
+        assertFalse(assertDoesNotThrow(command::submit).getHasErrors());
+        assertTrue(command.hasExecutionErrors());
+        assertEquals(1, command.getExecutionErrors().size());
+        var error = command.getExecutionErrors().get(Messages.EXECUTION_ERROR).next();
+        assertEquals("Missing" + fieldName, error.getKey());
+        assertEquals(1, command.executions);
+        assertEquals(0, command.creates);
+        assertNull(command.savedPrecisions);
+    }
+
+    private static IntStream missingPrecisionCombinations() {
+        return IntStream.range(1, 1 << PRECISION_FIELDS.size());
+    }
+
+    @ParameterizedTest
+    @MethodSource("missingPrecisionCombinations")
+    public void reportsEveryMissingPrecisionTogetherAndNeverCreatesAPartialCurrency(int missingFields) {
+        var command = new TestCommand();
+        for(var index = 0; index < PRECISION_FIELDS.size(); index++) {
+            if((missingFields & (1 << index)) != 0) {
+                command.setPrecision(PRECISION_FIELDS.get(index), null);
+            }
+        }
+        assertFalse(assertDoesNotThrow(command::submit).getHasErrors());
+        var errors = command.getExecutionErrors();
+        assertNotNull(errors);
+        assertEquals(Integer.bitCount(missingFields), errors.size());
+        for(var index = 0; index < PRECISION_FIELDS.size(); index++) {
+            assertEquals((missingFields & (1 << index)) != 0,
+                    errors.containsKey(Messages.EXECUTION_ERROR, "Missing" + PRECISION_FIELDS.get(index)));
+        }
+        assertEquals(0, command.creates);
+        assertNull(command.savedPrecisions);
     }
 }
