@@ -18,13 +18,14 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityBooleanAttributeForm;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityBooleanAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -57,6 +58,9 @@ public class DeleteEntityBooleanAttributeCommand
     EntityAttributeLogic entityAttributeLogic;
 
     @Inject
+    EntityBooleanAttributeLogic entityBooleanAttributeLogic;
+
+    @Inject
     EntityInstanceLogic entityInstanceLogic;
 
     
@@ -85,10 +89,10 @@ public class DeleteEntityBooleanAttributeCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            var entityBooleanAttribute = entityAttributeLogic.getEntityBooleanAttributeForUpdate(this, entityAttribute, entityInstance);
+                            var entityBooleanAttribute = entityBooleanAttributeLogic.getEntityBooleanAttributeForUpdate(this, entityAttribute, entityInstance);
 
                             if(entityBooleanAttribute != null) {
-                                coreControl.deleteEntityBooleanAttribute(entityBooleanAttribute, getPartyPK());
+                                entityBooleanAttributeLogic.deleteEntityBooleanAttribute(this, entityBooleanAttribute, getPartyPK());
                             }
                         } else {
                             addExecutionError(ExecutionErrors.MismatchedEntityType.name());

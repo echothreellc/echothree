@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityGeoPointDefaultForm;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityGeoPointAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -55,6 +56,9 @@ public class DeleteEntityGeoPointDefaultCommand
     @Inject
     EntityAttributeLogic entityAttributeLogic;
 
+    @Inject
+    EntityGeoPointAttributeLogic entityGeoPointAttributeLogic;
+
     /** Creates a new instance of CreateEntityGeoPointDefaultCommand */
     public DeleteEntityGeoPointDefaultCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -65,7 +69,7 @@ public class DeleteEntityGeoPointDefaultCommand
         var entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, form);
 
         if(!hasExecutionErrors()) {
-            entityAttributeLogic.deleteEntityGeoPointDefault(this, entityAttribute, getPartyPK());
+            entityGeoPointAttributeLogic.deleteEntityGeoPointDefault(this, entityAttribute, getPartyPK());
         }
 
         return null;

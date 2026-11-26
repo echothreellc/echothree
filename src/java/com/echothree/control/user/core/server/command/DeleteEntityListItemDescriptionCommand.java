@@ -17,15 +17,16 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityListItemDescriptionForm;
+import com.echothree.model.control.core.server.logic.EntityListItemLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -61,6 +62,9 @@ public class DeleteEntityListItemDescriptionCommand
     @Inject
     PartyControl partyControl;
 
+    @Inject
+    EntityListItemLogic entityListItemLogic;
+
     
     /** Creates a new instance of DeleteEntityListItemDescriptionCommand */
     public DeleteEntityListItemDescriptionCommand() {
@@ -92,7 +96,7 @@ public class DeleteEntityListItemDescriptionCommand
                             var entityListItemDescription = coreControl.getEntityListItemDescriptionForUpdate(entityListItem, language);
                             
                             if(entityListItemDescription != null) {
-                                coreControl.deleteEntityListItemDescription(entityListItemDescription, getPartyPK());
+                                entityListItemLogic.deleteEntityListItemDescription(this, entityListItemDescription, getPartyPK());
                             } else {
                                 addExecutionError(ExecutionErrors.UnknownEntityListItemDescription.name(), componentVendorName, entityTypeName, entityAttributeName,
                                         entityListItemName, languageIsoName);

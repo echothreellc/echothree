@@ -23,6 +23,7 @@ import com.echothree.control.user.core.common.result.EditEntityNameAttributeResu
 import com.echothree.control.user.core.common.spec.EntityNameAttributeSpec;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.core.server.logic.EntityNameAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -73,6 +74,9 @@ public class EditEntityNameAttributeCommand
     @Inject
     EntityInstanceLogic entityInstanceLogic;
 
+    @Inject
+    EntityNameAttributeLogic entityNameAttributeLogic;
+
     private EntityInstance entityInstance;
     private EntityAttribute entityAttribute;
     private String stringAttribute;
@@ -103,7 +107,7 @@ public class EditEntityNameAttributeCommand
         }
 
         if(!hasExecutionErrors()) {
-            entity = entityAttributeLogic.getEntityNameAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
+            entity = entityNameAttributeLogic.getEntityNameAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
         }
 
         return entity;
@@ -151,7 +155,7 @@ public class EditEntityNameAttributeCommand
 
         entityNameAttributeValue.setNameAttribute(stringAttribute);
 
-        coreControl.updateEntityNameAttributeFromValue(entityNameAttributeValue, getPartyPK());
+        entityNameAttributeLogic.updateEntityNameAttributeFromValue(this, entityNameAttributeValue, getPartyPK());
     }
 
 }

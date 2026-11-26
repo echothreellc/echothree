@@ -23,6 +23,7 @@ import com.echothree.control.user.core.common.result.EditEntityIntegerAttributeR
 import com.echothree.control.user.core.common.spec.EntityIntegerAttributeSpec;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.core.server.logic.EntityIntegerAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -72,6 +73,9 @@ public class EditEntityIntegerAttributeCommand
     @Inject
     EntityInstanceLogic entityInstanceLogic;
 
+    @Inject
+    EntityIntegerAttributeLogic entityIntegerAttributeLogic;
+
     private EntityInstance entityInstance;
     private EntityAttribute entityAttribute;
     private Integer integerAttribute;
@@ -102,7 +106,7 @@ public class EditEntityIntegerAttributeCommand
         }
 
         if(!hasExecutionErrors()) {
-            entity = entityAttributeLogic.getEntityIntegerAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
+            entity = entityIntegerAttributeLogic.getEntityIntegerAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
         }
 
         return entity;
@@ -155,7 +159,7 @@ public class EditEntityIntegerAttributeCommand
 
         entityIntegerAttributeValue.setIntegerAttribute(integerAttribute);
 
-        coreControl.updateEntityIntegerAttributeFromValue(entityIntegerAttributeValue, getPartyPK());
+        entityIntegerAttributeLogic.updateEntityIntegerAttributeFromValue(this, entityIntegerAttributeValue, getPartyPK());
     }
 
 }

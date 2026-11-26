@@ -23,6 +23,7 @@ import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityDateDefaultResult;
 import com.echothree.control.user.core.common.spec.EntityDateDefaultSpec;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityDateAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityDateDefault;
@@ -67,6 +68,9 @@ public class EditEntityDateDefaultCommand
 
     @Inject
     EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    EntityDateAttributeLogic entityDateAttributeLogic;
 
     
     /** Creates a new instance of EditEntityDateDefaultCommand */
@@ -127,7 +131,7 @@ public class EditEntityDateDefaultCommand
 
         entityDateDefaultValue.setDateAttribute(Integer.valueOf(edit.getDateAttribute()));
 
-        coreControl.updateEntityDateDefaultFromValue(entityDateDefaultValue, getPartyPK());
+        entityDateAttributeLogic.updateEntityDateDefaultFromValue(this, entityDateDefaultValue, getPartyPK());
     }
     
 }

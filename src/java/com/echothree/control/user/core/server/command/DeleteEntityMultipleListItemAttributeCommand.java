@@ -20,12 +20,14 @@ import com.echothree.control.user.core.common.form.DeleteEntityMultipleListItemA
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.core.server.logic.EntityListItemLogic;
+import com.echothree.model.control.core.server.logic.EntityMultipleListItemAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -62,6 +64,12 @@ public class DeleteEntityMultipleListItemAttributeCommand
     @Inject
     EntityInstanceLogic entityInstanceLogic;
 
+    @Inject
+    EntityListItemLogic entityListItemLogic;
+
+    @Inject
+    EntityMultipleListItemAttributeLogic entityMultipleListItemAttributeLogic;
+
     
     /** Creates a new instance of DeleteEntityMultipleListItemAttributeCommand */
     public DeleteEntityMultipleListItemAttributeCommand() {
@@ -77,13 +85,13 @@ public class DeleteEntityMultipleListItemAttributeCommand
                     EntityAttributeTypes.MULTIPLELISTITEM);
 
             if(!hasExecutionErrors()) {
-                var entityListItem = entityAttributeLogic.getEntityListItem(this, entityAttribute, form);
+                var entityListItem = entityListItemLogic.getEntityListItem(this, entityAttribute, form);
 
                 if(!hasExecutionErrors()) {
                     var entityListItemAttribute = coreControl.getEntityMultipleListItemAttributeForUpdate(entityAttribute, entityInstance, entityListItem);
 
                     if(entityListItemAttribute != null) {
-                        coreControl.deleteEntityMultipleListItemAttribute(entityListItemAttribute, getPartyPK());
+                        entityMultipleListItemAttributeLogic.deleteEntityMultipleListItemAttribute(this, entityListItemAttribute, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownEntityMultipleListItemAttribute.name());
                     }

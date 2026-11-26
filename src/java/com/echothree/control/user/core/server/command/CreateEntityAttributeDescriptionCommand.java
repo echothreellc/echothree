@@ -17,15 +17,13 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateEntityAttributeDescriptionForm;
+import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -59,7 +57,7 @@ public class CreateEntityAttributeDescriptionCommand
     }
 
     @Inject
-    PartyControl partyControl;
+    protected EntityAttributeLogic entityAttributeLogic;
 
     
     /** Creates a new instance of CreateEntityAttributeDescriptionCommand */
@@ -69,44 +67,9 @@ public class CreateEntityAttributeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var componentVendorName = form.getComponentVendorName();
-        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
-        
-        if(componentVendor != null) {
-            var entityTypeName = form.getEntityTypeName();
-            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
-            
-            if(entityType != null) {
-                var entityAttributeName = form.getEntityAttributeName();
-                var entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
-                
-                if(entityAttribute != null) {
-                    var languageIsoName = form.getLanguageIsoName();
-                    var language = partyControl.getLanguageByIsoName(languageIsoName);
-                    
-                    if(language != null) {
-                        var entityAttributeDescription = coreControl.getEntityAttributeDescription(entityAttribute, language);
-                        
-                        if(entityAttributeDescription == null) {
-                            var description = form.getDescription();
-                            
-                            coreControl.createEntityAttributeDescription(entityAttribute, language, description, getPartyPK());
-                        } else {
-                            addExecutionError(ExecutionErrors.DuplicateEntityAttributeDescription.name(), componentVendorName, entityTypeName, entityAttributeName, languageIsoName);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownEntityAttributeName.name(), componentVendorName, entityTypeName, entityAttributeName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), componentVendorName, entityTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
-        }
-        
+        entityAttributeLogic.createEntityAttributeDescription(this, form.getComponentVendorName(), form.getEntityTypeName(),
+                form.getEntityAttributeName(), form.getLanguageIsoName(), form.getDescription(), getPartyPK());
+
         return null;
     }
     

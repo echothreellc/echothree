@@ -23,6 +23,7 @@ import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityIntegerDefaultResult;
 import com.echothree.control.user.core.common.spec.EntityIntegerDefaultSpec;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityIntegerAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityIntegerDefault;
@@ -67,6 +68,9 @@ public class EditEntityIntegerDefaultCommand
 
     @Inject
     EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    EntityIntegerAttributeLogic entityIntegerAttributeLogic;
 
     
     /** Creates a new instance of EditEntityIntegerDefaultCommand */
@@ -127,7 +131,7 @@ public class EditEntityIntegerDefaultCommand
 
         entityIntegerDefaultValue.setIntegerAttribute(Integer.valueOf(edit.getIntegerAttribute()));
 
-        coreControl.updateEntityIntegerDefaultFromValue(entityIntegerDefaultValue, getPartyPK());
+        entityIntegerAttributeLogic.updateEntityIntegerDefaultFromValue(this, entityIntegerDefaultValue, getPartyPK());
     }
     
 }

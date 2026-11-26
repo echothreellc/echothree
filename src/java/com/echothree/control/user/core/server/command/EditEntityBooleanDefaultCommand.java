@@ -23,6 +23,7 @@ import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityBooleanDefaultResult;
 import com.echothree.control.user.core.common.spec.EntityBooleanDefaultSpec;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityBooleanAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityBooleanDefault;
@@ -67,6 +68,9 @@ public class EditEntityBooleanDefaultCommand
 
     @Inject
     EntityAttributeLogic entityAttributeLogic;
+
+    @Inject
+    EntityBooleanAttributeLogic entityBooleanAttributeLogic;
 
     
     /** Creates a new instance of EditEntityBooleanDefaultCommand */
@@ -127,7 +131,7 @@ public class EditEntityBooleanDefaultCommand
 
         entityBooleanDefaultValue.setBooleanAttribute(Boolean.valueOf(edit.getBooleanAttribute()));
 
-        coreControl.updateEntityBooleanDefaultFromValue(entityBooleanDefaultValue, getPartyPK());
+        entityBooleanAttributeLogic.updateEntityBooleanDefaultFromValue(this, entityBooleanDefaultValue, getPartyPK());
     }
     
 }

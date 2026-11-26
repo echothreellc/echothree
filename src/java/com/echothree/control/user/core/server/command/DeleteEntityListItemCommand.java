@@ -17,14 +17,14 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityListItemForm;
-import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityListItemLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -59,7 +59,7 @@ public class DeleteEntityListItemCommand
     }
 
     @Inject
-    EntityAttributeLogic entityAttributeLogic;
+    EntityListItemLogic entityListItemLogic;
 
     
     /** Creates a new instance of DeleteEntityListItemCommand */
@@ -69,10 +69,10 @@ public class DeleteEntityListItemCommand
     
     @Override
     protected BaseResult execute() {
-        var entityListItem = entityAttributeLogic.getEntityListItemByUniversalSpecForUpdate(this, form);
+        var entityListItem = entityListItemLogic.getEntityListItemByUniversalSpecForUpdate(this, form);
         
         if(!hasExecutionErrors()) {
-            entityAttributeLogic.deleteEntityListItem(this, entityListItem, getPartyPK());
+            entityListItemLogic.deleteEntityListItem(this, entityListItem, getPartyPK());
         }
         
         return null;

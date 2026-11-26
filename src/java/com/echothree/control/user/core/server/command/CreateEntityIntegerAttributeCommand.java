@@ -20,11 +20,12 @@ import com.echothree.control.user.core.common.form.CreateEntityIntegerAttributeF
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.core.server.logic.EntityIntegerAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -60,6 +61,9 @@ public class CreateEntityIntegerAttributeCommand
     @Inject
     EntityInstanceLogic entityInstanceLogic;
 
+    @Inject
+    EntityIntegerAttributeLogic entityIntegerAttributeLogic;
+
     
     /** Creates a new instance of CreateEntityIntegerAttributeCommand */
     public CreateEntityIntegerAttributeCommand() {
@@ -77,7 +81,7 @@ public class CreateEntityIntegerAttributeCommand
             if(!hasExecutionErrors()) {
                 var integerAttribute = Integer.valueOf(form.getIntegerAttribute());
                 
-                entityAttributeLogic.createEntityIntegerAttribute(this, entityAttribute, entityInstance,
+                entityIntegerAttributeLogic.createEntityIntegerAttribute(this, entityAttribute, entityInstance,
                         integerAttribute, getPartyPK());
             }
         }

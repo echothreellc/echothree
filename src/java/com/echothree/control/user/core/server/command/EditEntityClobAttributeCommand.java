@@ -23,6 +23,7 @@ import com.echothree.control.user.core.common.result.EditEntityClobAttributeResu
 import com.echothree.control.user.core.common.spec.EntityClobAttributeSpec;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityClobAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.core.server.logic.MimeTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -78,6 +79,9 @@ public class EditEntityClobAttributeCommand
     EntityAttributeLogic entityAttributeLogic;
 
     @Inject
+    EntityClobAttributeLogic entityClobAttributeLogic;
+
+    @Inject
     EntityInstanceLogic entityInstanceLogic;
 
     @Inject
@@ -118,7 +122,7 @@ public class EditEntityClobAttributeCommand
         }
 
         if(!hasExecutionErrors()) {
-            entity = entityAttributeLogic.getEntityClobAttribute(this, entityAttribute, entityInstance, language, editModeToEntityPermission(editMode));
+            entity = entityClobAttributeLogic.getEntityClobAttribute(this, entityAttribute, entityInstance, language, editModeToEntityPermission(editMode));
         }
 
         return entity;
@@ -163,7 +167,7 @@ public class EditEntityClobAttributeCommand
         entityClobAttributeValue.setClobAttribute(edit.getClobAttribute());
         entityClobAttributeValue.setMimeTypePK(mimeType.getPrimaryKey());
 
-        coreControl.updateEntityClobAttributeFromValue(entityClobAttributeValue, getPartyPK());
+        entityClobAttributeLogic.updateEntityClobAttributeFromValue(this, entityClobAttributeValue, getPartyPK());
     }
 
 }

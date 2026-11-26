@@ -17,7 +17,6 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityAttributeGroupForm;
-import com.echothree.model.control.core.server.control.EntityAttributeGroupControl;
 import com.echothree.model.control.core.server.logic.EntityAttributeGroupLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -58,9 +57,6 @@ public class DeleteEntityAttributeGroupCommand
     }
     
     @Inject
-    protected EntityAttributeGroupControl entityAttributeGroupControl;
-
-    @Inject
     protected EntityAttributeGroupLogic entityAttributeGroupLogic;
 
     /** Creates a new instance of DeleteEntityAttributeGroupCommand */
@@ -73,7 +69,7 @@ public class DeleteEntityAttributeGroupCommand
         var entityAttributeGroup = entityAttributeGroupLogic.getEntityAttributeGroupByUniversalSpecForUpdate(this, form);
         
         if(!hasExecutionErrors()) {
-            entityAttributeGroupControl.deleteEntityAttributeGroup(entityAttributeGroup, getPartyPK());
+            entityAttributeGroupLogic.deleteEntityAttributeGroup(this, entityAttributeGroup, getPartyPK());
         }
         
         return null;

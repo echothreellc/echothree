@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityListItemDefaultForm;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityListItemAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -55,6 +56,9 @@ public class DeleteEntityListItemDefaultCommand
     @Inject
     EntityAttributeLogic entityAttributeLogic;
 
+    @Inject
+    EntityListItemAttributeLogic entityListItemAttributeLogic;
+
     
     /** Creates a new instance of DeleteEntityListItemDefaultCommand */
     public DeleteEntityListItemDefaultCommand() {
@@ -66,7 +70,7 @@ public class DeleteEntityListItemDefaultCommand
         var entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, form);
 
         if(!hasExecutionErrors()) {
-            entityAttributeLogic.deleteEntityListItemDefault(this, entityAttribute, getPartyPK());
+            entityListItemAttributeLogic.deleteEntityListItemDefault(this, entityAttribute, getPartyPK());
         }
 
         return null;

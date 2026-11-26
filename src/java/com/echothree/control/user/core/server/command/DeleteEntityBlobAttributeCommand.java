@@ -17,7 +17,7 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityBlobAttributeForm;
-import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityBlobAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -57,7 +57,7 @@ public class DeleteEntityBlobAttributeCommand
     PartyControl partyControl;
 
     @Inject
-    EntityAttributeLogic entityAttributeLogic;
+    EntityBlobAttributeLogic entityBlobAttributeLogic;
 
     @Inject
     EntityInstanceLogic entityInstanceLogic;
@@ -81,10 +81,10 @@ public class DeleteEntityBlobAttributeCommand
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    var entityBlobAttribute = entityAttributeLogic.getEntityBlobAttributeForUpdate(this, entityAttribute, entityInstance, language);
+                    var entityBlobAttribute = entityBlobAttributeLogic.getEntityBlobAttributeForUpdate(this, entityAttribute, entityInstance, language);
                     
                     if(entityBlobAttribute != null) {
-                        coreControl.deleteEntityBlobAttribute(entityBlobAttribute, getPartyPK());
+                        entityBlobAttributeLogic.deleteEntityBlobAttribute(this, entityBlobAttribute, getPartyPK());
                     }
                 } else {
                     addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);

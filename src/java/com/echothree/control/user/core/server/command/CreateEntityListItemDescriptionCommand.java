@@ -17,15 +17,13 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.CreateEntityListItemDescriptionForm;
+import com.echothree.model.control.core.server.logic.EntityListItemLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -60,7 +58,7 @@ public class CreateEntityListItemDescriptionCommand
     }
 
     @Inject
-    PartyControl partyControl;
+    protected EntityListItemLogic entityListItemLogic;
 
     
     /** Creates a new instance of CreateEntityListItemDescriptionCommand */
@@ -70,52 +68,9 @@ public class CreateEntityListItemDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var componentVendorName = form.getComponentVendorName();
-        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
-        
-        if(componentVendor != null) {
-            var entityTypeName = form.getEntityTypeName();
-            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
-            
-            if(entityType != null) {
-                var entityAttributeName = form.getEntityAttributeName();
-                var entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
-                
-                if(entityAttribute != null) {
-                    var entityListItemName = form.getEntityListItemName();
-                    var entityListItem = coreControl.getEntityListItemByName(entityAttribute, entityListItemName);
-                    
-                    if(entityListItem != null) {
-                        var languageIsoName = form.getLanguageIsoName();
-                        var language = partyControl.getLanguageByIsoName(languageIsoName);
-                        
-                        if(language != null) {
-                            var entityListItemDescription = coreControl.getEntityListItemDescription(entityListItem, language);
-                            
-                            if(entityListItemDescription == null) {
-                                var description = form.getDescription();
-                                
-                                coreControl.createEntityListItemDescription(entityListItem, language, description, getPartyPK());
-                            } else {
-                                addExecutionError(ExecutionErrors.DuplicateEntityListItemDescription.name(), componentVendorName, entityTypeName,
-                                        entityAttributeName, entityListItemName, languageIsoName);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownEntityListItemName.name(), componentVendorName, entityTypeName, entityAttributeName, entityListItemName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownEntityAttributeName.name(), componentVendorName, entityTypeName, entityAttributeName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), componentVendorName, entityTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
-        }
-        
+        entityListItemLogic.createEntityListItemDescription(this, form.getComponentVendorName(), form.getEntityTypeName(),
+                form.getEntityAttributeName(), form.getEntityListItemName(), form.getLanguageIsoName(), form.getDescription(), getPartyPK());
+
         return null;
     }
     

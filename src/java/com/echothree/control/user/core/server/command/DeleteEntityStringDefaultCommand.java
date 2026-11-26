@@ -20,6 +20,7 @@ import com.echothree.control.user.core.common.form.DeleteEntityStringAttributeFo
 import com.echothree.control.user.core.common.form.DeleteEntityStringDefaultForm;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.core.server.logic.EntityStringAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -62,6 +63,9 @@ public class DeleteEntityStringDefaultCommand
     EntityAttributeLogic entityAttributeLogic;
 
     @Inject
+    EntityStringAttributeLogic entityStringAttributeLogic;
+
+    @Inject
     LanguageLogic languageLogic;
 
     
@@ -76,7 +80,7 @@ public class DeleteEntityStringDefaultCommand
         var language = languageLogic.getLanguage(this, form, form);
 
         if(!hasExecutionErrors()) {
-            entityAttributeLogic.deleteEntityStringDefault(this, entityAttribute, language, getPartyPK());
+            entityStringAttributeLogic.deleteEntityStringDefault(this, entityAttribute, language, getPartyPK());
         }
 
         return null;

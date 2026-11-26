@@ -80,7 +80,7 @@ public class CreateEntityEntityAttributeCommand
                 var entityEntityAttribute = coreControl.getEntityEntityAttribute(entityAttribute, entityInstance);
 
                 if(entityEntityAttribute == null) {
-                    var entityInstanceAttribute = entityAttributeLogic.getEntityInstanceAttribute(this, form);
+                    var entityInstanceAttribute = entityInstanceLogic.getEntityInstanceAttribute(this, form);
 
                     if(entityInstanceAttribute != null) {
                         if(coreControl.countEntityAttributeEntityTypesByEntityAttribute(entityAttribute) > 0) {

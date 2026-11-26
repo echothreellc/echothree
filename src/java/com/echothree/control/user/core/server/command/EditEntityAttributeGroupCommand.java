@@ -146,17 +146,17 @@ public class EditEntityAttributeGroupCommand
         entityAttributeGroupDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         entityAttributeGroupDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        entityAttributeGroupControl.updateEntityAttributeGroupFromValue(entityAttributeGroupDetailValue, partyPK);
+        entityAttributeGroupLogic.updateEntityAttributeGroupFromValue(this, entityAttributeGroupDetailValue, partyPK);
 
         if(entityAttributeGroupDescription == null && description != null) {
-            entityAttributeGroupControl.createEntityAttributeGroupDescription(entityAttributeGroup, getPreferredLanguage(), description, partyPK);
+            entityAttributeGroupLogic.createEntityAttributeGroupDescription(this, entityAttributeGroup, getPreferredLanguage(), description, partyPK);
         } else if(entityAttributeGroupDescription != null && description == null) {
-            entityAttributeGroupControl.deleteEntityAttributeGroupDescription(entityAttributeGroupDescription, partyPK);
+            entityAttributeGroupLogic.deleteEntityAttributeGroupDescription(this, entityAttributeGroupDescription, partyPK);
         } else if(entityAttributeGroupDescription != null && description != null) {
             var entityAttributeGroupDescriptionValue = entityAttributeGroupControl.getEntityAttributeGroupDescriptionValue(entityAttributeGroupDescription);
 
             entityAttributeGroupDescriptionValue.setDescription(description);
-            entityAttributeGroupControl.updateEntityAttributeGroupDescriptionFromValue(entityAttributeGroupDescriptionValue, partyPK);
+            entityAttributeGroupLogic.updateEntityAttributeGroupDescriptionFromValue(this, entityAttributeGroupDescriptionValue, partyPK);
         }
     }
     

@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityDateDefaultForm;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityDateAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -55,6 +56,9 @@ public class DeleteEntityDateDefaultCommand
     @Inject
     EntityAttributeLogic entityAttributeLogic;
 
+    @Inject
+    EntityDateAttributeLogic entityDateAttributeLogic;
+
     /** Creates a new instance of CreateEntityDateDefaultCommand */
     public DeleteEntityDateDefaultCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -65,7 +69,7 @@ public class DeleteEntityDateDefaultCommand
         var entityAttribute = entityAttributeLogic.getEntityAttributeByUniversalSpec(this, form);
 
         if(!hasExecutionErrors()) {
-            entityAttributeLogic.deleteEntityDateDefault(this, entityAttribute, getPartyPK());
+            entityDateAttributeLogic.deleteEntityDateDefault(this, entityAttribute, getPartyPK());
         }
 
         return null;
