@@ -52,7 +52,7 @@ public class EditAction
         String forwardKey;
         var originalLetterSourceName = request.getParameter(ParameterConstants.ORIGINAL_LETTER_SOURCE_NAME);
         var commandForm = LetterUtil.getHome().getEditLetterSourceForm();
-        var spec = LetterUtil.getHome().getLetterSourceSpec();
+        var spec = LetterUtil.getHome().getLetterSourceUniversalSpec();
         
         if(originalLetterSourceName == null) {
             originalLetterSourceName = actionForm.getOriginalLetterSourceName();

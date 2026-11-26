@@ -25,6 +25,7 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.data.contact.server.entity.ContactMechanismAliasType;
+import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -46,15 +47,32 @@ public class ContactMechanismAliasTypeLogic
         super();
     }
 
-    public ContactMechanismAliasType getContactMechanismAliasTypeByName(final ExecutionErrorAccumulator eea, final String contactMechanismAliasTypeName,
+    public ContactMechanismAliasType getContactMechanismAliasTypeByName(final Class<? extends BaseException> unknownException,
+            final ExecutionErrors unknownExecutionError, final ExecutionErrorAccumulator eea, final String contactMechanismAliasTypeName,
             final EntityPermission entityPermission) {
         var contactMechanismAliasType = contactControl.getContactMechanismAliasTypeByName(contactMechanismAliasTypeName, entityPermission);
 
         if(contactMechanismAliasType == null) {
-            handleExecutionError(UnknownContactMechanismAliasTypeNameException.class, eea, ExecutionErrors.UnknownContactMechanismAliasTypeName.name(), contactMechanismAliasTypeName);
+            handleExecutionError(unknownException, eea, unknownExecutionError.name(), contactMechanismAliasTypeName);
         }
 
         return contactMechanismAliasType;
+    }
+
+    public ContactMechanismAliasType getContactMechanismAliasTypeByName(final Class<? extends BaseException> unknownException,
+            final ExecutionErrors unknownExecutionError, final ExecutionErrorAccumulator eea, final String contactMechanismAliasTypeName) {
+        return getContactMechanismAliasTypeByName(unknownException, unknownExecutionError, eea, contactMechanismAliasTypeName, EntityPermission.READ_ONLY);
+    }
+
+    public ContactMechanismAliasType getContactMechanismAliasTypeByNameForUpdate(final Class<? extends BaseException> unknownException,
+            final ExecutionErrors unknownExecutionError, final ExecutionErrorAccumulator eea, final String contactMechanismAliasTypeName) {
+        return getContactMechanismAliasTypeByName(unknownException, unknownExecutionError, eea, contactMechanismAliasTypeName, EntityPermission.READ_WRITE);
+    }
+
+    public ContactMechanismAliasType getContactMechanismAliasTypeByName(final ExecutionErrorAccumulator eea, final String contactMechanismAliasTypeName,
+            final EntityPermission entityPermission) {
+        return getContactMechanismAliasTypeByName(UnknownContactMechanismAliasTypeNameException.class, ExecutionErrors.UnknownContactMechanismAliasTypeName, eea,
+                contactMechanismAliasTypeName, entityPermission);
     }
 
     public ContactMechanismAliasType getContactMechanismAliasTypeByName(final ExecutionErrorAccumulator eea, final String contactMechanismAliasTypeName) {

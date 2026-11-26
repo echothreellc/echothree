@@ -27,6 +27,7 @@ import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -54,16 +55,29 @@ public class PartyContactMechanismLogic
         super();
     }
 
-    public PartyContactMechanism getPartyContactMechanism(final ExecutionErrorAccumulator eea, final Party party,
+    public PartyContactMechanism getPartyContactMechanism(final Class<? extends BaseException> unknownException, final ExecutionErrors unknownExecutionError,
+            final ExecutionErrorAccumulator eea, final Party party,
             final ContactMechanism contactMechanism, final EntityPermission entityPermission) {
         var partyContactMechanism = contactControl.getPartyContactMechanism(party, contactMechanism, entityPermission);
 
         if(partyContactMechanism == null) {
-            handleExecutionError(UnknownPartyContactMechanismException.class, eea, ExecutionErrors.UnknownPartyContactMechanism.name(),
+            handleExecutionError(unknownException, eea, unknownExecutionError.name(),
                     party.getLastDetail().getPartyName(), contactMechanism.getLastDetail().getContactMechanismName());
         }
 
         return partyContactMechanism;
+    }
+
+    public PartyContactMechanism getPartyContactMechanism(final Class<? extends BaseException> unknownException,
+            final ExecutionErrors unknownExecutionError, final ExecutionErrorAccumulator eea, final Party party,
+            final ContactMechanism contactMechanism) {
+        return getPartyContactMechanism(unknownException, unknownExecutionError, eea, party, contactMechanism, EntityPermission.READ_ONLY);
+    }
+
+    public PartyContactMechanism getPartyContactMechanism(final ExecutionErrorAccumulator eea, final Party party,
+            final ContactMechanism contactMechanism, final EntityPermission entityPermission) {
+        return getPartyContactMechanism(UnknownPartyContactMechanismException.class, ExecutionErrors.UnknownPartyContactMechanism,
+                eea, party, contactMechanism, entityPermission);
     }
     
     public PartyContactMechanism getPartyContactMechanism(final ExecutionErrorAccumulator eea, final Party party,

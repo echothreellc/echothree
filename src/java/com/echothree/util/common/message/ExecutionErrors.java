@@ -1313,6 +1313,7 @@ public enum ExecutionErrors {
     UnknownContactListContactMechanismPurpose,
     DuplicatePartyContactList,
     UnknownPartyContactList,
+    UnknownDefaultLetterSource,
     UnknownLetterSourceName,
     DuplicateLetterSourceName,
     DuplicateLetterSourceDescription,
