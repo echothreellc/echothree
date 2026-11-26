@@ -75,12 +75,10 @@ public class DeleteEntityListItemAttributeCommand
                     EntityAttributeTypes.LISTITEM);
 
             if(!hasExecutionErrors()) {
-                var entityListItemAttribute = coreControl.getEntityListItemAttributeForUpdate(entityAttribute, entityInstance);
+                var entityListItemAttribute = entityAttributeLogic.getEntityListItemAttributeForUpdate(this, entityAttribute, entityInstance);
                 
                 if(entityListItemAttribute != null) {
                     coreControl.deleteEntityListItemAttribute(entityListItemAttribute, getPartyPK());
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownEntityListItemAttribute.name());
                 }
             }
         }

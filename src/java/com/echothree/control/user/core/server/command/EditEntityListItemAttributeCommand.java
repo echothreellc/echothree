@@ -18,23 +18,25 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.edit.CoreEditFactory;
 import com.echothree.control.user.core.common.edit.EntityListItemAttributeEdit;
-import com.echothree.control.user.core.common.form.EditEntityListItemAttributeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.control.user.core.common.result.EditEntityListItemAttributeResult;
 import com.echothree.control.user.core.common.spec.EntityListItemAttributeSpec;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.data.core.server.entity.EntityAttribute;
+import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.core.server.entity.EntityListItem;
 import com.echothree.model.data.core.server.entity.EntityListItemAttribute;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -42,12 +44,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditEntityListItemAttributeCommand
-        extends BaseEditCommand<EntityListItemAttributeSpec, EntityListItemAttributeEdit> {
+        extends BaseAbstractEditCommand<EntityListItemAttributeSpec, EntityListItemAttributeEdit, EditEntityListItemAttributeResult, EntityListItemAttribute, EntityInstance> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -60,7 +62,7 @@ public class EditEntityListItemAttributeCommand
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeUuid", FieldType.UUID, false, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EntityListItemName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityListItemUuid", FieldType.UUID, false, null, null)
@@ -73,89 +75,74 @@ public class EditEntityListItemAttributeCommand
     @Inject
     EntityInstanceLogic entityInstanceLogic;
 
-    
+    private EntityInstance entityInstance;
+    private EntityAttribute entityAttribute;
+    private EntityListItem entityListItem;
+
     /** Creates a new instance of EditEntityListItemAttributeCommand */
     public EditEntityListItemAttributeCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = CoreResultFactory.getEditEntityListItemAttributeResult();
-        var entityInstance = entityInstanceLogic.getEntityInstance(this, spec);
+    public EditEntityListItemAttributeResult getResult() {
+        return CoreResultFactory.getEditEntityListItemAttributeResult();
+    }
+
+    @Override
+    public EntityListItemAttributeEdit getEdit() {
+        return CoreEditFactory.getEntityListItemAttributeEdit();
+    }
+
+    @Override
+    public EntityListItemAttribute getEntity(EditEntityListItemAttributeResult result) {
+        EntityListItemAttribute entity = null;
+
+        entityInstance = entityInstanceLogic.getEntityInstance(this, spec);
 
         if(!hasExecutionErrors()) {
-            var entityAttribute = entityAttributeLogic.getEntityAttribute(this, entityInstance, spec, spec,
-                    EntityAttributeTypes.LISTITEM);
-
-            if(!hasExecutionErrors()) {
-                EntityListItemAttribute entityListItemAttribute = null;
-                var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
-
-                if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                    entityListItemAttribute = coreControl.getEntityListItemAttribute(entityAttribute, entityInstance);
-
-                    if(entityListItemAttribute != null) {
-                        if(editMode.equals(EditMode.LOCK)) {
-                            result.setEntityListItemAttribute(coreControl.getEntityListItemAttributeTransfer(getUserVisit(), entityListItemAttribute, entityInstance));
-
-                            if(lockEntity(basePK)) {
-                                var edit = CoreEditFactory.getEntityListItemAttributeEdit();
-
-                                result.setEdit(edit);
-                                edit.setEntityListItemName(entityListItemAttribute.getEntityListItem().getLastDetail().getEntityListItemName());
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                            }
-                        } else { // EditMode.ABANDON
-                            unlockEntity(basePK);
-                            basePK = null;
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownEntityListItemAttribute.name(),
-                                entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
-                                entityAttribute.getLastDetail().getEntityAttributeName());
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var entityListItem = entityAttributeLogic.getEntityListItem(this, entityAttribute, edit);
-
-                    if(!hasExecutionErrors()) {
-                        entityListItemAttribute = coreControl.getEntityListItemAttributeForUpdate(entityAttribute, entityInstance);
-
-                        if(entityListItemAttribute != null) {
-                            if(lockEntityForUpdate(basePK)) {
-                                try {
-                                    var entityListItemAttributeValue = coreControl.getEntityListItemAttributeValueForUpdate(entityListItemAttribute);
-
-                                    entityListItemAttributeValue.setEntityListItemPK(entityListItem.getPrimaryKey());
-
-                                    coreControl.updateEntityListItemAttributeFromValue(entityListItemAttributeValue, getPartyPK());
-                                } finally {
-                                    unlockEntity(basePK);
-                                    basePK = null;
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockStale.name());
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownEntityListItemAttribute.name(),
-                                    entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
-                                    entityAttribute.getLastDetail().getEntityAttributeName());
-                        }
-                    }
-                }
-
-                if(basePK != null) {
-                    result.setEntityLock(getEntityLockTransfer(basePK));
-                }
-
-                if(entityListItemAttribute != null) {
-                    result.setEntityListItemAttribute(coreControl.getEntityListItemAttributeTransfer(getUserVisit(), entityListItemAttribute, entityInstance));
-                }
-            }
+            entityAttribute = entityAttributeLogic.getEntityAttribute(this, entityInstance, spec, spec, EntityAttributeTypes.LISTITEM);
         }
 
-        return result;
+        if(!hasExecutionErrors()) {
+            entity = entityAttributeLogic.getEntityListItemAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
+        }
+
+        return entity;
     }
-    
+
+    @Override
+    public EntityInstance getLockEntity(EntityListItemAttribute entityListItemAttribute) {
+        return entityInstance;
+    }
+
+    @Override
+    protected BasePK getLockTargetPK(BaseEntity lockTarget) {
+        return PersistenceUtils.getInstance().getBasePKFromEntityInstance((EntityInstance)lockTarget);
+    }
+
+    @Override
+    public void fillInResult(EditEntityListItemAttributeResult result, EntityListItemAttribute entityListItemAttribute) {
+        result.setEntityListItemAttribute(coreControl.getEntityListItemAttributeTransfer(getUserVisit(), entityListItemAttribute, entityInstance));
+    }
+
+    @Override
+    public void doLock(EntityListItemAttributeEdit edit, EntityListItemAttribute entityListItemAttribute) {
+        edit.setEntityListItemName(entityListItemAttribute.getEntityListItem().getLastDetail().getEntityListItemName());
+    }
+
+    @Override
+    protected void canUpdate(EntityListItemAttribute entityListItemAttribute) {
+        entityListItem = entityAttributeLogic.getEntityListItem(this, entityAttribute, edit);
+    }
+
+    @Override
+    public void doUpdate(EntityListItemAttribute entityListItemAttribute) {
+        var entityListItemAttributeValue = coreControl.getEntityListItemAttributeValueForUpdate(entityListItemAttribute);
+
+        entityListItemAttributeValue.setEntityListItemPK(entityListItem.getPrimaryKey());
+
+        coreControl.updateEntityListItemAttributeFromValue(entityListItemAttributeValue, getPartyPK());
+    }
+
 }

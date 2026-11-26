@@ -18,22 +18,23 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.edit.CoreEditFactory;
 import com.echothree.control.user.core.common.edit.EntityLongAttributeEdit;
-import com.echothree.control.user.core.common.form.EditEntityLongAttributeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.control.user.core.common.result.EditEntityLongAttributeResult;
 import com.echothree.control.user.core.common.spec.EntityLongAttributeSpec;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.data.core.server.entity.EntityAttribute;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityLongAttribute;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -41,12 +42,12 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditEntityLongAttributeCommand
-        extends BaseEditCommand<EntityLongAttributeSpec, EntityLongAttributeEdit> {
+        extends BaseAbstractEditCommand<EntityLongAttributeSpec, EntityLongAttributeEdit, EditEntityLongAttributeResult, EntityLongAttribute, EntityInstance> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -59,7 +60,7 @@ public class EditEntityLongAttributeCommand
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeUuid", FieldType.UUID, false, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("LongAttribute", FieldType.SIGNED_LONG, true, null, null)
         );
@@ -71,125 +72,90 @@ public class EditEntityLongAttributeCommand
     @Inject
     EntityInstanceLogic entityInstanceLogic;
 
-    
+    private EntityInstance entityInstance;
+    private EntityAttribute entityAttribute;
+    private Long longAttribute;
+
     /** Creates a new instance of EditEntityLongAttributeCommand */
     public EditEntityLongAttributeCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = CoreResultFactory.getEditEntityLongAttributeResult();
-        var parameterCount = entityInstanceLogic.countPossibleEntitySpecs(spec);
+    public EditEntityLongAttributeResult getResult() {
+        return CoreResultFactory.getEditEntityLongAttributeResult();
+    }
 
-        if(parameterCount == 1) {
-            var entityInstance = entityInstanceLogic.getEntityInstance(this, spec);
+    @Override
+    public EntityLongAttributeEdit getEdit() {
+        return CoreEditFactory.getEntityLongAttributeEdit();
+    }
 
-            if(!hasExecutionErrors()) {
-                var entityAttributeName = spec.getEntityAttributeName();
-                var entityAttributeUuid = spec.getEntityAttributeUuid();
-                
-                parameterCount = (entityAttributeName == null ? 0 : 1) + (entityAttributeUuid == null ? 0 : 1);
-                
-                if(parameterCount == 1) {
-                    var entityAttribute = entityAttributeName == null ?
-                            entityAttributeLogic.getEntityAttributeByUuid(this, entityAttributeUuid) :
-                            entityAttributeLogic.getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
+    @Override
+    public EntityLongAttribute getEntity(EditEntityLongAttributeResult result) {
+        EntityLongAttribute entity = null;
 
-                    if(!hasExecutionErrors()) {
-                        if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            EntityLongAttribute entityLongAttribute = null;
-                            var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
+        entityInstance = entityInstanceLogic.getEntityInstance(this, spec);
 
-                            if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                                entityLongAttribute = coreControl.getEntityLongAttribute(entityAttribute, entityInstance);
-
-                                if(entityLongAttribute != null) {
-                                    if(editMode.equals(EditMode.LOCK)) {
-                                        result.setEntityLongAttribute(coreControl.getEntityLongAttributeTransfer(getUserVisit(), entityLongAttribute, entityInstance));
-
-                                        if(lockEntity(basePK)) {
-                                            var edit = CoreEditFactory.getEntityLongAttributeEdit();
-
-                                            result.setEdit(edit);
-                                            edit.setLongAttribute(entityLongAttribute.getLongAttribute().toString());
-                                        } else {
-                                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                                        }
-                                    } else { // EditMode.ABANDON
-                                        unlockEntity(basePK);
-                                        basePK = null;
-                                    }
-                                } else {
-                                    addExecutionError(ExecutionErrors.UnknownEntityLongAttribute.name(),
-                                            entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityAttributeName);
-                                }
-                            } else if(editMode.equals(EditMode.UPDATE)) {
-                                var entityAttributeLong = coreControl.getEntityAttributeLong(entityAttribute);
-                                var longAttribute = Long.valueOf(edit.getLongAttribute());
-
-                                if(entityAttributeLong != null) {
-                                    var upperRangeLongValue = entityAttributeLong.getUpperRangeLongValue();
-                                    var lowerRangeLongValue = entityAttributeLong.getLowerRangeLongValue();
-
-                                    if(upperRangeLongValue != null && longAttribute > upperRangeLongValue){
-                                        addExecutionError(ExecutionErrors.UpperRangeExceeded.name(),
-                                                upperRangeLongValue, longAttribute);
-                                    }
-
-                                    if(lowerRangeLongValue != null && longAttribute < lowerRangeLongValue) {
-                                        addExecutionError(ExecutionErrors.LowerRangeExceeded.name(),
-                                                lowerRangeLongValue, longAttribute);
-                                    }
-                                }
-
-
-                                if(!hasExecutionErrors()) {
-                                    entityLongAttribute = coreControl.getEntityLongAttributeForUpdate(entityAttribute, entityInstance);
-
-                                    if(entityLongAttribute != null) {
-                                        if(lockEntityForUpdate(basePK)) {
-                                            try {
-                                                var entityLongAttributeValue = coreControl.getEntityLongAttributeValueForUpdate(entityLongAttribute);
-
-                                                entityLongAttributeValue.setLongAttribute(longAttribute);
-
-                                                coreControl.updateEntityLongAttributeFromValue(entityLongAttributeValue, getPartyPK());
-                                            } finally {
-                                                unlockEntity(basePK);
-                                                basePK = null;
-                                            }
-                                        } else {
-                                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                                        }
-                                    } else {
-                                        addExecutionError(ExecutionErrors.UnknownEntityLongAttribute.name(),
-                                                entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
-                                                entityAttribute.getLastDetail().getEntityAttributeName());
-                                    }
-                                }
-                            }
-
-                            if(basePK != null) {
-                                result.setEntityLock(getEntityLockTransfer(basePK));
-                            }
-
-                            if(entityLongAttribute != null) {
-                                result.setEntityLongAttribute(coreControl.getEntityLongAttributeTransfer(getUserVisit(), entityLongAttribute, entityInstance));
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.MismatchedEntityType.name());
-                        }
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.InvalidParameterCount.name());
-                }
-            }
-        } else {
-            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        if(!hasExecutionErrors()) {
+            entityAttribute = entityAttributeLogic.getEntityAttribute(this, entityInstance, spec, spec);
         }
 
-        return result;
+        if(!hasExecutionErrors()) {
+            entity = entityAttributeLogic.getEntityLongAttribute(this, entityAttribute, entityInstance, editModeToEntityPermission(editMode));
+        }
+
+        return entity;
     }
-    
+
+    @Override
+    public EntityInstance getLockEntity(EntityLongAttribute entityLongAttribute) {
+        return entityInstance;
+    }
+
+    @Override
+    protected BasePK getLockTargetPK(BaseEntity lockTarget) {
+        return PersistenceUtils.getInstance().getBasePKFromEntityInstance((EntityInstance)lockTarget);
+    }
+
+    @Override
+    public void fillInResult(EditEntityLongAttributeResult result, EntityLongAttribute entityLongAttribute) {
+        result.setEntityLongAttribute(coreControl.getEntityLongAttributeTransfer(getUserVisit(), entityLongAttribute, entityInstance));
+    }
+
+    @Override
+    public void doLock(EntityLongAttributeEdit edit, EntityLongAttribute entityLongAttribute) {
+        edit.setLongAttribute(entityLongAttribute.getLongAttribute().toString());
+    }
+
+    @Override
+    protected void canUpdate(EntityLongAttribute entityLongAttribute) {
+        var entityAttributeLong = coreControl.getEntityAttributeLong(entityAttribute);
+        longAttribute = Long.valueOf(edit.getLongAttribute());
+
+        if(entityAttributeLong != null) {
+            var upperRangeLongValue = entityAttributeLong.getUpperRangeLongValue();
+            var lowerRangeLongValue = entityAttributeLong.getLowerRangeLongValue();
+
+            if(upperRangeLongValue != null && longAttribute > upperRangeLongValue) {
+                addExecutionError(ExecutionErrors.UpperRangeExceeded.name(),
+                        upperRangeLongValue, longAttribute);
+            }
+
+            if(lowerRangeLongValue != null && longAttribute < lowerRangeLongValue) {
+                addExecutionError(ExecutionErrors.LowerRangeExceeded.name(),
+                        lowerRangeLongValue, longAttribute);
+            }
+        }
+    }
+
+    @Override
+    public void doUpdate(EntityLongAttribute entityLongAttribute) {
+        var entityLongAttributeValue = coreControl.getEntityLongAttributeValueForUpdate(entityLongAttribute);
+
+        entityLongAttributeValue.setLongAttribute(longAttribute);
+
+        coreControl.updateEntityLongAttributeFromValue(entityLongAttributeValue, getPartyPK());
+    }
+
 }

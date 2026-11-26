@@ -54,7 +54,7 @@ public class CreateEntityBlobAttributeCommand
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeUuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("LanguageUuid", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("LanguageUuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, true, null, null)
         );
     }

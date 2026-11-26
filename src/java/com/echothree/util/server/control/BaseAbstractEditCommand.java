@@ -95,6 +95,10 @@ public abstract class BaseAbstractEditCommand<S extends BaseSpec, E extends Base
 
                     // canEdit(...) may set both SecurityMessages and ExecutionErrors.
                     if(!hasSecurityMessages()) {
+                        // Build the current-value transfer before acquiring a lock, so a transfer
+                        // construction failure cannot leave a newly acquired lock behind.
+                        fillInResult(result, baseEntity);
+
                         if(!hasExecutionErrors()) {
                             if(lockEntity(lockEntity)) {
                                 edit = getEdit();
@@ -105,7 +109,7 @@ public abstract class BaseAbstractEditCommand<S extends BaseSpec, E extends Base
                             }
                         }
 
-                        fillInResult(result, baseEntity, lockEntity);
+                        result.setEntityLock(getEntityLockTransfer(lockEntity));
                     }
                 }
                 case ABANDON -> unlockEntity(lockEntity);

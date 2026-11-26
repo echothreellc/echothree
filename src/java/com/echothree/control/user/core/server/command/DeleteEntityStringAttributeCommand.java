@@ -52,7 +52,7 @@ public class DeleteEntityStringAttributeCommand
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeUuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("LanguageUuid", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("LanguageUuid", FieldType.UUID, false, null, null)
         );
     }
 
@@ -102,12 +102,10 @@ public class DeleteEntityStringAttributeCommand
                                         languageLogic.getLanguageByName(this, languageIsoName);
 
                                 if(!hasExecutionErrors()) {
-                                    var entityStringAttribute = coreControl.getEntityStringAttributeForUpdate(entityAttribute, entityInstance, language);
+                                    var entityStringAttribute = entityAttributeLogic.getEntityStringAttributeForUpdate(this, entityAttribute, entityInstance, language);
 
                                     if(entityStringAttribute != null) {
                                         coreControl.deleteEntityStringAttribute(entityStringAttribute, getPartyPK());
-                                    } else {
-                                        addExecutionError(ExecutionErrors.UnknownEntityStringAttribute.name());
                                     }
                                 }
                             } else {

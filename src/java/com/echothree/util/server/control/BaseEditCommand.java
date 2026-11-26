@@ -155,9 +155,14 @@ public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit>
         this.editFieldDefinitions = editFieldDefinitions;
     }
     
+    /** Selects the entity represented by a lock target; metadata-backed editors may override this mapping. */
+    protected BasePK getLockTargetPK(BaseEntity lockTarget) {
+        return lockTarget.getPrimaryKey();
+    }
+
     public EntityLockTransfer getEntityLockTransfer(BaseEntity lockTarget)
             throws EntityLockException {
-        return entityLockControl.getEntityLockTransfer(getUserVisit(), lockTarget);
+        return entityLockControl.getEntityLockTransfer(getUserVisit(), getLockTargetPK(lockTarget));
     }
 
     public EntityLockTransfer getEntityLockTransfer(BasePK lockTarget)
@@ -172,7 +177,7 @@ public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit>
 
     public boolean lockEntity(BaseEntity lockTarget)
             throws EntityLockException {
-        return entityLockControl.lockEntity(lockTarget, getPartyPK()) != 0;
+        return entityLockControl.lockEntity(getLockTargetPK(lockTarget), getPartyPK()) != 0;
     }
 
     public boolean lockEntity(BasePK lockTarget)
@@ -187,7 +192,7 @@ public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit>
 
     public boolean lockEntityForUpdate(BaseEntity lockTarget)
             throws EntityLockException {
-        return entityLockControl.lockEntityForUpdate(lockTarget, getPartyPK());
+        return entityLockControl.lockEntityForUpdate(getLockTargetPK(lockTarget), getPartyPK());
     }
 
     public boolean lockEntityForUpdate(BasePK lockTarget)
@@ -202,7 +207,7 @@ public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit>
 
     public boolean unlockEntity(BaseEntity lockTarget)
             throws EntityLockException {
-        return entityLockControl.unlockEntity(lockTarget, getPartyPK());
+        return entityLockControl.unlockEntity(getLockTargetPK(lockTarget), getPartyPK());
     }
 
     public boolean unlockEntity(BasePK lockTarget)
@@ -217,7 +222,7 @@ public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit>
 
     public boolean isEntityLocked(BaseEntity lockTarget)
             throws EntityLockException {
-        return entityLockControl.isEntityLocked(lockTarget, getPartyPK());
+        return entityLockControl.isEntityLocked(getLockTargetPK(lockTarget), getPartyPK());
     }
 
     public boolean isEntityLocked(BasePK lockTarget)

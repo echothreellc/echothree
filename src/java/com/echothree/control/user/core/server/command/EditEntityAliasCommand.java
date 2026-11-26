@@ -16,11 +16,10 @@
 
 package com.echothree.control.user.core.server.command;
 
-import com.google.re2j.Pattern;
 import com.echothree.control.user.core.common.edit.CoreEditFactory;
 import com.echothree.control.user.core.common.edit.EntityAliasEdit;
-import com.echothree.control.user.core.common.form.EditEntityAliasForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.control.user.core.common.result.EditEntityAliasResult;
 import com.echothree.control.user.core.common.spec.EntityAliasSpec;
 import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.core.server.logic.EntityAliasTypeLogic;
@@ -29,24 +28,26 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.EntityAlias;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
+import com.echothree.model.data.core.server.entity.EntityAliasType;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.PersistenceUtils;
+import com.google.re2j.Pattern;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class EditEntityAliasCommand
-        extends BaseEditCommand<EntityAliasSpec, EntityAliasEdit> {
+        extends BaseAbstractEditCommand<EntityAliasSpec, EntityAliasEdit, EditEntityAliasResult, EntityAlias, EntityInstance> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -81,125 +82,93 @@ public class EditEntityAliasCommand
     @Inject
     EntityInstanceLogic entityInstanceLogic;
 
+    private EntityInstance entityInstance;
+    private EntityAliasType entityAliasType;
+
     /** Creates a new instance of EditEntityAliasCommand */
     public EditEntityAliasCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = CoreResultFactory.getEditEntityAliasResult();
-        var parameterCount = entityInstanceLogic.countPossibleEntitySpecs(spec);
+    public EditEntityAliasResult getResult() {
+        return CoreResultFactory.getEditEntityAliasResult();
+    }
 
-        if(parameterCount == 1) {
-            var entityInstance = entityInstanceLogic.getEntityInstance(this, spec);
+    @Override
+    public EntityAliasEdit getEdit() {
+        return CoreEditFactory.getEntityAliasEdit();
+    }
 
-            if(!hasExecutionErrors()) {
-                var entityAliasTypeName = spec.getEntityAliasTypeName();
-                var entityAliasTypeUuid = spec.getEntityAliasTypeUuid();
+    @Override
+    public EntityAlias getEntity(EditEntityAliasResult result) {
+        EntityAlias entity = null;
 
-                parameterCount = (entityAliasTypeName == null ? 0 : 1) + (entityAliasTypeUuid == null ? 0 : 1);
+        entityInstance = entityInstanceLogic.getEntityInstance(this, spec);
 
-                if(parameterCount == 1) {
-                    var entityAliasType = entityAliasTypeName == null ?
-                            entityAliasTypeLogic.getEntityAliasTypeByUuid(this, entityAliasTypeUuid) :
-                            entityAliasTypeLogic.getEntityAliasTypeByName(this, entityInstance.getEntityType(), entityAliasTypeName);
-
-                    if(!hasExecutionErrors()) {
-                        if(entityInstance.getEntityType().equals(entityAliasType.getLastDetail().getEntityType())) {
-                            EntityAlias entityAlias = null;
-                            var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
-
-                            if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                                entityAlias = entityAliasControl.getEntityAlias(entityInstance, entityAliasType);
-
-                                if(entityAlias != null) {
-                                    if(editMode.equals(EditMode.LOCK)) {
-                                        result.setEntityAlias(entityAliasControl.getEntityAliasTransfer(getUserVisit(), entityAlias));
-
-                                        if(lockEntity(basePK)) {
-                                            var edit = CoreEditFactory.getEntityAliasEdit();
-
-                                            result.setEdit(edit);
-                                            edit.setAlias(entityAlias.getAlias());
-                                        } else {
-                                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                                        }
-                                    } else { // EditMode.ABANDON
-                                        unlockEntity(basePK);
-                                        basePK = null;
-                                    }
-                                } else {
-                                    addExecutionError(ExecutionErrors.UnknownEntityAlias.name(),
-                                            entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityAliasTypeName);
-                                }
-                            } else if(editMode.equals(EditMode.UPDATE)) {
-                                var validationPattern = entityAliasType.getLastDetail().getValidationPattern();
-                                var alias = edit.getAlias();
-
-                                if(validationPattern != null) {
-                                    var pattern = Pattern.compile(validationPattern);
-                                    var matcher = pattern.matcher(alias);
-
-                                    if(!matcher.matches()) {
-                                        addExecutionError(ExecutionErrors.InvalidAlias.name(), alias);
-                                    }
-                                }
-
-                                if(!hasExecutionErrors()) {
-                                    entityAlias = entityAliasControl.getEntityAliasForUpdate(entityInstance, entityAliasType);
-
-                                    if(entityAlias != null) {
-
-                                        var duplicateEntityAlias = entityAliasControl.getEntityAliasByEntityAliasTypeAndAlias(entityAliasType, alias);
-
-                                        if(duplicateEntityAlias != null && !entityAlias.equals(duplicateEntityAlias)) {
-                                            addExecutionError(ExecutionErrors.DuplicateEntityAlias.name(),
-                                                    entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
-                                                    entityAliasType.getLastDetail().getEntityAliasTypeName(), alias);
-                                        } else {
-                                            if(lockEntityForUpdate(basePK)) {
-                                                try {
-                                                    var entityAliasValue = entityAliasControl.getEntityAliasValueForUpdate(entityAlias);
-
-                                                    entityAliasValue.setAlias(alias);
-
-                                                    entityAliasControl.updateEntityAliasFromValue(entityAliasValue, getPartyPK());
-                                                } finally {
-                                                    unlockEntity(basePK);
-                                                    basePK = null;
-                                                }
-                                            } else {
-                                                addExecutionError(ExecutionErrors.EntityLockStale.name());
-                                            }
-                                        }
-                                    } else {
-                                        addExecutionError(ExecutionErrors.UnknownEntityAlias.name(),
-                                                entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance), entityAliasTypeName);
-                                    }
-                                }
-                            }
-
-                            if(basePK != null) {
-                                result.setEntityLock(getEntityLockTransfer(basePK));
-                            }
-
-                            if(entityAlias != null) {
-                                result.setEntityAlias(entityAliasControl.getEntityAliasTransfer(getUserVisit(), entityAlias));
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.MismatchedEntityType.name());
-                        }
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.InvalidParameterCount.name());
-                }
-            }
-        } else {
-            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        if(!hasExecutionErrors()) {
+            entityAliasType = entityAliasTypeLogic.getEntityAliasType(this, entityInstance, spec, spec);
         }
 
-        return result;
+        if(!hasExecutionErrors()) {
+            entity = entityAliasTypeLogic.getEntityAlias(this, entityInstance, entityAliasType, editModeToEntityPermission(editMode));
+        }
+
+        return entity;
     }
-    
+
+    @Override
+    public EntityInstance getLockEntity(EntityAlias entityAlias) {
+        return entityInstance;
+    }
+
+    @Override
+    protected BasePK getLockTargetPK(BaseEntity lockTarget) {
+        return PersistenceUtils.getInstance().getBasePKFromEntityInstance((EntityInstance)lockTarget);
+    }
+
+    @Override
+    public void fillInResult(EditEntityAliasResult result, EntityAlias entityAlias) {
+        result.setEntityAlias(entityAliasControl.getEntityAliasTransfer(getUserVisit(), entityAlias));
+    }
+
+    @Override
+    public void doLock(EntityAliasEdit edit, EntityAlias entityAlias) {
+        edit.setAlias(entityAlias.getAlias());
+    }
+
+    @Override
+    protected void canUpdate(EntityAlias entityAlias) {
+        var validationPattern = entityAliasType.getLastDetail().getValidationPattern();
+        var alias = edit.getAlias();
+
+        if(validationPattern != null) {
+            var pattern = Pattern.compile(validationPattern);
+            var matcher = pattern.matcher(alias);
+
+            if(!matcher.matches()) {
+                addExecutionError(ExecutionErrors.InvalidAlias.name(), alias);
+            }
+        }
+
+        if(!hasExecutionErrors()) {
+            var duplicateEntityAlias = entityAliasControl.getEntityAliasByEntityAliasTypeAndAlias(entityAliasType, alias);
+
+            if(duplicateEntityAlias != null && !entityAlias.equals(duplicateEntityAlias)) {
+                addExecutionError(ExecutionErrors.DuplicateEntityAlias.name(),
+                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
+                        entityAliasType.getLastDetail().getEntityAliasTypeName(), alias);
+            }
+        }
+    }
+
+    @Override
+    public void doUpdate(EntityAlias entityAlias) {
+        var entityAliasValue = entityAliasControl.getEntityAliasValueForUpdate(entityAlias);
+
+        entityAliasValue.setAlias(edit.getAlias());
+
+        entityAliasControl.updateEntityAliasFromValue(entityAliasValue, getPartyPK());
+    }
+
 }
