@@ -62,6 +62,10 @@ public abstract class BaseFieldType {
     }
     
     public Map<String, String> getSplitFieldNameParameters() {
+        return getSplitFieldNameParameters(splitFieldName);
+    }
+
+    protected static Map<String, String> getSplitFieldNameParameters(String[] splitFieldName) {
         var length = splitFieldName.length;
         Map<String, String> parameters = new HashMap<>(length - 1);
         

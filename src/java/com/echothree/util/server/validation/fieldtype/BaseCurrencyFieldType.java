@@ -22,6 +22,9 @@ import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.message.Message;
 import com.echothree.util.common.message.Messages;
 import com.echothree.util.server.validation.Validator;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 public abstract class BaseCurrencyFieldType
         extends BaseFieldType {
@@ -37,6 +40,12 @@ public abstract class BaseCurrencyFieldType
     public BaseCurrencyFieldType(Validator validator, BaseForm baseForm, Messages validationMessages, String fieldValue, String[] splitFieldName,
             FieldDefinition fieldDefinition) {
         super(validator, baseForm, validationMessages, fieldValue, splitFieldName, fieldDefinition);
+    }
+
+    public static List<String> getFieldDependencies(String[] splitFieldName) {
+        var parameters = getSplitFieldNameParameters(splitFieldName);
+
+        return Stream.of(parameters.get(CURRENCY_ISO_NAME), parameters.get(VENDOR_NAME)).filter(Objects::nonNull).toList();
     }
     
     public Currency getCurrency() {
