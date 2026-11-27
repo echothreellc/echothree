@@ -18,6 +18,15 @@ package com.echothree.util.common.validation;
 
 import java.io.Serializable;
 
+/**
+ * Defines validation rules for a submitted form field.
+ *
+ * <p>The field name may be followed by options in the form {@code FieldName:OptionName,OptionValue}.
+ * Use a colon before each option and a comma between its name and value. The field type determines
+ * which options it accepts and whether a value names another form field or supplies a literal setting.
+ * For example, {@code UnitPrice:CurrencyIsoName,CurrencyIsoName} tells the amount validator to read
+ * the currency ISO code from the submitted {@code CurrencyIsoName} field.
+ */
 public class FieldDefinition
         implements Serializable {
     
@@ -27,7 +36,14 @@ public class FieldDefinition
     private Long minimumValue = null;
     private Long maximumValue = null;
     
-    /** Creates a new instance of FieldDefinition
+    /**
+     * Creates a validation rule for a form field.
+     *
+     * @param fieldName the submitted field name, optionally followed by validation options
+     * @param fieldType the type of validation to perform
+     * @param isRequired whether the field requires a value
+     * @param minimumValue the lower bound for a value or its length, or {@code null} to leave the bound unspecified
+     * @param maximumValue the upper bound for a value or its length, or {@code null} to leave the bound unspecified
      */
     public FieldDefinition(String fieldName, FieldType fieldType, Boolean isRequired, Long minimumValue, Long maximumValue) {
         this.fieldName = fieldName;
@@ -51,11 +67,10 @@ public class FieldDefinition
     public FieldDefinition() {
     }
     
-    /** fieldName is a colon separated list of values. The first value should be the name
-     * of the field in the submitted form. Following that, there may be zero or more values
-     * that should be in the format "name,field" - where name is the name of the parameter, and
-     * field is the form field that the parameter's value may be found in. For example:
-     * "unitPrice:currencyIsoName,currencyIsoName"
+    /**
+     * Sets the submitted field name and its optional validation options.
+     *
+     * @param fieldName the field name and options in the format documented by {@link FieldDefinition}
      */
     public void setFieldName(String fieldName) {
         this.fieldName = fieldName;

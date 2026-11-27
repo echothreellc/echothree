@@ -16,14 +16,29 @@
 
 package com.echothree.util.server.validation;
 
+import com.echothree.control.user.item.common.form.ItemFormFactory;
+import com.echothree.control.user.item.server.command.CreateItemUnitPriceLimitCommand;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.control.user.party.server.command.CreateVendorCommand;
 import com.echothree.control.user.term.common.edit.TermEditFactory;
+import com.echothree.control.user.term.common.form.TermFormFactory;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.accounting.common.pk.CurrencyPK;
 import com.echothree.model.data.accounting.common.pk.SymbolPositionPK;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.accounting.server.value.CurrencyValue;
+import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyTypePK;
+import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.party.server.entity.PartyDetail;
+import com.echothree.model.data.party.server.entity.PartyType;
+import com.echothree.model.data.party.server.value.PartyDetailValue;
+import com.echothree.model.data.party.server.value.PartyTypeValue;
+import com.echothree.model.data.party.server.value.PartyValue;
+import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.message.Messages;
 import com.echothree.util.common.string.DecimalUtils;
@@ -191,7 +206,45 @@ public class DecimalFieldTypeTest {
     }
 
     @Test
-    public void vendorPurchaseOrderLimitsUseTheDefaultCurrencyWhenPreferenceIsOmitted() {
+    public void itemUnitPriceLimitsUseTheSubmittedCurrency() {
+        var command = new CreateItemUnitPriceLimitCommand() {
+            List<FieldDefinition> amountFields() {
+                return getFormFieldDefinitions().stream()
+                        .filter(fieldDefinition -> fieldDefinition.getFieldType() == FieldType.UNSIGNED_PRICE_UNIT).toList();
+            }
+        };
+        var validator = new Validator(command) {
+            @Override
+            public AccountingControl getAccountingControl() {
+                return new AccountingControl() {
+                    @Override
+                    public Currency getDefaultCurrency() {
+                        return currency(".", 2);
+                    }
+
+                    @Override
+                    public Currency getCurrencyByIsoName(String currencyIsoName) {
+                        assertEquals("EUR", currencyIsoName);
+                        return new Currency(new CurrencyValue(new CurrencyPK(2L), "EUR", "€", new SymbolPositionPK(1L),
+                                false, false, false, false, ".", 3, ",", 2, 3, 2, 4, 2, "-", false, 0),
+                                EntityPermission.READ_ONLY);
+                    }
+                };
+            }
+        };
+        var form = ItemFormFactory.getCreateItemUnitPriceLimitForm();
+        form.setCurrencyIsoName("EUR");
+        form.setMinimumUnitPrice("1,234");
+        form.setMaximumUnitPrice("2,345");
+
+        assertFalse(validator.validate(form, command.amountFields()).getHasErrors());
+        assertEquals("1234", form.getMinimumUnitPrice());
+        assertEquals("2345", form.getMaximumUnitPrice());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = { false, true })
+    public void createVendorNormalizesTheCurrencyPreferenceRegardlessOfFieldOrder(boolean reverseFieldOrder) {
         var command = new CreateVendorCommand() {
             @Override
             public List<FieldDefinition> getFormFieldDefinitions() {
@@ -211,25 +264,218 @@ public class DecimalFieldTypeTest {
                 };
             }
         };
-        for(var fieldName : List.of("MinimumPurchaseOrderAmount", "MaximumPurchaseOrderAmount")) {
-            var definition = command.getFormFieldDefinitions().stream()
-                    .filter(fieldDefinition -> fieldDefinition.getFieldName().startsWith(fieldName + ":"))
-                    .findFirst().orElseThrow();
-            var form = PartyFormFactory.getCreateVendorForm();
-            form.set(fieldName, "100.00");
-            assertNull(validator.validateField(form, definition));
-            assertEquals("100000", form.get(fieldName));
-            assertNull(form.getPreferredCurrencyIsoName());
-
-            form.setPreferredCurrencyIsoName("EUR");
-            form.set(fieldName, "100,25");
-            assertNull(validator.validateField(form, definition));
-            assertEquals("100250", form.get(fieldName));
-
-            form.setPreferredCurrencyIsoName("BAD");
-            form.set(fieldName, "100.00");
-            assertTrue(validator.validateField(form, definition).containsKey(fieldName, Validator.ERROR_UNKNOWN_CURRENCY_ISO_NAME));
+        var fieldDefinitions = command.getFormFieldDefinitions();
+        if(reverseFieldOrder) {
+            fieldDefinitions = fieldDefinitions.reversed();
         }
+
+        var form = PartyFormFactory.getCreateVendorForm();
+        form.setUseItemPurchasingCategories("false");
+        form.setAllowSolicitation("false");
+        form.setPreferredCurrencyIsoName("  ");
+        form.setMinimumPurchaseOrderAmount("100.00");
+        form.setMaximumPurchaseOrderAmount("200.50");
+        assertFalse(validator.validate(form, fieldDefinitions).getHasErrors());
+        assertNull(form.getPreferredCurrencyIsoName());
+        assertEquals("100000", form.getMinimumPurchaseOrderAmount());
+        assertEquals("200500", form.getMaximumPurchaseOrderAmount());
+
+        form.setPreferredCurrencyIsoName(" EUR ");
+        form.setMinimumPurchaseOrderAmount("100,25");
+        form.setMaximumPurchaseOrderAmount("200,50");
+        assertFalse(validator.validate(form, fieldDefinitions).getHasErrors());
+        assertEquals("EUR", form.getPreferredCurrencyIsoName());
+        assertEquals("100250", form.getMinimumPurchaseOrderAmount());
+        assertEquals("200500", form.getMaximumPurchaseOrderAmount());
+
+        form.setPreferredCurrencyIsoName("BAD");
+        form.setMinimumPurchaseOrderAmount("100.00");
+        form.setMaximumPurchaseOrderAmount("200.50");
+        var messages = validator.validate(form, fieldDefinitions).getValidationMessages();
+        assertTrue(messages.containsKey("MinimumPurchaseOrderAmount", Validator.ERROR_UNKNOWN_CURRENCY_ISO_NAME));
+        assertTrue(messages.containsKey("MaximumPurchaseOrderAmount", Validator.ERROR_UNKNOWN_CURRENCY_ISO_NAME));
+
+        form.setPreferredCurrencyIsoName("BAD CURRENCY");
+        messages = validator.validate(form, fieldDefinitions).getValidationMessages();
+        assertTrue(messages.containsKey("PreferredCurrencyIsoName", Validator.ERROR_INVALID_FORMAT));
+        assertEquals(1, messages.size());
+        assertEquals("100.00", form.getMinimumPurchaseOrderAmount());
+        assertEquals("200.50", form.getMaximumPurchaseOrderAmount());
+    }
+
+    @Test
+    public void vendorLookupUsesTheNormalizedNameWhenDeclaredAfterTheCost() {
+        var form = PartyFormFactory.getCreateVendorForm();
+        form.setVendorName(" VENDOR ");
+        form.setMinimumPurchaseOrderAmount("1.00");
+        var fields = List.of(
+                new FieldDefinition("MinimumPurchaseOrderAmount:VendorName,VendorName", FieldType.UNSIGNED_COST_LINE, false, null, null),
+                new FieldDefinition("VendorName", FieldType.ENTITY_NAME, true, null, null)
+        );
+        var validator = new Validator(null) {
+            @Override
+            public VendorControl getVendorControl() {
+                return new VendorControl() {
+                    @Override
+                    public Vendor getVendorByName(String vendorName) {
+                        assertEquals("VENDOR", vendorName);
+                        return null;
+                    }
+                };
+            }
+        };
+
+        var result = validator.validate(form, fields);
+
+        assertTrue(result.getValidationMessages().containsKey("MinimumPurchaseOrderAmount", Validator.ERROR_UNKNOWN_VENDOR_NAME));
+        assertEquals("VENDOR", form.getVendorName());
+    }
+
+    @Test
+    public void suppliedCurrencyTakesPrecedenceOverThePartyLookup() {
+        var form = TermFormFactory.getCreatePartyCreditLimitForm();
+        form.setPartyName("INVALID PARTY NAME");
+        form.setCurrencyIsoName(" USD ");
+        form.setCreditLimit("12.34");
+        var validator = new Validator(null) {
+            @Override
+            public AccountingControl getAccountingControl() {
+                return new AccountingControl() {
+                    @Override
+                    public Currency getCurrencyByIsoName(String currencyIsoName) {
+                        assertEquals("USD", currencyIsoName);
+                        return currency(".", 2);
+                    }
+                };
+            }
+
+            @Override
+            public PartyControl getPartyControl() {
+                throw new AssertionError("Unexpected party lookup");
+            }
+        };
+
+        var result = validator.validate(form, partyCurrencyFields());
+
+        assertTrue(result.getValidationMessages().containsKey("PartyName", Validator.ERROR_INVALID_FORMAT));
+        assertEquals("1234", form.getCreditLimit());
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = PartyTypes.class, names = { "CUSTOMER", "COMPANY", "DIVISION", "DEPARTMENT", "EMPLOYEE" })
+    @SuppressWarnings("UnnecessaryAssignment") // Supply the CDI dependency without a container.
+    public void partyLookupUsesThePartysPreferenceOrTheSystemDefault(PartyTypes partyType) {
+        var preferredCurrency = currency(",", 3);
+        var validator = new Validator(null) {
+            @Override
+            public PartyControl getPartyControl() {
+                return new PartyControl() {
+                    {
+                        accountingControl = new AccountingControl() {
+                            @Override
+                            public Currency getDefaultCurrency() {
+                                return currency(".", 2);
+                            }
+                        };
+                    }
+
+                    @Override
+                    public Party getPartyByName(String partyName) {
+                        return switch(partyName) {
+                            case "WITH_PREFERENCE" -> party(partyType, partyName, preferredCurrency);
+                            case "WITHOUT_PREFERENCE" -> party(partyType, partyName, null);
+                            default -> null;
+                        };
+                    }
+                };
+            }
+        };
+        var fields = partyCurrencyFields();
+        var form = TermFormFactory.getCreatePartyCreditLimitForm();
+        form.setPartyName(" WITH_PREFERENCE ");
+        form.setCurrencyIsoName(" ");
+        form.setCreditLimit("12,345");
+        assertFalse(validator.validate(form, fields).getHasErrors());
+        assertEquals("12345", form.getCreditLimit());
+
+        form.setPartyName("WITHOUT_PREFERENCE");
+        form.setCreditLimit("12.34");
+        assertFalse(validator.validate(form, fields).getHasErrors());
+        assertEquals("1234", form.getCreditLimit());
+
+        form.setPartyName("UNKNOWN");
+        form.setCreditLimit("12.34");
+        var messages = validator.validate(form, fields).getValidationMessages();
+        assertTrue(messages.containsKey(FIELD, Validator.ERROR_UNKNOWN_PARTY_NAME));
+        assertArrayEquals(new Object[]{ "UNKNOWN" }, messages.get(FIELD).next().getValues());
+        assertEquals("12.34", form.getCreditLimit());
+    }
+
+    private Party party(PartyTypes partyType, String partyName, Currency preferredCurrency) {
+        var partyPK = new PartyPK(1L);
+        var partyTypeEntity = new PartyType(new PartyTypeValue(new PartyTypePK(1L), partyType.name(), null, null,
+                false, false, false, 0), EntityPermission.READ_ONLY);
+
+        return new Party(new PartyValue(partyPK, null, null), EntityPermission.READ_ONLY) {
+            @Override
+            public PartyDetail getLastDetail() {
+                var preferredCurrencyPK = preferredCurrency == null ? null : preferredCurrency.getPrimaryKey();
+                var partyDetailValue = new PartyDetailValue(partyPK, partyName, partyTypeEntity.getPrimaryKey(), null,
+                        preferredCurrencyPK, null, null, 0L, Long.MAX_VALUE);
+
+                return new PartyDetail(partyDetailValue, EntityPermission.READ_ONLY) {
+                    @Override
+                    public PartyType getPartyType() {
+                        return partyTypeEntity;
+                    }
+
+                    @Override
+                    public Currency getPreferredCurrency() {
+                        return preferredCurrency;
+                    }
+                };
+            }
+        };
+    }
+
+    private List<FieldDefinition> partyCurrencyFields() {
+        return List.of(
+                new FieldDefinition("CreditLimit:CurrencyIsoName,CurrencyIsoName:DefaultCurrencyIfOmitted,true:PartyName,PartyName",
+                        FieldType.UNSIGNED_PRICE_LINE, false, null, null),
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, false, null, null)
+        );
+    }
+
+    @Test
+    public void circularFieldDependenciesReportAValidationError() {
+        var form = TermEditFactory.getCustomerTypeCreditLimitEdit();
+        form.setCreditLimit("1.00");
+        form.setPotentialCreditLimit("2.00");
+        var fields = List.of(
+                new FieldDefinition("CreditLimit:CurrencyIsoName,PotentialCreditLimit", FieldType.UNSIGNED_PRICE_LINE, false, null, null),
+                new FieldDefinition("PotentialCreditLimit:CurrencyIsoName,CreditLimit", FieldType.UNSIGNED_PRICE_LINE, false, null, null)
+        );
+
+        var result = new Validator(null).validate(form, fields);
+
+        assertTrue(result.getValidationMessages().containsKey("CreditLimit", Validator.ERROR_INTERNAL_ERROR));
+        assertEquals(1, result.getValidationMessages().size());
+        assertEquals("1.00", form.getCreditLimit());
+        assertEquals("2.00", form.getPotentialCreditLimit());
+    }
+
+    @Test
+    public void multipleDefinitionsForTheSameFieldStillApply() {
+        var form = PartyFormFactory.getCreateVendorForm();
+        var fields = List.of(
+                new FieldDefinition("VendorName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("VendorName", FieldType.ENTITY_NAME, false, null, null)
+        );
+
+        var result = new Validator(null).validate(form, fields);
+
+        assertTrue(result.getValidationMessages().containsKey("VendorName", Validator.ERROR_REQUIRED_FIELD));
     }
 
     @Test
