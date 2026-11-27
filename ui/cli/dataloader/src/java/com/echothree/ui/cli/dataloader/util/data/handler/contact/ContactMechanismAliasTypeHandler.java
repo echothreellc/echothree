@@ -21,24 +21,21 @@ import com.echothree.control.user.contact.common.ContactService;
 import com.echothree.control.user.contact.common.form.ContactFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ContactMechanismAliasTypeHandler
         extends BaseHandler {
+
     ContactService contactService;
     String contactMechanismAliasTypeName;
     
     /** Creates a new instance of ContactMechanismAliasTypeHandler */
-    public ContactMechanismAliasTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String contactMechanismAliasTypeName) {
+    public ContactMechanismAliasTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String contactMechanismAliasTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            contactService = ContactUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        contactService = lookupService(ContactService.class, ContactUtil::getHome);
         
         this.contactMechanismAliasTypeName = contactMechanismAliasTypeName;
     }

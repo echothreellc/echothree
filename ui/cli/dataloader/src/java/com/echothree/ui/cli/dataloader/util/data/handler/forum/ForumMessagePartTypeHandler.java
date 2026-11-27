@@ -21,24 +21,21 @@ import com.echothree.control.user.forum.common.ForumService;
 import com.echothree.control.user.forum.common.form.ForumFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ForumMessagePartTypeHandler
         extends BaseHandler {
+
     ForumService forumService;
     String forumMessagePartTypeName;
     
     /** Creates a new instance of ForumMessagePartTypeHandler */
-    public ForumMessagePartTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String forumMessagePartTypeName) {
+    public ForumMessagePartTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String forumMessagePartTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            forumService = ForumUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        forumService = lookupService(ForumService.class, ForumUtil::getHome);
         
         this.forumMessagePartTypeName = forumMessagePartTypeName;
     }

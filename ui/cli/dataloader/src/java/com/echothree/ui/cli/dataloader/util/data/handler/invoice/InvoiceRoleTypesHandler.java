@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class InvoiceRoleTypesHandler
         extends BaseHandler {
+
     InvoiceService invoiceService;
     
     /** Creates a new instance of InvoiceRoleTypesHandler */

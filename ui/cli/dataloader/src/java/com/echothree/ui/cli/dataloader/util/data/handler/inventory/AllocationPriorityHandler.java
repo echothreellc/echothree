@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class AllocationPriorityHandler
         extends BaseHandler {
+
     InventoryService inventoryService;
     String allocationPriorityName;
     

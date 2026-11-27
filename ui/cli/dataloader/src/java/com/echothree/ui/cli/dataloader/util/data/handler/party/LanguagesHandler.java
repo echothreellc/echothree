@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class LanguagesHandler
         extends BaseHandler {
+
     PartyService partyService;
     
     /** Creates a new instance of LanguagesHandler */

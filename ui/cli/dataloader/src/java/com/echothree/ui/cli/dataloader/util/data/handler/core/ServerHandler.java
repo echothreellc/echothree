@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class ServerHandler
         extends BaseHandler {
+
     CoreService coreService;
     String serverName;
     

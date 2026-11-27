@@ -21,24 +21,21 @@ import com.echothree.control.user.employee.common.EmployeeService;
 import com.echothree.control.user.employee.common.form.EmployeeFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class LeaveReasonHandler
         extends BaseHandler {
+
     EmployeeService employeeService;
     String leaveReasonName;
     
     /** Creates a new instance of LeaveReasonHandler */
-    public LeaveReasonHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String leaveReasonName) {
+    public LeaveReasonHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String leaveReasonName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            employeeService = EmployeeUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        employeeService = lookupService(EmployeeService.class, EmployeeUtil::getHome);
         
         this.leaveReasonName = leaveReasonName;
     }

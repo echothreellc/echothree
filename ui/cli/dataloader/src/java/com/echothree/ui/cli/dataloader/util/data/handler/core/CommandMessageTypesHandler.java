@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class CommandMessageTypesHandler
         extends BaseHandler {
+
     CoreService coreService;
     
     /** Creates a new instance of CommandMessageTypesHandler */

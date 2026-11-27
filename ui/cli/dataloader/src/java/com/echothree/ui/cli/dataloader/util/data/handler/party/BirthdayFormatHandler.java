@@ -21,24 +21,21 @@ import com.echothree.control.user.party.common.PartyService;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class BirthdayFormatHandler
         extends BaseHandler {
+
     PartyService partyService;
     String birthdayFormatName;
     
     /** Creates a new instance of BirthdayFormatHandler */
-    public BirthdayFormatHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String birthdayFormatName) {
+    public BirthdayFormatHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String birthdayFormatName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            partyService = PartyUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        partyService = lookupService(PartyService.class, PartyUtil::getHome);
         
         this.birthdayFormatName = birthdayFormatName;
     }

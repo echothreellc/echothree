@@ -21,23 +21,20 @@ import com.echothree.control.user.club.common.ClubService;
 import com.echothree.control.user.club.common.form.ClubFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ClubsHandler
         extends BaseHandler {
+
     ClubService clubService;
     
     /** Creates a new instance of ClubsHandler */
-    public ClubsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public ClubsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            clubService = ClubUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        clubService = lookupService(ClubService.class, ClubUtil::getHome);
     }
     
     @Override

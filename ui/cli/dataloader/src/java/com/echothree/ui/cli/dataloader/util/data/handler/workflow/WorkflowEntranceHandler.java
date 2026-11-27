@@ -30,6 +30,7 @@ import org.xml.sax.SAXException;
 
 public class WorkflowEntranceHandler
         extends BaseHandler {
+
     WorkflowService workflowService;
     String workflowName;
     String workflowEntranceName;

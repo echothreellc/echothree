@@ -21,28 +21,25 @@ import com.echothree.control.user.core.common.CoreService;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class EntityAttributeGroupHandler
         extends BaseHandler {
+
     CoreService coreService;
     String componentVendorName;
     String entityTypeName;
     String entityAttributeGroupName;
     
     /** Creates a new instance of EntityAttributeGroupHandler */
-    public EntityAttributeGroupHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String componentVendorName, String entityTypeName, String entityAttributeGroupName) {
+    public EntityAttributeGroupHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String componentVendorName, String entityTypeName, String entityAttributeGroupName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         this.componentVendorName = componentVendorName;
         this.entityTypeName = entityTypeName;
         
-        try {
-            coreService = CoreUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        coreService = lookupService(CoreService.class, CoreUtil::getHome);
         
         this.entityAttributeGroupName = entityAttributeGroupName;
     }

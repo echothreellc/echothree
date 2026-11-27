@@ -21,24 +21,21 @@ import com.echothree.control.user.user.common.UserService;
 import com.echothree.control.user.user.common.form.UserFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class RecoveryQuestionHandler
         extends BaseHandler {
+
     UserService userService;
     String recoveryQuestionName;
     
     /** Creates a new instance of RecoveryQuestionHandler */
-    public RecoveryQuestionHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String recoveryQuestionName) {
+    public RecoveryQuestionHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String recoveryQuestionName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            userService = UserUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        userService = lookupService(UserService.class, UserUtil::getHome);
         
         this.recoveryQuestionName = recoveryQuestionName;
     }

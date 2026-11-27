@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class GlAccountTypeHandler
         extends BaseHandler {
+
     AccountingService accountingService;
     String glAccountTypeName;
     

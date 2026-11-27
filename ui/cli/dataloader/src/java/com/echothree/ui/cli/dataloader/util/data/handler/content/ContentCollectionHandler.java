@@ -21,24 +21,21 @@ import com.echothree.control.user.content.common.ContentService;
 import com.echothree.control.user.content.common.form.ContentFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ContentCollectionHandler
         extends BaseHandler {
+
     ContentService contentService;
     String contentCollectionName;
     
     /** Creates a new instance of ContentCollectionHandler */
-    public ContentCollectionHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String contentCollectionName) {
+    public ContentCollectionHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String contentCollectionName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            contentService = ContentUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        contentService = lookupService(ContentService.class, ContentUtil::getHome);
         
         this.contentCollectionName = contentCollectionName;
     }

@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class DocumentTypeUsageTypesHandler
         extends BaseHandler {
+
     DocumentService documentService;
     
     /** Creates a new instance of DocumentTypeUsageTypesHandler */

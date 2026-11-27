@@ -25,12 +25,12 @@ import com.echothree.ui.cli.dataloader.util.data.handler.comment.CommentsHandler
 import com.echothree.ui.cli.dataloader.util.data.handler.core.EntityAttributesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.payment.PartyPaymentMethodsHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.tag.EntityTagsHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ContactMechanismHandler
         extends BaseHandler {
+
     ContactService contactService;
     String partyName;
     String contactMechanismName;
@@ -38,14 +38,11 @@ public class ContactMechanismHandler
     
     /** Creates a new instance of ContactMechanismHandler */
     public ContactMechanismHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String partyName,
-            String contactMechanismName, String entityRef) {
+            String contactMechanismName, String entityRef)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            contactService = ContactUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        contactService = lookupService(ContactService.class, ContactUtil::getHome);
         
         this.partyName = partyName;
         this.contactMechanismName = contactMechanismName;

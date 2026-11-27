@@ -21,24 +21,21 @@ import com.echothree.control.user.tag.common.TagService;
 import com.echothree.control.user.tag.common.form.TagFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class TagScopeHandler
         extends BaseHandler {
+
     TagService tagService;
     String tagScopeName;
     
     /** Creates a new instance of TagScopeHandler */
-    public TagScopeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String tagScopeName) {
+    public TagScopeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String tagScopeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            tagService = TagUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        tagService = lookupService(TagService.class, TagUtil::getHome);
         
         this.tagScopeName = tagScopeName;
     }

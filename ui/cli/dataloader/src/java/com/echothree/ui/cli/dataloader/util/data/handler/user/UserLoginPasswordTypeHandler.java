@@ -21,24 +21,21 @@ import com.echothree.control.user.user.common.UserService;
 import com.echothree.control.user.user.common.form.UserFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class UserLoginPasswordTypeHandler
         extends BaseHandler {
+
     UserService userService;
     String userLoginPasswordTypeName;
     
     /** Creates a new instance of UserLoginPasswordTypeHandler */
-    public UserLoginPasswordTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String userLoginPasswordTypeName) {
+    public UserLoginPasswordTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String userLoginPasswordTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            userService = UserUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        userService = lookupService(UserService.class, UserUtil::getHome);
         
         this.userLoginPasswordTypeName = userLoginPasswordTypeName;
     }

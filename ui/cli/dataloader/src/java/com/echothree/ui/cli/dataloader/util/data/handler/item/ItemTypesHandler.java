@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class ItemTypesHandler
         extends BaseHandler {
+
     ItemService itemService;
     
     /** Creates a new instance of ItemTypesHandler */

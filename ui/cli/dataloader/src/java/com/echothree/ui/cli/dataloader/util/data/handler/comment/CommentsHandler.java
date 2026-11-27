@@ -25,12 +25,12 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Map;
 import java.util.Set;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class CommentsHandler
         extends BaseHandler {
+
     CommentService commentService;
     String entityRef;
     
@@ -40,14 +40,11 @@ public class CommentsHandler
     Set<String> commentUsages = new HashSet<>();
     
     /** Creates a new instance of CommentsHandler */
-    public CommentsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String entityRef) {
+    public CommentsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String entityRef)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            commentService = CommentUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        commentService = lookupService(CommentService.class, CommentUtil::getHome);
         
         this.entityRef = entityRef;
     }

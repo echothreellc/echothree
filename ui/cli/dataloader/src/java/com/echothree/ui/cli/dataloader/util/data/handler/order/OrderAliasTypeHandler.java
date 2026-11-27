@@ -21,26 +21,23 @@ import com.echothree.control.user.order.common.OrderService;
 import com.echothree.control.user.order.common.form.OrderFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class OrderAliasTypeHandler
         extends BaseHandler {
+
     OrderService orderService;
     String orderTypeName;
     String orderAliasTypeName;
     
     /** Creates a new instance of OrderAliasTypeHandler */
     public OrderAliasTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String orderTypeName,
-            String orderAliasTypeName) {
+            String orderAliasTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            orderService = OrderUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        orderService = lookupService(OrderService.class, OrderUtil::getHome);
         
         this.orderTypeName = orderTypeName;
         this.orderAliasTypeName = orderAliasTypeName;

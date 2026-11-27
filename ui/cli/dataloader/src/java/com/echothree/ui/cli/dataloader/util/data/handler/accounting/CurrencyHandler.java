@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class CurrencyHandler
         extends BaseHandler {
+
     AccountingService accountingService;
     String currencyIsoName;
     

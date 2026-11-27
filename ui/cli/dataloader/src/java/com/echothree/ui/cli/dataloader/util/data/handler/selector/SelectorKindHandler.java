@@ -30,6 +30,7 @@ import org.xml.sax.SAXException;
 
 public class SelectorKindHandler
         extends BaseHandler {
+
     SelectorService selectorService;
     WorkflowService workflowService;
     String selectorKindName;

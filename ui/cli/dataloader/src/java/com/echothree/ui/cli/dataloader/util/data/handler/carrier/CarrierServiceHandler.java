@@ -21,26 +21,23 @@ import com.echothree.control.user.carrier.common.CarrierService;
 import com.echothree.control.user.carrier.common.form.CarrierFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class CarrierServiceHandler
         extends BaseHandler {
+
     CarrierService carrierService;
     String carrierName;
     String carrierServiceName;
     
     /** Creates a new instance of CarrierServiceHandler */
     public CarrierServiceHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String carrierName,
-            String carrierServiceName) {
+            String carrierServiceName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            carrierService = CarrierUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        carrierService = lookupService(CarrierService.class, CarrierUtil::getHome);
         
         this.carrierName = carrierName;
         this.carrierServiceName = carrierServiceName;

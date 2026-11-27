@@ -21,24 +21,21 @@ import com.echothree.control.user.employee.common.EmployeeService;
 import com.echothree.control.user.employee.common.form.EmployeeFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ResponsibilityTypeHandler
         extends BaseHandler {
+
     EmployeeService employeeService;
     String responsibilityTypeName;
     
     /** Creates a new instance of ResponsibilityTypeHandler */
-    public ResponsibilityTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String responsibilityTypeName) {
+    public ResponsibilityTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String responsibilityTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            employeeService = EmployeeUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        employeeService = lookupService(EmployeeService.class, EmployeeUtil::getHome);
         
         this.responsibilityTypeName = responsibilityTypeName;
     }

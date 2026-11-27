@@ -47,6 +47,20 @@ public abstract class BaseHandler {
         this.initialDataParser = initialDataParser;
         this.parentHandler = parentHandler;
     }
+
+    @FunctionalInterface
+    protected interface ServiceLookup<S> {
+        S get() throws NamingException;
+    }
+
+    protected static <S> S lookupService(Class<S> serviceType, ServiceLookup<S> serviceLookup)
+            throws SAXException {
+        try {
+            return serviceLookup.get();
+        } catch(NamingException exception) {
+            throw new SAXException("Unable to look up " + serviceType.getSimpleName(), exception);
+        }
+    }
     
     public abstract void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException, NamingException;

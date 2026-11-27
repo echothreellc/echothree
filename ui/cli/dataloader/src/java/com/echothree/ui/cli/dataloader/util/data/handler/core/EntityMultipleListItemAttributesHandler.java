@@ -21,25 +21,22 @@ import com.echothree.control.user.core.common.CoreService;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class EntityMultipleListItemAttributesHandler
         extends BaseHandler {
+
     CoreService coreService;
     String entityRef;
     String entityAttributeName;
     
     /** Creates a new instance of EntityMultipleListItemAttributesHandler */
-    public EntityMultipleListItemAttributesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String entityRef, String entityAttributeName) {
+    public EntityMultipleListItemAttributesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String entityRef, String entityAttributeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            coreService = CoreUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        coreService = lookupService(CoreService.class, CoreUtil::getHome);
         
         this.entityRef = entityRef;
         this.entityAttributeName = entityAttributeName;

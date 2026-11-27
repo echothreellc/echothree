@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class TransactionEntityRoleTypeHandler
         extends BaseHandler {
+
     AccountingService accountingService;
     String transactionTypeName;
     String transactionEntityRoleTypeName;

@@ -21,25 +21,22 @@ import com.echothree.control.user.returnpolicy.common.ReturnPolicyService;
 import com.echothree.control.user.returnpolicy.common.form.ReturnPolicyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ReturnTypeHandler
         extends BaseHandler {
+
     ReturnPolicyService returnPolicyService;
     String returnKindName;
     String returnTypeName;
     
     /** Creates a new instance of ReturnTypeHandler */
-    public ReturnTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String returnKindName, String returnTypeName) {
+    public ReturnTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String returnKindName, String returnTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            returnPolicyService = ReturnPolicyUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        returnPolicyService = lookupService(ReturnPolicyService.class, ReturnPolicyUtil::getHome);
         
         this.returnKindName = returnKindName;
         this.returnTypeName = returnTypeName;

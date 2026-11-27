@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class LicenseTypesHandler
         extends BaseHandler {
+
     LicenseService licenseService;
     
     /** Creates a new instance of LicenseTypesHandler */

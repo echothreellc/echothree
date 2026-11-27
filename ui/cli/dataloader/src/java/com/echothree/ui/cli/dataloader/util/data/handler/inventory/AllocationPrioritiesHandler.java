@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class AllocationPrioritiesHandler
         extends BaseHandler {
+
     InventoryService inventoryService;
     
     /** Creates a new instance of AllocationPrioritysHandler */

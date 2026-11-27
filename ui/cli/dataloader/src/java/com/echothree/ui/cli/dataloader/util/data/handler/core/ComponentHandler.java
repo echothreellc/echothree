@@ -21,25 +21,22 @@ import com.echothree.control.user.core.common.CoreService;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ComponentHandler
         extends BaseHandler {
+
     CoreService coreService;
     String componentVendorName;
     String componentName;
     
     /** Creates a new instance of ComponentHandler */
-    public ComponentHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String componentVendorName, String componentName) {
+    public ComponentHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String componentVendorName, String componentName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            coreService = CoreUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        coreService = lookupService(CoreService.class, CoreUtil::getHome);
         
         this.componentVendorName = componentVendorName;
         this.componentName = componentName;

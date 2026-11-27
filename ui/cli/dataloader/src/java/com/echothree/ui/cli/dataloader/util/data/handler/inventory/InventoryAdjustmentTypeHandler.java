@@ -21,7 +21,6 @@ import com.echothree.control.user.inventory.common.InventoryService;
 import com.echothree.control.user.inventory.common.form.InventoryFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -32,14 +31,11 @@ public class InventoryAdjustmentTypeHandler
     String inventoryAdjustmentTypeName;
     
     /** Creates a new instance of InventoryAdjustmentTypeHandler */
-    public InventoryAdjustmentTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String inventoryAdjustmentTypeName) {
+    public InventoryAdjustmentTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String inventoryAdjustmentTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            inventoryService = InventoryUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        inventoryService = lookupService(InventoryService.class, InventoryUtil::getHome);
         
         this.inventoryAdjustmentTypeName = inventoryAdjustmentTypeName;
     }

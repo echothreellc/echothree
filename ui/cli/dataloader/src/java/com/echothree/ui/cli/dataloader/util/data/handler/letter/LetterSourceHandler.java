@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class LetterSourceHandler
         extends BaseHandler {
+
     LetterService letterService;
     String letterSourceName;
     

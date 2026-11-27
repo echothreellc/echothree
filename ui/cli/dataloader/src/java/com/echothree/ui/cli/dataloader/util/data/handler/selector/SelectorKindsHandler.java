@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class SelectorKindsHandler
         extends BaseHandler {
+
     SelectorService selectorService;
     
     /** Creates a new instance of SelectorKindsHandler */

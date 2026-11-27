@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class InvoiceLineTypeHandler
         extends BaseHandler {
+
     InvoiceService invoiceService;
     String invoiceTypeName;
     String invoiceLineTypeName;

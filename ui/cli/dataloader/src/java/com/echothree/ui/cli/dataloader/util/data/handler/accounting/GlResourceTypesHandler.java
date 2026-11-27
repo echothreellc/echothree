@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class GlResourceTypesHandler
         extends BaseHandler {
+
     AccountingService accountingService;
     
     /** Creates a new instance of GlResourceTypesHandler */

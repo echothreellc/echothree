@@ -21,26 +21,23 @@ import com.echothree.control.user.rating.common.RatingService;
 import com.echothree.control.user.rating.common.form.RatingFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class RatingTypeHandler
         extends BaseHandler {
+
     RatingService ratingService;
     String componentVendorName;
     String entityTypeName;
     String ratingTypeName;
     
     /** Creates a new instance of RatingTypeHandler */
-    public RatingTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String componentVendorName, String entityTypeName, String ratingTypeName) {
+    public RatingTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String componentVendorName, String entityTypeName, String ratingTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            ratingService = RatingUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        ratingService = lookupService(RatingService.class, RatingUtil::getHome);
         
         this.componentVendorName = componentVendorName;
         this.entityTypeName = entityTypeName;

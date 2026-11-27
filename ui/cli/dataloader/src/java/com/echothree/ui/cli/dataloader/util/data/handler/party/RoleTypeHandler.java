@@ -21,24 +21,21 @@ import com.echothree.control.user.party.common.PartyService;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class RoleTypeHandler
         extends BaseHandler {
+
     PartyService partyService;
     String roleTypeName;
     
     /** Creates a new instance of RoleTypeHandler */
-    public RoleTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String roleTypeName) {
+    public RoleTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String roleTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            partyService = PartyUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        partyService = lookupService(PartyService.class, PartyUtil::getHome);
         
         this.roleTypeName = roleTypeName;
     }

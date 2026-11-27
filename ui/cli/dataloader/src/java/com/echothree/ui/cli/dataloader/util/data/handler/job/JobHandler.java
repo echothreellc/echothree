@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class JobHandler
         extends BaseHandler {
+
     JobService jobService;
     String jobName;
     

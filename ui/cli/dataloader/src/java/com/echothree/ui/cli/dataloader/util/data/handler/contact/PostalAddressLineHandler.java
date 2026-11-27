@@ -21,26 +21,23 @@ import com.echothree.control.user.contact.common.ContactService;
 import com.echothree.control.user.contact.common.form.ContactFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class PostalAddressLineHandler
         extends BaseHandler {
+
     ContactService contactService;
     String postalAddressFormatName;
     String postalAddressLineSortOrder;
     
     /** Creates a new instance of PostalAddressLineHandler */
     public PostalAddressLineHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String postalAddressFormatName,
-            String postalAddressLineSortOrder) {
+            String postalAddressLineSortOrder)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            contactService = ContactUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        contactService = lookupService(ContactService.class, ContactUtil::getHome);
         
         this.postalAddressFormatName = postalAddressFormatName;
         this.postalAddressLineSortOrder = postalAddressLineSortOrder;

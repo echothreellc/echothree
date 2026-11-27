@@ -21,26 +21,23 @@ import com.echothree.control.user.workeffort.common.WorkEffortService;
 import com.echothree.control.user.workeffort.common.form.WorkEffortFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class WorkEffortScopeHandler
         extends BaseHandler {
+
     WorkEffortService workEffortService;
     String workEffortTypeName;
     String workEffortScopeName;
     
     /** Creates a new instance of WorkEffortScopeHandler */
     public WorkEffortScopeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String workEffortTypeName,
-            String workEffortScopeName) {
+            String workEffortScopeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            workEffortService = WorkEffortUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        workEffortService = lookupService(WorkEffortService.class, WorkEffortUtil::getHome);
         this.workEffortTypeName = workEffortTypeName;
         this.workEffortScopeName = workEffortScopeName;
     }

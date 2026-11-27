@@ -21,24 +21,21 @@ import com.echothree.control.user.party.common.PartyService;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class TimeZoneHandler
         extends BaseHandler {
+
     PartyService partyService;
     String javaTimeZoneName;
     
     /** Creates a new instance of TimeZoneHandler */
-    public TimeZoneHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String javaTimeZoneName) {
+    public TimeZoneHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String javaTimeZoneName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            partyService = PartyUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        partyService = lookupService(PartyService.class, PartyUtil::getHome);
         
         this.javaTimeZoneName = javaTimeZoneName;
     }

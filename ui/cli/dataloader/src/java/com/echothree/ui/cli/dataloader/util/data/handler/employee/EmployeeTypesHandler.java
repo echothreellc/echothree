@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class EmployeeTypesHandler
         extends BaseHandler {
+
     EmployeeService employeeService;
     
     /** Creates a new instance of EmployeeTypesHandler */

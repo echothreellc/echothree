@@ -21,24 +21,21 @@ import com.echothree.control.user.geo.common.GeoService;
 import com.echothree.control.user.geo.common.form.GeoFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class GeoCodeTypeHandler
         extends BaseHandler {
+
     GeoService geoService;
     String geoCodeTypeName;
     
     /** Creates a new instance of GeoCodeTypeHandler */
-    public GeoCodeTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String geoCodeTypeName) {
+    public GeoCodeTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String geoCodeTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            geoService = GeoUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        geoService = lookupService(GeoService.class, GeoUtil::getHome);
         this.geoCodeTypeName = geoCodeTypeName;
     }
     

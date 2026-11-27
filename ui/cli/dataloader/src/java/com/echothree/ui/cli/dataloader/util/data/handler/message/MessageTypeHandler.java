@@ -23,12 +23,12 @@ import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import java.util.Map;
 import java.util.Set;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class MessageTypeHandler
         extends BaseHandler {
+
     MessageService messageService;
     String componentVendorName;
     String entityTypeName;
@@ -40,14 +40,11 @@ public class MessageTypeHandler
     
     /** Creates a new instance of MessageTypeHandler */
     public MessageTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String componentVendorName,
-            String entityTypeName, String messageTypeName) {
+            String entityTypeName, String messageTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            messageService = MessageUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        messageService = lookupService(MessageService.class, MessageUtil::getHome);
         
         this.componentVendorName = componentVendorName;
         this.entityTypeName = entityTypeName;

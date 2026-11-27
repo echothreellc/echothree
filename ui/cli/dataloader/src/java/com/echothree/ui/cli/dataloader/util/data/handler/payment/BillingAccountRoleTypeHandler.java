@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class BillingAccountRoleTypeHandler
         extends BaseHandler {
+
     PaymentService paymentService;
     String billingAccountRoleTypeName;
     

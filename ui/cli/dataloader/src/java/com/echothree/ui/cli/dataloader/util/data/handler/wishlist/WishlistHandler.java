@@ -21,12 +21,12 @@ import com.echothree.control.user.wishlist.common.WishlistService;
 import com.echothree.control.user.wishlist.common.form.WishlistFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class WishlistHandler
         extends BaseHandler {
+
     WishlistService wishlistService;
     String partyName;
     String wishlistTypeName;
@@ -35,14 +35,11 @@ public class WishlistHandler
     
     /** Creates a new instance of WishlistHandler */
     public WishlistHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String partyName, String wishlistTypeName,
-            String currencyIsoName, String sourceName) {
+            String currencyIsoName, String sourceName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            wishlistService = WishlistUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        wishlistService = lookupService(WishlistService.class, WishlistUtil::getHome);
         this.partyName = partyName;
         this.wishlistTypeName = wishlistTypeName;
         this.currencyIsoName = currencyIsoName;

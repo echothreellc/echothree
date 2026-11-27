@@ -21,24 +21,21 @@ import com.echothree.control.user.term.common.TermService;
 import com.echothree.control.user.term.common.form.TermFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class TermHandler
         extends BaseHandler {
+
     TermService termService;
     String termName;
     
     /** Creates a new instance of TermHandler */
-    public TermHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String termName) {
+    public TermHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String termName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            termService = TermUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        termService = lookupService(TermService.class, TermUtil::getHome);
         
         this.termName = termName;
     }

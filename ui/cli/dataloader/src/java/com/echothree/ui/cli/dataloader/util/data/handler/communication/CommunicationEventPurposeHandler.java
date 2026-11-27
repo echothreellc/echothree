@@ -21,24 +21,21 @@ import com.echothree.control.user.communication.common.CommunicationService;
 import com.echothree.control.user.communication.common.form.CommunicationFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class CommunicationEventPurposeHandler
         extends BaseHandler {
+
     CommunicationService communicationService;
     String communicationEventPurposeName;
     
     /** Creates a new instance of CommunicationEventPurposeHandler */
-    public CommunicationEventPurposeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String communicationEventPurposeName) {
+    public CommunicationEventPurposeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String communicationEventPurposeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            communicationService = CommunicationUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        communicationService = lookupService(CommunicationService.class, CommunicationUtil::getHome);
         
         this.communicationEventPurposeName = communicationEventPurposeName;
     }

@@ -23,12 +23,12 @@ import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import java.util.Map;
 import java.util.Set;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ContentPageHandler
         extends BaseHandler {
+
     ContentService contentService;
     String contentCollectionName;
     String contentSectionName;
@@ -40,14 +40,11 @@ public class ContentPageHandler
     
     /** Creates a new instance of ContentPageHandler */
     public ContentPageHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String contentCollectionName, String contentSectionName,
-    String contentPageName) {
+    String contentPageName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            contentService = ContentUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        contentService = lookupService(ContentService.class, ContentUtil::getHome);
         
         this.contentCollectionName = contentCollectionName;
         this.contentSectionName = contentSectionName;

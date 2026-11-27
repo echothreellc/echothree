@@ -35,6 +35,7 @@ import org.xml.sax.SAXException;
 
 public class CompanyHandler
         extends BaseHandler {
+
     LetterService letterService;
     PartyService partyService;
     String partyName;

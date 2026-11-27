@@ -21,24 +21,21 @@ import com.echothree.control.user.icon.common.IconService;
 import com.echothree.control.user.icon.common.form.IconFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class IconUsageTypeHandler
         extends BaseHandler {
+
     IconService iconService;
     String iconUsageTypeName;
     
     /** Creates a new instance of IconUsageTypeHandler */
-    public IconUsageTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String iconUsageTypeName) {
+    public IconUsageTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String iconUsageTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            iconService = IconUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        iconService = lookupService(IconService.class, IconUtil::getHome);
         
         this.iconUsageTypeName = iconUsageTypeName;
     }

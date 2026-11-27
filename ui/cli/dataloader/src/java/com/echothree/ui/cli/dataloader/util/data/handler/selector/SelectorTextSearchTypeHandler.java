@@ -21,24 +21,21 @@ import com.echothree.control.user.selector.common.SelectorService;
 import com.echothree.control.user.selector.common.form.SelectorFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class SelectorTextSearchTypeHandler
         extends BaseHandler {
+
     SelectorService selectorService;
     String selectorTextSearchTypeName;
     
     /** Creates a new instance of SelectorTextSearchTypeHandler */
-    public SelectorTextSearchTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String selectorTextSearchTypeName) {
+    public SelectorTextSearchTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String selectorTextSearchTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            selectorService = SelectorUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        selectorService = lookupService(SelectorService.class, SelectorUtil::getHome);
         
         this.selectorTextSearchTypeName = selectorTextSearchTypeName;
     }

@@ -21,7 +21,6 @@ import com.echothree.control.user.order.common.OrderService;
 import com.echothree.control.user.order.common.form.OrderFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -32,14 +31,11 @@ public class OrderTypeHandler
     String orderTypeName;
     
     /** Creates a new instance of OrderTypeHandler */
-    public OrderTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String orderTypeName) {
+    public OrderTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String orderTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            orderService = OrderUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        orderService = lookupService(OrderService.class, OrderUtil::getHome);
         
         this.orderTypeName = orderTypeName;
     }

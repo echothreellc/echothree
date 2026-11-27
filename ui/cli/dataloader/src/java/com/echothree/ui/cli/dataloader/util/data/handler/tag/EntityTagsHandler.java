@@ -21,24 +21,21 @@ import com.echothree.control.user.tag.common.TagService;
 import com.echothree.control.user.tag.common.form.TagFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class EntityTagsHandler
         extends BaseHandler {
+
     TagService tagService;
     String entityRef;
     
     /** Creates a new instance of EntityTagsHandler */
-    public EntityTagsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String entityRef) {
+    public EntityTagsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String entityRef)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            tagService = TagUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        tagService = lookupService(TagService.class, TagUtil::getHome);
         
         this.entityRef = entityRef;
     }

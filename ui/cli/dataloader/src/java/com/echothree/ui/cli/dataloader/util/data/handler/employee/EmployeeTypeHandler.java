@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class EmployeeTypeHandler
         extends BaseHandler {
+
     EmployeeService employeeService;
     String employeeTypeName;
     

@@ -21,24 +21,21 @@ import com.echothree.control.user.item.common.ItemService;
 import com.echothree.control.user.item.common.form.ItemFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ItemCategoryHandler
         extends BaseHandler {
+
     ItemService itemService;
     String itemCategoryName;
     
     /** Creates a new instance of ItemCategoryHandler */
-    public ItemCategoryHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String itemCategoryName) {
+    public ItemCategoryHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String itemCategoryName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            itemService = ItemUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        itemService = lookupService(ItemService.class, ItemUtil::getHome);
         
         this.itemCategoryName = itemCategoryName;
     }

@@ -21,26 +21,23 @@ import com.echothree.control.user.warehouse.common.WarehouseService;
 import com.echothree.control.user.warehouse.common.form.WarehouseFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class LocationTypeHandler
         extends BaseHandler {
+
     WarehouseService warehouseService;
     String warehouseName;
     String locationTypeName;
     
     /** Creates a new instance of LocationTypeHandler */
     public LocationTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String warehouseName,
-    String locationTypeName) {
+    String locationTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            warehouseService = WarehouseUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        warehouseService = lookupService(WarehouseService.class, WarehouseUtil::getHome);
         
         this.warehouseName = warehouseName;
         this.locationTypeName = locationTypeName;

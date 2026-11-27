@@ -30,6 +30,7 @@ import org.xml.sax.SAXException;
 
 public class DivisionHandler
         extends BaseHandler {
+
     PartyService partyService;
     String partyName;
     String companyName;

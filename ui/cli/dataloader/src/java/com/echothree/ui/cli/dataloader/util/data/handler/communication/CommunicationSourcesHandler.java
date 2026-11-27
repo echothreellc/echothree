@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class CommunicationSourcesHandler
         extends BaseHandler {
+
     CommunicationService communicationService;
     
     /** Creates a new instance of CommunicationSourcesHandler */

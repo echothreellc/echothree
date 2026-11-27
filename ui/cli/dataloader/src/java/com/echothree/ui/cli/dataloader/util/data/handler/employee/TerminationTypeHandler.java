@@ -21,24 +21,21 @@ import com.echothree.control.user.employee.common.EmployeeService;
 import com.echothree.control.user.employee.common.form.EmployeeFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class TerminationTypeHandler
         extends BaseHandler {
+
     EmployeeService employeeService;
     String terminationTypeName;
     
     /** Creates a new instance of TerminationTypeHandler */
-    public TerminationTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String terminationTypeName) {
+    public TerminationTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String terminationTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            employeeService = EmployeeUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        employeeService = lookupService(EmployeeService.class, EmployeeUtil::getHome);
         
         this.terminationTypeName = terminationTypeName;
     }

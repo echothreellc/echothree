@@ -21,23 +21,20 @@ import com.echothree.control.user.tax.common.TaxService;
 import com.echothree.control.user.tax.common.form.TaxFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class TaxesHandler
         extends BaseHandler {
+
     TaxService taxService;
     
     /** Creates a new instance of TaxesHandler */
-    public TaxesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public TaxesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            taxService = TaxUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        taxService = lookupService(TaxService.class, TaxUtil::getHome);
     }
     
     @Override

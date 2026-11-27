@@ -21,24 +21,21 @@ import com.echothree.control.user.shipment.common.ShipmentService;
 import com.echothree.control.user.shipment.common.form.ShipmentFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ShipmentTypeHandler
         extends BaseHandler {
+
     ShipmentService shipmentService;
     String shipmentTypeName;
     
     /** Creates a new instance of ShipmentTypeHandler */
-    public ShipmentTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String shipmentTypeName) {
+    public ShipmentTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String shipmentTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            shipmentService = ShipmentUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        shipmentService = lookupService(ShipmentService.class, ShipmentUtil::getHome);
         
         this.shipmentTypeName = shipmentTypeName;
     }

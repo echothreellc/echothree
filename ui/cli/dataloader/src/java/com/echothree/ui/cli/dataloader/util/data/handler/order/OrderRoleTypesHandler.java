@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class OrderRoleTypesHandler
         extends BaseHandler {
+
     OrderService orderService;
     
     /** Creates a new instance of OrderRoleTypesHandler */

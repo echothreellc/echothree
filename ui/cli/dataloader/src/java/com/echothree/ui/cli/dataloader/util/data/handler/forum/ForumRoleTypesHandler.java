@@ -21,23 +21,20 @@ import com.echothree.control.user.forum.common.ForumService;
 import com.echothree.control.user.forum.common.form.ForumFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ForumRoleTypesHandler
         extends BaseHandler {
+
     ForumService forumService;
     
     /** Creates a new instance of ForumRoleTypesHandler */
-    public ForumRoleTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public ForumRoleTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            forumService = ForumUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        forumService = lookupService(ForumService.class, ForumUtil::getHome);
     }
     
     @Override

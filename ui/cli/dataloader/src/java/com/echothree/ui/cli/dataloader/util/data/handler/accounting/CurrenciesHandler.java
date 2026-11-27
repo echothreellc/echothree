@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class CurrenciesHandler
         extends BaseHandler {
+
     AccountingService accountingService;
     
     /** Creates a new instance of CurrenciesHandler */

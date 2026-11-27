@@ -28,6 +28,7 @@ import org.xml.sax.SAXException;
 
 public class LetterHandler
         extends BaseHandler {
+
     LetterService letterService;
     String chainKindName;
     String chainTypeName;

@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class ItemAccountingCategoryHandler
         extends BaseHandler {
+
     AccountingService accountingService;
     String itemAccountingCategoryName;
     

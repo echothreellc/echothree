@@ -21,22 +21,19 @@ import com.echothree.control.user.party.common.PartyService;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class PersonalTitlesHandler
         extends BaseHandler {
+
     PartyService partyService;
     
     /** Creates a new instance of PersonalTitlesHandler */
-    public PersonalTitlesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public PersonalTitlesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
-        try {
-            partyService = PartyUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        partyService = lookupService(PartyService.class, PartyUtil::getHome);
     }
     
     @Override

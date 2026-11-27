@@ -21,25 +21,22 @@ import com.echothree.control.user.picklist.common.PicklistService;
 import com.echothree.control.user.picklist.common.form.PicklistFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class PicklistAliasTypeHandler
         extends BaseHandler {
+
     PicklistService picklistService;
     String picklistTypeName;
     String picklistAliasTypeName;
     
     /** Creates a new instance of PicklistAliasTypeHandler */
-    public PicklistAliasTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String picklistTypeName, String picklistAliasTypeName) {
+    public PicklistAliasTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String picklistTypeName, String picklistAliasTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            picklistService = PicklistUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        picklistService = lookupService(PicklistService.class, PicklistUtil::getHome);
         
         this.picklistTypeName = picklistTypeName;
         this.picklistAliasTypeName = picklistAliasTypeName;

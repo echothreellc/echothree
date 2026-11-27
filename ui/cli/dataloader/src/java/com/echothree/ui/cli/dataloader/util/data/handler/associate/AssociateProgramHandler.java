@@ -21,24 +21,21 @@ import com.echothree.control.user.associate.common.AssociateService;
 import com.echothree.control.user.associate.common.form.AssociateFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class AssociateProgramHandler
         extends BaseHandler {
+
     AssociateService associateService;
     String associateProgramName;
     
     /** Creates a new instance of AssociateProgramHandler */
-    public AssociateProgramHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String associateProgramName) {
+    public AssociateProgramHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String associateProgramName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            associateService = AssociateUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        associateService = lookupService(AssociateService.class, AssociateUtil::getHome);
         
         this.associateProgramName = associateProgramName;
     }

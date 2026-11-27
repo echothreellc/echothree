@@ -21,24 +21,21 @@ import com.echothree.control.user.filter.common.FilterService;
 import com.echothree.control.user.filter.common.form.FilterFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class FilterAdjustmentTypeHandler
         extends BaseHandler {
+
     FilterService filterService;
     String filterAdjustmentTypeName;
     
     /** Creates a new instance of FilterAdjustmentTypeHandler */
-    public FilterAdjustmentTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String filterAdjustmentTypeName) {
+    public FilterAdjustmentTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String filterAdjustmentTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            filterService = FilterUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        filterService = lookupService(FilterService.class, FilterUtil::getHome);
         
         this.filterAdjustmentTypeName = filterAdjustmentTypeName;
     }

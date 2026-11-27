@@ -21,25 +21,22 @@ import com.echothree.control.user.cancellationpolicy.common.CancellationPolicySe
 import com.echothree.control.user.cancellationpolicy.common.form.CancellationPolicyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class CancellationReasonHandler
         extends BaseHandler {
+
     CancellationPolicyService cancellationPolicyService;
     String cancellationKindName;
     String cancellationReasonName;
     
     /** Creates a new instance of CancellationReasonHandler */
-    public CancellationReasonHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String cancellationKindName, String cancellationReasonName) {
+    public CancellationReasonHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String cancellationKindName, String cancellationReasonName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            cancellationPolicyService = CancellationPolicyUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        cancellationPolicyService = lookupService(CancellationPolicyService.class, CancellationPolicyUtil::getHome);
         
         this.cancellationKindName = cancellationKindName;
         this.cancellationReasonName = cancellationReasonName;

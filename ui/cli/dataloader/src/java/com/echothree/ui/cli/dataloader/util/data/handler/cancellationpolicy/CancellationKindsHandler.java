@@ -21,23 +21,20 @@ import com.echothree.control.user.cancellationpolicy.common.CancellationPolicySe
 import com.echothree.control.user.cancellationpolicy.common.form.CancellationPolicyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class CancellationKindsHandler
         extends BaseHandler {
+
     CancellationPolicyService cancellationPolicyService;
     
     /** Creates a new instance of CancellationKindsHandler */
-    public CancellationKindsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public CancellationKindsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            cancellationPolicyService = CancellationPolicyUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        cancellationPolicyService = lookupService(CancellationPolicyService.class, CancellationPolicyUtil::getHome);
     }
     
     @Override

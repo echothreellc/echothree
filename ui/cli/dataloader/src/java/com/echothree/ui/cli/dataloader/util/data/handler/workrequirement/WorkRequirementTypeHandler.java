@@ -21,26 +21,23 @@ import com.echothree.control.user.workrequirement.common.WorkRequirementService;
 import com.echothree.control.user.workrequirement.common.form.WorkRequirementFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class WorkRequirementTypeHandler
         extends BaseHandler {
+
     WorkRequirementService workRequirementService;
     String workEffortTypeName;
     String workRequirementTypeName;
     
     /** Creates a new instance of WorkRequirementTypeHandler */
     public WorkRequirementTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String workEffortTypeName,
-            String workRequirementTypeName) {
+            String workRequirementTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            workRequirementService = WorkRequirementUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        workRequirementService = lookupService(WorkRequirementService.class, WorkRequirementUtil::getHome);
         this.workEffortTypeName = workEffortTypeName;
         this.workRequirementTypeName = workRequirementTypeName;
     }

@@ -22,25 +22,22 @@ import com.echothree.control.user.geo.common.form.GeoFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.core.EntityAttributesHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ZipCodeHandler
         extends BaseHandler {
+
     GeoService geoService;
     String zipCodeGeoCodeName;
     String zipCodeEntityRef;
     
     /** Creates a new instance of ZipCodeHandler */
-    public ZipCodeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String zipCodeGeoCodeName, String zipCodeEntityRef) {
+    public ZipCodeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String zipCodeGeoCodeName, String zipCodeEntityRef)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            geoService = GeoUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        geoService = lookupService(GeoService.class, GeoUtil::getHome);
         
         this.zipCodeGeoCodeName = zipCodeGeoCodeName;
         this.zipCodeEntityRef = zipCodeEntityRef;

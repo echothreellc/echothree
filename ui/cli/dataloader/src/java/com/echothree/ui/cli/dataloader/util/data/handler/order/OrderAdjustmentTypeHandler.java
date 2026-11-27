@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class OrderAdjustmentTypeHandler
         extends BaseHandler {
+
     OrderService orderService;
     String orderTypeName;
     String orderAdjustmentTypeName;

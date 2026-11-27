@@ -25,27 +25,24 @@ import com.echothree.control.user.tax.common.form.TaxFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.core.EntityAttributesHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class StateHandler
         extends BaseHandler {
+
     GeoService geoService;
     TaxService taxService;
     String stateGeoCodeName;
     String stateEntityRef;
     
     /** Creates a new instance of StateHandler */
-    public StateHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String stateGeoCodeName, String stateEntityRef) {
+    public StateHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String stateGeoCodeName, String stateEntityRef)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            geoService = GeoUtil.getHome();
-            taxService = TaxUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        geoService = lookupService(GeoService.class, GeoUtil::getHome);
+        taxService = lookupService(TaxService.class, TaxUtil::getHome);
         
         this.stateGeoCodeName = stateGeoCodeName;
         this.stateEntityRef = stateEntityRef;

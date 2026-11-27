@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class WorkflowEntrancePartyTypeHandler
         extends BaseHandler {
+
     WorkflowService workflowService;
     String workflowName;
     String workflowEntranceName;

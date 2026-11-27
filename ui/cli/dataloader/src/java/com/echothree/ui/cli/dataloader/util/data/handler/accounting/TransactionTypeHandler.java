@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class TransactionTypeHandler
         extends BaseHandler {
+
     AccountingService accountingService;
     String transactionTypeName;
     

@@ -21,24 +21,21 @@ import com.echothree.control.user.shipping.common.ShippingService;
 import com.echothree.control.user.shipping.common.form.ShippingFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ShippingMethodHandler
         extends BaseHandler {
+
     ShippingService shippingService;
     String shippingMethodName;
     
     /** Creates a new instance of ShippingMethodHandler */
-    public ShippingMethodHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String shippingMethodName) {
+    public ShippingMethodHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String shippingMethodName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            shippingService = ShippingUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        shippingService = lookupService(ShippingService.class, ShippingUtil::getHome);
         
         this.shippingMethodName = shippingMethodName;
     }

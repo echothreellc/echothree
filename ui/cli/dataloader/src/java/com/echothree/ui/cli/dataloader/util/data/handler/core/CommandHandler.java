@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class CommandHandler
         extends BaseHandler {
+
     CoreService coreService;
     String componentVendorName;
     String commandName;

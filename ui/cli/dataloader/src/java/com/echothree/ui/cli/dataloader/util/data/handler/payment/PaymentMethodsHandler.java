@@ -21,23 +21,20 @@ import com.echothree.control.user.payment.common.PaymentService;
 import com.echothree.control.user.payment.common.form.PaymentFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class PaymentMethodsHandler
         extends BaseHandler {
+
     PaymentService paymentService;
     
     /** Creates a new instance of PaymentMethodsHandler */
-    public PaymentMethodsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public PaymentMethodsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            paymentService = PaymentUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        paymentService = lookupService(PaymentService.class, PaymentUtil::getHome);
     }
     
     @Override

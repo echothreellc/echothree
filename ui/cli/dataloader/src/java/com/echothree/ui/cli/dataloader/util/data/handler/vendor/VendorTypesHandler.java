@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class VendorTypesHandler
         extends BaseHandler {
+
     VendorService vendorService = VendorUtil.getHome();
     
     /** Creates a new instance of VendorTypesHandler */

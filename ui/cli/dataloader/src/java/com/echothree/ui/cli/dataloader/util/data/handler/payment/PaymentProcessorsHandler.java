@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class PaymentProcessorsHandler
         extends BaseHandler {
+
     PaymentService paymentService;
     
     /** Creates a new instance of PaymentProcessorsHandler */

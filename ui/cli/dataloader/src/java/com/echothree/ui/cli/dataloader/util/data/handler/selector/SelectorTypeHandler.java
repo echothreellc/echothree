@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class SelectorTypeHandler
         extends BaseHandler {
+
     SelectorService selectorService;
     String selectorKindName;
     String selectorTypeName;

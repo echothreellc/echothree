@@ -21,23 +21,20 @@ import com.echothree.control.user.offer.common.OfferService;
 import com.echothree.control.user.offer.common.form.OfferFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class UseNameElementsHandler
         extends BaseHandler {
+
     OfferService offerService;
     
     /** Creates a new instance of UseNameElementsHandler */
-    public UseNameElementsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public UseNameElementsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            offerService = OfferUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        offerService = lookupService(OfferService.class, OfferUtil::getHome);
     }
     
     @Override

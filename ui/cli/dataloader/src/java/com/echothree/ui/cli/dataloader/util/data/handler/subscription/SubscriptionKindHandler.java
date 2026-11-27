@@ -22,24 +22,21 @@ import com.echothree.control.user.subscription.common.SubscriptionService;
 import com.echothree.control.user.subscription.common.form.SubscriptionFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class SubscriptionKindHandler
         extends BaseHandler {
+
     SubscriptionService subscriptionService;
     String subscriptionKindName;
     
     /** Creates a new instance of SubscriptionKindHandler */
-    public SubscriptionKindHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String subscriptionKindName) {
+    public SubscriptionKindHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String subscriptionKindName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            subscriptionService = SubscriptionUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        subscriptionService = lookupService(SubscriptionService.class, SubscriptionUtil::getHome);
         
         this.subscriptionKindName = subscriptionKindName;
     }

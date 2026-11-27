@@ -21,12 +21,12 @@ import com.echothree.control.user.comment.common.CommentService;
 import com.echothree.control.user.comment.common.form.CommentFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class CommentTypeHandler
         extends BaseHandler {
+
     CommentService commentService;
     String componentVendorName;
     String entityTypeName;
@@ -34,14 +34,11 @@ public class CommentTypeHandler
     
     /** Creates a new instance of CommentTypeHandler */
     public CommentTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String componentVendorName,
-            String entityTypeName, String commentTypeName) {
+            String entityTypeName, String commentTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            commentService = CommentUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        commentService = lookupService(CommentService.class, CommentUtil::getHome);
         
         this.componentVendorName = componentVendorName;
         this.entityTypeName = entityTypeName;

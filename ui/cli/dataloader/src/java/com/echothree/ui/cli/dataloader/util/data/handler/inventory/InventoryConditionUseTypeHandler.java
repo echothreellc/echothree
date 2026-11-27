@@ -21,24 +21,21 @@ import com.echothree.control.user.inventory.common.InventoryService;
 import com.echothree.control.user.inventory.common.form.InventoryFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class InventoryConditionUseTypeHandler
         extends BaseHandler {
+
     InventoryService inventoryService;
     String inventoryConditionUseTypeName;
     
     /** Creates a new instance of InventoryConditionUseTypeHandler */
-    public InventoryConditionUseTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String inventoryConditionUseTypeName) {
+    public InventoryConditionUseTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String inventoryConditionUseTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            inventoryService = InventoryUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        inventoryService = lookupService(InventoryService.class, InventoryUtil::getHome);
         
         this.inventoryConditionUseTypeName = inventoryConditionUseTypeName;
     }

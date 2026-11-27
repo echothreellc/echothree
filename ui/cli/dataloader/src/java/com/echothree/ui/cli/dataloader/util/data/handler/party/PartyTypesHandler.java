@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class PartyTypesHandler
         extends BaseHandler {
+
     PartyService partyService;
     
     /** Creates a new instance of PartyTypesHandler */

@@ -41,7 +41,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Set;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -60,15 +59,12 @@ public class ItemHandler
     
     /** Creates a new instance of ItemHandler */
     public ItemHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String itemName, String companyName,
-            String entityRef) {
+            String entityRef)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            inventoryService = InventoryUtil.getHome();
-            itemService = ItemUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        inventoryService = lookupService(InventoryService.class, InventoryUtil::getHome);
+        itemService = lookupService(ItemService.class, ItemUtil::getHome);
         
         this.itemName = itemName;
         this.companyName = companyName;
