@@ -47,27 +47,19 @@ public class PartyTypeUseTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("partyTypeUseTypeDescription")) {
-            try {
-                var form = PartyFormFactory.getCreatePartyTypeUseTypeDescriptionForm();
-                
-                form.setPartyTypeUseTypeName(partyTypeUseTypeName);
-                form.set(getAttrsMap(attrs));
-                
-                partyService.createPartyTypeUseTypeDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = PartyFormFactory.getCreatePartyTypeUseTypeDescriptionForm();
+
+            form.setPartyTypeUseTypeName(partyTypeUseTypeName);
+            form.set(getAttrsMap(attrs));
+
+            partyService.createPartyTypeUseTypeDescription(initialDataParser.getUserVisit(), form);
         } else if(localName.equals("partyTypeUse")) {
-            try {
-                var form = PartyFormFactory.getCreatePartyTypeUseForm();
-                
-                form.setPartyTypeUseTypeName(partyTypeUseTypeName);
-                form.set(getAttrsMap(attrs));
-                
-                partyService.createPartyTypeUse(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = PartyFormFactory.getCreatePartyTypeUseForm();
+
+            form.setPartyTypeUseTypeName(partyTypeUseTypeName);
+            form.set(getAttrsMap(attrs));
+
+            partyService.createPartyTypeUse(initialDataParser.getUserVisit(), form);
         }
     }
     

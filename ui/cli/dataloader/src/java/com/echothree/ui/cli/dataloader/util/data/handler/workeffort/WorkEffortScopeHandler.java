@@ -49,17 +49,13 @@ public class WorkEffortScopeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("workEffortScopeDescription")) {
-            try {
-                var commandForm = WorkEffortFormFactory.getCreateWorkEffortScopeDescriptionForm();
-                
-                commandForm.setWorkEffortTypeName(workEffortTypeName);
-                commandForm.setWorkEffortScopeName(workEffortScopeName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                workEffortService.createWorkEffortScopeDescription(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = WorkEffortFormFactory.getCreateWorkEffortScopeDescriptionForm();
+
+            commandForm.setWorkEffortTypeName(workEffortTypeName);
+            commandForm.setWorkEffortScopeName(workEffortScopeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            workEffortService.createWorkEffortScopeDescription(initialDataParser.getUserVisit(), commandForm);
         }
     }
     

@@ -56,20 +56,16 @@ public class FilterStepElementHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("filterStepElementDescription")) {
-            try {
-                var commandForm = FilterFormFactory.getCreateFilterStepElementDescriptionForm();
-                
-                commandForm.setFilterKindName(filterKindName);
-                commandForm.setFilterTypeName(filterTypeName);
-                commandForm.setFilterName(filterName);
-                commandForm.setFilterStepName(filterStepName);
-                commandForm.setFilterStepElementName(filterStepElementName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                filterService.createFilterStepElementDescription(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = FilterFormFactory.getCreateFilterStepElementDescriptionForm();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterTypeName(filterTypeName);
+            commandForm.setFilterName(filterName);
+            commandForm.setFilterStepName(filterStepName);
+            commandForm.setFilterStepElementName(filterStepElementName);
+            commandForm.set(getAttrsMap(attrs));
+
+            filterService.createFilterStepElementDescription(initialDataParser.getUserVisit(), commandForm);
         }
     }
     

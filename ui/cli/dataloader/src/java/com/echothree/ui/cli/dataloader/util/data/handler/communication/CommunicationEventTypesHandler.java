@@ -44,17 +44,13 @@ public class CommunicationEventTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("communicationEventType")) {
-            try {
-                var form = CommunicationFormFactory.getCreateCommunicationEventTypeForm();
-                
-                form.set(getAttrsMap(attrs));
-                
-                communicationService.createCommunicationEventType(initialDataParser.getUserVisit(), form);
-                
-                initialDataParser.pushHandler(new CommunicationEventTypeHandler(initialDataParser, this, form.getCommunicationEventTypeName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = CommunicationFormFactory.getCreateCommunicationEventTypeForm();
+
+            form.set(getAttrsMap(attrs));
+
+            communicationService.createCommunicationEventType(initialDataParser.getUserVisit(), form);
+
+            initialDataParser.pushHandler(new CommunicationEventTypeHandler(initialDataParser, this, form.getCommunicationEventTypeName()));
         }
     }
     

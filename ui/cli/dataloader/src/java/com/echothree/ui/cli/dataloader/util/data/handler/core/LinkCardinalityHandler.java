@@ -49,16 +49,12 @@ public class LinkCardinalityHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("linkCardinalityDescription")) {
-            try {
-                var commandForm = CoreFormFactory.getCreateLinkCardinalityDescriptionForm();
+            var commandForm = CoreFormFactory.getCreateLinkCardinalityDescriptionForm();
 
-                commandForm.setLinkCardinalityName(linkCardinalityName);
-                commandForm.set(getAttrsMap(attrs));
+            commandForm.setLinkCardinalityName(linkCardinalityName);
+            commandForm.set(getAttrsMap(attrs));
 
-                checkCommandResult(coreService.createLinkCardinalityDescription(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            checkCommandResult(coreService.createLinkCardinalityDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

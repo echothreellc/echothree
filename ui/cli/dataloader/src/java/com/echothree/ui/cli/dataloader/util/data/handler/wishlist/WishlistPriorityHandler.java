@@ -50,17 +50,13 @@ public class WishlistPriorityHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("wishlistPriorityDescription")) {
-            try {
-                var form = WishlistFormFactory.getCreateWishlistPriorityDescriptionForm();
-                
-                form.setWishlistTypeName(wishlistTypeName);
-                form.setWishlistPriorityName(wishlistPriorityName);
-                form.set(getAttrsMap(attrs));
-                
-                wishlistService.createWishlistPriorityDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = WishlistFormFactory.getCreateWishlistPriorityDescriptionForm();
+
+            form.setWishlistTypeName(wishlistTypeName);
+            form.setWishlistPriorityName(wishlistPriorityName);
+            form.set(getAttrsMap(attrs));
+
+            wishlistService.createWishlistPriorityDescription(initialDataParser.getUserVisit(), form);
         }
     }
     

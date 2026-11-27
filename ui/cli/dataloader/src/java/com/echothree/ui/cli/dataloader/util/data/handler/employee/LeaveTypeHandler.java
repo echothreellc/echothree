@@ -47,16 +47,12 @@ public class LeaveTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("leaveTypeDescription")) {
-            try {
-                var form = EmployeeFormFactory.getCreateLeaveTypeDescriptionForm();
-                
-                form.setLeaveTypeName(leaveTypeName);
-                form.set(getAttrsMap(attrs));
-                
-                employeeService.createLeaveTypeDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = EmployeeFormFactory.getCreateLeaveTypeDescriptionForm();
+
+            form.setLeaveTypeName(leaveTypeName);
+            form.set(getAttrsMap(attrs));
+
+            employeeService.createLeaveTypeDescription(initialDataParser.getUserVisit(), form);
         }
     }
     

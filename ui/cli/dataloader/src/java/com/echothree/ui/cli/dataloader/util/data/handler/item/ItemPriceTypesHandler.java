@@ -44,17 +44,13 @@ public class ItemPriceTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("itemPriceType")) {
-            try {
-                var createItemPriceTypeForm = ItemFormFactory.getCreateItemPriceTypeForm();
-                
-                createItemPriceTypeForm.set(getAttrsMap(attrs));
-                
-                itemService.createItemPriceType(initialDataParser.getUserVisit(), createItemPriceTypeForm);
-                
-                initialDataParser.pushHandler(new ItemPriceTypeHandler(initialDataParser, this, createItemPriceTypeForm.getItemPriceTypeName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var createItemPriceTypeForm = ItemFormFactory.getCreateItemPriceTypeForm();
+
+            createItemPriceTypeForm.set(getAttrsMap(attrs));
+
+            itemService.createItemPriceType(initialDataParser.getUserVisit(), createItemPriceTypeForm);
+
+            initialDataParser.pushHandler(new ItemPriceTypeHandler(initialDataParser, this, createItemPriceTypeForm.getItemPriceTypeName()));
         }
     }
     

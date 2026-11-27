@@ -45,20 +45,16 @@ public class NameSuffixesHandler
         if(localName.equals("nameSuffix")) {
             var description = attrs.getValue("description");
 
-            try {
-                if(initialDataParser.getNameSuffixes().get(description) == null) {
-                    var form = PartyFormFactory.getCreateNameSuffixForm();
-                    
-                    form.set(getAttrsMap(attrs));
+            if(initialDataParser.getNameSuffixes().get(description) == null) {
+                var form = PartyFormFactory.getCreateNameSuffixForm();
 
-                    var commandResult = partyService.createNameSuffix(initialDataParser.getUserVisit(), form);
-                    var executionResult = commandResult.getExecutionResult();
-                    var result = executionResult.getResult();
-                    
-                    initialDataParser.addNameSuffix(result.getNameSuffixId(), description);
-                }
-            } catch (Exception e) {
-                throw new SAXException(e);
+                form.set(getAttrsMap(attrs));
+
+                var commandResult = partyService.createNameSuffix(initialDataParser.getUserVisit(), form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = executionResult.getResult();
+
+                initialDataParser.addNameSuffix(result.getNameSuffixId(), description);
             }
         }
     }

@@ -44,17 +44,13 @@ public class SelectorComparisonTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("selectorComparisonType")) {
-            try {
-                var form = SelectorFormFactory.getCreateSelectorComparisonTypeForm();
-                
-                form.set(getAttrsMap(attrs));
-                
-                selectorService.createSelectorComparisonType(initialDataParser.getUserVisit(), form);
-                
-                initialDataParser.pushHandler(new SelectorComparisonTypeHandler(initialDataParser, this, form.getSelectorComparisonTypeName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = SelectorFormFactory.getCreateSelectorComparisonTypeForm();
+
+            form.set(getAttrsMap(attrs));
+
+            selectorService.createSelectorComparisonType(initialDataParser.getUserVisit(), form);
+
+            initialDataParser.pushHandler(new SelectorComparisonTypeHandler(initialDataParser, this, form.getSelectorComparisonTypeName()));
         }
     }
     

@@ -44,17 +44,13 @@ public class TagScopesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("tagScope")) {
-            try {
-                var commandForm = TagFormFactory.getCreateTagScopeForm();
-                
-                commandForm.set(getAttrsMap(attrs));
-                
-                tagService.createTagScope(initialDataParser.getUserVisit(), commandForm);
-                
-                initialDataParser.pushHandler(new TagScopeHandler(initialDataParser, this, commandForm.getTagScopeName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = TagFormFactory.getCreateTagScopeForm();
+
+            commandForm.set(getAttrsMap(attrs));
+
+            tagService.createTagScope(initialDataParser.getUserVisit(), commandForm);
+
+            initialDataParser.pushHandler(new TagScopeHandler(initialDataParser, this, commandForm.getTagScopeName()));
         }
     }
     

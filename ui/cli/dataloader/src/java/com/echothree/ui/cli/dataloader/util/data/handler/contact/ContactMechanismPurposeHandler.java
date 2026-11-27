@@ -47,16 +47,12 @@ public class ContactMechanismPurposeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("contactMechanismPurposeDescription")) {
-            try {
-                var createContactMechanismPurposeDescriptionForm = ContactFormFactory.getCreateContactMechanismPurposeDescriptionForm();
-                
-                createContactMechanismPurposeDescriptionForm.setContactMechanismPurposeName(contactMechanismPurposeName);
-                createContactMechanismPurposeDescriptionForm.set(getAttrsMap(attrs));
-                
-                contactService.createContactMechanismPurposeDescription(initialDataParser.getUserVisit(), createContactMechanismPurposeDescriptionForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var createContactMechanismPurposeDescriptionForm = ContactFormFactory.getCreateContactMechanismPurposeDescriptionForm();
+
+            createContactMechanismPurposeDescriptionForm.setContactMechanismPurposeName(contactMechanismPurposeName);
+            createContactMechanismPurposeDescriptionForm.set(getAttrsMap(attrs));
+
+            contactService.createContactMechanismPurposeDescription(initialDataParser.getUserVisit(), createContactMechanismPurposeDescriptionForm);
         }
     }
     

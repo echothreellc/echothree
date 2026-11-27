@@ -48,30 +48,22 @@ public class SubscriptionKindHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("subscriptionKindDescription")) {
-            try {
-                var commandForm = SubscriptionFormFactory.getCreateSubscriptionKindDescriptionForm();
-                
-                commandForm.setSubscriptionKindName(subscriptionKindName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                subscriptionService.createSubscriptionKindDescription(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = SubscriptionFormFactory.getCreateSubscriptionKindDescriptionForm();
+
+            commandForm.setSubscriptionKindName(subscriptionKindName);
+            commandForm.set(getAttrsMap(attrs));
+
+            subscriptionService.createSubscriptionKindDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("subscriptionType")) {
-            try {
-                var commandForm = SubscriptionFormFactory.getCreateSubscriptionTypeForm();
-                
-                commandForm.setSubscriptionKindName(subscriptionKindName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                subscriptionService.createSubscriptionType(initialDataParser.getUserVisit(), commandForm);
-                
-                initialDataParser.pushHandler(new SubscriptionTypeHandler(initialDataParser, this, subscriptionKindName,
-                        commandForm.getSubscriptionTypeName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = SubscriptionFormFactory.getCreateSubscriptionTypeForm();
+
+            commandForm.setSubscriptionKindName(subscriptionKindName);
+            commandForm.set(getAttrsMap(attrs));
+
+            subscriptionService.createSubscriptionType(initialDataParser.getUserVisit(), commandForm);
+
+            initialDataParser.pushHandler(new SubscriptionTypeHandler(initialDataParser, this, subscriptionKindName,
+                    commandForm.getSubscriptionTypeName()));
         }
     }
     

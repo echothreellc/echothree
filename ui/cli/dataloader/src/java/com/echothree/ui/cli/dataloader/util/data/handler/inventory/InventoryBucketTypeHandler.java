@@ -48,16 +48,12 @@ public class InventoryBucketTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("inventoryBucketTypeDescription")) {
-            try {
-                var commandForm = InventoryFormFactory.getCreateInventoryBucketTypeDescriptionForm();
-                
-                commandForm.setInventoryBucketTypeName(inventoryBucketTypeName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(inventoryService.createInventoryBucketTypeDescription(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = InventoryFormFactory.getCreateInventoryBucketTypeDescriptionForm();
+
+            commandForm.setInventoryBucketTypeName(inventoryBucketTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(inventoryService.createInventoryBucketTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

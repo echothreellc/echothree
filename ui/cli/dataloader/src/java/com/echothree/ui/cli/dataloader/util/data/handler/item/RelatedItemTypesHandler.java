@@ -44,17 +44,13 @@ public class RelatedItemTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("relatedItemType")) {
-            try {
-                var commandForm = ItemFormFactory.getCreateRelatedItemTypeForm();
-                
-                commandForm.set(getAttrsMap(attrs));
-                
-                itemService.createRelatedItemType(initialDataParser.getUserVisit(), commandForm);
-                
-                initialDataParser.pushHandler(new RelatedItemTypeHandler(initialDataParser, this, commandForm.getRelatedItemTypeName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = ItemFormFactory.getCreateRelatedItemTypeForm();
+
+            commandForm.set(getAttrsMap(attrs));
+
+            itemService.createRelatedItemType(initialDataParser.getUserVisit(), commandForm);
+
+            initialDataParser.pushHandler(new RelatedItemTypeHandler(initialDataParser, this, commandForm.getRelatedItemTypeName()));
         }
     }
     

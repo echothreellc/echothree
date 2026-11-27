@@ -46,15 +46,11 @@ public class ForumMessageTypesHandler
         if(localName.equals("forumMessageType")) {
             var forumMessageTypeName = attrs.getValue("forumMessageTypeName");
 
-            try {
-                var form = ForumFormFactory.getCreateForumMessageTypeForm();
-                
-                form.set(getAttrsMap(attrs));
-                
-                forumService.createForumMessageType(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = ForumFormFactory.getCreateForumMessageTypeForm();
+
+            form.set(getAttrsMap(attrs));
+
+            forumService.createForumMessageType(initialDataParser.getUserVisit(), form);
             
             initialDataParser.pushHandler(new ForumMessageTypeHandler(initialDataParser, this, forumMessageTypeName));
         }

@@ -47,16 +47,12 @@ public class CommunicationSourceHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("communicationSourceDescription")) {
-            try {
-                var form = CommunicationFormFactory.getCreateCommunicationSourceDescriptionForm();
-                
-                form.setCommunicationSourceName(communicationSourceName);
-                form.set(getAttrsMap(attrs));
-                
-                communicationService.createCommunicationSourceDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = CommunicationFormFactory.getCreateCommunicationSourceDescriptionForm();
+
+            form.setCommunicationSourceName(communicationSourceName);
+            form.set(getAttrsMap(attrs));
+
+            communicationService.createCommunicationSourceDescription(initialDataParser.getUserVisit(), form);
         }
     }
     

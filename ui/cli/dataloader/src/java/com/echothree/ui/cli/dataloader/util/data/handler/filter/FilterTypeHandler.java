@@ -49,32 +49,24 @@ public class FilterTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("filterTypeDescription")) {
-            try {
-                var commandForm = FilterFormFactory.getCreateFilterTypeDescriptionForm();
-                
-                commandForm.setFilterKindName(filterKindName);
-                commandForm.setFilterTypeName(filterTypeName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                filterService.createFilterTypeDescription(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = FilterFormFactory.getCreateFilterTypeDescriptionForm();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterTypeName(filterTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            filterService.createFilterTypeDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("filter")) {
-            try {
-                var commandForm = FilterFormFactory.getCreateFilterForm();
-                
-                commandForm.setFilterKindName(filterKindName);
-                commandForm.setFilterTypeName(filterTypeName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                filterService.createFilter(initialDataParser.getUserVisit(), commandForm);
-                
-                initialDataParser.pushHandler(new FilterHandler(initialDataParser, this, filterKindName, filterTypeName,
-                        commandForm.getFilterName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = FilterFormFactory.getCreateFilterForm();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterTypeName(filterTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            filterService.createFilter(initialDataParser.getUserVisit(), commandForm);
+
+            initialDataParser.pushHandler(new FilterHandler(initialDataParser, this, filterKindName, filterTypeName,
+                    commandForm.getFilterName()));
         }
     }
     

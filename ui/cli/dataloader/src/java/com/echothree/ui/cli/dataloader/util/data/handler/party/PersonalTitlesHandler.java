@@ -45,20 +45,16 @@ public class PersonalTitlesHandler
         if(localName.equals("personalTitle")) {
             var description = attrs.getValue("description");
 
-            try {
-                if(initialDataParser.getPersonalTitles().get(description) == null) {
-                    var form = PartyFormFactory.getCreatePersonalTitleForm();
-                    
-                    form.set(getAttrsMap(attrs));
+            if(initialDataParser.getPersonalTitles().get(description) == null) {
+                var form = PartyFormFactory.getCreatePersonalTitleForm();
 
-                    var commandResult = partyService.createPersonalTitle(initialDataParser.getUserVisit(), form);
-                    var executionResult = commandResult.getExecutionResult();
-                    var result = executionResult.getResult();
-                    
-                    initialDataParser.addPersonalTitle(result.getPersonalTitleId(), description);
-                }
-            } catch (Exception e) {
-                throw new SAXException(e);
+                form.set(getAttrsMap(attrs));
+
+                var commandResult = partyService.createPersonalTitle(initialDataParser.getUserVisit(), form);
+                var executionResult = commandResult.getExecutionResult();
+                var result = executionResult.getResult();
+
+                initialDataParser.addPersonalTitle(result.getPersonalTitleId(), description);
             }
         }
     }

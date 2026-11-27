@@ -49,17 +49,13 @@ public class OfferItemHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("offerItemPrice")) {
-            try {
-                var form = OfferFormFactory.getCreateOfferItemPriceForm();
-                
-                form.setOfferName(offerName);
-                form.setItemName(itemName);
-                form.set(getAttrsMap(attrs));
-                
-                offerService.createOfferItemPrice(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = OfferFormFactory.getCreateOfferItemPriceForm();
+
+            form.setOfferName(offerName);
+            form.setItemName(itemName);
+            form.set(getAttrsMap(attrs));
+
+            offerService.createOfferItemPrice(initialDataParser.getUserVisit(), form);
         }
     }
     

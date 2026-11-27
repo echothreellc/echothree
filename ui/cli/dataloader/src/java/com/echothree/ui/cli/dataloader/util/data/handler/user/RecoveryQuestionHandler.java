@@ -47,16 +47,12 @@ public class RecoveryQuestionHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("recoveryQuestionDescription")) {
-            try {
-                var createRecoveryQuestionDescriptionForm = UserFormFactory.getCreateRecoveryQuestionDescriptionForm();
-                
-                createRecoveryQuestionDescriptionForm.setRecoveryQuestionName(recoveryQuestionName);
-                createRecoveryQuestionDescriptionForm.set(getAttrsMap(attrs));
-                
-                userService.createRecoveryQuestionDescription(initialDataParser.getUserVisit(), createRecoveryQuestionDescriptionForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var createRecoveryQuestionDescriptionForm = UserFormFactory.getCreateRecoveryQuestionDescriptionForm();
+
+            createRecoveryQuestionDescriptionForm.setRecoveryQuestionName(recoveryQuestionName);
+            createRecoveryQuestionDescriptionForm.set(getAttrsMap(attrs));
+
+            userService.createRecoveryQuestionDescription(initialDataParser.getUserVisit(), createRecoveryQuestionDescriptionForm);
         }
     }
     

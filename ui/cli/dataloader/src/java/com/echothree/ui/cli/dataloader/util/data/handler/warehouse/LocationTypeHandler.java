@@ -50,32 +50,24 @@ public class LocationTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("locationTypeDescription")) {
-            try {
-                var form = WarehouseFormFactory.getCreateLocationTypeDescriptionForm();
-                
-                form.setWarehouseName(warehouseName);
-                form.setLocationTypeName(locationTypeName);
-                form.set(getAttrsMap(attrs));
-                
-                warehouseService.createLocationTypeDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = WarehouseFormFactory.getCreateLocationTypeDescriptionForm();
+
+            form.setWarehouseName(warehouseName);
+            form.setLocationTypeName(locationTypeName);
+            form.set(getAttrsMap(attrs));
+
+            warehouseService.createLocationTypeDescription(initialDataParser.getUserVisit(), form);
         } else if(localName.equals("locationNameElement")) {
-            try {
-                var form = WarehouseFormFactory.getCreateLocationNameElementForm();
-                
-                form.setWarehouseName(warehouseName);
-                form.setLocationTypeName(locationTypeName);
-                form.set(getAttrsMap(attrs));
-                
-                warehouseService.createLocationNameElement(initialDataParser.getUserVisit(), form);
-                
-                initialDataParser.pushHandler(new LocationNameElementHandler(initialDataParser, this, warehouseName,
-                locationTypeName, form.getLocationNameElementName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = WarehouseFormFactory.getCreateLocationNameElementForm();
+
+            form.setWarehouseName(warehouseName);
+            form.setLocationTypeName(locationTypeName);
+            form.set(getAttrsMap(attrs));
+
+            warehouseService.createLocationNameElement(initialDataParser.getUserVisit(), form);
+
+            initialDataParser.pushHandler(new LocationNameElementHandler(initialDataParser, this, warehouseName,
+            locationTypeName, form.getLocationNameElementName()));
         }
     }
     

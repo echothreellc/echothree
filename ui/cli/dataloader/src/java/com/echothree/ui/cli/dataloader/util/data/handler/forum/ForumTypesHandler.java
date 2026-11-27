@@ -46,15 +46,11 @@ public class ForumTypesHandler
         if(localName.equals("forumType")) {
             var forumTypeName = attrs.getValue("forumTypeName");
 
-            try {
-                var form = ForumFormFactory.getCreateForumTypeForm();
-                
-                form.set(getAttrsMap(attrs));
-                
-                forumService.createForumType(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = ForumFormFactory.getCreateForumTypeForm();
+
+            form.set(getAttrsMap(attrs));
+
+            forumService.createForumType(initialDataParser.getUserVisit(), form);
             
             initialDataParser.pushHandler(new ForumTypeHandler(initialDataParser, this, forumTypeName));
         }

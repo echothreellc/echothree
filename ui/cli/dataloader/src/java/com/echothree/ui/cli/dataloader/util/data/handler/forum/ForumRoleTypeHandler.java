@@ -47,16 +47,12 @@ public class ForumRoleTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("forumRoleTypeDescription")) {
-            try {
-                var form = ForumFormFactory.getCreateForumRoleTypeDescriptionForm();
-                
-                form.setForumRoleTypeName(forumRoleTypeName);
-                form.set(getAttrsMap(attrs));
-                
-                forumService.createForumRoleTypeDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = ForumFormFactory.getCreateForumRoleTypeDescriptionForm();
+
+            form.setForumRoleTypeName(forumRoleTypeName);
+            form.set(getAttrsMap(attrs));
+
+            forumService.createForumRoleTypeDescription(initialDataParser.getUserVisit(), form);
         }
     }
     

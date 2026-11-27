@@ -44,17 +44,13 @@ public class ReturnKindsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("returnKind")) {
-            try {
-                var commandForm = ReturnPolicyFormFactory.getCreateReturnKindForm();
-                
-                commandForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(returnPolicyService.createReturnKind(initialDataParser.getUserVisit(), commandForm));
-                
-                initialDataParser.pushHandler(new ReturnKindHandler(initialDataParser, this, commandForm.getReturnKindName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = ReturnPolicyFormFactory.getCreateReturnKindForm();
+
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(returnPolicyService.createReturnKind(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new ReturnKindHandler(initialDataParser, this, commandForm.getReturnKindName()));
         }
     }
     

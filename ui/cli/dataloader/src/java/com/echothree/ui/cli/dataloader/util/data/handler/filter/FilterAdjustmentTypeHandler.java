@@ -47,16 +47,12 @@ public class FilterAdjustmentTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("filterAdjustmentTypeDescription")) {
-            try {
-                var commandForm = FilterFormFactory.getCreateFilterAdjustmentTypeDescriptionForm();
-                
-                commandForm.setFilterAdjustmentTypeName(filterAdjustmentTypeName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                filterService.createFilterAdjustmentTypeDescription(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = FilterFormFactory.getCreateFilterAdjustmentTypeDescriptionForm();
+
+            commandForm.setFilterAdjustmentTypeName(filterAdjustmentTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            filterService.createFilterAdjustmentTypeDescription(initialDataParser.getUserVisit(), commandForm);
         }
     }
     

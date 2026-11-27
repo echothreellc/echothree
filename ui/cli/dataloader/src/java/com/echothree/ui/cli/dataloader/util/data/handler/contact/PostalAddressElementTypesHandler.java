@@ -44,17 +44,13 @@ public class PostalAddressElementTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("postalAddressElementType")) {
-            try {
-                var form = ContactFormFactory.getCreatePostalAddressElementTypeForm();
-                
-                form.set(getAttrsMap(attrs));
-                
-                contactService.createPostalAddressElementType(initialDataParser.getUserVisit(), form);
-                
-                initialDataParser.pushHandler(new PostalAddressElementTypeHandler(initialDataParser, this, form.getPostalAddressElementTypeName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = ContactFormFactory.getCreatePostalAddressElementTypeForm();
+
+            form.set(getAttrsMap(attrs));
+
+            contactService.createPostalAddressElementType(initialDataParser.getUserVisit(), form);
+
+            initialDataParser.pushHandler(new PostalAddressElementTypeHandler(initialDataParser, this, form.getPostalAddressElementTypeName()));
         }
     }
     

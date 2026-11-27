@@ -46,16 +46,12 @@ public class GeoCodeScopeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("geoCodeScopeDescription")) {
-            try {
-                var createGeoCodeScopeDescriptionForm = GeoFormFactory.getCreateGeoCodeScopeDescriptionForm();
-                
-                createGeoCodeScopeDescriptionForm.setGeoCodeScopeName(geoCodeScopeName);
-                createGeoCodeScopeDescriptionForm.set(getAttrsMap(attrs));
-                
-                geoService.createGeoCodeScopeDescription(initialDataParser.getUserVisit(), createGeoCodeScopeDescriptionForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var createGeoCodeScopeDescriptionForm = GeoFormFactory.getCreateGeoCodeScopeDescriptionForm();
+
+            createGeoCodeScopeDescriptionForm.setGeoCodeScopeName(geoCodeScopeName);
+            createGeoCodeScopeDescriptionForm.set(getAttrsMap(attrs));
+
+            geoService.createGeoCodeScopeDescription(initialDataParser.getUserVisit(), createGeoCodeScopeDescriptionForm);
         }
     }
     

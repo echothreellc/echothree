@@ -49,17 +49,13 @@ public class ComponentHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("componentVersion")) {
-            try {
-                var createComponentVersionForm = CoreFormFactory.getCreateComponentVersionForm();
-                
-                createComponentVersionForm.setComponentVendorName(componentVendorName);
-                createComponentVersionForm.setComponentName(componentName);
-                createComponentVersionForm.set(getAttrsMap(attrs));
-                
-                coreService.createComponentVersion(initialDataParser.getUserVisit(), createComponentVersionForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var createComponentVersionForm = CoreFormFactory.getCreateComponentVersionForm();
+
+            createComponentVersionForm.setComponentVendorName(componentVendorName);
+            createComponentVersionForm.setComponentName(componentName);
+            createComponentVersionForm.set(getAttrsMap(attrs));
+
+            coreService.createComponentVersion(initialDataParser.getUserVisit(), createComponentVersionForm);
         }
     }
     

@@ -48,17 +48,13 @@ public class GeoCodeAliasTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("geoCodeAliasTypeDescription")) {
-            try {
-                var createGeoCodeAliasTypeDescriptionForm = GeoFormFactory.getCreateGeoCodeAliasTypeDescriptionForm();
-                
-                createGeoCodeAliasTypeDescriptionForm.setGeoCodeTypeName(geoCodeTypeName);
-                createGeoCodeAliasTypeDescriptionForm.setGeoCodeAliasTypeName(geoCodeAliasTypeName);
-                createGeoCodeAliasTypeDescriptionForm.set(getAttrsMap(attrs));
-                
-                geoService.createGeoCodeAliasTypeDescription(initialDataParser.getUserVisit(), createGeoCodeAliasTypeDescriptionForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var createGeoCodeAliasTypeDescriptionForm = GeoFormFactory.getCreateGeoCodeAliasTypeDescriptionForm();
+
+            createGeoCodeAliasTypeDescriptionForm.setGeoCodeTypeName(geoCodeTypeName);
+            createGeoCodeAliasTypeDescriptionForm.setGeoCodeAliasTypeName(geoCodeAliasTypeName);
+            createGeoCodeAliasTypeDescriptionForm.set(getAttrsMap(attrs));
+
+            geoService.createGeoCodeAliasTypeDescription(initialDataParser.getUserVisit(), createGeoCodeAliasTypeDescriptionForm);
         }
     }
     

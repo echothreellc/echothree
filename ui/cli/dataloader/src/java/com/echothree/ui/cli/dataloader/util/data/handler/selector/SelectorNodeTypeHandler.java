@@ -47,16 +47,12 @@ public class SelectorNodeTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("selectorNodeTypeDescription")) {
-            try {
-                var createSelectorNodeTypeDescriptionForm = SelectorFormFactory.getCreateSelectorNodeTypeDescriptionForm();
-                
-                createSelectorNodeTypeDescriptionForm.setSelectorNodeTypeName(selectorNodeTypeName);
-                createSelectorNodeTypeDescriptionForm.set(getAttrsMap(attrs));
-                
-                selectorService.createSelectorNodeTypeDescription(initialDataParser.getUserVisit(), createSelectorNodeTypeDescriptionForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var createSelectorNodeTypeDescriptionForm = SelectorFormFactory.getCreateSelectorNodeTypeDescriptionForm();
+
+            createSelectorNodeTypeDescriptionForm.setSelectorNodeTypeName(selectorNodeTypeName);
+            createSelectorNodeTypeDescriptionForm.set(getAttrsMap(attrs));
+
+            selectorService.createSelectorNodeTypeDescription(initialDataParser.getUserVisit(), createSelectorNodeTypeDescriptionForm);
         }
     }
     

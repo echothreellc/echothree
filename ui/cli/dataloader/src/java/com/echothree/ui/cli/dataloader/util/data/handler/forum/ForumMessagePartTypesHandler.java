@@ -46,15 +46,11 @@ public class ForumMessagePartTypesHandler
         if(localName.equals("forumMessagePartType")) {
             var forumMessagePartTypeName = attrs.getValue("forumMessagePartTypeName");
 
-            try {
-                var form = ForumFormFactory.getCreateForumMessagePartTypeForm();
-                
-                form.set(getAttrsMap(attrs));
-                
-                forumService.createForumMessagePartType(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = ForumFormFactory.getCreateForumMessagePartTypeForm();
+
+            form.set(getAttrsMap(attrs));
+
+            forumService.createForumMessagePartType(initialDataParser.getUserVisit(), form);
             
             initialDataParser.pushHandler(new ForumMessagePartTypeHandler(initialDataParser, this, forumMessagePartTypeName));
         }

@@ -52,34 +52,26 @@ public class CommentTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("commentTypeDescription")) {
-            try {
-                var commandForm = CommentFormFactory.getCreateCommentTypeDescriptionForm();
-                
-                commandForm.setComponentVendorName(componentVendorName);
-                commandForm.setEntityTypeName(entityTypeName);
-                commandForm.setCommentTypeName(commentTypeName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                commentService.createCommentTypeDescription(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = CommentFormFactory.getCreateCommentTypeDescriptionForm();
+
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+            commandForm.setCommentTypeName(commentTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            commentService.createCommentTypeDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("commentUsageType")) {
-            try {
-                var commandForm = CommentFormFactory.getCreateCommentUsageTypeForm();
-                
-                commandForm.setComponentVendorName(componentVendorName);
-                commandForm.setEntityTypeName(entityTypeName);
-                commandForm.setCommentTypeName(commentTypeName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                commentService.createCommentUsageType(initialDataParser.getUserVisit(), commandForm);
-                
-                initialDataParser.pushHandler(new CommentUsageTypeHandler(initialDataParser, this, componentVendorName,
-                        entityTypeName, commentTypeName, commandForm.getCommentUsageTypeName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = CommentFormFactory.getCreateCommentUsageTypeForm();
+
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+            commandForm.setCommentTypeName(commentTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            commentService.createCommentUsageType(initialDataParser.getUserVisit(), commandForm);
+
+            initialDataParser.pushHandler(new CommentUsageTypeHandler(initialDataParser, this, componentVendorName,
+                    entityTypeName, commentTypeName, commandForm.getCommentUsageTypeName()));
         }
     }
     

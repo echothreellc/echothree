@@ -47,55 +47,39 @@ public class ContentCollectionHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("contentCollectionDescription")) {
-            try {
-                var commandForm = ContentFormFactory.getCreateContentCollectionDescriptionForm();
-                
-                commandForm.setContentCollectionName(contentCollectionName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                contentService.createContentCollectionDescription(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = ContentFormFactory.getCreateContentCollectionDescriptionForm();
+
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.set(getAttrsMap(attrs));
+
+            contentService.createContentCollectionDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("contentSection")) {
-            try {
-                var commandForm = ContentFormFactory.getCreateContentSectionForm();
-                
-                commandForm.setContentCollectionName(contentCollectionName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                contentService.createContentSection(initialDataParser.getUserVisit(), commandForm);
-                
-                initialDataParser.pushHandler(new ContentSectionHandler(initialDataParser, this, contentCollectionName,
-                        commandForm.getContentSectionName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = ContentFormFactory.getCreateContentSectionForm();
+
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.set(getAttrsMap(attrs));
+
+            contentService.createContentSection(initialDataParser.getUserVisit(), commandForm);
+
+            initialDataParser.pushHandler(new ContentSectionHandler(initialDataParser, this, contentCollectionName,
+                    commandForm.getContentSectionName()));
         } else if(localName.equals("contentCatalog")) {
-            try {
-                var commandForm = ContentFormFactory.getCreateContentCatalogForm();
-                
-                commandForm.setContentCollectionName(contentCollectionName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                contentService.createContentCatalog(initialDataParser.getUserVisit(), commandForm);
-                
-                initialDataParser.pushHandler(new ContentCatalogHandler(initialDataParser, this, contentCollectionName,
-                        commandForm.getContentCatalogName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = ContentFormFactory.getCreateContentCatalogForm();
+
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.set(getAttrsMap(attrs));
+
+            contentService.createContentCatalog(initialDataParser.getUserVisit(), commandForm);
+
+            initialDataParser.pushHandler(new ContentCatalogHandler(initialDataParser, this, contentCollectionName,
+                    commandForm.getContentCatalogName()));
         } else if(localName.equals("contentForum")) {
-            try {
-                var commandForm = ContentFormFactory.getCreateContentForumForm();
-                
-                commandForm.setContentCollectionName(contentCollectionName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                contentService.createContentForum(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = ContentFormFactory.getCreateContentForumForm();
+
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.set(getAttrsMap(attrs));
+
+            contentService.createContentForum(initialDataParser.getUserVisit(), commandForm);
         }
     }
     

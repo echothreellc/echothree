@@ -49,17 +49,13 @@ public class WorkRequirementTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("workRequirementTypeDescription")) {
-            try {
-                var commandForm = WorkRequirementFormFactory.getCreateWorkRequirementTypeDescriptionForm();
-                
-                commandForm.setWorkEffortTypeName(workEffortTypeName);
-                commandForm.setWorkRequirementTypeName(workRequirementTypeName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                workRequirementService.createWorkRequirementTypeDescription(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = WorkRequirementFormFactory.getCreateWorkRequirementTypeDescriptionForm();
+
+            commandForm.setWorkEffortTypeName(workEffortTypeName);
+            commandForm.setWorkRequirementTypeName(workRequirementTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            workRequirementService.createWorkRequirementTypeDescription(initialDataParser.getUserVisit(), commandForm);
         }
     }
     

@@ -44,17 +44,13 @@ public class ClubItemTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("clubItemType")) {
-            try {
-                var commandForm = ClubFormFactory.getCreateClubItemTypeForm();
-                
-                commandForm.set(getAttrsMap(attrs));
-                
-                clubService.createClubItemType(initialDataParser.getUserVisit(), commandForm);
-                
-                initialDataParser.pushHandler(new ClubItemTypeHandler(initialDataParser, this, commandForm.getClubItemTypeName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = ClubFormFactory.getCreateClubItemTypeForm();
+
+            commandForm.set(getAttrsMap(attrs));
+
+            clubService.createClubItemType(initialDataParser.getUserVisit(), commandForm);
+
+            initialDataParser.pushHandler(new ClubItemTypeHandler(initialDataParser, this, commandForm.getClubItemTypeName()));
         }
     }
     

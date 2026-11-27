@@ -44,18 +44,14 @@ public class FilterAdjustmentSourcesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("filterAdjustmentSource")) {
-            try {
-                var commandForm = FilterFormFactory.getCreateFilterAdjustmentSourceForm();
-                
-                commandForm.set(getAttrsMap(attrs));
-                
-                filterService.createFilterAdjustmentSource(initialDataParser.getUserVisit(), commandForm);
-                
-                initialDataParser.pushHandler(new FilterAdjustmentSourceHandler(initialDataParser, this,
-                        commandForm.getFilterAdjustmentSourceName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = FilterFormFactory.getCreateFilterAdjustmentSourceForm();
+
+            commandForm.set(getAttrsMap(attrs));
+
+            filterService.createFilterAdjustmentSource(initialDataParser.getUserVisit(), commandForm);
+
+            initialDataParser.pushHandler(new FilterAdjustmentSourceHandler(initialDataParser, this,
+                    commandForm.getFilterAdjustmentSourceName()));
         }
     }
     

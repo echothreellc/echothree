@@ -58,18 +58,14 @@ public class MessageTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("messageTypeDescription")) {
-            try {
-                var commandForm = MessageFormFactory.getCreateMessageTypeDescriptionForm();
-                
-                commandForm.setComponentVendorName(componentVendorName);
-                commandForm.setEntityTypeName(entityTypeName);
-                commandForm.setMessageTypeName(messageTypeName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                messageService.createMessageTypeDescription(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = MessageFormFactory.getCreateMessageTypeDescriptionForm();
+
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+            commandForm.setMessageTypeName(messageTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            messageService.createMessageTypeDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("message")) {
             messageAttrs = getAttrsMap(attrs);
             messageAttrs.keySet().removeAll(Set.of("ComponentVendorName", "EntityTypeName", "MessageTypeName", "ClobMessage", "Description"));

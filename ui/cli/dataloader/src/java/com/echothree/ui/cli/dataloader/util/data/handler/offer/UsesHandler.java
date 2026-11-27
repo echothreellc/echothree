@@ -44,17 +44,13 @@ public class UsesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("use")) {
-            try {
-                var form = OfferFormFactory.getCreateUseForm();
-                
-                form.set(getAttrsMap(attrs));
-                
-                offerService.createUse(initialDataParser.getUserVisit(), form);
-                
-                initialDataParser.pushHandler(new UseHandler(initialDataParser, this, form.getUseName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = OfferFormFactory.getCreateUseForm();
+
+            form.set(getAttrsMap(attrs));
+
+            offerService.createUse(initialDataParser.getUserVisit(), form);
+
+            initialDataParser.pushHandler(new UseHandler(initialDataParser, this, form.getUseName()));
         }
     }
     

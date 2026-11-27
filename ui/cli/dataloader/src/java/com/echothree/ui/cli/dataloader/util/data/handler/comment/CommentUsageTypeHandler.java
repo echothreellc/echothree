@@ -55,19 +55,15 @@ public class CommentUsageTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("commentUsageTypeDescription")) {
-            try {
-                var form = CommentFormFactory.getCreateCommentUsageTypeDescriptionForm();
-                
-                form.setComponentVendorName(componentVendorName);
-                form.setEntityTypeName(entityTypeName);
-                form.setCommentTypeName(commentTypeName);
-                form.setCommentUsageTypeName(commentUsageTypeName);
-                form.set(getAttrsMap(attrs));
-                
-                commentService.createCommentUsageTypeDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = CommentFormFactory.getCreateCommentUsageTypeDescriptionForm();
+
+            form.setComponentVendorName(componentVendorName);
+            form.setEntityTypeName(entityTypeName);
+            form.setCommentTypeName(commentTypeName);
+            form.setCommentUsageTypeName(commentUsageTypeName);
+            form.set(getAttrsMap(attrs));
+
+            commentService.createCommentUsageTypeDescription(initialDataParser.getUserVisit(), form);
         }
     }
     

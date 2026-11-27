@@ -44,17 +44,13 @@ public class SelectorNodeTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("selectorNodeType")) {
-            try {
-                var commandForm = SelectorFormFactory.getCreateSelectorNodeTypeForm();
-                
-                commandForm.set(getAttrsMap(attrs));
-                
-                selectorService.createSelectorNodeType(initialDataParser.getUserVisit(), commandForm);
-                
-                initialDataParser.pushHandler(new SelectorNodeTypeHandler(initialDataParser, this, commandForm.getSelectorNodeTypeName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = SelectorFormFactory.getCreateSelectorNodeTypeForm();
+
+            commandForm.set(getAttrsMap(attrs));
+
+            selectorService.createSelectorNodeType(initialDataParser.getUserVisit(), commandForm);
+
+            initialDataParser.pushHandler(new SelectorNodeTypeHandler(initialDataParser, this, commandForm.getSelectorNodeTypeName()));
         }
     }
     

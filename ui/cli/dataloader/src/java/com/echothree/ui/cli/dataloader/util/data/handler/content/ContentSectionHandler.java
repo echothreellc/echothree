@@ -49,32 +49,24 @@ public class ContentSectionHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("contentSectionDescription")) {
-            try {
-                var createContentSectionDescriptionForm = ContentFormFactory.getCreateContentSectionDescriptionForm();
-                
-                createContentSectionDescriptionForm.setContentCollectionName(contentCollectionName);
-                createContentSectionDescriptionForm.setContentSectionName(contentSectionName);
-                createContentSectionDescriptionForm.set(getAttrsMap(attrs));
-                
-                contentService.createContentSectionDescription(initialDataParser.getUserVisit(), createContentSectionDescriptionForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var createContentSectionDescriptionForm = ContentFormFactory.getCreateContentSectionDescriptionForm();
+
+            createContentSectionDescriptionForm.setContentCollectionName(contentCollectionName);
+            createContentSectionDescriptionForm.setContentSectionName(contentSectionName);
+            createContentSectionDescriptionForm.set(getAttrsMap(attrs));
+
+            contentService.createContentSectionDescription(initialDataParser.getUserVisit(), createContentSectionDescriptionForm);
         } else if(localName.equals("contentPage")) {
-            try {
-                var createContentPageForm = ContentFormFactory.getCreateContentPageForm();
-                
-                createContentPageForm.setContentCollectionName(contentCollectionName);
-                createContentPageForm.setContentSectionName(contentSectionName);
-                createContentPageForm.set(getAttrsMap(attrs));
-                
-                contentService.createContentPage(initialDataParser.getUserVisit(), createContentPageForm);
-                
-                initialDataParser.pushHandler(new ContentPageHandler(initialDataParser, this, contentCollectionName,
-                        contentSectionName, createContentPageForm.getContentPageName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var createContentPageForm = ContentFormFactory.getCreateContentPageForm();
+
+            createContentPageForm.setContentCollectionName(contentCollectionName);
+            createContentPageForm.setContentSectionName(contentSectionName);
+            createContentPageForm.set(getAttrsMap(attrs));
+
+            contentService.createContentPage(initialDataParser.getUserVisit(), createContentPageForm);
+
+            initialDataParser.pushHandler(new ContentPageHandler(initialDataParser, this, contentCollectionName,
+                    contentSectionName, createContentPageForm.getContentPageName()));
         }
     }
     

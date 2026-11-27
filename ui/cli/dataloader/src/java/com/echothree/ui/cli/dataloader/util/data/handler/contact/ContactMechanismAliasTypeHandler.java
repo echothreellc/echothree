@@ -47,16 +47,12 @@ public class ContactMechanismAliasTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("contactMechanismAliasTypeDescription")) {
-            try {
-                var createContactMechanismAliasTypeDescriptionForm = ContactFormFactory.getCreateContactMechanismAliasTypeDescriptionForm();
-                
-                createContactMechanismAliasTypeDescriptionForm.setContactMechanismAliasTypeName(contactMechanismAliasTypeName);
-                createContactMechanismAliasTypeDescriptionForm.set(getAttrsMap(attrs));
-                
-                contactService.createContactMechanismAliasTypeDescription(initialDataParser.getUserVisit(), createContactMechanismAliasTypeDescriptionForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var createContactMechanismAliasTypeDescriptionForm = ContactFormFactory.getCreateContactMechanismAliasTypeDescriptionForm();
+
+            createContactMechanismAliasTypeDescriptionForm.setContactMechanismAliasTypeName(contactMechanismAliasTypeName);
+            createContactMechanismAliasTypeDescriptionForm.set(getAttrsMap(attrs));
+
+            contactService.createContactMechanismAliasTypeDescription(initialDataParser.getUserVisit(), createContactMechanismAliasTypeDescriptionForm);
         }
     }
     

@@ -47,27 +47,19 @@ public class ShippingMethodHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("shippingMethodDescription")) {
-            try {
-                var commandForm = ShippingFormFactory.getCreateShippingMethodDescriptionForm();
-                
-                commandForm.setShippingMethodName(shippingMethodName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(shippingService.createShippingMethodDescription(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = ShippingFormFactory.getCreateShippingMethodDescriptionForm();
+
+            commandForm.setShippingMethodName(shippingMethodName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(shippingService.createShippingMethodDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("shippingMethodCarrierService")) {
-            try {
-                var commandForm = ShippingFormFactory.getCreateShippingMethodCarrierServiceForm();
-                
-                commandForm.setShippingMethodName(shippingMethodName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(shippingService.createShippingMethodCarrierService(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = ShippingFormFactory.getCreateShippingMethodCarrierServiceForm();
+
+            commandForm.setShippingMethodName(shippingMethodName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(shippingService.createShippingMethodCarrierService(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

@@ -49,29 +49,21 @@ public class CancellationReasonHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("cancellationReasonDescription")) {
-            try {
-                var commandForm = CancellationPolicyFormFactory.getCreateCancellationReasonDescriptionForm();
-                
-                commandForm.setCancellationKindName(cancellationKindName);
-                commandForm.setCancellationReasonName(cancellationReasonName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(cancellationPolicyService.createCancellationReasonDescription(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = CancellationPolicyFormFactory.getCreateCancellationReasonDescriptionForm();
+
+            commandForm.setCancellationKindName(cancellationKindName);
+            commandForm.setCancellationReasonName(cancellationReasonName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(cancellationPolicyService.createCancellationReasonDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("cancellationPolicyReason")) {
-            try {
-                var commandForm = CancellationPolicyFormFactory.getCreateCancellationPolicyReasonForm();
-                
-                commandForm.setCancellationKindName(cancellationKindName);
-                commandForm.setCancellationReasonName(cancellationReasonName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(cancellationPolicyService.createCancellationPolicyReason(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = CancellationPolicyFormFactory.getCreateCancellationPolicyReasonForm();
+
+            commandForm.setCancellationKindName(cancellationKindName);
+            commandForm.setCancellationReasonName(cancellationReasonName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(cancellationPolicyService.createCancellationPolicyReason(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

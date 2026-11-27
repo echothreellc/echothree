@@ -44,17 +44,13 @@ public class ResponsibilityTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("responsibilityType")) {
-            try {
-                var form = EmployeeFormFactory.getCreateResponsibilityTypeForm();
-                
-                form.set(getAttrsMap(attrs));
-                
-                employeeService.createResponsibilityType(initialDataParser.getUserVisit(), form);
-                
-                initialDataParser.pushHandler(new ResponsibilityTypeHandler(initialDataParser, this, form.getResponsibilityTypeName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = EmployeeFormFactory.getCreateResponsibilityTypeForm();
+
+            form.set(getAttrsMap(attrs));
+
+            employeeService.createResponsibilityType(initialDataParser.getUserVisit(), form);
+
+            initialDataParser.pushHandler(new ResponsibilityTypeHandler(initialDataParser, this, form.getResponsibilityTypeName()));
         }
     }
     

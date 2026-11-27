@@ -47,16 +47,12 @@ public class UseNameElementHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("useNameElementDescription")) {
-            try {
-                var form = OfferFormFactory.getCreateUseNameElementDescriptionForm();
-                
-                form.setUseNameElementName(useNameElementName);
-                form.set(getAttrsMap(attrs));
-                
-                offerService.createUseNameElementDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = OfferFormFactory.getCreateUseNameElementDescriptionForm();
+
+            form.setUseNameElementName(useNameElementName);
+            form.set(getAttrsMap(attrs));
+
+            offerService.createUseNameElementDescription(initialDataParser.getUserVisit(), form);
         }
     }
     

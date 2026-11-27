@@ -54,19 +54,15 @@ public class SelectorNodeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("selectorNodeDescription")) {
-            try {
-                var form = SelectorFormFactory.getCreateSelectorNodeDescriptionForm();
-                
-                form.setSelectorKindName(selectorKindName);
-                form.setSelectorTypeName(selectorTypeName);
-                form.setSelectorName(selectorName);
-                form.setSelectorNodeName(selectorNodeName);
-                form.set(getAttrsMap(attrs));
-                
-                selectorService.createSelectorNodeDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = SelectorFormFactory.getCreateSelectorNodeDescriptionForm();
+
+            form.setSelectorKindName(selectorKindName);
+            form.setSelectorTypeName(selectorTypeName);
+            form.setSelectorName(selectorName);
+            form.setSelectorNodeName(selectorNodeName);
+            form.set(getAttrsMap(attrs));
+
+            selectorService.createSelectorNodeDescription(initialDataParser.getUserVisit(), form);
         }
     }
     

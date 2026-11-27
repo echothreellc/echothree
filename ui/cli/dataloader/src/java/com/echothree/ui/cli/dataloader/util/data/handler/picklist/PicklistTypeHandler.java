@@ -47,16 +47,12 @@ public class PicklistTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("picklistTypeDescription")) {
-            try {
-                var createPicklistTypeDescriptionForm = PicklistFormFactory.getCreatePicklistTypeDescriptionForm();
-                
-                createPicklistTypeDescriptionForm.setPicklistTypeName(picklistTypeName);
-                createPicklistTypeDescriptionForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(picklistService.createPicklistTypeDescription(initialDataParser.getUserVisit(), createPicklistTypeDescriptionForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var createPicklistTypeDescriptionForm = PicklistFormFactory.getCreatePicklistTypeDescriptionForm();
+
+            createPicklistTypeDescriptionForm.setPicklistTypeName(picklistTypeName);
+            createPicklistTypeDescriptionForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(picklistService.createPicklistTypeDescription(initialDataParser.getUserVisit(), createPicklistTypeDescriptionForm));
         } else if(localName.equals("picklistTimeType")) {
             var commandForm = PicklistFormFactory.getCreatePicklistTimeTypeForm();
 
@@ -67,19 +63,15 @@ public class PicklistTypeHandler
 
             initialDataParser.pushHandler(new PicklistTimeTypeHandler(initialDataParser, this, picklistTypeName, commandForm.getPicklistTimeTypeName()));
         } else if(localName.equals("picklistAliasType")) {
-            try {
-                var createPicklistAliasTypeForm = PicklistFormFactory.getCreatePicklistAliasTypeForm();
-                
-                createPicklistAliasTypeForm.setPicklistTypeName(picklistTypeName);
-                createPicklistAliasTypeForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(picklistService.createPicklistAliasType(initialDataParser.getUserVisit(), createPicklistAliasTypeForm));
-                
-                initialDataParser.pushHandler(new PicklistAliasTypeHandler(initialDataParser, this, picklistTypeName,
-                        createPicklistAliasTypeForm.getPicklistAliasTypeName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var createPicklistAliasTypeForm = PicklistFormFactory.getCreatePicklistAliasTypeForm();
+
+            createPicklistAliasTypeForm.setPicklistTypeName(picklistTypeName);
+            createPicklistAliasTypeForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(picklistService.createPicklistAliasType(initialDataParser.getUserVisit(), createPicklistAliasTypeForm));
+
+            initialDataParser.pushHandler(new PicklistAliasTypeHandler(initialDataParser, this, picklistTypeName,
+                    createPicklistAliasTypeForm.getPicklistAliasTypeName()));
         }
     }
     

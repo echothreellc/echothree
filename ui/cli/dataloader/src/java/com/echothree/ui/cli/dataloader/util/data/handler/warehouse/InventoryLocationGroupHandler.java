@@ -50,41 +50,29 @@ public class InventoryLocationGroupHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("inventoryLocationGroupDescription")) {
-            try {
-                var form = InventoryFormFactory.getCreateInventoryLocationGroupDescriptionForm();
-                
-                form.setWarehouseName(warehouseName);
-                form.setInventoryLocationGroupName(inventoryLocationGroupName);
-                form.set(getAttrsMap(attrs));
-                
-                inventoryService.createInventoryLocationGroupDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = InventoryFormFactory.getCreateInventoryLocationGroupDescriptionForm();
+
+            form.setWarehouseName(warehouseName);
+            form.setInventoryLocationGroupName(inventoryLocationGroupName);
+            form.set(getAttrsMap(attrs));
+
+            inventoryService.createInventoryLocationGroupDescription(initialDataParser.getUserVisit(), form);
         } else if(localName.equals("inventoryLocationGroupVolume")) {
-            try {
-                var form = InventoryFormFactory.getCreateInventoryLocationGroupVolumeForm();
-                
-                form.setWarehouseName(warehouseName);
-                form.setInventoryLocationGroupName(inventoryLocationGroupName);
-                form.set(getAttrsMap(attrs));
-                
-                inventoryService.createInventoryLocationGroupVolume(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = InventoryFormFactory.getCreateInventoryLocationGroupVolumeForm();
+
+            form.setWarehouseName(warehouseName);
+            form.setInventoryLocationGroupName(inventoryLocationGroupName);
+            form.set(getAttrsMap(attrs));
+
+            inventoryService.createInventoryLocationGroupVolume(initialDataParser.getUserVisit(), form);
         } else if(localName.equals("inventoryLocationGroupCapacity")) {
-            try {
-                var form = InventoryFormFactory.getCreateInventoryLocationGroupCapacityForm();
-                
-                form.setWarehouseName(warehouseName);
-                form.setInventoryLocationGroupName(inventoryLocationGroupName);
-                form.set(getAttrsMap(attrs));
-                
-                inventoryService.createInventoryLocationGroupCapacity(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = InventoryFormFactory.getCreateInventoryLocationGroupCapacityForm();
+
+            form.setWarehouseName(warehouseName);
+            form.setInventoryLocationGroupName(inventoryLocationGroupName);
+            form.set(getAttrsMap(attrs));
+
+            inventoryService.createInventoryLocationGroupCapacity(initialDataParser.getUserVisit(), form);
         }
     }
     

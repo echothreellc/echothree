@@ -46,30 +46,22 @@ public class GeoCodeTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("geoCodeTypeDescription")) {
-            try {
-                var form = GeoFormFactory.getCreateGeoCodeTypeDescriptionForm();
-                
-                form.setGeoCodeTypeName(geoCodeTypeName);
-                form.set(getAttrsMap(attrs));
-                
-                geoService.createGeoCodeTypeDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = GeoFormFactory.getCreateGeoCodeTypeDescriptionForm();
+
+            form.setGeoCodeTypeName(geoCodeTypeName);
+            form.set(getAttrsMap(attrs));
+
+            geoService.createGeoCodeTypeDescription(initialDataParser.getUserVisit(), form);
         } else if(localName.equals("geoCodeAliasType")) {
-            try {
-                var form = GeoFormFactory.getCreateGeoCodeAliasTypeForm();
-                
-                form.setGeoCodeTypeName(geoCodeTypeName);
-                form.set(getAttrsMap(attrs));
-                
-                geoService.createGeoCodeAliasType(initialDataParser.getUserVisit(), form);
-                
-                initialDataParser.pushHandler(new GeoCodeAliasTypeHandler(initialDataParser, this, geoCodeTypeName,
-                        form.getGeoCodeAliasTypeName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = GeoFormFactory.getCreateGeoCodeAliasTypeForm();
+
+            form.setGeoCodeTypeName(geoCodeTypeName);
+            form.set(getAttrsMap(attrs));
+
+            geoService.createGeoCodeAliasType(initialDataParser.getUserVisit(), form);
+
+            initialDataParser.pushHandler(new GeoCodeAliasTypeHandler(initialDataParser, this, geoCodeTypeName,
+                    form.getGeoCodeAliasTypeName()));
         }
     }
     

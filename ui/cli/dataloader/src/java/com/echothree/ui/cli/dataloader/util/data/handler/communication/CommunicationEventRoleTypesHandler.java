@@ -44,18 +44,14 @@ public class CommunicationEventRoleTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("communicationEventRoleType")) {
-            try {
-                var form = CommunicationFormFactory.getCreateCommunicationEventRoleTypeForm();
-                
-                form.set(getAttrsMap(attrs));
-                
-                communicationService.createCommunicationEventRoleType(initialDataParser.getUserVisit(), form);
-                
-                initialDataParser.pushHandler(new CommunicationEventRoleTypeHandler(initialDataParser, this,
-                        form.getCommunicationEventRoleTypeName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = CommunicationFormFactory.getCreateCommunicationEventRoleTypeForm();
+
+            form.set(getAttrsMap(attrs));
+
+            communicationService.createCommunicationEventRoleType(initialDataParser.getUserVisit(), form);
+
+            initialDataParser.pushHandler(new CommunicationEventRoleTypeHandler(initialDataParser, this,
+                    form.getCommunicationEventRoleTypeName()));
         }
     }
     

@@ -47,16 +47,12 @@ public class InventoryConditionUseTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("inventoryConditionUseTypeDescription")) {
-            try {
-                var commandForm = InventoryFormFactory.getCreateInventoryConditionUseTypeDescriptionForm();
-                
-                commandForm.setInventoryConditionUseTypeName(inventoryConditionUseTypeName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(inventoryService.createInventoryConditionUseTypeDescription(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = InventoryFormFactory.getCreateInventoryConditionUseTypeDescriptionForm();
+
+            commandForm.setInventoryConditionUseTypeName(inventoryConditionUseTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(inventoryService.createInventoryConditionUseTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

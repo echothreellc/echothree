@@ -58,18 +58,14 @@ public class ContentPageHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("contentPageDescription")) {
-            try {
-                var createContentPageDescriptionForm = ContentFormFactory.getCreateContentPageDescriptionForm();
-                
-                createContentPageDescriptionForm.setContentCollectionName(contentCollectionName);
-                createContentPageDescriptionForm.setContentSectionName(contentSectionName);
-                createContentPageDescriptionForm.setContentPageName(contentPageName);
-                createContentPageDescriptionForm.set(getAttrsMap(attrs));
-                
-                contentService.createContentPageDescription(initialDataParser.getUserVisit(), createContentPageDescriptionForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var createContentPageDescriptionForm = ContentFormFactory.getCreateContentPageDescriptionForm();
+
+            createContentPageDescriptionForm.setContentCollectionName(contentCollectionName);
+            createContentPageDescriptionForm.setContentSectionName(contentSectionName);
+            createContentPageDescriptionForm.setContentPageName(contentPageName);
+            createContentPageDescriptionForm.set(getAttrsMap(attrs));
+
+            contentService.createContentPageDescription(initialDataParser.getUserVisit(), createContentPageDescriptionForm);
         } else if(localName.equals("contentPageArea")) {
             contentPageAreaAttrs = getAttrsMap(attrs);
             contentPageAreaAttrs.keySet().removeAll(Set.of("ContentCollectionName", "ContentSectionName", "ContentPageName", "ContentPageAreaClob"));

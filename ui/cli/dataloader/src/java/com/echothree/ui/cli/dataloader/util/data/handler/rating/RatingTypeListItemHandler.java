@@ -54,19 +54,15 @@ public class RatingTypeListItemHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("ratingTypeListItemDescription")) {
-            try {
-                var createRatingTypeListItemDescriptionForm = RatingFormFactory.getCreateRatingTypeListItemDescriptionForm();
-                
-                createRatingTypeListItemDescriptionForm.setComponentVendorName(componentVendorName);
-                createRatingTypeListItemDescriptionForm.setEntityTypeName(entityTypeName);
-                createRatingTypeListItemDescriptionForm.setRatingTypeName(ratingTypeName);
-                createRatingTypeListItemDescriptionForm.setRatingTypeListItemName(ratingTypeListItemName);
-                createRatingTypeListItemDescriptionForm.set(getAttrsMap(attrs));
-                
-                ratingService.createRatingTypeListItemDescription(initialDataParser.getUserVisit(), createRatingTypeListItemDescriptionForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var createRatingTypeListItemDescriptionForm = RatingFormFactory.getCreateRatingTypeListItemDescriptionForm();
+
+            createRatingTypeListItemDescriptionForm.setComponentVendorName(componentVendorName);
+            createRatingTypeListItemDescriptionForm.setEntityTypeName(entityTypeName);
+            createRatingTypeListItemDescriptionForm.setRatingTypeName(ratingTypeName);
+            createRatingTypeListItemDescriptionForm.setRatingTypeListItemName(ratingTypeListItemName);
+            createRatingTypeListItemDescriptionForm.set(getAttrsMap(attrs));
+
+            ratingService.createRatingTypeListItemDescription(initialDataParser.getUserVisit(), createRatingTypeListItemDescriptionForm);
         }
     }
     

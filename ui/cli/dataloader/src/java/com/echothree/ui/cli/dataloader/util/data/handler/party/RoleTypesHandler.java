@@ -46,15 +46,11 @@ public class RoleTypesHandler
         if(localName.equals("roleType")) {
             var roleTypeName = attrs.getValue("roleTypeName");
 
-            try {
-                var createRoleTypeForm = PartyFormFactory.getCreateRoleTypeForm();
-                
-                createRoleTypeForm.set(getAttrsMap(attrs));
-                
-                partyService.createRoleType(initialDataParser.getUserVisit(), createRoleTypeForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var createRoleTypeForm = PartyFormFactory.getCreateRoleTypeForm();
+
+            createRoleTypeForm.set(getAttrsMap(attrs));
+
+            partyService.createRoleType(initialDataParser.getUserVisit(), createRoleTypeForm);
             
             initialDataParser.pushHandler(new RoleTypeHandler(initialDataParser, this, roleTypeName));
         }

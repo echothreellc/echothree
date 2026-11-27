@@ -44,17 +44,13 @@ public class SkillTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("skillType")) {
-            try {
-                var form = EmployeeFormFactory.getCreateSkillTypeForm();
-                
-                form.set(getAttrsMap(attrs));
-                
-                employeeService.createSkillType(initialDataParser.getUserVisit(), form);
-                
-                initialDataParser.pushHandler(new SkillTypeHandler(initialDataParser, this, form.getSkillTypeName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = EmployeeFormFactory.getCreateSkillTypeForm();
+
+            form.set(getAttrsMap(attrs));
+
+            employeeService.createSkillType(initialDataParser.getUserVisit(), form);
+
+            initialDataParser.pushHandler(new SkillTypeHandler(initialDataParser, this, form.getSkillTypeName()));
         }
     }
     

@@ -44,17 +44,13 @@ public class GeoCodeScopesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("geoCodeScope")) {
-            try {
-                var createGeoCodeScopeForm = GeoFormFactory.getCreateGeoCodeScopeForm();
-                
-                createGeoCodeScopeForm.set(getAttrsMap(attrs));
-                
-                geoService.createGeoCodeScope(initialDataParser.getUserVisit(), createGeoCodeScopeForm);
-                
-                initialDataParser.pushHandler(new GeoCodeScopeHandler(initialDataParser, this, createGeoCodeScopeForm.getGeoCodeScopeName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var createGeoCodeScopeForm = GeoFormFactory.getCreateGeoCodeScopeForm();
+
+            createGeoCodeScopeForm.set(getAttrsMap(attrs));
+
+            geoService.createGeoCodeScope(initialDataParser.getUserVisit(), createGeoCodeScopeForm);
+
+            initialDataParser.pushHandler(new GeoCodeScopeHandler(initialDataParser, this, createGeoCodeScopeForm.getGeoCodeScopeName()));
         }
     }
     

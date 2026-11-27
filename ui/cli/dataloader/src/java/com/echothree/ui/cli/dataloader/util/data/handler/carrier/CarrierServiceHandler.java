@@ -50,29 +50,21 @@ public class CarrierServiceHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("carrierServiceDescription")) {
-            try {
-                var commandForm = CarrierFormFactory.getCreateCarrierServiceDescriptionForm();
-                
-                commandForm.setCarrierName(carrierName);
-                commandForm.setCarrierServiceName(carrierServiceName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(carrierService.createCarrierServiceDescription(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = CarrierFormFactory.getCreateCarrierServiceDescriptionForm();
+
+            commandForm.setCarrierName(carrierName);
+            commandForm.setCarrierServiceName(carrierServiceName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(carrierService.createCarrierServiceDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("carrierServiceOption")) {
-            try {
-                var commandForm = CarrierFormFactory.getCreateCarrierServiceOptionForm();
-                
-                commandForm.setCarrierName(carrierName);
-                commandForm.setCarrierServiceName(carrierServiceName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(carrierService.createCarrierServiceOption(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = CarrierFormFactory.getCreateCarrierServiceOptionForm();
+
+            commandForm.setCarrierName(carrierName);
+            commandForm.setCarrierServiceName(carrierServiceName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(carrierService.createCarrierServiceOption(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

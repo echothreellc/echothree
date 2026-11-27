@@ -46,15 +46,11 @@ public class ContactMechanismPurposesHandler
         if(localName.equals("contactMechanismPurpose")) {
             var contactMechanismPurposeName = attrs.getValue("contactMechanismPurposeName");
 
-            try {
-                var form = ContactFormFactory.getCreateContactMechanismPurposeForm();
-                
-                form.set(getAttrsMap(attrs));
-                
-                contactService.createContactMechanismPurpose(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = ContactFormFactory.getCreateContactMechanismPurposeForm();
+
+            form.set(getAttrsMap(attrs));
+
+            contactService.createContactMechanismPurpose(initialDataParser.getUserVisit(), form);
             
             initialDataParser.pushHandler(new ContactMechanismPurposeHandler(initialDataParser, this, contactMechanismPurposeName));
         }

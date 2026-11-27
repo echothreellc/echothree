@@ -49,29 +49,21 @@ public class CancellationTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("cancellationTypeDescription")) {
-            try {
-                var commandForm = CancellationPolicyFormFactory.getCreateCancellationTypeDescriptionForm();
-                
-                commandForm.setCancellationKindName(cancellationKindName);
-                commandForm.setCancellationTypeName(cancellationTypeName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(cancellationPolicyService.createCancellationTypeDescription(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = CancellationPolicyFormFactory.getCreateCancellationTypeDescriptionForm();
+
+            commandForm.setCancellationKindName(cancellationKindName);
+            commandForm.setCancellationTypeName(cancellationTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(cancellationPolicyService.createCancellationTypeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("cancellationReasonType")) {
-            try {
-                var commandForm = CancellationPolicyFormFactory.getCreateCancellationReasonTypeForm();
-                
-                commandForm.setCancellationKindName(cancellationKindName);
-                commandForm.setCancellationTypeName(cancellationTypeName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(cancellationPolicyService.createCancellationReasonType(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = CancellationPolicyFormFactory.getCreateCancellationReasonTypeForm();
+
+            commandForm.setCancellationKindName(cancellationKindName);
+            commandForm.setCancellationTypeName(cancellationTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(cancellationPolicyService.createCancellationReasonType(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

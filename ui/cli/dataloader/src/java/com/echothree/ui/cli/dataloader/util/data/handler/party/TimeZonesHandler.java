@@ -44,17 +44,13 @@ public class TimeZonesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("timeZone")) {
-            try {
-                var createTimeZoneForm = PartyFormFactory.getCreateTimeZoneForm();
-                
-                createTimeZoneForm.set(getAttrsMap(attrs));
-                
-                partyService.createTimeZone(initialDataParser.getUserVisit(), createTimeZoneForm);
-                
-                initialDataParser.pushHandler(new TimeZoneHandler(initialDataParser, this, createTimeZoneForm.getJavaTimeZoneName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var createTimeZoneForm = PartyFormFactory.getCreateTimeZoneForm();
+
+            createTimeZoneForm.set(getAttrsMap(attrs));
+
+            partyService.createTimeZone(initialDataParser.getUserVisit(), createTimeZoneForm);
+
+            initialDataParser.pushHandler(new TimeZoneHandler(initialDataParser, this, createTimeZoneForm.getJavaTimeZoneName()));
         }
     }
     

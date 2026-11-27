@@ -52,18 +52,14 @@ public class LocationNameElementHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("locationNameElementDescription")) {
-            try {
-                var form = WarehouseFormFactory.getCreateLocationNameElementDescriptionForm();
-                
-                form.setWarehouseName(warehouseName);
-                form.setLocationTypeName(locationTypeName);
-                form.setLocationNameElementName(locationNameElementName);
-                form.set(getAttrsMap(attrs));
-                
-                warehouseService.createLocationNameElementDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = WarehouseFormFactory.getCreateLocationNameElementDescriptionForm();
+
+            form.setWarehouseName(warehouseName);
+            form.setLocationTypeName(locationTypeName);
+            form.setLocationNameElementName(locationNameElementName);
+            form.set(getAttrsMap(attrs));
+
+            warehouseService.createLocationNameElementDescription(initialDataParser.getUserVisit(), form);
         }
     }
     

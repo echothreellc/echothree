@@ -48,16 +48,12 @@ public class InventoryCostingMethodHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("inventoryCostingMethodDescription")) {
-            try {
-                var commandForm = InventoryFormFactory.getCreateInventoryCostingMethodDescriptionForm();
-                
-                commandForm.setInventoryCostingMethodName(inventoryCostingMethodName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(inventoryService.createInventoryCostingMethodDescription(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = InventoryFormFactory.getCreateInventoryCostingMethodDescriptionForm();
+
+            commandForm.setInventoryCostingMethodName(inventoryCostingMethodName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(inventoryService.createInventoryCostingMethodDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

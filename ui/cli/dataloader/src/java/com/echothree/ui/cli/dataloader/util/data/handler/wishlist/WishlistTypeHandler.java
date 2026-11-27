@@ -47,29 +47,21 @@ public class WishlistTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("wishlistTypeDescription")) {
-            try {
-                var form = WishlistFormFactory.getCreateWishlistTypeDescriptionForm();
-                
-                form.setWishlistTypeName(wishlistTypeName);
-                form.set(getAttrsMap(attrs));
-                
-                wishlistService.createWishlistTypeDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = WishlistFormFactory.getCreateWishlistTypeDescriptionForm();
+
+            form.setWishlistTypeName(wishlistTypeName);
+            form.set(getAttrsMap(attrs));
+
+            wishlistService.createWishlistTypeDescription(initialDataParser.getUserVisit(), form);
         } else if(localName.equals("wishlistPriority")) {
-            try {
-                var form = WishlistFormFactory.getCreateWishlistPriorityForm();
-                
-                form.setWishlistTypeName(wishlistTypeName);
-                form.set(getAttrsMap(attrs));
-                
-                wishlistService.createWishlistPriority(initialDataParser.getUserVisit(), form);
-                
-                initialDataParser.pushHandler(new WishlistPriorityHandler(initialDataParser, this, wishlistTypeName, form.getWishlistPriorityName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = WishlistFormFactory.getCreateWishlistPriorityForm();
+
+            form.setWishlistTypeName(wishlistTypeName);
+            form.set(getAttrsMap(attrs));
+
+            wishlistService.createWishlistPriority(initialDataParser.getUserVisit(), form);
+
+            initialDataParser.pushHandler(new WishlistPriorityHandler(initialDataParser, this, wishlistTypeName, form.getWishlistPriorityName()));
         }
     }
     

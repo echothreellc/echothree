@@ -50,17 +50,13 @@ public class CarrierOptionHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("carrierOptionDescription")) {
-            try {
-                var commandForm = CarrierFormFactory.getCreateCarrierOptionDescriptionForm();
-                
-                commandForm.setCarrierName(carrierName);
-                commandForm.setCarrierOptionName(carrierOptionName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(carrierService.createCarrierOptionDescription(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = CarrierFormFactory.getCreateCarrierOptionDescriptionForm();
+
+            commandForm.setCarrierName(carrierName);
+            commandForm.setCarrierOptionName(carrierOptionName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(carrierService.createCarrierOptionDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

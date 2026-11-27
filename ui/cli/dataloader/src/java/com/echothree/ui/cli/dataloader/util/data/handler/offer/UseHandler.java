@@ -47,16 +47,12 @@ public class UseHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("useDescription")) {
-            try {
-                var form = OfferFormFactory.getCreateUseDescriptionForm();
-                
-                form.setUseName(useName);
-                form.set(getAttrsMap(attrs));
-                
-                offerService.createUseDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = OfferFormFactory.getCreateUseDescriptionForm();
+
+            form.setUseName(useName);
+            form.set(getAttrsMap(attrs));
+
+            offerService.createUseDescription(initialDataParser.getUserVisit(), form);
         }
     }
     

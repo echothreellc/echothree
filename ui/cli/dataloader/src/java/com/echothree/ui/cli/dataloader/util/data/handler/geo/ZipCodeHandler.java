@@ -50,16 +50,12 @@ public class ZipCodeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("geoCodeDescription")) {
-            try {
-                var commandForm = GeoFormFactory.getCreateGeoCodeDescriptionForm();
-                
-                commandForm.setGeoCodeName(zipCodeGeoCodeName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                geoService.createGeoCodeDescription(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = GeoFormFactory.getCreateGeoCodeDescriptionForm();
+
+            commandForm.setGeoCodeName(zipCodeGeoCodeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            geoService.createGeoCodeDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("entityAttributes")) {
             initialDataParser.pushHandler(new EntityAttributesHandler(initialDataParser, this, zipCodeEntityRef));
         }

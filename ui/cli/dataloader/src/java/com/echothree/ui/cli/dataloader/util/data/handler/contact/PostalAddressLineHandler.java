@@ -50,17 +50,13 @@ public class PostalAddressLineHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("postalAddressLineElement")) {
-            try {
-                var form = ContactFormFactory.getCreatePostalAddressLineElementForm();
-                
-                form.setPostalAddressFormatName(postalAddressFormatName);
-                form.setPostalAddressLineSortOrder(postalAddressLineSortOrder);
-                form.set(getAttrsMap(attrs));
-                
-                contactService.createPostalAddressLineElement(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = ContactFormFactory.getCreatePostalAddressLineElementForm();
+
+            form.setPostalAddressFormatName(postalAddressFormatName);
+            form.setPostalAddressLineSortOrder(postalAddressLineSortOrder);
+            form.set(getAttrsMap(attrs));
+
+            contactService.createPostalAddressLineElement(initialDataParser.getUserVisit(), form);
         }
     }
     

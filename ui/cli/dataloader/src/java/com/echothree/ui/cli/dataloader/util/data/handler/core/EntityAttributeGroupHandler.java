@@ -51,18 +51,14 @@ public class EntityAttributeGroupHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("entityAttributeGroupDescription")) {
-            try {
-                var form = CoreFormFactory.getCreateEntityAttributeGroupDescriptionForm();
-                
-                form.setComponentVendorName(componentVendorName);
-                form.setEntityTypeName(entityTypeName);
-                form.setEntityAttributeGroupName(entityAttributeGroupName);
-                form.set(getAttrsMap(attrs));
-                
-                coreService.createEntityAttributeGroupDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = CoreFormFactory.getCreateEntityAttributeGroupDescriptionForm();
+
+            form.setComponentVendorName(componentVendorName);
+            form.setEntityTypeName(entityTypeName);
+            form.setEntityAttributeGroupName(entityAttributeGroupName);
+            form.set(getAttrsMap(attrs));
+
+            coreService.createEntityAttributeGroupDescription(initialDataParser.getUserVisit(), form);
         }
     }
     

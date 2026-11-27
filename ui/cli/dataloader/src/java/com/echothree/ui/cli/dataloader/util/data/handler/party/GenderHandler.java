@@ -47,16 +47,12 @@ public class GenderHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("genderDescription")) {
-            try {
-                var commandForm = PartyFormFactory.getCreateGenderDescriptionForm();
-                
-                commandForm.setGenderName(genderName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                partyService.createGenderDescription(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = PartyFormFactory.getCreateGenderDescriptionForm();
+
+            commandForm.setGenderName(genderName);
+            commandForm.set(getAttrsMap(attrs));
+
+            partyService.createGenderDescription(initialDataParser.getUserVisit(), commandForm);
         }
     }
     

@@ -46,15 +46,11 @@ public class ForumRoleTypesHandler
         if(localName.equals("forumRoleType")) {
             var forumRoleTypeName = attrs.getValue("forumRoleTypeName");
 
-            try {
-                var form = ForumFormFactory.getCreateForumRoleTypeForm();
-                
-                form.set(getAttrsMap(attrs));
-                
-                forumService.createForumRoleType(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = ForumFormFactory.getCreateForumRoleTypeForm();
+
+            form.set(getAttrsMap(attrs));
+
+            forumService.createForumRoleType(initialDataParser.getUserVisit(), form);
             
             initialDataParser.pushHandler(new ForumRoleTypeHandler(initialDataParser, this, forumRoleTypeName));
         }

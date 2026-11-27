@@ -44,17 +44,13 @@ public class LeaveReasonsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("leaveReason")) {
-            try {
-                var form = EmployeeFormFactory.getCreateLeaveReasonForm();
-                
-                form.set(getAttrsMap(attrs));
-                
-                employeeService.createLeaveReason(initialDataParser.getUserVisit(), form);
-                
-                initialDataParser.pushHandler(new LeaveReasonHandler(initialDataParser, this, form.getLeaveReasonName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = EmployeeFormFactory.getCreateLeaveReasonForm();
+
+            form.set(getAttrsMap(attrs));
+
+            employeeService.createLeaveReason(initialDataParser.getUserVisit(), form);
+
+            initialDataParser.pushHandler(new LeaveReasonHandler(initialDataParser, this, form.getLeaveReasonName()));
         }
     }
     

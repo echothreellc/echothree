@@ -44,17 +44,13 @@ public class WishlistTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("wishlistType")) {
-            try {
-                var form = WishlistFormFactory.getCreateWishlistTypeForm();
-                
-                form.set(getAttrsMap(attrs));
-                
-                wishlistService.createWishlistType(initialDataParser.getUserVisit(), form);
-                
-                initialDataParser.pushHandler(new WishlistTypeHandler(initialDataParser, this, form.getWishlistTypeName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = WishlistFormFactory.getCreateWishlistTypeForm();
+
+            form.set(getAttrsMap(attrs));
+
+            wishlistService.createWishlistType(initialDataParser.getUserVisit(), form);
+
+            initialDataParser.pushHandler(new WishlistTypeHandler(initialDataParser, this, form.getWishlistTypeName()));
         }
     }
     

@@ -48,16 +48,12 @@ public class OrderTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("orderTypeDescription")) {
-            try {
-                var commandForm = OrderFormFactory.getCreateOrderTypeDescriptionForm();
-                
-                commandForm.setOrderTypeName(orderTypeName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(orderService.createOrderTypeDescription(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = OrderFormFactory.getCreateOrderTypeDescriptionForm();
+
+            commandForm.setOrderTypeName(orderTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(orderService.createOrderTypeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("orderTimeType")) {
             var commandForm = OrderFormFactory.getCreateOrderTimeTypeForm();
 
@@ -77,18 +73,14 @@ public class OrderTypeHandler
 
             initialDataParser.pushHandler(new OrderPriorityHandler(initialDataParser, this, orderTypeName, commandForm.getOrderPriorityName()));
         } else if(localName.equals("orderAliasType")) {
-            try {
-                var commandForm = OrderFormFactory.getCreateOrderAliasTypeForm();
-                
-                commandForm.setOrderTypeName(orderTypeName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(orderService.createOrderAliasType(initialDataParser.getUserVisit(), commandForm));
-                
-                initialDataParser.pushHandler(new OrderAliasTypeHandler(initialDataParser, this, orderTypeName, commandForm.getOrderAliasTypeName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = OrderFormFactory.getCreateOrderAliasTypeForm();
+
+            commandForm.setOrderTypeName(orderTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(orderService.createOrderAliasType(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new OrderAliasTypeHandler(initialDataParser, this, orderTypeName, commandForm.getOrderAliasTypeName()));
         } else if(localName.equals("orderAdjustmentType")) {
             var commandForm = OrderFormFactory.getCreateOrderAdjustmentTypeForm();
 

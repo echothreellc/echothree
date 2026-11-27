@@ -47,55 +47,39 @@ public class ReturnKindHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("returnKindDescription")) {
-            try {
-                var commandForm = ReturnPolicyFormFactory.getCreateReturnKindDescriptionForm();
-                
-                commandForm.setReturnKindName(returnKindName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(returnPolicyService.createReturnKindDescription(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
-        }else if(localName.equals("returnPolicy")) {
-            try {
-                var commandForm = ReturnPolicyFormFactory.getCreateReturnPolicyForm();
-                
-                commandForm.setReturnKindName(returnKindName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(returnPolicyService.createReturnPolicy(initialDataParser.getUserVisit(), commandForm));
-                
-                initialDataParser.pushHandler(new ReturnPolicyHandler(initialDataParser, this, returnKindName, commandForm.getReturnPolicyName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = ReturnPolicyFormFactory.getCreateReturnKindDescriptionForm();
+
+            commandForm.setReturnKindName(returnKindName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(returnPolicyService.createReturnKindDescription(initialDataParser.getUserVisit(), commandForm));
+        } else if(localName.equals("returnPolicy")) {
+            var commandForm = ReturnPolicyFormFactory.getCreateReturnPolicyForm();
+
+            commandForm.setReturnKindName(returnKindName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(returnPolicyService.createReturnPolicy(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new ReturnPolicyHandler(initialDataParser, this, returnKindName, commandForm.getReturnPolicyName()));
         } else if(localName.equals("returnReason")) {
-            try {
-                var commandForm = ReturnPolicyFormFactory.getCreateReturnReasonForm();
-                
-                commandForm.setReturnKindName(returnKindName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(returnPolicyService.createReturnReason(initialDataParser.getUserVisit(), commandForm));
-                
-                initialDataParser.pushHandler(new ReturnReasonHandler(initialDataParser, this, returnKindName, commandForm.getReturnReasonName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = ReturnPolicyFormFactory.getCreateReturnReasonForm();
+
+            commandForm.setReturnKindName(returnKindName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(returnPolicyService.createReturnReason(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new ReturnReasonHandler(initialDataParser, this, returnKindName, commandForm.getReturnReasonName()));
         } else if(localName.equals("returnType")) {
-            try {
-                var commandForm = ReturnPolicyFormFactory.getCreateReturnTypeForm();
-                
-                commandForm.setReturnKindName(returnKindName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(returnPolicyService.createReturnType(initialDataParser.getUserVisit(), commandForm));
-                
-                initialDataParser.pushHandler(new ReturnTypeHandler(initialDataParser, this, returnKindName, commandForm.getReturnTypeName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = ReturnPolicyFormFactory.getCreateReturnTypeForm();
+
+            commandForm.setReturnKindName(returnKindName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(returnPolicyService.createReturnType(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new ReturnTypeHandler(initialDataParser, this, returnKindName, commandForm.getReturnTypeName()));
         }
     }
     

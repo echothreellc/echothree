@@ -118,11 +118,7 @@ public class EntityAttributesHandler
         } else if(localName.equals("entityMultipleListItemAttributes")) {
             var entityAttributeName = attrs.getValue("entityAttributeName");
             
-            try {
-                initialDataParser.pushHandler(new EntityMultipleListItemAttributesHandler(initialDataParser, this, entityRef, entityAttributeName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            initialDataParser.pushHandler(new EntityMultipleListItemAttributesHandler(initialDataParser, this, entityRef, entityAttributeName));
         }
     }
     

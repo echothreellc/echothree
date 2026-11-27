@@ -53,19 +53,15 @@ public class WishlistHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("wishlistLine")) {
-            try {
-                var form = WishlistFormFactory.getCreateWishlistLineForm();
-                
-                form.setPartyName(partyName);
-                form.setWishlistTypeName(wishlistTypeName);
-                form.setCurrencyIsoName(currencyIsoName);
-                form.setSourceName(sourceName);
-                form.set(getAttrsMap(attrs));
-                
-                wishlistService.createWishlistLine(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = WishlistFormFactory.getCreateWishlistLineForm();
+
+            form.setPartyName(partyName);
+            form.setWishlistTypeName(wishlistTypeName);
+            form.setCurrencyIsoName(currencyIsoName);
+            form.setSourceName(sourceName);
+            form.set(getAttrsMap(attrs));
+
+            wishlistService.createWishlistLine(initialDataParser.getUserVisit(), form);
         }
     }
     

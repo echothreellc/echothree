@@ -48,27 +48,19 @@ public class ClubHandler
     throws SAXException {
         
         if(localName.equals("clubDescription")) {
-            try {
-                var commandForm = ClubFormFactory.getCreateClubDescriptionForm();
-                
-                commandForm.setClubName(clubName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                clubService.createClubDescription(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = ClubFormFactory.getCreateClubDescriptionForm();
+
+            commandForm.setClubName(clubName);
+            commandForm.set(getAttrsMap(attrs));
+
+            clubService.createClubDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("clubItem")) {
-            try {
-                var commandForm = ClubFormFactory.getCreateClubItemForm();
-                
-                commandForm.setClubName(clubName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                clubService.createClubItem(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = ClubFormFactory.getCreateClubItemForm();
+
+            commandForm.setClubName(clubName);
+            commandForm.set(getAttrsMap(attrs));
+
+            clubService.createClubItem(initialDataParser.getUserVisit(), commandForm);
         }
     }
     

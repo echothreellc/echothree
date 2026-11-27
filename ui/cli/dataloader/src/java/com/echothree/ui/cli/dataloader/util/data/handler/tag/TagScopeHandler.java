@@ -47,38 +47,26 @@ public class TagScopeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("tagScopeDescription")) {
-            try {
-                var commandForm = TagFormFactory.getCreateTagScopeDescriptionForm();
-                
-                commandForm.setTagScopeName(tagScopeName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                tagService.createTagScopeDescription(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = TagFormFactory.getCreateTagScopeDescriptionForm();
+
+            commandForm.setTagScopeName(tagScopeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            tagService.createTagScopeDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("tagScopeEntityType")) {
-            try {
-                var commandForm = TagFormFactory.getCreateTagScopeEntityTypeForm();
-                
-                commandForm.setTagScopeName(tagScopeName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                tagService.createTagScopeEntityType(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = TagFormFactory.getCreateTagScopeEntityTypeForm();
+
+            commandForm.setTagScopeName(tagScopeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            tagService.createTagScopeEntityType(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("tag")) {
-            try {
-                var commandForm = TagFormFactory.getCreateTagForm();
-                
-                commandForm.setTagScopeName(tagScopeName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                tagService.createTag(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = TagFormFactory.getCreateTagForm();
+
+            commandForm.setTagScopeName(tagScopeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            tagService.createTag(initialDataParser.getUserVisit(), commandForm);
         }
     }
     

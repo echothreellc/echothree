@@ -44,17 +44,13 @@ public class DateTimeFormatsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("dateTimeFormat")) {
-            try {
-                var createDateTimeFormatForm = PartyFormFactory.getCreateDateTimeFormatForm();
-                
-                createDateTimeFormatForm.set(getAttrsMap(attrs));
-                
-                partyService.createDateTimeFormat(initialDataParser.getUserVisit(), createDateTimeFormatForm);
-                
-                initialDataParser.pushHandler(new DateTimeFormatHandler(initialDataParser, this, createDateTimeFormatForm.getDateTimeFormatName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var createDateTimeFormatForm = PartyFormFactory.getCreateDateTimeFormatForm();
+
+            createDateTimeFormatForm.set(getAttrsMap(attrs));
+
+            partyService.createDateTimeFormat(initialDataParser.getUserVisit(), createDateTimeFormatForm);
+
+            initialDataParser.pushHandler(new DateTimeFormatHandler(initialDataParser, this, createDateTimeFormatForm.getDateTimeFormatName()));
         }
     }
     

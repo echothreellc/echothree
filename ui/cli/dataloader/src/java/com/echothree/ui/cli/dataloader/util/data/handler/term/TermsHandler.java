@@ -44,17 +44,13 @@ public class TermsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("term")) {
-            try {
-                var commandForm = TermFormFactory.getCreateTermForm();
-                
-                commandForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(termService.createTerm(initialDataParser.getUserVisit(), commandForm));
-                
-                initialDataParser.pushHandler(new TermHandler(initialDataParser, this, commandForm.getTermName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = TermFormFactory.getCreateTermForm();
+
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(termService.createTerm(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new TermHandler(initialDataParser, this, commandForm.getTermName()));
         }
     }
     

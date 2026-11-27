@@ -44,17 +44,13 @@ public class ItemUseTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("itemUseType")) {
-            try {
-                var commandForm = ItemFormFactory.getCreateItemUseTypeForm();
-                
-                commandForm.set(getAttrsMap(attrs));
-                
-                itemService.createItemUseType(initialDataParser.getUserVisit(), commandForm);
-                
-                initialDataParser.pushHandler(new ItemUseTypeHandler(initialDataParser, this, commandForm.getItemUseTypeName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = ItemFormFactory.getCreateItemUseTypeForm();
+
+            commandForm.set(getAttrsMap(attrs));
+
+            itemService.createItemUseType(initialDataParser.getUserVisit(), commandForm);
+
+            initialDataParser.pushHandler(new ItemUseTypeHandler(initialDataParser, this, commandForm.getItemUseTypeName()));
         }
     }
     

@@ -47,16 +47,12 @@ public class PostalAddressElementTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("postalAddressElementTypeDescription")) {
-            try {
-                var form = ContactFormFactory.getCreatePostalAddressElementTypeDescriptionForm();
-                
-                form.setPostalAddressElementTypeName(postalAddressElementTypesName);
-                form.set(getAttrsMap(attrs));
-                
-                contactService.createPostalAddressElementTypeDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = ContactFormFactory.getCreatePostalAddressElementTypeDescriptionForm();
+
+            form.setPostalAddressElementTypeName(postalAddressElementTypesName);
+            form.set(getAttrsMap(attrs));
+
+            contactService.createPostalAddressElementTypeDescription(initialDataParser.getUserVisit(), form);
         }
     }
     

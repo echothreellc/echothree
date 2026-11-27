@@ -49,41 +49,29 @@ public class ReturnTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("returnTypeDescription")) {
-            try {
-                var commandForm = ReturnPolicyFormFactory.getCreateReturnTypeDescriptionForm();
-                
-                commandForm.setReturnKindName(returnKindName);
-                commandForm.setReturnTypeName(returnTypeName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(returnPolicyService.createReturnTypeDescription(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = ReturnPolicyFormFactory.getCreateReturnTypeDescriptionForm();
+
+            commandForm.setReturnKindName(returnKindName);
+            commandForm.setReturnTypeName(returnTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(returnPolicyService.createReturnTypeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("returnReasonType")) {
-            try {
-                var commandForm = ReturnPolicyFormFactory.getCreateReturnReasonTypeForm();
-                
-                commandForm.setReturnKindName(returnKindName);
-                commandForm.setReturnTypeName(returnTypeName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(returnPolicyService.createReturnReasonType(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = ReturnPolicyFormFactory.getCreateReturnReasonTypeForm();
+
+            commandForm.setReturnKindName(returnKindName);
+            commandForm.setReturnTypeName(returnTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(returnPolicyService.createReturnReasonType(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("returnTypeShippingMethod")) {
-            try {
-                var commandForm = ReturnPolicyFormFactory.getCreateReturnTypeShippingMethodForm();
-                
-                commandForm.setReturnKindName(returnKindName);
-                commandForm.setReturnTypeName(returnTypeName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(returnPolicyService.createReturnTypeShippingMethod(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = ReturnPolicyFormFactory.getCreateReturnTypeShippingMethodForm();
+
+            commandForm.setReturnKindName(returnKindName);
+            commandForm.setReturnTypeName(returnTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(returnPolicyService.createReturnTypeShippingMethod(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

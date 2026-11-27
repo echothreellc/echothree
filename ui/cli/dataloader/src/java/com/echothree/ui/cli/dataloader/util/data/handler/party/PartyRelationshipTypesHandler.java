@@ -46,15 +46,11 @@ public class PartyRelationshipTypesHandler
         if(localName.equals("partyRelationshipType")) {
             var partyRelationshipTypeName = attrs.getValue("partyRelationshipTypeName");
 
-            try {
-                var createPartyRelationshipTypeForm = PartyFormFactory.getCreatePartyRelationshipTypeForm();
-                
-                createPartyRelationshipTypeForm.set(getAttrsMap(attrs));
-                
-                partyService.createPartyRelationshipType(initialDataParser.getUserVisit(), createPartyRelationshipTypeForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var createPartyRelationshipTypeForm = PartyFormFactory.getCreatePartyRelationshipTypeForm();
+
+            createPartyRelationshipTypeForm.set(getAttrsMap(attrs));
+
+            partyService.createPartyRelationshipType(initialDataParser.getUserVisit(), createPartyRelationshipTypeForm);
             
             initialDataParser.pushHandler(new PartyRelationshipTypeHandler(initialDataParser, this, partyRelationshipTypeName));
         }

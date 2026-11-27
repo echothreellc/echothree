@@ -44,18 +44,14 @@ public class ContentPageLayoutsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("contentPageLayout")) {
-            try {
-                var createContentPageLayoutForm = ContentFormFactory.getCreateContentPageLayoutForm();
-                
-                createContentPageLayoutForm.set(getAttrsMap(attrs));
-                
-                contentService.createContentPageLayout(initialDataParser.getUserVisit(), createContentPageLayoutForm);
-                
-                initialDataParser.pushHandler(new ContentPageLayoutHandler(initialDataParser, this,
-                        createContentPageLayoutForm.getContentPageLayoutName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var createContentPageLayoutForm = ContentFormFactory.getCreateContentPageLayoutForm();
+
+            createContentPageLayoutForm.set(getAttrsMap(attrs));
+
+            contentService.createContentPageLayout(initialDataParser.getUserVisit(), createContentPageLayoutForm);
+
+            initialDataParser.pushHandler(new ContentPageLayoutHandler(initialDataParser, this,
+                    createContentPageLayoutForm.getContentPageLayoutName()));
         }
     }
     

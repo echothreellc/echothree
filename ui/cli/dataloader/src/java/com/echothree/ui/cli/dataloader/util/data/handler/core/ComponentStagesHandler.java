@@ -44,15 +44,11 @@ public class ComponentStagesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("componentStage")) {
-            try {
-                var createComponentStageForm = CoreFormFactory.getCreateComponentStageForm();
-                
-                createComponentStageForm.set(getAttrsMap(attrs));
-                
-                coreService.createComponentStage(initialDataParser.getUserVisit(), createComponentStageForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var createComponentStageForm = CoreFormFactory.getCreateComponentStageForm();
+
+            createComponentStageForm.set(getAttrsMap(attrs));
+
+            coreService.createComponentStage(initialDataParser.getUserVisit(), createComponentStageForm);
         }
     }
     

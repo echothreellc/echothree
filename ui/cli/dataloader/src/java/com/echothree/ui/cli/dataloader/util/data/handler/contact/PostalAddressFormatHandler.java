@@ -47,30 +47,22 @@ public class PostalAddressFormatHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("postalAddressFormatDescription")) {
-            try {
-                var form = ContactFormFactory.getCreatePostalAddressFormatDescriptionForm();
-                
-                form.setPostalAddressFormatName(postalAddressFormatName);
-                form.set(getAttrsMap(attrs));
-                
-                contactService.createPostalAddressFormatDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = ContactFormFactory.getCreatePostalAddressFormatDescriptionForm();
+
+            form.setPostalAddressFormatName(postalAddressFormatName);
+            form.set(getAttrsMap(attrs));
+
+            contactService.createPostalAddressFormatDescription(initialDataParser.getUserVisit(), form);
         } else if(localName.equals("postalAddressLine")) {
-            try {
-                var form = ContactFormFactory.getCreatePostalAddressLineForm();
-                
-                form.setPostalAddressFormatName(postalAddressFormatName);
-                form.set(getAttrsMap(attrs));
-                
-                contactService.createPostalAddressLine(initialDataParser.getUserVisit(), form);
-                
-                initialDataParser.pushHandler(new PostalAddressLineHandler(initialDataParser, this, postalAddressFormatName,
-                        form.getPostalAddressLineSortOrder()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = ContactFormFactory.getCreatePostalAddressLineForm();
+
+            form.setPostalAddressFormatName(postalAddressFormatName);
+            form.set(getAttrsMap(attrs));
+
+            contactService.createPostalAddressLine(initialDataParser.getUserVisit(), form);
+
+            initialDataParser.pushHandler(new PostalAddressLineHandler(initialDataParser, this, postalAddressFormatName,
+                    form.getPostalAddressLineSortOrder()));
         }
     }
     

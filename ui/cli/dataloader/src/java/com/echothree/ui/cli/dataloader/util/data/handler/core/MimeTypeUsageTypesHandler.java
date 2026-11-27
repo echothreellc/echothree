@@ -44,17 +44,13 @@ public class MimeTypeUsageTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("mimeTypeUsageType")) {
-            try {
-                var commandForm = CoreFormFactory.getCreateMimeTypeUsageTypeForm();
-                
-                commandForm.set(getAttrsMap(attrs));
-                
-                coreService.createMimeTypeUsageType(initialDataParser.getUserVisit(), commandForm);
-                
-                initialDataParser.pushHandler(new MimeTypeUsageTypeHandler(initialDataParser, this, commandForm.getMimeTypeUsageTypeName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = CoreFormFactory.getCreateMimeTypeUsageTypeForm();
+
+            commandForm.set(getAttrsMap(attrs));
+
+            coreService.createMimeTypeUsageType(initialDataParser.getUserVisit(), commandForm);
+
+            initialDataParser.pushHandler(new MimeTypeUsageTypeHandler(initialDataParser, this, commandForm.getMimeTypeUsageTypeName()));
         }
     }
     

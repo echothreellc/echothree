@@ -44,17 +44,13 @@ public class TerminationReasonsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("terminationReason")) {
-            try {
-                var form = EmployeeFormFactory.getCreateTerminationReasonForm();
-                
-                form.set(getAttrsMap(attrs));
-                
-                employeeService.createTerminationReason(initialDataParser.getUserVisit(), form);
-                
-                initialDataParser.pushHandler(new TerminationReasonHandler(initialDataParser, this, form.getTerminationReasonName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = EmployeeFormFactory.getCreateTerminationReasonForm();
+
+            form.set(getAttrsMap(attrs));
+
+            employeeService.createTerminationReason(initialDataParser.getUserVisit(), form);
+
+            initialDataParser.pushHandler(new TerminationReasonHandler(initialDataParser, this, form.getTerminationReasonName()));
         }
     }
     

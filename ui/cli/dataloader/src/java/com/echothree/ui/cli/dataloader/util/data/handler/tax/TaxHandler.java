@@ -47,16 +47,12 @@ public class TaxHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("taxDescription")) {
-            try {
-                var createTaxDescriptionForm = TaxFormFactory.getCreateTaxDescriptionForm();
-                
-                createTaxDescriptionForm.setTaxName(taxName);
-                createTaxDescriptionForm.set(getAttrsMap(attrs));
-                
-                taxService.createTaxDescription(initialDataParser.getUserVisit(), createTaxDescriptionForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var createTaxDescriptionForm = TaxFormFactory.getCreateTaxDescriptionForm();
+
+            createTaxDescriptionForm.setTaxName(taxName);
+            createTaxDescriptionForm.set(getAttrsMap(attrs));
+
+            taxService.createTaxDescription(initialDataParser.getUserVisit(), createTaxDescriptionForm);
         }
     }
     

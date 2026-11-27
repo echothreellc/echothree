@@ -44,21 +44,17 @@ public class CountriesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("country")) {
-            try {
-                var form = GeoFormFactory.getCreateCountryForm();
-                
-                form.set(getAttrsMap(attrs));
+            var form = GeoFormFactory.getCreateCountryForm();
 
-                var commandResult = geoService.createCountry(initialDataParser.getUserVisit(), form);
-                var executionResult = commandResult.getExecutionResult();
-                var createCountryResult = executionResult.getResult();
-                var countryGeoCodeName = createCountryResult.getGeoCodeName();
-                var countryEntityRef = createCountryResult.getEntityRef();
-                
-                initialDataParser.pushHandler(new CountryHandler(initialDataParser, this, countryGeoCodeName, countryEntityRef));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.set(getAttrsMap(attrs));
+
+            var commandResult = geoService.createCountry(initialDataParser.getUserVisit(), form);
+            var executionResult = commandResult.getExecutionResult();
+            var createCountryResult = executionResult.getResult();
+            var countryGeoCodeName = createCountryResult.getGeoCodeName();
+            var countryEntityRef = createCountryResult.getEntityRef();
+
+            initialDataParser.pushHandler(new CountryHandler(initialDataParser, this, countryGeoCodeName, countryEntityRef));
         }
     }
     

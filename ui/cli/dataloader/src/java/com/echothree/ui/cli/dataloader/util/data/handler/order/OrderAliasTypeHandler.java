@@ -50,17 +50,13 @@ public class OrderAliasTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("orderAliasTypeDescription")) {
-            try {
-                var commandForm = OrderFormFactory.getCreateOrderAliasTypeDescriptionForm();
-                
-                commandForm.setOrderTypeName(orderTypeName);
-                commandForm.setOrderAliasTypeName(orderAliasTypeName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(orderService.createOrderAliasTypeDescription(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = OrderFormFactory.getCreateOrderAliasTypeDescriptionForm();
+
+            commandForm.setOrderTypeName(orderTypeName);
+            commandForm.setOrderAliasTypeName(orderAliasTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(orderService.createOrderAliasTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

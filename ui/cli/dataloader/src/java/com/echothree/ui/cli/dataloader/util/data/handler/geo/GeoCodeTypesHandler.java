@@ -44,17 +44,13 @@ public class GeoCodeTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("geoCodeType")) {
-            try {
-                var createGeoCodeTypeForm = GeoFormFactory.getCreateGeoCodeTypeForm();
-                
-                createGeoCodeTypeForm.set(getAttrsMap(attrs));
-                
-                geoService.createGeoCodeType(initialDataParser.getUserVisit(), createGeoCodeTypeForm);
-                
-                initialDataParser.pushHandler(new GeoCodeTypeHandler(initialDataParser, this, createGeoCodeTypeForm.getGeoCodeTypeName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var createGeoCodeTypeForm = GeoFormFactory.getCreateGeoCodeTypeForm();
+
+            createGeoCodeTypeForm.set(getAttrsMap(attrs));
+
+            geoService.createGeoCodeType(initialDataParser.getUserVisit(), createGeoCodeTypeForm);
+
+            initialDataParser.pushHandler(new GeoCodeTypeHandler(initialDataParser, this, createGeoCodeTypeForm.getGeoCodeTypeName()));
         }
     }
     

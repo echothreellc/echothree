@@ -46,15 +46,11 @@ public class ContactMechanismAliasTypesHandler
         if(localName.equals("contactMechanismAliasType")) {
             var contactMechanismAliasTypeName = attrs.getValue("contactMechanismAliasTypeName");
 
-            try {
-                var form = ContactFormFactory.getCreateContactMechanismAliasTypeForm();
-                
-                form.set(getAttrsMap(attrs));
-                
-                contactService.createContactMechanismAliasType(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = ContactFormFactory.getCreateContactMechanismAliasTypeForm();
+
+            form.set(getAttrsMap(attrs));
+
+            contactService.createContactMechanismAliasType(initialDataParser.getUserVisit(), form);
             
             initialDataParser.pushHandler(new ContactMechanismAliasTypeHandler(initialDataParser, this, contactMechanismAliasTypeName));
         }

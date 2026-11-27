@@ -44,17 +44,13 @@ public class SelectorTextSearchTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("selectorTextSearchType")) {
-            try {
-                var form = SelectorFormFactory.getCreateSelectorTextSearchTypeForm();
-                
-                form.set(getAttrsMap(attrs));
-                
-                selectorService.createSelectorTextSearchType(initialDataParser.getUserVisit(), form);
-                
-                initialDataParser.pushHandler(new SelectorTextSearchTypeHandler(initialDataParser, this, form.getSelectorTextSearchTypeName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = SelectorFormFactory.getCreateSelectorTextSearchTypeForm();
+
+            form.set(getAttrsMap(attrs));
+
+            selectorService.createSelectorTextSearchType(initialDataParser.getUserVisit(), form);
+
+            initialDataParser.pushHandler(new SelectorTextSearchTypeHandler(initialDataParser, this, form.getSelectorTextSearchTypeName()));
         }
     }
     

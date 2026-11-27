@@ -314,8 +314,7 @@ public class InitialDataParser
     //
     
     /** Creates a new instance of InitialDataParser */
-    public InitialDataParser(final String name)
-            throws Exception {
+    public InitialDataParser(final String name) {
         this.name = name;
     }
 

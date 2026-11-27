@@ -49,17 +49,13 @@ public class ContentPageLayoutAreaHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("contentPageLayoutAreaDescription")) {
-            try {
-                var form = ContentFormFactory.getCreateContentPageLayoutAreaDescriptionForm();
-                
-                form.setContentPageLayoutName(contentPageLayoutName);
-                form.setSortOrder(sortOrder);
-                form.set(getAttrsMap(attrs));
-                
-                contentService.createContentPageLayoutAreaDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = ContentFormFactory.getCreateContentPageLayoutAreaDescriptionForm();
+
+            form.setContentPageLayoutName(contentPageLayoutName);
+            form.setSortOrder(sortOrder);
+            form.set(getAttrsMap(attrs));
+
+            contentService.createContentPageLayoutAreaDescription(initialDataParser.getUserVisit(), form);
         }
     }
     

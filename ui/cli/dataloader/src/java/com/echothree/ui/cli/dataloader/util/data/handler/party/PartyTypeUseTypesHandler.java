@@ -46,15 +46,11 @@ public class PartyTypeUseTypesHandler
         if(localName.equals("partyTypeUseType")) {
             var partyTypeUseTypeName = attrs.getValue("partyTypeUseTypeName");
 
-            try {
-                var form = PartyFormFactory.getCreatePartyTypeUseTypeForm();
-                
-                form.set(getAttrsMap(attrs));
-                
-                partyService.createPartyTypeUseType(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = PartyFormFactory.getCreatePartyTypeUseTypeForm();
+
+            form.set(getAttrsMap(attrs));
+
+            partyService.createPartyTypeUseType(initialDataParser.getUserVisit(), form);
             
             initialDataParser.pushHandler(new PartyTypeUseTypeHandler(initialDataParser, this, partyTypeUseTypeName));
         }

@@ -47,16 +47,12 @@ public class ItemCategoryHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("itemCategoryDescription")) {
-            try {
-                var createItemCategoryDescriptionForm = ItemFormFactory.getCreateItemCategoryDescriptionForm();
-                
-                createItemCategoryDescriptionForm.setItemCategoryName(itemCategoryName);
-                createItemCategoryDescriptionForm.set(getAttrsMap(attrs));
-                
-                itemService.createItemCategoryDescription(initialDataParser.getUserVisit(), createItemCategoryDescriptionForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var createItemCategoryDescriptionForm = ItemFormFactory.getCreateItemCategoryDescriptionForm();
+
+            createItemCategoryDescriptionForm.setItemCategoryName(itemCategoryName);
+            createItemCategoryDescriptionForm.set(getAttrsMap(attrs));
+
+            itemService.createItemCategoryDescription(initialDataParser.getUserVisit(), createItemCategoryDescriptionForm);
         }
     }
     

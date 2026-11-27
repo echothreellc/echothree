@@ -44,18 +44,14 @@ public class RecoveryQuestionsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("recoveryQuestion")) {
-            try {
-                var createRecoveryQuestionForm = UserFormFactory.getCreateRecoveryQuestionForm();
-                
-                createRecoveryQuestionForm.set(getAttrsMap(attrs));
-                
-                userService.createRecoveryQuestion(initialDataParser.getUserVisit(), createRecoveryQuestionForm);
-                
-                initialDataParser.pushHandler(new RecoveryQuestionHandler(initialDataParser, this,
-                        createRecoveryQuestionForm.getRecoveryQuestionName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var createRecoveryQuestionForm = UserFormFactory.getCreateRecoveryQuestionForm();
+
+            createRecoveryQuestionForm.set(getAttrsMap(attrs));
+
+            userService.createRecoveryQuestion(initialDataParser.getUserVisit(), createRecoveryQuestionForm);
+
+            initialDataParser.pushHandler(new RecoveryQuestionHandler(initialDataParser, this,
+                    createRecoveryQuestionForm.getRecoveryQuestionName()));
         }
     }
     

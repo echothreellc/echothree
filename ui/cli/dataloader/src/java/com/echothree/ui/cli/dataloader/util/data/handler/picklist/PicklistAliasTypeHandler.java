@@ -49,17 +49,13 @@ public class PicklistAliasTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("picklistAliasTypeDescription")) {
-            try {
-                var createPicklistAliasTypeDescriptionForm = PicklistFormFactory.getCreatePicklistAliasTypeDescriptionForm();
-                
-                createPicklistAliasTypeDescriptionForm.setPicklistTypeName(picklistTypeName);
-                createPicklistAliasTypeDescriptionForm.setPicklistAliasTypeName(picklistAliasTypeName);
-                createPicklistAliasTypeDescriptionForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(picklistService.createPicklistAliasTypeDescription(initialDataParser.getUserVisit(), createPicklistAliasTypeDescriptionForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var createPicklistAliasTypeDescriptionForm = PicklistFormFactory.getCreatePicklistAliasTypeDescriptionForm();
+
+            createPicklistAliasTypeDescriptionForm.setPicklistTypeName(picklistTypeName);
+            createPicklistAliasTypeDescriptionForm.setPicklistAliasTypeName(picklistAliasTypeName);
+            createPicklistAliasTypeDescriptionForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(picklistService.createPicklistAliasTypeDescription(initialDataParser.getUserVisit(), createPicklistAliasTypeDescriptionForm));
         }
     }
     

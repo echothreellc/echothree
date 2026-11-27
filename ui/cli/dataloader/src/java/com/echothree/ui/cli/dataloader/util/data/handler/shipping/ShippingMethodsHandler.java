@@ -44,17 +44,13 @@ public class ShippingMethodsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("shippingMethod")) {
-            try {
-                var commandForm = ShippingFormFactory.getCreateShippingMethodForm();
-                
-                commandForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(shippingService.createShippingMethod(initialDataParser.getUserVisit(), commandForm));
-                
-                initialDataParser.pushHandler(new ShippingMethodHandler(initialDataParser, this, commandForm.getShippingMethodName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = ShippingFormFactory.getCreateShippingMethodForm();
+
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(shippingService.createShippingMethod(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new ShippingMethodHandler(initialDataParser, this, commandForm.getShippingMethodName()));
         }
     }
     

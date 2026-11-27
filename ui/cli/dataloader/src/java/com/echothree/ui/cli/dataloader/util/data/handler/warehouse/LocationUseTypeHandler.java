@@ -47,16 +47,12 @@ public class LocationUseTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("locationUseTypeDescription")) {
-            try {
-                var form = WarehouseFormFactory.getCreateLocationUseTypeDescriptionForm();
-                
-                form.setLocationUseTypeName(locationUseTypeName);
-                form.set(getAttrsMap(attrs));
-                
-                warehouseService.createLocationUseTypeDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = WarehouseFormFactory.getCreateLocationUseTypeDescriptionForm();
+
+            form.setLocationUseTypeName(locationUseTypeName);
+            form.set(getAttrsMap(attrs));
+
+            warehouseService.createLocationUseTypeDescription(initialDataParser.getUserVisit(), form);
         }
     }
     

@@ -47,16 +47,12 @@ public class SelectorBooleanTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("selectorBooleanTypeDescription")) {
-            try {
-                var form = SelectorFormFactory.getCreateSelectorBooleanTypeDescriptionForm();
-                
-                form.setSelectorBooleanTypeName(selectorBooleanTypeName);
-                form.set(getAttrsMap(attrs));
-                
-                selectorService.createSelectorBooleanTypeDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = SelectorFormFactory.getCreateSelectorBooleanTypeDescriptionForm();
+
+            form.setSelectorBooleanTypeName(selectorBooleanTypeName);
+            form.set(getAttrsMap(attrs));
+
+            selectorService.createSelectorBooleanTypeDescription(initialDataParser.getUserVisit(), form);
         }
     }
     

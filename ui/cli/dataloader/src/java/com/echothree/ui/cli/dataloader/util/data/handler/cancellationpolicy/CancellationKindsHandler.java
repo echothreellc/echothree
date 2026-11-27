@@ -44,17 +44,13 @@ public class CancellationKindsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("cancellationKind")) {
-            try {
-                var commandForm = CancellationPolicyFormFactory.getCreateCancellationKindForm();
-                
-                commandForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(cancellationPolicyService.createCancellationKind(initialDataParser.getUserVisit(), commandForm));
-                
-                initialDataParser.pushHandler(new CancellationKindHandler(initialDataParser, this, commandForm.getCancellationKindName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = CancellationPolicyFormFactory.getCreateCancellationKindForm();
+
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(cancellationPolicyService.createCancellationKind(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new CancellationKindHandler(initialDataParser, this, commandForm.getCancellationKindName()));
         }
     }
     

@@ -47,16 +47,12 @@ public class ForumMessagePartTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("forumMessagePartTypeDescription")) {
-            try {
-                var form = ForumFormFactory.getCreateForumMessagePartTypeDescriptionForm();
-                
-                form.setForumMessagePartTypeName(forumMessagePartTypeName);
-                form.set(getAttrsMap(attrs));
-                
-                forumService.createForumMessagePartTypeDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = ForumFormFactory.getCreateForumMessagePartTypeDescriptionForm();
+
+            form.setForumMessagePartTypeName(forumMessagePartTypeName);
+            form.set(getAttrsMap(attrs));
+
+            forumService.createForumMessagePartTypeDescription(initialDataParser.getUserVisit(), form);
         }
     }
     

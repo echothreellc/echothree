@@ -47,58 +47,42 @@ public class CancellationKindHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("cancellationKindDescription")) {
-            try {
-                var commandForm = CancellationPolicyFormFactory.getCreateCancellationKindDescriptionForm();
-                
-                commandForm.setCancellationKindName(cancellationKindName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(cancellationPolicyService.createCancellationKindDescription(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
-        }else if(localName.equals("cancellationPolicy")) {
-            try {
-                var commandForm = CancellationPolicyFormFactory.getCreateCancellationPolicyForm();
-                
-                commandForm.setCancellationKindName(cancellationKindName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(cancellationPolicyService.createCancellationPolicy(initialDataParser.getUserVisit(), commandForm));
-                
-                initialDataParser.pushHandler(new CancellationPolicyHandler(initialDataParser, this, cancellationKindName,
-                        commandForm.getCancellationPolicyName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = CancellationPolicyFormFactory.getCreateCancellationKindDescriptionForm();
+
+            commandForm.setCancellationKindName(cancellationKindName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(cancellationPolicyService.createCancellationKindDescription(initialDataParser.getUserVisit(), commandForm));
+        } else if(localName.equals("cancellationPolicy")) {
+            var commandForm = CancellationPolicyFormFactory.getCreateCancellationPolicyForm();
+
+            commandForm.setCancellationKindName(cancellationKindName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(cancellationPolicyService.createCancellationPolicy(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new CancellationPolicyHandler(initialDataParser, this, cancellationKindName,
+                    commandForm.getCancellationPolicyName()));
         } else if(localName.equals("cancellationReason")) {
-            try {
-                var commandForm = CancellationPolicyFormFactory.getCreateCancellationReasonForm();
-                
-                commandForm.setCancellationKindName(cancellationKindName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(cancellationPolicyService.createCancellationReason(initialDataParser.getUserVisit(), commandForm));
-                
-                initialDataParser.pushHandler(new CancellationReasonHandler(initialDataParser, this, cancellationKindName,
-                        commandForm.getCancellationReasonName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = CancellationPolicyFormFactory.getCreateCancellationReasonForm();
+
+            commandForm.setCancellationKindName(cancellationKindName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(cancellationPolicyService.createCancellationReason(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new CancellationReasonHandler(initialDataParser, this, cancellationKindName,
+                    commandForm.getCancellationReasonName()));
         } else if(localName.equals("cancellationType")) {
-            try {
-                var commandForm = CancellationPolicyFormFactory.getCreateCancellationTypeForm();
-                
-                commandForm.setCancellationKindName(cancellationKindName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                checkCommandResult(cancellationPolicyService.createCancellationType(initialDataParser.getUserVisit(), commandForm));
-                
-                initialDataParser.pushHandler(new CancellationTypeHandler(initialDataParser, this, cancellationKindName,
-                        commandForm.getCancellationTypeName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = CancellationPolicyFormFactory.getCreateCancellationTypeForm();
+
+            commandForm.setCancellationKindName(cancellationKindName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(cancellationPolicyService.createCancellationType(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new CancellationTypeHandler(initialDataParser, this, cancellationKindName,
+                    commandForm.getCancellationTypeName()));
         }
     }
     

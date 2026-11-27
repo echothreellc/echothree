@@ -49,53 +49,37 @@ public class FilterAdjustmentHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("filterAdjustmentDescription")) {
-            try {
-                var commandForm = FilterFormFactory.getCreateFilterAdjustmentDescriptionForm();
-                
-                commandForm.setFilterKindName(filterKindName);
-                commandForm.setFilterAdjustmentName(filterAdjustmentName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                filterService.createFilterAdjustmentDescription(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = FilterFormFactory.getCreateFilterAdjustmentDescriptionForm();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterAdjustmentName(filterAdjustmentName);
+            commandForm.set(getAttrsMap(attrs));
+
+            filterService.createFilterAdjustmentDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("filterAdjustmentAmount")) {
-            try {
-                var commandForm = FilterFormFactory.getCreateFilterAdjustmentAmountForm();
-                
-                commandForm.setFilterKindName(filterKindName);
-                commandForm.setFilterAdjustmentName(filterAdjustmentName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                filterService.createFilterAdjustmentAmount(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = FilterFormFactory.getCreateFilterAdjustmentAmountForm();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterAdjustmentName(filterAdjustmentName);
+            commandForm.set(getAttrsMap(attrs));
+
+            filterService.createFilterAdjustmentAmount(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("filterAdjustmentFixedAmount")) {
-            try {
-                var commandForm = FilterFormFactory.getCreateFilterAdjustmentFixedAmountForm();
-                
-                commandForm.setFilterKindName(filterKindName);
-                commandForm.setFilterAdjustmentName(filterAdjustmentName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                filterService.createFilterAdjustmentFixedAmount(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = FilterFormFactory.getCreateFilterAdjustmentFixedAmountForm();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterAdjustmentName(filterAdjustmentName);
+            commandForm.set(getAttrsMap(attrs));
+
+            filterService.createFilterAdjustmentFixedAmount(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("filterAdjustmentPercent")) {
-            try {
-                var commandForm = FilterFormFactory.getCreateFilterAdjustmentPercentForm();
-                
-                commandForm.setFilterKindName(filterKindName);
-                commandForm.setFilterAdjustmentName(filterAdjustmentName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                filterService.createFilterAdjustmentPercent(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = FilterFormFactory.getCreateFilterAdjustmentPercentForm();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterAdjustmentName(filterAdjustmentName);
+            commandForm.set(getAttrsMap(attrs));
+
+            filterService.createFilterAdjustmentPercent(initialDataParser.getUserVisit(), commandForm);
         }
     }
     

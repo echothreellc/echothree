@@ -44,17 +44,13 @@ public class TerminationTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("terminationType")) {
-            try {
-                var form = EmployeeFormFactory.getCreateTerminationTypeForm();
-                
-                form.set(getAttrsMap(attrs));
-                
-                employeeService.createTerminationType(initialDataParser.getUserVisit(), form);
-                
-                initialDataParser.pushHandler(new TerminationTypeHandler(initialDataParser, this, form.getTerminationTypeName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = EmployeeFormFactory.getCreateTerminationTypeForm();
+
+            form.set(getAttrsMap(attrs));
+
+            employeeService.createTerminationType(initialDataParser.getUserVisit(), form);
+
+            initialDataParser.pushHandler(new TerminationTypeHandler(initialDataParser, this, form.getTerminationTypeName()));
         }
     }
     

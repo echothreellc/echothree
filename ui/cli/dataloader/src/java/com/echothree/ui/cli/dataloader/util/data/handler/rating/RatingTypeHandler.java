@@ -51,34 +51,26 @@ public class RatingTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("ratingTypeDescription")) {
-            try {
-                var createRatingTypeDescriptionForm = RatingFormFactory.getCreateRatingTypeDescriptionForm();
-                
-                createRatingTypeDescriptionForm.setComponentVendorName(componentVendorName);
-                createRatingTypeDescriptionForm.setEntityTypeName(entityTypeName);
-                createRatingTypeDescriptionForm.setRatingTypeName(ratingTypeName);
-                createRatingTypeDescriptionForm.set(getAttrsMap(attrs));
-                
-                ratingService.createRatingTypeDescription(initialDataParser.getUserVisit(), createRatingTypeDescriptionForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var createRatingTypeDescriptionForm = RatingFormFactory.getCreateRatingTypeDescriptionForm();
+
+            createRatingTypeDescriptionForm.setComponentVendorName(componentVendorName);
+            createRatingTypeDescriptionForm.setEntityTypeName(entityTypeName);
+            createRatingTypeDescriptionForm.setRatingTypeName(ratingTypeName);
+            createRatingTypeDescriptionForm.set(getAttrsMap(attrs));
+
+            ratingService.createRatingTypeDescription(initialDataParser.getUserVisit(), createRatingTypeDescriptionForm);
         } else if(localName.equals("ratingTypeListItem")) {
-            try {
-                var createRatingTypeListItemForm = RatingFormFactory.getCreateRatingTypeListItemForm();
-                
-                createRatingTypeListItemForm.setComponentVendorName(componentVendorName);
-                createRatingTypeListItemForm.setEntityTypeName(entityTypeName);
-                createRatingTypeListItemForm.setRatingTypeName(ratingTypeName);
-                createRatingTypeListItemForm.set(getAttrsMap(attrs));
-                
-                ratingService.createRatingTypeListItem(initialDataParser.getUserVisit(), createRatingTypeListItemForm);
-                
-                initialDataParser.pushHandler(new RatingTypeListItemHandler(initialDataParser, this, componentVendorName,
-                        entityTypeName, ratingTypeName, createRatingTypeListItemForm.getRatingTypeListItemName()));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var createRatingTypeListItemForm = RatingFormFactory.getCreateRatingTypeListItemForm();
+
+            createRatingTypeListItemForm.setComponentVendorName(componentVendorName);
+            createRatingTypeListItemForm.setEntityTypeName(entityTypeName);
+            createRatingTypeListItemForm.setRatingTypeName(ratingTypeName);
+            createRatingTypeListItemForm.set(getAttrsMap(attrs));
+
+            ratingService.createRatingTypeListItem(initialDataParser.getUserVisit(), createRatingTypeListItemForm);
+
+            initialDataParser.pushHandler(new RatingTypeListItemHandler(initialDataParser, this, componentVendorName,
+                    entityTypeName, ratingTypeName, createRatingTypeListItemForm.getRatingTypeListItemName()));
         }
     }
     

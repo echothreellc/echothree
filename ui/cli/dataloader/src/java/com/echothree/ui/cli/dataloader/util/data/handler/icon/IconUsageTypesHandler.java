@@ -46,15 +46,11 @@ public class IconUsageTypesHandler
         if(localName.equals("iconUsageType")) {
             var iconUsageTypeName = attrs.getValue("iconUsageTypeName");
 
-            try {
-                var form = IconFormFactory.getCreateIconUsageTypeForm();
-                
-                form.set(getAttrsMap(attrs));
-                
-                iconService.createIconUsageType(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = IconFormFactory.getCreateIconUsageTypeForm();
+
+            form.set(getAttrsMap(attrs));
+
+            iconService.createIconUsageType(initialDataParser.getUserVisit(), form);
             
             initialDataParser.pushHandler(new IconUsageTypeHandler(initialDataParser, this, iconUsageTypeName));
         }
