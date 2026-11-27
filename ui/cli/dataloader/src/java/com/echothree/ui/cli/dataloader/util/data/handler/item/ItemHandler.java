@@ -57,7 +57,6 @@ public class ItemHandler
     boolean inItemDescription = false;
     private Map<String, Object> itemDescriptionAttrs;
     char []clobDescription = null;
-    String path = null;
     
     /** Creates a new instance of ItemHandler */
     public ItemHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String itemName, String companyName,
@@ -89,11 +88,6 @@ public class ItemHandler
         } else if(localName.equals("itemDescription")) {
             itemDescriptionAttrs = getAttrsMap(attrs);
             itemDescriptionAttrs.keySet().removeAll(Set.of("ItemName", "ClobDescription", "BlobDescription"));
-
-            var itemDescriptionPath = (String)itemDescriptionAttrs.remove("Path");
-            if(itemDescriptionPath != null) {
-                path = itemDescriptionPath;
-            }
 
             inItemDescription = true;
         } else if(localName.equals("itemUnitOfMeasureType")) {
@@ -222,6 +216,7 @@ public class ItemHandler
             var mimeTypeName = (String)itemDescriptionAttrs.get("MimeTypeName");
             var itemImageTypeName = (String)itemDescriptionAttrs.get("ItemImageTypeName");
             var stringDescription = (String)itemDescriptionAttrs.get("StringDescription");
+            var itemDescriptionPath = (String)itemDescriptionAttrs.remove("Path");
 
             var spec = ItemSpecFactory.getItemDescriptionSpec();
             var editForm = ItemFormFactory.getEditItemDescriptionForm();
@@ -243,8 +238,8 @@ public class ItemHandler
                     createForm.setClobDescription(clobDescription == null ? null : new String(clobDescription));
                     createForm.set(itemDescriptionAttrs);
 
-                    if(path != null) {
-                        var file = new File(path);
+                    if(itemDescriptionPath != null) {
+                        var file = new File(itemDescriptionPath);
                         var length = file.length();
 
                         if(length < Integer.MAX_VALUE) {
@@ -326,8 +321,8 @@ public class ItemHandler
 
                     // If there's a BLOB, we'll always assume it's changed. They're not returned as
                     // part of the edit.
-                    if(path != null) {
-                        var file = new File(path);
+                    if(itemDescriptionPath != null) {
+                        var file = new File(itemDescriptionPath);
                         var length = file.length();
 
                         if(length < Integer.MAX_VALUE) {
