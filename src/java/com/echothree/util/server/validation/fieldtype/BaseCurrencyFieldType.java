@@ -27,6 +27,7 @@ public abstract class BaseCurrencyFieldType
         extends BaseFieldType {
     
     private static final String CURRENCY_ISO_NAME = "CurrencyIsoName";
+    private static final String DEFAULT_CURRENCY_IF_OMITTED = "DefaultCurrencyIfOmitted";
     private static final String VENDOR_NAME = "VendorName";
     
     private boolean currencyResolved;
@@ -47,10 +48,10 @@ public abstract class BaseCurrencyFieldType
                 validationMessages.add(fieldName, new Message(Validator.ERROR_MISSING_CURRENCY));
             } else if(resolvedCurrency == null) {
                 var parameters = getSplitFieldNameParameters();
+                var currencyIsoName = getParameterValue(parameters, CURRENCY_ISO_NAME);
+                var useDefaultCurrency = currencyIsoName == null && Boolean.parseBoolean(parameters.get(DEFAULT_CURRENCY_IF_OMITTED));
 
-                if(parameters.containsKey(CURRENCY_ISO_NAME)) {
-                    var currencyIsoName = getParameterValue(parameters, CURRENCY_ISO_NAME);
-
+                if(parameters.containsKey(CURRENCY_ISO_NAME) && !useDefaultCurrency) {
                     if(currencyIsoName == null || currencyIsoName.isBlank()) {
                         validationMessages.add(fieldName, new Message(Validator.ERROR_MISSING_CURRENCY));
                     } else {
