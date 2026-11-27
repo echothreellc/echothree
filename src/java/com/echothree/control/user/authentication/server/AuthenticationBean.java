@@ -98,7 +98,6 @@ public class AuthenticationBean
             } catch(RuntimeException rollbackFailure) {
                 failure.addSuppressed(rollbackFailure);
             }
-
             throw failure;
         } finally {
             CommandScopeExtension.getCommandScopeContext().pop();
