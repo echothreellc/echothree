@@ -20,7 +20,6 @@ import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.authentication.common.form.AuthenticationFormFactory;
 import com.echothree.control.user.authentication.common.result.GetUserVisitResult;
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.edit.WorkflowEdit;
 import com.echothree.control.user.workflow.common.edit.WorkflowEditFactory;
 import com.echothree.control.user.workflow.common.form.CreateWorkflowForm;
 import com.echothree.control.user.workflow.common.form.EditWorkflowForm;
@@ -29,7 +28,6 @@ import com.echothree.control.user.workflow.common.result.CreateWorkflowResult;
 import com.echothree.control.user.workflow.common.result.EditWorkflowResult;
 import com.echothree.control.user.workflow.common.result.WorkflowResultFactory;
 import com.echothree.control.user.workflow.common.spec.WorkflowSpecFactory;
-import com.echothree.control.user.workflow.common.spec.WorkflowUniversalSpec;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -340,16 +338,9 @@ class DataLoaderEditLifecycleTest {
 
         private boolean load(Map<String, Object> attrs, BiFunction<UserVisitPK, EditWorkflowForm, CommandResult<EditWorkflowResult>> editCommand,
                 BiFunction<UserVisitPK, CreateWorkflowForm, CommandResult<CreateWorkflowResult>> createCommand) throws SAXException {
-            var spec = WorkflowSpecFactory.getWorkflowUniversalSpec();
-            var editForm = WorkflowFormFactory.getEditWorkflowForm();
-            var createForm = WorkflowFormFactory.getCreateWorkflowForm();
-
-            setFormFields(spec, WorkflowUniversalSpec.class, attrs);
-            editForm.setSpec(spec);
-            setFormFields(createForm, CreateWorkflowForm.class, attrs);
-
-            return editOrCreate(editForm, editCommand, createForm, createCommand, ExecutionErrors.UnknownWorkflowName, WorkflowEdit.class)
-                    .successful();
+            return editOrCreate(attrs, WorkflowSpecFactory.getWorkflowUniversalSpec(),
+                    WorkflowFormFactory.getEditWorkflowForm(), editCommand, WorkflowFormFactory.getCreateWorkflowForm(),
+                    createCommand, ExecutionErrors.UnknownWorkflowName).successful();
         }
 
         @Override

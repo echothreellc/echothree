@@ -35,6 +35,7 @@ import org.xml.sax.InputSource;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag("integration")
 class DataLoaderResolvedParentTest
@@ -89,6 +90,58 @@ class DataLoaderResolvedParentTest
     }
 
     @Test
+    void reconcilesWorkflowStepsAndSkipsChildrenOnRejectedUpdate() throws Exception {
+        var service = WorkflowUtil.getHome();
+        var workflowName = newTestName();
+        var createForm = WorkflowFormFactory.getCreateWorkflowForm();
+        createForm.setWorkflowName(workflowName);
+        createForm.setSortOrder("7");
+        requireSuccess(service.createWorkflow(userVisitPK, createForm));
+
+        try {
+            var stepXml = """
+                    <initialData>
+                        <workflows>
+                            <workflow workflowName="%s" commandAction="none">
+                                <workflowStep workflowStepName="REVIEW" %s>
+                                    <workflowStepDescription languageIsoName="en" description="%s"/>
+                                </workflowStep>
+                            </workflow>
+                        </workflows>
+                    </initialData>
+                    """;
+            loadXml(stepXml.formatted(workflowName,
+                    "workflowStepTypeName=\"MANUAL_TRANSITION\" isDefault=\"true\" sortOrder=\"1\"", "Created with step"));
+
+            var getDescriptionForm = WorkflowFormFactory.getGetWorkflowStepDescriptionForm();
+            getDescriptionForm.setWorkflowName(workflowName);
+            getDescriptionForm.setWorkflowStepName("REVIEW");
+            getDescriptionForm.setLanguageIsoName("en");
+            assertEquals("Created with step",
+                    requireSuccess(service.getWorkflowStepDescription(userVisitPK, getDescriptionForm)).getWorkflowStepDescription().getDescription());
+
+            loadXml(stepXml.formatted(workflowName, "sortOrder=\"2\"", "Updated with step"));
+            var getStepForm = WorkflowFormFactory.getGetWorkflowStepForm();
+            getStepForm.setWorkflowName(workflowName);
+            getStepForm.setWorkflowStepName("REVIEW");
+            var step = requireSuccess(service.getWorkflowStep(userVisitPK, getStepForm)).getWorkflowStep();
+            assertEquals(Integer.valueOf(2), step.getSortOrder());
+            assertTrue(step.getIsDefault());
+            assertEquals("MANUAL_TRANSITION", step.getWorkflowStepType().getWorkflowStepTypeName());
+
+            loadXml(stepXml.formatted(workflowName, "sortOrder=\"not-a-number\"", "Must not be loaded"));
+            assertEquals("Updated with step",
+                    requireSuccess(service.getWorkflowStepDescription(userVisitPK, getDescriptionForm)).getWorkflowStepDescription().getDescription());
+            assertEquals(Integer.valueOf(2),
+                    requireSuccess(service.getWorkflowStep(userVisitPK, getStepForm)).getWorkflowStep().getSortOrder());
+        } finally {
+            var deleteForm = WorkflowFormFactory.getDeleteWorkflowForm();
+            deleteForm.setWorkflowName(workflowName);
+            assertNoErrors(service.deleteWorkflow(userVisitPK, deleteForm));
+        }
+    }
+
+    @Test
     void loadsItemAliasTypeDescriptionUnderAnUnchangedParentByUuid() throws Exception {
         var service = ItemUtil.getHome();
         var itemAliasTypeName = newTestName();
@@ -101,21 +154,28 @@ class DataLoaderResolvedParentTest
         var aliasType = requireSuccess(service.createItemAliasType(userVisitPK, createForm));
 
         try {
-            loadXml("""
+            var descriptionXml = """
                     <initialData>
                         <itemAliasTypes>
                             <itemAliasType uuid="%s">
-                                <itemAliasTypeDescription languageIsoName="en" description="Alias type loaded by UUID"/>
+                                <itemAliasTypeDescription languageIsoName="en" %s/>
                             </itemAliasType>
                         </itemAliasTypes>
                     </initialData>
-                    """.formatted(uuidOf(aliasType.getEntityRef())));
+                    """;
+            var uuid = uuidOf(aliasType.getEntityRef());
+            loadXml(descriptionXml.formatted(uuid, "description=\"Alias type loaded by UUID\""));
 
             var getDescriptionForm = ItemFormFactory.getGetItemAliasTypeDescriptionForm();
             getDescriptionForm.setItemAliasTypeName(itemAliasTypeName);
             getDescriptionForm.setLanguageIsoName("en");
             var description = requireSuccess(service.getItemAliasTypeDescription(userVisitPK, getDescriptionForm));
             assertEquals("Alias type loaded by UUID", description.getItemAliasTypeDescription().getDescription());
+
+            loadXml(descriptionXml.formatted(uuid, "description=\"Alias type updated by UUID\""));
+            loadXml(descriptionXml.formatted(uuid, ""));
+            description = requireSuccess(service.getItemAliasTypeDescription(userVisitPK, getDescriptionForm));
+            assertEquals("Alias type updated by UUID", description.getItemAliasTypeDescription().getDescription());
         } finally {
             var deleteForm = ItemFormFactory.getDeleteItemAliasTypeForm();
             deleteForm.setItemAliasTypeName(itemAliasTypeName);

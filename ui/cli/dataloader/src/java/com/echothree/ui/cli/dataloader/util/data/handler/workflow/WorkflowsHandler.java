@@ -18,12 +18,8 @@ package com.echothree.ui.cli.dataloader.util.data.handler.workflow;
 
 import com.echothree.control.user.workflow.common.WorkflowService;
 import com.echothree.control.user.workflow.common.WorkflowUtil;
-import com.echothree.control.user.workflow.common.edit.WorkflowEdit;
-import com.echothree.control.user.workflow.common.form.CreateWorkflowForm;
-import com.echothree.control.user.workflow.common.form.GetWorkflowForm;
 import com.echothree.control.user.workflow.common.form.WorkflowFormFactory;
 import com.echothree.control.user.workflow.common.spec.WorkflowSpecFactory;
-import com.echothree.control.user.workflow.common.spec.WorkflowUniversalSpec;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -53,21 +49,13 @@ public class WorkflowsHandler
             throws SAXException {
         if(localName.equals("workflow")) {
             var attrsMap = getAttrsMap(attrs);
-            var spec = WorkflowSpecFactory.getWorkflowUniversalSpec();
-
-            setFormFields(spec, WorkflowUniversalSpec.class, attrsMap);
-
-            var commandAction = (String)attrsMap.get("CommandAction");
-            var workflowName = spec.getWorkflowName();
+            var workflowName = (String)attrsMap.get("WorkflowName");
             var processChildren = true;
-            if(commandAction == null || commandAction.equals("create")) {
-                var editForm = WorkflowFormFactory.getEditWorkflowForm();
-                var createForm = WorkflowFormFactory.getCreateWorkflowForm();
 
-                editForm.setSpec(spec);
-                setFormFields(createForm, CreateWorkflowForm.class, attrsMap);
-                var outcome = editOrCreate(editForm, workflowService::editWorkflow, createForm, workflowService::createWorkflow,
-                        ExecutionErrors.UnknownWorkflowName, WorkflowEdit.class);
+            if(shouldEdit(attrsMap)) {
+                var outcome = editOrCreate(attrsMap, WorkflowSpecFactory.getWorkflowUniversalSpec(),
+                        WorkflowFormFactory.getEditWorkflowForm(), workflowService::editWorkflow,
+                        WorkflowFormFactory.getCreateWorkflowForm(), workflowService::createWorkflow, ExecutionErrors.UnknownWorkflowName);
                 processChildren = outcome.successful();
 
                 if(outcome.lockedEdit() != null) {
@@ -77,7 +65,7 @@ public class WorkflowsHandler
                 }
             } else if(workflowName == null) {
                 var getForm = WorkflowFormFactory.getGetWorkflowForm();
-                setFormFields(getForm, GetWorkflowForm.class, attrsMap);
+                setFormFields(getForm, attrsMap);
 
                 var commandResult = workflowService.getWorkflow(initialDataParser.getUserVisit(), getForm);
                 checkCommandResult(getForm, commandResult);

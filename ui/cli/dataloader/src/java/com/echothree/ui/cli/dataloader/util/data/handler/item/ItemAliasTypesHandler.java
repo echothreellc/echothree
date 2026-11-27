@@ -18,10 +18,7 @@ package com.echothree.ui.cli.dataloader.util.data.handler.item;
 
 import com.echothree.control.user.item.common.ItemService;
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.edit.ItemAliasTypeEdit;
-import com.echothree.control.user.item.common.form.CreateItemAliasTypeForm;
 import com.echothree.control.user.item.common.form.ItemFormFactory;
-import com.echothree.control.user.item.common.spec.ItemAliasTypeUniversalSpec;
 import com.echothree.control.user.item.common.spec.ItemSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -52,20 +49,12 @@ public class ItemAliasTypesHandler
             throws SAXException {
         if(localName.equals("itemAliasType")) {
             var attrsMap = getAttrsMap(attrs);
-            var spec = ItemSpecFactory.getItemAliasTypeUniversalSpec();
-
-            setFormFields(spec, ItemAliasTypeUniversalSpec.class, attrsMap);
-
-            var editForm = ItemFormFactory.getEditItemAliasTypeForm();
-            var createForm = ItemFormFactory.getCreateItemAliasTypeForm();
-
-            editForm.setSpec(spec);
-            setFormFields(createForm, CreateItemAliasTypeForm.class, attrsMap);
-            var outcome = editOrCreate(editForm, itemService::editItemAliasType, createForm, itemService::createItemAliasType,
-                    ExecutionErrors.UnknownItemAliasTypeName, ItemAliasTypeEdit.class);
+            var outcome = editOrCreate(attrsMap, ItemSpecFactory.getItemAliasTypeUniversalSpec(),
+                    ItemFormFactory.getEditItemAliasTypeForm(), itemService::editItemAliasType,
+                    ItemFormFactory.getCreateItemAliasTypeForm(), itemService::createItemAliasType, ExecutionErrors.UnknownItemAliasTypeName);
 
             if(outcome.successful()) {
-                var itemAliasTypeName = spec.getItemAliasTypeName();
+                var itemAliasTypeName = (String)attrsMap.get("ItemAliasTypeName");
                 if(outcome.lockedEdit() != null) {
                     itemAliasTypeName = outcome.lockedEdit().getItemAliasTypeName();
                 } else if(outcome.createdRecord() != null) {

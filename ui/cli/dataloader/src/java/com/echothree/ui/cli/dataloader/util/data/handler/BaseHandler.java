@@ -107,10 +107,13 @@ public abstract class BaseHandler {
     protected record EditOutcome<E extends BaseEdit, C extends BaseResult>(boolean successful, E lockedEdit, C createdRecord) {
     }
 
-    protected <E extends BaseEdit, F extends BaseEditForm<?, E>, R extends BaseEditResult<E>, C extends BaseForm,
-            CR extends BaseResult> EditOutcome<E, CR> editOrCreate(F editForm, BiFunction<UserVisitPK, F, CommandResult<R>> editCommand,
+    protected <S extends BaseSpec, E extends BaseEdit, F extends BaseEditForm<S, E>, R extends BaseEditResult<E>,
+            C extends BaseForm, CR extends BaseResult> EditOutcome<E, CR> editOrCreate(Map<String, Object> suppliedValues,
+            S spec, F editForm, BiFunction<UserVisitPK, F, CommandResult<R>> editCommand,
             C createForm, BiFunction<UserVisitPK, C, CommandResult<CR>> createCommand,
-            ExecutionErrors missingRecordError, Class<E> editType) throws SAXException {
+            ExecutionErrors missingRecordError) throws SAXException {
+        setFormFields(spec, suppliedValues);
+        editForm.setSpec(spec);
         var userVisit = initialDataParser.getUserVisit();
         editForm.setEditMode(EditMode.LOCK);
 
@@ -120,6 +123,7 @@ public abstract class BaseHandler {
             if(lockResult.containsExecutionError(missingRecordError.name()) && !lockResult.hasSecurityMessages()
                     && !lockResult.hasValidationErrors()
                     && lockResult.getExecutionResult().getExecutionErrors().size(Messages.EXECUTION_ERROR) == 1) {
+                setFormFields(createForm, suppliedValues);
                 var createResult = createCommand.apply(userVisit, createForm);
                 checkCommandResult(createForm, createResult);
                 var successful = !createResult.hasErrors();
@@ -129,7 +133,7 @@ public abstract class BaseHandler {
                 outcome = new EditOutcome<>(false, null, null);
             }
         } else {
-            var edit = completeEdit(userVisit, editForm, editCommand, lockResult, createForm.get(), editType);
+            var edit = completeEdit(userVisit, editForm, editCommand, lockResult, suppliedValues);
             outcome = new EditOutcome<>(edit != null, edit, null);
         }
 
@@ -138,7 +142,7 @@ public abstract class BaseHandler {
 
     private <E extends BaseEdit, F extends BaseEditForm<?, E>, R extends BaseEditResult<E>>
             E completeEdit(UserVisitPK userVisit, F editForm, BiFunction<UserVisitPK, F, CommandResult<R>> editCommand,
-            CommandResult<R> lockResult, Map<String, Object> suppliedValues, Class<E> editType) throws SAXException {
+            CommandResult<R> lockResult, Map<String, Object> suppliedValues) throws SAXException {
         boolean successful = true;
         boolean abandonLock = true;
         E edit;
@@ -151,7 +155,7 @@ public abstract class BaseHandler {
                 throw new SAXException(editForm.getFormName() + " returned no edit payload after LOCK");
             }
 
-            if(applyEditFields(edit, editType, suppliedValues, editForm.getSpec())) {
+            if(applyEditFields(edit, suppliedValues, editForm.getSpec())) {
                 editForm.setEdit(edit);
                 editForm.setEditMode(EditMode.UPDATE);
 
@@ -175,16 +179,19 @@ public abstract class BaseHandler {
         return successful ? edit : null;
     }
 
-    protected static <F extends BaseForm> void setFormFields(F form, Class<F> formType, Map<String, Object> suppliedValues) {
-        for(var fieldName : getStringFormFields(formType)) {
+    protected static void setFormFields(BaseForm form, Map<String, Object> suppliedValues) {
+        for(var fieldName : getStringFormFields(form)) {
             if(suppliedValues.containsKey(fieldName)) {
                 form.set(fieldName, suppliedValues.get(fieldName));
             }
         }
     }
 
-    private static List<String> getStringFormFields(Class<? extends BaseForm> formType) {
-        return Arrays.stream(formType.getMethods())
+    private static List<String> getStringFormFields(BaseForm form) {
+        // Form factories expose the domain setters through the proxy's interfaces.
+        return Arrays.stream(form.getClass().getInterfaces())
+                .filter(BaseForm.class::isAssignableFrom)
+                .flatMap(formType -> Arrays.stream(formType.getMethods()))
                 .filter(method -> method.getDeclaringClass() != BaseForm.class && Modifier.isAbstract(method.getModifiers())
                         && method.getReturnType() == void.class && method.getParameterCount() == 1
                         && method.getParameterTypes()[0] == String.class)
@@ -195,12 +202,11 @@ public abstract class BaseHandler {
                 .toList();
     }
 
-    private static <E extends BaseEdit> boolean applyEditFields(E edit, Class<E> editType, Map<String, Object> suppliedValues,
-            BaseSpec spec) {
+    private static boolean applyEditFields(BaseEdit edit, Map<String, Object> suppliedValues, BaseSpec spec) {
         var identityFields = spec.get();
         var changed = false;
 
-        for(var fieldName : getStringFormFields(editType)) {
+        for(var fieldName : getStringFormFields(edit)) {
             var suppliedValue = suppliedValues.get(fieldName);
             if(suppliedValues.containsKey(fieldName) && !identityFields.containsKey(fieldName)
                     && !Objects.equals(edit.get(fieldName), suppliedValue)) {
@@ -210,6 +216,11 @@ public abstract class BaseHandler {
         }
 
         return changed;
+    }
+
+    protected static boolean shouldEdit(Map<String, Object> suppliedValues) {
+        var commandAction = suppliedValues.get("CommandAction");
+        return commandAction == null || commandAction.equals("create");
     }
 
     @SuppressWarnings("ReferenceEquality") // Throwable.addSuppressed rejects self-suppression by identity.
