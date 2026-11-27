@@ -21,24 +21,21 @@ import com.echothree.control.user.party.common.PartyService;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class GenderHandler
         extends BaseHandler {
+
     PartyService partyService;
     String genderName;
     
     /** Creates a new instance of GenderHandler */
-    public GenderHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String genderName) {
+    public GenderHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String genderName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            partyService = PartyUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        partyService = lookupService(PartyService.class, PartyUtil::getHome);
         
         this.genderName = genderName;
     }
@@ -47,28 +44,12 @@ public class GenderHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("genderDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var commandForm = PartyFormFactory.getCreateGenderDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = PartyFormFactory.getCreateGenderDescriptionForm();
-                
-                commandForm.setGenderName(genderName);
-                commandForm.setLanguageIsoName(languageIsoName);
-                commandForm.setDescription(description);
-                
-                partyService.createGenderDescription(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setGenderName(genderName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, partyService.createGenderDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

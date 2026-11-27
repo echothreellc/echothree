@@ -58,7 +58,8 @@ public class InventoryTransactionRoleTypeHandler
             commandForm.setInventoryTransactionRoleTypeName(inventoryTransactionRoleTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(inventoryService.createInventoryTransactionRoleTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm,
+                    inventoryService.createInventoryTransactionRoleTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

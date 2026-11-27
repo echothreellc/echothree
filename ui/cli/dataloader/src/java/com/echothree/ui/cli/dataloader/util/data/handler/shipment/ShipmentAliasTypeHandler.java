@@ -21,25 +21,22 @@ import com.echothree.control.user.shipment.common.ShipmentService;
 import com.echothree.control.user.shipment.common.form.ShipmentFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ShipmentAliasTypeHandler
         extends BaseHandler {
+
     ShipmentService shipmentService;
     String shipmentTypeName;
     String shipmentAliasTypeName;
     
     /** Creates a new instance of ShipmentAliasTypeHandler */
-    public ShipmentAliasTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String shipmentTypeName, String shipmentAliasTypeName) {
+    public ShipmentAliasTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String shipmentTypeName, String shipmentAliasTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            shipmentService = ShipmentUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        shipmentService = lookupService(ShipmentService.class, ShipmentUtil::getHome);
         
         this.shipmentTypeName = shipmentTypeName;
         this.shipmentAliasTypeName = shipmentAliasTypeName;
@@ -50,23 +47,12 @@ public class ShipmentAliasTypeHandler
             throws SAXException {
         if(localName.equals("shipmentAliasTypeDescription")) {
             var commandForm = ShipmentFormFactory.getCreateShipmentAliasTypeDescriptionForm();
-            String attrLanguageIsoName = null;
-            String attrDescription = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    attrLanguageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    attrDescription = attrs.getValue(i);
-            }
             
             commandForm.setShipmentTypeName(shipmentTypeName);
             commandForm.setShipmentAliasTypeName(shipmentAliasTypeName);
-            commandForm.setLanguageIsoName(attrLanguageIsoName);
-            commandForm.setDescription(attrDescription);
+            commandForm.set(getAttrsMap(attrs));
             
-            checkCommandResult(shipmentService.createShipmentAliasTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, shipmentService.createShipmentAliasTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

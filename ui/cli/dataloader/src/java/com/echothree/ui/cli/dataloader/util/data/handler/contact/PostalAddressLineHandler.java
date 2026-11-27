@@ -21,26 +21,23 @@ import com.echothree.control.user.contact.common.ContactService;
 import com.echothree.control.user.contact.common.form.ContactFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class PostalAddressLineHandler
         extends BaseHandler {
+
     ContactService contactService;
     String postalAddressFormatName;
     String postalAddressLineSortOrder;
     
     /** Creates a new instance of PostalAddressLineHandler */
     public PostalAddressLineHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String postalAddressFormatName,
-            String postalAddressLineSortOrder) {
+            String postalAddressLineSortOrder)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            contactService = ContactUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        contactService = lookupService(ContactService.class, ContactUtil::getHome);
         
         this.postalAddressFormatName = postalAddressFormatName;
         this.postalAddressLineSortOrder = postalAddressLineSortOrder;
@@ -50,45 +47,13 @@ public class PostalAddressLineHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("postalAddressLineElement")) {
-            String postalAddressLineElementSortOrder = null;
-            String postalAddressElementTypeName = null;
-            String prefix = null;
-            String alwaysIncludePrefix = null;
-            String suffix = null;
-            String alwaysIncludeSuffix = null;
+            var form = ContactFormFactory.getCreatePostalAddressLineElementForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("postalAddressLineElementSortOrder"))
-                    postalAddressLineElementSortOrder = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("postalAddressElementTypeName"))
-                    postalAddressElementTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("prefix"))
-                    prefix = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("alwaysIncludePrefix"))
-                    alwaysIncludePrefix = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("suffix"))
-                    suffix = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("alwaysIncludeSuffix"))
-                    alwaysIncludeSuffix = attrs.getValue(i);
-            }
-            
-            try {
-                var form = ContactFormFactory.getCreatePostalAddressLineElementForm();
-                
-                form.setPostalAddressFormatName(postalAddressFormatName);
-                form.setPostalAddressLineSortOrder(postalAddressLineSortOrder);
-                form.setPostalAddressLineElementSortOrder(postalAddressLineElementSortOrder);
-                form.setPostalAddressElementTypeName(postalAddressElementTypeName);
-                form.setPrefix(prefix);
-                form.setAlwaysIncludePrefix(alwaysIncludePrefix);
-                form.setSuffix(suffix);
-                form.setAlwaysIncludeSuffix(alwaysIncludeSuffix);
-                
-                contactService.createPostalAddressLineElement(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.setPostalAddressFormatName(postalAddressFormatName);
+            form.setPostalAddressLineSortOrder(postalAddressLineSortOrder);
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, contactService.createPostalAddressLineElement(initialDataParser.getUserVisit(), form));
         }
     }
     

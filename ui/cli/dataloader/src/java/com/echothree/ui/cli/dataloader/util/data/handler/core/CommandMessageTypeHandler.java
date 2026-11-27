@@ -54,14 +54,14 @@ public class CommandMessageTypeHandler
             commandForm.setCommandMessageTypeName(commandMessageTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createCommandMessageTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createCommandMessageTypeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("commandMessage")) {
             var commandForm = CoreFormFactory.getCreateCommandMessageForm();
 
             commandForm.setCommandMessageTypeName(commandMessageTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createCommandMessage(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createCommandMessage(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new CommandMessageHandler(initialDataParser, this, commandMessageTypeName, commandForm.getCommandMessageKey()));
         }

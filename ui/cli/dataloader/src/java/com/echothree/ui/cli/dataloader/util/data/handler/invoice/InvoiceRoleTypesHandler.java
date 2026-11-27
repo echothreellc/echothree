@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class InvoiceRoleTypesHandler
         extends BaseHandler {
+
     InvoiceService invoiceService;
     
     /** Creates a new instance of InvoiceRoleTypesHandler */
@@ -49,7 +50,7 @@ public class InvoiceRoleTypesHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            checkCommandResult(invoiceService.createInvoiceRoleType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, invoiceService.createInvoiceRoleType(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new InvoiceRoleTypeHandler(initialDataParser, this, commandForm.getInvoiceRoleTypeName()));
         }

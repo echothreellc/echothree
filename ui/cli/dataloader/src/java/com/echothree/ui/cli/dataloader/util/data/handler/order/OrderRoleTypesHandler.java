@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class OrderRoleTypesHandler
         extends BaseHandler {
+
     OrderService orderService;
     
     /** Creates a new instance of OrderRoleTypesHandler */
@@ -49,7 +50,7 @@ public class OrderRoleTypesHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            checkCommandResult(orderService.createOrderRoleType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, orderService.createOrderRoleType(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new OrderRoleTypeHandler(initialDataParser, this, commandForm.getOrderRoleTypeName()));
         }

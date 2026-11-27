@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class ItemAccountingCategoriesHandler
         extends BaseHandler {
+
     AccountingService accountingService;
     
     /** Creates a new instance of ItemAccountingCategoriesHandler */
@@ -49,7 +50,7 @@ public class ItemAccountingCategoriesHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            accountingService.createItemAccountingCategory(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, accountingService.createItemAccountingCategory(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new ItemAccountingCategoryHandler(initialDataParser, this, commandForm.getItemAccountingCategoryName()));
         }

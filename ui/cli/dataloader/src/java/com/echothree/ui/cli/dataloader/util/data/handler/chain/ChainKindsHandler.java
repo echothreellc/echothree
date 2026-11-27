@@ -50,7 +50,7 @@ public class ChainKindsHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            chainService.createChainKind(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, chainService.createChainKind(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new ChainKindHandler(initialDataParser, this, commandForm.getChainKindName()));
         }

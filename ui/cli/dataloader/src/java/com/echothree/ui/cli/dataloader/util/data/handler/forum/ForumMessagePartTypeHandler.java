@@ -21,24 +21,21 @@ import com.echothree.control.user.forum.common.ForumService;
 import com.echothree.control.user.forum.common.form.ForumFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ForumMessagePartTypeHandler
         extends BaseHandler {
+
     ForumService forumService;
     String forumMessagePartTypeName;
     
     /** Creates a new instance of ForumMessagePartTypeHandler */
-    public ForumMessagePartTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String forumMessagePartTypeName) {
+    public ForumMessagePartTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String forumMessagePartTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            forumService = ForumUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        forumService = lookupService(ForumService.class, ForumUtil::getHome);
         
         this.forumMessagePartTypeName = forumMessagePartTypeName;
     }
@@ -47,28 +44,12 @@ public class ForumMessagePartTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("forumMessagePartTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var form = ForumFormFactory.getCreateForumMessagePartTypeDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var form = ForumFormFactory.getCreateForumMessagePartTypeDescriptionForm();
-                
-                form.setForumMessagePartTypeName(forumMessagePartTypeName);
-                form.setLanguageIsoName(languageIsoName);
-                form.setDescription(description);
-                
-                forumService.createForumMessagePartTypeDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.setForumMessagePartTypeName(forumMessagePartTypeName);
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, forumService.createForumMessagePartTypeDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

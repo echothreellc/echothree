@@ -21,24 +21,21 @@ import com.echothree.control.user.employee.common.EmployeeService;
 import com.echothree.control.user.employee.common.form.EmployeeFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class LeaveReasonHandler
         extends BaseHandler {
+
     EmployeeService employeeService;
     String leaveReasonName;
     
     /** Creates a new instance of LeaveReasonHandler */
-    public LeaveReasonHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String leaveReasonName) {
+    public LeaveReasonHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String leaveReasonName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            employeeService = EmployeeUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        employeeService = lookupService(EmployeeService.class, EmployeeUtil::getHome);
         
         this.leaveReasonName = leaveReasonName;
     }
@@ -47,28 +44,12 @@ public class LeaveReasonHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("leaveReasonDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var form = EmployeeFormFactory.getCreateLeaveReasonDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var form = EmployeeFormFactory.getCreateLeaveReasonDescriptionForm();
-                
-                form.setLeaveReasonName(leaveReasonName);
-                form.setLanguageIsoName(languageIsoName);
-                form.setDescription(description);
-                
-                employeeService.createLeaveReasonDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.setLeaveReasonName(leaveReasonName);
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, employeeService.createLeaveReasonDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

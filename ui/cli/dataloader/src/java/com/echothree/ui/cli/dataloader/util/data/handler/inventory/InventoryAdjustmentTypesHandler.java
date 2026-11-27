@@ -50,7 +50,7 @@ public class InventoryAdjustmentTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(inventoryService.createInventoryAdjustmentType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, inventoryService.createInventoryAdjustmentType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new InventoryAdjustmentTypeHandler(initialDataParser, this, commandForm.getInventoryAdjustmentTypeName()));
         }

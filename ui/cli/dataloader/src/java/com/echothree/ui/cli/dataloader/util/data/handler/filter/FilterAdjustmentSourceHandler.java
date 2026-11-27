@@ -21,24 +21,21 @@ import com.echothree.control.user.filter.common.FilterService;
 import com.echothree.control.user.filter.common.form.FilterFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class FilterAdjustmentSourceHandler
         extends BaseHandler {
+
     FilterService filterService;
     String filterAdjustmentSourceName;
     
     /** Creates a new instance of FilterAdjustmentSourceHandler */
-    public FilterAdjustmentSourceHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String filterAdjustmentSourceName) {
+    public FilterAdjustmentSourceHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String filterAdjustmentSourceName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            filterService = FilterUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        filterService = lookupService(FilterService.class, FilterUtil::getHome);
         
         this.filterAdjustmentSourceName = filterAdjustmentSourceName;
     }
@@ -47,28 +44,13 @@ public class FilterAdjustmentSourceHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("filterAdjustmentSourceDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var commandForm = FilterFormFactory.getCreateFilterAdjustmentSourceDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = FilterFormFactory.getCreateFilterAdjustmentSourceDescriptionForm();
-                
-                commandForm.setFilterAdjustmentSourceName(filterAdjustmentSourceName);
-                commandForm.setLanguageIsoName(languageIsoName);
-                commandForm.setDescription(description);
-                
-                filterService.createFilterAdjustmentSourceDescription(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setFilterAdjustmentSourceName(filterAdjustmentSourceName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm,
+                    filterService.createFilterAdjustmentSourceDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

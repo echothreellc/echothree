@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class WorkflowEntrancePartyTypeHandler
         extends BaseHandler {
+
     WorkflowService workflowService;
     String workflowName;
     String workflowEntranceName;
@@ -60,7 +61,7 @@ public class WorkflowEntrancePartyTypeHandler
             commandForm.setPartyTypeName(partyTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            workflowService.createWorkflowEntranceSecurityRole(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, workflowService.createWorkflowEntranceSecurityRole(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

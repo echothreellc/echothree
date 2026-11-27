@@ -21,56 +21,33 @@ import com.echothree.control.user.employee.common.EmployeeService;
 import com.echothree.control.user.employee.common.form.EmployeeFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class TerminationReasonsHandler
         extends BaseHandler {
+
     EmployeeService employeeService;
     
     /** Creates a new instance of TerminationReasonsHandler */
-    public TerminationReasonsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public TerminationReasonsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            employeeService = EmployeeUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        employeeService = lookupService(EmployeeService.class, EmployeeUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("terminationReason")) {
-            String terminationReasonName = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var form = EmployeeFormFactory.getCreateTerminationReasonForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("terminationReasonName"))
-                    terminationReasonName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
-            try {
-                var form = EmployeeFormFactory.getCreateTerminationReasonForm();
-                
-                form.setTerminationReasonName(terminationReasonName);
-                form.setIsDefault(isDefault);
-                form.setSortOrder(sortOrder);
-                
-                employeeService.createTerminationReason(initialDataParser.getUserVisit(), form);
-                
-                initialDataParser.pushHandler(new TerminationReasonHandler(initialDataParser, this, terminationReasonName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, employeeService.createTerminationReason(initialDataParser.getUserVisit(), form));
+
+            initialDataParser.pushHandler(new TerminationReasonHandler(initialDataParser, this, form.getTerminationReasonName()));
         }
     }
     

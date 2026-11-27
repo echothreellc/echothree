@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class WorkflowStepTypeHandler
         extends BaseHandler {
+
     WorkflowService workflowService;
     String workflowStepTypeName;
     
@@ -53,7 +54,7 @@ public class WorkflowStepTypeHandler
             commandForm.setWorkflowStepTypeName(workflowStepTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            workflowService.createWorkflowStepTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, workflowService.createWorkflowStepTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

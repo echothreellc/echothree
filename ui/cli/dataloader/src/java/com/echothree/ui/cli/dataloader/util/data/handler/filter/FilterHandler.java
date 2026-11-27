@@ -21,26 +21,23 @@ import com.echothree.control.user.filter.common.FilterService;
 import com.echothree.control.user.filter.common.form.FilterFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class FilterHandler
         extends BaseHandler {
+
     FilterService filterService;
     String filterKindName;
     String filterTypeName;
     String filterName;
     
     /** Creates a new instance of FilterHandler */
-    public FilterHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String filterKindName, String filterTypeName, String filterName) {
+    public FilterHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String filterKindName, String filterTypeName, String filterName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            filterService = FilterUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        filterService = lookupService(FilterService.class, FilterUtil::getHome);
         
         this.filterKindName = filterKindName;
         this.filterTypeName = filterTypeName;
@@ -51,103 +48,44 @@ public class FilterHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("filterDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var commandForm = FilterFormFactory.getCreateFilterDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = FilterFormFactory.getCreateFilterDescriptionForm();
-                
-                commandForm.setFilterKindName(filterKindName);
-                commandForm.setFilterTypeName(filterTypeName);
-                commandForm.setFilterName(filterName);
-                commandForm.setLanguageIsoName(languageIsoName);
-                commandForm.setDescription(description);
-                
-                filterService.createFilterDescription(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterTypeName(filterTypeName);
+            commandForm.setFilterName(filterName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, filterService.createFilterDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("filterStep")) {
-            String filterStepName = null;
-            String filterItemSelectorName = null;
+            var commandForm = FilterFormFactory.getCreateFilterStepForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("filterStepName"))
-                    filterStepName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("filterItemSelectorName"))
-                    filterItemSelectorName = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = FilterFormFactory.getCreateFilterStepForm();
-                
-                commandForm.setFilterKindName(filterKindName);
-                commandForm.setFilterTypeName(filterTypeName);
-                commandForm.setFilterName(filterName);
-                commandForm.setFilterStepName(filterStepName);
-                commandForm.setFilterItemSelectorName(filterItemSelectorName);
-                
-                filterService.createFilterStep(initialDataParser.getUserVisit(), commandForm);
-                
-                initialDataParser.pushHandler(new FilterStepHandler(initialDataParser, this, filterKindName, filterTypeName, filterName, filterStepName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterTypeName(filterTypeName);
+            commandForm.setFilterName(filterName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, filterService.createFilterStep(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new FilterStepHandler(initialDataParser, this, filterKindName, filterTypeName,
+                    filterName, commandForm.getFilterStepName()));
         } else if(localName.equals("filterEntranceStep")) {
-            String filterStepName = null;
+            var commandForm = FilterFormFactory.getCreateFilterEntranceStepForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("filterStepName"))
-                    filterStepName = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = FilterFormFactory.getCreateFilterEntranceStepForm();
-                
-                commandForm.setFilterKindName(filterKindName);
-                commandForm.setFilterTypeName(filterTypeName);
-                commandForm.setFilterName(filterName);
-                commandForm.setFilterStepName(filterStepName);
-                
-                filterService.createFilterEntranceStep(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterTypeName(filterTypeName);
+            commandForm.setFilterName(filterName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, filterService.createFilterEntranceStep(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("filterStepDestination")) {
-            String fromFilterStepName = null;
-            String toFilterStepName = null;
+            var commandForm = FilterFormFactory.getCreateFilterStepDestinationForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("fromFilterStepName"))
-                    fromFilterStepName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("toFilterStepName"))
-                    toFilterStepName = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = FilterFormFactory.getCreateFilterStepDestinationForm();
-                
-                commandForm.setFilterKindName(filterKindName);
-                commandForm.setFilterTypeName(filterTypeName);
-                commandForm.setFilterName(filterName);
-                commandForm.setFromFilterStepName(fromFilterStepName);
-                commandForm.setToFilterStepName(toFilterStepName);
-                
-                filterService.createFilterStepDestination(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterTypeName(filterTypeName);
+            commandForm.setFilterName(filterName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, filterService.createFilterStepDestination(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class GlAccountClassHandler
         extends BaseHandler {
+
     AccountingService accountingService;
     String glAccountClassName;
     
@@ -53,7 +54,7 @@ public class GlAccountClassHandler
             commandForm.setGlAccountClassName(glAccountClassName);
             commandForm.set(getAttrsMap(attrs));
             
-            accountingService.createGlAccountClassDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, accountingService.createGlAccountClassDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

@@ -21,24 +21,21 @@ import com.echothree.control.user.party.common.PartyService;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class TimeZoneHandler
         extends BaseHandler {
+
     PartyService partyService;
     String javaTimeZoneName;
     
     /** Creates a new instance of TimeZoneHandler */
-    public TimeZoneHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String javaTimeZoneName) {
+    public TimeZoneHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String javaTimeZoneName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            partyService = PartyUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        partyService = lookupService(PartyService.class, PartyUtil::getHome);
         
         this.javaTimeZoneName = javaTimeZoneName;
     }
@@ -47,28 +44,13 @@ public class TimeZoneHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("timeZoneDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var createTimeZoneDescriptionForm = PartyFormFactory.getCreateTimeZoneDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var createTimeZoneDescriptionForm = PartyFormFactory.getCreateTimeZoneDescriptionForm();
-                
-                createTimeZoneDescriptionForm.setJavaTimeZoneName(javaTimeZoneName);
-                createTimeZoneDescriptionForm.setLanguageIsoName(languageIsoName);
-                createTimeZoneDescriptionForm.setDescription(description);
-                
-                partyService.createTimeZoneDescription(initialDataParser.getUserVisit(), createTimeZoneDescriptionForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            createTimeZoneDescriptionForm.setJavaTimeZoneName(javaTimeZoneName);
+            createTimeZoneDescriptionForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createTimeZoneDescriptionForm,
+                    partyService.createTimeZoneDescription(initialDataParser.getUserVisit(), createTimeZoneDescriptionForm));
         }
     }
     

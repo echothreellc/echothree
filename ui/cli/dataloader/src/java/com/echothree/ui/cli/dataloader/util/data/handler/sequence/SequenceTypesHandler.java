@@ -18,12 +18,10 @@ package com.echothree.ui.cli.dataloader.util.data.handler.sequence;
 
 import com.echothree.control.user.sequence.common.SequenceService;
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.edit.SequenceTypeEdit;
 import com.echothree.control.user.sequence.common.form.SequenceFormFactory;
 import com.echothree.control.user.sequence.common.spec.SequenceSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
@@ -50,91 +48,21 @@ public class SequenceTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("sequenceType")) {
-            var spec = SequenceSpecFactory.getSequenceTypeSpec();
-            var editForm = SequenceFormFactory.getEditSequenceTypeForm();
+            var attrsMap = getAttrsMap(attrs);
+            // The XML loader clears an omitted prefix.
+            attrsMap.putIfAbsent("Prefix", null);
 
-            spec.set(getAttrsMap(attrs));
+            var outcome = editOrCreate(attrsMap, SequenceSpecFactory.getSequenceTypeSpec(),
+                    SequenceFormFactory.getEditSequenceTypeForm(), sequenceService::editSequenceType,
+                    SequenceFormFactory.getCreateSequenceTypeForm(), sequenceService::createSequenceType,
+                    ExecutionErrors.UnknownSequenceTypeName);
 
-            editForm.setSpec(spec);
-            editForm.setEditMode(EditMode.LOCK);
-
-            var commandResult = sequenceService.editSequenceType(initialDataParser.getUserVisit(), editForm);
-            
-            if(commandResult.hasErrors()) {
-                if(commandResult.containsExecutionError(ExecutionErrors.UnknownSequenceTypeName.name())) {
-                    var createForm = SequenceFormFactory.getCreateSequenceTypeForm();
-
-                    createForm.set(getAttrsMap(attrs));
-
-                    var createSequenceTypeCommandResult = sequenceService.createSequenceType(initialDataParser.getUserVisit(), createForm);
-                    
-                    if(createSequenceTypeCommandResult.hasErrors()) {
-                        getLogger().error(createSequenceTypeCommandResult.toString());
-                    }
-                } else {
-                    getLogger().error(commandResult.toString());
-                }
+            if(outcome.successful()) {
+                var sequenceTypeName = (String)attrsMap.get("SequenceTypeName");
+                initialDataParser.pushHandler(new SequenceTypeHandler(initialDataParser, this, sequenceTypeName));
             } else {
-                var executionResult = commandResult.getExecutionResult();
-                var result = executionResult.getResult();
-
-                if(result != null) {
-                    var edit = (SequenceTypeEdit)result.getEdit();
-                    var prefix = attrs.getValue("prefix");
-                    var sequenceEncoderTypeName = attrs.getValue("sequenceEncoderTypeName");
-                    var sequenceChecksumTypeName = attrs.getValue("sequenceChecksumTypeName");
-                    var isDefault = attrs.getValue("isDefault");
-                    var sortOrder = attrs.getValue("sortOrder");
-                    var changed = false;
-                    
-                    if(!edit.getPrefix().equals(prefix)) {
-                        edit.setPrefix(prefix);
-                        changed = true;
-                    }
-
-                    if(!edit.getSequenceEncoderTypeName().equals(sequenceEncoderTypeName)) {
-                        edit.setSequenceEncoderTypeName(sequenceEncoderTypeName);
-                        changed = true;
-                    }
-
-                    if(!edit.getSequenceChecksumTypeName().equals(sequenceChecksumTypeName)) {
-                        edit.setSequenceChecksumTypeName(sequenceChecksumTypeName);
-                        changed = true;
-                    }
-
-                    if(!edit.getIsDefault().equals(isDefault)) {
-                        edit.setIsDefault(isDefault);
-                        changed = true;
-                    }
-
-                    if(!edit.getSortOrder().equals(sortOrder)) {
-                        edit.setSortOrder(sortOrder);
-                        changed = true;
-                    }
-
-                    if(changed) {
-                        editForm.setEdit(edit);
-                        editForm.setEditMode(EditMode.UPDATE);
-                        
-                        commandResult = sequenceService.editSequenceType(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
-                        }
-                    } else {
-                        editForm.setEdit(null);
-                        editForm.setEditMode(EditMode.ABANDON);
-                        
-                        commandResult = sequenceService.editSequenceType(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
-                        }
-                    }
-                }
+                skipCurrentElement();
             }
-
-            initialDataParser.pushHandler(new SequenceTypeHandler(initialDataParser, this, spec.getSequenceTypeName()));
         }
     }
 

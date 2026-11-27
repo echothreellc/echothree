@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class PartyTypesHandler
         extends BaseHandler {
+
     PartyService partyService;
     
     /** Creates a new instance of PartyTypesHandler */
@@ -51,7 +52,7 @@ public class PartyTypesHandler
 
             var commandAction = (String)commandForm.get("CommandAction");
             if(commandAction == null || commandAction.equals("create")) {
-                partyService.createPartyType(initialDataParser.getUserVisit(), commandForm);
+                checkCommandResult(commandForm, partyService.createPartyType(initialDataParser.getUserVisit(), commandForm));
             }
             
             initialDataParser.pushHandler(new PartyTypeHandler(initialDataParser, this, commandForm.getPartyTypeName()));

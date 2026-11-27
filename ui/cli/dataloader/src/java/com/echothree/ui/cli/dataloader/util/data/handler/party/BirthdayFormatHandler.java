@@ -21,24 +21,21 @@ import com.echothree.control.user.party.common.PartyService;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class BirthdayFormatHandler
         extends BaseHandler {
+
     PartyService partyService;
     String birthdayFormatName;
     
     /** Creates a new instance of BirthdayFormatHandler */
-    public BirthdayFormatHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String birthdayFormatName) {
+    public BirthdayFormatHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String birthdayFormatName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            partyService = PartyUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        partyService = lookupService(PartyService.class, PartyUtil::getHome);
         
         this.birthdayFormatName = birthdayFormatName;
     }
@@ -47,28 +44,12 @@ public class BirthdayFormatHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("birthdayFormatDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var commandForm = PartyFormFactory.getCreateBirthdayFormatDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = PartyFormFactory.getCreateBirthdayFormatDescriptionForm();
-                
-                commandForm.setBirthdayFormatName(birthdayFormatName);
-                commandForm.setLanguageIsoName(languageIsoName);
-                commandForm.setDescription(description);
-                
-                partyService.createBirthdayFormatDescription(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setBirthdayFormatName(birthdayFormatName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, partyService.createBirthdayFormatDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

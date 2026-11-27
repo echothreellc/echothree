@@ -21,46 +21,34 @@ import com.echothree.control.user.party.common.PartyService;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class PartyRelationshipTypesHandler
         extends BaseHandler {
+
     PartyService partyService;
     
     /** Creates a new instance of PartyRelationshipTypesHandler */
-    public PartyRelationshipTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public PartyRelationshipTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            partyService = PartyUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        partyService = lookupService(PartyService.class, PartyUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("partyRelationshipType")) {
-            String partyRelationshipTypeName = null;
+            var partyRelationshipTypeName = attrs.getValue("partyRelationshipTypeName");
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("partyRelationshipTypeName"))
-                    partyRelationshipTypeName = attrs.getValue(i);
-            }
-            
-            try {
-                var createPartyRelationshipTypeForm = PartyFormFactory.getCreatePartyRelationshipTypeForm();
-                
-                createPartyRelationshipTypeForm.setPartyRelationshipTypeName(partyRelationshipTypeName);
-                
-                partyService.createPartyRelationshipType(initialDataParser.getUserVisit(), createPartyRelationshipTypeForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var createPartyRelationshipTypeForm = PartyFormFactory.getCreatePartyRelationshipTypeForm();
+
+            createPartyRelationshipTypeForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createPartyRelationshipTypeForm,
+                    partyService.createPartyRelationshipType(initialDataParser.getUserVisit(), createPartyRelationshipTypeForm));
             
             initialDataParser.pushHandler(new PartyRelationshipTypeHandler(initialDataParser, this, partyRelationshipTypeName));
         }

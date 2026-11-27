@@ -21,56 +21,34 @@ import com.echothree.control.user.item.common.ItemService;
 import com.echothree.control.user.item.common.form.ItemFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ItemPriceTypesHandler
         extends BaseHandler {
+
     ItemService itemService;
     
     /** Creates a new instance of ItemPriceTypesHandler */
-    public ItemPriceTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public ItemPriceTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            itemService = ItemUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        itemService = lookupService(ItemService.class, ItemUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("itemPriceType")) {
-            String itemPriceTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var createItemPriceTypeForm = ItemFormFactory.getCreateItemPriceTypeForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("itemPriceTypeName"))
-                    itemPriceTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
-            try {
-                var createItemPriceTypeForm = ItemFormFactory.getCreateItemPriceTypeForm();
-                
-                createItemPriceTypeForm.setItemPriceTypeName(itemPriceTypeName);
-                createItemPriceTypeForm.setIsDefault(isDefault);
-                createItemPriceTypeForm.setSortOrder(sortOrder);
-                
-                itemService.createItemPriceType(initialDataParser.getUserVisit(), createItemPriceTypeForm);
-                
-                initialDataParser.pushHandler(new ItemPriceTypeHandler(initialDataParser, this, itemPriceTypeName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            createItemPriceTypeForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createItemPriceTypeForm,
+                    itemService.createItemPriceType(initialDataParser.getUserVisit(), createItemPriceTypeForm));
+
+            initialDataParser.pushHandler(new ItemPriceTypeHandler(initialDataParser, this, createItemPriceTypeForm.getItemPriceTypeName()));
         }
     }
     

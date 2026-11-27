@@ -46,7 +46,7 @@ public class FreeOnBoardsHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(shipmentService.createFreeOnBoard(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, shipmentService.createFreeOnBoard(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new FreeOnBoardHandler(initialDataParser, this, commandForm.getFreeOnBoardName()));
         }

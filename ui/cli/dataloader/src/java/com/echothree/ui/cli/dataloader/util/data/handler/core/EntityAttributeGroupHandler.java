@@ -21,28 +21,25 @@ import com.echothree.control.user.core.common.CoreService;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class EntityAttributeGroupHandler
         extends BaseHandler {
+
     CoreService coreService;
     String componentVendorName;
     String entityTypeName;
     String entityAttributeGroupName;
     
     /** Creates a new instance of EntityAttributeGroupHandler */
-    public EntityAttributeGroupHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String componentVendorName, String entityTypeName, String entityAttributeGroupName) {
+    public EntityAttributeGroupHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String componentVendorName, String entityTypeName, String entityAttributeGroupName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         this.componentVendorName = componentVendorName;
         this.entityTypeName = entityTypeName;
         
-        try {
-            coreService = CoreUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        coreService = lookupService(CoreService.class, CoreUtil::getHome);
         
         this.entityAttributeGroupName = entityAttributeGroupName;
     }
@@ -51,30 +48,14 @@ public class EntityAttributeGroupHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("entityAttributeGroupDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var form = CoreFormFactory.getCreateEntityAttributeGroupDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var form = CoreFormFactory.getCreateEntityAttributeGroupDescriptionForm();
-                
-                form.setComponentVendorName(componentVendorName);
-                form.setEntityTypeName(entityTypeName);
-                form.setEntityAttributeGroupName(entityAttributeGroupName);
-                form.setLanguageIsoName(languageIsoName);
-                form.setDescription(description);
-                
-                coreService.createEntityAttributeGroupDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.setComponentVendorName(componentVendorName);
+            form.setEntityTypeName(entityTypeName);
+            form.setEntityAttributeGroupName(entityAttributeGroupName);
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, coreService.createEntityAttributeGroupDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

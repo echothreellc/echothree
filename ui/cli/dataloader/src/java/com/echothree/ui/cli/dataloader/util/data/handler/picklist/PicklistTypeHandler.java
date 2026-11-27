@@ -21,24 +21,21 @@ import com.echothree.control.user.picklist.common.PicklistService;
 import com.echothree.control.user.picklist.common.form.PicklistFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class PicklistTypeHandler
         extends BaseHandler {
+
     PicklistService picklistService;
     String picklistTypeName;
     
     /** Creates a new instance of PicklistTypeHandler */
-    public PicklistTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String picklistTypeName) {
+    public PicklistTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String picklistTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            picklistService = PicklistUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        picklistService = lookupService(PicklistService.class, PicklistUtil::getHome);
         
         this.picklistTypeName = picklistTypeName;
     }
@@ -47,66 +44,33 @@ public class PicklistTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("picklistTypeDescription")) {
-            String attrLanguageIsoName = null;
-            String attrDescription = null;
+            var createPicklistTypeDescriptionForm = PicklistFormFactory.getCreatePicklistTypeDescriptionForm();
 
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    attrLanguageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    attrDescription = attrs.getValue(i);
-            }
-            
-            try {
-                var createPicklistTypeDescriptionForm = PicklistFormFactory.getCreatePicklistTypeDescriptionForm();
-                
-                createPicklistTypeDescriptionForm.setPicklistTypeName(picklistTypeName);
-                createPicklistTypeDescriptionForm.setLanguageIsoName(attrLanguageIsoName);
-                createPicklistTypeDescriptionForm.setDescription(attrDescription);
-                
-                checkCommandResult(picklistService.createPicklistTypeDescription(initialDataParser.getUserVisit(), createPicklistTypeDescriptionForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            createPicklistTypeDescriptionForm.setPicklistTypeName(picklistTypeName);
+            createPicklistTypeDescriptionForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createPicklistTypeDescriptionForm,
+                    picklistService.createPicklistTypeDescription(initialDataParser.getUserVisit(), createPicklistTypeDescriptionForm));
         } else if(localName.equals("picklistTimeType")) {
             var commandForm = PicklistFormFactory.getCreatePicklistTimeTypeForm();
 
             commandForm.setPicklistTypeName(picklistTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(picklistService.createPicklistTimeType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, picklistService.createPicklistTimeType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new PicklistTimeTypeHandler(initialDataParser, this, picklistTypeName, commandForm.getPicklistTimeTypeName()));
         } else if(localName.equals("picklistAliasType")) {
-            String picklistAliasTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var createPicklistAliasTypeForm = PicklistFormFactory.getCreatePicklistAliasTypeForm();
 
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("picklistAliasTypeName"))
-                    picklistAliasTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
-            try {
-                var createPicklistAliasTypeForm = PicklistFormFactory.getCreatePicklistAliasTypeForm();
-                
-                createPicklistAliasTypeForm.setPicklistTypeName(picklistTypeName);
-                createPicklistAliasTypeForm.setPicklistAliasTypeName(picklistAliasTypeName);
-                createPicklistAliasTypeForm.setIsDefault(isDefault);
-                createPicklistAliasTypeForm.setSortOrder(sortOrder);
-                
-                checkCommandResult(picklistService.createPicklistAliasType(initialDataParser.getUserVisit(), createPicklistAliasTypeForm));
-                
-                initialDataParser.pushHandler(new PicklistAliasTypeHandler(initialDataParser, this, picklistTypeName, picklistAliasTypeName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            createPicklistAliasTypeForm.setPicklistTypeName(picklistTypeName);
+            createPicklistAliasTypeForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createPicklistAliasTypeForm,
+                    picklistService.createPicklistAliasType(initialDataParser.getUserVisit(), createPicklistAliasTypeForm));
+
+            initialDataParser.pushHandler(new PicklistAliasTypeHandler(initialDataParser, this, picklistTypeName,
+                    createPicklistAliasTypeForm.getPicklistAliasTypeName()));
         }
     }
     

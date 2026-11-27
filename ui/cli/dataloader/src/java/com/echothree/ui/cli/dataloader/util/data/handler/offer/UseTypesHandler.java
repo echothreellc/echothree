@@ -21,56 +21,33 @@ import com.echothree.control.user.offer.common.OfferService;
 import com.echothree.control.user.offer.common.form.OfferFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class UseTypesHandler
         extends BaseHandler {
+
     OfferService offerService;
     
     /** Creates a new instance of UseTypesHandler */
-    public UseTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public UseTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            offerService = OfferUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        offerService = lookupService(OfferService.class, OfferUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("useType")) {
-            String useTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var form = OfferFormFactory.getCreateUseTypeForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("useTypeName"))
-                    useTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
-            try {
-                var form = OfferFormFactory.getCreateUseTypeForm();
-                
-                form.setUseTypeName(useTypeName);
-                form.setIsDefault(isDefault);
-                form.setSortOrder(sortOrder);
-                
-                offerService.createUseType(initialDataParser.getUserVisit(), form);
-                
-                initialDataParser.pushHandler(new UseTypeHandler(initialDataParser, this, useTypeName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, offerService.createUseType(initialDataParser.getUserVisit(), form));
+
+            initialDataParser.pushHandler(new UseTypeHandler(initialDataParser, this, form.getUseTypeName()));
         }
     }
     

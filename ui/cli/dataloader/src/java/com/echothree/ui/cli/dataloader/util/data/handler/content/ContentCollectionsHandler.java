@@ -21,51 +21,35 @@ import com.echothree.control.user.content.common.ContentService;
 import com.echothree.control.user.content.common.form.ContentFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ContentCollectionsHandler
         extends BaseHandler {
+
     ContentService contentService;
     
     /** Creates a new instance of ContentCollectionsHandler */
-    public ContentCollectionsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public ContentCollectionsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            contentService = ContentUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        contentService = lookupService(ContentService.class, ContentUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("contentCollection")) {
-            String contentCollectionName = null;
-            String doUpdate = null;
+            var createContentCollectionForm = ContentFormFactory.getCreateContentCollectionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("contentCollectionName"))
-                    contentCollectionName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("doUpdate"))
-                    doUpdate = attrs.getValue(i);
-            }
-            
-            try {
-                var createContentCollectionForm = ContentFormFactory.getCreateContentCollectionForm();
-                
-                createContentCollectionForm.setContentCollectionName(contentCollectionName);
-                
-                contentService.createContentCollection(initialDataParser.getUserVisit(), createContentCollectionForm);
-                
-                initialDataParser.pushHandler(new ContentCollectionHandler(initialDataParser, this, contentCollectionName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            createContentCollectionForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createContentCollectionForm,
+                    contentService.createContentCollection(initialDataParser.getUserVisit(), createContentCollectionForm));
+
+            initialDataParser.pushHandler(new ContentCollectionHandler(initialDataParser, this,
+                    createContentCollectionForm.getContentCollectionName()));
         }
     }
     

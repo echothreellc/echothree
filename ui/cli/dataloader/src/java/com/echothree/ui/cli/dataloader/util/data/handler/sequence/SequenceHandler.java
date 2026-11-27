@@ -57,7 +57,7 @@ public class SequenceHandler
             commandForm.setSequenceName(sequenceName);
             commandForm.set(getAttrsMap(attrs));
 
-            sequenceService.createSequenceDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, sequenceService.createSequenceDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("sequenceValue")) {
             var commandForm = SequenceFormFactory.getSetSequenceValueForm();
 
@@ -65,7 +65,7 @@ public class SequenceHandler
             commandForm.setSequenceName(sequenceName);
             commandForm.set(getAttrsMap(attrs));
 
-            sequenceService.setSequenceValue(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, sequenceService.setSequenceValue(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

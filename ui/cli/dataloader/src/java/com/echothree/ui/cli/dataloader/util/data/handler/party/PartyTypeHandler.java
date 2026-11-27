@@ -59,49 +59,49 @@ public class PartyTypeHandler
             commandForm.setPartyTypeName(partyTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            partyService.createPartyTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, partyService.createPartyTypeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("partyTypePasswordStringPolicy")) {
             var commandForm = PartyFormFactory.getCreatePartyTypePasswordStringPolicyForm();
             
             commandForm.setPartyTypeName(partyTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            partyService.createPartyTypePasswordStringPolicy(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, partyService.createPartyTypePasswordStringPolicy(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("partyTypeLockoutPolicy")) {
             var commandForm = PartyFormFactory.getCreatePartyTypeLockoutPolicyForm();
             
             commandForm.setPartyTypeName(partyTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            partyService.createPartyTypeLockoutPolicy(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, partyService.createPartyTypeLockoutPolicy(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("partyTypeAuditPolicy")) {
             var commandForm = PartyFormFactory.getCreatePartyTypeAuditPolicyForm();
             
             commandForm.setPartyTypeName(partyTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            partyService.createPartyTypeAuditPolicy(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, partyService.createPartyTypeAuditPolicy(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("partyTypeContactListGroup")) {
             var commandForm = ContactListFormFactory.getCreatePartyTypeContactListGroupForm();
             
             commandForm.setPartyTypeName(partyTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            contactListService.createPartyTypeContactListGroup(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, contactListService.createPartyTypeContactListGroup(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("partyTypeContactList")) {
             var commandForm = ContactListFormFactory.getCreatePartyTypeContactListForm();
 
             commandForm.setPartyTypeName(partyTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            contactListService.createPartyTypeContactList(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, contactListService.createPartyTypeContactList(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("partyAliasType")) {
             var commandForm = PartyFormFactory.getCreatePartyAliasTypeForm();
 
             commandForm.setPartyTypeName(partyTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            partyService.createPartyAliasType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, partyService.createPartyAliasType(initialDataParser.getUserVisit(), commandForm));
             initialDataParser.pushHandler(new PartyAliasTypeHandler(initialDataParser, this, partyTypeName, commandForm.getPartyAliasTypeName()));
         }
     }

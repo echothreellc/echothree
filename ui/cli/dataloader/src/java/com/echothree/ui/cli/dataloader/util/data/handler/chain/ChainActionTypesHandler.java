@@ -50,7 +50,7 @@ public class ChainActionTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            chainService.createChainActionType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, chainService.createChainActionType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new ChainActionTypeHandler(initialDataParser, this, commandForm.getChainActionTypeName()));
         }

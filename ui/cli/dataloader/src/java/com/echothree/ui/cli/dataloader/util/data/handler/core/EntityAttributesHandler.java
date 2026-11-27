@@ -54,42 +54,42 @@ public class EntityAttributesHandler
             commandForm.setEntityRef(entityRef);
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createEntityNameAttribute(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createEntityNameAttribute(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("entityIntegerAttribute")) {
             var commandForm = CoreFormFactory.getCreateEntityIntegerAttributeForm();
             
             commandForm.setEntityRef(entityRef);
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createEntityIntegerAttribute(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createEntityIntegerAttribute(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("entityLongAttribute")) {
             var commandForm = CoreFormFactory.getCreateEntityLongAttributeForm();
             
             commandForm.setEntityRef(entityRef);
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createEntityLongAttribute(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createEntityLongAttribute(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("entityBooleanAttribute")) {
             var commandForm = CoreFormFactory.getCreateEntityBooleanAttributeForm();
             
             commandForm.setEntityRef(entityRef);
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createEntityBooleanAttribute(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createEntityBooleanAttribute(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("entityStringAttribute")) {
             var commandForm = CoreFormFactory.getCreateEntityStringAttributeForm();
             
             commandForm.setEntityRef(entityRef);
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createEntityStringAttribute(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createEntityStringAttribute(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("entityGeoPointAttribute")) {
             var commandForm = CoreFormFactory.getCreateEntityGeoPointAttributeForm();
             
             commandForm.setEntityRef(entityRef);
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createEntityGeoPointAttribute(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createEntityGeoPointAttribute(initialDataParser.getUserVisit(), commandForm));
         } /* else if(localName.equals("entityBlobAttribute")) {
         } else if(localName.equals("entityClobAttribute")) {
         } else if(localName.equals("entityEntityAttribute")) {
@@ -100,35 +100,25 @@ public class EntityAttributesHandler
             commandForm.setEntityRef(entityRef);
             commandForm.set(getAttrsMap(attrs));
 
-            coreService.createEntityDateAttribute(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createEntityDateAttribute(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("entityTimeAttribute")) {
             var commandForm = CoreFormFactory.getCreateEntityTimeAttributeForm();
 
             commandForm.setEntityRef(entityRef);
             commandForm.set(getAttrsMap(attrs));
 
-            coreService.createEntityTimeAttribute(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createEntityTimeAttribute(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("entityListItemAttribute")) {
             var commandForm = CoreFormFactory.getCreateEntityListItemAttributeForm();
             
             commandForm.setEntityRef(entityRef);
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createEntityListItemAttribute(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createEntityListItemAttribute(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("entityMultipleListItemAttributes")) {
-            String entityAttributeName = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("entityAttributeName"))
-                    entityAttributeName = attrs.getValue(i);
-            }
+            var entityAttributeName = attrs.getValue("entityAttributeName");
             
-            try {
-                initialDataParser.pushHandler(new EntityMultipleListItemAttributesHandler(initialDataParser, this, entityRef, entityAttributeName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            initialDataParser.pushHandler(new EntityMultipleListItemAttributesHandler(initialDataParser, this, entityRef, entityAttributeName));
         }
     }
     

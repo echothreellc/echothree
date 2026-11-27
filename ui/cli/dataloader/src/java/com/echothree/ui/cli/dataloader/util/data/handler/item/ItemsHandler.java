@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class ItemsHandler
         extends BaseHandler {
+
     ItemService itemService = null;
     
     /** Creates a new instance of ItemsHandler */
@@ -46,24 +47,9 @@ public class ItemsHandler
             throws SAXException {
         if(localName.equals("item")) {
             String entityRef = null;
-            String itemName = null;
-            String companyName = null;
-            String commandAction = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                switch (attrs.getQName(i)) {
-                    case "itemName":
-                        itemName = attrs.getValue(i);
-                        break;
-                    case "companyName":
-                        companyName = attrs.getValue(i);
-                        break;
-                    case "commandAction":
-                        commandAction = attrs.getValue(i);
-                        break;
-                }
-            }
+            var itemName = attrs.getValue("itemName");
+            var companyName = attrs.getValue("companyName");
+            var commandAction = attrs.getValue("commandAction");
             
             if(commandAction == null || commandAction.equals("create")) {
                 var commandForm = ItemFormFactory.getCreateItemForm();
@@ -71,6 +57,7 @@ public class ItemsHandler
                 commandForm.set(getAttrsMap(attrs));
 
                 var commandResult = itemService.createItem(initialDataParser.getUserVisit(), commandForm);
+                checkCommandResult(commandForm, commandResult);
                 var executionResult = commandResult.getExecutionResult();
                 var result = executionResult.getResult();
                 
@@ -82,6 +69,7 @@ public class ItemsHandler
                 commandForm.setItemName(itemName);
 
                 var commandResult = itemService.getItem(initialDataParser.getUserVisit(), commandForm);
+                checkCommandResult(commandForm, commandResult);
                 
                 if(!commandResult.hasErrors()) {
                     var executionResult = commandResult.getExecutionResult();

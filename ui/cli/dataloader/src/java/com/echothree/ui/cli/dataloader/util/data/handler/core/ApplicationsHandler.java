@@ -50,7 +50,7 @@ public class ApplicationsHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createApplication(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createApplication(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new ApplicationHandler(initialDataParser, this, commandForm.getApplicationName()));
         }

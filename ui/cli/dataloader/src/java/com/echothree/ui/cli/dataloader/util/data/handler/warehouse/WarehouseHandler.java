@@ -63,14 +63,14 @@ public class WarehouseHandler
             commandForm.setPartyName(partyName);
             commandForm.set(getAttrsMap(attrs));
 
-            partyService.createPartyAlias(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, partyService.createPartyAlias(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("inventoryLocationGroup")) {
             var commandForm = InventoryFormFactory.getCreateInventoryLocationGroupForm();
 
             commandForm.setWarehouseName(warehouseName);
             commandForm.set(getAttrsMap(attrs));
 
-            inventoryService.createInventoryLocationGroup(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, inventoryService.createInventoryLocationGroup(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new InventoryLocationGroupHandler(initialDataParser, this, warehouseName, commandForm.getInventoryLocationGroupName()));
         } else if(localName.equals("locationType")) {
@@ -79,7 +79,7 @@ public class WarehouseHandler
             commandForm.setWarehouseName(warehouseName);
             commandForm.set(getAttrsMap(attrs));
 
-            warehouseService.createLocationType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, warehouseService.createLocationType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new LocationTypeHandler(initialDataParser, this, warehouseName, commandForm.getLocationTypeName()));
         } else if(localName.equals("location")) {
@@ -89,6 +89,7 @@ public class WarehouseHandler
             commandForm.set(getAttrsMap(attrs));
 
             var commandResult = warehouseService.createLocation(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, commandResult);
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();

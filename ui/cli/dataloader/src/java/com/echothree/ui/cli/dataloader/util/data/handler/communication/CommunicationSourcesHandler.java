@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class CommunicationSourcesHandler
         extends BaseHandler {
+
     CommunicationService communicationService;
     
     /** Creates a new instance of CommunicationSourcesHandler */
@@ -46,11 +47,10 @@ public class CommunicationSourcesHandler
             throws SAXException {
         if(localName.equals("communicationSource")) {
             var commandForm = CommunicationFormFactory.getCreateCommunicationSourceForm();
-            var attrsMap = getAttrsMap(attrs);
+
+            commandForm.set(getAttrsMap(attrs));
             
-            commandForm.set(attrsMap);
-            
-            communicationService.createCommunicationSource(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, communicationService.createCommunicationSource(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new CommunicationSourceHandler(initialDataParser, this, commandForm.getCommunicationSourceName()));
         }

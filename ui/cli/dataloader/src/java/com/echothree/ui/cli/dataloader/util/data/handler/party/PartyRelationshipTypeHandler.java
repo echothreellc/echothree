@@ -22,24 +22,21 @@ import com.echothree.control.user.party.common.PartyService;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class PartyRelationshipTypeHandler
         extends BaseHandler {
+
     PartyService partyService;
     String partyRelationshipTypeName;
     
     /** Creates a new instance of PartyRelationshipTypeHandler */
-    public PartyRelationshipTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String partyRelationshipTypeName) {
+    public PartyRelationshipTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String partyRelationshipTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            partyService = PartyUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        partyService = lookupService(PartyService.class, PartyUtil::getHome);
         
         this.partyRelationshipTypeName = partyRelationshipTypeName;
     }
@@ -48,28 +45,13 @@ public class PartyRelationshipTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("partyRelationshipTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var createPartyRelationshipTypeDescriptionForm = PartyFormFactory.getCreatePartyRelationshipTypeDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var createPartyRelationshipTypeDescriptionForm = PartyFormFactory.getCreatePartyRelationshipTypeDescriptionForm();
-                
-                createPartyRelationshipTypeDescriptionForm.setPartyRelationshipTypeName(partyRelationshipTypeName);
-                createPartyRelationshipTypeDescriptionForm.setLanguageIsoName(languageIsoName);
-                createPartyRelationshipTypeDescriptionForm.setDescription(description);
-                
-                partyService.createPartyRelationshipTypeDescription(initialDataParser.getUserVisit(), createPartyRelationshipTypeDescriptionForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            createPartyRelationshipTypeDescriptionForm.setPartyRelationshipTypeName(partyRelationshipTypeName);
+            createPartyRelationshipTypeDescriptionForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createPartyRelationshipTypeDescriptionForm,
+                    partyService.createPartyRelationshipTypeDescription(initialDataParser.getUserVisit(), createPartyRelationshipTypeDescriptionForm));
         }
     }
     

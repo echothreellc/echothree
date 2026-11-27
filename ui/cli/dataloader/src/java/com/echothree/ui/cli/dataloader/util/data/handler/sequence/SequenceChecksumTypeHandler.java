@@ -54,7 +54,8 @@ public class SequenceChecksumTypeHandler
             commandForm.setSequenceChecksumTypeName(sequenceChecksumTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            sequenceService.createSequenceChecksumTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm,
+                    sequenceService.createSequenceChecksumTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

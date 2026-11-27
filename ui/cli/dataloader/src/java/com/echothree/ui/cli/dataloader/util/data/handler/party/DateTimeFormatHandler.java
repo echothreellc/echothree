@@ -21,24 +21,21 @@ import com.echothree.control.user.party.common.PartyService;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class DateTimeFormatHandler
         extends BaseHandler {
+
     PartyService partyService;
     String dateTimeFormatName;
     
     /** Creates a new instance of DateTimeFormatHandler */
-    public DateTimeFormatHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String dateTimeFormatName) {
+    public DateTimeFormatHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String dateTimeFormatName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            partyService = PartyUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        partyService = lookupService(PartyService.class, PartyUtil::getHome);
         
         this.dateTimeFormatName = dateTimeFormatName;
     }
@@ -47,28 +44,13 @@ public class DateTimeFormatHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("dateTimeFormatDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var createDateTimeFormatDescriptionForm = PartyFormFactory.getCreateDateTimeFormatDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var createDateTimeFormatDescriptionForm = PartyFormFactory.getCreateDateTimeFormatDescriptionForm();
-                
-                createDateTimeFormatDescriptionForm.setDateTimeFormatName(dateTimeFormatName);
-                createDateTimeFormatDescriptionForm.setLanguageIsoName(languageIsoName);
-                createDateTimeFormatDescriptionForm.setDescription(description);
-                
-                partyService.createDateTimeFormatDescription(initialDataParser.getUserVisit(), createDateTimeFormatDescriptionForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            createDateTimeFormatDescriptionForm.setDateTimeFormatName(dateTimeFormatName);
+            createDateTimeFormatDescriptionForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createDateTimeFormatDescriptionForm,
+                    partyService.createDateTimeFormatDescription(initialDataParser.getUserVisit(), createDateTimeFormatDescriptionForm));
         }
     }
     

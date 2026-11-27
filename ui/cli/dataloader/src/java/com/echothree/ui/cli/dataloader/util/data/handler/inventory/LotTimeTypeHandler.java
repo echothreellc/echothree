@@ -54,7 +54,7 @@ public class LotTimeTypeHandler
             commandForm.setLotTimeTypeName(lotTimeTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(inventoryService.createLotTimeTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, inventoryService.createLotTimeTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

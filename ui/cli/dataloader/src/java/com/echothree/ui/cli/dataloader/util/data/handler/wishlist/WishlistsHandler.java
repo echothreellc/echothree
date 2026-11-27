@@ -20,24 +20,21 @@ import com.echothree.control.user.wishlist.common.WishlistUtil;
 import com.echothree.control.user.wishlist.common.WishlistService;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class WishlistsHandler
         extends BaseHandler {
+
     WishlistService wishlistService;
     String partyName;
     
     /** Creates a new instance of WishlistsHandler */
-    public WishlistsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String partyName) {
+    public WishlistsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String partyName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            wishlistService = WishlistUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        wishlistService = lookupService(WishlistService.class, WishlistUtil::getHome);
         this.partyName = partyName;
     }
     
@@ -45,19 +42,9 @@ public class WishlistsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("wishlist")) {
-            String wishlistTypeName = null;
-            String currencyIsoName = null;
-            String sourceName = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("wishlistTypeName"))
-                    wishlistTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("currencyIsoName"))
-                    currencyIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sourceName"))
-                    sourceName = attrs.getValue(i);
-            }
+            var wishlistTypeName = attrs.getValue("wishlistTypeName");
+            var currencyIsoName = attrs.getValue("currencyIsoName");
+            var sourceName = attrs.getValue("sourceName");
             
             initialDataParser.pushHandler(new WishlistHandler(initialDataParser, this, partyName, wishlistTypeName, currencyIsoName,
                     sourceName));

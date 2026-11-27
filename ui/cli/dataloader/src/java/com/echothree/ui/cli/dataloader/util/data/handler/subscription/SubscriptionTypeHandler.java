@@ -21,25 +21,22 @@ import com.echothree.control.user.subscription.common.SubscriptionService;
 import com.echothree.control.user.subscription.common.form.SubscriptionFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class SubscriptionTypeHandler
         extends BaseHandler {
+
     SubscriptionService subscriptionService;
     String subscriptionKindName;
     String subscriptionTypeName;
     
     /** Creates a new instance of SubscriptionTypeHandler */
-    public SubscriptionTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String subscriptionKindName, String subscriptionTypeName) {
+    public SubscriptionTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String subscriptionKindName, String subscriptionTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            subscriptionService = SubscriptionUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        subscriptionService = lookupService(SubscriptionService.class, SubscriptionUtil::getHome);
         
         this.subscriptionKindName = subscriptionKindName;
         this.subscriptionTypeName = subscriptionTypeName;
@@ -49,61 +46,22 @@ public class SubscriptionTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("subscriptionTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var commandForm = SubscriptionFormFactory.getCreateSubscriptionTypeDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = SubscriptionFormFactory.getCreateSubscriptionTypeDescriptionForm();
-                
-                commandForm.setSubscriptionKindName(subscriptionKindName);
-                commandForm.setSubscriptionTypeName(subscriptionTypeName);
-                commandForm.setLanguageIsoName(languageIsoName);
-                commandForm.setDescription(description);
-                
-                subscriptionService.createSubscriptionTypeDescription(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setSubscriptionKindName(subscriptionKindName);
+            commandForm.setSubscriptionTypeName(subscriptionTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm,
+                    subscriptionService.createSubscriptionTypeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("subscriptionTypeChain")) {
-            String chainTypeName = null;
-            String chainName = null;
-            String unitOfMeasureTypeName = null;
-            String remainingTime = null;
+            var commandForm = SubscriptionFormFactory.getCreateSubscriptionTypeChainForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("chainTypeName"))
-                    chainTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("chainName"))
-                    chainName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("unitOfMeasureTypeName"))
-                    unitOfMeasureTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("remainingTime"))
-                    remainingTime = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = SubscriptionFormFactory.getCreateSubscriptionTypeChainForm();
-                
-                commandForm.setSubscriptionKindName(subscriptionKindName);
-                commandForm.setSubscriptionTypeName(subscriptionTypeName);
-                commandForm.setChainTypeName(chainTypeName);
-                commandForm.setChainName(chainName);
-                commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
-                commandForm.setRemainingTime(remainingTime);
-                
-                subscriptionService.createSubscriptionTypeChain(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setSubscriptionKindName(subscriptionKindName);
+            commandForm.setSubscriptionTypeName(subscriptionTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, subscriptionService.createSubscriptionTypeChain(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

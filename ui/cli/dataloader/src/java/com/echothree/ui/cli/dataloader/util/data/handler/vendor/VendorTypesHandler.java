@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class VendorTypesHandler
         extends BaseHandler {
+
     VendorService vendorService = VendorUtil.getHome();
     
     /** Creates a new instance of VendorTypesHandler */
@@ -43,7 +44,7 @@ public class VendorTypesHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            vendorService.createVendorType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, vendorService.createVendorType(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new VendorTypeHandler(initialDataParser, this, commandForm.getVendorTypeName()));
         }

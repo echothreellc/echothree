@@ -140,9 +140,9 @@
         <ant dir="src" target="jars"/>
         <parallel>
             <ant dir="service" target="compile"/>
-            <ant dir="test" target="compile"/>
             <ant dir="ui" target="compile"/>
         </parallel>
+        <ant dir="test" target="compile"/>
     </target>
     
     <target name="javadoc" depends="build-properties,setup-ivy,ivy-lib">

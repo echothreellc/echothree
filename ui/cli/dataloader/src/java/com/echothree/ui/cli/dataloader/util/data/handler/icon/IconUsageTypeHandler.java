@@ -21,24 +21,21 @@ import com.echothree.control.user.icon.common.IconService;
 import com.echothree.control.user.icon.common.form.IconFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class IconUsageTypeHandler
         extends BaseHandler {
+
     IconService iconService;
     String iconUsageTypeName;
     
     /** Creates a new instance of IconUsageTypeHandler */
-    public IconUsageTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String iconUsageTypeName) {
+    public IconUsageTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String iconUsageTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            iconService = IconUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        iconService = lookupService(IconService.class, IconUtil::getHome);
         
         this.iconUsageTypeName = iconUsageTypeName;
     }
@@ -47,28 +44,12 @@ public class IconUsageTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("iconUsageTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var form = IconFormFactory.getCreateIconUsageTypeDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var form = IconFormFactory.getCreateIconUsageTypeDescriptionForm();
-                
-                form.setIconUsageTypeName(iconUsageTypeName);
-                form.setLanguageIsoName(languageIsoName);
-                form.setDescription(description);
-                
-                iconService.createIconUsageTypeDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.setIconUsageTypeName(iconUsageTypeName);
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, iconService.createIconUsageTypeDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

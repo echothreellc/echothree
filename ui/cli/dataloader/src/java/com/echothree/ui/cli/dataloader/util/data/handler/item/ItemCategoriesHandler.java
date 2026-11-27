@@ -21,60 +21,33 @@ import com.echothree.control.user.item.common.ItemService;
 import com.echothree.control.user.item.common.form.ItemFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ItemCategoriesHandler
         extends BaseHandler {
+
     ItemService itemService;
     
     /** Creates a new instance of ItemCategoriesHandler */
-    public ItemCategoriesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public ItemCategoriesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            itemService = ItemUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        itemService = lookupService(ItemService.class, ItemUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("itemCategory")) {
-            String itemCategoryName = null;
-            String parentItemCategoryName = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var createItemCategoryForm = ItemFormFactory.getCreateItemCategoryForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("itemCategoryName"))
-                    itemCategoryName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("parentItemCategoryName"))
-                    parentItemCategoryName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
-            try {
-                var createItemCategoryForm = ItemFormFactory.getCreateItemCategoryForm();
-                
-                createItemCategoryForm.setItemCategoryName(itemCategoryName);
-                createItemCategoryForm.setParentItemCategoryName(parentItemCategoryName);
-                createItemCategoryForm.setIsDefault(isDefault);
-                createItemCategoryForm.setSortOrder(sortOrder);
-                
-                itemService.createItemCategory(initialDataParser.getUserVisit(), createItemCategoryForm);
-                
-                initialDataParser.pushHandler(new ItemCategoryHandler(initialDataParser, this, itemCategoryName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            createItemCategoryForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createItemCategoryForm, itemService.createItemCategory(initialDataParser.getUserVisit(), createItemCategoryForm));
+
+            initialDataParser.pushHandler(new ItemCategoryHandler(initialDataParser, this, createItemCategoryForm.getItemCategoryName()));
         }
     }
     

@@ -21,52 +21,33 @@ import com.echothree.control.user.selector.common.SelectorService;
 import com.echothree.control.user.selector.common.form.SelectorFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class SelectorNodeTypesHandler
         extends BaseHandler {
+
     SelectorService selectorService;
     
     /** Creates a new instance of SelectorNodeTypesHandler */
-    public SelectorNodeTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public SelectorNodeTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            selectorService = SelectorUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        selectorService = lookupService(SelectorService.class, SelectorUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("selectorNodeType")) {
-            String selectorNodeTypeName = null;
-            String sortOrder = null;
+            var commandForm = SelectorFormFactory.getCreateSelectorNodeTypeForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("selectorNodeTypeName"))
-                    selectorNodeTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = SelectorFormFactory.getCreateSelectorNodeTypeForm();
-                
-                commandForm.setSelectorNodeTypeName(selectorNodeTypeName);
-                commandForm.setSortOrder(sortOrder);
-                
-                selectorService.createSelectorNodeType(initialDataParser.getUserVisit(), commandForm);
-                
-                initialDataParser.pushHandler(new SelectorNodeTypeHandler(initialDataParser, this, selectorNodeTypeName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, selectorService.createSelectorNodeType(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new SelectorNodeTypeHandler(initialDataParser, this, commandForm.getSelectorNodeTypeName()));
         }
     }
     

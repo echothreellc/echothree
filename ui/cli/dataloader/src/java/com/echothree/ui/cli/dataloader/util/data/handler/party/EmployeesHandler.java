@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class EmployeesHandler
         extends BaseHandler {
+
     PartyService partyService;
     
     /** Creates a new instance of EmployeesHandler */
@@ -50,6 +51,7 @@ public class EmployeesHandler
             commandForm.set(getAttrsMap(attrs));
 
             var commandResult = partyService.createEmployee(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, commandResult);
             
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();

@@ -54,7 +54,7 @@ public class ContactListGroupHandler
             commandForm.setContactListGroupName(contactListGroupName);
             commandForm.set(getAttrsMap(attrs));
             
-            contactListService.createContactListGroupDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, contactListService.createContactListGroupDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

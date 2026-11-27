@@ -22,7 +22,6 @@ import com.echothree.control.user.item.common.form.ItemFormFactory;
 import com.echothree.control.user.item.common.spec.ItemSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
@@ -52,66 +51,13 @@ public class ItemWeightTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("itemWeightTypeDescription")) {
-            var spec = ItemSpecFactory.getItemWeightTypeDescriptionSpec();
-            var editForm = ItemFormFactory.getEditItemWeightTypeDescriptionForm();
+            var attrsMap = getAttrsMap(attrs);
+            attrsMap.putIfAbsent("ItemWeightTypeName", itemWeightTypeName);
 
-            spec.setItemWeightTypeName(itemWeightTypeName);
-            spec.set(getAttrsMap(attrs));
-
-            editForm.setSpec(spec);
-            editForm.setEditMode(EditMode.LOCK);
-
-            var commandResult = itemService.editItemWeightTypeDescription(initialDataParser.getUserVisit(), editForm);
-
-            if(commandResult.hasErrors()) {
-                if(commandResult.containsExecutionError(ExecutionErrors.UnknownItemWeightTypeDescription.name())) {
-                    var createForm = ItemFormFactory.getCreateItemWeightTypeDescriptionForm();
-
-                    createForm.set(spec.get());
-
-                    var createItemWeightTypeDescriptionCommandResult = itemService.createItemWeightTypeDescription(initialDataParser.getUserVisit(), createForm);
-
-                    if(createItemWeightTypeDescriptionCommandResult.hasErrors()) {
-                        getLogger().error(createItemWeightTypeDescriptionCommandResult.toString());
-                    }
-                } else {
-                    getLogger().error(commandResult.toString());
-                }
-            } else {
-                var executionResult = commandResult.getExecutionResult();
-                var result = executionResult.getResult();
-
-                if(result != null) {
-                    var edit = result.getEdit();
-                    var description = attrs.getValue("description");
-                    var changed = false;
-
-                    if(!edit.getDescription().equals(description)) {
-                        edit.setDescription(description);
-                        changed = true;
-                    }
-
-                    if(changed) {
-                        editForm.setEdit(edit);
-                        editForm.setEditMode(EditMode.UPDATE);
-
-                        commandResult = itemService.editItemWeightTypeDescription(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
-                        }
-                    } else {
-                        editForm.setEdit(null);
-                        editForm.setEditMode(EditMode.ABANDON);
-
-                        commandResult = itemService.editItemWeightTypeDescription(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
-                        }
-                    }
-                }
-            }
+            editOrCreate(attrsMap, ItemSpecFactory.getItemWeightTypeDescriptionSpec(),
+                    ItemFormFactory.getEditItemWeightTypeDescriptionForm(), itemService::editItemWeightTypeDescription,
+                    ItemFormFactory.getCreateItemWeightTypeDescriptionForm(), itemService::createItemWeightTypeDescription,
+                    ExecutionErrors.UnknownItemWeightTypeDescription);
         }
     }
     

@@ -21,24 +21,21 @@ import com.echothree.control.user.forum.common.ForumService;
 import com.echothree.control.user.forum.common.form.ForumFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ForumRoleTypeHandler
         extends BaseHandler {
+
     ForumService forumService;
     String forumRoleTypeName;
     
     /** Creates a new instance of ForumRoleTypeHandler */
-    public ForumRoleTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String forumRoleTypeName) {
+    public ForumRoleTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String forumRoleTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            forumService = ForumUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        forumService = lookupService(ForumService.class, ForumUtil::getHome);
         
         this.forumRoleTypeName = forumRoleTypeName;
     }
@@ -47,28 +44,12 @@ public class ForumRoleTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("forumRoleTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var form = ForumFormFactory.getCreateForumRoleTypeDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var form = ForumFormFactory.getCreateForumRoleTypeDescriptionForm();
-                
-                form.setForumRoleTypeName(forumRoleTypeName);
-                form.setLanguageIsoName(languageIsoName);
-                form.setDescription(description);
-                
-                forumService.createForumRoleTypeDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.setForumRoleTypeName(forumRoleTypeName);
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, forumService.createForumRoleTypeDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

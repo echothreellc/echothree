@@ -64,7 +64,7 @@ public class EntityLongRangeHandler
             commandForm.setEntityLongRangeName(entityLongRangeName);
             commandForm.set(getAttrsMap(attrs));
 
-            coreService.createEntityLongRangeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createEntityLongRangeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

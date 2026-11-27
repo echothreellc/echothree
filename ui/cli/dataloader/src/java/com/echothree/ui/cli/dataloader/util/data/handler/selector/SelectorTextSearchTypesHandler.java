@@ -21,56 +21,33 @@ import com.echothree.control.user.selector.common.SelectorService;
 import com.echothree.control.user.selector.common.form.SelectorFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class SelectorTextSearchTypesHandler
         extends BaseHandler {
+
     SelectorService selectorService;
     
     /** Creates a new instance of SelectorTextSearchTypesHandler */
-    public SelectorTextSearchTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public SelectorTextSearchTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            selectorService = SelectorUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        selectorService = lookupService(SelectorService.class, SelectorUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("selectorTextSearchType")) {
-            String selectorTextSearchTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var form = SelectorFormFactory.getCreateSelectorTextSearchTypeForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("selectorTextSearchTypeName"))
-                    selectorTextSearchTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
-            try {
-                var form = SelectorFormFactory.getCreateSelectorTextSearchTypeForm();
-                
-                form.setSelectorTextSearchTypeName(selectorTextSearchTypeName);
-                form.setIsDefault(isDefault);
-                form.setSortOrder(sortOrder);
-                
-                selectorService.createSelectorTextSearchType(initialDataParser.getUserVisit(), form);
-                
-                initialDataParser.pushHandler(new SelectorTextSearchTypeHandler(initialDataParser, this, selectorTextSearchTypeName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, selectorService.createSelectorTextSearchType(initialDataParser.getUserVisit(), form));
+
+            initialDataParser.pushHandler(new SelectorTextSearchTypeHandler(initialDataParser, this, form.getSelectorTextSearchTypeName()));
         }
     }
     

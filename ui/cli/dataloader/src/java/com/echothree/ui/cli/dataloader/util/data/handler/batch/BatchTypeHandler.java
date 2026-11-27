@@ -49,14 +49,14 @@ public class BatchTypeHandler
             commandForm.setBatchTypeName(batchTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            batchService.createBatchTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, batchService.createBatchTypeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("batchTypeEntityType")) {
             var commandForm = BatchFormFactory.getCreateBatchTypeEntityTypeForm();
 
             commandForm.setBatchTypeName(batchTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            batchService.createBatchTypeEntityType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, batchService.createBatchTypeEntityType(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

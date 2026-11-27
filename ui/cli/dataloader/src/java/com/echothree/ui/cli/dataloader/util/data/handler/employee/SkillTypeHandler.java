@@ -21,24 +21,21 @@ import com.echothree.control.user.employee.common.EmployeeService;
 import com.echothree.control.user.employee.common.form.EmployeeFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class SkillTypeHandler
         extends BaseHandler {
+
     EmployeeService employeeService;
     String skillTypeName;
     
     /** Creates a new instance of SkillTypeHandler */
-    public SkillTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String skillTypeName) {
+    public SkillTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String skillTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            employeeService = EmployeeUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        employeeService = lookupService(EmployeeService.class, EmployeeUtil::getHome);
         
         this.skillTypeName = skillTypeName;
     }
@@ -47,28 +44,12 @@ public class SkillTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("skillTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var form = EmployeeFormFactory.getCreateSkillTypeDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var form = EmployeeFormFactory.getCreateSkillTypeDescriptionForm();
-                
-                form.setSkillTypeName(skillTypeName);
-                form.setLanguageIsoName(languageIsoName);
-                form.setDescription(description);
-                
-                employeeService.createSkillTypeDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.setSkillTypeName(skillTypeName);
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, employeeService.createSkillTypeDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

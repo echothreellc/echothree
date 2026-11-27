@@ -57,7 +57,7 @@ public class PeriodTypeHandler
             commandForm.setPeriodTypeName(periodTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(periodService.createPeriodTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, periodService.createPeriodTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

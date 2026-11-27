@@ -51,14 +51,14 @@ public class PaymentMethodTypeHandler
             commandForm.setPaymentMethodTypeName(paymentMethodTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(paymentService.createPaymentMethodTypePartyType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, paymentService.createPaymentMethodTypePartyType(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("paymentMethodTypeDescription")) {
             var commandForm = PaymentFormFactory.getCreatePaymentMethodTypeDescriptionForm();
 
             commandForm.setPaymentMethodTypeName(paymentMethodTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(paymentService.createPaymentMethodTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, paymentService.createPaymentMethodTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

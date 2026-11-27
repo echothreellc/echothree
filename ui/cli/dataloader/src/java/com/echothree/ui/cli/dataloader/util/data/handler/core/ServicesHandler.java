@@ -50,7 +50,7 @@ public class ServicesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            coreService.createService(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createService(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new ServiceHandler(initialDataParser, this, commandForm.getServiceName()));
         }

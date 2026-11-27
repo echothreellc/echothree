@@ -54,7 +54,7 @@ public class ScaleUseTypeHandler
             commandForm.setScaleUseTypeName(scaleUseTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            scaleService.createScaleUseTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, scaleService.createScaleUseTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

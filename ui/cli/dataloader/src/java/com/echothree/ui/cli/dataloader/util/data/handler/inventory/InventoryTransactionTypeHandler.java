@@ -21,7 +21,6 @@ import com.echothree.control.user.inventory.common.InventoryService;
 import com.echothree.control.user.inventory.common.form.InventoryFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -32,14 +31,11 @@ public class InventoryTransactionTypeHandler
     String inventoryTransactionTypeName;
     
     /** Creates a new instance of InventoryTransactionTypeHandler */
-    public InventoryTransactionTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String inventoryTransactionTypeName) {
+    public InventoryTransactionTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String inventoryTransactionTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
 
-        try {
-            inventoryService = InventoryUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        inventoryService = lookupService(InventoryService.class, InventoryUtil::getHome);
         
         this.inventoryTransactionTypeName = inventoryTransactionTypeName;
     }
@@ -53,14 +49,15 @@ public class InventoryTransactionTypeHandler
             commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            checkCommandResult(inventoryService.createInventoryTransactionTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm,
+                    inventoryService.createInventoryTransactionTypeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("inventoryTransactionTimeType")) {
             var commandForm = InventoryFormFactory.getCreateInventoryTransactionTimeTypeForm();
 
             commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(inventoryService.createInventoryTransactionTimeType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, inventoryService.createInventoryTransactionTimeType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new InventoryTransactionTimeTypeHandler(initialDataParser, this,
                     inventoryTransactionTypeName, commandForm.getInventoryTransactionTimeTypeName()));
@@ -70,7 +67,7 @@ public class InventoryTransactionTypeHandler
             commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(inventoryService.createInventoryTransactionReason(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, inventoryService.createInventoryTransactionReason(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new InventoryTransactionReasonHandler(initialDataParser, this,
                     inventoryTransactionTypeName, commandForm.getInventoryTransactionReasonName()));
@@ -80,7 +77,7 @@ public class InventoryTransactionTypeHandler
             commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(inventoryService.createInventoryTransactionRoleType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, inventoryService.createInventoryTransactionRoleType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new InventoryTransactionRoleTypeHandler(initialDataParser, this,
                     inventoryTransactionTypeName, commandForm.getInventoryTransactionRoleTypeName()));
@@ -90,7 +87,7 @@ public class InventoryTransactionTypeHandler
             commandForm.setInventoryTransactionTypeName(inventoryTransactionTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(inventoryService.createInventoryDisposition(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, inventoryService.createInventoryDisposition(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new InventoryDispositionHandler(initialDataParser, this,
                     inventoryTransactionTypeName, commandForm.getInventoryDispositionName()));

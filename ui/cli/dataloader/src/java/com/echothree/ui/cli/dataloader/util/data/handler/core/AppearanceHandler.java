@@ -54,21 +54,21 @@ public class AppearanceHandler
             commandForm.setAppearanceName(appearanceName);
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createAppearanceDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createAppearanceDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("appearanceTextDecoration")) {
             var commandForm = CoreFormFactory.getCreateAppearanceTextDecorationForm();
             
             commandForm.setAppearanceName(appearanceName);
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createAppearanceTextDecoration(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createAppearanceTextDecoration(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("appearanceTextTransformation")) {
             var commandForm = CoreFormFactory.getCreateAppearanceTextTransformationForm();
             
             commandForm.setAppearanceName(appearanceName);
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createAppearanceTextTransformation(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createAppearanceTextTransformation(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

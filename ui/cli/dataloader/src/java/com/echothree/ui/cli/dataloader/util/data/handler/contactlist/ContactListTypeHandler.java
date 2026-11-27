@@ -54,7 +54,7 @@ public class ContactListTypeHandler
             commandForm.setContactListTypeName(contactListTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            contactListService.createContactListTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, contactListService.createContactListTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

@@ -21,24 +21,21 @@ import com.echothree.control.user.contact.common.ContactService;
 import com.echothree.control.user.contact.common.form.ContactFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ContactMechanismTypeHandler
         extends BaseHandler {
+
     ContactService contactService;
     String contactMechanismTypeName;
     
     /** Creates a new instance of ContactMechanismTypeHandler */
-    public ContactMechanismTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String contactMechanismTypeName) {
+    public ContactMechanismTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String contactMechanismTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            contactService = ContactUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        contactService = lookupService(ContactService.class, ContactUtil::getHome);
         
         this.contactMechanismTypeName = contactMechanismTypeName;
     }
@@ -47,28 +44,13 @@ public class ContactMechanismTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("contactMechanismTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var createContactMechanismTypeDescriptionForm = ContactFormFactory.getCreateContactMechanismTypeDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var createContactMechanismTypeDescriptionForm = ContactFormFactory.getCreateContactMechanismTypeDescriptionForm();
-                
-                createContactMechanismTypeDescriptionForm.setContactMechanismTypeName(contactMechanismTypeName);
-                createContactMechanismTypeDescriptionForm.setLanguageIsoName(languageIsoName);
-                createContactMechanismTypeDescriptionForm.setDescription(description);
-                
-                contactService.createContactMechanismTypeDescription(initialDataParser.getUserVisit(), createContactMechanismTypeDescriptionForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            createContactMechanismTypeDescriptionForm.setContactMechanismTypeName(contactMechanismTypeName);
+            createContactMechanismTypeDescriptionForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createContactMechanismTypeDescriptionForm,
+                    contactService.createContactMechanismTypeDescription(initialDataParser.getUserVisit(), createContactMechanismTypeDescriptionForm));
         }
     }
     

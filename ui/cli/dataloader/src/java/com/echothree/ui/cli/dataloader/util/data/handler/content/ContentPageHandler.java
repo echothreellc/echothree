@@ -21,35 +21,30 @@ import com.echothree.control.user.content.common.ContentService;
 import com.echothree.control.user.content.common.form.ContentFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
+import java.util.Map;
+import java.util.Set;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ContentPageHandler
         extends BaseHandler {
+
     ContentService contentService;
     String contentCollectionName;
     String contentSectionName;
     String contentPageName;
     
     boolean inContentPageArea = false;
-    String sortOrder = null;
-    String contentPageAreaUrl = null;
-    String languageIsoName = null;
-    String description = null;
-    String mimeTypeName = null;
+    private Map<String, Object> contentPageAreaAttrs;
     char []contentPageAreaClob = null;
     
     /** Creates a new instance of ContentPageHandler */
     public ContentPageHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String contentCollectionName, String contentSectionName,
-    String contentPageName) {
+    String contentPageName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            contentService = ContentUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        contentService = lookupService(ContentService.class, ContentUtil::getHome);
         
         this.contentCollectionName = contentCollectionName;
         this.contentSectionName = contentSectionName;
@@ -60,47 +55,18 @@ public class ContentPageHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("contentPageDescription")) {
-            String languageIsoName = null;
-            String description = null;
-            String doUpdate = null;
+            var createContentPageDescriptionForm = ContentFormFactory.getCreateContentPageDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("doUpdate"))
-                    doUpdate = attrs.getValue(i);
-            }
-            
-            try {
-                var createContentPageDescriptionForm = ContentFormFactory.getCreateContentPageDescriptionForm();
-                
-                createContentPageDescriptionForm.setContentCollectionName(contentCollectionName);
-                createContentPageDescriptionForm.setContentSectionName(contentSectionName);
-                createContentPageDescriptionForm.setContentPageName(contentPageName);
-                createContentPageDescriptionForm.setLanguageIsoName(languageIsoName);
-                createContentPageDescriptionForm.setDescription(description);
-                
-                contentService.createContentPageDescription(initialDataParser.getUserVisit(), createContentPageDescriptionForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            createContentPageDescriptionForm.setContentCollectionName(contentCollectionName);
+            createContentPageDescriptionForm.setContentSectionName(contentSectionName);
+            createContentPageDescriptionForm.setContentPageName(contentPageName);
+            createContentPageDescriptionForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createContentPageDescriptionForm,
+                    contentService.createContentPageDescription(initialDataParser.getUserVisit(), createContentPageDescriptionForm));
         } else if(localName.equals("contentPageArea")) {
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("contentPageAreaUrl"))
-                    contentPageAreaUrl = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("mimeTypeName"))
-                    mimeTypeName = attrs.getValue(i);
-            }
+            contentPageAreaAttrs = getAttrsMap(attrs);
+            contentPageAreaAttrs.keySet().removeAll(Set.of("ContentCollectionName", "ContentSectionName", "ContentPageName", "ContentPageAreaClob"));
             
             inContentPageArea = true;
         }
@@ -129,21 +95,14 @@ public class ContentPageHandler
             createContentPageAreaForm.setContentCollectionName(contentCollectionName);
             createContentPageAreaForm.setContentSectionName(contentSectionName);
             createContentPageAreaForm.setContentPageName(contentPageName);
-            createContentPageAreaForm.setSortOrder(sortOrder);
-            createContentPageAreaForm.setContentPageAreaUrl(contentPageAreaUrl);
-            createContentPageAreaForm.setLanguageIsoName(languageIsoName);
-            createContentPageAreaForm.setDescription(description);
             createContentPageAreaForm.setContentPageAreaClob(contentPageAreaClob == null? null: new String(contentPageAreaClob));
-            createContentPageAreaForm.setMimeTypeName(mimeTypeName);
+            createContentPageAreaForm.set(contentPageAreaAttrs);
             
-            contentService.createContentPageArea(initialDataParser.getUserVisit(), createContentPageAreaForm);
+            checkCommandResult(createContentPageAreaForm,
+                    contentService.createContentPageArea(initialDataParser.getUserVisit(), createContentPageAreaForm));
             
             inContentPageArea = false;
-            sortOrder = null;
-            contentPageAreaUrl = null;
-            languageIsoName = null;
-            description = null;
-            mimeTypeName = null;
+            contentPageAreaAttrs = null;
             contentPageAreaClob = null;
         } else if(localName.equals("contentPage")) {
             initialDataParser.popHandler();

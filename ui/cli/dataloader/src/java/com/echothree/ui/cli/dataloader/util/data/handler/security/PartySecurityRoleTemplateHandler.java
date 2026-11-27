@@ -55,21 +55,23 @@ public class PartySecurityRoleTemplateHandler
             commandForm.setPartySecurityRoleTemplateName(partySecurityRoleTemplateName);
             commandForm.set(getAttrsMap(attrs));
 
-            securityService.createPartySecurityRoleTemplateDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm,
+                    securityService.createPartySecurityRoleTemplateDescription(initialDataParser.getUserVisit(), commandForm));
         } if(localName.equals("partySecurityRoleTemplateRole")) {
             var commandForm = SecurityFormFactory.getCreatePartySecurityRoleTemplateRoleForm();
 
             commandForm.setPartySecurityRoleTemplateName(partySecurityRoleTemplateName);
             commandForm.set(getAttrsMap(attrs));
 
-            securityService.createPartySecurityRoleTemplateRole(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, securityService.createPartySecurityRoleTemplateRole(initialDataParser.getUserVisit(), commandForm));
         } if(localName.equals("partySecurityRoleTemplateTrainingClass")) {
             var commandForm = SecurityFormFactory.getCreatePartySecurityRoleTemplateTrainingClassForm();
 
             commandForm.setPartySecurityRoleTemplateName(partySecurityRoleTemplateName);
             commandForm.set(getAttrsMap(attrs));
 
-            securityService.createPartySecurityRoleTemplateTrainingClass(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm,
+                    securityService.createPartySecurityRoleTemplateTrainingClass(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

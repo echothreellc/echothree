@@ -126,7 +126,7 @@ public class PartyDocumentsHandler
                 }
             }
 
-            documentService.createPartyDocument(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, documentService.createPartyDocument(initialDataParser.getUserVisit(), form));
 
             inPartyDocument = false;
             createPartyDocumentMap = null;

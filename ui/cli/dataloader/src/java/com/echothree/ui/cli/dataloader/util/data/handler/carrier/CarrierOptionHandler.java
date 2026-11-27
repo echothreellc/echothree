@@ -21,26 +21,23 @@ import com.echothree.control.user.carrier.common.CarrierService;
 import com.echothree.control.user.carrier.common.form.CarrierFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class CarrierOptionHandler
         extends BaseHandler {
+
     CarrierService carrierService;
     String carrierName;
     String carrierOptionName;
     
     /** Creates a new instance of CarrierOptionHandler */
     public CarrierOptionHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String carrierName,
-            String carrierOptionName) {
+            String carrierOptionName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            carrierService = CarrierUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        carrierService = lookupService(CarrierService.class, CarrierUtil::getHome);
         
         this.carrierName = carrierName;
         this.carrierOptionName = carrierOptionName;
@@ -50,29 +47,13 @@ public class CarrierOptionHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("carrierOptionDescription")) {
-            String attrLanguageIsoName = null;
-            String attrDescription = null;
+            var commandForm = CarrierFormFactory.getCreateCarrierOptionDescriptionForm();
 
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    attrLanguageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    attrDescription = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = CarrierFormFactory.getCreateCarrierOptionDescriptionForm();
-                
-                commandForm.setCarrierName(carrierName);
-                commandForm.setCarrierOptionName(carrierOptionName);
-                commandForm.setLanguageIsoName(attrLanguageIsoName);
-                commandForm.setDescription(attrDescription);
-                
-                checkCommandResult(carrierService.createCarrierOptionDescription(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setCarrierName(carrierName);
+            commandForm.setCarrierOptionName(carrierOptionName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, carrierService.createCarrierOptionDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

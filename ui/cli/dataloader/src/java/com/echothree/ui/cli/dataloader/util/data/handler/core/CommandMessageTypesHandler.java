@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class CommandMessageTypesHandler
         extends BaseHandler {
+
     CoreService coreService;
     
     /** Creates a new instance of CommandMessageTypesHandler */
@@ -49,7 +50,7 @@ public class CommandMessageTypesHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createCommandMessageType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createCommandMessageType(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new CommandMessageTypeHandler(initialDataParser, this, commandForm.getCommandMessageTypeName()));
         }

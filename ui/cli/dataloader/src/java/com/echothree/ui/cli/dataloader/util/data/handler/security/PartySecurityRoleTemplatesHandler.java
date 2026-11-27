@@ -50,7 +50,7 @@ public class PartySecurityRoleTemplatesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            securityService.createPartySecurityRoleTemplate(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, securityService.createPartySecurityRoleTemplate(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new PartySecurityRoleTemplateHandler(initialDataParser, this, commandForm.getPartySecurityRoleTemplateName()));
         }

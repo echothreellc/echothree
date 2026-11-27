@@ -54,7 +54,7 @@ public class SymbolPositionHandler
             commandForm.setSymbolPositionName(symbolPositionName);
             commandForm.set(getAttrsMap(attrs));
             
-            accountingService.createSymbolPositionDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, accountingService.createSymbolPositionDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

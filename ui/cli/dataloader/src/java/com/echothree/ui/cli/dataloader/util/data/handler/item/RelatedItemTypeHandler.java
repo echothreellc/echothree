@@ -21,24 +21,21 @@ import com.echothree.control.user.item.common.ItemService;
 import com.echothree.control.user.item.common.form.ItemFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class RelatedItemTypeHandler
         extends BaseHandler {
+
     ItemService itemService;
     String relatedItemTypeName;
     
     /** Creates a new instance of RelatedItemTypeHandler */
-    public RelatedItemTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String relatedItemTypeName) {
+    public RelatedItemTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String relatedItemTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            itemService = ItemUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        itemService = lookupService(ItemService.class, ItemUtil::getHome);
         
         this.relatedItemTypeName = relatedItemTypeName;
     }
@@ -47,28 +44,12 @@ public class RelatedItemTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("relatedItemTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var commandForm = ItemFormFactory.getCreateRelatedItemTypeDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = ItemFormFactory.getCreateRelatedItemTypeDescriptionForm();
-                
-                commandForm.setRelatedItemTypeName(relatedItemTypeName);
-                commandForm.setLanguageIsoName(languageIsoName);
-                commandForm.setDescription(description);
-                
-                itemService.createRelatedItemTypeDescription(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setRelatedItemTypeName(relatedItemTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, itemService.createRelatedItemTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

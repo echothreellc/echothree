@@ -21,24 +21,21 @@ import com.echothree.control.user.shipping.common.ShippingService;
 import com.echothree.control.user.shipping.common.form.ShippingFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ShippingMethodHandler
         extends BaseHandler {
+
     ShippingService shippingService;
     String shippingMethodName;
     
     /** Creates a new instance of ShippingMethodHandler */
-    public ShippingMethodHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String shippingMethodName) {
+    public ShippingMethodHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String shippingMethodName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            shippingService = ShippingUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        shippingService = lookupService(ShippingService.class, ShippingUtil::getHome);
         
         this.shippingMethodName = shippingMethodName;
     }
@@ -47,51 +44,19 @@ public class ShippingMethodHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("shippingMethodDescription")) {
-            String attrLanguageIsoName = null;
-            String attrDescription = null;
+            var commandForm = ShippingFormFactory.getCreateShippingMethodDescriptionForm();
 
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    attrLanguageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    attrDescription = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = ShippingFormFactory.getCreateShippingMethodDescriptionForm();
-                
-                commandForm.setShippingMethodName(shippingMethodName);
-                commandForm.setLanguageIsoName(attrLanguageIsoName);
-                commandForm.setDescription(attrDescription);
-                
-                checkCommandResult(shippingService.createShippingMethodDescription(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setShippingMethodName(shippingMethodName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, shippingService.createShippingMethodDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("shippingMethodCarrierService")) {
-            String carrierName = null;
-            String carrierServiceName = null;
+            var commandForm = ShippingFormFactory.getCreateShippingMethodCarrierServiceForm();
 
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("carrierName"))
-                    carrierName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("carrierServiceName"))
-                    carrierServiceName = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = ShippingFormFactory.getCreateShippingMethodCarrierServiceForm();
-                
-                commandForm.setShippingMethodName(shippingMethodName);
-                commandForm.setCarrierName(carrierName);
-                commandForm.setCarrierServiceName(carrierServiceName);
-                
-                checkCommandResult(shippingService.createShippingMethodCarrierService(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setShippingMethodName(shippingMethodName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, shippingService.createShippingMethodCarrierService(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

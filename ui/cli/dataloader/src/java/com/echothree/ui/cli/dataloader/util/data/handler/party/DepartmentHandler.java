@@ -29,6 +29,7 @@ import org.xml.sax.SAXException;
 
 public class DepartmentHandler
         extends BaseHandler {
+
     PartyService partyService;
     String partyName;
     String entityRef;

@@ -64,7 +64,7 @@ public class EntityIntegerRangeHandler
             commandForm.setEntityIntegerRangeName(entityIntegerRangeName);
             commandForm.set(getAttrsMap(attrs));
 
-            coreService.createEntityIntegerRangeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createEntityIntegerRangeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

@@ -21,24 +21,21 @@ import com.echothree.control.user.term.common.TermService;
 import com.echothree.control.user.term.common.form.TermFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class TermHandler
         extends BaseHandler {
+
     TermService termService;
     String termName;
     
     /** Creates a new instance of TermHandler */
-    public TermHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String termName) {
+    public TermHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String termName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            termService = TermUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        termService = lookupService(TermService.class, TermUtil::getHome);
         
         this.termName = termName;
     }
@@ -47,28 +44,12 @@ public class TermHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("termDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var commandForm = TermFormFactory.getCreateTermDescriptionForm();
 
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = TermFormFactory.getCreateTermDescriptionForm();
-                
-                commandForm.setTermName(termName);
-                commandForm.setLanguageIsoName(languageIsoName);
-                commandForm.setDescription(description);
-                
-                checkCommandResult(termService.createTermDescription(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setTermName(termName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, termService.createTermDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

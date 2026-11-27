@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class InvoiceLineUseTypesHandler
         extends BaseHandler {
+
     InvoiceService invoiceService;
     
     /** Creates a new instance of InvoiceLineUseTypesHandler */
@@ -49,7 +50,7 @@ public class InvoiceLineUseTypesHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            checkCommandResult(invoiceService.createInvoiceLineUseType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, invoiceService.createInvoiceLineUseType(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new InvoiceLineUseTypeHandler(initialDataParser, this, commandForm.getInvoiceLineUseTypeName()));
         }

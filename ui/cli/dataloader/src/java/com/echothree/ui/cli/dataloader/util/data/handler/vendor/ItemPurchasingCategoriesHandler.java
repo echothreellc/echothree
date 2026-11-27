@@ -44,7 +44,7 @@ public class ItemPurchasingCategoriesHandler
             
             form.set(getAttrsMap(attrs));
             
-            vendorService.createItemPurchasingCategory(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, vendorService.createItemPurchasingCategory(initialDataParser.getUserVisit(), form));
             
             initialDataParser.pushHandler(new ItemPurchasingCategoryHandler(initialDataParser, this,
                     form.getItemPurchasingCategoryName()));

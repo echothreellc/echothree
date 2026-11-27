@@ -50,7 +50,7 @@ public class ProtocolsHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            coreService.createProtocol(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createProtocol(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new ProtocolHandler(initialDataParser, this, commandForm.getProtocolName()));
         }

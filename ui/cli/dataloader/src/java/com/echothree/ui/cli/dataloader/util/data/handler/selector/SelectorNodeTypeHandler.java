@@ -21,24 +21,21 @@ import com.echothree.control.user.selector.common.SelectorService;
 import com.echothree.control.user.selector.common.form.SelectorFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class SelectorNodeTypeHandler
         extends BaseHandler {
+
     SelectorService selectorService;
     String selectorNodeTypeName;
     
     /** Creates a new instance of SelectorNodeTypeHandler */
-    public SelectorNodeTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String selectorNodeTypeName) {
+    public SelectorNodeTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String selectorNodeTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            selectorService = SelectorUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        selectorService = lookupService(SelectorService.class, SelectorUtil::getHome);
         
         this.selectorNodeTypeName = selectorNodeTypeName;
     }
@@ -47,28 +44,13 @@ public class SelectorNodeTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("selectorNodeTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var createSelectorNodeTypeDescriptionForm = SelectorFormFactory.getCreateSelectorNodeTypeDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var createSelectorNodeTypeDescriptionForm = SelectorFormFactory.getCreateSelectorNodeTypeDescriptionForm();
-                
-                createSelectorNodeTypeDescriptionForm.setSelectorNodeTypeName(selectorNodeTypeName);
-                createSelectorNodeTypeDescriptionForm.setLanguageIsoName(languageIsoName);
-                createSelectorNodeTypeDescriptionForm.setDescription(description);
-                
-                selectorService.createSelectorNodeTypeDescription(initialDataParser.getUserVisit(), createSelectorNodeTypeDescriptionForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            createSelectorNodeTypeDescriptionForm.setSelectorNodeTypeName(selectorNodeTypeName);
+            createSelectorNodeTypeDescriptionForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createSelectorNodeTypeDescriptionForm,
+                    selectorService.createSelectorNodeTypeDescription(initialDataParser.getUserVisit(), createSelectorNodeTypeDescriptionForm));
         }
     }
     

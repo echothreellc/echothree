@@ -22,7 +22,6 @@ import com.echothree.control.user.workflow.common.form.WorkflowFormFactory;
 import com.echothree.control.user.workflow.common.spec.WorkflowSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
@@ -30,6 +29,7 @@ import org.xml.sax.SAXException;
 
 public class WorkflowEntranceHandler
         extends BaseHandler {
+
     WorkflowService workflowService;
     String workflowName;
     String workflowEntranceName;
@@ -54,54 +54,15 @@ public class WorkflowEntranceHandler
             throws SAXException {
         switch(localName) {
             case "workflowEntranceDescription" -> {
-                var spec = WorkflowSpecFactory.getWorkflowEntranceDescriptionSpec();
-                var editForm = WorkflowFormFactory.getEditWorkflowEntranceDescriptionForm();
+                var attrsMap = getAttrsMap(attrs);
+                attrsMap.putIfAbsent("WorkflowName", workflowName);
+                attrsMap.putIfAbsent("WorkflowEntranceName", workflowEntranceName);
 
-                spec.setWorkflowName(workflowName);
-                spec.setWorkflowEntranceName(workflowEntranceName);
-                spec.set(getAttrsMap(attrs));
-
-                var commandAction = getCommandAction(spec);
-                getLogger().debug("Found: {}", commandAction);
-                if(commandAction == null || commandAction.equals("create")) {
-                    var attrsMap = getAttrsMap(attrs);
-
-                    editForm.setSpec(spec);
-                    editForm.setEditMode(EditMode.LOCK);
-
-                    var commandResult = workflowService.editWorkflowEntranceDescription(initialDataParser.getUserVisit(), editForm);
-
-                    if(commandResult.hasErrors()) {
-                        if(commandResult.containsExecutionError(ExecutionErrors.UnknownWorkflowEntranceDescription.name())) {
-                            var createForm = WorkflowFormFactory.getCreateWorkflowEntranceDescriptionForm();
-
-                            spec.setWorkflowName(workflowName);
-                            spec.setWorkflowEntranceName(workflowEntranceName);
-                            createForm.set(spec.get());
-
-                            getLogger().debug("Creating: {}", spec.getWorkflowName());
-                            var createWorkflowEntranceDescriptionCommandResult = workflowService.createWorkflowEntranceDescription(initialDataParser.getUserVisit(), createForm);
-
-                            if(createWorkflowEntranceDescriptionCommandResult.hasErrors()) {
-                                getLogger().error(createWorkflowEntranceDescriptionCommandResult.toString());
-                            }
-                        } else {
-                            getLogger().error(commandResult.toString());
-                        }
-                    } else {
-                        var executionResult = commandResult.getExecutionResult();
-                        var result = executionResult.getResult();
-
-                        getLogger().debug("Checking for modifications: {}", spec.getWorkflowName());
-                        if(result != null) {
-                            updateEditFormValues(editForm, attrsMap, result);
-
-                            commandResult = workflowService.editWorkflowEntranceDescription(initialDataParser.getUserVisit(), editForm);
-                            if(commandResult.hasErrors()) {
-                                getLogger().error(commandResult.toString());
-                            }
-                        }
-                    }
+                if(shouldEdit(attrsMap)) {
+                    editOrCreate(attrsMap, WorkflowSpecFactory.getWorkflowEntranceDescriptionSpec(),
+                            WorkflowFormFactory.getEditWorkflowEntranceDescriptionForm(), workflowService::editWorkflowEntranceDescription,
+                            WorkflowFormFactory.getCreateWorkflowEntranceDescriptionForm(), workflowService::createWorkflowEntranceDescription,
+                            ExecutionErrors.UnknownWorkflowEntranceDescription);
                 }
             }
             case "workflowEntranceSelector" -> {
@@ -111,7 +72,7 @@ public class WorkflowEntranceHandler
                 commandForm.setWorkflowEntranceName(workflowEntranceName);
                 commandForm.set(getAttrsMap(attrs));
 
-                workflowService.createWorkflowEntranceSelector(initialDataParser.getUserVisit(), commandForm);
+                checkCommandResult(commandForm, workflowService.createWorkflowEntranceSelector(initialDataParser.getUserVisit(), commandForm));
             }
             case "workflowEntrancePartyType" -> {
                 var commandForm = WorkflowFormFactory.getCreateWorkflowEntrancePartyTypeForm();
@@ -120,7 +81,7 @@ public class WorkflowEntranceHandler
                 commandForm.setWorkflowEntranceName(workflowEntranceName);
                 commandForm.set(getAttrsMap(attrs));
 
-                workflowService.createWorkflowEntrancePartyType(initialDataParser.getUserVisit(), commandForm);
+                checkCommandResult(commandForm, workflowService.createWorkflowEntrancePartyType(initialDataParser.getUserVisit(), commandForm));
 
                 initialDataParser.pushHandler(new WorkflowEntrancePartyTypeHandler(initialDataParser, this, workflowName,
                         workflowEntranceName, commandForm.getPartyTypeName()));
@@ -136,7 +97,7 @@ public class WorkflowEntranceHandler
                     commandForm.setEntranceWorkflowName(workflowName);
                 }
 
-                workflowService.createWorkflowEntranceStep(initialDataParser.getUserVisit(), commandForm);
+                checkCommandResult(commandForm, workflowService.createWorkflowEntranceStep(initialDataParser.getUserVisit(), commandForm));
             }
         }
     }

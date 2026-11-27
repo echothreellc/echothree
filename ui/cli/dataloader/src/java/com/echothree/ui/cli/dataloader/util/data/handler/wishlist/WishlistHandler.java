@@ -21,12 +21,12 @@ import com.echothree.control.user.wishlist.common.WishlistService;
 import com.echothree.control.user.wishlist.common.form.WishlistFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class WishlistHandler
         extends BaseHandler {
+
     WishlistService wishlistService;
     String partyName;
     String wishlistTypeName;
@@ -35,14 +35,11 @@ public class WishlistHandler
     
     /** Creates a new instance of WishlistHandler */
     public WishlistHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String partyName, String wishlistTypeName,
-            String currencyIsoName, String sourceName) {
+            String currencyIsoName, String sourceName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            wishlistService = WishlistUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        wishlistService = lookupService(WishlistService.class, WishlistUtil::getHome);
         this.partyName = partyName;
         this.wishlistTypeName = wishlistTypeName;
         this.currencyIsoName = currencyIsoName;
@@ -53,39 +50,15 @@ public class WishlistHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("wishlistLine")) {
-            String itemName = null;
-            String inventoryConditionName = null;
-            String wishlistPriorityName = null;
-            String comment = null;
+            var form = WishlistFormFactory.getCreateWishlistLineForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("itemName"))
-                    itemName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("inventoryConditionName"))
-                    inventoryConditionName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("wishlistPriorityName"))
-                    wishlistPriorityName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("comment"))
-                    comment = attrs.getValue(i);
-            }
-            
-            try {
-                var form = WishlistFormFactory.getCreateWishlistLineForm();
-                
-                form.setPartyName(partyName);
-                form.setWishlistTypeName(wishlistTypeName);
-                form.setCurrencyIsoName(currencyIsoName);
-                form.setSourceName(sourceName);
-                form.setItemName(itemName);
-                form.setInventoryConditionName(inventoryConditionName);
-                form.setWishlistPriorityName(wishlistPriorityName);
-                form.setComment(comment);
-                
-                wishlistService.createWishlistLine(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.setPartyName(partyName);
+            form.setWishlistTypeName(wishlistTypeName);
+            form.setCurrencyIsoName(currencyIsoName);
+            form.setSourceName(sourceName);
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, wishlistService.createWishlistLine(initialDataParser.getUserVisit(), form));
         }
     }
     

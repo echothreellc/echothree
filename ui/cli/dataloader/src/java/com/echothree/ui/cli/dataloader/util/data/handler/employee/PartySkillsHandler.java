@@ -49,24 +49,12 @@ public class PartySkillsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("partySkill")) {
-            String skillTypeName = null;
+            var commandForm = EmployeeFormFactory.getCreatePartySkillForm();
 
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("skillTypeName"))
-                    skillTypeName = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = EmployeeFormFactory.getCreatePartySkillForm();
-                
-                commandForm.setPartyName(partyName);
-                commandForm.setSkillTypeName(skillTypeName);
+            commandForm.setPartyName(partyName);
+            commandForm.set(getAttrsMap(attrs));
 
-                checkCommandResult(employeeService.createPartySkill(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            checkCommandResult(commandForm, employeeService.createPartySkill(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

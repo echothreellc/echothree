@@ -54,18 +54,10 @@ public class UnitOfMeasureKindHandler
             form.setUnitOfMeasureKindName(unitOfMeasureKindName);
             form.set(getAttrsMap(attrs));
 
-            checkCommandResult(uomService.createUnitOfMeasureKindDescription(initialDataParser.getUserVisit(), form));
+            checkCommandResult(form, uomService.createUnitOfMeasureKindDescription(initialDataParser.getUserVisit(), form));
         } else if(localName.equals("unitOfMeasureType")) {
-            String unitOfMeasureTypeName = null;
-            String doCreate = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("unitOfMeasureTypeName"))
-                    unitOfMeasureTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("doCreate"))
-                    doCreate = attrs.getValue(i);
-            }
+            var unitOfMeasureTypeName = attrs.getValue("unitOfMeasureTypeName");
+            var doCreate = attrs.getValue("doCreate");
             
             if(doCreate == null || doCreate.equalsIgnoreCase("true")) {
                 var form = UomFormFactory.getCreateUnitOfMeasureTypeForm();
@@ -73,7 +65,7 @@ public class UnitOfMeasureKindHandler
                 form.setUnitOfMeasureKindName(unitOfMeasureKindName);
                 form.set(getAttrsMap(attrs));
 
-                checkCommandResult(uomService.createUnitOfMeasureType(initialDataParser.getUserVisit(), form));
+                checkCommandResult(form, uomService.createUnitOfMeasureType(initialDataParser.getUserVisit(), form));
             }
 
             initialDataParser.pushHandler(new UnitOfMeasureTypeHandler(initialDataParser, this, unitOfMeasureKindName, unitOfMeasureTypeName));
@@ -83,14 +75,14 @@ public class UnitOfMeasureKindHandler
             form.setUnitOfMeasureKindName(unitOfMeasureKindName);
             form.set(getAttrsMap(attrs));
 
-            checkCommandResult(uomService.createUnitOfMeasureEquivalent(initialDataParser.getUserVisit(), form));
+            checkCommandResult(form, uomService.createUnitOfMeasureEquivalent(initialDataParser.getUserVisit(), form));
         } else if(localName.equals("unitOfMeasureKindUse")) {
             var form = UomFormFactory.getCreateUnitOfMeasureKindUseForm();
 
             form.setUnitOfMeasureKindName(unitOfMeasureKindName);
             form.set(getAttrsMap(attrs));
 
-            checkCommandResult(uomService.createUnitOfMeasureKindUse(initialDataParser.getUserVisit(), form));
+            checkCommandResult(form, uomService.createUnitOfMeasureKindUse(initialDataParser.getUserVisit(), form));
         }
     }
     

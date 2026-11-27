@@ -21,24 +21,21 @@ import com.echothree.control.user.offer.common.OfferService;
 import com.echothree.control.user.offer.common.form.OfferFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class OfferNameElementHandler
         extends BaseHandler {
+
     OfferService offerService;
     String offerNameElementName;
     
     /** Creates a new instance of OfferNameElementHandler */
-    public OfferNameElementHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String offerNameElementName) {
+    public OfferNameElementHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String offerNameElementName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            offerService = OfferUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        offerService = lookupService(OfferService.class, OfferUtil::getHome);
         
         this.offerNameElementName = offerNameElementName;
     }
@@ -47,28 +44,12 @@ public class OfferNameElementHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("offerNameElementDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var form = OfferFormFactory.getCreateOfferNameElementDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var form = OfferFormFactory.getCreateOfferNameElementDescriptionForm();
-                
-                form.setOfferNameElementName(offerNameElementName);
-                form.setLanguageIsoName(languageIsoName);
-                form.setDescription(description);
-                
-                offerService.createOfferNameElementDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.setOfferNameElementName(offerNameElementName);
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, offerService.createOfferNameElementDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

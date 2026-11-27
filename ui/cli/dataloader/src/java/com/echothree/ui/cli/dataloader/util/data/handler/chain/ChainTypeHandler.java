@@ -63,7 +63,7 @@ public class ChainTypeHandler
             commandForm.setChainTypeName(chainTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            chainService.createChainTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, chainService.createChainTypeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("chainEntityRoleType")) {
             var commandForm = ChainFormFactory.getCreateChainEntityRoleTypeForm();
 
@@ -71,7 +71,7 @@ public class ChainTypeHandler
             commandForm.setChainTypeName(chainTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            chainService.createChainEntityRoleType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, chainService.createChainEntityRoleType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new ChainEntityRoleTypeHandler(initialDataParser, this, chainKindName, chainTypeName, commandForm.getChainEntityRoleTypeName()));
         } else if(localName.equals("chain")) {
@@ -81,7 +81,7 @@ public class ChainTypeHandler
             commandForm.setChainTypeName(chainTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            chainService.createChain(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, chainService.createChain(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new ChainHandler(initialDataParser, this, chainKindName, chainTypeName, commandForm.getChainName()));
         } else if(localName.equals("letter")) {
@@ -91,7 +91,7 @@ public class ChainTypeHandler
             commandForm.setChainTypeName(chainTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            letterService.createLetter(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, letterService.createLetter(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new LetterHandler(initialDataParser, this, chainKindName, chainTypeName, commandForm.getLetterName()));
         }

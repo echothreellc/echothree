@@ -21,26 +21,23 @@ import com.echothree.control.user.wishlist.common.WishlistService;
 import com.echothree.control.user.wishlist.common.form.WishlistFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class WishlistPriorityHandler
         extends BaseHandler {
+
     WishlistService wishlistService;
     String wishlistTypeName;
     String wishlistPriorityName;
     
     /** Creates a new instance of WishlistPriorityHandler */
     public WishlistPriorityHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String wishlistTypeName,
-            String wishlistPriorityName) {
+            String wishlistPriorityName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            wishlistService = WishlistUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        wishlistService = lookupService(WishlistService.class, WishlistUtil::getHome);
         
         this.wishlistTypeName = wishlistTypeName;
         this.wishlistPriorityName = wishlistPriorityName;
@@ -50,29 +47,13 @@ public class WishlistPriorityHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("wishlistPriorityDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var form = WishlistFormFactory.getCreateWishlistPriorityDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var form = WishlistFormFactory.getCreateWishlistPriorityDescriptionForm();
-                
-                form.setWishlistTypeName(wishlistTypeName);
-                form.setWishlistPriorityName(wishlistPriorityName);
-                form.setLanguageIsoName(languageIsoName);
-                form.setDescription(description);
-                
-                wishlistService.createWishlistPriorityDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.setWishlistTypeName(wishlistTypeName);
+            form.setWishlistPriorityName(wishlistPriorityName);
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, wishlistService.createWishlistPriorityDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

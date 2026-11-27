@@ -45,6 +45,7 @@ public class CustomersHandler
             form.set(getAttrsMap(attrs));
 
             var commandResult = partyService.createCustomerWithLogin(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, commandResult);
             
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
@@ -61,6 +62,7 @@ public class CustomersHandler
             form.set(getAttrsMap(attrs));
 
             var commandResult = partyService.createCustomer(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, commandResult);
             
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();

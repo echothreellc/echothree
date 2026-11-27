@@ -22,9 +22,7 @@ import com.echothree.control.user.item.common.form.ItemFormFactory;
 import com.echothree.control.user.item.common.spec.ItemSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
-import java.util.Objects;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -50,91 +48,25 @@ public class ItemAliasTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("itemAliasType")) {
-            var spec = ItemSpecFactory.getItemAliasTypeUniversalSpec();
-            var editForm = ItemFormFactory.getEditItemAliasTypeForm();
+            var attrsMap = getAttrsMap(attrs);
+            var outcome = editOrCreate(attrsMap, ItemSpecFactory.getItemAliasTypeUniversalSpec(),
+                    ItemFormFactory.getEditItemAliasTypeForm(), itemService::editItemAliasType,
+                    ItemFormFactory.getCreateItemAliasTypeForm(), itemService::createItemAliasType, ExecutionErrors.UnknownItemAliasTypeName);
 
-            spec.set(getAttrsMap(attrs));
-
-            editForm.setSpec(spec);
-            editForm.setEditMode(EditMode.LOCK);
-
-            var commandResult = itemService.editItemAliasType(initialDataParser.getUserVisit(), editForm);
-
-            if(commandResult.hasErrors()) {
-                if(commandResult.containsExecutionError(ExecutionErrors.UnknownItemAliasTypeName.name())) {
-                    var createForm = ItemFormFactory.getCreateItemAliasTypeForm();
-
-                    createForm.set(spec.get());
-
-                    var createItemAliasTypeCommandResult = itemService.createItemAliasType(initialDataParser.getUserVisit(), createForm);
-
-                    if(createItemAliasTypeCommandResult.hasErrors()) {
-                        getLogger().error(createItemAliasTypeCommandResult.toString());
-                    }
-                } else {
-                    getLogger().error(commandResult.toString());
+            if(outcome.successful()) {
+                var itemAliasTypeName = (String)attrsMap.get("ItemAliasTypeName");
+                if(outcome.lockedEdit() != null) {
+                    itemAliasTypeName = outcome.lockedEdit().getItemAliasTypeName();
+                } else if(outcome.createdRecord() != null) {
+                    itemAliasTypeName = outcome.createdRecord().getItemAliasTypeName();
                 }
+                if(itemAliasTypeName == null) {
+                    throw new SAXException("Item alias type name is missing for child elements");
+                }
+                initialDataParser.pushHandler(new ItemAliasTypeHandler(initialDataParser, this, itemAliasTypeName));
             } else {
-                var executionResult = commandResult.getExecutionResult();
-                var result = executionResult.getResult();
-
-                if(result != null) {
-                    var edit = result.getEdit();
-                    var validationPattern = attrs.getValue("validationPattern");
-                    var itemAliasChecksumTypeName = attrs.getValue("itemAliasChecksumTypeName");
-                    var allowMultiple = attrs.getValue("allowMultiple");
-                    var isDefault = attrs.getValue("isDefault");
-                    var sortOrder = attrs.getValue("sortOrder");
-                    var changed = false;
-
-                    if(!Objects.equals(edit.getValidationPattern(), validationPattern)) {
-                        edit.setValidationPattern(validationPattern);
-                        changed = true;
-                    }
-
-                    if(!edit.getItemAliasChecksumTypeName().equals(itemAliasChecksumTypeName)) {
-                        edit.setItemAliasChecksumTypeName(itemAliasChecksumTypeName);
-                        changed = true;
-                    }
-
-                    if(!edit.getAllowMultiple().equals(allowMultiple)) {
-                        edit.setAllowMultiple(allowMultiple);
-                        changed = true;
-                    }
-
-                    if(!edit.getIsDefault().equals(isDefault)) {
-                        edit.setIsDefault(isDefault);
-                        changed = true;
-                    }
-
-                    if(!edit.getSortOrder().equals(sortOrder)) {
-                        edit.setSortOrder(sortOrder);
-                        changed = true;
-                    }
-
-                    if(changed) {
-                        editForm.setEdit(edit);
-                        editForm.setEditMode(EditMode.UPDATE);
-
-                        commandResult = itemService.editItemAliasType(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
-                        }
-                    } else {
-                        editForm.setEdit(null);
-                        editForm.setEditMode(EditMode.ABANDON);
-
-                        commandResult = itemService.editItemAliasType(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
-                        }
-                    }
-                }
+                skipCurrentElement();
             }
-            
-            initialDataParser.pushHandler(new ItemAliasTypeHandler(initialDataParser, this, spec.getItemAliasTypeName()));
         }
     }
     

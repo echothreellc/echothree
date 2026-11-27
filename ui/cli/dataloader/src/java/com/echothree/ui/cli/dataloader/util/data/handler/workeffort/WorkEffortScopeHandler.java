@@ -21,26 +21,23 @@ import com.echothree.control.user.workeffort.common.WorkEffortService;
 import com.echothree.control.user.workeffort.common.form.WorkEffortFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class WorkEffortScopeHandler
         extends BaseHandler {
+
     WorkEffortService workEffortService;
     String workEffortTypeName;
     String workEffortScopeName;
     
     /** Creates a new instance of WorkEffortScopeHandler */
     public WorkEffortScopeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String workEffortTypeName,
-            String workEffortScopeName) {
+            String workEffortScopeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            workEffortService = WorkEffortUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        workEffortService = lookupService(WorkEffortService.class, WorkEffortUtil::getHome);
         this.workEffortTypeName = workEffortTypeName;
         this.workEffortScopeName = workEffortScopeName;
     }
@@ -49,17 +46,13 @@ public class WorkEffortScopeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("workEffortScopeDescription")) {
-            try {
-                var commandForm = WorkEffortFormFactory.getCreateWorkEffortScopeDescriptionForm();
-                
-                commandForm.setWorkEffortTypeName(workEffortTypeName);
-                commandForm.setWorkEffortScopeName(workEffortScopeName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                workEffortService.createWorkEffortScopeDescription(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = WorkEffortFormFactory.getCreateWorkEffortScopeDescriptionForm();
+
+            commandForm.setWorkEffortTypeName(workEffortTypeName);
+            commandForm.setWorkEffortScopeName(workEffortScopeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, workEffortService.createWorkEffortScopeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

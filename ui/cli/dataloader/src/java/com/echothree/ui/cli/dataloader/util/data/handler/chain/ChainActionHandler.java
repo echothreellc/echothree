@@ -72,7 +72,7 @@ public class ChainActionHandler
             setupChainActionSpec(commandForm);
             commandForm.set(getAttrsMap(attrs));
 
-            chainService.createChainActionDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, chainService.createChainActionDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

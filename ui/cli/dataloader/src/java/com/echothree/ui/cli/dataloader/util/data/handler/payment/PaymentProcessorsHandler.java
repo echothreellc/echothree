@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class PaymentProcessorsHandler
         extends BaseHandler {
+
     PaymentService paymentService;
     
     /** Creates a new instance of PaymentProcessorsHandler */
@@ -46,6 +47,7 @@ public class PaymentProcessorsHandler
             commandForm.set(getAttrsMap(attrs));
 
             var commandResult = paymentService.createPaymentProcessor(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, commandResult);
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();

@@ -21,54 +21,32 @@ import com.echothree.control.user.core.common.CoreService;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ComponentStagesHandler
         extends BaseHandler {
+
     CoreService coreService;
     
     /** Creates a new instance of ComponentStagesHandler */
-    public ComponentStagesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public ComponentStagesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            coreService = CoreUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        coreService = lookupService(CoreService.class, CoreUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("componentStage")) {
-            String componentStageName = null;
-            String description = null;
-            String relativeAge = null;
+            var createComponentStageForm = CoreFormFactory.getCreateComponentStageForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("componentStageName"))
-                    componentStageName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("relativeAge"))
-                    relativeAge = attrs.getValue(i);
-            }
-            
-            try {
-                var createComponentStageForm = CoreFormFactory.getCreateComponentStageForm();
-                
-                createComponentStageForm.setComponentStageName(componentStageName);
-                createComponentStageForm.setDescription(description);
-                createComponentStageForm.setRelativeAge(relativeAge);
-                
-                coreService.createComponentStage(initialDataParser.getUserVisit(), createComponentStageForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            createComponentStageForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createComponentStageForm,
+                    coreService.createComponentStage(initialDataParser.getUserVisit(), createComponentStageForm));
         }
     }
     

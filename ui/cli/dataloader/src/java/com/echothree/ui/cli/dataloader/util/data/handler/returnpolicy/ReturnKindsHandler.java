@@ -21,60 +21,33 @@ import com.echothree.control.user.returnpolicy.common.ReturnPolicyService;
 import com.echothree.control.user.returnpolicy.common.form.ReturnPolicyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ReturnKindsHandler
         extends BaseHandler {
+
     ReturnPolicyService returnPolicyService;
     
     /** Creates a new instance of ReturnKindsHandler */
-    public ReturnKindsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public ReturnKindsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            returnPolicyService = ReturnPolicyUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        returnPolicyService = lookupService(ReturnPolicyService.class, ReturnPolicyUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("returnKind")) {
-            String returnKindName = null;
-            String returnSequenceTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var commandForm = ReturnPolicyFormFactory.getCreateReturnKindForm();
 
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("returnKindName"))
-                    returnKindName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("returnSequenceTypeName"))
-                    returnSequenceTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = ReturnPolicyFormFactory.getCreateReturnKindForm();
-                
-                commandForm.setReturnKindName(returnKindName);
-                commandForm.setReturnSequenceTypeName(returnSequenceTypeName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
-                
-                checkCommandResult(returnPolicyService.createReturnKind(initialDataParser.getUserVisit(), commandForm));
-                
-                initialDataParser.pushHandler(new ReturnKindHandler(initialDataParser, this, returnKindName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, returnPolicyService.createReturnKind(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new ReturnKindHandler(initialDataParser, this, commandForm.getReturnKindName()));
         }
     }
     

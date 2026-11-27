@@ -54,14 +54,15 @@ public class DocumentTypeUsageTypeHandler
             commandForm.setDocumentTypeUsageTypeName(documentTypeUsageTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(documentService.createDocumentTypeUsageTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm,
+                    documentService.createDocumentTypeUsageTypeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("partyTypeDocumentTypeUsageType")) {
             var commandForm = DocumentFormFactory.getCreatePartyTypeDocumentTypeUsageTypeForm();
 
             commandForm.setDocumentTypeUsageTypeName(documentTypeUsageTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(documentService.createPartyTypeDocumentTypeUsageType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, documentService.createPartyTypeDocumentTypeUsageType(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

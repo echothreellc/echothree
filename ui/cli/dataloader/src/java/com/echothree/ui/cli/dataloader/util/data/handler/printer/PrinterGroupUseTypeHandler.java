@@ -54,7 +54,7 @@ public class PrinterGroupUseTypeHandler
             commandForm.setPrinterGroupUseTypeName(printerGroupUseTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            printerService.createPrinterGroupUseTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, printerService.createPrinterGroupUseTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

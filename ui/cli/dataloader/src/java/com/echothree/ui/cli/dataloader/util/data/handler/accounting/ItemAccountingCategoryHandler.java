@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class ItemAccountingCategoryHandler
         extends BaseHandler {
+
     AccountingService accountingService;
     String itemAccountingCategoryName;
     
@@ -54,7 +55,8 @@ public class ItemAccountingCategoryHandler
             commandForm.setItemAccountingCategoryName(itemAccountingCategoryName);
             commandForm.set(getAttrsMap(attrs));
             
-            accountingService.createItemAccountingCategoryDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm,
+                    accountingService.createItemAccountingCategoryDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

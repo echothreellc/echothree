@@ -21,7 +21,6 @@ import com.echothree.control.user.order.common.OrderService;
 import com.echothree.control.user.order.common.form.OrderFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -32,14 +31,11 @@ public class OrderTypeHandler
     String orderTypeName;
     
     /** Creates a new instance of OrderTypeHandler */
-    public OrderTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String orderTypeName) {
+    public OrderTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String orderTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            orderService = OrderUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        orderService = lookupService(OrderService.class, OrderUtil::getHome);
         
         this.orderTypeName = orderTypeName;
     }
@@ -48,35 +44,19 @@ public class OrderTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("orderTypeDescription")) {
-            String attrLanguageIsoName = null;
-            String attrDescription = null;
+            var commandForm = OrderFormFactory.getCreateOrderTypeDescriptionForm();
 
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    attrLanguageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    attrDescription = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = OrderFormFactory.getCreateOrderTypeDescriptionForm();
-                
-                commandForm.setOrderTypeName(orderTypeName);
-                commandForm.setLanguageIsoName(attrLanguageIsoName);
-                commandForm.setDescription(attrDescription);
-                
-                checkCommandResult(orderService.createOrderTypeDescription(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setOrderTypeName(orderTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, orderService.createOrderTypeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("orderTimeType")) {
             var commandForm = OrderFormFactory.getCreateOrderTimeTypeForm();
 
             commandForm.setOrderTypeName(orderTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(orderService.createOrderTimeType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, orderService.createOrderTimeType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new OrderTimeTypeHandler(initialDataParser, this, orderTypeName, commandForm.getOrderTimeTypeName()));
         } else if(localName.equals("orderPriority")) {
@@ -85,45 +65,25 @@ public class OrderTypeHandler
             commandForm.setOrderTypeName(orderTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(orderService.createOrderPriority(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, orderService.createOrderPriority(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new OrderPriorityHandler(initialDataParser, this, orderTypeName, commandForm.getOrderPriorityName()));
         } else if(localName.equals("orderAliasType")) {
-            String orderAliasTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var commandForm = OrderFormFactory.getCreateOrderAliasTypeForm();
 
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("orderAliasTypeName"))
-                    orderAliasTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = OrderFormFactory.getCreateOrderAliasTypeForm();
-                
-                commandForm.setOrderTypeName(orderTypeName);
-                commandForm.setOrderAliasTypeName(orderAliasTypeName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
-                
-                checkCommandResult(orderService.createOrderAliasType(initialDataParser.getUserVisit(), commandForm));
-                
-                initialDataParser.pushHandler(new OrderAliasTypeHandler(initialDataParser, this, orderTypeName, orderAliasTypeName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setOrderTypeName(orderTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, orderService.createOrderAliasType(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new OrderAliasTypeHandler(initialDataParser, this, orderTypeName, commandForm.getOrderAliasTypeName()));
         } else if(localName.equals("orderAdjustmentType")) {
             var commandForm = OrderFormFactory.getCreateOrderAdjustmentTypeForm();
 
             commandForm.setOrderTypeName(orderTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(orderService.createOrderAdjustmentType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, orderService.createOrderAdjustmentType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new OrderAdjustmentTypeHandler(initialDataParser, this, orderTypeName, commandForm.getOrderAdjustmentTypeName()));
         } else if(localName.equals("orderLineAdjustmentType")) {
@@ -132,7 +92,7 @@ public class OrderTypeHandler
             commandForm.setOrderTypeName(orderTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(orderService.createOrderLineAdjustmentType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, orderService.createOrderLineAdjustmentType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new OrderLineAdjustmentTypeHandler(initialDataParser, this, orderTypeName, commandForm.getOrderLineAdjustmentTypeName()));
         }

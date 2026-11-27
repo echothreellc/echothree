@@ -21,24 +21,21 @@ import com.echothree.control.user.selector.common.SelectorService;
 import com.echothree.control.user.selector.common.form.SelectorFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class SelectorComparisonTypeHandler
         extends BaseHandler {
+
     SelectorService selectorService;
     String selectorComparisonTypeName;
     
     /** Creates a new instance of SelectorComparisonTypeHandler */
-    public SelectorComparisonTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String selectorComparisonTypeName) {
+    public SelectorComparisonTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String selectorComparisonTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            selectorService = SelectorUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        selectorService = lookupService(SelectorService.class, SelectorUtil::getHome);
         
         this.selectorComparisonTypeName = selectorComparisonTypeName;
     }
@@ -47,28 +44,12 @@ public class SelectorComparisonTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("selectorComparisonTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var form = SelectorFormFactory.getCreateSelectorComparisonTypeDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var form = SelectorFormFactory.getCreateSelectorComparisonTypeDescriptionForm();
-                
-                form.setSelectorComparisonTypeName(selectorComparisonTypeName);
-                form.setLanguageIsoName(languageIsoName);
-                form.setDescription(description);
-                
-                selectorService.createSelectorComparisonTypeDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.setSelectorComparisonTypeName(selectorComparisonTypeName);
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, selectorService.createSelectorComparisonTypeDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

@@ -21,24 +21,21 @@ import com.echothree.control.user.geo.common.GeoService;
 import com.echothree.control.user.geo.common.form.GeoFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class GeoCodeScopeHandler
         extends BaseHandler {
+
     GeoService geoService;
     String geoCodeScopeName;
     
     /** Creates a new instance of GeoCodeScopeHandler */
-    public GeoCodeScopeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String geoCodeScopeName) {
+    public GeoCodeScopeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String geoCodeScopeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            geoService = GeoUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        geoService = lookupService(GeoService.class, GeoUtil::getHome);
         this.geoCodeScopeName = geoCodeScopeName;
     }
     
@@ -46,28 +43,13 @@ public class GeoCodeScopeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("geoCodeScopeDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var createGeoCodeScopeDescriptionForm = GeoFormFactory.getCreateGeoCodeScopeDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var createGeoCodeScopeDescriptionForm = GeoFormFactory.getCreateGeoCodeScopeDescriptionForm();
-                
-                createGeoCodeScopeDescriptionForm.setGeoCodeScopeName(geoCodeScopeName);
-                createGeoCodeScopeDescriptionForm.setLanguageIsoName(languageIsoName);
-                createGeoCodeScopeDescriptionForm.setDescription(description);
-                
-                geoService.createGeoCodeScopeDescription(initialDataParser.getUserVisit(), createGeoCodeScopeDescriptionForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            createGeoCodeScopeDescriptionForm.setGeoCodeScopeName(geoCodeScopeName);
+            createGeoCodeScopeDescriptionForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createGeoCodeScopeDescriptionForm,
+                    geoService.createGeoCodeScopeDescription(initialDataParser.getUserVisit(), createGeoCodeScopeDescriptionForm));
         }
     }
     

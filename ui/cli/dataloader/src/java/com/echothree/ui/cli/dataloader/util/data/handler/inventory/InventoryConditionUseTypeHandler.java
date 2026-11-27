@@ -21,24 +21,21 @@ import com.echothree.control.user.inventory.common.InventoryService;
 import com.echothree.control.user.inventory.common.form.InventoryFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class InventoryConditionUseTypeHandler
         extends BaseHandler {
+
     InventoryService inventoryService;
     String inventoryConditionUseTypeName;
     
     /** Creates a new instance of InventoryConditionUseTypeHandler */
-    public InventoryConditionUseTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String inventoryConditionUseTypeName) {
+    public InventoryConditionUseTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String inventoryConditionUseTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            inventoryService = InventoryUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        inventoryService = lookupService(InventoryService.class, InventoryUtil::getHome);
         
         this.inventoryConditionUseTypeName = inventoryConditionUseTypeName;
     }
@@ -47,28 +44,13 @@ public class InventoryConditionUseTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("inventoryConditionUseTypeDescription")) {
-            String attrLanguageIsoName = null;
-            String attrDescription = null;
+            var commandForm = InventoryFormFactory.getCreateInventoryConditionUseTypeDescriptionForm();
 
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    attrLanguageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    attrDescription = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = InventoryFormFactory.getCreateInventoryConditionUseTypeDescriptionForm();
-                
-                commandForm.setInventoryConditionUseTypeName(inventoryConditionUseTypeName);
-                commandForm.setLanguageIsoName(attrLanguageIsoName);
-                commandForm.setDescription(attrDescription);
-                
-                checkCommandResult(inventoryService.createInventoryConditionUseTypeDescription(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setInventoryConditionUseTypeName(inventoryConditionUseTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm,
+                    inventoryService.createInventoryConditionUseTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

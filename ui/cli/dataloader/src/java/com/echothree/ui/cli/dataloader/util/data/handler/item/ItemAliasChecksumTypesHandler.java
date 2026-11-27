@@ -50,7 +50,7 @@ public class ItemAliasChecksumTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            itemService.createItemAliasChecksumType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemAliasChecksumType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new ItemAliasChecksumTypeHandler(initialDataParser, this, commandForm.getItemAliasChecksumTypeName()));
         }

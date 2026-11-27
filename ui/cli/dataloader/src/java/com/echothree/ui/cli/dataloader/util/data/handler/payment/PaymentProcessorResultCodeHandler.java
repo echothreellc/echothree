@@ -51,7 +51,8 @@ public class PaymentProcessorResultCodeHandler
             commandForm.setPaymentProcessorResultCodeName(paymentProcessorResultCodeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(paymentService.createPaymentProcessorResultCodeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm,
+                    paymentService.createPaymentProcessorResultCodeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

@@ -21,24 +21,21 @@ import com.echothree.control.user.user.common.UserService;
 import com.echothree.control.user.user.common.form.UserFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class RecoveryQuestionHandler
         extends BaseHandler {
+
     UserService userService;
     String recoveryQuestionName;
     
     /** Creates a new instance of RecoveryQuestionHandler */
-    public RecoveryQuestionHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String recoveryQuestionName) {
+    public RecoveryQuestionHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String recoveryQuestionName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            userService = UserUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        userService = lookupService(UserService.class, UserUtil::getHome);
         
         this.recoveryQuestionName = recoveryQuestionName;
     }
@@ -47,28 +44,13 @@ public class RecoveryQuestionHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("recoveryQuestionDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var createRecoveryQuestionDescriptionForm = UserFormFactory.getCreateRecoveryQuestionDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var createRecoveryQuestionDescriptionForm = UserFormFactory.getCreateRecoveryQuestionDescriptionForm();
-                
-                createRecoveryQuestionDescriptionForm.setRecoveryQuestionName(recoveryQuestionName);
-                createRecoveryQuestionDescriptionForm.setLanguageIsoName(languageIsoName);
-                createRecoveryQuestionDescriptionForm.setDescription(description);
-                
-                userService.createRecoveryQuestionDescription(initialDataParser.getUserVisit(), createRecoveryQuestionDescriptionForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            createRecoveryQuestionDescriptionForm.setRecoveryQuestionName(recoveryQuestionName);
+            createRecoveryQuestionDescriptionForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createRecoveryQuestionDescriptionForm,
+                    userService.createRecoveryQuestionDescription(initialDataParser.getUserVisit(), createRecoveryQuestionDescriptionForm));
         }
     }
     

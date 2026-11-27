@@ -57,7 +57,7 @@ public class PartyAliasTypeHandler
             commandForm.setPartyAliasTypeName(partyAliasTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            partyService.createPartyAliasTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, partyService.createPartyAliasTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

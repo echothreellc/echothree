@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class SelectorKindsHandler
         extends BaseHandler {
+
     SelectorService selectorService;
     
     /** Creates a new instance of SelectorKindsHandler */
@@ -49,7 +50,7 @@ public class SelectorKindsHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            selectorService.createSelectorKind(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, selectorService.createSelectorKind(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new SelectorKindHandler(initialDataParser, this, commandForm.getSelectorKindName()));
         }

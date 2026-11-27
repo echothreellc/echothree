@@ -21,24 +21,21 @@ import com.echothree.control.user.forum.common.ForumService;
 import com.echothree.control.user.forum.common.form.ForumFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ForumGroupHandler
         extends BaseHandler {
+
     ForumService forumService;
     String forumGroupName;
     
     /** Creates a new instance of ForumGroupHandler */
-    public ForumGroupHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String forumGroupName) {
+    public ForumGroupHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String forumGroupName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            forumService = ForumUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        forumService = lookupService(ForumService.class, ForumUtil::getHome);
         
         this.forumGroupName = forumGroupName;
     }
@@ -48,20 +45,18 @@ public class ForumGroupHandler
             throws SAXException {
         if(localName.equals("forumGroupDescription")) {
             var commandForm = ForumFormFactory.getCreateForumGroupDescriptionForm();
-            var attrsMap = getAttrsMap(attrs);
-            
+
             commandForm.setForumGroupName(forumGroupName);
-            commandForm.set(attrsMap);
+            commandForm.set(getAttrsMap(attrs));
             
-            forumService.createForumGroupDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, forumService.createForumGroupDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("forumGroupForum")) {
             var commandForm = ForumFormFactory.getCreateForumGroupForumForm();
-            var attrsMap = getAttrsMap(attrs);
-            
+
             commandForm.setForumGroupName(forumGroupName);
-            commandForm.set(attrsMap);
+            commandForm.set(getAttrsMap(attrs));
             
-            forumService.createForumGroupForum(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, forumService.createForumGroupForum(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

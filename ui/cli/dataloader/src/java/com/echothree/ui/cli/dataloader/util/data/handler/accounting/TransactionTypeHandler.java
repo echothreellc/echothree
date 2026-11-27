@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class TransactionTypeHandler
         extends BaseHandler {
+
     AccountingService accountingService;
     String transactionTypeName;
     
@@ -53,14 +54,14 @@ public class TransactionTypeHandler
             commandForm.setTransactionTypeName(transactionTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            accountingService.createTransactionTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, accountingService.createTransactionTypeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("transactionGlAccountCategory")) {
             var commandForm = AccountingFormFactory.getCreateTransactionGlAccountCategoryForm();
             
             commandForm.setTransactionTypeName(transactionTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            accountingService.createTransactionGlAccountCategory(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, accountingService.createTransactionGlAccountCategory(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new TransactionGlAccountCategoryHandler(initialDataParser, this, transactionTypeName,
                     commandForm.getTransactionGlAccountCategoryName()));
@@ -70,7 +71,7 @@ public class TransactionTypeHandler
             commandForm.setTransactionTypeName(transactionTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            accountingService.createTransactionEntityRoleType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, accountingService.createTransactionEntityRoleType(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new TransactionEntityRoleTypeHandler(initialDataParser, this,
                     transactionTypeName, commandForm.getTransactionEntityRoleTypeName()));

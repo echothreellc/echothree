@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class LicenseTypesHandler
         extends BaseHandler {
+
     LicenseService licenseService;
     
     /** Creates a new instance of LicenseTypesHandler */
@@ -49,7 +50,7 @@ public class LicenseTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            licenseService.createLicenseType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, licenseService.createLicenseType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new LicenseTypeHandler(initialDataParser, this, commandForm.getLicenseTypeName()));
         }

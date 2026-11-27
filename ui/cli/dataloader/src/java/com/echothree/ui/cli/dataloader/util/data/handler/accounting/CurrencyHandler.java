@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class CurrencyHandler
         extends BaseHandler {
+
     AccountingService accountingService;
     String currencyIsoName;
     
@@ -53,7 +54,7 @@ public class CurrencyHandler
             commandForm.setCurrencyIsoName(currencyIsoName);
             commandForm.set(getAttrsMap(attrs));
             
-            accountingService.createCurrencyDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, accountingService.createCurrencyDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

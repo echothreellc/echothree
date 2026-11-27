@@ -54,7 +54,7 @@ public class PartyApplicationEditorUsesHandler
             commandForm.setPartyName(partyName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(partyService.createPartyApplicationEditorUse(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, partyService.createPartyApplicationEditorUse(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

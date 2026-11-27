@@ -46,7 +46,7 @@ public class InventoryConditionsHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(inventoryService.createInventoryCondition(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, inventoryService.createInventoryCondition(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new InventoryConditionHandler(initialDataParser, this, commandForm.getInventoryConditionName()));
         }

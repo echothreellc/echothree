@@ -54,14 +54,14 @@ public class TrainingClassHandler
             commandForm.setTrainingClassName(trainingClassName);
             commandForm.set(getAttrsMap(attrs));
 
-            trainingService.createTrainingClassTranslation(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, trainingService.createTrainingClassTranslation(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("trainingClassSection")) {
             var commandForm = TrainingFormFactory.getCreateTrainingClassSectionForm();
 
             commandForm.setTrainingClassName(trainingClassName);
             commandForm.set(getAttrsMap(attrs));
 
-            trainingService.createTrainingClassSection(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, trainingService.createTrainingClassSection(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new TrainingClassSectionHandler(initialDataParser, this, trainingClassName,
                     commandForm.getTrainingClassSectionName()));

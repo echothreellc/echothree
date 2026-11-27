@@ -50,7 +50,7 @@ public class OrderTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(orderService.createOrderType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, orderService.createOrderType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new OrderTypeHandler(initialDataParser, this, commandForm.getOrderTypeName()));
         }

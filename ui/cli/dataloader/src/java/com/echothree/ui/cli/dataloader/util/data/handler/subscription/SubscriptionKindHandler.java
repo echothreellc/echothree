@@ -22,24 +22,21 @@ import com.echothree.control.user.subscription.common.SubscriptionService;
 import com.echothree.control.user.subscription.common.form.SubscriptionFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class SubscriptionKindHandler
         extends BaseHandler {
+
     SubscriptionService subscriptionService;
     String subscriptionKindName;
     
     /** Creates a new instance of SubscriptionKindHandler */
-    public SubscriptionKindHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String subscriptionKindName) {
+    public SubscriptionKindHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String subscriptionKindName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            subscriptionService = SubscriptionUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        subscriptionService = lookupService(SubscriptionService.class, SubscriptionUtil::getHome);
         
         this.subscriptionKindName = subscriptionKindName;
     }
@@ -48,61 +45,23 @@ public class SubscriptionKindHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("subscriptionKindDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var commandForm = SubscriptionFormFactory.getCreateSubscriptionKindDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = SubscriptionFormFactory.getCreateSubscriptionKindDescriptionForm();
-                
-                commandForm.setSubscriptionKindName(subscriptionKindName);
-                commandForm.setLanguageIsoName(languageIsoName);
-                commandForm.setDescription(description);
-                
-                subscriptionService.createSubscriptionKindDescription(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setSubscriptionKindName(subscriptionKindName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm,
+                    subscriptionService.createSubscriptionKindDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("subscriptionType")) {
-            String subscriptionTypeName = null;
-            String subscriptionSequenceName = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var commandForm = SubscriptionFormFactory.getCreateSubscriptionTypeForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("subscriptionTypeName"))
-                    subscriptionTypeName = attrs.getValue(i);
-                if(attrs.getQName(i).equals("subscriptionSequenceName"))
-                    subscriptionSequenceName = attrs.getValue(i);
-                if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = SubscriptionFormFactory.getCreateSubscriptionTypeForm();
-                
-                commandForm.setSubscriptionKindName(subscriptionKindName);
-                commandForm.setSubscriptionTypeName(subscriptionTypeName);
-                commandForm.setSubscriptionSequenceName(subscriptionSequenceName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
-                
-                subscriptionService.createSubscriptionType(initialDataParser.getUserVisit(), commandForm);
-                
-                initialDataParser.pushHandler(new SubscriptionTypeHandler(initialDataParser, this, subscriptionKindName, subscriptionTypeName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setSubscriptionKindName(subscriptionKindName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, subscriptionService.createSubscriptionType(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new SubscriptionTypeHandler(initialDataParser, this, subscriptionKindName,
+                    commandForm.getSubscriptionTypeName()));
         }
     }
     

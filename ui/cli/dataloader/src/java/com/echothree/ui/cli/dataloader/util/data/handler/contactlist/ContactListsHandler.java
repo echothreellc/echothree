@@ -21,23 +21,20 @@ import com.echothree.control.user.contactlist.common.ContactListService;
 import com.echothree.control.user.contactlist.common.form.ContactListFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ContactListsHandler
         extends BaseHandler {
+
     ContactListService contactListService;
     
     /** Creates a new instance of ContactListsHandler */
-    public ContactListsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public ContactListsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            contactListService = ContactListUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        contactListService = lookupService(ContactListService.class, ContactListUtil::getHome);
     }
     
     @Override
@@ -48,7 +45,7 @@ public class ContactListsHandler
 
             commandForm.set(getAttrsMap(attrs));
             
-            contactListService.createContactList(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, contactListService.createContactList(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new ContactListHandler(initialDataParser, this, commandForm.getContactListName()));
         }

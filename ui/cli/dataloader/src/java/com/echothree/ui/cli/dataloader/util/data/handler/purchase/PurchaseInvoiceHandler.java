@@ -30,6 +30,7 @@ import org.xml.sax.SAXException;
 
 public class PurchaseInvoiceHandler
         extends BaseHandler {
+
     PurchaseService purchaseService;
     String invoiceName;
     String entityRef;
@@ -61,7 +62,7 @@ public class PurchaseInvoiceHandler
             var commandResult = purchaseService.createPurchaseInvoiceLine(initialDataParser.getUserVisit(), form);
             
             if(commandResult.hasErrors()) {
-                System.err.println(commandResult);
+                checkCommandResult(form, commandResult);
             } else {
                 var executionResult = commandResult.getExecutionResult();
                 var result = executionResult.getResult();

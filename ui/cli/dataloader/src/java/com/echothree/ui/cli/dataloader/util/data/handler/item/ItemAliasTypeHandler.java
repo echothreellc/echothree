@@ -22,7 +22,6 @@ import com.echothree.control.user.item.common.form.ItemFormFactory;
 import com.echothree.control.user.item.common.spec.ItemSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
@@ -50,68 +49,15 @@ public class ItemAliasTypeHandler
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
-    throws SAXException {
+            throws SAXException {
         if(localName.equals("itemAliasTypeDescription")) {
-            var spec = ItemSpecFactory.getItemAliasTypeDescriptionSpec();
-            var editForm = ItemFormFactory.getEditItemAliasTypeDescriptionForm();
+            var attrsMap = getAttrsMap(attrs);
+            attrsMap.putIfAbsent("ItemAliasTypeName", itemAliasTypeName);
 
-            spec.setItemAliasTypeName(itemAliasTypeName);
-            spec.set(getAttrsMap(attrs));
-
-            editForm.setSpec(spec);
-            editForm.setEditMode(EditMode.LOCK);
-
-            var commandResult = itemService.editItemAliasTypeDescription(initialDataParser.getUserVisit(), editForm);
-
-            if(commandResult.hasErrors()) {
-                if(commandResult.containsExecutionError(ExecutionErrors.UnknownItemAliasTypeDescription.name())) {
-                    var createForm = ItemFormFactory.getCreateItemAliasTypeDescriptionForm();
-
-                    createForm.set(spec.get());
-
-                    var createItemAliasTypeDescriptionCommandResult = itemService.createItemAliasTypeDescription(initialDataParser.getUserVisit(), createForm);
-
-                    if(createItemAliasTypeDescriptionCommandResult.hasErrors()) {
-                        getLogger().error(createItemAliasTypeDescriptionCommandResult.toString());
-                    }
-                } else {
-                    getLogger().error(commandResult.toString());
-                }
-            } else {
-                var executionResult = commandResult.getExecutionResult();
-                var result = executionResult.getResult();
-
-                if(result != null) {
-                    var edit = result.getEdit();
-                    var description = attrs.getValue("description");
-                    var changed = false;
-
-                    if(!edit.getDescription().equals(description)) {
-                        edit.setDescription(description);
-                        changed = true;
-                    }
-
-                    if(changed) {
-                        editForm.setEdit(edit);
-                        editForm.setEditMode(EditMode.UPDATE);
-
-                        commandResult = itemService.editItemAliasTypeDescription(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
-                        }
-                    } else {
-                        editForm.setEdit(null);
-                        editForm.setEditMode(EditMode.ABANDON);
-
-                        commandResult = itemService.editItemAliasTypeDescription(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
-                        }
-                    }
-                }
-            }
+            editOrCreate(attrsMap, ItemSpecFactory.getItemAliasTypeDescriptionSpec(),
+                    ItemFormFactory.getEditItemAliasTypeDescriptionForm(), itemService::editItemAliasTypeDescription,
+                    ItemFormFactory.getCreateItemAliasTypeDescriptionForm(), itemService::createItemAliasTypeDescription,
+                    ExecutionErrors.UnknownItemAliasTypeDescription);
         }
     }
     

@@ -49,7 +49,7 @@ public class VendorTypeHandler
             commandForm.setVendorTypeName(vendorTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            vendorService.createVendorTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, vendorService.createVendorTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

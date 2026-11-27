@@ -21,24 +21,21 @@ import com.echothree.control.user.tax.common.TaxService;
 import com.echothree.control.user.tax.common.form.TaxFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class TaxHandler
         extends BaseHandler {
+
     TaxService taxService;
     String taxName;
     
     /** Creates a new instance of TaxHandler */
-    public TaxHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String taxName) {
+    public TaxHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String taxName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            taxService = TaxUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        taxService = lookupService(TaxService.class, TaxUtil::getHome);
         
         this.taxName = taxName;
     }
@@ -47,28 +44,13 @@ public class TaxHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("taxDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var createTaxDescriptionForm = TaxFormFactory.getCreateTaxDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var createTaxDescriptionForm = TaxFormFactory.getCreateTaxDescriptionForm();
-                
-                createTaxDescriptionForm.setTaxName(taxName);
-                createTaxDescriptionForm.setLanguageIsoName(languageIsoName);
-                createTaxDescriptionForm.setDescription(description);
-                
-                taxService.createTaxDescription(initialDataParser.getUserVisit(), createTaxDescriptionForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            createTaxDescriptionForm.setTaxName(taxName);
+            createTaxDescriptionForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createTaxDescriptionForm,
+                    taxService.createTaxDescription(initialDataParser.getUserVisit(), createTaxDescriptionForm));
         }
     }
     

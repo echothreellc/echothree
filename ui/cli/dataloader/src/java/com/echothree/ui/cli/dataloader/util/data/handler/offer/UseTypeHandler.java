@@ -21,24 +21,21 @@ import com.echothree.control.user.offer.common.OfferService;
 import com.echothree.control.user.offer.common.form.OfferFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class UseTypeHandler
         extends BaseHandler {
+
     OfferService offerService;
     String useTypeName;
     
     /** Creates a new instance of UseTypeHandler */
-    public UseTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String useTypeName) {
+    public UseTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String useTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            offerService = OfferUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        offerService = lookupService(OfferService.class, OfferUtil::getHome);
         
         this.useTypeName = useTypeName;
     }
@@ -47,28 +44,12 @@ public class UseTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("useTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var form = OfferFormFactory.getCreateUseTypeDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var form = OfferFormFactory.getCreateUseTypeDescriptionForm();
-                
-                form.setUseTypeName(useTypeName);
-                form.setLanguageIsoName(languageIsoName);
-                form.setDescription(description);
-                
-                offerService.createUseTypeDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.setUseTypeName(useTypeName);
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, offerService.createUseTypeDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

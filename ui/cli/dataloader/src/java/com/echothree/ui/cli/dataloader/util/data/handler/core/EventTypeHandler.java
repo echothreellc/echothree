@@ -21,24 +21,21 @@ import com.echothree.control.user.core.common.CoreService;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class EventTypeHandler
         extends BaseHandler {
+
     CoreService coreService;
     String eventTypeName;
     
     /** Creates a new instance of EventTypeHandler */
-    public EventTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String eventTypeName) {
+    public EventTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String eventTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            coreService = CoreUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        coreService = lookupService(CoreService.class, CoreUtil::getHome);
         
         this.eventTypeName = eventTypeName;
     }
@@ -47,28 +44,13 @@ public class EventTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("eventTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var createEventTypeDescriptionForm = CoreFormFactory.getCreateEventTypeDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var createEventTypeDescriptionForm = CoreFormFactory.getCreateEventTypeDescriptionForm();
-                
-                createEventTypeDescriptionForm.setEventTypeName(eventTypeName);
-                createEventTypeDescriptionForm.setLanguageIsoName(languageIsoName);
-                createEventTypeDescriptionForm.setDescription(description);
-                
-                coreService.createEventTypeDescription(initialDataParser.getUserVisit(), createEventTypeDescriptionForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            createEventTypeDescriptionForm.setEventTypeName(eventTypeName);
+            createEventTypeDescriptionForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createEventTypeDescriptionForm,
+                    coreService.createEventTypeDescription(initialDataParser.getUserVisit(), createEventTypeDescriptionForm));
         }
     }
     

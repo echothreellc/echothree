@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class InvoiceTypeHandler
         extends BaseHandler {
+
     InvoiceService invoiceService;
     String invoiceTypeName;
     
@@ -53,14 +54,14 @@ public class InvoiceTypeHandler
             commandForm.setInvoiceTypeName(invoiceTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            checkCommandResult(invoiceService.createInvoiceTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, invoiceService.createInvoiceTypeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("invoiceTimeType")) {
             var commandForm = InvoiceFormFactory.getCreateInvoiceTimeTypeForm();
 
             commandForm.setInvoiceTypeName(invoiceTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(invoiceService.createInvoiceTimeType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, invoiceService.createInvoiceTimeType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new InvoiceTimeTypeHandler(initialDataParser, this, invoiceTypeName, commandForm.getInvoiceTimeTypeName()));
         } else if(localName.equals("invoiceLineType")) {
@@ -69,7 +70,7 @@ public class InvoiceTypeHandler
             commandForm.setInvoiceTypeName(invoiceTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            checkCommandResult(invoiceService.createInvoiceLineType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, invoiceService.createInvoiceLineType(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new InvoiceLineTypeHandler(initialDataParser, this, invoiceTypeName,
                     commandForm.getInvoiceLineTypeName()));

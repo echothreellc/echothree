@@ -21,56 +21,33 @@ import com.echothree.control.user.item.common.ItemService;
 import com.echothree.control.user.item.common.form.ItemFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class RelatedItemTypesHandler
         extends BaseHandler {
+
     ItemService itemService;
     
     /** Creates a new instance of RelatedItemTypesHandler */
-    public RelatedItemTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public RelatedItemTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            itemService = ItemUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        itemService = lookupService(ItemService.class, ItemUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("relatedItemType")) {
-            String relatedItemTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var commandForm = ItemFormFactory.getCreateRelatedItemTypeForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("relatedItemTypeName"))
-                    relatedItemTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = ItemFormFactory.getCreateRelatedItemTypeForm();
-                
-                commandForm.setRelatedItemTypeName(relatedItemTypeName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
-                
-                itemService.createRelatedItemType(initialDataParser.getUserVisit(), commandForm);
-                
-                initialDataParser.pushHandler(new RelatedItemTypeHandler(initialDataParser, this, relatedItemTypeName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, itemService.createRelatedItemType(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new RelatedItemTypeHandler(initialDataParser, this, commandForm.getRelatedItemTypeName()));
         }
     }
     

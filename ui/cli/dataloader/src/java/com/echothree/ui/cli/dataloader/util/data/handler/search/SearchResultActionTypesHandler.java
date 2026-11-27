@@ -50,7 +50,7 @@ public class SearchResultActionTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            searchService.createSearchResultActionType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, searchService.createSearchResultActionType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new SearchResultActionTypeHandler(initialDataParser, this, commandForm.getSearchResultActionTypeName()));
         }

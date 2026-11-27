@@ -17,6 +17,8 @@
 package com.echothree.ui.cli.dataloader.util.data.handler;
 
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
+import java.io.IOException;
+import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -33,18 +35,11 @@ public class IncludesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("file")) {
-            String name = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("name")) {
-                    name = attrs.getValue(i);
-                }
-            }
+            var name = attrs.getValue("name");
 
             try {
                 new InitialDataParser(name).execute();
-            } catch(Exception e) {
+            } catch(IOException | ParserConfigurationException e) {
                 throw new SAXException(e);
             }
         }

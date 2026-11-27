@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class JobHandler
         extends BaseHandler {
+
     JobService jobService;
     String jobName;
     
@@ -53,7 +54,7 @@ public class JobHandler
             commandForm.setJobName(jobName);
             commandForm.set(getAttrsMap(attrs));
             
-            jobService.createJobDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, jobService.createJobDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

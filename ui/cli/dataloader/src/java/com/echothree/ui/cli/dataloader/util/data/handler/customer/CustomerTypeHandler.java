@@ -61,49 +61,50 @@ public class CustomerTypeHandler
             commandForm.setCustomerTypeName(customerTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            customerService.createCustomerTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, customerService.createCustomerTypeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("customerTypePaymentMethod")) {
             var commandForm = CustomerFormFactory.getCreateCustomerTypePaymentMethodForm();
             
             commandForm.setCustomerTypeName(customerTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            customerService.createCustomerTypePaymentMethod(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, customerService.createCustomerTypePaymentMethod(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("customerTypeShippingMethod")) {
             var commandForm = CustomerFormFactory.getCreateCustomerTypeShippingMethodForm();
             
             commandForm.setCustomerTypeName(customerTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            customerService.createCustomerTypeShippingMethod(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, customerService.createCustomerTypeShippingMethod(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("customerTypeCreditLimit")) {
             var commandForm = TermFormFactory.getCreateCustomerTypeCreditLimitForm();
             
             commandForm.setCustomerTypeName(customerTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            termService.createCustomerTypeCreditLimit(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, termService.createCustomerTypeCreditLimit(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("offerCustomerType")) {
             var commandForm = OfferFormFactory.getCreateOfferCustomerTypeForm();
             
             commandForm.setCustomerTypeName(customerTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            offerService.createOfferCustomerType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, offerService.createOfferCustomerType(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("customerTypeContactListGroup")) {
             var commandForm = ContactListFormFactory.getCreateCustomerTypeContactListGroupForm();
 
             commandForm.setCustomerTypeName(customerTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            contactListService.createCustomerTypeContactListGroup(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm,
+                    contactListService.createCustomerTypeContactListGroup(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("customerTypeContactList")) {
             var commandForm = ContactListFormFactory.getCreateCustomerTypeContactListForm();
 
             commandForm.setCustomerTypeName(customerTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            contactListService.createCustomerTypeContactList(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, contactListService.createCustomerTypeContactList(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

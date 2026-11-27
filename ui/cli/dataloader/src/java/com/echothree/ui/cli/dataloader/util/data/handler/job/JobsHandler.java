@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class JobsHandler
         extends BaseHandler {
+
     JobService jobService;
     
     /** Creates a new instance of JobsHandler */
@@ -49,7 +50,7 @@ public class JobsHandler
 
             commandForm.set(getAttrsMap(attrs));
             
-            jobService.createJob(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, jobService.createJob(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new JobHandler(initialDataParser, this, commandForm.getJobName()));
         }

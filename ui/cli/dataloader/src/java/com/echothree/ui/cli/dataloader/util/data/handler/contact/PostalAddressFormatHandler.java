@@ -21,24 +21,21 @@ import com.echothree.control.user.contact.common.ContactService;
 import com.echothree.control.user.contact.common.form.ContactFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class PostalAddressFormatHandler
         extends BaseHandler {
+
     ContactService contactService;
     String postalAddressFormatName;
     
     /** Creates a new instance of PostalAddressFormatHandler */
-    public PostalAddressFormatHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String postalAddressFormatsName) {
+    public PostalAddressFormatHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String postalAddressFormatsName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            contactService = ContactUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        contactService = lookupService(ContactService.class, ContactUtil::getHome);
         
         this.postalAddressFormatName = postalAddressFormatsName;
     }
@@ -47,70 +44,22 @@ public class PostalAddressFormatHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("postalAddressFormatDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var form = ContactFormFactory.getCreatePostalAddressFormatDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var form = ContactFormFactory.getCreatePostalAddressFormatDescriptionForm();
-                
-                form.setPostalAddressFormatName(postalAddressFormatName);
-                form.setLanguageIsoName(languageIsoName);
-                form.setDescription(description);
-                
-                contactService.createPostalAddressFormatDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.setPostalAddressFormatName(postalAddressFormatName);
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, contactService.createPostalAddressFormatDescription(initialDataParser.getUserVisit(), form));
         } else if(localName.equals("postalAddressLine")) {
-            String postalAddressLineSortOrder = null;
-            String prefix = null;
-            String alwaysIncludePrefix = null;
-            String suffix = null;
-            String alwaysIncludeSuffix = null;
-            String collapseIfEmpty = null;
+            var form = ContactFormFactory.getCreatePostalAddressLineForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("postalAddressLineSortOrder"))
-                    postalAddressLineSortOrder = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("prefix"))
-                    prefix = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("alwaysIncludePrefix"))
-                    alwaysIncludePrefix = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("suffix"))
-                    suffix = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("alwaysIncludeSuffix"))
-                    alwaysIncludeSuffix = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("collapseIfEmpty"))
-                    collapseIfEmpty = attrs.getValue(i);
-            }
-            
-            try {
-                var form = ContactFormFactory.getCreatePostalAddressLineForm();
-                
-                form.setPostalAddressFormatName(postalAddressFormatName);
-                form.setPostalAddressLineSortOrder(postalAddressLineSortOrder);
-                form.setPrefix(prefix);
-                form.setAlwaysIncludePrefix(alwaysIncludePrefix);
-                form.setSuffix(suffix);
-                form.setAlwaysIncludeSuffix(alwaysIncludeSuffix);
-                form.setCollapseIfEmpty(collapseIfEmpty);
-                
-                contactService.createPostalAddressLine(initialDataParser.getUserVisit(), form);
-                
-                initialDataParser.pushHandler(new PostalAddressLineHandler(initialDataParser, this, postalAddressFormatName,
-                        postalAddressLineSortOrder));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.setPostalAddressFormatName(postalAddressFormatName);
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, contactService.createPostalAddressLine(initialDataParser.getUserVisit(), form));
+
+            initialDataParser.pushHandler(new PostalAddressLineHandler(initialDataParser, this, postalAddressFormatName,
+                    form.getPostalAddressLineSortOrder()));
         }
     }
     

@@ -21,52 +21,34 @@ import com.echothree.control.user.communication.common.CommunicationService;
 import com.echothree.control.user.communication.common.form.CommunicationFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class CommunicationEventRoleTypesHandler
         extends BaseHandler {
+
     CommunicationService communicationService;
     
     /** Creates a new instance of CommunicationEventRoleTypesHandler */
-    public CommunicationEventRoleTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public CommunicationEventRoleTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            communicationService = CommunicationUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        communicationService = lookupService(CommunicationService.class, CommunicationUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("communicationEventRoleType")) {
-            String communicationEventRoleTypeName = null;
-            String sortOrder = null;
+            var form = CommunicationFormFactory.getCreateCommunicationEventRoleTypeForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("communicationEventRoleTypeName"))
-                    communicationEventRoleTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
-            try {
-                var form = CommunicationFormFactory.getCreateCommunicationEventRoleTypeForm();
-                
-                form.setCommunicationEventRoleTypeName(communicationEventRoleTypeName);
-                form.setSortOrder(sortOrder);
-                
-                communicationService.createCommunicationEventRoleType(initialDataParser.getUserVisit(), form);
-                
-                initialDataParser.pushHandler(new CommunicationEventRoleTypeHandler(initialDataParser, this, communicationEventRoleTypeName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, communicationService.createCommunicationEventRoleType(initialDataParser.getUserVisit(), form));
+
+            initialDataParser.pushHandler(new CommunicationEventRoleTypeHandler(initialDataParser, this,
+                    form.getCommunicationEventRoleTypeName()));
         }
     }
     
