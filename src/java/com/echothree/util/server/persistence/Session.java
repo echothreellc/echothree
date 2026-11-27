@@ -32,19 +32,22 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Vetoed;
 import javax.enterprise.inject.spi.CDI;
+import javax.transaction.Status;
+import javax.transaction.TransactionSynchronizationRegistry;
 import org.jooq.DSLContext;
 import org.jooq.Select;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@RequestScoped
+// Produced by TransactionSessionProvider; the transaction, rather than the request, owns cleanup.
+@Vetoed
 public class Session {
     
     private static final String GET_INSTANCE = "getInstance";
@@ -57,8 +60,11 @@ public class Session {
     private DSLContext dslContext;
     private Connection connection;
 
-    private ValueCache valueCache = ValueCacheProviderImpl.getInstance().getValueCache();
+    private ValueCache valueCache;
     private SessionEntityCache sessionEntityCache = new SessionEntityCache(this);
+
+    private TransactionSynchronizationRegistry transactionRegistry;
+    private Object transactionKey;
 
     private final Map<EntityInstancePK, Integer> eventTimeSequences = new HashMap<>();
 
@@ -80,6 +86,12 @@ public class Session {
      * Creates a new instance of Session
      */
     public Session() {
+        this(ValueCacheProviderImpl.getInstance().getValueCache());
+    }
+
+    Session(final ValueCache valueCache) {
+        this.valueCache = valueCache;
+
         START_TIME = System.currentTimeMillis();
     }
 
@@ -113,6 +125,37 @@ public class Session {
 
     public ValueCache getValueCache() {
         return valueCache;
+    }
+
+    void bindTransaction(final TransactionSynchronizationRegistry transactionRegistry) {
+        this.transactionRegistry = transactionRegistry;
+        transactionKey = transactionRegistry.getTransactionKey();
+    }
+
+    /** Store pending changes in the caller's transaction, without committing it. */
+    public void flush() {
+        if(transactionRegistry == null || !Objects.equals(transactionKey, transactionRegistry.getTransactionKey())) {
+            throw new IllegalStateException("Session flush requires its owning transaction");
+        }
+
+        switch(transactionRegistry.getTransactionStatus()) {
+            case Status.STATUS_ACTIVE -> sessionEntityCache.flush();
+            case Status.STATUS_MARKED_ROLLBACK -> {
+                // The container will discard all database and cache writes, including nested commands.
+            }
+            default -> throw new IllegalStateException("Session flush requires an active transaction");
+        }
+    }
+
+    public void markRollbackOnly() {
+        if(transactionRegistry != null && Objects.equals(transactionKey, transactionRegistry.getTransactionKey())
+                && transactionRegistry.getTransactionStatus() == Status.STATUS_ACTIVE) {
+            transactionRegistry.setRollbackOnly();
+        }
+    }
+
+    boolean hasPendingChanges() {
+        return sessionEntityCache != null && sessionEntityCache.hasPendingChanges();
     }
 
     public void pushSessionEntityCache() {
@@ -293,7 +336,6 @@ public class Session {
     }
 
     @SuppressWarnings("Finally")
-    @PreDestroy
     public void close() {
         if(PersistenceDebugFlags.LogSessions) {
             log.info("close()");
@@ -305,12 +347,6 @@ public class Session {
             }
             
             try {
-                if(PersistenceDebugFlags.LogConnections) {
-                    log.info("flushing entities for " + connection);
-                }
-
-                sessionEntityCache = sessionEntityCache.popLastSessionEntityCache();
-
                 if(PersistenceDebugFlags.LogValueCaches) {
                     log.info("discarding valueCache " + valueCache);
                 }
@@ -340,6 +376,10 @@ public class Session {
                 }
             }
         }
+
+        // Cleanup must never write entities: this also runs after transaction rollback.
+        sessionEntityCache = null;
+        valueCache = null;
     }
 
     public void putReadOnlyEntity(BasePK basePK, BaseEntity baseEntity) {
