@@ -89,6 +89,11 @@ public class EditVendorCommand
                 new FieldDefinition("VendorTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("MinimumPurchaseOrderLines", FieldType.UNSIGNED_INTEGER, false, null, null),
                 new FieldDefinition("MaximumPurchaseOrderLines", FieldType.UNSIGNED_INTEGER, false, null, null),
+                // A currency change requires limits in the new effective currency. Blank amounts clear the limits.
+                new FieldDefinition("MinimumPurchaseOrderAmount:CurrencyIsoName,PreferredCurrencyIsoName:DefaultCurrencyIfOmitted,true",
+                        FieldType.UNSIGNED_COST_LINE, false, null, null),
+                new FieldDefinition("MaximumPurchaseOrderAmount:CurrencyIsoName,PreferredCurrencyIsoName:DefaultCurrencyIfOmitted,true",
+                        FieldType.UNSIGNED_COST_LINE, false, null, null),
                 new FieldDefinition("UseItemPurchasingCategories", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("DefaultItemAliasTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CancellationPolicyName", FieldType.ENTITY_NAME, false, null, null),
@@ -110,12 +115,7 @@ public class EditVendorCommand
                 new FieldDefinition("AllowCombiningShipments", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("RequireReference", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("AllowReferenceDuplicates", FieldType.BOOLEAN, true, null, null),
-                new FieldDefinition("ReferenceValidationPattern", FieldType.REGULAR_EXPRESSION, false, null, null),
-                // A currency change requires limits in the new effective currency. Blank amounts clear the limits.
-                new FieldDefinition("MinimumPurchaseOrderAmount:CurrencyIsoName,PreferredCurrencyIsoName:DefaultCurrencyIfOmitted,true",
-                        FieldType.UNSIGNED_COST_LINE, false, null, null),
-                new FieldDefinition("MaximumPurchaseOrderAmount:CurrencyIsoName,PreferredCurrencyIsoName:DefaultCurrencyIfOmitted,true",
-                        FieldType.UNSIGNED_COST_LINE, false, null, null)
+                new FieldDefinition("ReferenceValidationPattern", FieldType.REGULAR_EXPRESSION, false, null, null)
         );
     }
 
