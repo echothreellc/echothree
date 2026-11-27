@@ -21,7 +21,6 @@ import com.echothree.control.user.core.common.CoreService;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -40,11 +39,7 @@ public class EntityListItemHandler
             throws SAXException {
         super(initialDataParser, parentHandler);
 
-        try {
-            coreService = CoreUtil.getHome();
-        } catch(NamingException ne) {
-            // TODO: Handle Exception
-        }
+        coreService = lookupService(CoreService.class, CoreUtil::getHome);
 
         this.componentVendorName = componentVendorName;
         this.entityTypeName = entityTypeName;
@@ -64,7 +59,7 @@ public class EntityListItemHandler
             commandForm.setEntityListItemName(entityListItemName);
             commandForm.set(getAttrsMap(attrs));
 
-            coreService.createEntityListItemDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createEntityListItemDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

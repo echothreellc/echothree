@@ -50,7 +50,7 @@ public class InventoryTransactionTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(inventoryService.createInventoryTransactionType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, inventoryService.createInventoryTransactionType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new InventoryTransactionTypeHandler(initialDataParser, this, commandForm.getInventoryTransactionTypeName()));
         }

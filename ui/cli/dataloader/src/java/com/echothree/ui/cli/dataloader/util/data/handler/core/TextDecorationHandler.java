@@ -54,7 +54,7 @@ public class TextDecorationHandler
             commandForm.setTextDecorationName(textDecorationName);
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createTextDecorationDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createTextDecorationDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

@@ -21,7 +21,6 @@ import com.echothree.control.user.inventory.common.InventoryUtil;
 import com.echothree.control.user.inventory.common.form.InventoryFormFactory;
 import com.echothree.control.user.item.common.ItemService;
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.edit.ItemDescriptionEdit;
 import com.echothree.control.user.item.common.form.ItemFormFactory;
 import com.echothree.control.user.item.common.spec.ItemSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
@@ -31,15 +30,13 @@ import com.echothree.ui.cli.dataloader.util.data.handler.core.EntityAliasesHandl
 import com.echothree.ui.cli.dataloader.util.data.handler.core.EntityAttributesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.rating.RatingsHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.tag.EntityTagsHandler;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.type.ByteArray;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import javax.naming.NamingException;
+import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
+import java.util.Map;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -53,25 +50,17 @@ public class ItemHandler
     String entityRef;
     
     boolean inItemDescription = false;
-    String itemDescriptionTypeName = null;
-    String languageIsoName = null;
-    String mimeTypeName = null;
-    String itemImageTypeName = null;
-    String stringDescription = null;
+    private Map<String, Object> itemDescriptionAttrs;
     char []clobDescription = null;
-    String path = null;
     
     /** Creates a new instance of ItemHandler */
     public ItemHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String itemName, String companyName,
-            String entityRef) {
+            String entityRef)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            inventoryService = InventoryUtil.getHome();
-            itemService = ItemUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        inventoryService = lookupService(InventoryService.class, InventoryUtil::getHome);
+        itemService = lookupService(ItemService.class, ItemUtil::getHome);
         
         this.itemName = itemName;
         this.companyName = companyName;
@@ -87,25 +76,12 @@ public class ItemHandler
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
-            itemService.createItemAlias(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemAlias(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("itemDescription")) {
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("itemDescriptionTypeName")) {
-                    itemDescriptionTypeName = attrs.getValue(i);
-                } else if(attrs.getQName(i).equals("languageIsoName")) {
-                    languageIsoName = attrs.getValue(i);
-                } else if(attrs.getQName(i).equals("mimeTypeName")) {
-                    mimeTypeName = attrs.getValue(i);
-                } else if(attrs.getQName(i).equals("itemImageTypeName")) {
-                    itemImageTypeName = attrs.getValue(i);
-                } else if(attrs.getQName(i).equals("stringDescription")) {
-                    stringDescription = attrs.getValue(i);
-                } else if(attrs.getQName(i).equals("path")) {
-                    path = attrs.getValue(i);
-                }
-            }
-            
+            itemDescriptionAttrs = getAttrsMap(attrs);
+            itemDescriptionAttrs.put("ItemName", itemName);
+            itemDescriptionAttrs.remove("BlobDescription");
+
             inItemDescription = true;
         } else if(localName.equals("itemUnitOfMeasureType")) {
             var commandForm = ItemFormFactory.getCreateItemUnitOfMeasureTypeForm();
@@ -113,70 +89,70 @@ public class ItemHandler
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
-            itemService.createItemUnitOfMeasureType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemUnitOfMeasureType(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("itemPrice")) {
             var commandForm = ItemFormFactory.getCreateItemPriceForm();
             
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
-            itemService.createItemPrice(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemPrice(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("itemVolume")) {
             var commandForm = ItemFormFactory.getCreateItemVolumeForm();
             
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
-            itemService.createItemVolume(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemVolume(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("itemWeight")) {
             var commandForm = ItemFormFactory.getCreateItemWeightForm();
             
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
-            itemService.createItemWeight(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemWeight(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("itemCountryOfOrigin")) {
             var commandForm = ItemFormFactory.getCreateItemCountryOfOriginForm();
             
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
-            itemService.createItemCountryOfOrigin(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemCountryOfOrigin(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("itemPackCheckRequirement")) {
             var commandForm = ItemFormFactory.getCreateItemPackCheckRequirementForm();
             
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
-            itemService.createItemPackCheckRequirement(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemPackCheckRequirement(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("itemUnitPriceLimit")) {
             var commandForm = ItemFormFactory.getCreateItemUnitPriceLimitForm();
             
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
-            itemService.createItemUnitPriceLimit(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemUnitPriceLimit(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("itemUnitLimit")) {
             var commandForm = ItemFormFactory.getCreateItemUnitLimitForm();
             
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
-            itemService.createItemUnitLimit(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemUnitLimit(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("itemKitMember")) {
             var commandForm = ItemFormFactory.getCreateItemKitMemberForm();
             
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
-            itemService.createItemKitMember(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemKitMember(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("itemUnitCustomerTypeLimit")) {
             var commandForm = ItemFormFactory.getCreateItemUnitCustomerTypeLimitForm();
             
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
-            itemService.createItemUnitCustomerTypeLimit(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemUnitCustomerTypeLimit(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("partyInventoryLevel")) {
             var commandForm = InventoryFormFactory.getCreatePartyInventoryLevelForm();
             
@@ -187,14 +163,14 @@ public class ItemHandler
                 commandForm.setCompanyName(companyName);
             }
             
-            inventoryService.createPartyInventoryLevel(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, inventoryService.createPartyInventoryLevel(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("relatedItem")) {
             var commandForm = ItemFormFactory.getCreateRelatedItemForm();
             
             commandForm.setFromItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
-            itemService.createRelatedItem(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createRelatedItem(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("comments")) {
             initialDataParser.pushHandler(new CommentsHandler(initialDataParser, this, entityRef));
         } else if(localName.equals("ratings")) {
@@ -228,178 +204,38 @@ public class ItemHandler
     public void endElement(String namespaceURI, String localName, String qName)
             throws SAXException {
         if(localName.equals("itemDescription")) {
-            var spec = ItemSpecFactory.getItemDescriptionSpec();
-            var editForm = ItemFormFactory.getEditItemDescriptionForm();
-
-            spec.setItemName(itemName);
-            spec.setItemDescriptionTypeName(itemDescriptionTypeName);
-            spec.setLanguageIsoName(languageIsoName);
-
-            editForm.setSpec(spec);
-            editForm.setEditMode(EditMode.LOCK);
-
-            var commandResult = itemService.editItemDescription(initialDataParser.getUserVisit(), editForm);
-            
-            if(commandResult.hasErrors()) {
-                if(commandResult.containsExecutionError(ExecutionErrors.UnknownItemDescription.name())) {
-                    var createForm = ItemFormFactory.getCreateItemDescriptionForm();
-
-                    createForm.setItemName(itemName);
-                    createForm.setItemDescriptionTypeName(itemDescriptionTypeName);
-                    createForm.setLanguageIsoName(languageIsoName);
-                    createForm.setMimeTypeName(mimeTypeName);
-                    createForm.setItemImageTypeName(itemImageTypeName);
-                    createForm.setClobDescription(clobDescription == null ? null : new String(clobDescription));
-                    createForm.setStringDescription(stringDescription);
-
-                    if(path != null) {
-                        var file = new File(path);
-                        var length = file.length();
-
-                        if(length < Integer.MAX_VALUE) {
-                            try {
-                                InputStream is = new FileInputStream(file);
-                                var bytes = new byte[(int)length];
-                                var offset = 0;
-                                var numRead = 0;
-
-                                while(offset < bytes.length && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
-                                    offset += numRead;
-                                }
-
-                                // Ensure all the bytes have been read in
-                                if(offset < bytes.length) {
-                                    throw new SAXException("Could not completely read file " + file.getName());
-                                }
-
-                                // Close the input stream and return bytes
-                                is.close();
-
-                                createForm.setBlobDescription(new ByteArray(bytes));
-                            } catch(FileNotFoundException fnfe) {
-                                throw new SAXException(fnfe);
-                            } catch(IOException ioe) {
-                                throw new SAXException(ioe);
-                            }
-                        }
-                    }
-
-                    var createItemDescriptionCommandResult = itemService.createItemDescription(initialDataParser.getUserVisit(), createForm);
-                    
-                    if(createItemDescriptionCommandResult.hasErrors()) {
-                        getLogger().error(createItemDescriptionCommandResult.toString());
-                    }
-                } else {
-                    getLogger().error(commandResult.toString());
-                }
-            } else {
-                var executionResult = commandResult.getExecutionResult();
-                var result = executionResult.getResult();
-
-                if(result != null) {
-                    var edit = (ItemDescriptionEdit)result.getEdit();
-                    var changed = false;
-
-                    var currentMimeTypeName = edit.getMimeTypeName();
-                    if((currentMimeTypeName == null && mimeTypeName != null)
-                            || (currentMimeTypeName != null && mimeTypeName == null)
-                            || ((currentMimeTypeName != null && mimeTypeName != null ) && !currentMimeTypeName.equals(mimeTypeName))) {
-                        edit.setMimeTypeName(mimeTypeName);
-                        changed = true;
-                    }
-
-                    var currentItemImageTypeName = edit.getItemImageTypeName();
-                    if((currentItemImageTypeName == null && itemImageTypeName != null)
-                            || (currentItemImageTypeName != null && itemImageTypeName == null)
-                            || ((currentItemImageTypeName != null && itemImageTypeName != null ) && !currentItemImageTypeName.equals(itemImageTypeName))) {
-                        edit.setItemImageTypeName(itemImageTypeName);
-                        changed = true;
-                    }
-
-                    var currentClobDescription = edit.getClobDescription();
-                    var wrappedClobDescription = clobDescription == null ? null : new String(clobDescription);
-                    if((currentClobDescription == null && wrappedClobDescription != null)
-                            || (currentClobDescription != null && wrappedClobDescription == null)
-                            || ((currentClobDescription != null && wrappedClobDescription != null ) && !currentClobDescription.equals(wrappedClobDescription))) {
-                        edit.setClobDescription(wrappedClobDescription);
-                        changed = true;
-                    }
-
-                    var currentStringDescription = edit.getStringDescription();
-                    if((currentStringDescription == null && stringDescription != null)
-                            || (currentStringDescription != null && stringDescription == null)
-                            || ((currentStringDescription != null && stringDescription != null ) && !currentStringDescription.equals(stringDescription))) {
-                        edit.setStringDescription(stringDescription);
-                        changed = true;
-                    }
-
-                    // If there's a BLOB, we'll always assume it's changed. They're not returned as
-                    // part of the edit.
-                    if(path != null) {
-                        var file = new File(path);
-                        var length = file.length();
-
-                        if(length < Integer.MAX_VALUE) {
-                            try {
-                                InputStream is = new FileInputStream(file);
-                                var bytes = new byte[(int)length];
-                                var offset = 0;
-                                var numRead = 0;
-
-                                while(offset < bytes.length && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
-                                    offset += numRead;
-                                }
-
-                                // Ensure all the bytes have been read in
-                                if(offset < bytes.length) {
-                                    throw new SAXException("Could not completely read file " + file.getName());
-                                }
-
-                                // Close the input stream and return bytes
-                                is.close();
-
-                                edit.setBlobDescription(new ByteArray(bytes));
-                                changed = true;
-                            } catch(FileNotFoundException fnfe) {
-                                throw new SAXException(fnfe);
-                            } catch(IOException ioe) {
-                                throw new SAXException(ioe);
-                            }
-                        }
-                    }
-                    
-                    if(changed) {
-                        editForm.setEdit(edit);
-                        editForm.setEditMode(EditMode.UPDATE);
-                        
-                        commandResult = itemService.editItemDescription(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
-                        }
-                    } else {
-                        editForm.setEdit(null);
-                        editForm.setEditMode(EditMode.ABANDON);
-                        
-                        commandResult = itemService.editItemDescription(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
-                        }
-                    }
-                }
-            }
-            
+            loadItemDescription();
             inItemDescription = false;
-            itemDescriptionTypeName = null;
-            languageIsoName = null;
-            mimeTypeName = null;
-            itemImageTypeName = null;
-            stringDescription = null;
+            itemDescriptionAttrs = null;
             clobDescription = null;
         } else if(localName.equals("item")) {
             initialDataParser.popHandler();
         }
     }
     
+    private void loadItemDescription() throws SAXException {
+        // An item description replaces its previous content and media attributes.
+        itemDescriptionAttrs.putIfAbsent("MimeTypeName", null);
+        itemDescriptionAttrs.putIfAbsent("ItemImageTypeName", null);
+        itemDescriptionAttrs.putIfAbsent("StringDescription", null);
+        itemDescriptionAttrs.put("ClobDescription", clobDescription == null ? null : new String(clobDescription));
+
+        var fileName = (String)itemDescriptionAttrs.remove("Path");
+        if(fileName != null) {
+            try {
+                var path = Path.of(fileName);
+                if(Files.size(path) < Integer.MAX_VALUE) {
+                    itemDescriptionAttrs.put("BlobDescription", new ByteArray(Files.readAllBytes(path)));
+                }
+            } catch(IOException | InvalidPathException failure) {
+                throw new SAXException("Could not read item description file " + fileName, failure);
+            }
+        }
+
+        editOrCreate(itemDescriptionAttrs, ItemSpecFactory.getItemDescriptionSpec(),
+                ItemFormFactory.getEditItemDescriptionForm(), itemService::editItemDescription,
+                ItemFormFactory.getCreateItemDescriptionForm(), itemService::createItemDescription,
+                ExecutionErrors.UnknownItemDescription);
+    }
+
 }

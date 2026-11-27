@@ -54,14 +54,14 @@ public class PeriodKindHandler
             commandForm.setPeriodKindName(periodKindName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(periodService.createPeriodKindDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, periodService.createPeriodKindDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("periodType")) {
             var commandForm = PeriodFormFactory.getCreatePeriodTypeForm();
 
             commandForm.setPeriodKindName(periodKindName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(periodService.createPeriodType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, periodService.createPeriodType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new PeriodTypeHandler(initialDataParser, this, periodKindName, commandForm.getPeriodTypeName()));
         }

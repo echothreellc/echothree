@@ -62,6 +62,7 @@
                     <include name="echothree-client.jar"/>
                     <include name="echothree-server.jar"/>
                 </fileset>
+                <pathelement location="../../build/ui/cli/dataloader/jar/dataloader.jar"/>
             </classpath>
             <compilerarg value="-processorpath"/>
             <compilerarg pathref="processorpath.ref"/>
@@ -109,6 +110,7 @@
                     <include name="echothree-client.jar"/>
                     <include name="echothree-server.jar"/>
                 </fileset>
+                <pathelement location="../../build/ui/cli/dataloader/jar/dataloader.jar"/>
                 <pathelement path="${test.junit.classes.dir}" />
                 <pathelement location="../../build/service/graphql/classes" />
                 <pathelement path="${test.junit.pathelement.1}" />

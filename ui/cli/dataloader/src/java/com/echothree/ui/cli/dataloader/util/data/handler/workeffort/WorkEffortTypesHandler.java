@@ -21,42 +21,34 @@ import com.echothree.control.user.workeffort.common.WorkEffortService;
 import com.echothree.control.user.workeffort.common.form.WorkEffortFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class WorkEffortTypesHandler
         extends BaseHandler {
+
     WorkEffortService workEffortService;
     
     /** Creates a new instance of WorkEffortTypesHandler */
-    public WorkEffortTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public WorkEffortTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            workEffortService = WorkEffortUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        workEffortService = lookupService(WorkEffortService.class, WorkEffortUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("workEffortType")) {
-            try {
-                var commandForm = WorkEffortFormFactory.getCreateWorkEffortTypeForm();
-                var attrsMap = getAttrsMap(attrs);
-                
-                commandForm.set(attrsMap);
-                
-                workEffortService.createWorkEffortType(initialDataParser.getUserVisit(), commandForm);
-                
-                initialDataParser.pushHandler(new WorkEffortTypeHandler(initialDataParser, this,
-                        (String)attrsMap.get("WorkEffortTypeName")));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = WorkEffortFormFactory.getCreateWorkEffortTypeForm();
+
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, workEffortService.createWorkEffortType(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new WorkEffortTypeHandler(initialDataParser, this,
+                    commandForm.getWorkEffortTypeName()));
         }
     }
     

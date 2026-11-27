@@ -57,7 +57,7 @@ public class OrderPriorityHandler
             commandForm.setOrderPriorityName(orderPriorityName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(orderService.createOrderPriorityDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, orderService.createOrderPriorityDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

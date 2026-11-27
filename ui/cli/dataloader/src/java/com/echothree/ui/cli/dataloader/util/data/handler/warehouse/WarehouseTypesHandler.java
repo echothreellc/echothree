@@ -50,7 +50,7 @@ public class WarehouseTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            warehouseService.createWarehouseType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, warehouseService.createWarehouseType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new WarehouseTypeHandler(initialDataParser, this, commandForm.getWarehouseTypeName()));
         }

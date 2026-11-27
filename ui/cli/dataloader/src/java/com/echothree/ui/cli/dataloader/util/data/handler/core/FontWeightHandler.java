@@ -54,7 +54,7 @@ public class FontWeightHandler
             commandForm.setFontWeightName(fontWeightName);
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createFontWeightDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createFontWeightDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

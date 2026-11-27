@@ -46,7 +46,7 @@ public class PaymentProcessorTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(paymentService.createPaymentProcessorType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, paymentService.createPaymentProcessorType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new PaymentProcessorTypeHandler(initialDataParser, this, commandForm.getPaymentProcessorTypeName()));
         }

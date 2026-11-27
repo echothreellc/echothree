@@ -50,7 +50,7 @@ public class ShipmentTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(shipmentService.createShipmentType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, shipmentService.createShipmentType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new ShipmentTypeHandler(initialDataParser, this, commandForm.getShipmentTypeName()));
         }

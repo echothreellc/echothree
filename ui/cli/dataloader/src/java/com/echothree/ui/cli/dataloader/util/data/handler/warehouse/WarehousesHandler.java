@@ -51,6 +51,7 @@ public class WarehousesHandler
             commandForm.set(getAttrsMap(attrs));
 
             var commandResult = warehouseService.createWarehouse(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, commandResult);
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();

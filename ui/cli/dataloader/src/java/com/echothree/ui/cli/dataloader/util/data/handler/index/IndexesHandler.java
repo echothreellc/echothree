@@ -50,7 +50,7 @@ public class IndexesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            indexService.createIndex(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, indexService.createIndex(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new IndexHandler(initialDataParser, this, commandForm.getIndexName()));
         }

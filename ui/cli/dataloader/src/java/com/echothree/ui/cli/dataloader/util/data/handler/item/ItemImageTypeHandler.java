@@ -54,7 +54,7 @@ public class ItemImageTypeHandler
             commandForm.setItemImageTypeName(itemImageTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            itemService.createItemImageTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemImageTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

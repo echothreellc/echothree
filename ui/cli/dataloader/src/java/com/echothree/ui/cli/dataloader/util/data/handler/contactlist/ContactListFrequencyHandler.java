@@ -54,7 +54,8 @@ public class ContactListFrequencyHandler
             commandForm.setContactListFrequencyName(contactListFrequencyName);
             commandForm.set(getAttrsMap(attrs));
             
-            contactListService.createContactListFrequencyDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm,
+                    contactListService.createContactListFrequencyDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

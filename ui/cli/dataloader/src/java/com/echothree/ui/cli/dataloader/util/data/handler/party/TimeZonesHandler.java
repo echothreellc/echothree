@@ -21,60 +21,33 @@ import com.echothree.control.user.party.common.PartyService;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class TimeZonesHandler
         extends BaseHandler {
+
     PartyService partyService;
     
     /** Creates a new instance of TimeZonesHandler */
-    public TimeZonesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public TimeZonesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            partyService = PartyUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        partyService = lookupService(PartyService.class, PartyUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("timeZone")) {
-            String javaTimeZoneName = null;
-            String unixTimeZoneName = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var createTimeZoneForm = PartyFormFactory.getCreateTimeZoneForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("javaTimeZoneName"))
-                    javaTimeZoneName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("unixTimeZoneName"))
-                    unixTimeZoneName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
-            try {
-                var createTimeZoneForm = PartyFormFactory.getCreateTimeZoneForm();
-                
-                createTimeZoneForm.setJavaTimeZoneName(javaTimeZoneName);
-                createTimeZoneForm.setUnixTimeZoneName(unixTimeZoneName);
-                createTimeZoneForm.setIsDefault(isDefault);
-                createTimeZoneForm.setSortOrder(sortOrder);
-                
-                partyService.createTimeZone(initialDataParser.getUserVisit(), createTimeZoneForm);
-                
-                initialDataParser.pushHandler(new TimeZoneHandler(initialDataParser, this, javaTimeZoneName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            createTimeZoneForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createTimeZoneForm, partyService.createTimeZone(initialDataParser.getUserVisit(), createTimeZoneForm));
+
+            initialDataParser.pushHandler(new TimeZoneHandler(initialDataParser, this, createTimeZoneForm.getJavaTimeZoneName()));
         }
     }
     

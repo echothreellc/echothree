@@ -25,30 +25,23 @@ import com.echothree.control.user.workrequirement.common.form.WorkRequirementFor
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.workrequirement.WorkRequirementTypeHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class WorkEffortTypeHandler
         extends BaseHandler {
+
     WorkEffortService workEffortService;
     WorkRequirementService workRequirementService;
     String workEffortTypeName;
     
     /** Creates a new instance of WorkEffortTypeHandler */
-    public WorkEffortTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String workEffortTypeName) {
+    public WorkEffortTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String workEffortTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            workEffortService = WorkEffortUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
-        try {
-            workRequirementService = WorkRequirementUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        workEffortService = lookupService(WorkEffortService.class, WorkEffortUtil::getHome);
+        workRequirementService = lookupService(WorkRequirementService.class, WorkRequirementUtil::getHome);
         this.workEffortTypeName = workEffortTypeName;
     }
     
@@ -56,46 +49,32 @@ public class WorkEffortTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("workEffortTypeDescription")) {
-            try {
-                var commandForm = WorkEffortFormFactory.getCreateWorkEffortTypeDescriptionForm();
-                
-                commandForm.setWorkEffortTypeName(workEffortTypeName);
-                commandForm.set(getAttrsMap(attrs));
-                
-                workEffortService.createWorkEffortTypeDescription(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = WorkEffortFormFactory.getCreateWorkEffortTypeDescriptionForm();
+
+            commandForm.setWorkEffortTypeName(workEffortTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, workEffortService.createWorkEffortTypeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("workEffortScope")) {
-            try {
-                var commandForm = WorkEffortFormFactory.getCreateWorkEffortScopeForm();
-                var attrsMap = getAttrsMap(attrs);
-                
-                commandForm.setWorkEffortTypeName(workEffortTypeName);
-                commandForm.set(attrsMap);
-                
-                workEffortService.createWorkEffortScope(initialDataParser.getUserVisit(), commandForm);
-                
-                initialDataParser.pushHandler(new WorkEffortScopeHandler(initialDataParser, this, workEffortTypeName,
-                        (String)attrsMap.get("WorkEffortScopeName")));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = WorkEffortFormFactory.getCreateWorkEffortScopeForm();
+
+            commandForm.setWorkEffortTypeName(workEffortTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, workEffortService.createWorkEffortScope(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new WorkEffortScopeHandler(initialDataParser, this, workEffortTypeName,
+                    commandForm.getWorkEffortScopeName()));
         } else if(localName.equals("workRequirementType")) {
-            try {
-                var commandForm = WorkRequirementFormFactory.getCreateWorkRequirementTypeForm();
-                var attrsMap = getAttrsMap(attrs);
-                
-                commandForm.setWorkEffortTypeName(workEffortTypeName);
-                commandForm.set(attrsMap);
-                
-                workRequirementService.createWorkRequirementType(initialDataParser.getUserVisit(), commandForm);
-                
-                initialDataParser.pushHandler(new WorkRequirementTypeHandler(initialDataParser, this, workEffortTypeName,
-                        (String)attrsMap.get("WorkRequirementTypeName")));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var commandForm = WorkRequirementFormFactory.getCreateWorkRequirementTypeForm();
+
+            commandForm.setWorkEffortTypeName(workEffortTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, workRequirementService.createWorkRequirementType(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new WorkRequirementTypeHandler(initialDataParser, this, workEffortTypeName,
+                    commandForm.getWorkRequirementTypeName()));
         }
     }
     

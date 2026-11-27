@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class BillingAccountRoleTypesHandler
         extends BaseHandler {
+
     PaymentService paymentService;
     
     /** Creates a new instance of BillingAccountRoleTypesHandler */
@@ -49,7 +50,7 @@ public class BillingAccountRoleTypesHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            checkCommandResult(paymentService.createBillingAccountRoleType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, paymentService.createBillingAccountRoleType(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new BillingAccountRoleTypeHandler(initialDataParser, this, commandForm.getBillingAccountRoleTypeName()));
         }

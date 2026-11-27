@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class OrderLineAdjustmentTypeHandler
         extends BaseHandler {
+
     OrderService orderService;
     String orderTypeName;
     String orderLineAdjustmentTypeName;
@@ -56,7 +57,8 @@ public class OrderLineAdjustmentTypeHandler
             commandForm.setOrderLineAdjustmentTypeName(orderLineAdjustmentTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(orderService.createOrderLineAdjustmentTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm,
+                    orderService.createOrderLineAdjustmentTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

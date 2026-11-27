@@ -50,7 +50,7 @@ public class LinkCardinalitiesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(coreService.createLinkCardinality(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, coreService.createLinkCardinality(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new LinkCardinalityHandler(initialDataParser, this, commandForm.getLinkCardinalityName()));
         }

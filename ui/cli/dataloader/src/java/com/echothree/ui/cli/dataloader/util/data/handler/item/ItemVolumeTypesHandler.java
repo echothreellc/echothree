@@ -22,7 +22,6 @@ import com.echothree.control.user.item.common.form.ItemFormFactory;
 import com.echothree.control.user.item.common.spec.ItemSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
@@ -49,73 +48,27 @@ public class ItemVolumeTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("itemVolumeType")) {
-            var spec = ItemSpecFactory.getItemVolumeTypeUniversalSpec();
-            var editForm = ItemFormFactory.getEditItemVolumeTypeForm();
+            var attrsMap = getAttrsMap(attrs);
 
-            spec.set(getAttrsMap(attrs));
+            var outcome = editOrCreate(attrsMap, ItemSpecFactory.getItemVolumeTypeUniversalSpec(),
+                    ItemFormFactory.getEditItemVolumeTypeForm(), itemService::editItemVolumeType,
+                    ItemFormFactory.getCreateItemVolumeTypeForm(), itemService::createItemVolumeType,
+                    ExecutionErrors.UnknownItemVolumeTypeName);
 
-            editForm.setSpec(spec);
-            editForm.setEditMode(EditMode.LOCK);
-
-            var commandResult = itemService.editItemVolumeType(initialDataParser.getUserVisit(), editForm);
-
-            if(commandResult.hasErrors()) {
-                if(commandResult.containsExecutionError(ExecutionErrors.UnknownItemVolumeTypeName.name())) {
-                    var createForm = ItemFormFactory.getCreateItemVolumeTypeForm();
-
-                    createForm.set(spec.get());
-
-                    var createItemVolumeTypeCommandResult = itemService.createItemVolumeType(initialDataParser.getUserVisit(), createForm);
-
-                    if(createItemVolumeTypeCommandResult.hasErrors()) {
-                        getLogger().error(createItemVolumeTypeCommandResult.toString());
-                    }
-                } else {
-                    getLogger().error(commandResult.toString());
+            if(outcome.successful()) {
+                var itemVolumeTypeName = (String)attrsMap.get("ItemVolumeTypeName");
+                if(outcome.lockedEdit() != null) {
+                    itemVolumeTypeName = outcome.lockedEdit().getItemVolumeTypeName();
+                } else if(outcome.createdRecord() != null) {
+                    itemVolumeTypeName = outcome.createdRecord().getItemVolumeTypeName();
                 }
+                if(itemVolumeTypeName == null) {
+                    throw new SAXException("Item volume type name is missing for child elements");
+                }
+                initialDataParser.pushHandler(new ItemVolumeTypeHandler(initialDataParser, this, itemVolumeTypeName));
             } else {
-                var executionResult = commandResult.getExecutionResult();
-                var result = executionResult.getResult();
-
-                if(result != null) {
-                    var edit = result.getEdit();
-                    var isDefault = attrs.getValue("isDefault");
-                    var sortOrder = attrs.getValue("sortOrder");
-                    var changed = false;
-
-                    if(!edit.getIsDefault().equals(isDefault)) {
-                        edit.setIsDefault(isDefault);
-                        changed = true;
-                    }
-
-                    if(!edit.getSortOrder().equals(sortOrder)) {
-                        edit.setSortOrder(sortOrder);
-                        changed = true;
-                    }
-
-                    if(changed) {
-                        editForm.setEdit(edit);
-                        editForm.setEditMode(EditMode.UPDATE);
-
-                        commandResult = itemService.editItemVolumeType(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
-                        }
-                    } else {
-                        editForm.setEdit(null);
-                        editForm.setEditMode(EditMode.ABANDON);
-
-                        commandResult = itemService.editItemVolumeType(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
-                        }
-                    }
-                }
+                skipCurrentElement();
             }
-            
-            initialDataParser.pushHandler(new ItemVolumeTypeHandler(initialDataParser, this, spec.getItemVolumeTypeName()));
         }
     }
     

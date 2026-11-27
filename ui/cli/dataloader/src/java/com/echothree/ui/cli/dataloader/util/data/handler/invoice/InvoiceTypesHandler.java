@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class InvoiceTypesHandler
         extends BaseHandler {
+
     InvoiceService invoiceService;
     
     /** Creates a new instance of InvoiceTypesHandler */
@@ -49,7 +50,7 @@ public class InvoiceTypesHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            checkCommandResult(invoiceService.createInvoiceType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, invoiceService.createInvoiceType(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new InvoiceTypeHandler(initialDataParser, this, commandForm.getInvoiceTypeName()));
         }

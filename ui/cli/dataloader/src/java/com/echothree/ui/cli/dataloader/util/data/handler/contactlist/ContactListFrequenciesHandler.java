@@ -50,7 +50,7 @@ public class ContactListFrequenciesHandler
 
             commandForm.set(getAttrsMap(attrs));
             
-            contactListService.createContactListFrequency(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, contactListService.createContactListFrequency(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new ContactListFrequencyHandler(initialDataParser, this, commandForm.getContactListFrequencyName()));
         }

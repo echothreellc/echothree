@@ -21,24 +21,21 @@ import com.echothree.control.user.party.common.PartyService;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class PartyTypeUseTypeHandler
         extends BaseHandler {
+
     PartyService partyService;
     String partyTypeUseTypeName;
     
     /** Creates a new instance of PartyTypeUseTypeHandler */
-    public PartyTypeUseTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String partyTypeUseTypeName) {
+    public PartyTypeUseTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String partyTypeUseTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            partyService = PartyUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        partyService = lookupService(PartyService.class, PartyUtil::getHome);
         
         this.partyTypeUseTypeName = partyTypeUseTypeName;
     }
@@ -47,51 +44,19 @@ public class PartyTypeUseTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("partyTypeUseTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var form = PartyFormFactory.getCreatePartyTypeUseTypeDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var form = PartyFormFactory.getCreatePartyTypeUseTypeDescriptionForm();
-                
-                form.setPartyTypeUseTypeName(partyTypeUseTypeName);
-                form.setLanguageIsoName(languageIsoName);
-                form.setDescription(description);
-                
-                partyService.createPartyTypeUseTypeDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.setPartyTypeUseTypeName(partyTypeUseTypeName);
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, partyService.createPartyTypeUseTypeDescription(initialDataParser.getUserVisit(), form));
         } else if(localName.equals("partyTypeUse")) {
-            String partyTypeName = null;
-            String isDefault = null;
+            var form = PartyFormFactory.getCreatePartyTypeUseForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("partyTypeName"))
-                    partyTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-            }
-            
-            try {
-                var form = PartyFormFactory.getCreatePartyTypeUseForm();
-                
-                form.setPartyTypeUseTypeName(partyTypeUseTypeName);
-                form.setPartyTypeName(partyTypeName);
-                form.setIsDefault(isDefault);
-                
-                partyService.createPartyTypeUse(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.setPartyTypeUseTypeName(partyTypeUseTypeName);
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, partyService.createPartyTypeUse(initialDataParser.getUserVisit(), form));
         }
     }
     

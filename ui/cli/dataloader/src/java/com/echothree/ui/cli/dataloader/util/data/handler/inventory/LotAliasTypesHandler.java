@@ -46,7 +46,7 @@ public class LotAliasTypesHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            checkCommandResult(inventoryService.createLotAliasType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, inventoryService.createLotAliasType(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new LotAliasTypeHandler(initialDataParser, this, commandForm.getLotAliasTypeName()));
         }

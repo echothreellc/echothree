@@ -50,7 +50,7 @@ public class FontWeightsHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createFontWeight(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createFontWeight(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new FontWeightHandler(initialDataParser, this, commandForm.getFontWeightName()));
         }

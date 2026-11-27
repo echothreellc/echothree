@@ -50,7 +50,7 @@ public class SymbolPositionsHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            accountingService.createSymbolPosition(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, accountingService.createSymbolPosition(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new SymbolPositionHandler(initialDataParser, this, commandForm.getSymbolPositionName()));
         }

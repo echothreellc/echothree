@@ -54,14 +54,14 @@ public class ForumMessageTypeHandler
             commandForm.setForumMessageTypeName(forumMessageTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            forumService.createForumMessageTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, forumService.createForumMessageTypeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("forumMessageTypePartType")) {
             var commandForm = ForumFormFactory.getCreateForumMessageTypePartTypeForm();
 
             commandForm.setForumMessageTypeName(forumMessageTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            forumService.createForumMessageTypePartType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, forumService.createForumMessageTypePartType(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

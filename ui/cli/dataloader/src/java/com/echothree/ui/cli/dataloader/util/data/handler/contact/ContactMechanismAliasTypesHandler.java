@@ -21,54 +21,33 @@ import com.echothree.control.user.contact.common.ContactService;
 import com.echothree.control.user.contact.common.form.ContactFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ContactMechanismAliasTypesHandler
         extends BaseHandler {
+
     ContactService contactService;
     
     /** Creates a new instance of ContactMechanismAliasTypesHandler */
-    public ContactMechanismAliasTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public ContactMechanismAliasTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            contactService = ContactUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        contactService = lookupService(ContactService.class, ContactUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("contactMechanismAliasType")) {
-            String contactMechanismAliasTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var contactMechanismAliasTypeName = attrs.getValue("contactMechanismAliasTypeName");
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("contactMechanismAliasTypeName"))
-                    contactMechanismAliasTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
-            try {
-                var form = ContactFormFactory.getCreateContactMechanismAliasTypeForm();
-                
-                form.setContactMechanismAliasTypeName(contactMechanismAliasTypeName);
-                form.setIsDefault(isDefault);
-                form.setSortOrder(sortOrder);
-                
-                contactService.createContactMechanismAliasType(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = ContactFormFactory.getCreateContactMechanismAliasTypeForm();
+
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, contactService.createContactMechanismAliasType(initialDataParser.getUserVisit(), form));
             
             initialDataParser.pushHandler(new ContactMechanismAliasTypeHandler(initialDataParser, this, contactMechanismAliasTypeName));
         }

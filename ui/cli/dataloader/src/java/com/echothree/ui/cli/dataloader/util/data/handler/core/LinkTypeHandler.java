@@ -49,16 +49,12 @@ public class LinkTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("linkTypeTranslation")) {
-            try {
-                var commandForm = CoreFormFactory.getCreateLinkTypeTranslationForm();
+            var commandForm = CoreFormFactory.getCreateLinkTypeTranslationForm();
 
-                commandForm.setLinkTypeName(linkTypeName);
-                commandForm.set(getAttrsMap(attrs));
+            commandForm.setLinkTypeName(linkTypeName);
+            commandForm.set(getAttrsMap(attrs));
 
-                checkCommandResult(coreService.createLinkTypeTranslation(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            checkCommandResult(commandForm, coreService.createLinkTypeTranslation(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

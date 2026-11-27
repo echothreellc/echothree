@@ -50,7 +50,7 @@ public class InventoryBucketTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(inventoryService.createInventoryBucketType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, inventoryService.createInventoryBucketType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new InventoryBucketTypeHandler(initialDataParser, this, commandForm.getInventoryBucketTypeName()));
         }

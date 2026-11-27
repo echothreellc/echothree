@@ -50,7 +50,7 @@ public class UnitOfMeasureKindUseTypesHandler
 
             form.set(getAttrsMap(attrs));
 
-            checkCommandResult(uomService.createUnitOfMeasureKindUseType(initialDataParser.getUserVisit(), form));
+            checkCommandResult(form, uomService.createUnitOfMeasureKindUseType(initialDataParser.getUserVisit(), form));
 
             initialDataParser.pushHandler(new UnitOfMeasureKindUseTypeHandler(initialDataParser, this, form.getUnitOfMeasureKindUseTypeName()));
         }

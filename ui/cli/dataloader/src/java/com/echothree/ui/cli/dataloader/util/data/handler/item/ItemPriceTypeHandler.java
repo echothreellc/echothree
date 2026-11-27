@@ -21,24 +21,21 @@ import com.echothree.control.user.item.common.ItemService;
 import com.echothree.control.user.item.common.form.ItemFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ItemPriceTypeHandler
         extends BaseHandler {
+
     ItemService itemService;
     String itemPriceTypeName;
     
     /** Creates a new instance of ItemPriceTypeHandler */
-    public ItemPriceTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String itemPriceTypeName) {
+    public ItemPriceTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String itemPriceTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            itemService = ItemUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        itemService = lookupService(ItemService.class, ItemUtil::getHome);
         
         this.itemPriceTypeName = itemPriceTypeName;
     }
@@ -47,28 +44,13 @@ public class ItemPriceTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("itemPriceTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
+                var createItemPriceTypeDescriptionForm = ItemFormFactory.getCreateItemPriceTypeDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-                try {
-                    var createItemPriceTypeDescriptionForm = ItemFormFactory.getCreateItemPriceTypeDescriptionForm();
-                    
-                    createItemPriceTypeDescriptionForm.setItemPriceTypeName(itemPriceTypeName);
-                    createItemPriceTypeDescriptionForm.setLanguageIsoName(languageIsoName);
-                    createItemPriceTypeDescriptionForm.setDescription(description);
-                    
-                    itemService.createItemPriceTypeDescription(initialDataParser.getUserVisit(), createItemPriceTypeDescriptionForm);
-                } catch (Exception e) {
-                    throw new SAXException(e);
-                }
+                createItemPriceTypeDescriptionForm.setItemPriceTypeName(itemPriceTypeName);
+                createItemPriceTypeDescriptionForm.set(getAttrsMap(attrs));
+
+                checkCommandResult(createItemPriceTypeDescriptionForm,
+                        itemService.createItemPriceTypeDescription(initialDataParser.getUserVisit(), createItemPriceTypeDescriptionForm));
         }
     }
     

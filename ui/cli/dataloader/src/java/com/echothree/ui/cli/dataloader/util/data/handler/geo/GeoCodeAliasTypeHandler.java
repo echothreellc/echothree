@@ -21,25 +21,22 @@ import com.echothree.control.user.geo.common.GeoService;
 import com.echothree.control.user.geo.common.form.GeoFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class GeoCodeAliasTypeHandler
         extends BaseHandler {
+
     GeoService geoService;
     String geoCodeTypeName;
     String geoCodeAliasTypeName;
     
     /** Creates a new instance of GeoCodeAliasTypeHandler */
-    public GeoCodeAliasTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String geoCodeTypeName, String geoCodeAliasTypeName) {
+    public GeoCodeAliasTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String geoCodeTypeName, String geoCodeAliasTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            geoService = GeoUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        geoService = lookupService(GeoService.class, GeoUtil::getHome);
         this.geoCodeTypeName = geoCodeTypeName;
         this.geoCodeAliasTypeName = geoCodeAliasTypeName;
     }
@@ -48,29 +45,14 @@ public class GeoCodeAliasTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("geoCodeAliasTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var createGeoCodeAliasTypeDescriptionForm = GeoFormFactory.getCreateGeoCodeAliasTypeDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var createGeoCodeAliasTypeDescriptionForm = GeoFormFactory.getCreateGeoCodeAliasTypeDescriptionForm();
-                
-                createGeoCodeAliasTypeDescriptionForm.setGeoCodeTypeName(geoCodeTypeName);
-                createGeoCodeAliasTypeDescriptionForm.setGeoCodeAliasTypeName(geoCodeAliasTypeName);
-                createGeoCodeAliasTypeDescriptionForm.setLanguageIsoName(languageIsoName);
-                createGeoCodeAliasTypeDescriptionForm.setDescription(description);
-                
-                geoService.createGeoCodeAliasTypeDescription(initialDataParser.getUserVisit(), createGeoCodeAliasTypeDescriptionForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            createGeoCodeAliasTypeDescriptionForm.setGeoCodeTypeName(geoCodeTypeName);
+            createGeoCodeAliasTypeDescriptionForm.setGeoCodeAliasTypeName(geoCodeAliasTypeName);
+            createGeoCodeAliasTypeDescriptionForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createGeoCodeAliasTypeDescriptionForm,
+                    geoService.createGeoCodeAliasTypeDescription(initialDataParser.getUserVisit(), createGeoCodeAliasTypeDescriptionForm));
         }
     }
     

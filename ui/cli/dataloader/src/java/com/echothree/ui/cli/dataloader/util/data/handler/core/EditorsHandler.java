@@ -50,7 +50,7 @@ public class EditorsHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createEditor(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createEditor(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new EditorHandler(initialDataParser, this, commandForm.getEditorName()));
         }

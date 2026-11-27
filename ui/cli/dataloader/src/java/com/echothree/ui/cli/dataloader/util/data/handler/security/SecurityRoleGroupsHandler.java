@@ -18,12 +18,10 @@ package com.echothree.ui.cli.dataloader.util.data.handler.security;
 
 import com.echothree.control.user.security.common.SecurityService;
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.edit.SecurityRoleGroupEdit;
 import com.echothree.control.user.security.common.form.SecurityFormFactory;
 import com.echothree.control.user.security.common.spec.SecuritySpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
@@ -50,88 +48,21 @@ public class SecurityRoleGroupsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("securityRoleGroup")) {
-            var spec = SecuritySpecFactory.getSecurityRoleGroupSpec();
-            var editForm = SecurityFormFactory.getEditSecurityRoleGroupForm();
+            var attrsMap = getAttrsMap(attrs);
+            // An omitted parent moves the group to ROOT.
+            attrsMap.putIfAbsent("ParentSecurityRoleGroupName", null);
 
-            spec.set(getAttrsMap(attrs));
+            var outcome = editOrCreate(attrsMap, SecuritySpecFactory.getSecurityRoleGroupSpec(),
+                    SecurityFormFactory.getEditSecurityRoleGroupForm(), securityService::editSecurityRoleGroup,
+                    SecurityFormFactory.getCreateSecurityRoleGroupForm(), securityService::createSecurityRoleGroup,
+                    ExecutionErrors.UnknownSecurityRoleGroupName);
 
-            editForm.setSpec(spec);
-            editForm.setEditMode(EditMode.LOCK);
-
-            var commandResult = securityService.editSecurityRoleGroup(initialDataParser.getUserVisit(), editForm);
-            
-            if(commandResult.hasErrors()) {
-                if(commandResult.containsExecutionError(ExecutionErrors.UnknownSecurityRoleGroupName.name())) {
-                    var createForm = SecurityFormFactory.getCreateSecurityRoleGroupForm();
-
-                    createForm.set(spec.get());
-
-                    var createSecurityRoleGroupCommandResult = securityService.createSecurityRoleGroup(initialDataParser.getUserVisit(), createForm);
-                    
-                    if(createSecurityRoleGroupCommandResult.hasErrors()) {
-                        getLogger().error(createSecurityRoleGroupCommandResult.toString());
-                    }
-                } else {
-                    getLogger().error(commandResult.toString());
-                }
+            if(outcome.successful()) {
+                var securityRoleGroupName = (String)attrsMap.get("SecurityRoleGroupName");
+                initialDataParser.pushHandler(new SecurityRoleGroupHandler(initialDataParser, this, securityRoleGroupName));
             } else {
-                var executionResult = commandResult.getExecutionResult();
-                var result = executionResult.getResult();
-
-                if(result != null) {
-                    var edit = (SecurityRoleGroupEdit)result.getEdit();
-                    var currentParentSecurityRoleGroupName = edit.getParentSecurityRoleGroupName();
-                    var parentSecurityRoleGroupName = attrs.getValue("parentSecurityRoleGroupName");
-                    var isDefault = attrs.getValue("isDefault");
-                    var sortOrder = attrs.getValue("sortOrder");
-                    var changed = false;
-                    
-                    if(currentParentSecurityRoleGroupName == null && parentSecurityRoleGroupName != null) {
-                        edit.setParentSecurityRoleGroupName(parentSecurityRoleGroupName);
-                        changed = true;
-                    } else if(currentParentSecurityRoleGroupName != null && parentSecurityRoleGroupName == null) {
-                        edit.setParentSecurityRoleGroupName(null);
-                        changed = true;
-                    } else if(currentParentSecurityRoleGroupName != null && parentSecurityRoleGroupName != null) {
-                        if(!currentParentSecurityRoleGroupName.equals(parentSecurityRoleGroupName)) {
-                            edit.setParentSecurityRoleGroupName(parentSecurityRoleGroupName);
-                            changed = true;
-                        }
-                    }
-
-                    if(!edit.getIsDefault().equals(isDefault)) {
-                        edit.setIsDefault(isDefault);
-                        changed = true;
-                    }
-
-                    if(!edit.getSortOrder().equals(sortOrder)) {
-                        edit.setSortOrder(sortOrder);
-                        changed = true;
-                    }
-
-                    if(changed) {
-                        editForm.setEdit(edit);
-                        editForm.setEditMode(EditMode.UPDATE);
-                        
-                        commandResult = securityService.editSecurityRoleGroup(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
-                        }
-                    } else {
-                        editForm.setEdit(null);
-                        editForm.setEditMode(EditMode.ABANDON);
-                        
-                        commandResult = securityService.editSecurityRoleGroup(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
-                        }
-                    }
-                }
+                skipCurrentElement();
             }
-            
-            initialDataParser.pushHandler(new SecurityRoleGroupHandler(initialDataParser, this, spec.getSecurityRoleGroupName()));
         }
     }
     

@@ -21,24 +21,21 @@ import com.echothree.control.user.contactlist.common.ContactListService;
 import com.echothree.control.user.contactlist.common.form.ContactListFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ContactListHandler
         extends BaseHandler {
+
     ContactListService contactListService;
     String contactListName;
     
     /** Creates a new instance of ContactListHandler */
-    public ContactListHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String contactListName) {
+    public ContactListHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String contactListName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            contactListService = ContactListUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        contactListService = lookupService(ContactListService.class, ContactListUtil::getHome);
         
         this.contactListName = contactListName;
     }
@@ -52,14 +49,15 @@ public class ContactListHandler
             commandForm.setContactListName(contactListName);
             commandForm.set(getAttrsMap(attrs));
             
-            contactListService.createContactListDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, contactListService.createContactListDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("contactListContactMechanismPurpose")) {
             var commandForm = ContactListFormFactory.getCreateContactListContactMechanismPurposeForm();
             
             commandForm.setContactListName(contactListName);
             commandForm.set(getAttrsMap(attrs));
             
-            contactListService.createContactListContactMechanismPurpose(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm,
+                    contactListService.createContactListContactMechanismPurpose(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

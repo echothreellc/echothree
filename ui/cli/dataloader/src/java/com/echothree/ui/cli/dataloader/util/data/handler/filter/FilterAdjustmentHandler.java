@@ -21,25 +21,22 @@ import com.echothree.control.user.filter.common.FilterService;
 import com.echothree.control.user.filter.common.form.FilterFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class FilterAdjustmentHandler
         extends BaseHandler {
+
     FilterService filterService;
     String filterKindName;
     String filterAdjustmentName;
     
     /** Creates a new instance of FilterAdjustmentHandler */
-    public FilterAdjustmentHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String filterKindName, String filterAdjustmentName) {
+    public FilterAdjustmentHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String filterKindName, String filterAdjustmentName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            filterService = FilterUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        filterService = lookupService(FilterService.class, FilterUtil::getHome);
         
         this.filterKindName = filterKindName;
         this.filterAdjustmentName = filterAdjustmentName;
@@ -49,125 +46,37 @@ public class FilterAdjustmentHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("filterAdjustmentDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var commandForm = FilterFormFactory.getCreateFilterAdjustmentDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = FilterFormFactory.getCreateFilterAdjustmentDescriptionForm();
-                
-                commandForm.setFilterKindName(filterKindName);
-                commandForm.setFilterAdjustmentName(filterAdjustmentName);
-                commandForm.setLanguageIsoName(languageIsoName);
-                commandForm.setDescription(description);
-                
-                filterService.createFilterAdjustmentDescription(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterAdjustmentName(filterAdjustmentName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, filterService.createFilterAdjustmentDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("filterAdjustmentAmount")) {
-            String unitOfMeasureKindName = null;
-            String unitOfMeasureTypeName = null;
-            String currencyIsoName = null;
-            String amount = null;
+            var commandForm = FilterFormFactory.getCreateFilterAdjustmentAmountForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("unitOfMeasureKindName"))
-                    unitOfMeasureKindName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("unitOfMeasureTypeName"))
-                    unitOfMeasureTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("currencyIsoName"))
-                    currencyIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("amount"))
-                    amount = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = FilterFormFactory.getCreateFilterAdjustmentAmountForm();
-                
-                commandForm.setFilterKindName(filterKindName);
-                commandForm.setFilterAdjustmentName(filterAdjustmentName);
-                commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
-                commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
-                commandForm.setCurrencyIsoName(currencyIsoName);
-                commandForm.setAmount(amount);
-                
-                filterService.createFilterAdjustmentAmount(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterAdjustmentName(filterAdjustmentName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, filterService.createFilterAdjustmentAmount(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("filterAdjustmentFixedAmount")) {
-            String unitOfMeasureKindName = null;
-            String unitOfMeasureTypeName = null;
-            String currencyIsoName = null;
-            String unitAmount = null;
+            var commandForm = FilterFormFactory.getCreateFilterAdjustmentFixedAmountForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("unitOfMeasureKindName"))
-                    unitOfMeasureKindName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("unitOfMeasureTypeName"))
-                    unitOfMeasureTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("currencyIsoName"))
-                    currencyIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("unitAmount"))
-                    unitAmount = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = FilterFormFactory.getCreateFilterAdjustmentFixedAmountForm();
-                
-                commandForm.setFilterKindName(filterKindName);
-                commandForm.setFilterAdjustmentName(filterAdjustmentName);
-                commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
-                commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
-                commandForm.setCurrencyIsoName(currencyIsoName);
-                commandForm.setUnitAmount(unitAmount);
-                
-                filterService.createFilterAdjustmentFixedAmount(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterAdjustmentName(filterAdjustmentName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, filterService.createFilterAdjustmentFixedAmount(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("filterAdjustmentPercent")) {
-            String unitOfMeasureKindName = null;
-            String unitOfMeasureTypeName = null;
-            String currencyIsoName = null;
-            String percent = null;
+            var commandForm = FilterFormFactory.getCreateFilterAdjustmentPercentForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("unitOfMeasureKindName"))
-                    unitOfMeasureKindName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("unitOfMeasureTypeName"))
-                    unitOfMeasureTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("currencyIsoName"))
-                    currencyIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("percent"))
-                    percent = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = FilterFormFactory.getCreateFilterAdjustmentPercentForm();
-                
-                commandForm.setFilterKindName(filterKindName);
-                commandForm.setFilterAdjustmentName(filterAdjustmentName);
-                commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
-                commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
-                commandForm.setCurrencyIsoName(currencyIsoName);
-                commandForm.setPercent(percent);
-                
-                filterService.createFilterAdjustmentPercent(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterAdjustmentName(filterAdjustmentName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, filterService.createFilterAdjustmentPercent(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

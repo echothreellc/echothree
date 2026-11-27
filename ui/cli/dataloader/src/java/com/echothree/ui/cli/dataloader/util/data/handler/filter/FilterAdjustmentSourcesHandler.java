@@ -21,60 +21,34 @@ import com.echothree.control.user.filter.common.FilterService;
 import com.echothree.control.user.filter.common.form.FilterFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class FilterAdjustmentSourcesHandler
         extends BaseHandler {
+
     FilterService filterService;
     
     /** Creates a new instance of FilterAdjustmentSourcesHandler */
-    public FilterAdjustmentSourcesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public FilterAdjustmentSourcesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            filterService = FilterUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        filterService = lookupService(FilterService.class, FilterUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("filterAdjustmentSource")) {
-            String filterAdjustmentSourceName = null;
-            String allowedForInitialAmount = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var commandForm = FilterFormFactory.getCreateFilterAdjustmentSourceForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("filterAdjustmentSourceName"))
-                    filterAdjustmentSourceName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("allowedForInitialAmount"))
-                    allowedForInitialAmount = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = FilterFormFactory.getCreateFilterAdjustmentSourceForm();
-                
-                commandForm.setFilterAdjustmentSourceName(filterAdjustmentSourceName);
-                commandForm.setAllowedForInitialAmount(allowedForInitialAmount);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
-                
-                filterService.createFilterAdjustmentSource(initialDataParser.getUserVisit(), commandForm);
-                
-                initialDataParser.pushHandler(new FilterAdjustmentSourceHandler(initialDataParser, this, filterAdjustmentSourceName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, filterService.createFilterAdjustmentSource(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new FilterAdjustmentSourceHandler(initialDataParser, this,
+                    commandForm.getFilterAdjustmentSourceName()));
         }
     }
     

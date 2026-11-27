@@ -21,12 +21,12 @@ import com.echothree.control.user.comment.common.CommentService;
 import com.echothree.control.user.comment.common.form.CommentFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class CommentUsageTypeHandler
         extends BaseHandler {
+
     CommentService commentService;
     String componentVendorName;
     String entityTypeName;
@@ -36,14 +36,11 @@ public class CommentUsageTypeHandler
     /** Creates a new instance of CommentUsageTypeHandler */
     public CommentUsageTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String componentVendorName,
             String entityTypeName,
-    String commentTypeName, String commentUsageTypeName) {
+    String commentTypeName, String commentUsageTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            commentService = CommentUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        commentService = lookupService(CommentService.class, CommentUtil::getHome);
         
         this.componentVendorName = componentVendorName;
         this.entityTypeName = entityTypeName;
@@ -55,31 +52,15 @@ public class CommentUsageTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("commentUsageTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var form = CommentFormFactory.getCreateCommentUsageTypeDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var form = CommentFormFactory.getCreateCommentUsageTypeDescriptionForm();
-                
-                form.setComponentVendorName(componentVendorName);
-                form.setEntityTypeName(entityTypeName);
-                form.setCommentTypeName(commentTypeName);
-                form.setCommentUsageTypeName(commentUsageTypeName);
-                form.setLanguageIsoName(languageIsoName);
-                form.setDescription(description);
-                
-                commentService.createCommentUsageTypeDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.setComponentVendorName(componentVendorName);
+            form.setEntityTypeName(entityTypeName);
+            form.setCommentTypeName(commentTypeName);
+            form.setCommentUsageTypeName(commentUsageTypeName);
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, commentService.createCommentUsageTypeDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

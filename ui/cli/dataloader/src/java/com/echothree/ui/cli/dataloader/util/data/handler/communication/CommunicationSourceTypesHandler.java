@@ -21,56 +21,33 @@ import com.echothree.control.user.communication.common.CommunicationService;
 import com.echothree.control.user.communication.common.form.CommunicationFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class CommunicationSourceTypesHandler
         extends BaseHandler {
+
     CommunicationService communicationService;
     
     /** Creates a new instance of CommunicationSourceTypesHandler */
-    public CommunicationSourceTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public CommunicationSourceTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            communicationService = CommunicationUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        communicationService = lookupService(CommunicationService.class, CommunicationUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("communicationSourceType")) {
-            String communicationSourceTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var form = CommunicationFormFactory.getCreateCommunicationSourceTypeForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("communicationSourceTypeName"))
-                    communicationSourceTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
-            try {
-                var form = CommunicationFormFactory.getCreateCommunicationSourceTypeForm();
-                
-                form.setCommunicationSourceTypeName(communicationSourceTypeName);
-                form.setIsDefault(isDefault);
-                form.setSortOrder(sortOrder);
-                
-                communicationService.createCommunicationSourceType(initialDataParser.getUserVisit(), form);
-                
-                initialDataParser.pushHandler(new CommunicationSourceTypeHandler(initialDataParser, this, communicationSourceTypeName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, communicationService.createCommunicationSourceType(initialDataParser.getUserVisit(), form));
+
+            initialDataParser.pushHandler(new CommunicationSourceTypeHandler(initialDataParser, this, form.getCommunicationSourceTypeName()));
         }
     }
     

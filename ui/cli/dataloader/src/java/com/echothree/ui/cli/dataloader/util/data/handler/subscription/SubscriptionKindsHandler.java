@@ -46,33 +46,17 @@ public class SubscriptionKindsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("subscriptionKind")) {
-            var commandForm = SubscriptionFormFactory.getCreateSubscriptionKindForm();
-            String subscriptionKindName = null;
-            String isDefault = null;
-            String sortOrder = null;
-            String commandAction = null;
+            var commandAction = attrs.getValue("commandAction");
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("subscriptionKindName"))
-                    subscriptionKindName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("commandAction"))
-                    commandAction = attrs.getValue(i);
-            }
+            var commandForm = SubscriptionFormFactory.getCreateSubscriptionKindForm();
             
-            commandForm.setSubscriptionKindName(subscriptionKindName);
-            commandForm.setIsDefault(isDefault);
-            commandForm.setSortOrder(sortOrder);
+            commandForm.set(getAttrsMap(attrs));
             
             if(commandAction == null || commandAction.equals("create")) {
-                subscriptionService.createSubscriptionKind(initialDataParser.getUserVisit(), commandForm);
+                checkCommandResult(commandForm, subscriptionService.createSubscriptionKind(initialDataParser.getUserVisit(), commandForm));
             }
             
-            initialDataParser.pushHandler(new SubscriptionKindHandler(initialDataParser, this, subscriptionKindName));
+            initialDataParser.pushHandler(new SubscriptionKindHandler(initialDataParser, this, commandForm.getSubscriptionKindName()));
         }
     }
     

@@ -21,24 +21,21 @@ import com.echothree.control.user.communication.common.CommunicationService;
 import com.echothree.control.user.communication.common.form.CommunicationFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class CommunicationEventPurposeHandler
         extends BaseHandler {
+
     CommunicationService communicationService;
     String communicationEventPurposeName;
     
     /** Creates a new instance of CommunicationEventPurposeHandler */
-    public CommunicationEventPurposeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String communicationEventPurposeName) {
+    public CommunicationEventPurposeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String communicationEventPurposeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            communicationService = CommunicationUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        communicationService = lookupService(CommunicationService.class, CommunicationUtil::getHome);
         
         this.communicationEventPurposeName = communicationEventPurposeName;
     }
@@ -47,28 +44,12 @@ public class CommunicationEventPurposeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("communicationEventPurposeDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var form = CommunicationFormFactory.getCreateCommunicationEventPurposeDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var form = CommunicationFormFactory.getCreateCommunicationEventPurposeDescriptionForm();
-                
-                form.setCommunicationEventPurposeName(communicationEventPurposeName);
-                form.setLanguageIsoName(languageIsoName);
-                form.setDescription(description);
-                
-                communicationService.createCommunicationEventPurposeDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.setCommunicationEventPurposeName(communicationEventPurposeName);
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, communicationService.createCommunicationEventPurposeDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

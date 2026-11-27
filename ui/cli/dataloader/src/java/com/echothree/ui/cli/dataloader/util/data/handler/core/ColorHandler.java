@@ -54,7 +54,7 @@ public class ColorHandler
             commandForm.setColorName(colorName);
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createColorDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createColorDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

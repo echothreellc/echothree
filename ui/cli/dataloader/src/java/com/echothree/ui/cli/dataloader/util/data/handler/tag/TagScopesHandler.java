@@ -21,56 +21,33 @@ import com.echothree.control.user.tag.common.TagService;
 import com.echothree.control.user.tag.common.form.TagFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class TagScopesHandler
         extends BaseHandler {
+
     TagService tagService;
     
     /** Creates a new instance of TagScopesHandler */
-    public TagScopesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public TagScopesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            tagService = TagUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        tagService = lookupService(TagService.class, TagUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("tagScope")) {
-            String tagScopeName = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var commandForm = TagFormFactory.getCreateTagScopeForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("tagScopeName"))
-                    tagScopeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = TagFormFactory.getCreateTagScopeForm();
-                
-                commandForm.setTagScopeName(tagScopeName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
-                
-                tagService.createTagScope(initialDataParser.getUserVisit(), commandForm);
-                
-                initialDataParser.pushHandler(new TagScopeHandler(initialDataParser, this, tagScopeName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, tagService.createTagScope(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new TagScopeHandler(initialDataParser, this, commandForm.getTagScopeName()));
         }
     }
     

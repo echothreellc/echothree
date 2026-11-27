@@ -21,24 +21,21 @@ import com.echothree.control.user.party.common.PartyService;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class RoleTypeHandler
         extends BaseHandler {
+
     PartyService partyService;
     String roleTypeName;
     
     /** Creates a new instance of RoleTypeHandler */
-    public RoleTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String roleTypeName) {
+    public RoleTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String roleTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            partyService = PartyUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        partyService = lookupService(PartyService.class, PartyUtil::getHome);
         
         this.roleTypeName = roleTypeName;
     }
@@ -47,28 +44,13 @@ public class RoleTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("roleTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var createRoleTypeDescriptionForm = PartyFormFactory.getCreateRoleTypeDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var createRoleTypeDescriptionForm = PartyFormFactory.getCreateRoleTypeDescriptionForm();
-                
-                createRoleTypeDescriptionForm.setRoleTypeName(roleTypeName);
-                createRoleTypeDescriptionForm.setLanguageIsoName(languageIsoName);
-                createRoleTypeDescriptionForm.setDescription(description);
-                
-                partyService.createRoleTypeDescription(initialDataParser.getUserVisit(), createRoleTypeDescriptionForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            createRoleTypeDescriptionForm.setRoleTypeName(roleTypeName);
+            createRoleTypeDescriptionForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createRoleTypeDescriptionForm,
+                    partyService.createRoleTypeDescription(initialDataParser.getUserVisit(), createRoleTypeDescriptionForm));
         }
     }
     

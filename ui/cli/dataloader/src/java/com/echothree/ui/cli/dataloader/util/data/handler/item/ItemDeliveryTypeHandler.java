@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class ItemDeliveryTypeHandler
         extends BaseHandler {
+
     ItemService itemService;
     String itemDeliveryTypeName;
     
@@ -53,7 +54,7 @@ public class ItemDeliveryTypeHandler
             commandForm.setItemDeliveryTypeName(itemDeliveryTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            itemService.createItemDeliveryTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemDeliveryTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

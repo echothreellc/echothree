@@ -21,72 +21,33 @@ import com.echothree.control.user.club.common.ClubService;
 import com.echothree.control.user.club.common.form.ClubFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ClubsHandler
         extends BaseHandler {
+
     ClubService clubService;
     
     /** Creates a new instance of ClubsHandler */
-    public ClubsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public ClubsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            clubService = ClubUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        clubService = lookupService(ClubService.class, ClubUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("club")) {
-            String clubName = null;
-            String subscriptionTypeName = null;
-            String clubPriceFilterName = null;
-            String currencyIsoName = null;
-            String isDefault = null;
-            String sortOrder = null;
-            String description = null;
+            var commandForm = ClubFormFactory.getCreateClubForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("clubName"))
-                    clubName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("subscriptionTypeName"))
-                    subscriptionTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("clubPriceFilterName"))
-                    clubPriceFilterName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("currencyIsoName"))
-                    currencyIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = ClubFormFactory.getCreateClubForm();
-                
-                commandForm.setClubName(clubName);
-                commandForm.setSubscriptionTypeName(subscriptionTypeName);
-                commandForm.setClubPriceFilterName(clubPriceFilterName);
-                commandForm.setCurrencyIsoName(currencyIsoName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
-                commandForm.setDescription(description);
-                
-                clubService.createClub(initialDataParser.getUserVisit(), commandForm);
-                
-                initialDataParser.pushHandler(new ClubHandler(initialDataParser, this, clubName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, clubService.createClub(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new ClubHandler(initialDataParser, this, commandForm.getClubName()));
         }
     }
     

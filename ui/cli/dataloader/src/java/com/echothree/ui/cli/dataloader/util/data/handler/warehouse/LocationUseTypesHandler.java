@@ -21,60 +21,33 @@ import com.echothree.control.user.warehouse.common.WarehouseService;
 import com.echothree.control.user.warehouse.common.form.WarehouseFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class LocationUseTypesHandler
         extends BaseHandler {
+
     WarehouseService warehouseService;
     
     /** Creates a new instance of LocationUseTypesHandler */
-    public LocationUseTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public LocationUseTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            warehouseService = WarehouseUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        warehouseService = lookupService(WarehouseService.class, WarehouseUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("locationUseType")) {
-            String locationUseTypeName = null;
-            String allowMultiple = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var form = WarehouseFormFactory.getCreateLocationUseTypeForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("locationUseTypeName"))
-                    locationUseTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("allowMultiple"))
-                    allowMultiple = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
-            try {
-                var form = WarehouseFormFactory.getCreateLocationUseTypeForm();
-                
-                form.setLocationUseTypeName(locationUseTypeName);
-                form.setAllowMultiple(allowMultiple);
-                form.setIsDefault(isDefault);
-                form.setSortOrder(sortOrder);
-                
-                warehouseService.createLocationUseType(initialDataParser.getUserVisit(), form);
-                
-                initialDataParser.pushHandler(new LocationUseTypeHandler(initialDataParser, this, locationUseTypeName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, warehouseService.createLocationUseType(initialDataParser.getUserVisit(), form));
+
+            initialDataParser.pushHandler(new LocationUseTypeHandler(initialDataParser, this, form.getLocationUseTypeName()));
         }
     }
     

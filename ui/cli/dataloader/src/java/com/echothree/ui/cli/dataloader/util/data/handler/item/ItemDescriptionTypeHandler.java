@@ -54,14 +54,14 @@ public class ItemDescriptionTypeHandler
             commandForm.setItemDescriptionTypeName(itemDescriptionTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            itemService.createItemDescriptionTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemDescriptionTypeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("itemDescriptionTypeUse")) {
             var commandForm = ItemFormFactory.getCreateItemDescriptionTypeUseForm();
 
             commandForm.setItemDescriptionTypeName(itemDescriptionTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            itemService.createItemDescriptionTypeUse(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemDescriptionTypeUse(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

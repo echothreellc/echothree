@@ -21,60 +21,33 @@ import com.echothree.control.user.cancellationpolicy.common.CancellationPolicySe
 import com.echothree.control.user.cancellationpolicy.common.form.CancellationPolicyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class CancellationKindsHandler
         extends BaseHandler {
+
     CancellationPolicyService cancellationPolicyService;
     
     /** Creates a new instance of CancellationKindsHandler */
-    public CancellationKindsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public CancellationKindsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            cancellationPolicyService = CancellationPolicyUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        cancellationPolicyService = lookupService(CancellationPolicyService.class, CancellationPolicyUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("cancellationKind")) {
-            String cancellationKindName = null;
-            String cancellationSequenceTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var commandForm = CancellationPolicyFormFactory.getCreateCancellationKindForm();
 
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("cancellationKindName"))
-                    cancellationKindName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("cancellationSequenceTypeName"))
-                    cancellationSequenceTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = CancellationPolicyFormFactory.getCreateCancellationKindForm();
-                
-                commandForm.setCancellationKindName(cancellationKindName);
-                commandForm.setCancellationSequenceTypeName(cancellationSequenceTypeName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
-                
-                checkCommandResult(cancellationPolicyService.createCancellationKind(initialDataParser.getUserVisit(), commandForm));
-                
-                initialDataParser.pushHandler(new CancellationKindHandler(initialDataParser, this, cancellationKindName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, cancellationPolicyService.createCancellationKind(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new CancellationKindHandler(initialDataParser, this, commandForm.getCancellationKindName()));
         }
     }
     

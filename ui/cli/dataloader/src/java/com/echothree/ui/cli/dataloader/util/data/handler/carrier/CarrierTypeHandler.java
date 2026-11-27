@@ -54,7 +54,7 @@ public class CarrierTypeHandler
             commandForm.setCarrierTypeName(carrierTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(carrierService.createCarrierTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, carrierService.createCarrierTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

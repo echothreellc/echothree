@@ -21,24 +21,21 @@ import com.echothree.control.user.contact.common.ContactService;
 import com.echothree.control.user.contact.common.form.ContactFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class PostalAddressElementTypeHandler
         extends BaseHandler {
+
     ContactService contactService;
     String postalAddressElementTypesName;
     
     /** Creates a new instance of PostalAddressElementTypeHandler */
-    public PostalAddressElementTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String postalAddressElementTypesName) {
+    public PostalAddressElementTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String postalAddressElementTypesName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            contactService = ContactUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        contactService = lookupService(ContactService.class, ContactUtil::getHome);
         
         this.postalAddressElementTypesName = postalAddressElementTypesName;
     }
@@ -47,28 +44,12 @@ public class PostalAddressElementTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("postalAddressElementTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var form = ContactFormFactory.getCreatePostalAddressElementTypeDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var form = ContactFormFactory.getCreatePostalAddressElementTypeDescriptionForm();
-                
-                form.setPostalAddressElementTypeName(postalAddressElementTypesName);
-                form.setLanguageIsoName(languageIsoName);
-                form.setDescription(description);
-                
-                contactService.createPostalAddressElementTypeDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.setPostalAddressElementTypeName(postalAddressElementTypesName);
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, contactService.createPostalAddressElementTypeDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

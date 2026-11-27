@@ -54,7 +54,7 @@ public class TextTransformationHandler
             commandForm.setTextTransformationName(textTransformationName);
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createTextTransformationDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createTextTransformationDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

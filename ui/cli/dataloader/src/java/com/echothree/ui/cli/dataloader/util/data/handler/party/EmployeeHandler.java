@@ -65,28 +65,28 @@ public class EmployeeHandler
             commandForm.setPartyName(partyName);
             commandForm.set(getAttrsMap(attrs));
 
-            partyService.createPartyAlias(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, partyService.createPartyAlias(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("employeeCompany")) {
             var commandForm = PartyFormFactory.getAddEmployeeToCompanyForm();
             
             commandForm.setEmployeeName(employeeName);
             commandForm.set(getAttrsMap(attrs));
             
-            partyService.addEmployeeToCompany(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, partyService.addEmployeeToCompany(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("employment")) {
             var commandForm = EmployeeFormFactory.getCreateEmploymentForm();
 
             commandForm.setPartyName(partyName);
             commandForm.set(getAttrsMap(attrs));
 
-            employeeService.createEmployment(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, employeeService.createEmployment(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("leave")) {
             var commandForm = EmployeeFormFactory.getCreateLeaveForm();
 
             commandForm.setPartyName(partyName);
             commandForm.set(getAttrsMap(attrs));
 
-            employeeService.createLeave(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, employeeService.createLeave(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("partyResponsibilities")) {
             initialDataParser.pushHandler(new PartyResponsibilitiesHandler(initialDataParser, this, partyName));
         } else if(localName.equals("partySkills")) {
@@ -99,7 +99,7 @@ public class EmployeeHandler
             commandForm.setPartyName(partyName);
             commandForm.set(getAttrsMap(attrs));
             
-            partyService.createProfile(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, partyService.createProfile(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("comments")) {
             initialDataParser.pushHandler(new CommentsHandler(initialDataParser, this, entityRef));
         } else if(localName.equals("entityAttributes")) {

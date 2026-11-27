@@ -21,56 +21,33 @@ import com.echothree.control.user.geo.common.GeoService;
 import com.echothree.control.user.geo.common.form.GeoFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class GeoCodeScopesHandler
         extends BaseHandler {
+
     GeoService geoService;
     
     /** Creates a new instance of GeoCodeScopesHandler */
-    public GeoCodeScopesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public GeoCodeScopesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            geoService = GeoUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        geoService = lookupService(GeoService.class, GeoUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("geoCodeScope")) {
-            String geoCodeScopeName = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var createGeoCodeScopeForm = GeoFormFactory.getCreateGeoCodeScopeForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("geoCodeScopeName"))
-                    geoCodeScopeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
-            try {
-                var createGeoCodeScopeForm = GeoFormFactory.getCreateGeoCodeScopeForm();
-                
-                createGeoCodeScopeForm.setGeoCodeScopeName(geoCodeScopeName);
-                createGeoCodeScopeForm.setIsDefault(isDefault);
-                createGeoCodeScopeForm.setSortOrder(sortOrder);
-                
-                geoService.createGeoCodeScope(initialDataParser.getUserVisit(), createGeoCodeScopeForm);
-                
-                initialDataParser.pushHandler(new GeoCodeScopeHandler(initialDataParser, this, geoCodeScopeName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            createGeoCodeScopeForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createGeoCodeScopeForm, geoService.createGeoCodeScope(initialDataParser.getUserVisit(), createGeoCodeScopeForm));
+
+            initialDataParser.pushHandler(new GeoCodeScopeHandler(initialDataParser, this, createGeoCodeScopeForm.getGeoCodeScopeName()));
         }
     }
     

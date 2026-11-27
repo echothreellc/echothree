@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class EmployeeTypesHandler
         extends BaseHandler {
+
     EmployeeService employeeService;
     
     /** Creates a new instance of EmployeeTypesHandler */
@@ -49,7 +50,7 @@ public class EmployeeTypesHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            employeeService.createEmployeeType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, employeeService.createEmployeeType(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new EmployeeTypeHandler(initialDataParser, this, commandForm.getEmployeeTypeName()));
         }

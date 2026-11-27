@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class LanguagesHandler
         extends BaseHandler {
+
     PartyService partyService;
     
     /** Creates a new instance of LanguagesHandler */
@@ -49,7 +50,7 @@ public class LanguagesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            partyService.createLanguage(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, partyService.createLanguage(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new LanguageHandler(initialDataParser, this, commandForm.getLanguageIsoName()));
         }

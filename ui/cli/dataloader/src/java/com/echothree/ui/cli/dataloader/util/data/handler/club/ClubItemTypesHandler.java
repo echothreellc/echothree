@@ -21,56 +21,33 @@ import com.echothree.control.user.club.common.ClubService;
 import com.echothree.control.user.club.common.form.ClubFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ClubItemTypesHandler
         extends BaseHandler {
+
     ClubService clubService;
     
     /** Creates a new instance of ClubItemTypesHandler */
-    public ClubItemTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public ClubItemTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            clubService = ClubUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        clubService = lookupService(ClubService.class, ClubUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("clubItemType")) {
-            String clubItemTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var commandForm = ClubFormFactory.getCreateClubItemTypeForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("clubItemTypeName"))
-                    clubItemTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = ClubFormFactory.getCreateClubItemTypeForm();
-                
-                commandForm.setClubItemTypeName(clubItemTypeName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
-                
-                clubService.createClubItemType(initialDataParser.getUserVisit(), commandForm);
-                
-                initialDataParser.pushHandler(new ClubItemTypeHandler(initialDataParser, this, clubItemTypeName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, clubService.createClubItemType(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new ClubItemTypeHandler(initialDataParser, this, commandForm.getClubItemTypeName()));
         }
     }
     

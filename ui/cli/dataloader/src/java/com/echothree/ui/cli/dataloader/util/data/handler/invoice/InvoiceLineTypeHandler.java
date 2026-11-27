@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class InvoiceLineTypeHandler
         extends BaseHandler {
+
     InvoiceService invoiceService;
     String invoiceTypeName;
     String invoiceLineTypeName;
@@ -57,7 +58,7 @@ public class InvoiceLineTypeHandler
             commandForm.setInvoiceLineTypeName(invoiceLineTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            checkCommandResult(invoiceService.createInvoiceLineTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, invoiceService.createInvoiceLineTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

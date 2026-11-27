@@ -21,25 +21,22 @@ import com.echothree.control.user.offer.common.OfferService;
 import com.echothree.control.user.offer.common.form.OfferFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class OfferUseHandler
         extends BaseHandler {
+
     OfferService offerService;
     String offerName;
     String useName;
     
     /** Creates a new instance of OfferUseHandler */
-    public OfferUseHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String offerName, String useName) {
+    public OfferUseHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String offerName, String useName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            offerService = OfferUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        offerService = lookupService(OfferService.class, OfferUtil::getHome);
         
         this.offerName = offerName;
         this.useName = useName;
@@ -49,33 +46,13 @@ public class OfferUseHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("source")) {
-            String sourceName = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var form = OfferFormFactory.getCreateSourceForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("sourceName"))
-                    sourceName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
-            try {
-                var form = OfferFormFactory.getCreateSourceForm();
-                
-                form.setOfferName(offerName);
-                form.setUseName(useName);
-                form.setSourceName(sourceName);
-                form.setIsDefault(isDefault);
-                form.setSortOrder(sortOrder);
-                
-                offerService.createSource(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.setOfferName(offerName);
+            form.setUseName(useName);
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, offerService.createSource(initialDataParser.getUserVisit(), form));
         }
     }
     

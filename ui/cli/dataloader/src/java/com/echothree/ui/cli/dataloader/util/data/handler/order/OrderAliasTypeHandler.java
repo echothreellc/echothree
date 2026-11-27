@@ -21,26 +21,23 @@ import com.echothree.control.user.order.common.OrderService;
 import com.echothree.control.user.order.common.form.OrderFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class OrderAliasTypeHandler
         extends BaseHandler {
+
     OrderService orderService;
     String orderTypeName;
     String orderAliasTypeName;
     
     /** Creates a new instance of OrderAliasTypeHandler */
     public OrderAliasTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String orderTypeName,
-            String orderAliasTypeName) {
+            String orderAliasTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            orderService = OrderUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        orderService = lookupService(OrderService.class, OrderUtil::getHome);
         
         this.orderTypeName = orderTypeName;
         this.orderAliasTypeName = orderAliasTypeName;
@@ -50,29 +47,13 @@ public class OrderAliasTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("orderAliasTypeDescription")) {
-            String attrLanguageIsoName = null;
-            String attrDescription = null;
+            var commandForm = OrderFormFactory.getCreateOrderAliasTypeDescriptionForm();
 
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    attrLanguageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    attrDescription = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = OrderFormFactory.getCreateOrderAliasTypeDescriptionForm();
-                
-                commandForm.setOrderTypeName(orderTypeName);
-                commandForm.setOrderAliasTypeName(orderAliasTypeName);
-                commandForm.setLanguageIsoName(attrLanguageIsoName);
-                commandForm.setDescription(attrDescription);
-                
-                checkCommandResult(orderService.createOrderAliasTypeDescription(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setOrderTypeName(orderTypeName);
+            commandForm.setOrderAliasTypeName(orderAliasTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, orderService.createOrderAliasTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

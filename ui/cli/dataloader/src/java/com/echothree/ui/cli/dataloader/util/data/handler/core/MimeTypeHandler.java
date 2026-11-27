@@ -54,21 +54,21 @@ public class MimeTypeHandler
             commandForm.setMimeTypeName(mimeTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            coreService.createMimeTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createMimeTypeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("mimeTypeFileExtension")) {
             var commandForm = CoreFormFactory.getCreateMimeTypeFileExtensionForm();
 
             commandForm.setMimeTypeName(mimeTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            coreService.createMimeTypeFileExtension(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createMimeTypeFileExtension(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("mimeTypeUsage")) {
             var commandForm = CoreFormFactory.getCreateMimeTypeUsageForm();
 
             commandForm.setMimeTypeName(mimeTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            coreService.createMimeTypeUsage(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createMimeTypeUsage(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

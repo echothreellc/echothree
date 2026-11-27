@@ -49,24 +49,12 @@ public class PartyResponsibilitiesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("partyResponsibility")) {
-            String responsibilityTypeName = null;
+            var commandForm = EmployeeFormFactory.getCreatePartyResponsibilityForm();
 
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("responsibilityTypeName"))
-                    responsibilityTypeName = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = EmployeeFormFactory.getCreatePartyResponsibilityForm();
-                
-                commandForm.setPartyName(partyName);
-                commandForm.setResponsibilityTypeName(responsibilityTypeName);
-                
-                checkCommandResult(employeeService.createPartyResponsibility(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setPartyName(partyName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, employeeService.createPartyResponsibility(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

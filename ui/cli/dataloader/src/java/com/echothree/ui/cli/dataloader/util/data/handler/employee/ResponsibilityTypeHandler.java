@@ -21,24 +21,21 @@ import com.echothree.control.user.employee.common.EmployeeService;
 import com.echothree.control.user.employee.common.form.EmployeeFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ResponsibilityTypeHandler
         extends BaseHandler {
+
     EmployeeService employeeService;
     String responsibilityTypeName;
     
     /** Creates a new instance of ResponsibilityTypeHandler */
-    public ResponsibilityTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String responsibilityTypeName) {
+    public ResponsibilityTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String responsibilityTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            employeeService = EmployeeUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        employeeService = lookupService(EmployeeService.class, EmployeeUtil::getHome);
         
         this.responsibilityTypeName = responsibilityTypeName;
     }
@@ -47,28 +44,12 @@ public class ResponsibilityTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("responsibilityTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var form = EmployeeFormFactory.getCreateResponsibilityTypeDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var form = EmployeeFormFactory.getCreateResponsibilityTypeDescriptionForm();
-                
-                form.setResponsibilityTypeName(responsibilityTypeName);
-                form.setLanguageIsoName(languageIsoName);
-                form.setDescription(description);
-                
-                employeeService.createResponsibilityTypeDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.setResponsibilityTypeName(responsibilityTypeName);
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, employeeService.createResponsibilityTypeDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

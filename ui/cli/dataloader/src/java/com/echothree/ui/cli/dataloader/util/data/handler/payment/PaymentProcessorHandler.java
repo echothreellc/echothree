@@ -55,14 +55,14 @@ public class PaymentProcessorHandler
             commandForm.setPaymentProcessorName(paymentProcessorName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(paymentService.createPaymentProcessorAction(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, paymentService.createPaymentProcessorAction(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("paymentProcessorDescription")) {
             var commandForm = PaymentFormFactory.getCreatePaymentProcessorDescriptionForm();
 
             commandForm.setPaymentProcessorName(paymentProcessorName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(paymentService.createPaymentProcessorDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, paymentService.createPaymentProcessorDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("comments")) {
             initialDataParser.pushHandler(new CommentsHandler(initialDataParser, this, entityRef));
         } else if(localName.equals("entityAttributes")) {

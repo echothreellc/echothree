@@ -54,7 +54,7 @@ public class QueueTypeHandler
             commandForm.setQueueTypeName(queueTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            queueService.createQueueTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, queueService.createQueueTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

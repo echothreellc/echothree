@@ -26,6 +26,7 @@ import org.xml.sax.SAXException;
 
 public class PurchaseInvoiceLineHandler
         extends BaseHandler {
+
     String entityRef;
     
     /** Creates a new instance of PurchaseInvoiceLineHandler */

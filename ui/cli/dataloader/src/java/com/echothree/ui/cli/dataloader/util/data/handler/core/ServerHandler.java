@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class ServerHandler
         extends BaseHandler {
+
     CoreService coreService;
     String serverName;
     
@@ -53,14 +54,14 @@ public class ServerHandler
             commandForm.setServerName(serverName);
             commandForm.set(getAttrsMap(attrs));
 
-            coreService.createServerDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createServerDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("serverService")) {
             var commandForm = CoreFormFactory.getCreateServerServiceForm();
 
             commandForm.setServerName(serverName);
             commandForm.set(getAttrsMap(attrs));
 
-            coreService.createServerService(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createServerService(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

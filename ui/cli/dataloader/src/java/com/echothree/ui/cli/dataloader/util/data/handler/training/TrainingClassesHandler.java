@@ -50,7 +50,7 @@ public class TrainingClassesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            trainingService.createTrainingClass(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, trainingService.createTrainingClass(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new TrainingClassHandler(initialDataParser, this, commandForm.getTrainingClassName()));
         }

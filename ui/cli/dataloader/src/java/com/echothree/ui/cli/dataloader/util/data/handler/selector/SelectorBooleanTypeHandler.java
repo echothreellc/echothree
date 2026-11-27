@@ -21,24 +21,21 @@ import com.echothree.control.user.selector.common.SelectorService;
 import com.echothree.control.user.selector.common.form.SelectorFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class SelectorBooleanTypeHandler
         extends BaseHandler {
+
     SelectorService selectorService;
     String selectorBooleanTypeName;
     
     /** Creates a new instance of SelectorBooleanTypeHandler */
-    public SelectorBooleanTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String selectorBooleanTypeName) {
+    public SelectorBooleanTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String selectorBooleanTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            selectorService = SelectorUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        selectorService = lookupService(SelectorService.class, SelectorUtil::getHome);
         
         this.selectorBooleanTypeName = selectorBooleanTypeName;
     }
@@ -47,28 +44,12 @@ public class SelectorBooleanTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("selectorBooleanTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var form = SelectorFormFactory.getCreateSelectorBooleanTypeDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var form = SelectorFormFactory.getCreateSelectorBooleanTypeDescriptionForm();
-                
-                form.setSelectorBooleanTypeName(selectorBooleanTypeName);
-                form.setLanguageIsoName(languageIsoName);
-                form.setDescription(description);
-                
-                selectorService.createSelectorBooleanTypeDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.setSelectorBooleanTypeName(selectorBooleanTypeName);
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, selectorService.createSelectorBooleanTypeDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

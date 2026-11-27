@@ -21,24 +21,21 @@ import com.echothree.control.user.employee.common.EmployeeService;
 import com.echothree.control.user.employee.common.form.EmployeeFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class TerminationReasonHandler
         extends BaseHandler {
+
     EmployeeService employeeService;
     String terminationReasonName;
     
     /** Creates a new instance of TerminationReasonHandler */
-    public TerminationReasonHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String terminationReasonName) {
+    public TerminationReasonHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String terminationReasonName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            employeeService = EmployeeUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        employeeService = lookupService(EmployeeService.class, EmployeeUtil::getHome);
         
         this.terminationReasonName = terminationReasonName;
     }
@@ -47,28 +44,12 @@ public class TerminationReasonHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("terminationReasonDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var form = EmployeeFormFactory.getCreateTerminationReasonDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var form = EmployeeFormFactory.getCreateTerminationReasonDescriptionForm();
-                
-                form.setTerminationReasonName(terminationReasonName);
-                form.setLanguageIsoName(languageIsoName);
-                form.setDescription(description);
-                
-                employeeService.createTerminationReasonDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.setTerminationReasonName(terminationReasonName);
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, employeeService.createTerminationReasonDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

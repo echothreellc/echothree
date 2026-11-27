@@ -61,7 +61,7 @@ public class TrainingClassPageHandler
             commandForm.setTrainingClassPageName(trainingClassPageName);
             commandForm.set(getAttrsMap(attrs));
 
-            trainingService.createTrainingClassPageTranslation(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, trainingService.createTrainingClassPageTranslation(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

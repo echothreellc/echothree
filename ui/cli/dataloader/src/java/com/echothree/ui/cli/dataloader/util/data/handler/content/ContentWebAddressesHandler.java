@@ -21,52 +21,35 @@ import com.echothree.control.user.content.common.ContentService;
 import com.echothree.control.user.content.common.form.ContentFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ContentWebAddressesHandler
         extends BaseHandler {
+
     ContentService contentService;
     
     /** Creates a new instance of ContentWebAddressesHandler */
-    public ContentWebAddressesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public ContentWebAddressesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            contentService = ContentUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        contentService = lookupService(ContentService.class, ContentUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("contentWebAddress")) {
-            String contentWebAddressName = null;
-            String contentCollectionName = null;
+            var createContentWebAddressForm = ContentFormFactory.getCreateContentWebAddressForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("contentWebAddressName"))
-                    contentWebAddressName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("contentCollectionName"))
-                    contentCollectionName = attrs.getValue(i);
-            }
-            
-            try {
-                var createContentWebAddressForm = ContentFormFactory.getCreateContentWebAddressForm();
-                
-                createContentWebAddressForm.setContentWebAddressName(contentWebAddressName);
-                createContentWebAddressForm.setContentCollectionName(contentCollectionName);
-                
-                contentService.createContentWebAddress(initialDataParser.getUserVisit(), createContentWebAddressForm);
-                
-                initialDataParser.pushHandler(new ContentWebAddressHandler(initialDataParser, this, contentWebAddressName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            createContentWebAddressForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createContentWebAddressForm,
+                    contentService.createContentWebAddress(initialDataParser.getUserVisit(), createContentWebAddressForm));
+
+            initialDataParser.pushHandler(new ContentWebAddressHandler(initialDataParser, this,
+                    createContentWebAddressForm.getContentWebAddressName()));
         }
     }
     

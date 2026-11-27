@@ -21,54 +21,33 @@ import com.echothree.control.user.icon.common.IconService;
 import com.echothree.control.user.icon.common.form.IconFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class IconUsageTypesHandler
         extends BaseHandler {
+
     IconService iconService;
     
     /** Creates a new instance of IconUsageTypesHandler */
-    public IconUsageTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public IconUsageTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            iconService = IconUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        iconService = lookupService(IconService.class, IconUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("iconUsageType")) {
-            String iconUsageTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var iconUsageTypeName = attrs.getValue("iconUsageTypeName");
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("iconUsageTypeName"))
-                    iconUsageTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
-            try {
-                var form = IconFormFactory.getCreateIconUsageTypeForm();
-                
-                form.setIconUsageTypeName(iconUsageTypeName);
-                form.setIsDefault(isDefault);
-                form.setSortOrder(sortOrder);
-                
-                iconService.createIconUsageType(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = IconFormFactory.getCreateIconUsageTypeForm();
+
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, iconService.createIconUsageType(initialDataParser.getUserVisit(), form));
             
             initialDataParser.pushHandler(new IconUsageTypeHandler(initialDataParser, this, iconUsageTypeName));
         }

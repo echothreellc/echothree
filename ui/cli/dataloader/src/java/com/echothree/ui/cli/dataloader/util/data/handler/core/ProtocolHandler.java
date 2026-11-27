@@ -54,7 +54,7 @@ public class ProtocolHandler
             commandForm.setProtocolName(protocolName);
             commandForm.set(getAttrsMap(attrs));
 
-            coreService.createProtocolDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createProtocolDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

@@ -21,25 +21,22 @@ import com.echothree.control.user.content.common.ContentService;
 import com.echothree.control.user.content.common.form.ContentFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ContentSectionHandler
         extends BaseHandler {
+
     ContentService contentService;
     String contentCollectionName;
     String contentSectionName;
     
     /** Creates a new instance of ContentSectionHandler */
-    public ContentSectionHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String contentCollectionName, String contentSectionName) {
+    public ContentSectionHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String contentCollectionName, String contentSectionName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            contentService = ContentUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        contentService = lookupService(ContentService.class, ContentUtil::getHome);
         
         this.contentCollectionName = contentCollectionName;
         this.contentSectionName = contentSectionName;
@@ -49,66 +46,25 @@ public class ContentSectionHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("contentSectionDescription")) {
-            String languageIsoName = null;
-            String description = null;
-            String doUpdate = null;
+            var createContentSectionDescriptionForm = ContentFormFactory.getCreateContentSectionDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("doUpdate"))
-                    doUpdate = attrs.getValue(i);
-            }
-            
-            try {
-                var createContentSectionDescriptionForm = ContentFormFactory.getCreateContentSectionDescriptionForm();
-                
-                createContentSectionDescriptionForm.setContentCollectionName(contentCollectionName);
-                createContentSectionDescriptionForm.setContentSectionName(contentSectionName);
-                createContentSectionDescriptionForm.setLanguageIsoName(languageIsoName);
-                createContentSectionDescriptionForm.setDescription(description);
-                
-                contentService.createContentSectionDescription(initialDataParser.getUserVisit(), createContentSectionDescriptionForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            createContentSectionDescriptionForm.setContentCollectionName(contentCollectionName);
+            createContentSectionDescriptionForm.setContentSectionName(contentSectionName);
+            createContentSectionDescriptionForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createContentSectionDescriptionForm,
+                    contentService.createContentSectionDescription(initialDataParser.getUserVisit(), createContentSectionDescriptionForm));
         } else if(localName.equals("contentPage")) {
-            String contentPageName = null;
-            String contentPageLayoutName = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var createContentPageForm = ContentFormFactory.getCreateContentPageForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("contentPageName"))
-                    contentPageName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("contentPageLayoutName"))
-                    contentPageLayoutName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
-            try {
-                var createContentPageForm = ContentFormFactory.getCreateContentPageForm();
-                
-                createContentPageForm.setContentCollectionName(contentCollectionName);
-                createContentPageForm.setContentSectionName(contentSectionName);
-                createContentPageForm.setContentPageName(contentPageName);
-                createContentPageForm.setContentPageLayoutName(contentPageLayoutName);
-                createContentPageForm.setIsDefault(isDefault);
-                createContentPageForm.setSortOrder(sortOrder);
-                
-                contentService.createContentPage(initialDataParser.getUserVisit(), createContentPageForm);
-                
-                initialDataParser.pushHandler(new ContentPageHandler(initialDataParser, this, contentCollectionName, contentSectionName, contentPageName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            createContentPageForm.setContentCollectionName(contentCollectionName);
+            createContentPageForm.setContentSectionName(contentSectionName);
+            createContentPageForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createContentPageForm, contentService.createContentPage(initialDataParser.getUserVisit(), createContentPageForm));
+
+            initialDataParser.pushHandler(new ContentPageHandler(initialDataParser, this, contentCollectionName,
+                    contentSectionName, createContentPageForm.getContentPageName()));
         }
     }
     

@@ -21,7 +21,6 @@ import com.echothree.control.user.sales.common.SalesService;
 import com.echothree.control.user.sales.common.form.SalesFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -31,14 +30,11 @@ public class SalesOrderBatchesHandler
     SalesService salesService;
     
     /** Creates a new instance of SalesOrderBatchesHandler */
-    public SalesOrderBatchesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public SalesOrderBatchesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            salesService = SalesUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        salesService = lookupService(SalesService.class, SalesUtil::getHome);
     }
     
     @Override
@@ -50,6 +46,7 @@ public class SalesOrderBatchesHandler
             commandForm.set(getAttrsMap(attrs));
 
             var commandResult = salesService.createSalesOrderBatch(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, commandResult);
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();

@@ -57,7 +57,7 @@ public class InvoiceTimeTypeHandler
             commandForm.setInvoiceTimeTypeName(invoiceTimeTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(invoiceService.createInvoiceTimeTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, invoiceService.createInvoiceTimeTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

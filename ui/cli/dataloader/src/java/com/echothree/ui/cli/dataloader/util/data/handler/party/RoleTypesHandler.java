@@ -21,50 +21,33 @@ import com.echothree.control.user.party.common.PartyService;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class RoleTypesHandler
         extends BaseHandler {
+
     PartyService partyService;
     
     /** Creates a new instance of RoleTypesHandler */
-    public RoleTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public RoleTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            partyService = PartyUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        partyService = lookupService(PartyService.class, PartyUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("roleType")) {
-            String roleTypeName = null;
-            String parentRoleTypeName = null;
+            var roleTypeName = attrs.getValue("roleTypeName");
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("roleTypeName"))
-                    roleTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("parentRoleTypeName"))
-                    parentRoleTypeName = attrs.getValue(i);
-            }
-            
-            try {
-                var createRoleTypeForm = PartyFormFactory.getCreateRoleTypeForm();
-                
-                createRoleTypeForm.setRoleTypeName(roleTypeName);
-                createRoleTypeForm.setParentRoleTypeName(parentRoleTypeName);
-                
-                partyService.createRoleType(initialDataParser.getUserVisit(), createRoleTypeForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var createRoleTypeForm = PartyFormFactory.getCreateRoleTypeForm();
+
+            createRoleTypeForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createRoleTypeForm, partyService.createRoleType(initialDataParser.getUserVisit(), createRoleTypeForm));
             
             initialDataParser.pushHandler(new RoleTypeHandler(initialDataParser, this, roleTypeName));
         }

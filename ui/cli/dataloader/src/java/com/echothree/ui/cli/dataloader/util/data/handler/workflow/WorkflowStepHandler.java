@@ -22,7 +22,6 @@ import com.echothree.control.user.workflow.common.form.WorkflowFormFactory;
 import com.echothree.control.user.workflow.common.spec.WorkflowSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
@@ -30,6 +29,7 @@ import org.xml.sax.SAXException;
 
 public class WorkflowStepHandler
         extends BaseHandler {
+
     WorkflowService workflowService;
     String workflowName;
     String workflowStepName;
@@ -53,54 +53,15 @@ public class WorkflowStepHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("workflowStepDescription")) {
-            var spec = WorkflowSpecFactory.getWorkflowStepDescriptionSpec();
-            var editForm = WorkflowFormFactory.getEditWorkflowStepDescriptionForm();
+            var attrsMap = getAttrsMap(attrs);
+            attrsMap.putIfAbsent("WorkflowName", workflowName);
+            attrsMap.putIfAbsent("WorkflowStepName", workflowStepName);
 
-            spec.setWorkflowName(workflowName);
-            spec.setWorkflowStepName(workflowStepName);
-            spec.set(getAttrsMap(attrs));
-
-            var commandAction = getCommandAction(spec);
-            getLogger().debug("Found: {}", commandAction);
-            if(commandAction == null || commandAction.equals("create")) {
-                var attrsMap = getAttrsMap(attrs);
-
-                editForm.setSpec(spec);
-                editForm.setEditMode(EditMode.LOCK);
-
-                var commandResult = workflowService.editWorkflowStepDescription(initialDataParser.getUserVisit(), editForm);
-
-                if(commandResult.hasErrors()) {
-                    if(commandResult.containsExecutionError(ExecutionErrors.UnknownWorkflowStepDescription.name())) {
-                        var createForm = WorkflowFormFactory.getCreateWorkflowStepDescriptionForm();
-
-                        spec.setWorkflowName(workflowName);
-                        spec.setWorkflowStepName(workflowStepName);
-                        createForm.set(spec.get());
-
-                        getLogger().debug("Creating: {}", spec.getWorkflowName());
-                        var createWorkflowStepDescriptionCommandResult = workflowService.createWorkflowStepDescription(initialDataParser.getUserVisit(), createForm);
-
-                        if(createWorkflowStepDescriptionCommandResult.hasErrors()) {
-                            getLogger().error(createWorkflowStepDescriptionCommandResult.toString());
-                        }
-                    } else {
-                        getLogger().error(commandResult.toString());
-                    }
-                } else {
-                    var executionResult = commandResult.getExecutionResult();
-                    var result = executionResult.getResult();
-
-                    getLogger().debug("Checking for modifications: {}", spec.getWorkflowName());
-                    if(result != null) {
-                        updateEditFormValues(editForm, attrsMap, result);
-
-                        commandResult = workflowService.editWorkflowStepDescription(initialDataParser.getUserVisit(), editForm);
-                        if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
-                        }
-                    }
-                }
+            if(shouldEdit(attrsMap)) {
+                editOrCreate(attrsMap, WorkflowSpecFactory.getWorkflowStepDescriptionSpec(),
+                        WorkflowFormFactory.getEditWorkflowStepDescriptionForm(), workflowService::editWorkflowStepDescription,
+                        WorkflowFormFactory.getCreateWorkflowStepDescriptionForm(), workflowService::createWorkflowStepDescription,
+                        ExecutionErrors.UnknownWorkflowStepDescription);
             }
         }
     }

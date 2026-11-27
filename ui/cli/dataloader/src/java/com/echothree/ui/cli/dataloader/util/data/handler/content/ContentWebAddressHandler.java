@@ -21,24 +21,21 @@ import com.echothree.control.user.content.common.ContentService;
 import com.echothree.control.user.content.common.form.ContentFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ContentWebAddressHandler
         extends BaseHandler {
+
     ContentService contentService;
     String contentWebAddressName;
     
     /** Creates a new instance of ContentWebAddressHandler */
-    public ContentWebAddressHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String contentWebAddressName) {
+    public ContentWebAddressHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String contentWebAddressName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            contentService = ContentUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        contentService = lookupService(ContentService.class, ContentUtil::getHome);
         
         this.contentWebAddressName = contentWebAddressName;
     }
@@ -47,47 +44,21 @@ public class ContentWebAddressHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("contentWebAddressDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var createContentWebAddressDescriptionForm = ContentFormFactory.getCreateContentWebAddressDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var createContentWebAddressDescriptionForm = ContentFormFactory.getCreateContentWebAddressDescriptionForm();
-                
-                createContentWebAddressDescriptionForm.setContentWebAddressName(contentWebAddressName);
-                createContentWebAddressDescriptionForm.setLanguageIsoName(languageIsoName);
-                createContentWebAddressDescriptionForm.setDescription(description);
-                
-                contentService.createContentWebAddressDescription(initialDataParser.getUserVisit(), createContentWebAddressDescriptionForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            createContentWebAddressDescriptionForm.setContentWebAddressName(contentWebAddressName);
+            createContentWebAddressDescriptionForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createContentWebAddressDescriptionForm,
+                    contentService.createContentWebAddressDescription(initialDataParser.getUserVisit(), createContentWebAddressDescriptionForm));
         } else if(localName.equals("contentWebAddressServer")) {
-            String serverName = null;
+            var createContentWebAddressServerForm = ContentFormFactory.getCreateContentWebAddressServerForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("serverName"))
-                    serverName = attrs.getValue(i);
-            }
-            
-            try {
-                var createContentWebAddressServerForm = ContentFormFactory.getCreateContentWebAddressServerForm();
-                
-                createContentWebAddressServerForm.setContentWebAddressName(contentWebAddressName);
-                createContentWebAddressServerForm.setServerName(serverName);
-                
-                contentService.createContentWebAddressServer(initialDataParser.getUserVisit(), createContentWebAddressServerForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            createContentWebAddressServerForm.setContentWebAddressName(contentWebAddressName);
+            createContentWebAddressServerForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createContentWebAddressServerForm,
+                    contentService.createContentWebAddressServer(initialDataParser.getUserVisit(), createContentWebAddressServerForm));
         }
     }
     

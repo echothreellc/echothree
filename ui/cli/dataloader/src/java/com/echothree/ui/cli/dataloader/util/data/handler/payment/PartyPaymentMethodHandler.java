@@ -23,24 +23,21 @@ import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.comment.CommentsHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.core.EntityAttributesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.tag.EntityTagsHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class PartyPaymentMethodHandler
         extends BaseHandler {
+
     PaymentService paymentService;
     String entityRef;
     
     /** Creates a new instance of PartyPaymentMethodHandler */
-    public PartyPaymentMethodHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String entityRef) {
+    public PartyPaymentMethodHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String entityRef)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            paymentService = PaymentUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        paymentService = lookupService(PaymentService.class, PaymentUtil::getHome);
         
         this.entityRef = entityRef;
     }

@@ -49,16 +49,12 @@ public class LinkDirectionalityHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("linkDirectionalityDescription")) {
-            try {
-                var commandForm = CoreFormFactory.getCreateLinkDirectionalityDescriptionForm();
+            var commandForm = CoreFormFactory.getCreateLinkDirectionalityDescriptionForm();
 
-                commandForm.setLinkDirectionalityName(linkDirectionalityName);
-                commandForm.set(getAttrsMap(attrs));
+            commandForm.setLinkDirectionalityName(linkDirectionalityName);
+            commandForm.set(getAttrsMap(attrs));
 
-                checkCommandResult(coreService.createLinkDirectionalityDescription(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            checkCommandResult(commandForm, coreService.createLinkDirectionalityDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

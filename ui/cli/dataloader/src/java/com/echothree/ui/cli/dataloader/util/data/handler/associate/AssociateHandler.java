@@ -21,26 +21,23 @@ import com.echothree.control.user.associate.common.AssociateService;
 import com.echothree.control.user.associate.common.form.AssociateFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class AssociateHandler
         extends BaseHandler {
+
     AssociateService associateService;
     String associateProgramName;
     String associateName;
     
     /** Creates a new instance of AssociateHandler */
     public AssociateHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String associateProgramName,
-            String associateName) {
+            String associateName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            associateService = AssociateUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        associateService = lookupService(AssociateService.class, AssociateUtil::getHome);
         
         this.associateProgramName = associateProgramName;
         this.associateName = associateName;
@@ -51,39 +48,13 @@ public class AssociateHandler
             throws SAXException {
         if(localName.equals("associatePartyContactMechanism")) {
             var commandForm = AssociateFormFactory.getCreateAssociatePartyContactMechanismForm();
-            String associatePartyContactMechanismName = null;
-            String contactMechanismName = null;
-            String contactMechanismAliasTypeName = null;
-            String alias = null;
-            String isDefault = null;
-            String sortOrder = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("associatePartyContactMechanismName"))
-                    associatePartyContactMechanismName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("contactMechanismName"))
-                    contactMechanismName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("contactMechanismAliasTypeName"))
-                    contactMechanismAliasTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("alias"))
-                    alias = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
             
             commandForm.setAssociateProgramName(associateProgramName);
             commandForm.setAssociateName(associateName);
-            commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
-            commandForm.setContactMechanismName(contactMechanismName);
-            commandForm.setContactMechanismAliasTypeName(contactMechanismAliasTypeName);
-            commandForm.setAlias(alias);
-            commandForm.setIsDefault(isDefault);
-            commandForm.setSortOrder(sortOrder);
+            commandForm.set(getAttrsMap(attrs));
             
-            checkCommandResult(associateService.createAssociatePartyContactMechanism(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm,
+                    associateService.createAssociatePartyContactMechanism(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

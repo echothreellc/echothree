@@ -21,60 +21,33 @@ import com.echothree.control.user.offer.common.OfferService;
 import com.echothree.control.user.offer.common.form.OfferFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class OfferNameElementsHandler
         extends BaseHandler {
+
     OfferService offerService;
     
     /** Creates a new instance of OfferNameElementsHandler */
-    public OfferNameElementsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public OfferNameElementsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            offerService = OfferUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        offerService = lookupService(OfferService.class, OfferUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("offerNameElement")) {
-            String offerNameElementName = null;
-            String offset = null;
-            String length = null;
-            String validationPattern = null;
+            var form = OfferFormFactory.getCreateOfferNameElementForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("offerNameElementName"))
-                    offerNameElementName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("offset"))
-                    offset = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("length"))
-                    length = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("validationPattern"))
-                    validationPattern = attrs.getValue(i);
-            }
-            
-            try {
-                var form = OfferFormFactory.getCreateOfferNameElementForm();
-                
-                form.setOfferNameElementName(offerNameElementName);
-                form.setOffset(offset);
-                form.setLength(length);
-                form.setValidationPattern(validationPattern);
-                
-                offerService.createOfferNameElement(initialDataParser.getUserVisit(), form);
-                
-                initialDataParser.pushHandler(new OfferNameElementHandler(initialDataParser, this, offerNameElementName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, offerService.createOfferNameElement(initialDataParser.getUserVisit(), form));
+
+            initialDataParser.pushHandler(new OfferNameElementHandler(initialDataParser, this, form.getOfferNameElementName()));
         }
     }
     

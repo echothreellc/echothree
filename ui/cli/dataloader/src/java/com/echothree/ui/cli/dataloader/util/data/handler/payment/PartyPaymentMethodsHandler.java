@@ -21,26 +21,23 @@ import com.echothree.control.user.payment.common.PaymentService;
 import com.echothree.control.user.payment.common.form.PaymentFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class PartyPaymentMethodsHandler
         extends BaseHandler {
+
     PaymentService paymentService;
     String partyName;
     String contactMechanismName;
     
     /** Creates a new instance of PartyPaymentMethodsHandler */
     public PartyPaymentMethodsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String partyName,
-            String contactMechanismName) {
+            String contactMechanismName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            paymentService = PaymentUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        paymentService = lookupService(PaymentService.class, PaymentUtil::getHome);
         
         this.partyName = partyName;
         this.contactMechanismName = contactMechanismName;
@@ -57,6 +54,7 @@ public class PartyPaymentMethodsHandler
             commandForm.set(getAttrsMap(attrs));
 
             var commandResult = paymentService.createPartyPaymentMethod(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, commandResult);
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();

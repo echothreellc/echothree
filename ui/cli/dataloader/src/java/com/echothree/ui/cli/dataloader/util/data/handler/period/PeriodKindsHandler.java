@@ -50,7 +50,7 @@ public class PeriodKindsHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(periodService.createPeriodKind(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, periodService.createPeriodKind(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new PeriodKindHandler(initialDataParser, this, commandForm.getPeriodKindName()));
         } else if(localName.equals("fiscalYear")) {
@@ -58,7 +58,7 @@ public class PeriodKindsHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            periodService.createFiscalYear(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, periodService.createFiscalYear(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

@@ -50,7 +50,7 @@ public class SearchUseTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            searchService.createSearchUseType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, searchService.createSearchUseType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new SearchUseTypeHandler(initialDataParser, this, commandForm.getSearchUseTypeName()));
         }

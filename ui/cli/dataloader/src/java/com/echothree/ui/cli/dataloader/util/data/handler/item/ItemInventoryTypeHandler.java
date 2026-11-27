@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class ItemInventoryTypeHandler
         extends BaseHandler {
+
     ItemService itemService;
     String itemInventoryTypeName;
     
@@ -53,7 +54,7 @@ public class ItemInventoryTypeHandler
             commandForm.setItemInventoryTypeName(itemInventoryTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            itemService.createItemInventoryTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemInventoryTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

@@ -50,7 +50,7 @@ public class AppearancesHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createAppearance(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createAppearance(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new AppearanceHandler(initialDataParser, this, commandForm.getAppearanceName()));
         }

@@ -16,6 +16,8 @@
 
 package com.echothree.util.server.validation;
 
+import com.echothree.control.user.party.common.form.PartyFormFactory;
+import com.echothree.control.user.party.server.command.CreateVendorCommand;
 import com.echothree.control.user.term.common.edit.TermEditFactory;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.common.pk.CurrencyPK;
@@ -186,6 +188,48 @@ public class DecimalFieldTypeTest {
         var errors = validator.validateField(form, definition);
         assertTrue(errors.containsKey(FIELD, Validator.ERROR_UNKNOWN_CURRENCY_ISO_NAME));
         assertArrayEquals(new Object[]{"BAD"}, errors.get(FIELD).next().getValues());
+    }
+
+    @Test
+    public void vendorPurchaseOrderLimitsUseTheDefaultCurrencyWhenPreferenceIsOmitted() {
+        var command = new CreateVendorCommand() {
+            @Override
+            public List<FieldDefinition> getFormFieldDefinitions() {
+                return super.getFormFieldDefinitions();
+            }
+        };
+        var validator = new Validator(null) {
+            @Override
+            public AccountingControl getAccountingControl() {
+                return new AccountingControl() {
+                    @Override
+                    public Currency getDefaultCurrency() { return currency(".", 2); }
+                    @Override
+                    public Currency getCurrencyByIsoName(String currencyIsoName) {
+                        return currencyIsoName.equals("EUR") ? currency(",", 2) : null;
+                    }
+                };
+            }
+        };
+        for(var fieldName : List.of("MinimumPurchaseOrderAmount", "MaximumPurchaseOrderAmount")) {
+            var definition = command.getFormFieldDefinitions().stream()
+                    .filter(fieldDefinition -> fieldDefinition.getFieldName().startsWith(fieldName + ":"))
+                    .findFirst().orElseThrow();
+            var form = PartyFormFactory.getCreateVendorForm();
+            form.set(fieldName, "100.00");
+            assertNull(validator.validateField(form, definition));
+            assertEquals("100000", form.get(fieldName));
+            assertNull(form.getPreferredCurrencyIsoName());
+
+            form.setPreferredCurrencyIsoName("EUR");
+            form.set(fieldName, "100,25");
+            assertNull(validator.validateField(form, definition));
+            assertEquals("100250", form.get(fieldName));
+
+            form.setPreferredCurrencyIsoName("BAD");
+            form.set(fieldName, "100.00");
+            assertTrue(validator.validateField(form, definition).containsKey(fieldName, Validator.ERROR_UNKNOWN_CURRENCY_ISO_NAME));
+        }
     }
 
     @Test

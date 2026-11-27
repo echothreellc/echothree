@@ -50,7 +50,7 @@ public class SearchSortDirectionsHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            searchService.createSearchSortDirection(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, searchService.createSearchSortDirection(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new SearchSortDirectionHandler(initialDataParser, this, commandForm.getSearchSortDirectionName()));
         }

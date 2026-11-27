@@ -58,7 +58,8 @@ public class InventoryTransactionReasonHandler
             commandForm.setInventoryTransactionReasonName(inventoryTransactionReasonName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(inventoryService.createInventoryTransactionReasonDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm,
+                    inventoryService.createInventoryTransactionReasonDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

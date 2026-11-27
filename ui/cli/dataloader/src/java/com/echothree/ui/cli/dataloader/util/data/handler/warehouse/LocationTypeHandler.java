@@ -21,26 +21,23 @@ import com.echothree.control.user.warehouse.common.WarehouseService;
 import com.echothree.control.user.warehouse.common.form.WarehouseFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class LocationTypeHandler
         extends BaseHandler {
+
     WarehouseService warehouseService;
     String warehouseName;
     String locationTypeName;
     
     /** Creates a new instance of LocationTypeHandler */
     public LocationTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String warehouseName,
-    String locationTypeName) {
+    String locationTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            warehouseService = WarehouseUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        warehouseService = lookupService(WarehouseService.class, WarehouseUtil::getHome);
         
         this.warehouseName = warehouseName;
         this.locationTypeName = locationTypeName;
@@ -50,64 +47,24 @@ public class LocationTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("locationTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var form = WarehouseFormFactory.getCreateLocationTypeDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var form = WarehouseFormFactory.getCreateLocationTypeDescriptionForm();
-                
-                form.setWarehouseName(warehouseName);
-                form.setLocationTypeName(locationTypeName);
-                form.setLanguageIsoName(languageIsoName);
-                form.setDescription(description);
-                
-                warehouseService.createLocationTypeDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.setWarehouseName(warehouseName);
+            form.setLocationTypeName(locationTypeName);
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, warehouseService.createLocationTypeDescription(initialDataParser.getUserVisit(), form));
         } else if(localName.equals("locationNameElement")) {
-            String locationNameElementName = null;
-            String offset = null;
-            String length = null;
-            String validationPattern = null;
+            var form = WarehouseFormFactory.getCreateLocationNameElementForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("locationNameElementName"))
-                    locationNameElementName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("offset"))
-                    offset = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("length"))
-                    length = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("validationPattern"))
-                    validationPattern = attrs.getValue(i);
-            }
-            
-            try {
-                var form = WarehouseFormFactory.getCreateLocationNameElementForm();
-                
-                form.setWarehouseName(warehouseName);
-                form.setLocationTypeName(locationTypeName);
-                form.setLocationNameElementName(locationNameElementName);
-                form.setOffset(offset);
-                form.setLength(length);
-                form.setValidationPattern(validationPattern);
-                
-                warehouseService.createLocationNameElement(initialDataParser.getUserVisit(), form);
-                
-                initialDataParser.pushHandler(new LocationNameElementHandler(initialDataParser, this, warehouseName,
-                locationTypeName, locationNameElementName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.setWarehouseName(warehouseName);
+            form.setLocationTypeName(locationTypeName);
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, warehouseService.createLocationNameElement(initialDataParser.getUserVisit(), form));
+
+            initialDataParser.pushHandler(new LocationNameElementHandler(initialDataParser, this, warehouseName,
+            locationTypeName, form.getLocationNameElementName()));
         }
     }
     

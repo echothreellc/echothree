@@ -24,25 +24,22 @@ import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.comment.CommentsHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.core.EntityAttributesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.tag.EntityTagsHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class PaymentMethodHandler
         extends BaseHandler {
+
     PaymentService paymentService;
     String paymentMethodName;
     String entityRef;
     
     /** Creates a new instance of PaymentMethodHandler */
-    public PaymentMethodHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String paymentMethodName, String entityRef) {
+    public PaymentMethodHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String paymentMethodName, String entityRef)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            paymentService = PaymentUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        paymentService = lookupService(PaymentService.class, PaymentUtil::getHome);
         
         this.paymentMethodName = paymentMethodName;
     }
@@ -56,7 +53,7 @@ public class PaymentMethodHandler
             commandForm.setPaymentMethodName(paymentMethodName);
             commandForm.set(getAttrsMap(attrs));
             
-            checkCommandResult(paymentService.createPaymentMethodDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, paymentService.createPaymentMethodDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("comments")) {
             initialDataParser.pushHandler(new CommentsHandler(initialDataParser, this, entityRef));
         } else if(localName.equals("entityAttributes")) {

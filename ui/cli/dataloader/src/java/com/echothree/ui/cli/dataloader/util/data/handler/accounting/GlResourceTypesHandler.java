@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class GlResourceTypesHandler
         extends BaseHandler {
+
     AccountingService accountingService;
     
     /** Creates a new instance of GlResourceTypesHandler */
@@ -49,7 +50,7 @@ public class GlResourceTypesHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            accountingService.createGlResourceType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, accountingService.createGlResourceType(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new GlResourceTypeHandler(initialDataParser, this, commandForm.getGlResourceTypeName()));
         }

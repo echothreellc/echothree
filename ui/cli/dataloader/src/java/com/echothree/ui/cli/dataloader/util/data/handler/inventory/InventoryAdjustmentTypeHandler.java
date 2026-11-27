@@ -21,7 +21,6 @@ import com.echothree.control.user.inventory.common.InventoryService;
 import com.echothree.control.user.inventory.common.form.InventoryFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -32,14 +31,11 @@ public class InventoryAdjustmentTypeHandler
     String inventoryAdjustmentTypeName;
     
     /** Creates a new instance of InventoryAdjustmentTypeHandler */
-    public InventoryAdjustmentTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String inventoryAdjustmentTypeName) {
+    public InventoryAdjustmentTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String inventoryAdjustmentTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            inventoryService = InventoryUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        inventoryService = lookupService(InventoryService.class, InventoryUtil::getHome);
         
         this.inventoryAdjustmentTypeName = inventoryAdjustmentTypeName;
     }
@@ -48,28 +44,13 @@ public class InventoryAdjustmentTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("inventoryAdjustmentTypeDescription")) {
-            String attrLanguageIsoName = null;
-            String attrDescription = null;
+            var commandForm = InventoryFormFactory.getCreateInventoryAdjustmentTypeDescriptionForm();
 
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    attrLanguageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    attrDescription = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = InventoryFormFactory.getCreateInventoryAdjustmentTypeDescriptionForm();
-                
-                commandForm.setInventoryAdjustmentTypeName(inventoryAdjustmentTypeName);
-                commandForm.setLanguageIsoName(attrLanguageIsoName);
-                commandForm.setDescription(attrDescription);
-                
-                checkCommandResult(inventoryService.createInventoryAdjustmentTypeDescription(initialDataParser.getUserVisit(), commandForm));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setInventoryAdjustmentTypeName(inventoryAdjustmentTypeName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm,
+                    inventoryService.createInventoryAdjustmentTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

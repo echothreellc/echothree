@@ -21,24 +21,21 @@ import com.echothree.control.user.club.common.ClubService;
 import com.echothree.control.user.club.common.form.ClubFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ClubHandler
         extends BaseHandler {
+
     ClubService clubService;
     String clubName;
     
     /** Creates a new instance of ClubHandler */
-    public ClubHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String clubName) {
+    public ClubHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String clubName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            clubService = ClubUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        clubService = lookupService(ClubService.class, ClubUtil::getHome);
         
         this.clubName = clubName;
     }
@@ -48,59 +45,19 @@ public class ClubHandler
     throws SAXException {
         
         if(localName.equals("clubDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var commandForm = ClubFormFactory.getCreateClubDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = ClubFormFactory.getCreateClubDescriptionForm();
-                
-                commandForm.setClubName(clubName);
-                commandForm.setLanguageIsoName(languageIsoName);
-                commandForm.setDescription(description);
-                
-                clubService.createClubDescription(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setClubName(clubName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, clubService.createClubDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("clubItem")) {
-            String clubItemTypeName = null;
-            String itemName = null;
-            String unitOfMeasureTypeName = null;
-            String subscriptionTime = null;
+            var commandForm = ClubFormFactory.getCreateClubItemForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("clubItemTypeName"))
-                    clubItemTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("itemName"))
-                    itemName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("unitOfMeasureTypeName"))
-                    unitOfMeasureTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("subscriptionTime"))
-                    subscriptionTime = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = ClubFormFactory.getCreateClubItemForm();
-                
-                commandForm.setClubName(clubName);
-                commandForm.setClubItemTypeName(clubItemTypeName);
-                commandForm.setItemName(itemName);
-                commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
-                commandForm.setSubscriptionTime(subscriptionTime);
-                
-                clubService.createClubItem(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setClubName(clubName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, clubService.createClubItem(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class TransactionGlAccountCategoryHandler
         extends BaseHandler {
+
     AccountingService accountingService;
     String transactionTypeName;
     String transactionGlAccountCategoryName;
@@ -57,7 +58,8 @@ public class TransactionGlAccountCategoryHandler
             commandForm.setTransactionGlAccountCategoryName(transactionGlAccountCategoryName);
             commandForm.set(getAttrsMap(attrs));
             
-            accountingService.createTransactionGlAccountCategoryDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm,
+                    accountingService.createTransactionGlAccountCategoryDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

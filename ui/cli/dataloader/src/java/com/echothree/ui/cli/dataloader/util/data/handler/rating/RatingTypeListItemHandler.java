@@ -21,12 +21,12 @@ import com.echothree.control.user.rating.common.RatingService;
 import com.echothree.control.user.rating.common.form.RatingFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class RatingTypeListItemHandler
         extends BaseHandler {
+
     RatingService ratingService;
     String componentVendorName;
     String entityTypeName;
@@ -35,14 +35,11 @@ public class RatingTypeListItemHandler
     
     /** Creates a new instance of RatingTypeListItemHandler */
     public RatingTypeListItemHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String componentVendorName, String entityTypeName, String ratingTypeName,
-    String ratingTypeListItemName) {
+    String ratingTypeListItemName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            ratingService = RatingUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        ratingService = lookupService(RatingService.class, RatingUtil::getHome);
         
         this.componentVendorName = componentVendorName;
         this.entityTypeName = entityTypeName;
@@ -54,31 +51,16 @@ public class RatingTypeListItemHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("ratingTypeListItemDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var createRatingTypeListItemDescriptionForm = RatingFormFactory.getCreateRatingTypeListItemDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var createRatingTypeListItemDescriptionForm = RatingFormFactory.getCreateRatingTypeListItemDescriptionForm();
-                
-                createRatingTypeListItemDescriptionForm.setComponentVendorName(componentVendorName);
-                createRatingTypeListItemDescriptionForm.setEntityTypeName(entityTypeName);
-                createRatingTypeListItemDescriptionForm.setRatingTypeName(ratingTypeName);
-                createRatingTypeListItemDescriptionForm.setRatingTypeListItemName(ratingTypeListItemName);
-                createRatingTypeListItemDescriptionForm.setLanguageIsoName(languageIsoName);
-                createRatingTypeListItemDescriptionForm.setDescription(description);
-                
-                ratingService.createRatingTypeListItemDescription(initialDataParser.getUserVisit(), createRatingTypeListItemDescriptionForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            createRatingTypeListItemDescriptionForm.setComponentVendorName(componentVendorName);
+            createRatingTypeListItemDescriptionForm.setEntityTypeName(entityTypeName);
+            createRatingTypeListItemDescriptionForm.setRatingTypeName(ratingTypeName);
+            createRatingTypeListItemDescriptionForm.setRatingTypeListItemName(ratingTypeListItemName);
+            createRatingTypeListItemDescriptionForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createRatingTypeListItemDescriptionForm,
+                    ratingService.createRatingTypeListItemDescription(initialDataParser.getUserVisit(), createRatingTypeListItemDescriptionForm));
         }
     }
     

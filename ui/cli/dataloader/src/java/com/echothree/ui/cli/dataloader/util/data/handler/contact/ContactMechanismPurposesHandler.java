@@ -21,62 +21,33 @@ import com.echothree.control.user.contact.common.ContactService;
 import com.echothree.control.user.contact.common.form.ContactFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ContactMechanismPurposesHandler
         extends BaseHandler {
+
     ContactService contactService;
     
     /** Creates a new instance of ContactMechanismPurposesHandler */
-    public ContactMechanismPurposesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public ContactMechanismPurposesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            contactService = ContactUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        contactService = lookupService(ContactService.class, ContactUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("contactMechanismPurpose")) {
-            String contactMechanismPurposeName = null;
-            String contactMechanismTypeName = null;
-            String eventSubscriber = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var contactMechanismPurposeName = attrs.getValue("contactMechanismPurposeName");
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("contactMechanismPurposeName"))
-                    contactMechanismPurposeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("contactMechanismTypeName"))
-                    contactMechanismTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("eventSubscriber"))
-                    eventSubscriber = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
-            try {
-                var form = ContactFormFactory.getCreateContactMechanismPurposeForm();
-                
-                form.setContactMechanismPurposeName(contactMechanismPurposeName);
-                form.setContactMechanismTypeName(contactMechanismTypeName);
-                form.setEventSubscriber(eventSubscriber);
-                form.setIsDefault(isDefault);
-                form.setSortOrder(sortOrder);
-                
-                contactService.createContactMechanismPurpose(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = ContactFormFactory.getCreateContactMechanismPurposeForm();
+
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, contactService.createContactMechanismPurpose(initialDataParser.getUserVisit(), form));
             
             initialDataParser.pushHandler(new ContactMechanismPurposeHandler(initialDataParser, this, contactMechanismPurposeName));
         }

@@ -21,24 +21,21 @@ import com.echothree.control.user.forum.common.ForumService;
 import com.echothree.control.user.forum.common.form.ForumFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ForumTypeHandler
         extends BaseHandler {
+
     ForumService forumService;
     String forumTypeName;
     
     /** Creates a new instance of ForumTypeHandler */
-    public ForumTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String forumTypeName) {
+    public ForumTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String forumTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            forumService = ForumUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        forumService = lookupService(ForumService.class, ForumUtil::getHome);
         
         this.forumTypeName = forumTypeName;
     }
@@ -47,55 +44,19 @@ public class ForumTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("forumTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var form = ForumFormFactory.getCreateForumTypeDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var form = ForumFormFactory.getCreateForumTypeDescriptionForm();
-                
-                form.setForumTypeName(forumTypeName);
-                form.setLanguageIsoName(languageIsoName);
-                form.setDescription(description);
-                
-                forumService.createForumTypeDescription(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.setForumTypeName(forumTypeName);
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, forumService.createForumTypeDescription(initialDataParser.getUserVisit(), form));
         } else if(localName.equals("forumTypeMessageType")) {
-            String forumMessageTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var form = ForumFormFactory.getCreateForumTypeMessageTypeForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("forumMessageTypeName"))
-                    forumMessageTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
-            try {
-                var form = ForumFormFactory.getCreateForumTypeMessageTypeForm();
-                
-                form.setForumTypeName(forumTypeName);
-                form.setForumMessageTypeName(forumMessageTypeName);
-                form.setIsDefault(isDefault);
-                form.setSortOrder(sortOrder);
-                
-                forumService.createForumTypeMessageType(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.setForumTypeName(forumTypeName);
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, forumService.createForumTypeMessageType(initialDataParser.getUserVisit(), form));
         }
     }
     

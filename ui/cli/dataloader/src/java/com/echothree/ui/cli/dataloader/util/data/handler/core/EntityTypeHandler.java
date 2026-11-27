@@ -34,7 +34,6 @@ import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.comment.CommentTypeHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.message.MessageTypeHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.rating.RatingTypeHandler;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
@@ -73,52 +72,15 @@ public class EntityTypeHandler
     throws SAXException {
         switch(localName) {
             case "entityTypeDescription" -> {
-                var spec = CoreSpecFactory.getEntityTypeDescriptionSpec();
-                var editForm = CoreFormFactory.getEditEntityTypeDescriptionForm();
+                var attrsMap = getAttrsMap(attrs);
+                attrsMap.putIfAbsent("ComponentVendorName", componentVendorName);
+                attrsMap.putIfAbsent("EntityTypeName", entityTypeName);
 
-                spec.setComponentVendorName(componentVendorName);
-                spec.setEntityTypeName(entityTypeName);
-                spec.set(getAttrsMap(attrs));
-
-                var commandAction = getCommandAction(spec);
-                getLogger().debug("Found: {}", commandAction);
-                if(commandAction == null || commandAction.equals("create")) {
-                    var attrsMap = getAttrsMap(attrs);
-
-                    editForm.setSpec(spec);
-                    editForm.setEditMode(EditMode.LOCK);
-
-                    var commandResult = coreService.editEntityTypeDescription(initialDataParser.getUserVisit(), editForm);
-
-                    if(commandResult.hasErrors()) {
-                        if(commandResult.containsExecutionError(ExecutionErrors.UnknownEntityTypeDescription.name())) {
-                            var createForm = CoreFormFactory.getCreateEntityTypeDescriptionForm();
-
-                            createForm.set(spec.get());
-
-                            getLogger().debug("Creating: {}", spec.getEntityTypeName());
-                            var createEntityTypeDescriptionCommandResult = coreService.createEntityTypeDescription(initialDataParser.getUserVisit(), createForm);
-
-                            if(createEntityTypeDescriptionCommandResult.hasErrors()) {
-                                getLogger().error(createEntityTypeDescriptionCommandResult.toString());
-                            }
-                        } else {
-                            getLogger().error(commandResult.toString());
-                        }
-                    } else {
-                        var executionResult = commandResult.getExecutionResult();
-                        var result = executionResult.getResult();
-
-                        getLogger().debug("Checking for modifications: {}", spec.getEntityTypeName());
-                        if(result != null) {
-                            updateEditFormValues(editForm, attrsMap, result);
-
-                            commandResult = coreService.editEntityTypeDescription(initialDataParser.getUserVisit(), editForm);
-                            if(commandResult.hasErrors()) {
-                                getLogger().error(commandResult.toString());
-                            }
-                        }
-                    }
+                if(shouldEdit(attrsMap)) {
+                    editOrCreate(attrsMap, CoreSpecFactory.getEntityTypeDescriptionSpec(),
+                            CoreFormFactory.getEditEntityTypeDescriptionForm(), coreService::editEntityTypeDescription,
+                            CoreFormFactory.getCreateEntityTypeDescriptionForm(), coreService::createEntityTypeDescription,
+                            ExecutionErrors.UnknownEntityTypeDescription);
                 }
             }
             case "entityAliasType" -> {
@@ -128,7 +90,7 @@ public class EntityTypeHandler
                 commandForm.setEntityTypeName(entityTypeName);
                 commandForm.set(getAttrsMap(attrs));
 
-                coreService.createEntityAliasType(initialDataParser.getUserVisit(), commandForm);
+                checkCommandResult(commandForm, coreService.createEntityAliasType(initialDataParser.getUserVisit(), commandForm));
 
                 initialDataParser.pushHandler(new EntityAliasTypeHandler(initialDataParser, this, componentVendorName, entityTypeName,
                         commandForm.getEntityAliasTypeName()));
@@ -140,7 +102,7 @@ public class EntityTypeHandler
                 commandForm.setEntityTypeName(entityTypeName);
                 commandForm.set(getAttrsMap(attrs));
 
-                coreService.createEntityAttributeGroup(initialDataParser.getUserVisit(), commandForm);
+                checkCommandResult(commandForm, coreService.createEntityAttributeGroup(initialDataParser.getUserVisit(), commandForm));
 
                 initialDataParser.pushHandler(new EntityAttributeGroupHandler(initialDataParser, this, componentVendorName, entityTypeName,
                         commandForm.getEntityAttributeGroupName()));
@@ -152,7 +114,7 @@ public class EntityTypeHandler
                 commandForm.setEntityTypeName(entityTypeName);
                 commandForm.set(getAttrsMap(attrs));
 
-                coreService.createEntityAttribute(initialDataParser.getUserVisit(), commandForm);
+                checkCommandResult(commandForm, coreService.createEntityAttribute(initialDataParser.getUserVisit(), commandForm));
 
                 initialDataParser.pushHandler(new EntityAttributeHandler(initialDataParser, this, componentVendorName, entityTypeName,
                         commandForm.getEntityAttributeName()));
@@ -164,7 +126,7 @@ public class EntityTypeHandler
                 commandForm.setEntityTypeName(entityTypeName);
                 commandForm.set(getAttrsMap(attrs));
 
-                commentService.createCommentType(initialDataParser.getUserVisit(), commandForm);
+                checkCommandResult(commandForm, commentService.createCommentType(initialDataParser.getUserVisit(), commandForm));
 
                 initialDataParser.pushHandler(new CommentTypeHandler(initialDataParser, this, componentVendorName, entityTypeName,
                         commandForm.getCommentTypeName()));
@@ -176,7 +138,7 @@ public class EntityTypeHandler
                 commandForm.setEntityTypeName(entityTypeName);
                 commandForm.set(getAttrsMap(attrs));
 
-                ratingService.createRatingType(initialDataParser.getUserVisit(), commandForm);
+                checkCommandResult(commandForm, ratingService.createRatingType(initialDataParser.getUserVisit(), commandForm));
 
                 initialDataParser.pushHandler(new RatingTypeHandler(initialDataParser, this, componentVendorName, entityTypeName,
                         commandForm.getRatingTypeName()));
@@ -188,7 +150,7 @@ public class EntityTypeHandler
                 commandForm.setEntityTypeName(entityTypeName);
                 commandForm.set(getAttrsMap(attrs));
 
-                messageService.createMessageType(initialDataParser.getUserVisit(), commandForm);
+                checkCommandResult(commandForm, messageService.createMessageType(initialDataParser.getUserVisit(), commandForm));
 
                 initialDataParser.pushHandler(new MessageTypeHandler(initialDataParser, this, componentVendorName, entityTypeName,
                         commandForm.getMessageTypeName()));

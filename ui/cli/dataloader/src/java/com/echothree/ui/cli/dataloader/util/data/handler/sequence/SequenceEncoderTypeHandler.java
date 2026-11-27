@@ -54,7 +54,7 @@ public class SequenceEncoderTypeHandler
             commandForm.setSequenceEncoderTypeName(sequenceEncoderTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            sequenceService.createSequenceEncoderTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, sequenceService.createSequenceEncoderTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

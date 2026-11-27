@@ -21,56 +21,35 @@ import com.echothree.control.user.user.common.UserService;
 import com.echothree.control.user.user.common.form.UserFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class RecoveryQuestionsHandler
         extends BaseHandler {
+
     UserService userService;
     
     /** Creates a new instance of RecoveryQuestionsHandler */
-    public RecoveryQuestionsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public RecoveryQuestionsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            userService = UserUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        userService = lookupService(UserService.class, UserUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("recoveryQuestion")) {
-            String recoveryQuestionName = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var createRecoveryQuestionForm = UserFormFactory.getCreateRecoveryQuestionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("recoveryQuestionName"))
-                    recoveryQuestionName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
-            try {
-                var createRecoveryQuestionForm = UserFormFactory.getCreateRecoveryQuestionForm();
-                
-                createRecoveryQuestionForm.setRecoveryQuestionName(recoveryQuestionName);
-                createRecoveryQuestionForm.setIsDefault(isDefault);
-                createRecoveryQuestionForm.setSortOrder(sortOrder);
-                
-                userService.createRecoveryQuestion(initialDataParser.getUserVisit(), createRecoveryQuestionForm);
-                
-                initialDataParser.pushHandler(new RecoveryQuestionHandler(initialDataParser, this, recoveryQuestionName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            createRecoveryQuestionForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createRecoveryQuestionForm,
+                    userService.createRecoveryQuestion(initialDataParser.getUserVisit(), createRecoveryQuestionForm));
+
+            initialDataParser.pushHandler(new RecoveryQuestionHandler(initialDataParser, this,
+                    createRecoveryQuestionForm.getRecoveryQuestionName()));
         }
     }
     

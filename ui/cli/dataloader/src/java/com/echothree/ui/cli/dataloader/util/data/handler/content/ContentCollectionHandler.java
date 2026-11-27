@@ -21,24 +21,21 @@ import com.echothree.control.user.content.common.ContentService;
 import com.echothree.control.user.content.common.form.ContentFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ContentCollectionHandler
         extends BaseHandler {
+
     ContentService contentService;
     String contentCollectionName;
     
     /** Creates a new instance of ContentCollectionHandler */
-    public ContentCollectionHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String contentCollectionName) {
+    public ContentCollectionHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String contentCollectionName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            contentService = ContentUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        contentService = lookupService(ContentService.class, ContentUtil::getHome);
         
         this.contentCollectionName = contentCollectionName;
     }
@@ -47,134 +44,39 @@ public class ContentCollectionHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("contentCollectionDescription")) {
-            String languageIsoName = null;
-            String description = null;
-            String doUpdate = null;
+            var commandForm = ContentFormFactory.getCreateContentCollectionDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("doUpdate"))
-                    doUpdate = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = ContentFormFactory.getCreateContentCollectionDescriptionForm();
-                
-                commandForm.setContentCollectionName(contentCollectionName);
-                commandForm.setLanguageIsoName(languageIsoName);
-                commandForm.setDescription(description);
-                
-                contentService.createContentCollectionDescription(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, contentService.createContentCollectionDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("contentSection")) {
-            String contentSectionName = null;
-            String parentContentSectionName = null;
-            String isDefault = null;
-            String sortOrder = null;
-            String doUpdate = null;
+            var commandForm = ContentFormFactory.getCreateContentSectionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("contentSectionName"))
-                    contentSectionName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("parentContentSectionName"))
-                    parentContentSectionName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("doUpdate"))
-                    doUpdate = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = ContentFormFactory.getCreateContentSectionForm();
-                
-                commandForm.setContentCollectionName(contentCollectionName);
-                commandForm.setContentSectionName(contentSectionName);
-                commandForm.setParentContentSectionName(parentContentSectionName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
-                
-                contentService.createContentSection(initialDataParser.getUserVisit(), commandForm);
-                
-                initialDataParser.pushHandler(new ContentSectionHandler(initialDataParser, this, contentCollectionName, contentSectionName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, contentService.createContentSection(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new ContentSectionHandler(initialDataParser, this, contentCollectionName,
+                    commandForm.getContentSectionName()));
         } else if(localName.equals("contentCatalog")) {
-            String contentCatalogName = null;
-            String defaultOfferName = null;
-            String defaultUseName = null;
-            String defaultSourceName = null;
-            String isDefault = null;
-            String sortOrder = null;
-            String doUpdate = null;
+            var commandForm = ContentFormFactory.getCreateContentCatalogForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("contentCatalogName"))
-                    contentCatalogName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("defaultOfferName"))
-                    defaultOfferName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("defaultUseName"))
-                    defaultUseName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("defaultSourceName"))
-                    defaultSourceName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("doUpdate"))
-                    doUpdate = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = ContentFormFactory.getCreateContentCatalogForm();
-                
-                commandForm.setContentCollectionName(contentCollectionName);
-                commandForm.setContentCatalogName(contentCatalogName);
-                commandForm.setDefaultOfferName(defaultOfferName);
-                commandForm.setDefaultUseName(defaultUseName);
-                commandForm.setDefaultSourceName(defaultSourceName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
-                
-                contentService.createContentCatalog(initialDataParser.getUserVisit(), commandForm);
-                
-                initialDataParser.pushHandler(new ContentCatalogHandler(initialDataParser, this, contentCollectionName, contentCatalogName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, contentService.createContentCatalog(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new ContentCatalogHandler(initialDataParser, this, contentCollectionName,
+                    commandForm.getContentCatalogName()));
         } else if(localName.equals("contentForum")) {
-            String forumName = null;
-            String isDefault = null;
+            var commandForm = ContentFormFactory.getCreateContentForumForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("forumName"))
-                    forumName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = ContentFormFactory.getCreateContentForumForm();
-                
-                commandForm.setContentCollectionName(contentCollectionName);
-                commandForm.setForumName(forumName);
-                commandForm.setIsDefault(isDefault);
-                
-                contentService.createContentForum(initialDataParser.getUserVisit(), commandForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, contentService.createContentForum(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

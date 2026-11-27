@@ -21,24 +21,21 @@ import com.echothree.control.user.item.common.ItemService;
 import com.echothree.control.user.item.common.form.ItemFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ItemCategoryHandler
         extends BaseHandler {
+
     ItemService itemService;
     String itemCategoryName;
     
     /** Creates a new instance of ItemCategoryHandler */
-    public ItemCategoryHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String itemCategoryName) {
+    public ItemCategoryHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String itemCategoryName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            itemService = ItemUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        itemService = lookupService(ItemService.class, ItemUtil::getHome);
         
         this.itemCategoryName = itemCategoryName;
     }
@@ -47,28 +44,13 @@ public class ItemCategoryHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("itemCategoryDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var createItemCategoryDescriptionForm = ItemFormFactory.getCreateItemCategoryDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var createItemCategoryDescriptionForm = ItemFormFactory.getCreateItemCategoryDescriptionForm();
-                
-                createItemCategoryDescriptionForm.setItemCategoryName(itemCategoryName);
-                createItemCategoryDescriptionForm.setLanguageIsoName(languageIsoName);
-                createItemCategoryDescriptionForm.setDescription(description);
-                
-                itemService.createItemCategoryDescription(initialDataParser.getUserVisit(), createItemCategoryDescriptionForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            createItemCategoryDescriptionForm.setItemCategoryName(itemCategoryName);
+            createItemCategoryDescriptionForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createItemCategoryDescriptionForm,
+                    itemService.createItemCategoryDescription(initialDataParser.getUserVisit(), createItemCategoryDescriptionForm));
         }
     }
     

@@ -50,7 +50,7 @@ public class ColorsHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createColor(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createColor(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new ColorHandler(initialDataParser, this, commandForm.getColorName()));
         }

@@ -25,12 +25,12 @@ import com.echothree.ui.cli.dataloader.util.data.handler.comment.CommentsHandler
 import com.echothree.ui.cli.dataloader.util.data.handler.core.EntityAttributesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.payment.PartyPaymentMethodsHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.tag.EntityTagsHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ContactMechanismHandler
         extends BaseHandler {
+
     ContactService contactService;
     String partyName;
     String contactMechanismName;
@@ -38,14 +38,11 @@ public class ContactMechanismHandler
     
     /** Creates a new instance of ContactMechanismHandler */
     public ContactMechanismHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String partyName,
-            String contactMechanismName, String entityRef) {
+            String contactMechanismName, String entityRef)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            contactService = ContactUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        contactService = lookupService(ContactService.class, ContactUtil::getHome);
         
         this.partyName = partyName;
         this.contactMechanismName = contactMechanismName;
@@ -57,56 +54,27 @@ public class ContactMechanismHandler
             throws SAXException {
         if(localName.equals("partyContactMechanismPurpose")) {
             var form = ContactFormFactory.getCreatePartyContactMechanismPurposeForm();
-            String contactMechanismPurposeName = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("contactMechanismPurposeName"))
-                    contactMechanismPurposeName = attrs.getValue(i);
-            }
             
             form.setPartyName(partyName);
             form.setContactMechanismName(contactMechanismName);
-            form.setContactMechanismPurposeName(contactMechanismPurposeName);
+            form.set(getAttrsMap(attrs));
             
-            contactService.createPartyContactMechanismPurpose(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, contactService.createPartyContactMechanismPurpose(initialDataParser.getUserVisit(), form));
         } else if(localName.equals("contactMechanismAlias")) {
             var form = ContactFormFactory.getCreateContactMechanismAliasForm();
-            String contactMechanismAliasTypeName = null;
-            String alias = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("contactMechanismAliasTypeName"))
-                    contactMechanismAliasTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("alias"))
-                    alias = attrs.getValue(i);
-            }
             
             form.setContactMechanismName(contactMechanismName);
-            form.setContactMechanismAliasTypeName(contactMechanismAliasTypeName);
-            form.setAlias(alias);
+            form.set(getAttrsMap(attrs));
             
-            contactService.createContactMechanismAlias(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, contactService.createContactMechanismAlias(initialDataParser.getUserVisit(), form));
         } else if(localName.equals("partyContactMechanismAlias")) {
             var form = ContactFormFactory.getCreatePartyContactMechanismAliasForm();
-            String contactMechanismAliasTypeName = null;
-            String alias = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("contactMechanismAliasTypeName"))
-                    contactMechanismAliasTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("alias"))
-                    alias = attrs.getValue(i);
-            }
             
             form.setPartyName(partyName);
             form.setContactMechanismName(contactMechanismName);
-            form.setContactMechanismAliasTypeName(contactMechanismAliasTypeName);
-            form.setAlias(alias);
+            form.set(getAttrsMap(attrs));
             
-            contactService.createPartyContactMechanismAlias(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, contactService.createPartyContactMechanismAlias(initialDataParser.getUserVisit(), form));
         } else if(localName.equals("partyPaymentMethods")) {
             initialDataParser.pushHandler(new PartyPaymentMethodsHandler(initialDataParser, this, partyName, contactMechanismName));
         } else if(localName.equals("comments")) {

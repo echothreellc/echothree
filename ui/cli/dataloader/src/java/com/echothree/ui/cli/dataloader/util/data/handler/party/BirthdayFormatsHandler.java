@@ -21,56 +21,33 @@ import com.echothree.control.user.party.common.PartyService;
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class BirthdayFormatsHandler
         extends BaseHandler {
+
     PartyService partyService;
     
     /** Creates a new instance of BirthdayFormatsHandler */
-    public BirthdayFormatsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public BirthdayFormatsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            partyService = PartyUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        partyService = lookupService(PartyService.class, PartyUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("birthdayFormat")) {
-            String birthdayFormatName = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var commandForm = PartyFormFactory.getCreateBirthdayFormatForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("birthdayFormatName"))
-                    birthdayFormatName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
-            try {
-                var commandForm = PartyFormFactory.getCreateBirthdayFormatForm();
-                
-                commandForm.setBirthdayFormatName(birthdayFormatName);
-                commandForm.setIsDefault(isDefault);
-                commandForm.setSortOrder(sortOrder);
-                
-                partyService.createBirthdayFormat(initialDataParser.getUserVisit(), commandForm);
-                
-                initialDataParser.pushHandler(new BirthdayFormatHandler(initialDataParser, this, birthdayFormatName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            commandForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(commandForm, partyService.createBirthdayFormat(initialDataParser.getUserVisit(), commandForm));
+
+            initialDataParser.pushHandler(new BirthdayFormatHandler(initialDataParser, this, commandForm.getBirthdayFormatName()));
         }
     }
     

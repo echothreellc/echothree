@@ -50,7 +50,7 @@ public class PrinterGroupsHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            printerService.createPrinterGroup(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, printerService.createPrinterGroup(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new PrinterGroupHandler(initialDataParser, this, commandForm.getPrinterGroupName()));
         }

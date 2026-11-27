@@ -50,7 +50,7 @@ public class FilterKindsHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            filterService.createFilterKind(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, filterService.createFilterKind(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new FilterKindHandler(initialDataParser, this, commandForm.getFilterKindName()));
         }

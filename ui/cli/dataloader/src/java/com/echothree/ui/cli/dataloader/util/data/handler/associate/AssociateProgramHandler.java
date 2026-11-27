@@ -21,24 +21,21 @@ import com.echothree.control.user.associate.common.AssociateService;
 import com.echothree.control.user.associate.common.form.AssociateFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class AssociateProgramHandler
         extends BaseHandler {
+
     AssociateService associateService;
     String associateProgramName;
     
     /** Creates a new instance of AssociateProgramHandler */
-    public AssociateProgramHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String associateProgramName) {
+    public AssociateProgramHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String associateProgramName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            associateService = AssociateUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        associateService = lookupService(AssociateService.class, AssociateUtil::getHome);
         
         this.associateProgramName = associateProgramName;
     }
@@ -48,22 +45,11 @@ public class AssociateProgramHandler
             throws SAXException {
         if(localName.equals("associateProgramDescription")) {
             var commandForm = AssociateFormFactory.getCreateAssociateProgramDescriptionForm();
-            String attrLanguageIsoName = null;
-            String attrDescription = null;
-
-            var attrCount = attrs.getLength();
-            for(var i = 0; i < attrCount; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    attrLanguageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    attrDescription = attrs.getValue(i);
-            }
             
             commandForm.setAssociateProgramName(associateProgramName);
-            commandForm.setLanguageIsoName(attrLanguageIsoName);
-            commandForm.setDescription(attrDescription);
+            commandForm.set(getAttrsMap(attrs));
             
-            checkCommandResult(associateService.createAssociateProgramDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, associateService.createAssociateProgramDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

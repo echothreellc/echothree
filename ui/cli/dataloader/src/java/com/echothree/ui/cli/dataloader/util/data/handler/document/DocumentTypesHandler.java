@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class DocumentTypesHandler
         extends BaseHandler {
+
     DocumentService documentService;
     
     /** Creates a new instance of DocumentTypesHandler */
@@ -49,7 +50,7 @@ public class DocumentTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(documentService.createDocumentType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, documentService.createDocumentType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new DocumentTypeHandler(initialDataParser, this, commandForm.getDocumentTypeName()));
         }

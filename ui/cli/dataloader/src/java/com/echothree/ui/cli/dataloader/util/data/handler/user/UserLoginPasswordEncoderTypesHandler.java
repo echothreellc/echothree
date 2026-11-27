@@ -21,23 +21,20 @@ import com.echothree.control.user.user.common.UserService;
 import com.echothree.control.user.user.common.form.UserFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class UserLoginPasswordEncoderTypesHandler
         extends BaseHandler {
+
     UserService userService;
     
     /** Creates a new instance of UserLoginPasswordEncoderTypesHandler */
-    public UserLoginPasswordEncoderTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public UserLoginPasswordEncoderTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            userService = UserUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        userService = lookupService(UserService.class, UserUtil::getHome);
     }
     
     @Override
@@ -45,19 +42,13 @@ public class UserLoginPasswordEncoderTypesHandler
             throws SAXException {
         if(localName.equals("userLoginPasswordEncoderType")) {
             var commandForm = UserFormFactory.getCreateUserLoginPasswordEncoderTypeForm();
-            String userLoginPasswordEncoderTypeName = null;
-
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("userLoginPasswordEncoderTypeName"))
-                    userLoginPasswordEncoderTypeName = attrs.getValue(i);
-            }
             
-            commandForm.setUserLoginPasswordEncoderTypeName(userLoginPasswordEncoderTypeName);
+            commandForm.set(getAttrsMap(attrs));
             
-            userService.createUserLoginPasswordEncoderType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, userService.createUserLoginPasswordEncoderType(initialDataParser.getUserVisit(), commandForm));
             
-            initialDataParser.pushHandler(new UserLoginPasswordEncoderTypeHandler(initialDataParser, this, userLoginPasswordEncoderTypeName));
+            initialDataParser.pushHandler(new UserLoginPasswordEncoderTypeHandler(initialDataParser, this,
+                    commandForm.getUserLoginPasswordEncoderTypeName()));
         }
     }
     

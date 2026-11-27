@@ -55,7 +55,8 @@ public class HarmonizedTariffScheduleCodeUnitHandler
             commandForm.setHarmonizedTariffScheduleCodeUnitName(harmonizedTariffScheduleCodeUnitName);
             commandForm.set(getAttrsMap(attrs));
 
-            itemService.createHarmonizedTariffScheduleCodeUnitDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm,
+                    itemService.createHarmonizedTariffScheduleCodeUnitDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

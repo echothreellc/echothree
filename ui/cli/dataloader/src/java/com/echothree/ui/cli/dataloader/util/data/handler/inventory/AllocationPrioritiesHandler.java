@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class AllocationPrioritiesHandler
         extends BaseHandler {
+
     InventoryService inventoryService;
     
     /** Creates a new instance of AllocationPrioritysHandler */
@@ -49,7 +50,7 @@ public class AllocationPrioritiesHandler
 
             form.set(getAttrsMap(attrs));
 
-            inventoryService.createAllocationPriority(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, inventoryService.createAllocationPriority(initialDataParser.getUserVisit(), form));
 
             initialDataParser.pushHandler(new AllocationPriorityHandler(initialDataParser, this, form.getAllocationPriorityName()));
         }

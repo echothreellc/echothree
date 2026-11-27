@@ -21,26 +21,23 @@ import com.echothree.control.user.rating.common.RatingService;
 import com.echothree.control.user.rating.common.form.RatingFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class RatingTypeHandler
         extends BaseHandler {
+
     RatingService ratingService;
     String componentVendorName;
     String entityTypeName;
     String ratingTypeName;
     
     /** Creates a new instance of RatingTypeHandler */
-    public RatingTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String componentVendorName, String entityTypeName, String ratingTypeName) {
+    public RatingTypeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String componentVendorName, String entityTypeName, String ratingTypeName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            ratingService = RatingUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        ratingService = lookupService(RatingService.class, RatingUtil::getHome);
         
         this.componentVendorName = componentVendorName;
         this.entityTypeName = entityTypeName;
@@ -51,61 +48,28 @@ public class RatingTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("ratingTypeDescription")) {
-            String languageIsoName = null;
-            String description = null;
+            var createRatingTypeDescriptionForm = RatingFormFactory.getCreateRatingTypeDescriptionForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("languageIsoName"))
-                    languageIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("description"))
-                    description = attrs.getValue(i);
-            }
-            
-            try {
-                var createRatingTypeDescriptionForm = RatingFormFactory.getCreateRatingTypeDescriptionForm();
-                
-                createRatingTypeDescriptionForm.setComponentVendorName(componentVendorName);
-                createRatingTypeDescriptionForm.setEntityTypeName(entityTypeName);
-                createRatingTypeDescriptionForm.setRatingTypeName(ratingTypeName);
-                createRatingTypeDescriptionForm.setLanguageIsoName(languageIsoName);
-                createRatingTypeDescriptionForm.setDescription(description);
-                
-                ratingService.createRatingTypeDescription(initialDataParser.getUserVisit(), createRatingTypeDescriptionForm);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            createRatingTypeDescriptionForm.setComponentVendorName(componentVendorName);
+            createRatingTypeDescriptionForm.setEntityTypeName(entityTypeName);
+            createRatingTypeDescriptionForm.setRatingTypeName(ratingTypeName);
+            createRatingTypeDescriptionForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createRatingTypeDescriptionForm,
+                    ratingService.createRatingTypeDescription(initialDataParser.getUserVisit(), createRatingTypeDescriptionForm));
         } else if(localName.equals("ratingTypeListItem")) {
-            String ratingTypeListItemName = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var createRatingTypeListItemForm = RatingFormFactory.getCreateRatingTypeListItemForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("ratingTypeListItemName"))
-                    ratingTypeListItemName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
-            try {
-                var createRatingTypeListItemForm = RatingFormFactory.getCreateRatingTypeListItemForm();
-                
-                createRatingTypeListItemForm.setComponentVendorName(componentVendorName);
-                createRatingTypeListItemForm.setEntityTypeName(entityTypeName);
-                createRatingTypeListItemForm.setRatingTypeName(ratingTypeName);
-                createRatingTypeListItemForm.setRatingTypeListItemName(ratingTypeListItemName);
-                createRatingTypeListItemForm.setIsDefault(isDefault);
-                createRatingTypeListItemForm.setSortOrder(sortOrder);
-                
-                ratingService.createRatingTypeListItem(initialDataParser.getUserVisit(), createRatingTypeListItemForm);
-                
-                initialDataParser.pushHandler(new RatingTypeListItemHandler(initialDataParser, this, componentVendorName, entityTypeName, ratingTypeName, ratingTypeListItemName));
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            createRatingTypeListItemForm.setComponentVendorName(componentVendorName);
+            createRatingTypeListItemForm.setEntityTypeName(entityTypeName);
+            createRatingTypeListItemForm.setRatingTypeName(ratingTypeName);
+            createRatingTypeListItemForm.set(getAttrsMap(attrs));
+
+            checkCommandResult(createRatingTypeListItemForm,
+                    ratingService.createRatingTypeListItem(initialDataParser.getUserVisit(), createRatingTypeListItemForm));
+
+            initialDataParser.pushHandler(new RatingTypeListItemHandler(initialDataParser, this, componentVendorName,
+                    entityTypeName, ratingTypeName, createRatingTypeListItemForm.getRatingTypeListItemName()));
         }
     }
     

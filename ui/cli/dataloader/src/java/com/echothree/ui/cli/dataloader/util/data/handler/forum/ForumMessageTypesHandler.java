@@ -21,54 +21,33 @@ import com.echothree.control.user.forum.common.ForumService;
 import com.echothree.control.user.forum.common.form.ForumFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ForumMessageTypesHandler
         extends BaseHandler {
+
     ForumService forumService;
     
     /** Creates a new instance of ForumMessageTypesHandler */
-    public ForumMessageTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    public ForumMessageTypesHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            forumService = ForumUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        forumService = lookupService(ForumService.class, ForumUtil::getHome);
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("forumMessageType")) {
-            String forumMessageTypeName = null;
-            String isDefault = null;
-            String sortOrder = null;
+            var forumMessageTypeName = attrs.getValue("forumMessageTypeName");
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("forumMessageTypeName"))
-                    forumMessageTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("isDefault"))
-                    isDefault = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("sortOrder"))
-                    sortOrder = attrs.getValue(i);
-            }
-            
-            try {
-                var form = ForumFormFactory.getCreateForumMessageTypeForm();
-                
-                form.setForumMessageTypeName(forumMessageTypeName);
-                form.setIsDefault(isDefault);
-                form.setSortOrder(sortOrder);
-                
-                forumService.createForumMessageType(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            var form = ForumFormFactory.getCreateForumMessageTypeForm();
+
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, forumService.createForumMessageType(initialDataParser.getUserVisit(), form));
             
             initialDataParser.pushHandler(new ForumMessageTypeHandler(initialDataParser, this, forumMessageTypeName));
         }

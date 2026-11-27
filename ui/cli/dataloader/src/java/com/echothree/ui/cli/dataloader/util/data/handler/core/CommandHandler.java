@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 
 public class CommandHandler
         extends BaseHandler {
+
     CoreService coreService;
     String componentVendorName;
     String commandName;
@@ -56,7 +57,7 @@ public class CommandHandler
             commandForm.setCommandName(commandName);
             commandForm.set(getAttrsMap(attrs));
 
-            coreService.createCommandDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createCommandDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

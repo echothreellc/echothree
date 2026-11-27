@@ -22,7 +22,6 @@ import com.echothree.control.user.item.common.form.ItemFormFactory;
 import com.echothree.control.user.item.common.spec.ItemSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
@@ -52,66 +51,13 @@ public class ItemVolumeTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("itemVolumeTypeDescription")) {
-            var spec = ItemSpecFactory.getItemVolumeTypeDescriptionSpec();
-            var editForm = ItemFormFactory.getEditItemVolumeTypeDescriptionForm();
+            var attrsMap = getAttrsMap(attrs);
+            attrsMap.putIfAbsent("ItemVolumeTypeName", itemVolumeTypeName);
 
-            spec.setItemVolumeTypeName(itemVolumeTypeName);
-            spec.set(getAttrsMap(attrs));
-
-            editForm.setSpec(spec);
-            editForm.setEditMode(EditMode.LOCK);
-
-            var commandResult = itemService.editItemVolumeTypeDescription(initialDataParser.getUserVisit(), editForm);
-
-            if(commandResult.hasErrors()) {
-                if(commandResult.containsExecutionError(ExecutionErrors.UnknownItemVolumeTypeDescription.name())) {
-                    var createForm = ItemFormFactory.getCreateItemVolumeTypeDescriptionForm();
-
-                    createForm.set(spec.get());
-
-                    var createItemVolumeTypeDescriptionCommandResult = itemService.createItemVolumeTypeDescription(initialDataParser.getUserVisit(), createForm);
-
-                    if(createItemVolumeTypeDescriptionCommandResult.hasErrors()) {
-                        getLogger().error(createItemVolumeTypeDescriptionCommandResult.toString());
-                    }
-                } else {
-                    getLogger().error(commandResult.toString());
-                }
-            } else {
-                var executionResult = commandResult.getExecutionResult();
-                var result = executionResult.getResult();
-
-                if(result != null) {
-                    var edit = result.getEdit();
-                    var description = attrs.getValue("description");
-                    var changed = false;
-
-                    if(!edit.getDescription().equals(description)) {
-                        edit.setDescription(description);
-                        changed = true;
-                    }
-
-                    if(changed) {
-                        editForm.setEdit(edit);
-                        editForm.setEditMode(EditMode.UPDATE);
-
-                        commandResult = itemService.editItemVolumeTypeDescription(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
-                        }
-                    } else {
-                        editForm.setEdit(null);
-                        editForm.setEditMode(EditMode.ABANDON);
-
-                        commandResult = itemService.editItemVolumeTypeDescription(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
-                        }
-                    }
-                }
-            }
+            editOrCreate(attrsMap, ItemSpecFactory.getItemVolumeTypeDescriptionSpec(),
+                    ItemFormFactory.getEditItemVolumeTypeDescriptionForm(), itemService::editItemVolumeTypeDescription,
+                    ItemFormFactory.getCreateItemVolumeTypeDescriptionForm(), itemService::createItemVolumeTypeDescription,
+                    ExecutionErrors.UnknownItemVolumeTypeDescription);
         }
     }
     

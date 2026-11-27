@@ -21,25 +21,22 @@ import com.echothree.control.user.offer.common.OfferService;
 import com.echothree.control.user.offer.common.form.OfferFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class OfferItemHandler
         extends BaseHandler {
+
     OfferService offerService;
     String offerName;
     String itemName;
     
     /** Creates a new instance of OfferItemHandler */
-    public OfferItemHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String offerName, String itemName) {
+    public OfferItemHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String offerName, String itemName)
+            throws SAXException {
         super(initialDataParser, parentHandler);
         
-        try {
-            offerService = OfferUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
+        offerService = lookupService(OfferService.class, OfferUtil::getHome);
         
         this.offerName = offerName;
         this.itemName = itemName;
@@ -49,49 +46,13 @@ public class OfferItemHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
         if(localName.equals("offerItemPrice")) {
-            String inventoryConditionName = null;
-            String unitOfMeasureTypeName = null;
-            String currencyIsoName = null;
-            String unitPrice = null;
-            String minimumUnitPrice = null;
-            String maximumUnitPrice = null;
-            String unitPriceIncrement = null;
+            var form = OfferFormFactory.getCreateOfferItemPriceForm();
 
-            var count = attrs.getLength();
-            for(var i = 0; i < count; i++) {
-                if(attrs.getQName(i).equals("inventoryConditionName"))
-                    inventoryConditionName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("unitOfMeasureTypeName"))
-                    unitOfMeasureTypeName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("currencyIsoName"))
-                    currencyIsoName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("unitPrice"))
-                    unitPrice = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("minimumUnitPrice"))
-                    minimumUnitPrice = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("maximumUnitPrice"))
-                    maximumUnitPrice = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("unitPriceIncrement"))
-                    unitPriceIncrement = attrs.getValue(i);
-            }
-            
-            try {
-                var form = OfferFormFactory.getCreateOfferItemPriceForm();
-                
-                form.setOfferName(offerName);
-                form.setItemName(itemName);
-                form.setInventoryConditionName(inventoryConditionName);
-                form.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
-                form.setCurrencyIsoName(currencyIsoName);
-                form.setUnitPrice(unitPrice);
-                form.setMinimumUnitPrice(minimumUnitPrice);
-                form.setMaximumUnitPrice(maximumUnitPrice);
-                form.setUnitPriceIncrement(unitPriceIncrement);
-                
-                offerService.createOfferItemPrice(initialDataParser.getUserVisit(), form);
-            } catch (Exception e) {
-                throw new SAXException(e);
-            }
+            form.setOfferName(offerName);
+            form.setItemName(itemName);
+            form.set(getAttrsMap(attrs));
+
+            checkCommandResult(form, offerService.createOfferItemPrice(initialDataParser.getUserVisit(), form));
         }
     }
     
