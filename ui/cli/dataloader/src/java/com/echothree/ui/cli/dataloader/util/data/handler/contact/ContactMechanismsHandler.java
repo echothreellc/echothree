@@ -76,12 +76,7 @@ public class ContactMechanismsHandler
             form.setNameSuffixId(nameSuffix == null ? null : initialDataParser.getNameSuffixes().get(nameSuffix));
 
             var attrsMap = getAttrsMap(attrs);
-
-            // Preserve the legacy mapping when attention follows companyName or is the only one specified.
-            if(attrs.getIndex("attention") > attrs.getIndex("companyName")) {
-                attrsMap.put("CompanyName", attrs.getValue("attention"));
-            }
-            attrsMap.keySet().removeAll(Set.of("Attention", "PartyName", "PersonalTitle", "PersonalTitleId", "NameSuffix", "NameSuffixId"));
+            attrsMap.keySet().removeAll(Set.of("PersonalTitle", "PersonalTitleId", "NameSuffix", "NameSuffixId"));
             form.set(attrsMap);
 
             var commandResult = contactService.createContactPostalAddress(initialDataParser.getUserVisit(), form);
