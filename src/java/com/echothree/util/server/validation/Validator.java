@@ -61,6 +61,7 @@ public class Validator {
     public static final String ERROR_MAXIMUM_VALUE             = "MaximumValue";
     public static final String ERROR_NO_VALUE_ALLOWED          = "NoValueAllowed";
     public static final String ERROR_UNKNOWN_CURRENCY_ISO_NAME = "UnknownCurrencyIsoName";
+    public static final String ERROR_UNKNOWN_PARTY_NAME        = "UnknownPartyName";
     public static final String ERROR_UNKNOWN_VENDOR_NAME       = "UnknownVendorName";
     public static final String ERROR_INTERNAL_ERROR            = "InternalError";
     public static final String ERROR_EXCESS_FRACTIONAL_DIGITS = "ExcessFractionalDigits";
@@ -355,13 +356,11 @@ public class Validator {
                 var dependenciesValid = true;
 
                 if(!isCurrencySpecified() && fieldValidator != null && BaseCurrencyFieldType.class.isAssignableFrom(fieldValidator)) {
-                    for(var dependency : BaseCurrencyFieldType.getFieldDependencies(splitFieldName(fieldDefinition))) {
-                        // Some commands validate the currency in an earlier pass.
-                        if(fieldsByName.containsKey(dependency)) {
-                            dependenciesValid &= validateFieldWithDependencies(form, dependency, fieldsByName, fieldStates, formValidationMessages)
-                                    == FieldValidationState.VALID;
-                        }
-                    }
+                    // Some commands validate the currency in an earlier pass.
+                    dependenciesValid = BaseCurrencyFieldType.validateFieldDependencies(form, splitFieldName(fieldDefinition), dependency ->
+                            !fieldsByName.containsKey(dependency)
+                                    || validateFieldWithDependencies(form, dependency, fieldsByName, fieldStates, formValidationMessages)
+                                            == FieldValidationState.VALID);
                 }
 
                 if(dependenciesValid) {

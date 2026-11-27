@@ -21,12 +21,23 @@ import com.echothree.control.user.item.server.command.CreateItemUnitPriceLimitCo
 import com.echothree.control.user.party.common.form.PartyFormFactory;
 import com.echothree.control.user.party.server.command.CreateVendorCommand;
 import com.echothree.control.user.term.common.edit.TermEditFactory;
+import com.echothree.control.user.term.common.form.TermFormFactory;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.accounting.common.pk.CurrencyPK;
 import com.echothree.model.data.accounting.common.pk.SymbolPositionPK;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.accounting.server.value.CurrencyValue;
+import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.data.party.common.pk.PartyTypePK;
+import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.party.server.entity.PartyDetail;
+import com.echothree.model.data.party.server.entity.PartyType;
+import com.echothree.model.data.party.server.value.PartyDetailValue;
+import com.echothree.model.data.party.server.value.PartyTypeValue;
+import com.echothree.model.data.party.server.value.PartyValue;
 import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.message.Messages;
@@ -318,6 +329,122 @@ public class DecimalFieldTypeTest {
 
         assertTrue(result.getValidationMessages().containsKey("MinimumPurchaseOrderAmount", Validator.ERROR_UNKNOWN_VENDOR_NAME));
         assertEquals("VENDOR", form.getVendorName());
+    }
+
+    @Test
+    public void suppliedCurrencyTakesPrecedenceOverThePartyLookup() {
+        var form = TermFormFactory.getCreatePartyCreditLimitForm();
+        form.setPartyName("INVALID PARTY NAME");
+        form.setCurrencyIsoName(" USD ");
+        form.setCreditLimit("12.34");
+        var validator = new Validator(null) {
+            @Override
+            public AccountingControl getAccountingControl() {
+                return new AccountingControl() {
+                    @Override
+                    public Currency getCurrencyByIsoName(String currencyIsoName) {
+                        assertEquals("USD", currencyIsoName);
+                        return currency(".", 2);
+                    }
+                };
+            }
+
+            @Override
+            public PartyControl getPartyControl() {
+                throw new AssertionError("Unexpected party lookup");
+            }
+        };
+
+        var result = validator.validate(form, partyCurrencyFields());
+
+        assertTrue(result.getValidationMessages().containsKey("PartyName", Validator.ERROR_INVALID_FORMAT));
+        assertEquals("1234", form.getCreditLimit());
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = PartyTypes.class, names = { "CUSTOMER", "COMPANY", "DIVISION", "DEPARTMENT", "EMPLOYEE" })
+    @SuppressWarnings("UnnecessaryAssignment") // Supply the CDI dependency without a container.
+    public void partyLookupUsesThePartysPreferenceOrTheSystemDefault(PartyTypes partyType) {
+        var preferredCurrency = currency(",", 3);
+        var validator = new Validator(null) {
+            @Override
+            public PartyControl getPartyControl() {
+                return new PartyControl() {
+                    {
+                        accountingControl = new AccountingControl() {
+                            @Override
+                            public Currency getDefaultCurrency() {
+                                return currency(".", 2);
+                            }
+                        };
+                    }
+
+                    @Override
+                    public Party getPartyByName(String partyName) {
+                        return switch(partyName) {
+                            case "WITH_PREFERENCE" -> party(partyType, partyName, preferredCurrency);
+                            case "WITHOUT_PREFERENCE" -> party(partyType, partyName, null);
+                            default -> null;
+                        };
+                    }
+                };
+            }
+        };
+        var fields = partyCurrencyFields();
+        var form = TermFormFactory.getCreatePartyCreditLimitForm();
+        form.setPartyName(" WITH_PREFERENCE ");
+        form.setCurrencyIsoName(" ");
+        form.setCreditLimit("12,345");
+        assertFalse(validator.validate(form, fields).getHasErrors());
+        assertEquals("12345", form.getCreditLimit());
+
+        form.setPartyName("WITHOUT_PREFERENCE");
+        form.setCreditLimit("12.34");
+        assertFalse(validator.validate(form, fields).getHasErrors());
+        assertEquals("1234", form.getCreditLimit());
+
+        form.setPartyName("UNKNOWN");
+        form.setCreditLimit("12.34");
+        var messages = validator.validate(form, fields).getValidationMessages();
+        assertTrue(messages.containsKey(FIELD, Validator.ERROR_UNKNOWN_PARTY_NAME));
+        assertArrayEquals(new Object[]{ "UNKNOWN" }, messages.get(FIELD).next().getValues());
+        assertEquals("12.34", form.getCreditLimit());
+    }
+
+    private Party party(PartyTypes partyType, String partyName, Currency preferredCurrency) {
+        var partyPK = new PartyPK(1L);
+        var partyTypeEntity = new PartyType(new PartyTypeValue(new PartyTypePK(1L), partyType.name(), null, null,
+                false, false, false, 0), EntityPermission.READ_ONLY);
+
+        return new Party(new PartyValue(partyPK, null, null), EntityPermission.READ_ONLY) {
+            @Override
+            public PartyDetail getLastDetail() {
+                var preferredCurrencyPK = preferredCurrency == null ? null : preferredCurrency.getPrimaryKey();
+                var partyDetailValue = new PartyDetailValue(partyPK, partyName, partyTypeEntity.getPrimaryKey(), null,
+                        preferredCurrencyPK, null, null, 0L, Long.MAX_VALUE);
+
+                return new PartyDetail(partyDetailValue, EntityPermission.READ_ONLY) {
+                    @Override
+                    public PartyType getPartyType() {
+                        return partyTypeEntity;
+                    }
+
+                    @Override
+                    public Currency getPreferredCurrency() {
+                        return preferredCurrency;
+                    }
+                };
+            }
+        };
+    }
+
+    private List<FieldDefinition> partyCurrencyFields() {
+        return List.of(
+                new FieldDefinition("CreditLimit:CurrencyIsoName,CurrencyIsoName:DefaultCurrencyIfOmitted,true:PartyName,PartyName",
+                        FieldType.UNSIGNED_PRICE_LINE, false, null, null),
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, false, null, null)
+        );
     }
 
     @Test
