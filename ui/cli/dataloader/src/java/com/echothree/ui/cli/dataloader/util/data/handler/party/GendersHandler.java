@@ -45,7 +45,7 @@ public class GendersHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            partyService.createGender(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, partyService.createGender(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new GenderHandler(initialDataParser, this, commandForm.getGenderName()));
         }

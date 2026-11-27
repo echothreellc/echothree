@@ -45,6 +45,7 @@ public class VendorsHandler
             form.set(getAttrsMap(attrs));
 
             var commandResult = partyService.createVendor(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, commandResult);
             
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();

@@ -54,7 +54,7 @@ public class EditorHandler
             commandForm.setEditorName(editorName);
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createEditorDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createEditorDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

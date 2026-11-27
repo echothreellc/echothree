@@ -59,7 +59,7 @@ public class EntityListItemHandler
             commandForm.setEntityListItemName(entityListItemName);
             commandForm.set(getAttrsMap(attrs));
 
-            coreService.createEntityListItemDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createEntityListItemDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

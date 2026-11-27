@@ -38,8 +38,8 @@ public class DataLoader {
                 .addOption("f", "file", true, "load data into database from specified file")
                 .addOption("z", "zipcode", false, "load zip code data from specified file")
                 .addOption("h", "hts", false, "load harmonized tariff schedule codes from specified directory")
-                .addOption("e", "errors", false, "show command result when an error is returned")
-                .addOption("v", "verbose", false, "verbose command results"), args);
+                .addOption("e", "errors", false, "show command errors (enabled by default)")
+                .addOption("v", "verbose", false, "show successful command results and duplicate execution errors"), args);
     }
     
     public static void main(String args[])
@@ -51,7 +51,6 @@ public class DataLoader {
         var doZipCode = line.hasOption("z");
         var doHts = line.hasOption("h");
         
-        BaseHandler.setDoErrors(line.hasOption("e"));
         BaseHandler.setDoVerbose(line.hasOption("v"));
         
         if(doInitial) {

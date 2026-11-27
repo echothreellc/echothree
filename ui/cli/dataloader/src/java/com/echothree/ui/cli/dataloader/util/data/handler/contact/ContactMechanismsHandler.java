@@ -53,7 +53,7 @@ public class ContactMechanismsHandler
             var commandResult = contactService.createContactEmailAddress(initialDataParser.getUserVisit(), form);
             
             if(commandResult.hasErrors()) {
-                System.err.println(commandResult);
+                checkCommandResult(form, commandResult);
             } else {
                 var executionResult = commandResult.getExecutionResult();
                 var result = executionResult.getResult();
@@ -79,7 +79,7 @@ public class ContactMechanismsHandler
             var commandResult = contactService.createContactPostalAddress(initialDataParser.getUserVisit(), form);
             
             if(commandResult.hasErrors()) {
-                System.err.println(commandResult);
+                checkCommandResult(form, commandResult);
             } else {
                 var executionResult = commandResult.getExecutionResult();
                 var result = executionResult.getResult();
@@ -97,7 +97,7 @@ public class ContactMechanismsHandler
             var commandResult = contactService.createContactTelephone(initialDataParser.getUserVisit(), form);
             
             if(commandResult.hasErrors()) {
-                System.err.println(commandResult);
+                checkCommandResult(form, commandResult);
             } else {
                 var executionResult = commandResult.getExecutionResult();
                 var result = executionResult.getResult();
@@ -115,7 +115,7 @@ public class ContactMechanismsHandler
             var commandResult = contactService.createContactWebAddress(initialDataParser.getUserVisit(), form);
             
             if(commandResult.hasErrors()) {
-                System.err.println(commandResult);
+                checkCommandResult(form, commandResult);
             } else {
                 var executionResult = commandResult.getExecutionResult();
                 var result = executionResult.getResult();

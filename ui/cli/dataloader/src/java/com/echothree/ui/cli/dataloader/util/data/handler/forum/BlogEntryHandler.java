@@ -59,6 +59,7 @@ public class BlogEntryHandler
             commandForm.set(getAttrsMap(attrs));
 
             var commandResult = forumService.createBlogComment(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, commandResult);
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();

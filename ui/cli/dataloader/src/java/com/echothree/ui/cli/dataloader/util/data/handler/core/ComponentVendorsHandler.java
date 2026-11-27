@@ -74,10 +74,10 @@ public class ComponentVendorsHandler
                         var createComponentVendorResult = coreService.createComponentVendor(initialDataParser.getUserVisit(), createForm);
 
                         if(createComponentVendorResult.hasErrors()) {
-                            getLogger().error(createComponentVendorResult.toString());
+                            checkCommandResult(createForm, createComponentVendorResult);
                         }
                     } else {
-                        getLogger().error(commandResult.toString());
+                        checkCommandResult(editForm, commandResult);
                     }
                 } else {
                     var executionResult = commandResult.getExecutionResult();
@@ -89,7 +89,7 @@ public class ComponentVendorsHandler
 
                         commandResult = coreService.editComponentVendor(initialDataParser.getUserVisit(), editForm);
                         if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     }
                 }

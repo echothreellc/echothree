@@ -57,7 +57,7 @@ public class CommandMessageHandler
             commandForm.setCommandMessageKey(commandMessageKey);
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createCommandMessageTranslation(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createCommandMessageTranslation(initialDataParser.getUserVisit(), commandForm));
         } 
     }
     

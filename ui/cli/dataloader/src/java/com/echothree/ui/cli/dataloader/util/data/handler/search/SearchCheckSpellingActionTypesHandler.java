@@ -50,7 +50,7 @@ public class SearchCheckSpellingActionTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            searchService.createSearchCheckSpellingActionType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, searchService.createSearchCheckSpellingActionType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new SearchCheckSpellingActionTypeHandler(initialDataParser, this, commandForm.getSearchCheckSpellingActionTypeName()));
         }

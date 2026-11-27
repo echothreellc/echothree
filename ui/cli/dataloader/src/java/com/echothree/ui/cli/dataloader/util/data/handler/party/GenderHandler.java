@@ -49,7 +49,7 @@ public class GenderHandler
             commandForm.setGenderName(genderName);
             commandForm.set(getAttrsMap(attrs));
 
-            partyService.createGenderDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, partyService.createGenderDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

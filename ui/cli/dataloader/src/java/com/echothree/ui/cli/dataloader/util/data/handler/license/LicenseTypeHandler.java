@@ -54,7 +54,7 @@ public class LicenseTypeHandler
             commandForm.setLicenseTypeName(licenseTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            licenseService.createLicenseTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, licenseService.createLicenseTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

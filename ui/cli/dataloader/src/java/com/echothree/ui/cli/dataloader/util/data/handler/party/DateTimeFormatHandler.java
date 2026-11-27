@@ -49,7 +49,8 @@ public class DateTimeFormatHandler
             createDateTimeFormatDescriptionForm.setDateTimeFormatName(dateTimeFormatName);
             createDateTimeFormatDescriptionForm.set(getAttrsMap(attrs));
 
-            partyService.createDateTimeFormatDescription(initialDataParser.getUserVisit(), createDateTimeFormatDescriptionForm);
+            checkCommandResult(createDateTimeFormatDescriptionForm,
+                    partyService.createDateTimeFormatDescription(initialDataParser.getUserVisit(), createDateTimeFormatDescriptionForm));
         }
     }
     

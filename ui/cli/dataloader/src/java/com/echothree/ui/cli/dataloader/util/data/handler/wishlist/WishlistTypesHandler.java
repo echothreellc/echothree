@@ -45,7 +45,7 @@ public class WishlistTypesHandler
 
             form.set(getAttrsMap(attrs));
 
-            wishlistService.createWishlistType(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, wishlistService.createWishlistType(initialDataParser.getUserVisit(), form));
 
             initialDataParser.pushHandler(new WishlistTypeHandler(initialDataParser, this, form.getWishlistTypeName()));
         }

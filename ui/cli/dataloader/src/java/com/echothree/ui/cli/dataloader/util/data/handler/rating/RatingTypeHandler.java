@@ -55,7 +55,8 @@ public class RatingTypeHandler
             createRatingTypeDescriptionForm.setRatingTypeName(ratingTypeName);
             createRatingTypeDescriptionForm.set(getAttrsMap(attrs));
 
-            ratingService.createRatingTypeDescription(initialDataParser.getUserVisit(), createRatingTypeDescriptionForm);
+            checkCommandResult(createRatingTypeDescriptionForm,
+                    ratingService.createRatingTypeDescription(initialDataParser.getUserVisit(), createRatingTypeDescriptionForm));
         } else if(localName.equals("ratingTypeListItem")) {
             var createRatingTypeListItemForm = RatingFormFactory.getCreateRatingTypeListItemForm();
 
@@ -64,7 +65,8 @@ public class RatingTypeHandler
             createRatingTypeListItemForm.setRatingTypeName(ratingTypeName);
             createRatingTypeListItemForm.set(getAttrsMap(attrs));
 
-            ratingService.createRatingTypeListItem(initialDataParser.getUserVisit(), createRatingTypeListItemForm);
+            checkCommandResult(createRatingTypeListItemForm,
+                    ratingService.createRatingTypeListItem(initialDataParser.getUserVisit(), createRatingTypeListItemForm));
 
             initialDataParser.pushHandler(new RatingTypeListItemHandler(initialDataParser, this, componentVendorName,
                     entityTypeName, ratingTypeName, createRatingTypeListItemForm.getRatingTypeListItemName()));

@@ -45,7 +45,7 @@ public class ClubItemTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            clubService.createClubItemType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, clubService.createClubItemType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new ClubItemTypeHandler(initialDataParser, this, commandForm.getClubItemTypeName()));
         }

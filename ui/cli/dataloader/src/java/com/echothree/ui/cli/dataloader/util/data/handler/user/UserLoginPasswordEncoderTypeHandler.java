@@ -49,7 +49,8 @@ public class UserLoginPasswordEncoderTypeHandler
             commandForm.setUserLoginPasswordEncoderTypeName(userLoginPasswordEncoderTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            userService.createUserLoginPasswordEncoderTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm,
+                    userService.createUserLoginPasswordEncoderTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

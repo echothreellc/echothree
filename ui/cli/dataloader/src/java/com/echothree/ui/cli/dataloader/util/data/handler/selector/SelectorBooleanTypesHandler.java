@@ -45,7 +45,7 @@ public class SelectorBooleanTypesHandler
 
             form.set(getAttrsMap(attrs));
 
-            selectorService.createSelectorBooleanType(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, selectorService.createSelectorBooleanType(initialDataParser.getUserVisit(), form));
 
             initialDataParser.pushHandler(new SelectorBooleanTypeHandler(initialDataParser, this, form.getSelectorBooleanTypeName()));
         }

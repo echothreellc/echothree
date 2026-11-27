@@ -61,7 +61,7 @@ public class CarrierHandler
             commandForm.setCarrierName(carrierName);
             commandForm.set(getAttrsMap(attrs));
 
-            carrierService.createCarrierService(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, carrierService.createCarrierService(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new CarrierServiceHandler(initialDataParser, this, carrierName, commandForm.getCarrierServiceName()));
         } else if(localName.equals("carrierOption")) {
@@ -70,7 +70,7 @@ public class CarrierHandler
             commandForm.setCarrierName(carrierName);
             commandForm.set(getAttrsMap(attrs));
 
-            carrierService.createCarrierOption(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, carrierService.createCarrierOption(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new CarrierOptionHandler(initialDataParser, this, carrierName, commandForm.getCarrierOptionName()));
         } else if(localName.equals("entityAttributes")) {

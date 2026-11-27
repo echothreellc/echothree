@@ -68,10 +68,10 @@ public class ItemVolumeTypesHandler
                     var createItemVolumeTypeCommandResult = itemService.createItemVolumeType(initialDataParser.getUserVisit(), createForm);
 
                     if(createItemVolumeTypeCommandResult.hasErrors()) {
-                        getLogger().error(createItemVolumeTypeCommandResult.toString());
+                        checkCommandResult(createForm, createItemVolumeTypeCommandResult);
                     }
                 } else {
-                    getLogger().error(commandResult.toString());
+                    checkCommandResult(editForm, commandResult);
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
@@ -100,7 +100,7 @@ public class ItemVolumeTypesHandler
                         commandResult = itemService.editItemVolumeType(initialDataParser.getUserVisit(), editForm);
 
                         if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     } else {
                         editForm.setEdit(null);
@@ -109,7 +109,7 @@ public class ItemVolumeTypesHandler
                         commandResult = itemService.editItemVolumeType(initialDataParser.getUserVisit(), editForm);
 
                         if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     }
                 }

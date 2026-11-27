@@ -45,7 +45,7 @@ public class PostalAddressElementTypesHandler
 
             form.set(getAttrsMap(attrs));
 
-            contactService.createPostalAddressElementType(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, contactService.createPostalAddressElementType(initialDataParser.getUserVisit(), form));
 
             initialDataParser.pushHandler(new PostalAddressElementTypeHandler(initialDataParser, this, form.getPostalAddressElementTypeName()));
         }

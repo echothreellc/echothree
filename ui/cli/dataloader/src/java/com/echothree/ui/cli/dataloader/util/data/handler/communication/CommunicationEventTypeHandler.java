@@ -49,7 +49,7 @@ public class CommunicationEventTypeHandler
             form.setCommunicationEventTypeName(communicationEventTypeName);
             form.set(getAttrsMap(attrs));
 
-            communicationService.createCommunicationEventTypeDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, communicationService.createCommunicationEventTypeDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

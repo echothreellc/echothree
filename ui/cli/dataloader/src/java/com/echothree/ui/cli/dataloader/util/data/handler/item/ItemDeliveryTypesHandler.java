@@ -50,7 +50,7 @@ public class ItemDeliveryTypesHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            itemService.createItemDeliveryType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemDeliveryType(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new ItemDeliveryTypeHandler(initialDataParser, this, commandForm.getItemDeliveryTypeName()));
         }

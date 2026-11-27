@@ -45,7 +45,8 @@ public class ComponentStagesHandler
 
             createComponentStageForm.set(getAttrsMap(attrs));
 
-            coreService.createComponentStage(initialDataParser.getUserVisit(), createComponentStageForm);
+            checkCommandResult(createComponentStageForm,
+                    coreService.createComponentStage(initialDataParser.getUserVisit(), createComponentStageForm));
         }
     }
     

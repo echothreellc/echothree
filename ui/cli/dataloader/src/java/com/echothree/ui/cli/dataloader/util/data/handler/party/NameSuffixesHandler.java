@@ -48,6 +48,7 @@ public class NameSuffixesHandler
                 form.set(getAttrsMap(attrs));
 
                 var commandResult = partyService.createNameSuffix(initialDataParser.getUserVisit(), form);
+                checkCommandResult(form, commandResult);
                 var executionResult = commandResult.getExecutionResult();
                 var result = executionResult.getResult();
 

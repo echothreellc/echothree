@@ -57,7 +57,7 @@ public class PicklistTimeTypeHandler
             commandForm.setPicklistTimeTypeName(picklistTimeTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(picklistService.createPicklistTimeTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, picklistService.createPicklistTimeTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

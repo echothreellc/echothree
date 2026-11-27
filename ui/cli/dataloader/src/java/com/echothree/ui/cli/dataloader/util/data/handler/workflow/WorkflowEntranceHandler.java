@@ -84,10 +84,10 @@ public class WorkflowEntranceHandler
                             var createWorkflowEntranceDescriptionCommandResult = workflowService.createWorkflowEntranceDescription(initialDataParser.getUserVisit(), createForm);
 
                             if(createWorkflowEntranceDescriptionCommandResult.hasErrors()) {
-                                getLogger().error(createWorkflowEntranceDescriptionCommandResult.toString());
+                                checkCommandResult(createForm, createWorkflowEntranceDescriptionCommandResult);
                             }
                         } else {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     } else {
                         var executionResult = commandResult.getExecutionResult();
@@ -99,7 +99,7 @@ public class WorkflowEntranceHandler
 
                             commandResult = workflowService.editWorkflowEntranceDescription(initialDataParser.getUserVisit(), editForm);
                             if(commandResult.hasErrors()) {
-                                getLogger().error(commandResult.toString());
+                                checkCommandResult(editForm, commandResult);
                             }
                         }
                     }
@@ -112,7 +112,7 @@ public class WorkflowEntranceHandler
                 commandForm.setWorkflowEntranceName(workflowEntranceName);
                 commandForm.set(getAttrsMap(attrs));
 
-                workflowService.createWorkflowEntranceSelector(initialDataParser.getUserVisit(), commandForm);
+                checkCommandResult(commandForm, workflowService.createWorkflowEntranceSelector(initialDataParser.getUserVisit(), commandForm));
             }
             case "workflowEntrancePartyType" -> {
                 var commandForm = WorkflowFormFactory.getCreateWorkflowEntrancePartyTypeForm();
@@ -121,7 +121,7 @@ public class WorkflowEntranceHandler
                 commandForm.setWorkflowEntranceName(workflowEntranceName);
                 commandForm.set(getAttrsMap(attrs));
 
-                workflowService.createWorkflowEntrancePartyType(initialDataParser.getUserVisit(), commandForm);
+                checkCommandResult(commandForm, workflowService.createWorkflowEntrancePartyType(initialDataParser.getUserVisit(), commandForm));
 
                 initialDataParser.pushHandler(new WorkflowEntrancePartyTypeHandler(initialDataParser, this, workflowName,
                         workflowEntranceName, commandForm.getPartyTypeName()));
@@ -137,7 +137,7 @@ public class WorkflowEntranceHandler
                     commandForm.setEntranceWorkflowName(workflowName);
                 }
 
-                workflowService.createWorkflowEntranceStep(initialDataParser.getUserVisit(), commandForm);
+                checkCommandResult(commandForm, workflowService.createWorkflowEntranceStep(initialDataParser.getUserVisit(), commandForm));
             }
         }
     }

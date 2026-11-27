@@ -49,7 +49,7 @@ public class SkillTypeHandler
             form.setSkillTypeName(skillTypeName);
             form.set(getAttrsMap(attrs));
 
-            employeeService.createSkillTypeDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, employeeService.createSkillTypeDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

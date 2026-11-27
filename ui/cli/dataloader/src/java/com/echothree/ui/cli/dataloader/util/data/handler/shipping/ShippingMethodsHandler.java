@@ -45,7 +45,7 @@ public class ShippingMethodsHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(shippingService.createShippingMethod(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, shippingService.createShippingMethod(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new ShippingMethodHandler(initialDataParser, this, commandForm.getShippingMethodName()));
         }

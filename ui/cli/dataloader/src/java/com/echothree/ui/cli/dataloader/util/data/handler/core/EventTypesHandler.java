@@ -45,7 +45,7 @@ public class EventTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            coreService.createEventType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createEventType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new EventTypeHandler(initialDataParser, this, commandForm.getEventTypeName()));
         }

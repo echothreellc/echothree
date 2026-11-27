@@ -45,7 +45,7 @@ public class SelectorComparisonTypesHandler
 
             form.set(getAttrsMap(attrs));
 
-            selectorService.createSelectorComparisonType(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, selectorService.createSelectorComparisonType(initialDataParser.getUserVisit(), form));
 
             initialDataParser.pushHandler(new SelectorComparisonTypeHandler(initialDataParser, this, form.getSelectorComparisonTypeName()));
         }

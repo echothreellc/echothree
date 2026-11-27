@@ -45,7 +45,7 @@ public class ContactMechanismTypesHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            contactService.createContactMechanismType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, contactService.createContactMechanismType(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new ContactMechanismTypeHandler(initialDataParser, this, commandForm.getContactMechanismTypeName()));
         }

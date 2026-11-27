@@ -50,7 +50,7 @@ public class OrderRoleTypesHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            checkCommandResult(orderService.createOrderRoleType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, orderService.createOrderRoleType(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new OrderRoleTypeHandler(initialDataParser, this, commandForm.getOrderRoleTypeName()));
         }

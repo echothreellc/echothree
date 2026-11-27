@@ -52,7 +52,7 @@ public class OfferItemHandler
             form.setItemName(itemName);
             form.set(getAttrsMap(attrs));
 
-            offerService.createOfferItemPrice(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, offerService.createOfferItemPrice(initialDataParser.getUserVisit(), form));
         }
     }
     

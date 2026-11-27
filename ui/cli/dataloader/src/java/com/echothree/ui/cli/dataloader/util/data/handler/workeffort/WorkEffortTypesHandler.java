@@ -45,7 +45,7 @@ public class WorkEffortTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            workEffortService.createWorkEffortType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, workEffortService.createWorkEffortType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new WorkEffortTypeHandler(initialDataParser, this,
                     commandForm.getWorkEffortTypeName()));

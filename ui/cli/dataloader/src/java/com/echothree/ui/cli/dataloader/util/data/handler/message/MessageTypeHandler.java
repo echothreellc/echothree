@@ -62,7 +62,7 @@ public class MessageTypeHandler
             commandForm.setMessageTypeName(messageTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            messageService.createMessageTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, messageService.createMessageTypeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("message")) {
             messageAttrs = getAttrsMap(attrs);
             messageAttrs.keySet().removeAll(Set.of("ComponentVendorName", "EntityTypeName", "MessageTypeName", "ClobMessage", "Description"));
@@ -97,7 +97,7 @@ public class MessageTypeHandler
             commandForm.setClobMessage(clobMessage == null? null: new String(clobMessage));
             commandForm.set(messageAttrs);
             
-            messageService.createMessage(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, messageService.createMessage(initialDataParser.getUserVisit(), commandForm));
             
             inMessage = false;
             messageAttrs = null;

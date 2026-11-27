@@ -49,7 +49,7 @@ public class LeaveReasonHandler
             form.setLeaveReasonName(leaveReasonName);
             form.set(getAttrsMap(attrs));
 
-            employeeService.createLeaveReasonDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, employeeService.createLeaveReasonDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

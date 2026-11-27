@@ -53,7 +53,7 @@ public class CarrierOptionHandler
             commandForm.setCarrierOptionName(carrierOptionName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(carrierService.createCarrierOptionDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, carrierService.createCarrierOptionDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

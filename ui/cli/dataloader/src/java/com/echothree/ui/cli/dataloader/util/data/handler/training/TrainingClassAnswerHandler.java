@@ -64,7 +64,7 @@ public class TrainingClassAnswerHandler
             commandForm.setTrainingClassAnswerName(trainingClassAnswerName);
             commandForm.set(getAttrsMap(attrs));
 
-            trainingService.createTrainingClassAnswerTranslation(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, trainingService.createTrainingClassAnswerTranslation(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

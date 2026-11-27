@@ -49,7 +49,7 @@ public class TerminationReasonHandler
             form.setTerminationReasonName(terminationReasonName);
             form.set(getAttrsMap(attrs));
 
-            employeeService.createTerminationReasonDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, employeeService.createTerminationReasonDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

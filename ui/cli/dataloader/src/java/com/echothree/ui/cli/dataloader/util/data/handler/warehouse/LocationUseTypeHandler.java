@@ -49,7 +49,7 @@ public class LocationUseTypeHandler
             form.setLocationUseTypeName(locationUseTypeName);
             form.set(getAttrsMap(attrs));
 
-            warehouseService.createLocationUseTypeDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, warehouseService.createLocationUseTypeDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

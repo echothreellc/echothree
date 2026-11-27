@@ -83,10 +83,10 @@ public class WorkflowStepHandler
                         var createWorkflowStepDescriptionCommandResult = workflowService.createWorkflowStepDescription(initialDataParser.getUserVisit(), createForm);
 
                         if(createWorkflowStepDescriptionCommandResult.hasErrors()) {
-                            getLogger().error(createWorkflowStepDescriptionCommandResult.toString());
+                            checkCommandResult(createForm, createWorkflowStepDescriptionCommandResult);
                         }
                     } else {
-                        getLogger().error(commandResult.toString());
+                        checkCommandResult(editForm, commandResult);
                     }
                 } else {
                     var executionResult = commandResult.getExecutionResult();
@@ -98,7 +98,7 @@ public class WorkflowStepHandler
 
                         commandResult = workflowService.editWorkflowStepDescription(initialDataParser.getUserVisit(), editForm);
                         if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     }
                 }

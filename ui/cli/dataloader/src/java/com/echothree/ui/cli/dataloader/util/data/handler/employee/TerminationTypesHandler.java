@@ -45,7 +45,7 @@ public class TerminationTypesHandler
 
             form.set(getAttrsMap(attrs));
 
-            employeeService.createTerminationType(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, employeeService.createTerminationType(initialDataParser.getUserVisit(), form));
 
             initialDataParser.pushHandler(new TerminationTypeHandler(initialDataParser, this, form.getTerminationTypeName()));
         }

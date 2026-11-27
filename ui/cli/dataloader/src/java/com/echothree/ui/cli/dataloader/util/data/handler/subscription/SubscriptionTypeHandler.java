@@ -52,7 +52,8 @@ public class SubscriptionTypeHandler
             commandForm.setSubscriptionTypeName(subscriptionTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            subscriptionService.createSubscriptionTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm,
+                    subscriptionService.createSubscriptionTypeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("subscriptionTypeChain")) {
             var commandForm = SubscriptionFormFactory.getCreateSubscriptionTypeChainForm();
 
@@ -60,7 +61,7 @@ public class SubscriptionTypeHandler
             commandForm.setSubscriptionTypeName(subscriptionTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            subscriptionService.createSubscriptionTypeChain(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, subscriptionService.createSubscriptionTypeChain(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

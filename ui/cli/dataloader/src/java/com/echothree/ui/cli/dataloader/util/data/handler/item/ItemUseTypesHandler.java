@@ -45,7 +45,7 @@ public class ItemUseTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            itemService.createItemUseType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemUseType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new ItemUseTypeHandler(initialDataParser, this, commandForm.getItemUseTypeName()));
         }

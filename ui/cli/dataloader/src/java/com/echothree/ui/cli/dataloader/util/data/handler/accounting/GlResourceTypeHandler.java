@@ -54,7 +54,7 @@ public class GlResourceTypeHandler
             commandForm.setGlResourceTypeName(glResourceTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            accountingService.createGlResourceTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, accountingService.createGlResourceTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

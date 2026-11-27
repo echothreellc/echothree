@@ -50,7 +50,7 @@ public class GlResourceTypesHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            accountingService.createGlResourceType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, accountingService.createGlResourceType(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new GlResourceTypeHandler(initialDataParser, this, commandForm.getGlResourceTypeName()));
         }

@@ -49,14 +49,14 @@ public class OrderTypeHandler
             commandForm.setOrderTypeName(orderTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(orderService.createOrderTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, orderService.createOrderTypeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("orderTimeType")) {
             var commandForm = OrderFormFactory.getCreateOrderTimeTypeForm();
 
             commandForm.setOrderTypeName(orderTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(orderService.createOrderTimeType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, orderService.createOrderTimeType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new OrderTimeTypeHandler(initialDataParser, this, orderTypeName, commandForm.getOrderTimeTypeName()));
         } else if(localName.equals("orderPriority")) {
@@ -65,7 +65,7 @@ public class OrderTypeHandler
             commandForm.setOrderTypeName(orderTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(orderService.createOrderPriority(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, orderService.createOrderPriority(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new OrderPriorityHandler(initialDataParser, this, orderTypeName, commandForm.getOrderPriorityName()));
         } else if(localName.equals("orderAliasType")) {
@@ -74,7 +74,7 @@ public class OrderTypeHandler
             commandForm.setOrderTypeName(orderTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(orderService.createOrderAliasType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, orderService.createOrderAliasType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new OrderAliasTypeHandler(initialDataParser, this, orderTypeName, commandForm.getOrderAliasTypeName()));
         } else if(localName.equals("orderAdjustmentType")) {
@@ -83,7 +83,7 @@ public class OrderTypeHandler
             commandForm.setOrderTypeName(orderTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(orderService.createOrderAdjustmentType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, orderService.createOrderAdjustmentType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new OrderAdjustmentTypeHandler(initialDataParser, this, orderTypeName, commandForm.getOrderAdjustmentTypeName()));
         } else if(localName.equals("orderLineAdjustmentType")) {
@@ -92,7 +92,7 @@ public class OrderTypeHandler
             commandForm.setOrderTypeName(orderTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(orderService.createOrderLineAdjustmentType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, orderService.createOrderLineAdjustmentType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new OrderLineAdjustmentTypeHandler(initialDataParser, this, orderTypeName, commandForm.getOrderLineAdjustmentTypeName()));
         }

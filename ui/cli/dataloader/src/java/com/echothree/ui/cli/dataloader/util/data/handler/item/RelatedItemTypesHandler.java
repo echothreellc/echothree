@@ -45,7 +45,7 @@ public class RelatedItemTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            itemService.createRelatedItemType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createRelatedItemType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new RelatedItemTypeHandler(initialDataParser, this, commandForm.getRelatedItemTypeName()));
         }

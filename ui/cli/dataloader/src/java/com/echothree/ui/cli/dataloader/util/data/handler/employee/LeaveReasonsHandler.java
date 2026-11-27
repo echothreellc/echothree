@@ -45,7 +45,7 @@ public class LeaveReasonsHandler
 
             form.set(getAttrsMap(attrs));
 
-            employeeService.createLeaveReason(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, employeeService.createLeaveReason(initialDataParser.getUserVisit(), form));
 
             initialDataParser.pushHandler(new LeaveReasonHandler(initialDataParser, this, form.getLeaveReasonName()));
         }

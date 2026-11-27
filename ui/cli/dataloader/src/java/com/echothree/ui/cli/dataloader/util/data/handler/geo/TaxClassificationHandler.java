@@ -59,7 +59,7 @@ public class TaxClassificationHandler
             commandForm.setTaxClassificationName(taxClassificationName);
             commandForm.set(getAttrsMap(attrs));
 
-            taxService.createTaxClassificationTranslation(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, taxService.createTaxClassificationTranslation(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

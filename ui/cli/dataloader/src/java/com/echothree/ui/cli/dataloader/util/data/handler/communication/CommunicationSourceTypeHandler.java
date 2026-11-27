@@ -49,7 +49,7 @@ public class CommunicationSourceTypeHandler
             form.setCommunicationSourceTypeName(communicationSourceTypeName);
             form.set(getAttrsMap(attrs));
 
-            communicationService.createCommunicationSourceTypeDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, communicationService.createCommunicationSourceTypeDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

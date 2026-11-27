@@ -48,6 +48,7 @@ public class PersonalTitlesHandler
                 form.set(getAttrsMap(attrs));
 
                 var commandResult = partyService.createPersonalTitle(initialDataParser.getUserVisit(), form);
+                checkCommandResult(form, commandResult);
                 var executionResult = commandResult.getExecutionResult();
                 var result = executionResult.getResult();
 

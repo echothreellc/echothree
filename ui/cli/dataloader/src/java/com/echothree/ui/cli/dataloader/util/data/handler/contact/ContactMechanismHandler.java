@@ -59,14 +59,14 @@ public class ContactMechanismHandler
             form.setContactMechanismName(contactMechanismName);
             form.set(getAttrsMap(attrs));
             
-            contactService.createPartyContactMechanismPurpose(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, contactService.createPartyContactMechanismPurpose(initialDataParser.getUserVisit(), form));
         } else if(localName.equals("contactMechanismAlias")) {
             var form = ContactFormFactory.getCreateContactMechanismAliasForm();
             
             form.setContactMechanismName(contactMechanismName);
             form.set(getAttrsMap(attrs));
             
-            contactService.createContactMechanismAlias(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, contactService.createContactMechanismAlias(initialDataParser.getUserVisit(), form));
         } else if(localName.equals("partyContactMechanismAlias")) {
             var form = ContactFormFactory.getCreatePartyContactMechanismAliasForm();
             
@@ -74,7 +74,7 @@ public class ContactMechanismHandler
             form.setContactMechanismName(contactMechanismName);
             form.set(getAttrsMap(attrs));
             
-            contactService.createPartyContactMechanismAlias(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, contactService.createPartyContactMechanismAlias(initialDataParser.getUserVisit(), form));
         } else if(localName.equals("partyPaymentMethods")) {
             initialDataParser.pushHandler(new PartyPaymentMethodsHandler(initialDataParser, this, partyName, contactMechanismName));
         } else if(localName.equals("comments")) {

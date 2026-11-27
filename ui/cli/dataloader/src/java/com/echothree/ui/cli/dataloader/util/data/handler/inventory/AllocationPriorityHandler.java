@@ -54,7 +54,7 @@ public class AllocationPriorityHandler
             form.setAllocationPriorityName(allocationPriorityName);
             form.set(getAttrsMap(attrs));
 
-            inventoryService.createAllocationPriorityDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, inventoryService.createAllocationPriorityDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

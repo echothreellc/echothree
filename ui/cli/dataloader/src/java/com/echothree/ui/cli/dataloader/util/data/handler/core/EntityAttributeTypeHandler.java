@@ -49,7 +49,8 @@ public class EntityAttributeTypeHandler
             createEntityAttributeTypeDescriptionForm.setEntityAttributeTypeName(entityAttributeTypeName);
             createEntityAttributeTypeDescriptionForm.set(getAttrsMap(attrs));
 
-            coreService.createEntityAttributeTypeDescription(initialDataParser.getUserVisit(), createEntityAttributeTypeDescriptionForm);
+            checkCommandResult(createEntityAttributeTypeDescriptionForm,
+                    coreService.createEntityAttributeTypeDescription(initialDataParser.getUserVisit(), createEntityAttributeTypeDescriptionForm));
         }
     }
     

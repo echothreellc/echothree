@@ -49,7 +49,7 @@ public class ForumRoleTypeHandler
             form.setForumRoleTypeName(forumRoleTypeName);
             form.set(getAttrsMap(attrs));
 
-            forumService.createForumRoleTypeDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, forumService.createForumRoleTypeDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

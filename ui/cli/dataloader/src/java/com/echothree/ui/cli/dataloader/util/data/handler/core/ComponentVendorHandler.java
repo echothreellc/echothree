@@ -60,7 +60,7 @@ public class ComponentVendorHandler
 
                 var commandAction = (String)commandForm.get("CommandAction");
                 if(commandAction == null || commandAction.equals("create")) {
-                    coreService.createComponent(initialDataParser.getUserVisit(), commandForm);
+                    checkCommandResult(commandForm, coreService.createComponent(initialDataParser.getUserVisit(), commandForm));
                 }
 
                 initialDataParser.pushHandler(new ComponentHandler(initialDataParser, this, componentVendorName, commandForm.getComponentName()));
@@ -92,10 +92,10 @@ public class ComponentVendorHandler
                             var createEntityTypeResult = coreService.createEntityType(initialDataParser.getUserVisit(), createForm);
 
                             if(createEntityTypeResult.hasErrors()) {
-                                getLogger().error(createEntityTypeResult.toString());
+                                checkCommandResult(createForm, createEntityTypeResult);
                             }
                         } else {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     } else {
                         var executionResult = commandResult.getExecutionResult();
@@ -107,7 +107,7 @@ public class ComponentVendorHandler
 
                             commandResult = coreService.editEntityType(initialDataParser.getUserVisit(), editForm);
                             if(commandResult.hasErrors()) {
-                                getLogger().error(commandResult.toString());
+                                checkCommandResult(editForm, commandResult);
                             }
                         }
                     }
@@ -123,7 +123,7 @@ public class ComponentVendorHandler
 
                 var commandAction = (String)commandForm.get("CommandAction");
                 if(commandAction == null || commandAction.equals("create")) {
-                    coreService.createCommand(initialDataParser.getUserVisit(), commandForm);
+                    checkCommandResult(commandForm, coreService.createCommand(initialDataParser.getUserVisit(), commandForm));
                 }
 
                 initialDataParser.pushHandler(new CommandHandler(initialDataParser, this, componentVendorName, commandForm.getCommandName()));

@@ -58,7 +58,8 @@ public class TransactionEntityRoleTypeHandler
             commandForm.setTransactionEntityRoleTypeName(transactionEntityRoleTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            accountingService.createTransactionEntityRoleTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm,
+                    accountingService.createTransactionEntityRoleTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

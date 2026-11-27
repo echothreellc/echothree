@@ -52,7 +52,7 @@ public class ContentPageLayoutAreaHandler
             form.setSortOrder(sortOrder);
             form.set(getAttrsMap(attrs));
 
-            contentService.createContentPageLayoutAreaDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, contentService.createContentPageLayoutAreaDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

@@ -45,7 +45,7 @@ public class GeoCodeTypesHandler
 
             createGeoCodeTypeForm.set(getAttrsMap(attrs));
 
-            geoService.createGeoCodeType(initialDataParser.getUserVisit(), createGeoCodeTypeForm);
+            checkCommandResult(createGeoCodeTypeForm, geoService.createGeoCodeType(initialDataParser.getUserVisit(), createGeoCodeTypeForm));
 
             initialDataParser.pushHandler(new GeoCodeTypeHandler(initialDataParser, this, createGeoCodeTypeForm.getGeoCodeTypeName()));
         }

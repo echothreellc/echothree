@@ -52,7 +52,7 @@ public class ZipCodeHandler
             commandForm.setGeoCodeName(zipCodeGeoCodeName);
             commandForm.set(getAttrsMap(attrs));
 
-            geoService.createGeoCodeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, geoService.createGeoCodeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("entityAttributes")) {
             initialDataParser.pushHandler(new EntityAttributesHandler(initialDataParser, this, zipCodeEntityRef));
         }

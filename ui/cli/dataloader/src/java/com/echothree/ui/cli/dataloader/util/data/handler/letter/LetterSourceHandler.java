@@ -54,7 +54,7 @@ public class LetterSourceHandler
             commandForm.setLetterSourceName(letterSourceName);
             commandForm.set(getAttrsMap(attrs));
             
-            letterService.createLetterSourceDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, letterService.createLetterSourceDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

@@ -51,7 +51,7 @@ public class PaymentProcessorTypeHandler
             commandForm.setPaymentProcessorTypeName(paymentProcessorTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(paymentService.createPaymentProcessorTypeCodeType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, paymentService.createPaymentProcessorTypeCodeType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new PaymentProcessorTypeCodeTypeHandler(initialDataParser, this,
                     commandForm.getPaymentProcessorTypeName(), commandForm.getPaymentProcessorTypeCodeTypeName()));
@@ -61,14 +61,14 @@ public class PaymentProcessorTypeHandler
             commandForm.setPaymentProcessorTypeName(paymentProcessorTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(paymentService.createPaymentProcessorTypeAction(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, paymentService.createPaymentProcessorTypeAction(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("paymentProcessorTypeDescription")) {
             var commandForm = PaymentFormFactory.getCreatePaymentProcessorTypeDescriptionForm();
 
             commandForm.setPaymentProcessorTypeName(paymentProcessorTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(paymentService.createPaymentProcessorTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, paymentService.createPaymentProcessorTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

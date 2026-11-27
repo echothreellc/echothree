@@ -47,7 +47,7 @@ public class ForumRoleTypesHandler
 
             form.set(getAttrsMap(attrs));
 
-            forumService.createForumRoleType(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, forumService.createForumRoleType(initialDataParser.getUserVisit(), form));
             
             initialDataParser.pushHandler(new ForumRoleTypeHandler(initialDataParser, this, forumRoleTypeName));
         }

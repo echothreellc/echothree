@@ -45,7 +45,8 @@ public class DateTimeFormatsHandler
 
             createDateTimeFormatForm.set(getAttrsMap(attrs));
 
-            partyService.createDateTimeFormat(initialDataParser.getUserVisit(), createDateTimeFormatForm);
+            checkCommandResult(createDateTimeFormatForm,
+                    partyService.createDateTimeFormat(initialDataParser.getUserVisit(), createDateTimeFormatForm));
 
             initialDataParser.pushHandler(new DateTimeFormatHandler(initialDataParser, this, createDateTimeFormatForm.getDateTimeFormatName()));
         }

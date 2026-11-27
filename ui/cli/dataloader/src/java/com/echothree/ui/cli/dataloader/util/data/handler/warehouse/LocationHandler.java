@@ -61,7 +61,7 @@ public class LocationHandler
             commandForm.setLocationName(locationName);
             commandForm.set(getAttrsMap(attrs));
 
-            warehouseService.createLocationDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, warehouseService.createLocationDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("locationVolume")) {
             var commandForm = WarehouseFormFactory.getCreateLocationVolumeForm();
 
@@ -69,7 +69,7 @@ public class LocationHandler
             commandForm.setLocationName(locationName);
             commandForm.set(getAttrsMap(attrs));
 
-            warehouseService.createLocationVolume(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, warehouseService.createLocationVolume(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("locationCapacity")) {
             var commandForm = WarehouseFormFactory.getCreateLocationCapacityForm();
 
@@ -77,7 +77,7 @@ public class LocationHandler
             commandForm.setLocationName(locationName);
             commandForm.set(getAttrsMap(attrs));
 
-            warehouseService.createLocationCapacity(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, warehouseService.createLocationCapacity(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("entityAttributes")) {
             initialDataParser.pushHandler(new EntityAttributesHandler(initialDataParser, this, entityRef));
         } else if(localName.equals("entityTags")) {

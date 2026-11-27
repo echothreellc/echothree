@@ -49,7 +49,8 @@ public class ContactMechanismTypeHandler
             createContactMechanismTypeDescriptionForm.setContactMechanismTypeName(contactMechanismTypeName);
             createContactMechanismTypeDescriptionForm.set(getAttrsMap(attrs));
 
-            contactService.createContactMechanismTypeDescription(initialDataParser.getUserVisit(), createContactMechanismTypeDescriptionForm);
+            checkCommandResult(createContactMechanismTypeDescriptionForm,
+                    contactService.createContactMechanismTypeDescription(initialDataParser.getUserVisit(), createContactMechanismTypeDescriptionForm));
         }
     }
     

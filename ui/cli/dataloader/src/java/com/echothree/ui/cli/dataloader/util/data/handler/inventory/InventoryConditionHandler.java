@@ -51,14 +51,14 @@ public class InventoryConditionHandler
             commandForm.setInventoryConditionName(inventoryConditionName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(inventoryService.createInventoryConditionDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, inventoryService.createInventoryConditionDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("inventoryConditionUse")) {
             var commandForm = InventoryFormFactory.getCreateInventoryConditionUseForm();
 
             commandForm.setInventoryConditionName(inventoryConditionName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(inventoryService.createInventoryConditionUse(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, inventoryService.createInventoryConditionUse(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

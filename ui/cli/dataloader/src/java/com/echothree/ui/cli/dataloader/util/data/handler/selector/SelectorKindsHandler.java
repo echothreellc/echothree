@@ -50,7 +50,7 @@ public class SelectorKindsHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            selectorService.createSelectorKind(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, selectorService.createSelectorKind(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new SelectorKindHandler(initialDataParser, this, commandForm.getSelectorKindName()));
         }

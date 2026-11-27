@@ -45,7 +45,7 @@ public class UseTypesHandler
 
             form.set(getAttrsMap(attrs));
 
-            offerService.createUseType(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, offerService.createUseType(initialDataParser.getUserVisit(), form));
 
             initialDataParser.pushHandler(new UseTypeHandler(initialDataParser, this, form.getUseTypeName()));
         }

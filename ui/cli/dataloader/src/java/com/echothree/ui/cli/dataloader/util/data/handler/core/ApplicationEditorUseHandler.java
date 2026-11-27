@@ -57,7 +57,7 @@ public class ApplicationEditorUseHandler
             commandForm.setApplicationEditorUseName(applicationEditorUseName);
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createApplicationEditorUseDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createApplicationEditorUseDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

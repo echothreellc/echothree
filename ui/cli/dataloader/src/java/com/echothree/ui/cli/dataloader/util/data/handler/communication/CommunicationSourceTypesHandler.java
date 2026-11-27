@@ -45,7 +45,7 @@ public class CommunicationSourceTypesHandler
 
             form.set(getAttrsMap(attrs));
 
-            communicationService.createCommunicationSourceType(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, communicationService.createCommunicationSourceType(initialDataParser.getUserVisit(), form));
 
             initialDataParser.pushHandler(new CommunicationSourceTypeHandler(initialDataParser, this, form.getCommunicationSourceTypeName()));
         }

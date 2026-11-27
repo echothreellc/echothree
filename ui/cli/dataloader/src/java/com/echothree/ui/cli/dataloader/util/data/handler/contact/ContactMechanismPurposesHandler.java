@@ -47,7 +47,7 @@ public class ContactMechanismPurposesHandler
 
             form.set(getAttrsMap(attrs));
 
-            contactService.createContactMechanismPurpose(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, contactService.createContactMechanismPurpose(initialDataParser.getUserVisit(), form));
             
             initialDataParser.pushHandler(new ContactMechanismPurposeHandler(initialDataParser, this, contactMechanismPurposeName));
         }

@@ -65,14 +65,14 @@ public class PrinterGroupHandler
             commandForm.setPrinterGroupName(printerGroupName);
             commandForm.set(getAttrsMap(attrs));
 
-            printerService.createPrinterGroupDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, printerService.createPrinterGroupDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("printer")) {
             var commandForm = PrinterFormFactory.getCreatePrinterForm();
 
             commandForm.setPrinterGroupName(printerGroupName);
             commandForm.set(getAttrsMap(attrs));
 
-            printerService.createPrinter(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, printerService.createPrinter(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new PrinterHandler(initialDataParser, this, commandForm.getPrinterName()));
         } else if(localName.equals("printerGroupJob")) {
@@ -142,7 +142,7 @@ public class PrinterGroupHandler
                 }
             }
 
-            printerService.createPrinterGroupJob(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, printerService.createPrinterGroupJob(initialDataParser.getUserVisit(), commandForm));
 
             inPrinterGroupJob = false;
             createPrinterGroupJobMap = null;

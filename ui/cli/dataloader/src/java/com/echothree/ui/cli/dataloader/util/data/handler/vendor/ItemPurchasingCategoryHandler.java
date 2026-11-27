@@ -51,7 +51,7 @@ public class ItemPurchasingCategoryHandler
             form.setItemPurchasingCategoryName(itemPurchasingCategoryName);
             form.set(getAttrsMap(attrs));
             
-            vendorService.createItemPurchasingCategoryDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, vendorService.createItemPurchasingCategoryDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

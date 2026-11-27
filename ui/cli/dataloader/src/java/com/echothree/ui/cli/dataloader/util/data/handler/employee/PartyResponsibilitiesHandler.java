@@ -54,7 +54,7 @@ public class PartyResponsibilitiesHandler
             commandForm.setPartyName(partyName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(employeeService.createPartyResponsibility(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, employeeService.createPartyResponsibility(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

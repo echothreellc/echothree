@@ -51,7 +51,8 @@ public class GeoCodeAliasTypeHandler
             createGeoCodeAliasTypeDescriptionForm.setGeoCodeAliasTypeName(geoCodeAliasTypeName);
             createGeoCodeAliasTypeDescriptionForm.set(getAttrsMap(attrs));
 
-            geoService.createGeoCodeAliasTypeDescription(initialDataParser.getUserVisit(), createGeoCodeAliasTypeDescriptionForm);
+            checkCommandResult(createGeoCodeAliasTypeDescriptionForm,
+                    geoService.createGeoCodeAliasTypeDescription(initialDataParser.getUserVisit(), createGeoCodeAliasTypeDescriptionForm));
         }
     }
     

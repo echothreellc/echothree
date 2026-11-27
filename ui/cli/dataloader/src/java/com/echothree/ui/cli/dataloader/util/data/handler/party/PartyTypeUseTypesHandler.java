@@ -47,7 +47,7 @@ public class PartyTypeUseTypesHandler
 
             form.set(getAttrsMap(attrs));
 
-            partyService.createPartyTypeUseType(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, partyService.createPartyTypeUseType(initialDataParser.getUserVisit(), form));
             
             initialDataParser.pushHandler(new PartyTypeUseTypeHandler(initialDataParser, this, partyTypeUseTypeName));
         }

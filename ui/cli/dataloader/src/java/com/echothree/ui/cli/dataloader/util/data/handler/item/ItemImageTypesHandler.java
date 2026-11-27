@@ -50,7 +50,7 @@ public class ItemImageTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            itemService.createItemImageType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemImageType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new ItemImageTypeHandler(initialDataParser, this, commandForm.getItemImageTypeName()));
         }

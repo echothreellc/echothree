@@ -57,6 +57,7 @@ public class ItemsHandler
                 commandForm.set(getAttrsMap(attrs));
 
                 var commandResult = itemService.createItem(initialDataParser.getUserVisit(), commandForm);
+                checkCommandResult(commandForm, commandResult);
                 var executionResult = commandResult.getExecutionResult();
                 var result = executionResult.getResult();
                 
@@ -68,6 +69,7 @@ public class ItemsHandler
                 commandForm.setItemName(itemName);
 
                 var commandResult = itemService.getItem(initialDataParser.getUserVisit(), commandForm);
+                checkCommandResult(commandForm, commandResult);
                 
                 if(!commandResult.hasErrors()) {
                     var executionResult = commandResult.getExecutionResult();

@@ -50,7 +50,7 @@ public class DocumentTypeUsageTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(documentService.createDocumentTypeUsageType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, documentService.createDocumentTypeUsageType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new DocumentTypeUsageTypeHandler(initialDataParser, this, commandForm.getDocumentTypeUsageTypeName()));
         }

@@ -44,7 +44,7 @@ public class VendorTypesHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            vendorService.createVendorType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, vendorService.createVendorType(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new VendorTypeHandler(initialDataParser, this, commandForm.getVendorTypeName()));
         }

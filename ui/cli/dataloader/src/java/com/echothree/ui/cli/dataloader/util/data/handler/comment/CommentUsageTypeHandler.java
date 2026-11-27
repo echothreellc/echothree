@@ -60,7 +60,7 @@ public class CommentUsageTypeHandler
             form.setCommentUsageTypeName(commentUsageTypeName);
             form.set(getAttrsMap(attrs));
 
-            commentService.createCommentUsageTypeDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, commentService.createCommentUsageTypeDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

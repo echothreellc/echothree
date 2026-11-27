@@ -57,7 +57,8 @@ public class OrderLineAdjustmentTypeHandler
             commandForm.setOrderLineAdjustmentTypeName(orderLineAdjustmentTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(orderService.createOrderLineAdjustmentTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm,
+                    orderService.createOrderLineAdjustmentTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

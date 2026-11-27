@@ -45,7 +45,8 @@ public class EntityAttributeTypesHandler
 
             createEntityAttributeTypeForm.set(getAttrsMap(attrs));
 
-            coreService.createEntityAttributeType(initialDataParser.getUserVisit(), createEntityAttributeTypeForm);
+            checkCommandResult(createEntityAttributeTypeForm,
+                    coreService.createEntityAttributeType(initialDataParser.getUserVisit(), createEntityAttributeTypeForm));
 
             initialDataParser.pushHandler(new EntityAttributeTypeHandler(initialDataParser, this,
                     createEntityAttributeTypeForm.getEntityAttributeTypeName()));

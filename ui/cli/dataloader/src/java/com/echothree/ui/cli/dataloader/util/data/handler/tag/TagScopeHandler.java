@@ -49,21 +49,21 @@ public class TagScopeHandler
             commandForm.setTagScopeName(tagScopeName);
             commandForm.set(getAttrsMap(attrs));
 
-            tagService.createTagScopeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, tagService.createTagScopeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("tagScopeEntityType")) {
             var commandForm = TagFormFactory.getCreateTagScopeEntityTypeForm();
 
             commandForm.setTagScopeName(tagScopeName);
             commandForm.set(getAttrsMap(attrs));
 
-            tagService.createTagScopeEntityType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, tagService.createTagScopeEntityType(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("tag")) {
             var commandForm = TagFormFactory.getCreateTagForm();
 
             commandForm.setTagScopeName(tagScopeName);
             commandForm.set(getAttrsMap(attrs));
 
-            tagService.createTag(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, tagService.createTag(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

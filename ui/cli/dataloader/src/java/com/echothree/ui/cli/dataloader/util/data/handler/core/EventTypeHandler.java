@@ -49,7 +49,8 @@ public class EventTypeHandler
             createEventTypeDescriptionForm.setEventTypeName(eventTypeName);
             createEventTypeDescriptionForm.set(getAttrsMap(attrs));
 
-            coreService.createEventTypeDescription(initialDataParser.getUserVisit(), createEventTypeDescriptionForm);
+            checkCommandResult(createEventTypeDescriptionForm,
+                    coreService.createEventTypeDescription(initialDataParser.getUserVisit(), createEventTypeDescriptionForm));
         }
     }
     

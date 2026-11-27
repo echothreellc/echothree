@@ -50,7 +50,7 @@ public class TransactionTimeTypesHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            accountingService.createTransactionTimeType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, accountingService.createTransactionTimeType(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new TransactionTimeTypeHandler(initialDataParser, this, commandForm.getTransactionTimeTypeName()));
         }

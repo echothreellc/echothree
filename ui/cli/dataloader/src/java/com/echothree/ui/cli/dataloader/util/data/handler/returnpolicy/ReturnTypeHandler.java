@@ -52,7 +52,7 @@ public class ReturnTypeHandler
             commandForm.setReturnTypeName(returnTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(returnPolicyService.createReturnTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, returnPolicyService.createReturnTypeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("returnReasonType")) {
             var commandForm = ReturnPolicyFormFactory.getCreateReturnReasonTypeForm();
 
@@ -60,7 +60,7 @@ public class ReturnTypeHandler
             commandForm.setReturnTypeName(returnTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(returnPolicyService.createReturnReasonType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, returnPolicyService.createReturnReasonType(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("returnTypeShippingMethod")) {
             var commandForm = ReturnPolicyFormFactory.getCreateReturnTypeShippingMethodForm();
 
@@ -68,7 +68,7 @@ public class ReturnTypeHandler
             commandForm.setReturnTypeName(returnTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(returnPolicyService.createReturnTypeShippingMethod(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, returnPolicyService.createReturnTypeShippingMethod(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

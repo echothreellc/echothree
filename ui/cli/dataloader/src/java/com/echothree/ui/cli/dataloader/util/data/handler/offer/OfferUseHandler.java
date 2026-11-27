@@ -52,7 +52,7 @@ public class OfferUseHandler
             form.setUseName(useName);
             form.set(getAttrsMap(attrs));
 
-            offerService.createSource(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, offerService.createSource(initialDataParser.getUserVisit(), form));
         }
     }
     

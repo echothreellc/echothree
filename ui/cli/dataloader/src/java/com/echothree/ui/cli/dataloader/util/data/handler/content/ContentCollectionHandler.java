@@ -49,14 +49,14 @@ public class ContentCollectionHandler
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.set(getAttrsMap(attrs));
 
-            contentService.createContentCollectionDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, contentService.createContentCollectionDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("contentSection")) {
             var commandForm = ContentFormFactory.getCreateContentSectionForm();
 
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.set(getAttrsMap(attrs));
 
-            contentService.createContentSection(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, contentService.createContentSection(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new ContentSectionHandler(initialDataParser, this, contentCollectionName,
                     commandForm.getContentSectionName()));
@@ -66,7 +66,7 @@ public class ContentCollectionHandler
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.set(getAttrsMap(attrs));
 
-            contentService.createContentCatalog(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, contentService.createContentCatalog(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new ContentCatalogHandler(initialDataParser, this, contentCollectionName,
                     commandForm.getContentCatalogName()));
@@ -76,7 +76,7 @@ public class ContentCollectionHandler
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.set(getAttrsMap(attrs));
 
-            contentService.createContentForum(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, contentService.createContentForum(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

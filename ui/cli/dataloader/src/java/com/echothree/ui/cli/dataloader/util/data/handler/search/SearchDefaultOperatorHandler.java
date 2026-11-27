@@ -54,7 +54,7 @@ public class SearchDefaultOperatorHandler
             commandForm.setSearchDefaultOperatorName(searchDefaultOperatorName);
             commandForm.set(getAttrsMap(attrs));
 
-            searchService.createSearchDefaultOperatorDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, searchService.createSearchDefaultOperatorDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

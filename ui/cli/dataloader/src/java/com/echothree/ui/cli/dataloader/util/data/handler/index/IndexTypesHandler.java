@@ -69,10 +69,10 @@ public class IndexTypesHandler
                     var createIndexTypeCommandResult = indexService.createIndexType(initialDataParser.getUserVisit(), createForm);
                     
                     if(createIndexTypeCommandResult.hasErrors()) {
-                        getLogger().error(createIndexTypeCommandResult.toString());
+                        checkCommandResult(createForm, createIndexTypeCommandResult);
                     }
                 } else {
-                    getLogger().error(commandResult.toString());
+                    checkCommandResult(editForm, commandResult);
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
@@ -117,7 +117,7 @@ public class IndexTypesHandler
                         commandResult = indexService.editIndexType(initialDataParser.getUserVisit(), editForm);
 
                         if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     } else {
                         editForm.setEdit(null);
@@ -126,7 +126,7 @@ public class IndexTypesHandler
                         commandResult = indexService.editIndexType(initialDataParser.getUserVisit(), editForm);
 
                         if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     }
                 }

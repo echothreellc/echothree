@@ -56,7 +56,7 @@ public class LocationNameElementHandler
             form.setLocationNameElementName(locationNameElementName);
             form.set(getAttrsMap(attrs));
 
-            warehouseService.createLocationNameElementDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, warehouseService.createLocationNameElementDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

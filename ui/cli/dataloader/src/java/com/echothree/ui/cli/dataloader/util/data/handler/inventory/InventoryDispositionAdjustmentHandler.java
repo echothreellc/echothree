@@ -61,7 +61,8 @@ public class InventoryDispositionAdjustmentHandler
             commandForm.setInventoryDispositionAdjustmentName(inventoryDispositionAdjustmentName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(inventoryService.createInventoryDispositionAdjustmentDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm,
+                    inventoryService.createInventoryDispositionAdjustmentDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

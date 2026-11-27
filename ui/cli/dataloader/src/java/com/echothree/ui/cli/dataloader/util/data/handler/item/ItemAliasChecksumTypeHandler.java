@@ -54,7 +54,7 @@ public class ItemAliasChecksumTypeHandler
             commandForm.setItemAliasChecksumTypeName(itemAliasChecksumTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            itemService.createItemAliasChecksumTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemAliasChecksumTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

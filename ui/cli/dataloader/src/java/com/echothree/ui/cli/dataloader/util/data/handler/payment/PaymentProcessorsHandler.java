@@ -47,6 +47,7 @@ public class PaymentProcessorsHandler
             commandForm.set(getAttrsMap(attrs));
 
             var commandResult = paymentService.createPaymentProcessor(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, commandResult);
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();

@@ -49,7 +49,8 @@ public class ContentPageAreaTypeHandler
             createContentPageAreaTypeDescriptionForm.setContentPageAreaTypeName(contentPageAreaTypeName);
             createContentPageAreaTypeDescriptionForm.set(getAttrsMap(attrs));
 
-            contentService.createContentPageAreaTypeDescription(initialDataParser.getUserVisit(), createContentPageAreaTypeDescriptionForm);
+            checkCommandResult(createContentPageAreaTypeDescriptionForm,
+                    contentService.createContentPageAreaTypeDescription(initialDataParser.getUserVisit(), createContentPageAreaTypeDescriptionForm));
         }
     }
     

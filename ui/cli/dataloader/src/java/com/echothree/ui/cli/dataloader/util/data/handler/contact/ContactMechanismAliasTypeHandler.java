@@ -49,7 +49,8 @@ public class ContactMechanismAliasTypeHandler
             createContactMechanismAliasTypeDescriptionForm.setContactMechanismAliasTypeName(contactMechanismAliasTypeName);
             createContactMechanismAliasTypeDescriptionForm.set(getAttrsMap(attrs));
 
-            contactService.createContactMechanismAliasTypeDescription(initialDataParser.getUserVisit(), createContactMechanismAliasTypeDescriptionForm);
+            checkCommandResult(createContactMechanismAliasTypeDescriptionForm,
+                    contactService.createContactMechanismAliasTypeDescription(initialDataParser.getUserVisit(), createContactMechanismAliasTypeDescriptionForm));
         }
     }
     

@@ -51,6 +51,7 @@ public class EmployeesHandler
             commandForm.set(getAttrsMap(attrs));
 
             var commandResult = partyService.createEmployee(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, commandResult);
             
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();

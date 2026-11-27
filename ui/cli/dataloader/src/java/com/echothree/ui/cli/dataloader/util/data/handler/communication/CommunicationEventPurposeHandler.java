@@ -49,7 +49,7 @@ public class CommunicationEventPurposeHandler
             form.setCommunicationEventPurposeName(communicationEventPurposeName);
             form.set(getAttrsMap(attrs));
 
-            communicationService.createCommunicationEventPurposeDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, communicationService.createCommunicationEventPurposeDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

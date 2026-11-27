@@ -45,7 +45,7 @@ public class TermsHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(termService.createTerm(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, termService.createTerm(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new TermHandler(initialDataParser, this, commandForm.getTermName()));
         }

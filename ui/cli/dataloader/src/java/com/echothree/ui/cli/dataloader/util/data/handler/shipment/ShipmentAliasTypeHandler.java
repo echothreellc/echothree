@@ -52,7 +52,7 @@ public class ShipmentAliasTypeHandler
             commandForm.setShipmentAliasTypeName(shipmentAliasTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            checkCommandResult(shipmentService.createShipmentAliasTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, shipmentService.createShipmentAliasTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

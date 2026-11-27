@@ -53,7 +53,7 @@ public class PostalAddressLineHandler
             form.setPostalAddressLineSortOrder(postalAddressLineSortOrder);
             form.set(getAttrsMap(attrs));
 
-            contactService.createPostalAddressLineElement(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, contactService.createPostalAddressLineElement(initialDataParser.getUserVisit(), form));
         }
     }
     

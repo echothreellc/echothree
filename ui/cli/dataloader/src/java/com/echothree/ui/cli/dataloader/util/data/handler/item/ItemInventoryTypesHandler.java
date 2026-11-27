@@ -50,7 +50,7 @@ public class ItemInventoryTypesHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            itemService.createItemInventoryType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemInventoryType(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new ItemInventoryTypeHandler(initialDataParser, this, commandForm.getItemInventoryTypeName()));
         }

@@ -45,7 +45,8 @@ public class ContentCollectionsHandler
 
             createContentCollectionForm.set(getAttrsMap(attrs));
 
-            contentService.createContentCollection(initialDataParser.getUserVisit(), createContentCollectionForm);
+            checkCommandResult(createContentCollectionForm,
+                    contentService.createContentCollection(initialDataParser.getUserVisit(), createContentCollectionForm));
 
             initialDataParser.pushHandler(new ContentCollectionHandler(initialDataParser, this,
                     createContentCollectionForm.getContentCollectionName()));

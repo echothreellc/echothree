@@ -45,7 +45,7 @@ public class UserLoginPasswordTypesHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            userService.createUserLoginPasswordType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, userService.createUserLoginPasswordType(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new UserLoginPasswordTypeHandler(initialDataParser, this, commandForm.getUserLoginPasswordTypeName()));
         }

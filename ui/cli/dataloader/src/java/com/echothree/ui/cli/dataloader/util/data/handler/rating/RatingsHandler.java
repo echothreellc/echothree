@@ -49,7 +49,7 @@ public class RatingsHandler
             form.setEntityRef(entityRef);
             form.set(getAttrsMap(attrs));
             
-            ratingService.createRating(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, ratingService.createRating(initialDataParser.getUserVisit(), form));
         }
     }
     

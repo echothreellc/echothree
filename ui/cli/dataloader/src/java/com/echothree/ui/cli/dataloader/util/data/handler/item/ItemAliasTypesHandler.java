@@ -69,10 +69,10 @@ public class ItemAliasTypesHandler
                     var createItemAliasTypeCommandResult = itemService.createItemAliasType(initialDataParser.getUserVisit(), createForm);
 
                     if(createItemAliasTypeCommandResult.hasErrors()) {
-                        getLogger().error(createItemAliasTypeCommandResult.toString());
+                        checkCommandResult(createForm, createItemAliasTypeCommandResult);
                     }
                 } else {
-                    getLogger().error(commandResult.toString());
+                    checkCommandResult(editForm, commandResult);
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
@@ -119,7 +119,7 @@ public class ItemAliasTypesHandler
                         commandResult = itemService.editItemAliasType(initialDataParser.getUserVisit(), editForm);
 
                         if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     } else {
                         editForm.setEdit(null);
@@ -128,7 +128,7 @@ public class ItemAliasTypesHandler
                         commandResult = itemService.editItemAliasType(initialDataParser.getUserVisit(), editForm);
 
                         if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     }
                 }

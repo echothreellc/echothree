@@ -50,7 +50,7 @@ public class CommunicationSourcesHandler
 
             commandForm.set(getAttrsMap(attrs));
             
-            communicationService.createCommunicationSource(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, communicationService.createCommunicationSource(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new CommunicationSourceHandler(initialDataParser, this, commandForm.getCommunicationSourceName()));
         }

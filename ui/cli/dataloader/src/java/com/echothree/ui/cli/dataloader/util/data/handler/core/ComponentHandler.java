@@ -52,7 +52,8 @@ public class ComponentHandler
             createComponentVersionForm.setComponentName(componentName);
             createComponentVersionForm.set(getAttrsMap(attrs));
 
-            coreService.createComponentVersion(initialDataParser.getUserVisit(), createComponentVersionForm);
+            checkCommandResult(createComponentVersionForm,
+                    coreService.createComponentVersion(initialDataParser.getUserVisit(), createComponentVersionForm));
         }
     }
     

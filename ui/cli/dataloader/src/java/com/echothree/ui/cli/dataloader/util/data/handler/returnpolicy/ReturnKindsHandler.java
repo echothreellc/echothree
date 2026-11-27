@@ -45,7 +45,7 @@ public class ReturnKindsHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(returnPolicyService.createReturnKind(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, returnPolicyService.createReturnKind(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new ReturnKindHandler(initialDataParser, this, commandForm.getReturnKindName()));
         }

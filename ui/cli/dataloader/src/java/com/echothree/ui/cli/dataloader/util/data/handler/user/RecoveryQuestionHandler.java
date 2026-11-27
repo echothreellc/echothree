@@ -49,7 +49,8 @@ public class RecoveryQuestionHandler
             createRecoveryQuestionDescriptionForm.setRecoveryQuestionName(recoveryQuestionName);
             createRecoveryQuestionDescriptionForm.set(getAttrsMap(attrs));
 
-            userService.createRecoveryQuestionDescription(initialDataParser.getUserVisit(), createRecoveryQuestionDescriptionForm);
+            checkCommandResult(createRecoveryQuestionDescriptionForm,
+                    userService.createRecoveryQuestionDescription(initialDataParser.getUserVisit(), createRecoveryQuestionDescriptionForm));
         }
     }
     

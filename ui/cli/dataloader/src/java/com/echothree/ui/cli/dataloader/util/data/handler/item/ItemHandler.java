@@ -80,7 +80,7 @@ public class ItemHandler
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
-            itemService.createItemAlias(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemAlias(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("itemDescription")) {
             itemDescriptionAttrs = getAttrsMap(attrs);
             itemDescriptionAttrs.keySet().removeAll(Set.of("ItemName", "ClobDescription", "BlobDescription"));
@@ -92,70 +92,70 @@ public class ItemHandler
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
-            itemService.createItemUnitOfMeasureType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemUnitOfMeasureType(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("itemPrice")) {
             var commandForm = ItemFormFactory.getCreateItemPriceForm();
             
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
-            itemService.createItemPrice(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemPrice(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("itemVolume")) {
             var commandForm = ItemFormFactory.getCreateItemVolumeForm();
             
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
-            itemService.createItemVolume(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemVolume(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("itemWeight")) {
             var commandForm = ItemFormFactory.getCreateItemWeightForm();
             
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
-            itemService.createItemWeight(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemWeight(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("itemCountryOfOrigin")) {
             var commandForm = ItemFormFactory.getCreateItemCountryOfOriginForm();
             
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
-            itemService.createItemCountryOfOrigin(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemCountryOfOrigin(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("itemPackCheckRequirement")) {
             var commandForm = ItemFormFactory.getCreateItemPackCheckRequirementForm();
             
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
-            itemService.createItemPackCheckRequirement(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemPackCheckRequirement(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("itemUnitPriceLimit")) {
             var commandForm = ItemFormFactory.getCreateItemUnitPriceLimitForm();
             
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
-            itemService.createItemUnitPriceLimit(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemUnitPriceLimit(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("itemUnitLimit")) {
             var commandForm = ItemFormFactory.getCreateItemUnitLimitForm();
             
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
-            itemService.createItemUnitLimit(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemUnitLimit(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("itemKitMember")) {
             var commandForm = ItemFormFactory.getCreateItemKitMemberForm();
             
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
-            itemService.createItemKitMember(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemKitMember(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("itemUnitCustomerTypeLimit")) {
             var commandForm = ItemFormFactory.getCreateItemUnitCustomerTypeLimitForm();
             
             commandForm.setItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
-            itemService.createItemUnitCustomerTypeLimit(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemUnitCustomerTypeLimit(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("partyInventoryLevel")) {
             var commandForm = InventoryFormFactory.getCreatePartyInventoryLevelForm();
             
@@ -166,14 +166,14 @@ public class ItemHandler
                 commandForm.setCompanyName(companyName);
             }
             
-            inventoryService.createPartyInventoryLevel(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, inventoryService.createPartyInventoryLevel(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("relatedItem")) {
             var commandForm = ItemFormFactory.getCreateRelatedItemForm();
             
             commandForm.setFromItemName(itemName);
             commandForm.set(getAttrsMap(attrs));
             
-            itemService.createRelatedItem(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createRelatedItem(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("comments")) {
             initialDataParser.pushHandler(new CommentsHandler(initialDataParser, this, entityRef));
         } else if(localName.equals("ratings")) {
@@ -269,10 +269,10 @@ public class ItemHandler
                     var createItemDescriptionCommandResult = itemService.createItemDescription(initialDataParser.getUserVisit(), createForm);
                     
                     if(createItemDescriptionCommandResult.hasErrors()) {
-                        getLogger().error(createItemDescriptionCommandResult.toString());
+                        checkCommandResult(createForm, createItemDescriptionCommandResult);
                     }
                 } else {
-                    getLogger().error(commandResult.toString());
+                    checkCommandResult(editForm, commandResult);
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
@@ -357,7 +357,7 @@ public class ItemHandler
                         commandResult = itemService.editItemDescription(initialDataParser.getUserVisit(), editForm);
 
                         if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     } else {
                         editForm.setEdit(null);
@@ -366,7 +366,7 @@ public class ItemHandler
                         commandResult = itemService.editItemDescription(initialDataParser.getUserVisit(), editForm);
 
                         if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     }
                 }

@@ -50,7 +50,7 @@ public class LinkDirectionalitiesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(coreService.createLinkDirectionality(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, coreService.createLinkDirectionality(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new LinkDirectionalityHandler(initialDataParser, this, commandForm.getLinkDirectionalityName()));
         }

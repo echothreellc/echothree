@@ -46,6 +46,7 @@ public class CountriesHandler
             form.set(getAttrsMap(attrs));
 
             var commandResult = geoService.createCountry(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, commandResult);
             var executionResult = commandResult.getExecutionResult();
             var createCountryResult = executionResult.getResult();
             var countryGeoCodeName = createCountryResult.getGeoCodeName();

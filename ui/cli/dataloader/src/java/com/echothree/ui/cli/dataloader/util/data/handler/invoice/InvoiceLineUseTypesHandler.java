@@ -50,7 +50,7 @@ public class InvoiceLineUseTypesHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            checkCommandResult(invoiceService.createInvoiceLineUseType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, invoiceService.createInvoiceLineUseType(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new InvoiceLineUseTypeHandler(initialDataParser, this, commandForm.getInvoiceLineUseTypeName()));
         }

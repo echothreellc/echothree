@@ -52,7 +52,8 @@ public class WorkRequirementTypeHandler
             commandForm.setWorkRequirementTypeName(workRequirementTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            workRequirementService.createWorkRequirementTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm,
+                    workRequirementService.createWorkRequirementTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

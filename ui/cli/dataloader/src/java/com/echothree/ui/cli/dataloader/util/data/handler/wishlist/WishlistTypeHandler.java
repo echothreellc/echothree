@@ -49,14 +49,14 @@ public class WishlistTypeHandler
             form.setWishlistTypeName(wishlistTypeName);
             form.set(getAttrsMap(attrs));
 
-            wishlistService.createWishlistTypeDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, wishlistService.createWishlistTypeDescription(initialDataParser.getUserVisit(), form));
         } else if(localName.equals("wishlistPriority")) {
             var form = WishlistFormFactory.getCreateWishlistPriorityForm();
 
             form.setWishlistTypeName(wishlistTypeName);
             form.set(getAttrsMap(attrs));
 
-            wishlistService.createWishlistPriority(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, wishlistService.createWishlistPriority(initialDataParser.getUserVisit(), form));
 
             initialDataParser.pushHandler(new WishlistPriorityHandler(initialDataParser, this, wishlistTypeName, form.getWishlistPriorityName()));
         }

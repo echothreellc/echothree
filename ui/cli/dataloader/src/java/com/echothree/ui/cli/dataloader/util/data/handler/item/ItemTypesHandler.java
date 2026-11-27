@@ -50,7 +50,7 @@ public class ItemTypesHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            itemService.createItemType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemType(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new ItemTypeHandler(initialDataParser, this, commandForm.getItemTypeName()));
         }

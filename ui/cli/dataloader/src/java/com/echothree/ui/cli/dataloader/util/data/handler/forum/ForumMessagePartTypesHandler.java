@@ -47,7 +47,7 @@ public class ForumMessagePartTypesHandler
 
             form.set(getAttrsMap(attrs));
 
-            forumService.createForumMessagePartType(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, forumService.createForumMessagePartType(initialDataParser.getUserVisit(), form));
             
             initialDataParser.pushHandler(new ForumMessagePartTypeHandler(initialDataParser, this, forumMessagePartTypeName));
         }

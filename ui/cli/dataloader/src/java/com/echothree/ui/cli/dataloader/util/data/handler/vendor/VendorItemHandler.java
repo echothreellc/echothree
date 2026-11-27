@@ -53,7 +53,7 @@ public class VendorItemHandler
             form.setVendorItemName(vendorItemName);
             form.set(getAttrsMap(attrs));
             
-            vendorService.createVendorItemCost(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, vendorService.createVendorItemCost(initialDataParser.getUserVisit(), form));
         }
     }
     

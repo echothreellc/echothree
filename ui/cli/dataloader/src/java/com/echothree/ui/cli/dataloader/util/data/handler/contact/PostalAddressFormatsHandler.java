@@ -45,7 +45,7 @@ public class PostalAddressFormatsHandler
 
             form.set(getAttrsMap(attrs));
 
-            contactService.createPostalAddressFormat(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, contactService.createPostalAddressFormat(initialDataParser.getUserVisit(), form));
 
             initialDataParser.pushHandler(new PostalAddressFormatHandler(initialDataParser, this, form.getPostalAddressFormatName()));
         }

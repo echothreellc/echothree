@@ -45,7 +45,7 @@ public class BirthdayFormatsHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            partyService.createBirthdayFormat(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, partyService.createBirthdayFormat(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new BirthdayFormatHandler(initialDataParser, this, commandForm.getBirthdayFormatName()));
         }

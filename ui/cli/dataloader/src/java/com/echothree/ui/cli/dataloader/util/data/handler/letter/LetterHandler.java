@@ -66,14 +66,14 @@ public class LetterHandler
             setupLetterSpec(commandForm);
             commandForm.set(getAttrsMap(attrs));
             
-            letterService.createLetterDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, letterService.createLetterDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("letterContactMechanismPurpose")) {
             var commandForm = LetterFormFactory.getCreateLetterContactMechanismPurposeForm();
             
             setupLetterSpec(commandForm);
             commandForm.set(getAttrsMap(attrs));
             
-            letterService.createLetterContactMechanismPurpose(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, letterService.createLetterContactMechanismPurpose(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

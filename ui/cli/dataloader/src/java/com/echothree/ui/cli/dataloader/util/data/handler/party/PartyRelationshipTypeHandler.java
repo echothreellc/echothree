@@ -50,7 +50,8 @@ public class PartyRelationshipTypeHandler
             createPartyRelationshipTypeDescriptionForm.setPartyRelationshipTypeName(partyRelationshipTypeName);
             createPartyRelationshipTypeDescriptionForm.set(getAttrsMap(attrs));
 
-            partyService.createPartyRelationshipTypeDescription(initialDataParser.getUserVisit(), createPartyRelationshipTypeDescriptionForm);
+            checkCommandResult(createPartyRelationshipTypeDescriptionForm,
+                    partyService.createPartyRelationshipTypeDescription(initialDataParser.getUserVisit(), createPartyRelationshipTypeDescriptionForm));
         }
     }
     

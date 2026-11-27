@@ -45,7 +45,7 @@ public class LocationUseTypesHandler
 
             form.set(getAttrsMap(attrs));
 
-            warehouseService.createLocationUseType(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, warehouseService.createLocationUseType(initialDataParser.getUserVisit(), form));
 
             initialDataParser.pushHandler(new LocationUseTypeHandler(initialDataParser, this, form.getLocationUseTypeName()));
         }

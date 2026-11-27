@@ -49,7 +49,8 @@ public class ItemPriceTypeHandler
                 createItemPriceTypeDescriptionForm.setItemPriceTypeName(itemPriceTypeName);
                 createItemPriceTypeDescriptionForm.set(getAttrsMap(attrs));
 
-                itemService.createItemPriceTypeDescription(initialDataParser.getUserVisit(), createItemPriceTypeDescriptionForm);
+                checkCommandResult(createItemPriceTypeDescriptionForm,
+                        itemService.createItemPriceTypeDescription(initialDataParser.getUserVisit(), createItemPriceTypeDescriptionForm));
         }
     }
     

@@ -55,7 +55,7 @@ public class EntityAttributeGroupHandler
             form.setEntityAttributeGroupName(entityAttributeGroupName);
             form.set(getAttrsMap(attrs));
 
-            coreService.createEntityAttributeGroupDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, coreService.createEntityAttributeGroupDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

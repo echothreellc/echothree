@@ -69,10 +69,10 @@ public class SecurityRoleGroupsHandler
                     var createSecurityRoleGroupCommandResult = securityService.createSecurityRoleGroup(initialDataParser.getUserVisit(), createForm);
                     
                     if(createSecurityRoleGroupCommandResult.hasErrors()) {
-                        getLogger().error(createSecurityRoleGroupCommandResult.toString());
+                        checkCommandResult(createForm, createSecurityRoleGroupCommandResult);
                     }
                 } else {
-                    getLogger().error(commandResult.toString());
+                    checkCommandResult(editForm, commandResult);
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
@@ -116,7 +116,7 @@ public class SecurityRoleGroupsHandler
                         commandResult = securityService.editSecurityRoleGroup(initialDataParser.getUserVisit(), editForm);
 
                         if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     } else {
                         editForm.setEdit(null);
@@ -125,7 +125,7 @@ public class SecurityRoleGroupsHandler
                         commandResult = securityService.editSecurityRoleGroup(initialDataParser.getUserVisit(), editForm);
 
                         if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     }
                 }

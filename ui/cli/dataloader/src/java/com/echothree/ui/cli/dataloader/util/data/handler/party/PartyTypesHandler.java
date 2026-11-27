@@ -52,7 +52,7 @@ public class PartyTypesHandler
 
             var commandAction = (String)commandForm.get("CommandAction");
             if(commandAction == null || commandAction.equals("create")) {
-                partyService.createPartyType(initialDataParser.getUserVisit(), commandForm);
+                checkCommandResult(commandForm, partyService.createPartyType(initialDataParser.getUserVisit(), commandForm));
             }
             
             initialDataParser.pushHandler(new PartyTypeHandler(initialDataParser, this, commandForm.getPartyTypeName()));

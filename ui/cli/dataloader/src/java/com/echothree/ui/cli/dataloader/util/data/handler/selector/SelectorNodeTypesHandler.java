@@ -45,7 +45,7 @@ public class SelectorNodeTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            selectorService.createSelectorNodeType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, selectorService.createSelectorNodeType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new SelectorNodeTypeHandler(initialDataParser, this, commandForm.getSelectorNodeTypeName()));
         }

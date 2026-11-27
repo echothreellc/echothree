@@ -45,7 +45,7 @@ public class SkillTypesHandler
 
             form.set(getAttrsMap(attrs));
 
-            employeeService.createSkillType(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, employeeService.createSkillType(initialDataParser.getUserVisit(), form));
 
             initialDataParser.pushHandler(new SkillTypeHandler(initialDataParser, this, form.getSkillTypeName()));
         }

@@ -49,14 +49,14 @@ public class ForumGroupHandler
             commandForm.setForumGroupName(forumGroupName);
             commandForm.set(getAttrsMap(attrs));
             
-            forumService.createForumGroupDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, forumService.createForumGroupDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("forumGroupForum")) {
             var commandForm = ForumFormFactory.getCreateForumGroupForumForm();
 
             commandForm.setForumGroupName(forumGroupName);
             commandForm.set(getAttrsMap(attrs));
             
-            forumService.createForumGroupForum(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, forumService.createForumGroupForum(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

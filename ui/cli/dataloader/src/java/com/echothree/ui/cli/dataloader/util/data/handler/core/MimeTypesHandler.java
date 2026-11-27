@@ -50,7 +50,7 @@ public class MimeTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            coreService.createMimeType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createMimeType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new MimeTypeHandler(initialDataParser, this, commandForm.getMimeTypeName()));
         }

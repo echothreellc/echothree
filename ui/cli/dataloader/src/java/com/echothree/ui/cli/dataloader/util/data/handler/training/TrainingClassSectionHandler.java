@@ -57,7 +57,8 @@ public class TrainingClassSectionHandler
             commandForm.setTrainingClassSectionName(trainingClassSectionName);
             commandForm.set(getAttrsMap(attrs));
 
-            trainingService.createTrainingClassSectionTranslation(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm,
+                    trainingService.createTrainingClassSectionTranslation(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("trainingClassPage")) {
             var commandForm = TrainingFormFactory.getCreateTrainingClassPageForm();
 
@@ -65,7 +66,7 @@ public class TrainingClassSectionHandler
             commandForm.setTrainingClassSectionName(trainingClassSectionName);
             commandForm.set(getAttrsMap(attrs));
 
-            trainingService.createTrainingClassPage(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, trainingService.createTrainingClassPage(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new TrainingClassPageHandler(initialDataParser, this, trainingClassName, trainingClassSectionName,
                     commandForm.getTrainingClassPageName()));
@@ -76,7 +77,7 @@ public class TrainingClassSectionHandler
             commandForm.setTrainingClassSectionName(trainingClassSectionName);
             commandForm.set(getAttrsMap(attrs));
 
-            trainingService.createTrainingClassQuestion(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, trainingService.createTrainingClassQuestion(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new TrainingClassQuestionHandler(initialDataParser, this, trainingClassName, trainingClassSectionName,
                     commandForm.getTrainingClassQuestionName()));

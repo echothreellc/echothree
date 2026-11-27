@@ -53,7 +53,7 @@ public class InventoryLocationGroupHandler
             form.setInventoryLocationGroupName(inventoryLocationGroupName);
             form.set(getAttrsMap(attrs));
 
-            inventoryService.createInventoryLocationGroupDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, inventoryService.createInventoryLocationGroupDescription(initialDataParser.getUserVisit(), form));
         } else if(localName.equals("inventoryLocationGroupVolume")) {
             var form = InventoryFormFactory.getCreateInventoryLocationGroupVolumeForm();
 
@@ -61,7 +61,7 @@ public class InventoryLocationGroupHandler
             form.setInventoryLocationGroupName(inventoryLocationGroupName);
             form.set(getAttrsMap(attrs));
 
-            inventoryService.createInventoryLocationGroupVolume(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, inventoryService.createInventoryLocationGroupVolume(initialDataParser.getUserVisit(), form));
         } else if(localName.equals("inventoryLocationGroupCapacity")) {
             var form = InventoryFormFactory.getCreateInventoryLocationGroupCapacityForm();
 
@@ -69,7 +69,7 @@ public class InventoryLocationGroupHandler
             form.setInventoryLocationGroupName(inventoryLocationGroupName);
             form.set(getAttrsMap(attrs));
 
-            inventoryService.createInventoryLocationGroupCapacity(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, inventoryService.createInventoryLocationGroupCapacity(initialDataParser.getUserVisit(), form));
         }
     }
     

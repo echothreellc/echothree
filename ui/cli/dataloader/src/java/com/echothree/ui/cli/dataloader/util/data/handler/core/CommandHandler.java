@@ -57,7 +57,7 @@ public class CommandHandler
             commandForm.setCommandName(commandName);
             commandForm.set(getAttrsMap(attrs));
 
-            coreService.createCommandDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createCommandDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

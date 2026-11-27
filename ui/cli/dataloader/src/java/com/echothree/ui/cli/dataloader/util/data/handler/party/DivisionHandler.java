@@ -66,6 +66,7 @@ public class DivisionHandler
             form.set(getAttrsMap(attrs));
 
             var commandResult = partyService.createDepartment(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, commandResult);
             
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();

@@ -59,7 +59,7 @@ public class SelectorNodeHandler
             form.setSelectorNodeName(selectorNodeName);
             form.set(getAttrsMap(attrs));
 
-            selectorService.createSelectorNodeDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, selectorService.createSelectorNodeDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

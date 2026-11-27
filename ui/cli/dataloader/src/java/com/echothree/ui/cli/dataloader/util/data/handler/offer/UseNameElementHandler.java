@@ -49,7 +49,7 @@ public class UseNameElementHandler
             form.setUseNameElementName(useNameElementName);
             form.set(getAttrsMap(attrs));
 
-            offerService.createUseNameElementDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, offerService.createUseNameElementDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

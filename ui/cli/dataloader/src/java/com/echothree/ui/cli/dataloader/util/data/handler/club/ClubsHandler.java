@@ -45,7 +45,7 @@ public class ClubsHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            clubService.createClub(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, clubService.createClub(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new ClubHandler(initialDataParser, this, commandForm.getClubName()));
         }

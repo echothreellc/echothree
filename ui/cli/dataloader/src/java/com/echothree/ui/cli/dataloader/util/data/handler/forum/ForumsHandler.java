@@ -45,7 +45,7 @@ public class ForumsHandler
             
             form.set(getAttrsMap(attrs));
             
-            forumService.createForum(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, forumService.createForum(initialDataParser.getUserVisit(), form));
             
             initialDataParser.pushHandler(new ForumHandler(initialDataParser, this, form.getForumName()));
         }

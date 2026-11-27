@@ -45,7 +45,7 @@ public class LeaveTypesHandler
 
             form.set(getAttrsMap(attrs));
 
-            employeeService.createLeaveType(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, employeeService.createLeaveType(initialDataParser.getUserVisit(), form));
 
             initialDataParser.pushHandler(new LeaveTypeHandler(initialDataParser, this, form.getLeaveTypeName()));
         }

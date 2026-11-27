@@ -50,7 +50,7 @@ public class BillingAccountRoleTypesHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            checkCommandResult(paymentService.createBillingAccountRoleType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, paymentService.createBillingAccountRoleType(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new BillingAccountRoleTypeHandler(initialDataParser, this, commandForm.getBillingAccountRoleTypeName()));
         }

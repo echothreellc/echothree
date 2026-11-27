@@ -45,7 +45,8 @@ public class ContentWebAddressesHandler
 
             createContentWebAddressForm.set(getAttrsMap(attrs));
 
-            contentService.createContentWebAddress(initialDataParser.getUserVisit(), createContentWebAddressForm);
+            checkCommandResult(createContentWebAddressForm,
+                    contentService.createContentWebAddress(initialDataParser.getUserVisit(), createContentWebAddressForm));
 
             initialDataParser.pushHandler(new ContentWebAddressHandler(initialDataParser, this,
                     createContentWebAddressForm.getContentWebAddressName()));

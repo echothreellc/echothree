@@ -52,7 +52,8 @@ public class PicklistAliasTypeHandler
             createPicklistAliasTypeDescriptionForm.setPicklistAliasTypeName(picklistAliasTypeName);
             createPicklistAliasTypeDescriptionForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(picklistService.createPicklistAliasTypeDescription(initialDataParser.getUserVisit(), createPicklistAliasTypeDescriptionForm));
+            checkCommandResult(createPicklistAliasTypeDescriptionForm,
+                    picklistService.createPicklistAliasTypeDescription(initialDataParser.getUserVisit(), createPicklistAliasTypeDescriptionForm));
         }
     }
     

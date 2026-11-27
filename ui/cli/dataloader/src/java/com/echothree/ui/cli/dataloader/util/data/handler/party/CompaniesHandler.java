@@ -46,6 +46,7 @@ public class CompaniesHandler
             commandForm.set(getAttrsMap(attrs));
 
             var commandResult = partyService.createCompany(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, commandResult);
             
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();

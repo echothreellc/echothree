@@ -45,7 +45,7 @@ public class UsesHandler
 
             form.set(getAttrsMap(attrs));
 
-            offerService.createUse(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, offerService.createUse(initialDataParser.getUserVisit(), form));
 
             initialDataParser.pushHandler(new UseHandler(initialDataParser, this, form.getUseName()));
         }

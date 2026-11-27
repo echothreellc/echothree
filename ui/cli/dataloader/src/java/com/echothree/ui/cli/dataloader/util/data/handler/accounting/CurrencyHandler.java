@@ -54,7 +54,7 @@ public class CurrencyHandler
             commandForm.setCurrencyIsoName(currencyIsoName);
             commandForm.set(getAttrsMap(attrs));
             
-            accountingService.createCurrencyDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, accountingService.createCurrencyDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

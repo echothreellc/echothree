@@ -49,7 +49,8 @@ public class SelectorNodeTypeHandler
             createSelectorNodeTypeDescriptionForm.setSelectorNodeTypeName(selectorNodeTypeName);
             createSelectorNodeTypeDescriptionForm.set(getAttrsMap(attrs));
 
-            selectorService.createSelectorNodeTypeDescription(initialDataParser.getUserVisit(), createSelectorNodeTypeDescriptionForm);
+            checkCommandResult(createSelectorNodeTypeDescriptionForm,
+                    selectorService.createSelectorNodeTypeDescription(initialDataParser.getUserVisit(), createSelectorNodeTypeDescriptionForm));
         }
     }
     

@@ -52,7 +52,8 @@ public class CancellationPolicyHandler
             commandForm.setCancellationPolicyName(cancellationPolicyName);
             commandForm.set(getAttrsMap(attrs));
 
-            cancellationPolicyService.createCancellationPolicyTranslation(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm,
+                    cancellationPolicyService.createCancellationPolicyTranslation(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

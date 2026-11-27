@@ -45,7 +45,7 @@ public class SelectorTextSearchTypesHandler
 
             form.set(getAttrsMap(attrs));
 
-            selectorService.createSelectorTextSearchType(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, selectorService.createSelectorTextSearchType(initialDataParser.getUserVisit(), form));
 
             initialDataParser.pushHandler(new SelectorTextSearchTypeHandler(initialDataParser, this, form.getSelectorTextSearchTypeName()));
         }

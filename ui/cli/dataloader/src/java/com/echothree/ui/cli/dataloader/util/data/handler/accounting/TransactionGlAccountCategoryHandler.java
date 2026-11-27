@@ -58,7 +58,8 @@ public class TransactionGlAccountCategoryHandler
             commandForm.setTransactionGlAccountCategoryName(transactionGlAccountCategoryName);
             commandForm.set(getAttrsMap(attrs));
             
-            accountingService.createTransactionGlAccountCategoryDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm,
+                    accountingService.createTransactionGlAccountCategoryDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

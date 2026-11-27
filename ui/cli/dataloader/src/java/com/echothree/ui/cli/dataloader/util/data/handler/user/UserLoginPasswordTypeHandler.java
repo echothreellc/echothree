@@ -49,7 +49,7 @@ public class UserLoginPasswordTypeHandler
             commandForm.setUserLoginPasswordTypeName(userLoginPasswordTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            userService.createUserLoginPasswordTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, userService.createUserLoginPasswordTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

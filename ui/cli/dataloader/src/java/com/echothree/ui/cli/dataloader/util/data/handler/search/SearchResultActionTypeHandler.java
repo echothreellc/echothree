@@ -54,7 +54,8 @@ public class SearchResultActionTypeHandler
             commandForm.setSearchResultActionTypeName(searchResultActionTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            searchService.createSearchResultActionTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm,
+                    searchService.createSearchResultActionTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

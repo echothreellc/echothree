@@ -81,10 +81,10 @@ public class WorkflowHandler
                             var createWorkflowDescriptionCommandResult = workflowService.createWorkflowDescription(initialDataParser.getUserVisit(), createForm);
 
                             if(createWorkflowDescriptionCommandResult.hasErrors()) {
-                                getLogger().error(createWorkflowDescriptionCommandResult.toString());
+                                checkCommandResult(createForm, createWorkflowDescriptionCommandResult);
                             }
                         } else {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     } else {
                         var executionResult = commandResult.getExecutionResult();
@@ -96,7 +96,7 @@ public class WorkflowHandler
 
                             commandResult = workflowService.editWorkflowDescription(initialDataParser.getUserVisit(), editForm);
                             if(commandResult.hasErrors()) {
-                                getLogger().error(commandResult.toString());
+                                checkCommandResult(editForm, commandResult);
                             }
                         }
                     }
@@ -130,10 +130,10 @@ public class WorkflowHandler
                             var createWorkflowStepCommandResult = workflowService.createWorkflowStep(initialDataParser.getUserVisit(), createForm);
 
                             if(createWorkflowStepCommandResult.hasErrors()) {
-                                getLogger().error(createWorkflowStepCommandResult.toString());
+                                checkCommandResult(createForm, createWorkflowStepCommandResult);
                             }
                         } else {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     } else {
                         var executionResult = commandResult.getExecutionResult();
@@ -145,7 +145,7 @@ public class WorkflowHandler
 
                             commandResult = workflowService.editWorkflowStep(initialDataParser.getUserVisit(), editForm);
                             if(commandResult.hasErrors()) {
-                                getLogger().error(commandResult.toString());
+                                checkCommandResult(editForm, commandResult);
                             }
                         }
                     }
@@ -182,10 +182,10 @@ public class WorkflowHandler
                             var createWorkflowDestinationCommandResult = workflowService.createWorkflowDestination(initialDataParser.getUserVisit(), createForm);
 
                             if(createWorkflowDestinationCommandResult.hasErrors()) {
-                                getLogger().error(createWorkflowDestinationCommandResult.toString());
+                                checkCommandResult(createForm, createWorkflowDestinationCommandResult);
                             }
                         } else {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     } else {
                         var executionResult = commandResult.getExecutionResult();
@@ -197,7 +197,7 @@ public class WorkflowHandler
 
                             commandResult = workflowService.editWorkflowDestination(initialDataParser.getUserVisit(), editForm);
                             if(commandResult.hasErrors()) {
-                                getLogger().error(commandResult.toString());
+                                checkCommandResult(editForm, commandResult);
                             }
                         }
                     }
@@ -234,10 +234,10 @@ public class WorkflowHandler
                             var createWorkflowEntranceCommandResult = workflowService.createWorkflowEntrance(initialDataParser.getUserVisit(), createForm);
 
                             if(createWorkflowEntranceCommandResult.hasErrors()) {
-                                getLogger().error(createWorkflowEntranceCommandResult.toString());
+                                checkCommandResult(createForm, createWorkflowEntranceCommandResult);
                             }
                         } else {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     } else {
                         var executionResult = commandResult.getExecutionResult();
@@ -249,7 +249,7 @@ public class WorkflowHandler
 
                             commandResult = workflowService.editWorkflowEntrance(initialDataParser.getUserVisit(), editForm);
                             if(commandResult.hasErrors()) {
-                                getLogger().error(commandResult.toString());
+                                checkCommandResult(editForm, commandResult);
                             }
                         }
                     }
@@ -264,7 +264,7 @@ public class WorkflowHandler
                 commandForm.setWorkflowName(workflowName);
                 commandForm.set(getAttrsMap(attrs));
 
-                workflowService.createWorkflowEntityType(initialDataParser.getUserVisit(), commandForm);
+                checkCommandResult(commandForm, workflowService.createWorkflowEntityType(initialDataParser.getUserVisit(), commandForm));
             }
         }
     }

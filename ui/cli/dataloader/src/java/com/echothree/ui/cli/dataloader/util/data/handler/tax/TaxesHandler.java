@@ -45,7 +45,7 @@ public class TaxesHandler
 
             createTaxForm.set(getAttrsMap(attrs));
 
-            taxService.createTax(initialDataParser.getUserVisit(), createTaxForm);
+            checkCommandResult(createTaxForm, taxService.createTax(initialDataParser.getUserVisit(), createTaxForm));
 
             initialDataParser.pushHandler(new TaxHandler(initialDataParser, this, createTaxForm.getTaxName()));
         }

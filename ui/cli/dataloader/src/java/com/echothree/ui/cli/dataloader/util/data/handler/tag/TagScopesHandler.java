@@ -45,7 +45,7 @@ public class TagScopesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            tagService.createTagScope(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, tagService.createTagScope(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new TagScopeHandler(initialDataParser, this, commandForm.getTagScopeName()));
         }

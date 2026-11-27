@@ -32,6 +32,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
+import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
@@ -91,6 +92,16 @@ public class InitialDataParser
     
     String name;
     UserVisitPK userVisitPK;
+    private Locator documentLocator;
+
+    @Override
+    public void setDocumentLocator(Locator locator) {
+        documentLocator = locator;
+    }
+
+    public String getSourceLocation() {
+        return documentLocator == null ? name : name + ":" + documentLocator.getLineNumber();
+    }
     
     /** Start document. */
     @Override

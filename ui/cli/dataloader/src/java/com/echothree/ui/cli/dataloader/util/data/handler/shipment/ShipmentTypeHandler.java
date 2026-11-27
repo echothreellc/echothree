@@ -49,14 +49,14 @@ public class ShipmentTypeHandler
             commandForm.setShipmentTypeName(shipmentTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            checkCommandResult(shipmentService.createShipmentTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, shipmentService.createShipmentTypeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("shipmentTimeType")) {
             var commandForm = ShipmentFormFactory.getCreateShipmentTimeTypeForm();
 
             commandForm.setShipmentTypeName(shipmentTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(shipmentService.createShipmentTimeType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, shipmentService.createShipmentTimeType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new ShipmentTimeTypeHandler(initialDataParser, this, shipmentTypeName, commandForm.getShipmentTimeTypeName()));
         } else if(localName.equals("shipmentAliasType")) {
@@ -65,7 +65,7 @@ public class ShipmentTypeHandler
             commandForm.setShipmentTypeName(shipmentTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            checkCommandResult(shipmentService.createShipmentAliasType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, shipmentService.createShipmentAliasType(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new ShipmentAliasTypeHandler(initialDataParser, this, shipmentTypeName,
                     commandForm.getShipmentAliasTypeName()));
@@ -75,7 +75,7 @@ public class ShipmentTypeHandler
             commandForm.setShipmentTypeName(shipmentTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            checkCommandResult(shipmentService.createShipmentTypeShippingMethod(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, shipmentService.createShipmentTypeShippingMethod(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

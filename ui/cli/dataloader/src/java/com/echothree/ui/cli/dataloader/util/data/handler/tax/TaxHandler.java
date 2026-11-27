@@ -49,7 +49,8 @@ public class TaxHandler
             createTaxDescriptionForm.setTaxName(taxName);
             createTaxDescriptionForm.set(getAttrsMap(attrs));
 
-            taxService.createTaxDescription(initialDataParser.getUserVisit(), createTaxDescriptionForm);
+            checkCommandResult(createTaxDescriptionForm,
+                    taxService.createTaxDescription(initialDataParser.getUserVisit(), createTaxDescriptionForm));
         }
     }
     

@@ -70,6 +70,7 @@ public class CompanyHandler
             form.set(getAttrsMap(attrs));
 
             var commandResult = partyService.createDivision(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, commandResult);
             
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
@@ -86,7 +87,7 @@ public class CompanyHandler
             commandForm.setCompanyName(companyName);
             commandForm.set(getAttrsMap(attrs));
             
-            letterService.createLetterSource(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, letterService.createLetterSource(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new LetterSourceHandler(initialDataParser, this, commandForm.getLetterSourceName()));
         } else if(localName.equals("contactMechanisms")) {

@@ -52,7 +52,7 @@ public class FilterAdjustmentHandler
             commandForm.setFilterAdjustmentName(filterAdjustmentName);
             commandForm.set(getAttrsMap(attrs));
 
-            filterService.createFilterAdjustmentDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, filterService.createFilterAdjustmentDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("filterAdjustmentAmount")) {
             var commandForm = FilterFormFactory.getCreateFilterAdjustmentAmountForm();
 
@@ -60,7 +60,7 @@ public class FilterAdjustmentHandler
             commandForm.setFilterAdjustmentName(filterAdjustmentName);
             commandForm.set(getAttrsMap(attrs));
 
-            filterService.createFilterAdjustmentAmount(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, filterService.createFilterAdjustmentAmount(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("filterAdjustmentFixedAmount")) {
             var commandForm = FilterFormFactory.getCreateFilterAdjustmentFixedAmountForm();
 
@@ -68,7 +68,7 @@ public class FilterAdjustmentHandler
             commandForm.setFilterAdjustmentName(filterAdjustmentName);
             commandForm.set(getAttrsMap(attrs));
 
-            filterService.createFilterAdjustmentFixedAmount(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, filterService.createFilterAdjustmentFixedAmount(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("filterAdjustmentPercent")) {
             var commandForm = FilterFormFactory.getCreateFilterAdjustmentPercentForm();
 
@@ -76,7 +76,7 @@ public class FilterAdjustmentHandler
             commandForm.setFilterAdjustmentName(filterAdjustmentName);
             commandForm.set(getAttrsMap(attrs));
 
-            filterService.createFilterAdjustmentPercent(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, filterService.createFilterAdjustmentPercent(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

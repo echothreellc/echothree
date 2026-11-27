@@ -69,10 +69,10 @@ public class SearchKindsHandler
                     var createSearchKindCommandResult = searchService.createSearchKind(initialDataParser.getUserVisit(), createForm);
                     
                     if(createSearchKindCommandResult.hasErrors()) {
-                        getLogger().error(createSearchKindCommandResult.toString());
+                        checkCommandResult(createForm, createSearchKindCommandResult);
                     }
                 } else {
-                    getLogger().error(commandResult.toString());
+                    checkCommandResult(editForm, commandResult);
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
@@ -101,7 +101,7 @@ public class SearchKindsHandler
                         commandResult = searchService.editSearchKind(initialDataParser.getUserVisit(), editForm);
 
                         if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     } else {
                         editForm.setEdit(null);
@@ -110,7 +110,7 @@ public class SearchKindsHandler
                         commandResult = searchService.editSearchKind(initialDataParser.getUserVisit(), editForm);
 
                         if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     }
                 }

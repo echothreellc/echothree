@@ -69,10 +69,10 @@ public class SequenceTypesHandler
                     var createSequenceTypeCommandResult = sequenceService.createSequenceType(initialDataParser.getUserVisit(), createForm);
                     
                     if(createSequenceTypeCommandResult.hasErrors()) {
-                        getLogger().error(createSequenceTypeCommandResult.toString());
+                        checkCommandResult(createForm, createSequenceTypeCommandResult);
                     }
                 } else {
-                    getLogger().error(commandResult.toString());
+                    checkCommandResult(editForm, commandResult);
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
@@ -119,7 +119,7 @@ public class SequenceTypesHandler
                         commandResult = sequenceService.editSequenceType(initialDataParser.getUserVisit(), editForm);
 
                         if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     } else {
                         editForm.setEdit(null);
@@ -128,7 +128,7 @@ public class SequenceTypesHandler
                         commandResult = sequenceService.editSequenceType(initialDataParser.getUserVisit(), editForm);
 
                         if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     }
                 }

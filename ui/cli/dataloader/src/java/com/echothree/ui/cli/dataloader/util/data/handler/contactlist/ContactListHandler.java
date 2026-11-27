@@ -49,14 +49,15 @@ public class ContactListHandler
             commandForm.setContactListName(contactListName);
             commandForm.set(getAttrsMap(attrs));
             
-            contactListService.createContactListDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, contactListService.createContactListDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("contactListContactMechanismPurpose")) {
             var commandForm = ContactListFormFactory.getCreateContactListContactMechanismPurposeForm();
             
             commandForm.setContactListName(contactListName);
             commandForm.set(getAttrsMap(attrs));
             
-            contactListService.createContactListContactMechanismPurpose(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm,
+                    contactListService.createContactListContactMechanismPurpose(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

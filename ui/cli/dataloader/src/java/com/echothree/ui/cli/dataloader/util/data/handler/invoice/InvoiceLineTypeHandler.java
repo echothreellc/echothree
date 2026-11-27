@@ -58,7 +58,7 @@ public class InvoiceLineTypeHandler
             commandForm.setInvoiceLineTypeName(invoiceLineTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            checkCommandResult(invoiceService.createInvoiceLineTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, invoiceService.createInvoiceLineTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

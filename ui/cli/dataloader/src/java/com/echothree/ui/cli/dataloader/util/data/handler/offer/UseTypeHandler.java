@@ -49,7 +49,7 @@ public class UseTypeHandler
             form.setUseTypeName(useTypeName);
             form.set(getAttrsMap(attrs));
 
-            offerService.createUseTypeDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, offerService.createUseTypeDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

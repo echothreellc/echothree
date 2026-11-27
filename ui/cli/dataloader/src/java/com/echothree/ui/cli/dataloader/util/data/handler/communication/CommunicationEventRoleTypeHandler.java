@@ -49,7 +49,7 @@ public class CommunicationEventRoleTypeHandler
             form.setCommunicationEventRoleTypeName(communicationEventRoleTypeName);
             form.set(getAttrsMap(attrs));
 
-            communicationService.createCommunicationEventRoleTypeDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, communicationService.createCommunicationEventRoleTypeDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

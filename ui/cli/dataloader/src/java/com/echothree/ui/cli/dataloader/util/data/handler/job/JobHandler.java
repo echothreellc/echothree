@@ -54,7 +54,7 @@ public class JobHandler
             commandForm.setJobName(jobName);
             commandForm.set(getAttrsMap(attrs));
             
-            jobService.createJobDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, jobService.createJobDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

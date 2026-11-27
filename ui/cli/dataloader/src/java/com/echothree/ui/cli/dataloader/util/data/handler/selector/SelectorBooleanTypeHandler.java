@@ -49,7 +49,7 @@ public class SelectorBooleanTypeHandler
             form.setSelectorBooleanTypeName(selectorBooleanTypeName);
             form.set(getAttrsMap(attrs));
 
-            selectorService.createSelectorBooleanTypeDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, selectorService.createSelectorBooleanTypeDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

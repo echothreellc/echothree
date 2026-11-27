@@ -45,7 +45,7 @@ public class ItemCategoriesHandler
 
             createItemCategoryForm.set(getAttrsMap(attrs));
 
-            itemService.createItemCategory(initialDataParser.getUserVisit(), createItemCategoryForm);
+            checkCommandResult(createItemCategoryForm, itemService.createItemCategory(initialDataParser.getUserVisit(), createItemCategoryForm));
 
             initialDataParser.pushHandler(new ItemCategoryHandler(initialDataParser, this, createItemCategoryForm.getItemCategoryName()));
         }

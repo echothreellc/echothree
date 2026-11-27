@@ -49,7 +49,8 @@ public class MimeTypeUsageTypeHandler
             createMimeTypeUsageTypeDescriptionForm.setMimeTypeUsageTypeName(mimeTypeUsageTypeName);
             createMimeTypeUsageTypeDescriptionForm.set(getAttrsMap(attrs));
 
-            coreService.createMimeTypeUsageTypeDescription(initialDataParser.getUserVisit(), createMimeTypeUsageTypeDescriptionForm);
+            checkCommandResult(createMimeTypeUsageTypeDescriptionForm,
+                    coreService.createMimeTypeUsageTypeDescription(initialDataParser.getUserVisit(), createMimeTypeUsageTypeDescriptionForm));
         }
     }
     

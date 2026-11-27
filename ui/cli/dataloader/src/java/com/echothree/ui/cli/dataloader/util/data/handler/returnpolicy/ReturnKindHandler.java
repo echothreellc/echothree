@@ -49,14 +49,14 @@ public class ReturnKindHandler
             commandForm.setReturnKindName(returnKindName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(returnPolicyService.createReturnKindDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, returnPolicyService.createReturnKindDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("returnPolicy")) {
             var commandForm = ReturnPolicyFormFactory.getCreateReturnPolicyForm();
 
             commandForm.setReturnKindName(returnKindName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(returnPolicyService.createReturnPolicy(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, returnPolicyService.createReturnPolicy(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new ReturnPolicyHandler(initialDataParser, this, returnKindName, commandForm.getReturnPolicyName()));
         } else if(localName.equals("returnReason")) {
@@ -65,7 +65,7 @@ public class ReturnKindHandler
             commandForm.setReturnKindName(returnKindName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(returnPolicyService.createReturnReason(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, returnPolicyService.createReturnReason(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new ReturnReasonHandler(initialDataParser, this, returnKindName, commandForm.getReturnReasonName()));
         } else if(localName.equals("returnType")) {
@@ -74,7 +74,7 @@ public class ReturnKindHandler
             commandForm.setReturnKindName(returnKindName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(returnPolicyService.createReturnType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, returnPolicyService.createReturnType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new ReturnTypeHandler(initialDataParser, this, returnKindName, commandForm.getReturnTypeName()));
         }

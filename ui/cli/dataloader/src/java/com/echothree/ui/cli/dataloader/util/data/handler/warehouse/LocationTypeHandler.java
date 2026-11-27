@@ -53,7 +53,7 @@ public class LocationTypeHandler
             form.setLocationTypeName(locationTypeName);
             form.set(getAttrsMap(attrs));
 
-            warehouseService.createLocationTypeDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, warehouseService.createLocationTypeDescription(initialDataParser.getUserVisit(), form));
         } else if(localName.equals("locationNameElement")) {
             var form = WarehouseFormFactory.getCreateLocationNameElementForm();
 
@@ -61,7 +61,7 @@ public class LocationTypeHandler
             form.setLocationTypeName(locationTypeName);
             form.set(getAttrsMap(attrs));
 
-            warehouseService.createLocationNameElement(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, warehouseService.createLocationNameElement(initialDataParser.getUserVisit(), form));
 
             initialDataParser.pushHandler(new LocationNameElementHandler(initialDataParser, this, warehouseName,
             locationTypeName, form.getLocationNameElementName()));

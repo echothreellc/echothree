@@ -64,28 +64,28 @@ public class SelectorKindHandler
             commandForm.setSelectorKindName(selectorKindName);
             commandForm.set(getAttrsMap(attrs));
 
-            selectorService.createSelectorKindDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, selectorService.createSelectorKindDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("selectorNodeTypeUse")) {
             var commandForm = SelectorFormFactory.getCreateSelectorNodeTypeUseForm();
 
             commandForm.setSelectorKindName(selectorKindName);
             commandForm.set(getAttrsMap(attrs));
 
-            selectorService.createSelectorNodeTypeUse(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, selectorService.createSelectorNodeTypeUse(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("workflowSelectorKind")) {
             var commandForm = WorkflowFormFactory.getCreateWorkflowSelectorKindForm();
 
             commandForm.setSelectorKindName(selectorKindName);
             commandForm.set(getAttrsMap(attrs));
 
-            workflowService.createWorkflowSelectorKind(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, workflowService.createWorkflowSelectorKind(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("selectorType")) {
             var commandForm = SelectorFormFactory.getCreateSelectorTypeForm();
 
             commandForm.setSelectorKindName(selectorKindName);
             commandForm.set(getAttrsMap(attrs));
 
-            selectorService.createSelectorType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, selectorService.createSelectorType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new SelectorTypeHandler(initialDataParser, this, selectorKindName, commandForm.getSelectorTypeName()));
         }

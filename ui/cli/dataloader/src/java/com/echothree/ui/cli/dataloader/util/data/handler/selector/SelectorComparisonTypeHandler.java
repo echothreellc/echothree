@@ -49,7 +49,7 @@ public class SelectorComparisonTypeHandler
             form.setSelectorComparisonTypeName(selectorComparisonTypeName);
             form.set(getAttrsMap(attrs));
 
-            selectorService.createSelectorComparisonTypeDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, selectorService.createSelectorComparisonTypeDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

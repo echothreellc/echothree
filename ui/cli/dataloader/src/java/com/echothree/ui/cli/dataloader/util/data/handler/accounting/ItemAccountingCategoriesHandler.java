@@ -50,7 +50,7 @@ public class ItemAccountingCategoriesHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            accountingService.createItemAccountingCategory(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, accountingService.createItemAccountingCategory(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new ItemAccountingCategoryHandler(initialDataParser, this, commandForm.getItemAccountingCategoryName()));
         }

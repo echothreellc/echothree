@@ -77,10 +77,10 @@ public class SecurityRoleHandler
                     var createSecurityRoleDescriptionCommandResult = securityService.createSecurityRoleDescription(initialDataParser.getUserVisit(), createForm);
                     
                     if(createSecurityRoleDescriptionCommandResult.hasErrors()) {
-                        getLogger().error(createSecurityRoleDescriptionCommandResult.toString());
+                        checkCommandResult(createForm, createSecurityRoleDescriptionCommandResult);
                     }
                 } else {
-                    getLogger().error(commandResult.toString());
+                    checkCommandResult(editForm, commandResult);
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
@@ -103,7 +103,7 @@ public class SecurityRoleHandler
                         commandResult = securityService.editSecurityRoleDescription(initialDataParser.getUserVisit(), editForm);
 
                         if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     } else {
                         editForm.setEdit(null);
@@ -112,7 +112,7 @@ public class SecurityRoleHandler
                         commandResult = securityService.editSecurityRoleDescription(initialDataParser.getUserVisit(), editForm);
 
                         if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     }
                 }

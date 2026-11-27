@@ -45,7 +45,7 @@ public class MimeTypeUsageTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            coreService.createMimeTypeUsageType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createMimeTypeUsageType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new MimeTypeUsageTypeHandler(initialDataParser, this, commandForm.getMimeTypeUsageTypeName()));
         }

@@ -53,7 +53,7 @@ public class WishlistPriorityHandler
             form.setWishlistPriorityName(wishlistPriorityName);
             form.set(getAttrsMap(attrs));
 
-            wishlistService.createWishlistPriorityDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, wishlistService.createWishlistPriorityDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

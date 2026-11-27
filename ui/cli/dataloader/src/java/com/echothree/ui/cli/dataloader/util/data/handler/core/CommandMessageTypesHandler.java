@@ -50,7 +50,7 @@ public class CommandMessageTypesHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createCommandMessageType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createCommandMessageType(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new CommandMessageTypeHandler(initialDataParser, this, commandForm.getCommandMessageTypeName()));
         }

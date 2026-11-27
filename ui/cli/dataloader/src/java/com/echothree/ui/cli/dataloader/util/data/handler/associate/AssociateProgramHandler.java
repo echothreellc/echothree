@@ -49,7 +49,7 @@ public class AssociateProgramHandler
             commandForm.setAssociateProgramName(associateProgramName);
             commandForm.set(getAttrsMap(attrs));
             
-            checkCommandResult(associateService.createAssociateProgramDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, associateService.createAssociateProgramDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

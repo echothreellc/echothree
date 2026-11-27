@@ -49,7 +49,8 @@ public class RoleTypeHandler
             createRoleTypeDescriptionForm.setRoleTypeName(roleTypeName);
             createRoleTypeDescriptionForm.set(getAttrsMap(attrs));
 
-            partyService.createRoleTypeDescription(initialDataParser.getUserVisit(), createRoleTypeDescriptionForm);
+            checkCommandResult(createRoleTypeDescriptionForm,
+                    partyService.createRoleTypeDescription(initialDataParser.getUserVisit(), createRoleTypeDescriptionForm));
         }
     }
     

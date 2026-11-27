@@ -57,7 +57,7 @@ public class OrderTimeTypeHandler
             commandForm.setOrderTimeTypeName(orderTimeTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(orderService.createOrderTimeTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, orderService.createOrderTimeTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

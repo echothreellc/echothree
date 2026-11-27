@@ -54,7 +54,7 @@ public class LinkTypeHandler
             commandForm.setLinkTypeName(linkTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(coreService.createLinkTypeTranslation(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, coreService.createLinkTypeTranslation(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

@@ -62,7 +62,7 @@ public class FilterStepElementHandler
             commandForm.setFilterStepElementName(filterStepElementName);
             commandForm.set(getAttrsMap(attrs));
 
-            filterService.createFilterStepElementDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, filterService.createFilterStepElementDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

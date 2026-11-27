@@ -45,7 +45,7 @@ public class UseNameElementsHandler
 
             form.set(getAttrsMap(attrs));
 
-            offerService.createUseNameElement(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, offerService.createUseNameElement(initialDataParser.getUserVisit(), form));
 
             initialDataParser.pushHandler(new UseNameElementHandler(initialDataParser, this, form.getUseNameElementName()));
         }

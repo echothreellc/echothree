@@ -67,21 +67,21 @@ public class VendorHandler
             commandForm.setPartyName(partyName);
             commandForm.set(getAttrsMap(attrs));
 
-            partyService.createPartyAlias(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, partyService.createPartyAlias(initialDataParser.getUserVisit(), commandForm));
         } if(localName.equals("partyCreditLimit")) {
             var form = TermFormFactory.getCreatePartyCreditLimitForm();
             
             form.setPartyName(partyName);
             form.set(getAttrsMap(attrs));
             
-            termService.createPartyCreditLimit(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, termService.createPartyCreditLimit(initialDataParser.getUserVisit(), form));
         } else if(localName.equals("vendorItem")) {
             var form = VendorFormFactory.getCreateVendorItemForm();
             
             form.setVendorName(vendorName);
             form.set(getAttrsMap(attrs));
             
-            vendorService.createVendorItem(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, vendorService.createVendorItem(initialDataParser.getUserVisit(), form));
             
             initialDataParser.pushHandler(new VendorItemHandler(initialDataParser, this, vendorName, form.getVendorItemName()));
         } else if(localName.equals("purchaseInvoices")) {

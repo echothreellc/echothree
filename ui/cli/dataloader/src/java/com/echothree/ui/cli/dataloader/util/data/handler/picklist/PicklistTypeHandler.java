@@ -49,14 +49,15 @@ public class PicklistTypeHandler
             createPicklistTypeDescriptionForm.setPicklistTypeName(picklistTypeName);
             createPicklistTypeDescriptionForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(picklistService.createPicklistTypeDescription(initialDataParser.getUserVisit(), createPicklistTypeDescriptionForm));
+            checkCommandResult(createPicklistTypeDescriptionForm,
+                    picklistService.createPicklistTypeDescription(initialDataParser.getUserVisit(), createPicklistTypeDescriptionForm));
         } else if(localName.equals("picklistTimeType")) {
             var commandForm = PicklistFormFactory.getCreatePicklistTimeTypeForm();
 
             commandForm.setPicklistTypeName(picklistTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(picklistService.createPicklistTimeType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, picklistService.createPicklistTimeType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new PicklistTimeTypeHandler(initialDataParser, this, picklistTypeName, commandForm.getPicklistTimeTypeName()));
         } else if(localName.equals("picklistAliasType")) {
@@ -65,7 +66,8 @@ public class PicklistTypeHandler
             createPicklistAliasTypeForm.setPicklistTypeName(picklistTypeName);
             createPicklistAliasTypeForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(picklistService.createPicklistAliasType(initialDataParser.getUserVisit(), createPicklistAliasTypeForm));
+            checkCommandResult(createPicklistAliasTypeForm,
+                    picklistService.createPicklistAliasType(initialDataParser.getUserVisit(), createPicklistAliasTypeForm));
 
             initialDataParser.pushHandler(new PicklistAliasTypeHandler(initialDataParser, this, picklistTypeName,
                     createPicklistAliasTypeForm.getPicklistAliasTypeName()));

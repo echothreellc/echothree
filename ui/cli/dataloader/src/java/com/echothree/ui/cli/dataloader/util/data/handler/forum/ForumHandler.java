@@ -54,35 +54,35 @@ public class ForumHandler
             commandForm.setForumName(forumName);
             commandForm.set(getAttrsMap(attrs));
 
-            forumService.createForumDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, forumService.createForumDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("forumGroupForum")) {
             var commandForm = ForumFormFactory.getCreateForumGroupForumForm();
 
             commandForm.setForumName(forumName);
             commandForm.set(getAttrsMap(attrs));
 
-            forumService.createForumGroupForum(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, forumService.createForumGroupForum(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("forumMimeType")) {
             var commandForm = ForumFormFactory.getCreateForumMimeTypeForm();
 
             commandForm.setForumName(forumName);
             commandForm.set(getAttrsMap(attrs));
 
-            forumService.createForumMimeType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, forumService.createForumMimeType(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("forumPartyRole")) {
             var commandForm = ForumFormFactory.getCreateForumPartyRoleForm();
 
             commandForm.setForumName(forumName);
             commandForm.set(getAttrsMap(attrs));
 
-            forumService.createForumPartyRole(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, forumService.createForumPartyRole(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("forumPartyTypeRole")) {
             var commandForm = ForumFormFactory.getCreateForumPartyTypeRoleForm();
 
             commandForm.setForumName(forumName);
             commandForm.set(getAttrsMap(attrs));
 
-            forumService.createForumPartyTypeRole(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, forumService.createForumPartyTypeRole(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("blogEntry")) {
             var commandForm = ForumFormFactory.getCreateBlogEntryForm();
 
@@ -90,6 +90,7 @@ public class ForumHandler
             commandForm.set(getAttrsMap(attrs));
 
             var commandResult = forumService.createBlogEntry(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, commandResult);
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();

@@ -57,7 +57,7 @@ public class StateHandler
             commandForm.setGeoCodeName(stateGeoCodeName);
             commandForm.set(getAttrsMap(attrs));
             
-            geoService.createGeoCodeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, geoService.createGeoCodeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("county")) {
             var commandForm = GeoFormFactory.getCreateCountyForm();
             
@@ -65,6 +65,7 @@ public class StateHandler
             commandForm.set(getAttrsMap(attrs));
 
             var commandResult = geoService.createCounty(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, commandResult);
             var executionResult = commandResult.getExecutionResult();
             var createCountyResult = executionResult.getResult();
             var countyGeoCodeName = createCountyResult.getGeoCodeName();
@@ -78,6 +79,7 @@ public class StateHandler
             commandForm.set(getAttrsMap(attrs));
 
             var commandResult = geoService.createCity(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, commandResult);
             var executionResult = commandResult.getExecutionResult();
             var createCityResult = executionResult.getResult();
             var cityGeoCodeName = createCityResult.getGeoCodeName();
@@ -90,7 +92,7 @@ public class StateHandler
             commandForm.setGeoCodeName(stateGeoCodeName);
             commandForm.set(getAttrsMap(attrs));
             
-            taxService.createGeoCodeTax(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, taxService.createGeoCodeTax(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("entityAttributes")) {
             initialDataParser.pushHandler(new EntityAttributesHandler(initialDataParser, this, stateEntityRef));
         }

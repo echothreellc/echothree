@@ -54,21 +54,21 @@ public class ChainKindHandler
             commandForm.setChainKindName(chainKindName);
             commandForm.set(getAttrsMap(attrs));
 
-            chainService.createChainKindDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, chainService.createChainKindDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("chainActionTypeUse")) {
             var commandForm = ChainFormFactory.getCreateChainActionTypeUseForm();
 
             commandForm.setChainKindName(chainKindName);
             commandForm.set(getAttrsMap(attrs));
 
-            chainService.createChainActionTypeUse(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, chainService.createChainActionTypeUse(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("chainType")) {
             var commandForm = ChainFormFactory.getCreateChainTypeForm();
 
             commandForm.setChainKindName(chainKindName);
             commandForm.set(getAttrsMap(attrs));
 
-            chainService.createChainType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, chainService.createChainType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new ChainTypeHandler(initialDataParser, this, chainKindName, commandForm.getChainTypeName()));
         }

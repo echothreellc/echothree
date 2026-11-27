@@ -56,7 +56,7 @@ public class CommentTypeHandler
             commandForm.setCommentTypeName(commentTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            commentService.createCommentTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, commentService.createCommentTypeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("commentUsageType")) {
             var commandForm = CommentFormFactory.getCreateCommentUsageTypeForm();
 
@@ -65,7 +65,7 @@ public class CommentTypeHandler
             commandForm.setCommentTypeName(commentTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            commentService.createCommentUsageType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, commentService.createCommentUsageType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new CommentUsageTypeHandler(initialDataParser, this, componentVendorName,
                     entityTypeName, commentTypeName, commandForm.getCommentUsageTypeName()));

@@ -50,7 +50,7 @@ public class WorkflowStepTypesHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            workflowService.createWorkflowStepType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, workflowService.createWorkflowStepType(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new WorkflowStepTypeHandler(initialDataParser, this, commandForm.getWorkflowStepTypeName()));
         }

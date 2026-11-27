@@ -48,14 +48,14 @@ public class GeoCodeTypeHandler
             form.setGeoCodeTypeName(geoCodeTypeName);
             form.set(getAttrsMap(attrs));
 
-            geoService.createGeoCodeTypeDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, geoService.createGeoCodeTypeDescription(initialDataParser.getUserVisit(), form));
         } else if(localName.equals("geoCodeAliasType")) {
             var form = GeoFormFactory.getCreateGeoCodeAliasTypeForm();
 
             form.setGeoCodeTypeName(geoCodeTypeName);
             form.set(getAttrsMap(attrs));
 
-            geoService.createGeoCodeAliasType(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, geoService.createGeoCodeAliasType(initialDataParser.getUserVisit(), form));
 
             initialDataParser.pushHandler(new GeoCodeAliasTypeHandler(initialDataParser, this, geoCodeTypeName,
                     form.getGeoCodeAliasTypeName()));

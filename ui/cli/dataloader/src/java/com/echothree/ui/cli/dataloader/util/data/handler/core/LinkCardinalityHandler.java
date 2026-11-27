@@ -54,7 +54,7 @@ public class LinkCardinalityHandler
             commandForm.setLinkCardinalityName(linkCardinalityName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(coreService.createLinkCardinalityDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, coreService.createLinkCardinalityDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

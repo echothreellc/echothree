@@ -49,14 +49,14 @@ public class ForumTypeHandler
             form.setForumTypeName(forumTypeName);
             form.set(getAttrsMap(attrs));
 
-            forumService.createForumTypeDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, forumService.createForumTypeDescription(initialDataParser.getUserVisit(), form));
         } else if(localName.equals("forumTypeMessageType")) {
             var form = ForumFormFactory.getCreateForumTypeMessageTypeForm();
 
             form.setForumTypeName(forumTypeName);
             form.set(getAttrsMap(attrs));
 
-            forumService.createForumTypeMessageType(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, forumService.createForumTypeMessageType(initialDataParser.getUserVisit(), form));
         }
     }
     

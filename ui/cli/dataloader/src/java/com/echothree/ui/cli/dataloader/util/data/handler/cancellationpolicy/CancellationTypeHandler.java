@@ -52,7 +52,8 @@ public class CancellationTypeHandler
             commandForm.setCancellationTypeName(cancellationTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(cancellationPolicyService.createCancellationTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm,
+                    cancellationPolicyService.createCancellationTypeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("cancellationReasonType")) {
             var commandForm = CancellationPolicyFormFactory.getCreateCancellationReasonTypeForm();
 
@@ -60,7 +61,8 @@ public class CancellationTypeHandler
             commandForm.setCancellationTypeName(cancellationTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(cancellationPolicyService.createCancellationReasonType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm,
+                    cancellationPolicyService.createCancellationReasonType(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

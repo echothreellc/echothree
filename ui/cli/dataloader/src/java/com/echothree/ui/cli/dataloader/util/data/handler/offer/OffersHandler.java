@@ -45,7 +45,7 @@ public class OffersHandler
             
             form.set(getAttrsMap(attrs));
             
-            offerService.createOffer(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, offerService.createOffer(initialDataParser.getUserVisit(), form));
             
             initialDataParser.pushHandler(new OfferHandler(initialDataParser, this, form.getOfferName()));
         }

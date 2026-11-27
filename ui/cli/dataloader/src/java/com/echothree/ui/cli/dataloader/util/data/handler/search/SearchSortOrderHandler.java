@@ -57,7 +57,7 @@ public class SearchSortOrderHandler
             commandForm.setSearchSortOrderName(searchSortOrderName);
             commandForm.set(getAttrsMap(attrs));
 
-            searchService.createSearchSortOrderDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, searchService.createSearchSortOrderDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

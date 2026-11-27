@@ -53,7 +53,8 @@ public class AssociateHandler
             commandForm.setAssociateName(associateName);
             commandForm.set(getAttrsMap(attrs));
             
-            checkCommandResult(associateService.createAssociatePartyContactMechanism(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm,
+                    associateService.createAssociatePartyContactMechanism(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

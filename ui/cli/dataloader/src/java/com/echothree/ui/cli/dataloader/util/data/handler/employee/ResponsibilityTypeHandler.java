@@ -49,7 +49,7 @@ public class ResponsibilityTypeHandler
             form.setResponsibilityTypeName(responsibilityTypeName);
             form.set(getAttrsMap(attrs));
 
-            employeeService.createResponsibilityTypeDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, employeeService.createResponsibilityTypeDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

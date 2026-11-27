@@ -49,7 +49,8 @@ public class ItemCategoryHandler
             createItemCategoryDescriptionForm.setItemCategoryName(itemCategoryName);
             createItemCategoryDescriptionForm.set(getAttrsMap(attrs));
 
-            itemService.createItemCategoryDescription(initialDataParser.getUserVisit(), createItemCategoryDescriptionForm);
+            checkCommandResult(createItemCategoryDescriptionForm,
+                    itemService.createItemCategoryDescription(initialDataParser.getUserVisit(), createItemCategoryDescriptionForm));
         }
     }
     

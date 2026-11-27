@@ -55,7 +55,7 @@ public class FilterHandler
             commandForm.setFilterName(filterName);
             commandForm.set(getAttrsMap(attrs));
 
-            filterService.createFilterDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, filterService.createFilterDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("filterStep")) {
             var commandForm = FilterFormFactory.getCreateFilterStepForm();
 
@@ -64,7 +64,7 @@ public class FilterHandler
             commandForm.setFilterName(filterName);
             commandForm.set(getAttrsMap(attrs));
 
-            filterService.createFilterStep(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, filterService.createFilterStep(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new FilterStepHandler(initialDataParser, this, filterKindName, filterTypeName,
                     filterName, commandForm.getFilterStepName()));
@@ -76,7 +76,7 @@ public class FilterHandler
             commandForm.setFilterName(filterName);
             commandForm.set(getAttrsMap(attrs));
 
-            filterService.createFilterEntranceStep(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, filterService.createFilterEntranceStep(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("filterStepDestination")) {
             var commandForm = FilterFormFactory.getCreateFilterStepDestinationForm();
 
@@ -85,7 +85,7 @@ public class FilterHandler
             commandForm.setFilterName(filterName);
             commandForm.set(getAttrsMap(attrs));
 
-            filterService.createFilterStepDestination(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, filterService.createFilterStepDestination(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

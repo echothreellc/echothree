@@ -91,6 +91,7 @@ public class CommentsHandler
             form.set(commentAttrs);
 
             var commandResult = commentService.createComment(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, commandResult);
             
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
@@ -103,7 +104,8 @@ public class CommentsHandler
                     createCommentUsageForm.setCommentName(commentName);
                     createCommentUsageForm.setCommentUsageTypeName(commentUsageTypeName);
                     
-                    commentService.createCommentUsage(initialDataParser.getUserVisit(), createCommentUsageForm);
+                    checkCommandResult(createCommentUsageForm,
+                            commentService.createCommentUsage(initialDataParser.getUserVisit(), createCommentUsageForm));
                 }
             }
             

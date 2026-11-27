@@ -52,7 +52,7 @@ public class ReturnPolicyHandler
             commandForm.setReturnPolicyName(returnPolicyName);
             commandForm.set(getAttrsMap(attrs));
 
-            returnPolicyService.createReturnPolicyTranslation(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, returnPolicyService.createReturnPolicyTranslation(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

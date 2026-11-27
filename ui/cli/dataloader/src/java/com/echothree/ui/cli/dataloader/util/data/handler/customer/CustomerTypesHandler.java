@@ -44,7 +44,7 @@ public class CustomerTypesHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            customerService.createCustomerType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, customerService.createCustomerType(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new CustomerTypeHandler(initialDataParser, this, commandForm.getCustomerTypeName()));
         }

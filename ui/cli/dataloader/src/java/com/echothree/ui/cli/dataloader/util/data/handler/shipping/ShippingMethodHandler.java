@@ -49,14 +49,14 @@ public class ShippingMethodHandler
             commandForm.setShippingMethodName(shippingMethodName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(shippingService.createShippingMethodDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, shippingService.createShippingMethodDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("shippingMethodCarrierService")) {
             var commandForm = ShippingFormFactory.getCreateShippingMethodCarrierServiceForm();
 
             commandForm.setShippingMethodName(shippingMethodName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(shippingService.createShippingMethodCarrierService(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, shippingService.createShippingMethodCarrierService(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

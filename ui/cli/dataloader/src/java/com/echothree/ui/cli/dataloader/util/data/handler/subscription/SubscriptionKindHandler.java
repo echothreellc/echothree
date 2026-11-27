@@ -50,14 +50,15 @@ public class SubscriptionKindHandler
             commandForm.setSubscriptionKindName(subscriptionKindName);
             commandForm.set(getAttrsMap(attrs));
 
-            subscriptionService.createSubscriptionKindDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm,
+                    subscriptionService.createSubscriptionKindDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("subscriptionType")) {
             var commandForm = SubscriptionFormFactory.getCreateSubscriptionTypeForm();
 
             commandForm.setSubscriptionKindName(subscriptionKindName);
             commandForm.set(getAttrsMap(attrs));
 
-            subscriptionService.createSubscriptionType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, subscriptionService.createSubscriptionType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new SubscriptionTypeHandler(initialDataParser, this, subscriptionKindName,
                     commandForm.getSubscriptionTypeName()));

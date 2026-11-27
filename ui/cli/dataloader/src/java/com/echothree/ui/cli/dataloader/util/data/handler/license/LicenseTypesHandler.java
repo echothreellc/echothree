@@ -50,7 +50,7 @@ public class LicenseTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            licenseService.createLicenseType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, licenseService.createLicenseType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new LicenseTypeHandler(initialDataParser, this, commandForm.getLicenseTypeName()));
         }

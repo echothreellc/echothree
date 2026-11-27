@@ -49,14 +49,16 @@ public class ContentPageLayoutHandler
             createContentPageLayoutDescriptionForm.setContentPageLayoutName(contentPageLayoutName);
             createContentPageLayoutDescriptionForm.set(getAttrsMap(attrs));
 
-            contentService.createContentPageLayoutDescription(initialDataParser.getUserVisit(), createContentPageLayoutDescriptionForm);
+            checkCommandResult(createContentPageLayoutDescriptionForm,
+                    contentService.createContentPageLayoutDescription(initialDataParser.getUserVisit(), createContentPageLayoutDescriptionForm));
         } else if(localName.equals("contentPageLayoutArea")) {
             var createContentPageLayoutAreaForm = ContentFormFactory.getCreateContentPageLayoutAreaForm();
 
             createContentPageLayoutAreaForm.setContentPageLayoutName(contentPageLayoutName);
             createContentPageLayoutAreaForm.set(getAttrsMap(attrs));
 
-            contentService.createContentPageLayoutArea(initialDataParser.getUserVisit(), createContentPageLayoutAreaForm);
+            checkCommandResult(createContentPageLayoutAreaForm,
+                    contentService.createContentPageLayoutArea(initialDataParser.getUserVisit(), createContentPageLayoutAreaForm));
 
             initialDataParser.pushHandler(new ContentPageLayoutAreaHandler(initialDataParser, this, contentPageLayoutName,
                     createContentPageLayoutAreaForm.getSortOrder()));

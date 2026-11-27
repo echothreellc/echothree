@@ -54,7 +54,7 @@ public class InvoiceRoleTypeHandler
             commandForm.setInvoiceRoleTypeName(invoiceRoleTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            checkCommandResult(invoiceService.createInvoiceRoleTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, invoiceService.createInvoiceRoleTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

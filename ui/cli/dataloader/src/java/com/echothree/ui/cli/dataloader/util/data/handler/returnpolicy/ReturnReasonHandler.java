@@ -52,7 +52,7 @@ public class ReturnReasonHandler
             commandForm.setReturnReasonName(returnReasonName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(returnPolicyService.createReturnReasonDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, returnPolicyService.createReturnReasonDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("returnPolicyReason")) {
             var commandForm = ReturnPolicyFormFactory.getCreateReturnPolicyReasonForm();
 
@@ -60,7 +60,7 @@ public class ReturnReasonHandler
             commandForm.setReturnReasonName(returnReasonName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(returnPolicyService.createReturnPolicyReason(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, returnPolicyService.createReturnPolicyReason(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

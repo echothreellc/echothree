@@ -49,14 +49,14 @@ public class PartyTypeUseTypeHandler
             form.setPartyTypeUseTypeName(partyTypeUseTypeName);
             form.set(getAttrsMap(attrs));
 
-            partyService.createPartyTypeUseTypeDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, partyService.createPartyTypeUseTypeDescription(initialDataParser.getUserVisit(), form));
         } else if(localName.equals("partyTypeUse")) {
             var form = PartyFormFactory.getCreatePartyTypeUseForm();
 
             form.setPartyTypeUseTypeName(partyTypeUseTypeName);
             form.set(getAttrsMap(attrs));
 
-            partyService.createPartyTypeUse(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, partyService.createPartyTypeUse(initialDataParser.getUserVisit(), form));
         }
     }
     

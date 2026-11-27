@@ -54,7 +54,7 @@ public class ScaleHandler
             commandForm.setScaleName(scaleName);
             commandForm.set(getAttrsMap(attrs));
 
-            scaleService.createScaleDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, scaleService.createScaleDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

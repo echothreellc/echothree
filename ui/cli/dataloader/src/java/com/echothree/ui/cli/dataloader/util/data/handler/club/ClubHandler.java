@@ -50,14 +50,14 @@ public class ClubHandler
             commandForm.setClubName(clubName);
             commandForm.set(getAttrsMap(attrs));
 
-            clubService.createClubDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, clubService.createClubDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("clubItem")) {
             var commandForm = ClubFormFactory.getCreateClubItemForm();
 
             commandForm.setClubName(clubName);
             commandForm.set(getAttrsMap(attrs));
 
-            clubService.createClubItem(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, clubService.createClubItem(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

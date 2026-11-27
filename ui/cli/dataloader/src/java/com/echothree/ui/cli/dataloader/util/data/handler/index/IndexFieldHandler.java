@@ -78,10 +78,10 @@ public class IndexFieldHandler
                     var createIndexFieldDescriptionCommandResult = indexService.createIndexFieldDescription(initialDataParser.getUserVisit(), createForm);
                     
                     if(createIndexFieldDescriptionCommandResult.hasErrors()) {
-                        getLogger().error(createIndexFieldDescriptionCommandResult.toString());
+                        checkCommandResult(createForm, createIndexFieldDescriptionCommandResult);
                     }
                 } else {
-                    getLogger().error(commandResult.toString());
+                    checkCommandResult(editForm, commandResult);
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
@@ -104,7 +104,7 @@ public class IndexFieldHandler
                         commandResult = indexService.editIndexFieldDescription(initialDataParser.getUserVisit(), editForm);
 
                         if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     } else {
                         editForm.setEdit(null);
@@ -113,7 +113,7 @@ public class IndexFieldHandler
                         commandResult = indexService.editIndexFieldDescription(initialDataParser.getUserVisit(), editForm);
 
                         if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     }
                 }

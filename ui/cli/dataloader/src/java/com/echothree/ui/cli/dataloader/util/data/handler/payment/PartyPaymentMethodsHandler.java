@@ -54,6 +54,7 @@ public class PartyPaymentMethodsHandler
             commandForm.set(getAttrsMap(attrs));
 
             var commandResult = paymentService.createPartyPaymentMethod(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, commandResult);
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();

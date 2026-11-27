@@ -54,7 +54,7 @@ public class PrinterHandler
             commandForm.setPrinterName(printerName);
             commandForm.set(getAttrsMap(attrs));
 
-            printerService.createPrinterDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, printerService.createPrinterDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

@@ -49,7 +49,7 @@ public class ItemUseTypeHandler
             commandForm.setItemUseTypeName(itemUseTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            itemService.createItemUseTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createItemUseTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

@@ -49,7 +49,7 @@ public class ClubItemTypeHandler
             commandForm.setClubItemTypeName(clubItemTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            clubService.createClubItemTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, clubService.createClubItemTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

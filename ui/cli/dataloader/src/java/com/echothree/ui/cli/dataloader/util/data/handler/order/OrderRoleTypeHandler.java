@@ -54,7 +54,7 @@ public class OrderRoleTypeHandler
             commandForm.setOrderRoleTypeName(orderRoleTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            checkCommandResult(orderService.createOrderRoleTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, orderService.createOrderRoleTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

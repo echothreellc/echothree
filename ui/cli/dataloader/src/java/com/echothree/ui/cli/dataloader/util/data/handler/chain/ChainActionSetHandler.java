@@ -68,14 +68,14 @@ public class ChainActionSetHandler
             setupChainActionSetSpec(commandForm);
             commandForm.set(getAttrsMap(attrs));
 
-            chainService.createChainActionSetDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, chainService.createChainActionSetDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("chainAction")) {
             var commandForm = ChainFormFactory.getCreateChainActionForm();
 
             setupChainActionSetSpec(commandForm);
             commandForm.set(getAttrsMap(attrs));
 
-            chainService.createChainAction(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, chainService.createChainAction(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new ChainActionHandler(initialDataParser, this, chainKindName, chainTypeName, chainName, chainActionSetName, commandForm.getChainActionName()));
         }

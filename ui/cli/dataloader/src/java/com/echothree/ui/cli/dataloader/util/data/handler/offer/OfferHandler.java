@@ -49,14 +49,14 @@ public class OfferHandler
             commandForm.setOfferName(offerName);
             commandForm.set(getAttrsMap(attrs));
             
-            offerService.createOfferDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, offerService.createOfferDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("offerUse")) {
             var commandForm = OfferFormFactory.getCreateOfferUseForm();
             
             commandForm.setOfferName(offerName);
             commandForm.set(getAttrsMap(attrs));
             
-            offerService.createOfferUse(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, offerService.createOfferUse(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new OfferUseHandler(initialDataParser, this, offerName, commandForm.getUseName()));
         } else if(localName.equals("offerItem")) {
@@ -65,7 +65,7 @@ public class OfferHandler
             commandForm.setOfferName(offerName);
             commandForm.set(getAttrsMap(attrs));
             
-            checkCommandResult(offerService.createOfferItem(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, offerService.createOfferItem(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new OfferItemHandler(initialDataParser, this, offerName, commandForm.getItemName()));
         } else if(localName.equals("offerCustomerType")) {
@@ -74,14 +74,14 @@ public class OfferHandler
             commandForm.setOfferName(offerName);
             commandForm.set(getAttrsMap(attrs));
             
-            offerService.createOfferCustomerType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, offerService.createOfferCustomerType(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("offerChainType")) {
             var commandForm = OfferFormFactory.getCreateOfferChainTypeForm();
             
             commandForm.setOfferName(offerName);
             commandForm.set(getAttrsMap(attrs));
             
-            offerService.createOfferChainType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, offerService.createOfferChainType(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

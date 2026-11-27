@@ -49,7 +49,8 @@ public class TimeZoneHandler
             createTimeZoneDescriptionForm.setJavaTimeZoneName(javaTimeZoneName);
             createTimeZoneDescriptionForm.set(getAttrsMap(attrs));
 
-            partyService.createTimeZoneDescription(initialDataParser.getUserVisit(), createTimeZoneDescriptionForm);
+            checkCommandResult(createTimeZoneDescriptionForm,
+                    partyService.createTimeZoneDescription(initialDataParser.getUserVisit(), createTimeZoneDescriptionForm));
         }
     }
     

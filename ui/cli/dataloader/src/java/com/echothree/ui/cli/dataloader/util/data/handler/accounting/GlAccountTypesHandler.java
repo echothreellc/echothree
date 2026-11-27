@@ -50,7 +50,7 @@ public class GlAccountTypesHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            accountingService.createGlAccountType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, accountingService.createGlAccountType(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new GlAccountTypeHandler(initialDataParser, this, commandForm.getGlAccountTypeName()));
         }

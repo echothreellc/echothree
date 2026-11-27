@@ -53,7 +53,7 @@ public class CarrierServiceHandler
             commandForm.setCarrierServiceName(carrierServiceName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(carrierService.createCarrierServiceDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, carrierService.createCarrierServiceDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("carrierServiceOption")) {
             var commandForm = CarrierFormFactory.getCreateCarrierServiceOptionForm();
 
@@ -61,7 +61,7 @@ public class CarrierServiceHandler
             commandForm.setCarrierServiceName(carrierServiceName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(carrierService.createCarrierServiceOption(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, carrierService.createCarrierServiceOption(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

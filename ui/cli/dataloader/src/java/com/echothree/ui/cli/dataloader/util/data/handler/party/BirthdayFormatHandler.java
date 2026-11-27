@@ -49,7 +49,7 @@ public class BirthdayFormatHandler
             commandForm.setBirthdayFormatName(birthdayFormatName);
             commandForm.set(getAttrsMap(attrs));
 
-            partyService.createBirthdayFormatDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, partyService.createBirthdayFormatDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

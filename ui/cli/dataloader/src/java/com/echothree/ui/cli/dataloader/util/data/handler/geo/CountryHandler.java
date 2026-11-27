@@ -67,35 +67,35 @@ public class CountryHandler
             commandForm.setGeoCodeName(countryGeoCodeName);
             commandForm.set(getAttrsMap(attrs));
             
-            geoService.createGeoCodeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, geoService.createGeoCodeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("geoCodeLanguage")) {
             var commandForm = GeoFormFactory.getCreateGeoCodeLanguageForm();
             
             commandForm.setGeoCodeName(countryGeoCodeName);
             commandForm.set(getAttrsMap(attrs));
             
-            geoService.createGeoCodeLanguage(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, geoService.createGeoCodeLanguage(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("geoCodeCurrency")) {
             var commandForm = GeoFormFactory.getCreateGeoCodeCurrencyForm();
             
             commandForm.setGeoCodeName(countryGeoCodeName);
             commandForm.set(getAttrsMap(attrs));
             
-            geoService.createGeoCodeCurrency(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, geoService.createGeoCodeCurrency(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("geoCodeTimeZone")) {
             var commandForm = GeoFormFactory.getCreateGeoCodeTimeZoneForm();
             
             commandForm.setGeoCodeName(countryGeoCodeName);
             commandForm.set(getAttrsMap(attrs));
             
-            geoService.createGeoCodeTimeZone(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, geoService.createGeoCodeTimeZone(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("geoCodeDateTimeFormat")) {
             var commandForm = GeoFormFactory.getCreateGeoCodeDateTimeFormatForm();
             
             commandForm.setGeoCodeName(countryGeoCodeName);
             commandForm.set(getAttrsMap(attrs));
             
-            geoService.createGeoCodeDateTimeFormat(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, geoService.createGeoCodeDateTimeFormat(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("zipCode")) {
             var commandForm = GeoFormFactory.getCreateZipCodeForm();
             
@@ -103,6 +103,7 @@ public class CountryHandler
             commandForm.set(getAttrsMap(attrs));
 
             var commandResult = geoService.createZipCode(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, commandResult);
             var executionResult = commandResult.getExecutionResult();
             var createZipCodeResult = executionResult.getResult();
             var zipCodeGeoCodeName = createZipCodeResult.getGeoCodeName();
@@ -115,7 +116,7 @@ public class CountryHandler
             commandForm.setCountryName(countryGeoCodeName);
             commandForm.set(getAttrsMap(attrs));
 
-            itemService.createHarmonizedTariffScheduleCode(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createHarmonizedTariffScheduleCode(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new HarmonizedTariffScheduleCodeHandler(initialDataParser, this, countryGeoCodeName,
                     commandForm.getHarmonizedTariffScheduleCodeName()));
@@ -125,7 +126,7 @@ public class CountryHandler
             commandForm.setCountryName(countryGeoCodeName);
             commandForm.set(getAttrsMap(attrs));
 
-            taxService.createTaxClassification(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, taxService.createTaxClassification(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new TaxClassificationHandler(initialDataParser, this, countryGeoCodeName,
                     commandForm.getTaxClassificationName()));
@@ -136,6 +137,7 @@ public class CountryHandler
             commandForm.set(getAttrsMap(attrs));
 
             var commandResult = geoService.createState(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, commandResult);
             var executionResult = commandResult.getExecutionResult();
             var createStateResult = executionResult.getResult();
             var stateGeoCodeName = createStateResult.getGeoCodeName();
@@ -148,7 +150,7 @@ public class CountryHandler
             commandForm.setGeoCodeName(countryGeoCodeName);
             commandForm.set(getAttrsMap(attrs));
             
-            taxService.createGeoCodeTax(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, taxService.createGeoCodeTax(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("entityAttributes")) {
             initialDataParser.pushHandler(new EntityAttributesHandler(initialDataParser, this, countryEntityRef));
         }

@@ -45,7 +45,7 @@ public class TerminationReasonsHandler
 
             form.set(getAttrsMap(attrs));
 
-            employeeService.createTerminationReason(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, employeeService.createTerminationReason(initialDataParser.getUserVisit(), form));
 
             initialDataParser.pushHandler(new TerminationReasonHandler(initialDataParser, this, form.getTerminationReasonName()));
         }

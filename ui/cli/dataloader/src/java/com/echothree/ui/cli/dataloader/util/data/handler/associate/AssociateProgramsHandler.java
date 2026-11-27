@@ -45,7 +45,7 @@ public class AssociateProgramsHandler
             
             commandForm.set(getAttrsMap(attrs));
             
-            checkCommandResult(associateService.createAssociateProgram(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, associateService.createAssociateProgram(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new AssociateProgramHandler(initialDataParser, this, commandForm.getAssociateProgramName()));
         }

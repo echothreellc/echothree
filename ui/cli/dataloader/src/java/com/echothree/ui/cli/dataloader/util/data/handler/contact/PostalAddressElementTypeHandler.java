@@ -49,7 +49,7 @@ public class PostalAddressElementTypeHandler
             form.setPostalAddressElementTypeName(postalAddressElementTypesName);
             form.set(getAttrsMap(attrs));
 
-            contactService.createPostalAddressElementTypeDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, contactService.createPostalAddressElementTypeDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

@@ -47,7 +47,7 @@ public class RoleTypesHandler
 
             createRoleTypeForm.set(getAttrsMap(attrs));
 
-            partyService.createRoleType(initialDataParser.getUserVisit(), createRoleTypeForm);
+            checkCommandResult(createRoleTypeForm, partyService.createRoleType(initialDataParser.getUserVisit(), createRoleTypeForm));
             
             initialDataParser.pushHandler(new RoleTypeHandler(initialDataParser, this, roleTypeName));
         }

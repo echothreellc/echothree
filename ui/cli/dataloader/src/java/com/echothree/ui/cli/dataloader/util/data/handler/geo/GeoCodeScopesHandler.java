@@ -45,7 +45,7 @@ public class GeoCodeScopesHandler
 
             createGeoCodeScopeForm.set(getAttrsMap(attrs));
 
-            geoService.createGeoCodeScope(initialDataParser.getUserVisit(), createGeoCodeScopeForm);
+            checkCommandResult(createGeoCodeScopeForm, geoService.createGeoCodeScope(initialDataParser.getUserVisit(), createGeoCodeScopeForm));
 
             initialDataParser.pushHandler(new GeoCodeScopeHandler(initialDataParser, this, createGeoCodeScopeForm.getGeoCodeScopeName()));
         }

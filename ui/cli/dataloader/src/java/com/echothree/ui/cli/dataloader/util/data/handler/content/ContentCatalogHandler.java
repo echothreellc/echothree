@@ -53,7 +53,7 @@ public class ContentCatalogHandler
             commandForm.setContentCatalogName(contentCatalogName);
             commandForm.set(getAttrsMap(attrs));
             
-            contentService.createContentCatalogDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, contentService.createContentCatalogDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("contentCategory")) {
             var commandForm = ContentFormFactory.getCreateContentCategoryForm();
             
@@ -61,7 +61,7 @@ public class ContentCatalogHandler
             commandForm.setContentCatalogName(contentCatalogName);
             commandForm.set(getAttrsMap(attrs));
             
-            contentService.createContentCategory(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, contentService.createContentCategory(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new ContentCategoryHandler(initialDataParser, this, contentCollectionName,
                     contentCatalogName, commandForm.getContentCategoryName()));

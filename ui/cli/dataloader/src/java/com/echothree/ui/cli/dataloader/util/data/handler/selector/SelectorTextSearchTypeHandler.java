@@ -49,7 +49,7 @@ public class SelectorTextSearchTypeHandler
             form.setSelectorTextSearchTypeName(selectorTextSearchTypeName);
             form.set(getAttrsMap(attrs));
 
-            selectorService.createSelectorTextSearchTypeDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, selectorService.createSelectorTextSearchTypeDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

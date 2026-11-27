@@ -52,7 +52,7 @@ public class WorkEffortScopeHandler
             commandForm.setWorkEffortScopeName(workEffortScopeName);
             commandForm.set(getAttrsMap(attrs));
 
-            workEffortService.createWorkEffortScopeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, workEffortService.createWorkEffortScopeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

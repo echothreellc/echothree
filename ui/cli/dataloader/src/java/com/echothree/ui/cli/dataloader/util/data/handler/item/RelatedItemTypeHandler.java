@@ -49,7 +49,7 @@ public class RelatedItemTypeHandler
             commandForm.setRelatedItemTypeName(relatedItemTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            itemService.createRelatedItemTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, itemService.createRelatedItemTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

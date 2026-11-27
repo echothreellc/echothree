@@ -54,7 +54,7 @@ public class WorkflowStepTypeHandler
             commandForm.setWorkflowStepTypeName(workflowStepTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            workflowService.createWorkflowStepTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, workflowService.createWorkflowStepTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

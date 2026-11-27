@@ -57,28 +57,28 @@ public class CityHandler
             commandForm.setGeoCodeName(cityGeoCodeName);
             commandForm.set(getAttrsMap(attrs));
             
-            geoService.createGeoCodeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, geoService.createGeoCodeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("cityCounty")) {
             var commandForm = GeoFormFactory.getAddCityToCountyForm();
             
             commandForm.setCityGeoCodeName(cityGeoCodeName);
             commandForm.set(getAttrsMap(attrs));
             
-            geoService.addCityToCounty(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, geoService.addCityToCounty(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("cityZipCode")) {
             var commandForm = GeoFormFactory.getAddZipCodeToCityForm();
             
             commandForm.setCityGeoCodeName(cityGeoCodeName);
             commandForm.set(getAttrsMap(attrs));
             
-            geoService.addZipCodeToCity(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, geoService.addZipCodeToCity(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("geoCodeTax")) {
             var commandForm = TaxFormFactory.getCreateGeoCodeTaxForm();
             
             commandForm.setGeoCodeName(cityGeoCodeName);
             commandForm.set(getAttrsMap(attrs));
             
-            taxService.createGeoCodeTax(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, taxService.createGeoCodeTax(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("entityAttributes")) {
             initialDataParser.pushHandler(new EntityAttributesHandler(initialDataParser, this, cityEntityRef));
         }

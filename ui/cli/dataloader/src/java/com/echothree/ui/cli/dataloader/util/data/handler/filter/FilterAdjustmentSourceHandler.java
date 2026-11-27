@@ -49,7 +49,8 @@ public class FilterAdjustmentSourceHandler
             commandForm.setFilterAdjustmentSourceName(filterAdjustmentSourceName);
             commandForm.set(getAttrsMap(attrs));
 
-            filterService.createFilterAdjustmentSourceDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm,
+                    filterService.createFilterAdjustmentSourceDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

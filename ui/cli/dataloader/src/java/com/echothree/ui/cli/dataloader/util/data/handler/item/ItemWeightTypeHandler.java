@@ -72,10 +72,10 @@ public class ItemWeightTypeHandler
                     var createItemWeightTypeDescriptionCommandResult = itemService.createItemWeightTypeDescription(initialDataParser.getUserVisit(), createForm);
 
                     if(createItemWeightTypeDescriptionCommandResult.hasErrors()) {
-                        getLogger().error(createItemWeightTypeDescriptionCommandResult.toString());
+                        checkCommandResult(createForm, createItemWeightTypeDescriptionCommandResult);
                     }
                 } else {
-                    getLogger().error(commandResult.toString());
+                    checkCommandResult(editForm, commandResult);
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
@@ -98,7 +98,7 @@ public class ItemWeightTypeHandler
                         commandResult = itemService.editItemWeightTypeDescription(initialDataParser.getUserVisit(), editForm);
 
                         if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     } else {
                         editForm.setEdit(null);
@@ -107,7 +107,7 @@ public class ItemWeightTypeHandler
                         commandResult = itemService.editItemWeightTypeDescription(initialDataParser.getUserVisit(), editForm);
 
                         if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     }
                 }

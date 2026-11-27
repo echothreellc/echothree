@@ -49,7 +49,8 @@ public class InventoryConditionUseTypeHandler
             commandForm.setInventoryConditionUseTypeName(inventoryConditionUseTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(inventoryService.createInventoryConditionUseTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm,
+                    inventoryService.createInventoryConditionUseTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

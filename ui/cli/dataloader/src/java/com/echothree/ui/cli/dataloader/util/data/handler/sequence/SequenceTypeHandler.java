@@ -74,10 +74,10 @@ public class SequenceTypeHandler
                     var createSequenceTypeDescriptionCommandResult = sequenceService.createSequenceTypeDescription(initialDataParser.getUserVisit(), createForm);
                     
                     if(createSequenceTypeDescriptionCommandResult.hasErrors()) {
-                        getLogger().error(createSequenceTypeDescriptionCommandResult.toString());
+                        checkCommandResult(createForm, createSequenceTypeDescriptionCommandResult);
                     }
                 } else {
-                    getLogger().error(commandResult.toString());
+                    checkCommandResult(editForm, commandResult);
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
@@ -100,7 +100,7 @@ public class SequenceTypeHandler
                         commandResult = sequenceService.editSequenceTypeDescription(initialDataParser.getUserVisit(), editForm);
 
                         if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     } else {
                         editForm.setEdit(null);
@@ -109,7 +109,7 @@ public class SequenceTypeHandler
                         commandResult = sequenceService.editSequenceTypeDescription(initialDataParser.getUserVisit(), editForm);
 
                         if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     }
                 }
@@ -121,6 +121,7 @@ public class SequenceTypeHandler
             commandForm.set(getAttrsMap(attrs));
 
             var commandResult = sequenceService.createSequence(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, commandResult);
 
             if(!commandResult.hasErrors()) {
                 initialDataParser.pushHandler(new SequenceHandler(initialDataParser, this, sequenceTypeName, commandForm.getSequenceName()));

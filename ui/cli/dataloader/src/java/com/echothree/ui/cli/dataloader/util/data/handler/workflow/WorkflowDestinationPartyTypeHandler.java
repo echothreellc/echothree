@@ -64,7 +64,8 @@ public class WorkflowDestinationPartyTypeHandler
             commandForm.setPartyTypeName(partyTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            workflowService.createWorkflowDestinationSecurityRole(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm,
+                    workflowService.createWorkflowDestinationSecurityRole(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

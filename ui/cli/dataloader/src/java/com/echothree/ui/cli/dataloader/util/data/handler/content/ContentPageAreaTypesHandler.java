@@ -45,7 +45,8 @@ public class ContentPageAreaTypesHandler
 
             createContentPageAreaTypeForm.set(getAttrsMap(attrs));
 
-            contentService.createContentPageAreaType(initialDataParser.getUserVisit(), createContentPageAreaTypeForm);
+            checkCommandResult(createContentPageAreaTypeForm,
+                    contentService.createContentPageAreaType(initialDataParser.getUserVisit(), createContentPageAreaTypeForm));
 
             initialDataParser.pushHandler(new ContentPageAreaTypeHandler(initialDataParser, this,
                     createContentPageAreaTypeForm.getContentPageAreaTypeName()));

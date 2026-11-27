@@ -61,7 +61,8 @@ public class TrainingClassQuestionHandler
             commandForm.setTrainingClassQuestionName(trainingClassQuestionName);
             commandForm.set(getAttrsMap(attrs));
 
-            trainingService.createTrainingClassQuestionTranslation(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm,
+                    trainingService.createTrainingClassQuestionTranslation(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("trainingClassAnswer")) {
             var commandForm = TrainingFormFactory.getCreateTrainingClassAnswerForm();
 
@@ -70,7 +71,7 @@ public class TrainingClassQuestionHandler
             commandForm.setTrainingClassQuestionName(trainingClassQuestionName);
             commandForm.set(getAttrsMap(attrs));
 
-            trainingService.createTrainingClassAnswer(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, trainingService.createTrainingClassAnswer(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new TrainingClassAnswerHandler(initialDataParser, this, trainingClassName, trainingClassSectionName,
                     trainingClassQuestionName, commandForm.getTrainingClassAnswerName()));

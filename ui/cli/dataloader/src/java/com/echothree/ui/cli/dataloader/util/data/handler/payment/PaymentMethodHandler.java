@@ -53,7 +53,7 @@ public class PaymentMethodHandler
             commandForm.setPaymentMethodName(paymentMethodName);
             commandForm.set(getAttrsMap(attrs));
             
-            checkCommandResult(paymentService.createPaymentMethodDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, paymentService.createPaymentMethodDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("comments")) {
             initialDataParser.pushHandler(new CommentsHandler(initialDataParser, this, entityRef));
         } else if(localName.equals("entityAttributes")) {

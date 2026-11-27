@@ -49,7 +49,7 @@ public class ForumMessagePartTypeHandler
             form.setForumMessagePartTypeName(forumMessagePartTypeName);
             form.set(getAttrsMap(attrs));
 
-            forumService.createForumMessagePartTypeDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, forumService.createForumMessagePartTypeDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

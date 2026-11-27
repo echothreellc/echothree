@@ -49,7 +49,7 @@ public class FilterAdjustmentTypeHandler
             commandForm.setFilterAdjustmentTypeName(filterAdjustmentTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            filterService.createFilterAdjustmentTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, filterService.createFilterAdjustmentTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

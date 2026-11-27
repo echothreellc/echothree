@@ -22,10 +22,14 @@ import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.form.BaseEdit;
 import com.echothree.util.common.form.BaseEditForm;
+import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.form.BaseSpec;
+import com.echothree.util.common.message.Message;
+import com.echothree.util.common.message.Messages;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.StringJoiner;
 import javax.naming.NamingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +43,6 @@ public abstract class BaseHandler {
 
     private static Logger logger = null;
     
-    private static boolean doErrors = false;
     private static boolean doVerbose = false;
     
     /** Creates a new instance of BaseHandler */
@@ -124,19 +127,47 @@ public abstract class BaseHandler {
         }
     }
 
-    protected void checkCommandResult(CommandResult<?> commandResult) {
-        if(doVerbose || (commandResult.hasErrors() && doErrors)) {
-            var executionResult = commandResult.getExecutionResult();
-            
-            if(commandResult.hasErrors())
-                getLogger().error(executionResult.toString());
-            else
-                getLogger().info(executionResult.toString());
+    protected void checkCommandResult(BaseForm commandForm, CommandResult<?> commandResult) {
+        if(commandResult.hasErrors()) {
+            var errors = new StringJoiner("; ");
+
+            if(commandResult.hasSecurityMessages()) {
+                var securityMessages = commandResult.getSecurityResult().getSecurityMessages();
+                securityMessages.get(Messages.SECURITY_MESSAGE)
+                        .forEachRemaining(message -> appendError(errors, "Security", message));
+            }
+
+            if(commandResult.hasValidationErrors()) {
+                var validationMessages = commandResult.getValidationResult().getValidationMessages();
+                validationMessages.properties().forEachRemaining(fieldName -> validationMessages.get(fieldName)
+                        .forEachRemaining(message -> appendError(errors, "Validation (" + fieldName + ")", message)));
+            }
+
+            if(commandResult.hasExecutionErrors()) {
+                var executionErrors = commandResult.getExecutionResult().getExecutionErrors();
+                executionErrors.get(Messages.EXECUTION_ERROR).forEachRemaining(message -> {
+                    var key = message.getKey();
+                    var errorName = key == null ? "" : key.substring(key.lastIndexOf('.') + 1);
+                    if(doVerbose || !errorName.startsWith("Duplicate")) {
+                        appendError(errors, "Execution", message);
+                    }
+                });
+            }
+
+            if(errors.length() > 0) {
+                getLogger().error("{} failed at {}: {}", commandForm.getFormName(), initialDataParser.getSourceLocation(), errors);
+            }
+        } else if(doVerbose) {
+            getLogger().info("{} at {}: {}", commandForm.getFormName(), initialDataParser.getSourceLocation(),
+                    commandResult.getExecutionResult());
         }
     }
-    
-    public static void setDoErrors(boolean aDoErrors) {
-        doErrors = aDoErrors;
+
+    private static void appendError(StringJoiner errors, String category, Message message) {
+        var key = message.getKey();
+        var text = message.getMessage();
+
+        errors.add(category + " " + key + (text.equals("??" + key + "??") ? "" : " (" + text + ")"));
     }
     
     public static void setDoVerbose(boolean aDoVerbose) {

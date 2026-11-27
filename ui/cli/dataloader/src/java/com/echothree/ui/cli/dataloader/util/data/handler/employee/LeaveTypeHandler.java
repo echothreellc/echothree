@@ -49,7 +49,7 @@ public class LeaveTypeHandler
             form.setLeaveTypeName(leaveTypeName);
             form.set(getAttrsMap(attrs));
 
-            employeeService.createLeaveTypeDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, employeeService.createLeaveTypeDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

@@ -49,14 +49,14 @@ public class PostalAddressFormatHandler
             form.setPostalAddressFormatName(postalAddressFormatName);
             form.set(getAttrsMap(attrs));
 
-            contactService.createPostalAddressFormatDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, contactService.createPostalAddressFormatDescription(initialDataParser.getUserVisit(), form));
         } else if(localName.equals("postalAddressLine")) {
             var form = ContactFormFactory.getCreatePostalAddressLineForm();
 
             form.setPostalAddressFormatName(postalAddressFormatName);
             form.set(getAttrsMap(attrs));
 
-            contactService.createPostalAddressLine(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, contactService.createPostalAddressLine(initialDataParser.getUserVisit(), form));
 
             initialDataParser.pushHandler(new PostalAddressLineHandler(initialDataParser, this, postalAddressFormatName,
                     form.getPostalAddressLineSortOrder()));

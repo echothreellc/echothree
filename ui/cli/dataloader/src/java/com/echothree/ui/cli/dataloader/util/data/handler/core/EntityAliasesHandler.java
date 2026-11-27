@@ -54,7 +54,7 @@ public class EntityAliasesHandler
             commandForm.setEntityRef(entityRef);
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createEntityAlias(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createEntityAlias(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

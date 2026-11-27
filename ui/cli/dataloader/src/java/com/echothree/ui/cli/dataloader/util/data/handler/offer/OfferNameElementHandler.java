@@ -49,7 +49,7 @@ public class OfferNameElementHandler
             form.setOfferNameElementName(offerNameElementName);
             form.set(getAttrsMap(attrs));
 
-            offerService.createOfferNameElementDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, offerService.createOfferNameElementDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

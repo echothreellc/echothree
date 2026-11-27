@@ -45,7 +45,7 @@ public class CommunicationEventRoleTypesHandler
 
             form.set(getAttrsMap(attrs));
 
-            communicationService.createCommunicationEventRoleType(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, communicationService.createCommunicationEventRoleType(initialDataParser.getUserVisit(), form));
 
             initialDataParser.pushHandler(new CommunicationEventRoleTypeHandler(initialDataParser, this,
                     form.getCommunicationEventRoleTypeName()));

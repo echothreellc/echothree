@@ -50,7 +50,7 @@ public class ScaleTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            scaleService.createScaleType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, scaleService.createScaleType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new ScaleTypeHandler(initialDataParser, this, commandForm.getScaleTypeName()));
         }

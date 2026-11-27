@@ -50,7 +50,7 @@ public class CarrierTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(carrierService.createCarrierType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, carrierService.createCarrierType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new CarrierTypeHandler(initialDataParser, this, commandForm.getCarrierTypeName()));
         }

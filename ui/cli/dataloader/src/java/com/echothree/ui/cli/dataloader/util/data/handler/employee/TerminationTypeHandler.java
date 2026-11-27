@@ -49,7 +49,7 @@ public class TerminationTypeHandler
             form.setTerminationTypeName(terminationTypeName);
             form.set(getAttrsMap(attrs));
 
-            employeeService.createTerminationTypeDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, employeeService.createTerminationTypeDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

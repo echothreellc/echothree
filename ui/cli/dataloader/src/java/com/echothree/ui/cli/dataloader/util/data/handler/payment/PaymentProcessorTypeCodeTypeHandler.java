@@ -55,7 +55,7 @@ public class PaymentProcessorTypeCodeTypeHandler
             commandForm.setPaymentProcessorTypeCodeTypeName(paymentProcessorTypeCodeTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(paymentService.createPaymentProcessorTypeCode(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, paymentService.createPaymentProcessorTypeCode(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new PaymentProcessorTypeCodeHandler(initialDataParser, this,
                     commandForm.getPaymentProcessorTypeName(), commandForm.getPaymentProcessorTypeCodeTypeName(),
@@ -67,7 +67,8 @@ public class PaymentProcessorTypeCodeTypeHandler
             commandForm.setPaymentProcessorTypeCodeTypeName(paymentProcessorTypeCodeTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(paymentService.createPaymentProcessorTypeCodeTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm,
+                    paymentService.createPaymentProcessorTypeCodeTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

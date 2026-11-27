@@ -46,6 +46,7 @@ public class SalesOrderBatchesHandler
             commandForm.set(getAttrsMap(attrs));
 
             var commandResult = salesService.createSalesOrderBatch(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, commandResult);
 
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();

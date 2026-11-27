@@ -74,10 +74,10 @@ public class SearchKindHandler
                     var createSearchKindDescriptionCommandResult = searchService.createSearchKindDescription(initialDataParser.getUserVisit(), createForm);
                     
                     if(createSearchKindDescriptionCommandResult.hasErrors()) {
-                        getLogger().error(createSearchKindDescriptionCommandResult.toString());
+                        checkCommandResult(createForm, createSearchKindDescriptionCommandResult);
                     }
                 } else {
-                    getLogger().error(commandResult.toString());
+                    checkCommandResult(editForm, commandResult);
                 }
             } else {
                 var executionResult = commandResult.getExecutionResult();
@@ -100,7 +100,7 @@ public class SearchKindHandler
                         commandResult = searchService.editSearchKindDescription(initialDataParser.getUserVisit(), editForm);
 
                         if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     } else {
                         editForm.setEdit(null);
@@ -109,7 +109,7 @@ public class SearchKindHandler
                         commandResult = searchService.editSearchKindDescription(initialDataParser.getUserVisit(), editForm);
 
                         if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     }
                 }
@@ -120,7 +120,7 @@ public class SearchKindHandler
             commandForm.setSearchKindName(searchKindName);
             commandForm.set(getAttrsMap(attrs));
 
-            searchService.createSearchType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, searchService.createSearchType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new SearchTypeHandler(initialDataParser, this, searchKindName, commandForm.getSearchTypeName()));
         } else if(localName.equals("searchSortOrder")) {
@@ -129,7 +129,7 @@ public class SearchKindHandler
             commandForm.setSearchKindName(searchKindName);
             commandForm.set(getAttrsMap(attrs));
 
-            searchService.createSearchSortOrder(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, searchService.createSearchSortOrder(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new SearchSortOrderHandler(initialDataParser, this, searchKindName, commandForm.getSearchSortOrderName()));
         }

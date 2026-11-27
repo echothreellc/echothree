@@ -49,7 +49,7 @@ public class TermHandler
             commandForm.setTermName(termName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(termService.createTermDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, termService.createTermDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

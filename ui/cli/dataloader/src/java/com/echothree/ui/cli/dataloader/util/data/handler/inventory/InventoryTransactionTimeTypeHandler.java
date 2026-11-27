@@ -58,7 +58,8 @@ public class InventoryTransactionTimeTypeHandler
             commandForm.setInventoryTransactionTimeTypeName(inventoryTransactionTimeTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(inventoryService.createInventoryTransactionTimeTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm,
+                    inventoryService.createInventoryTransactionTimeTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

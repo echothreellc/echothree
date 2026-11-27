@@ -60,7 +60,7 @@ public class ChainEntityRoleTypeHandler
             commandForm.setChainEntityRoleTypeName(chainEntityRoleTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            chainService.createChainEntityRoleTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, chainService.createChainEntityRoleTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

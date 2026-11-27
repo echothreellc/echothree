@@ -45,7 +45,8 @@ public class RecoveryQuestionsHandler
 
             createRecoveryQuestionForm.set(getAttrsMap(attrs));
 
-            userService.createRecoveryQuestion(initialDataParser.getUserVisit(), createRecoveryQuestionForm);
+            checkCommandResult(createRecoveryQuestionForm,
+                    userService.createRecoveryQuestion(initialDataParser.getUserVisit(), createRecoveryQuestionForm));
 
             initialDataParser.pushHandler(new RecoveryQuestionHandler(initialDataParser, this,
                     createRecoveryQuestionForm.getRecoveryQuestionName()));

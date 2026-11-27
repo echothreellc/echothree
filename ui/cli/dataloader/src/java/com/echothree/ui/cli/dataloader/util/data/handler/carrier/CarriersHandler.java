@@ -46,6 +46,7 @@ public class CarriersHandler
             commandForm.set(getAttrsMap(attrs));
 
             var commandResult = carrierService.createCarrier(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, commandResult);
             
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();

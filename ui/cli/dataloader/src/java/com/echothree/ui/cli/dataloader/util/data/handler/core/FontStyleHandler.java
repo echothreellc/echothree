@@ -54,7 +54,7 @@ public class FontStyleHandler
             commandForm.setFontStyleName(fontStyleName);
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createFontStyleDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createFontStyleDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

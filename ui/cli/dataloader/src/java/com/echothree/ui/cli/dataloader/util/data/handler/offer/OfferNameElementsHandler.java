@@ -45,7 +45,7 @@ public class OfferNameElementsHandler
 
             form.set(getAttrsMap(attrs));
 
-            offerService.createOfferNameElement(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, offerService.createOfferNameElement(initialDataParser.getUserVisit(), form));
 
             initialDataParser.pushHandler(new OfferNameElementHandler(initialDataParser, this, form.getOfferNameElementName()));
         }

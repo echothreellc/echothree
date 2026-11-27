@@ -49,14 +49,15 @@ public class CancellationKindHandler
             commandForm.setCancellationKindName(cancellationKindName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(cancellationPolicyService.createCancellationKindDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm,
+                    cancellationPolicyService.createCancellationKindDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("cancellationPolicy")) {
             var commandForm = CancellationPolicyFormFactory.getCreateCancellationPolicyForm();
 
             commandForm.setCancellationKindName(cancellationKindName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(cancellationPolicyService.createCancellationPolicy(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, cancellationPolicyService.createCancellationPolicy(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new CancellationPolicyHandler(initialDataParser, this, cancellationKindName,
                     commandForm.getCancellationPolicyName()));
@@ -66,7 +67,7 @@ public class CancellationKindHandler
             commandForm.setCancellationKindName(cancellationKindName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(cancellationPolicyService.createCancellationReason(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, cancellationPolicyService.createCancellationReason(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new CancellationReasonHandler(initialDataParser, this, cancellationKindName,
                     commandForm.getCancellationReasonName()));
@@ -76,7 +77,7 @@ public class CancellationKindHandler
             commandForm.setCancellationKindName(cancellationKindName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(cancellationPolicyService.createCancellationType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, cancellationPolicyService.createCancellationType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new CancellationTypeHandler(initialDataParser, this, cancellationKindName,
                     commandForm.getCancellationTypeName()));

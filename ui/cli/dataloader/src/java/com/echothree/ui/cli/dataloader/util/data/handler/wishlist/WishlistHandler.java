@@ -58,7 +58,7 @@ public class WishlistHandler
             form.setSourceName(sourceName);
             form.set(getAttrsMap(attrs));
 
-            wishlistService.createWishlistLine(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, wishlistService.createWishlistLine(initialDataParser.getUserVisit(), form));
         }
     }
     

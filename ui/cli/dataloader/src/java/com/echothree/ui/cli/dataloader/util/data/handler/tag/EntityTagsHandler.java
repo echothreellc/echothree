@@ -49,7 +49,7 @@ public class EntityTagsHandler
             commandForm.setEntityRef(entityRef);
             commandForm.set(getAttrsMap(attrs));
             
-            tagService.createEntityTag(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, tagService.createEntityTag(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

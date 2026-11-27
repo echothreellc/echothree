@@ -45,7 +45,7 @@ public class CancellationKindsHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(cancellationPolicyService.createCancellationKind(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, cancellationPolicyService.createCancellationKind(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new CancellationKindHandler(initialDataParser, this, commandForm.getCancellationKindName()));
         }

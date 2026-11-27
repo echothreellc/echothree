@@ -53,7 +53,7 @@ public class SubscriptionKindsHandler
             commandForm.set(getAttrsMap(attrs));
             
             if(commandAction == null || commandAction.equals("create")) {
-                subscriptionService.createSubscriptionKind(initialDataParser.getUserVisit(), commandForm);
+                checkCommandResult(commandForm, subscriptionService.createSubscriptionKind(initialDataParser.getUserVisit(), commandForm));
             }
             
             initialDataParser.pushHandler(new SubscriptionKindHandler(initialDataParser, this, commandForm.getSubscriptionKindName()));

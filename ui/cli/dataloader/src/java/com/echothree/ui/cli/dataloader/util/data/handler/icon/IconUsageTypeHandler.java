@@ -49,7 +49,7 @@ public class IconUsageTypeHandler
             form.setIconUsageTypeName(iconUsageTypeName);
             form.set(getAttrsMap(attrs));
 
-            iconService.createIconUsageTypeDescription(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, iconService.createIconUsageTypeDescription(initialDataParser.getUserVisit(), form));
         }
     }
     

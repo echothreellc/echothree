@@ -45,7 +45,7 @@ public class CommunicationEventPurposesHandler
 
             form.set(getAttrsMap(attrs));
 
-            communicationService.createCommunicationEventPurpose(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, communicationService.createCommunicationEventPurpose(initialDataParser.getUserVisit(), form));
 
             initialDataParser.pushHandler(new CommunicationEventPurposeHandler(initialDataParser, this, form.getCommunicationEventPurposeName()));
         }

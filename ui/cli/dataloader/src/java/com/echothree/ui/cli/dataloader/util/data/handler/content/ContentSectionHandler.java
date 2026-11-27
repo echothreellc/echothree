@@ -52,7 +52,8 @@ public class ContentSectionHandler
             createContentSectionDescriptionForm.setContentSectionName(contentSectionName);
             createContentSectionDescriptionForm.set(getAttrsMap(attrs));
 
-            contentService.createContentSectionDescription(initialDataParser.getUserVisit(), createContentSectionDescriptionForm);
+            checkCommandResult(createContentSectionDescriptionForm,
+                    contentService.createContentSectionDescription(initialDataParser.getUserVisit(), createContentSectionDescriptionForm));
         } else if(localName.equals("contentPage")) {
             var createContentPageForm = ContentFormFactory.getCreateContentPageForm();
 
@@ -60,7 +61,7 @@ public class ContentSectionHandler
             createContentPageForm.setContentSectionName(contentSectionName);
             createContentPageForm.set(getAttrsMap(attrs));
 
-            contentService.createContentPage(initialDataParser.getUserVisit(), createContentPageForm);
+            checkCommandResult(createContentPageForm, contentService.createContentPage(initialDataParser.getUserVisit(), createContentPageForm));
 
             initialDataParser.pushHandler(new ContentPageHandler(initialDataParser, this, contentCollectionName,
                     contentSectionName, createContentPageForm.getContentPageName()));

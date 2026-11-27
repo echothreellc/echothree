@@ -58,7 +58,7 @@ public class FilterStepHandler
             commandForm.setFilterStepName(filterStepName);
             commandForm.set(getAttrsMap(attrs));
 
-            filterService.createFilterStepDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, filterService.createFilterStepDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("filterStepElement")) {
             var commandForm = FilterFormFactory.getCreateFilterStepElementForm();
 
@@ -68,7 +68,7 @@ public class FilterStepHandler
             commandForm.setFilterStepName(filterStepName);
             commandForm.set(getAttrsMap(attrs));
 
-            filterService.createFilterStepElement(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, filterService.createFilterStepElement(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new FilterStepElementHandler(initialDataParser, this, filterKindName,
                     filterTypeName, filterName, filterStepName, commandForm.getFilterStepElementName()));

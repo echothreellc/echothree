@@ -54,21 +54,21 @@ public class ApplicationHandler
             commandForm.setApplicationName(applicationName);
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createApplicationDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createApplicationDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("applicationEditor")) {
             var commandForm = CoreFormFactory.getCreateApplicationEditorForm();
             
             commandForm.setApplicationName(applicationName);
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createApplicationEditor(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createApplicationEditor(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("applicationEditorUse")) {
             var commandForm = CoreFormFactory.getCreateApplicationEditorUseForm();
             
             commandForm.setApplicationName(applicationName);
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createApplicationEditorUse(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createApplicationEditorUse(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new ApplicationEditorUseHandler(initialDataParser, this, applicationName, commandForm.getApplicationEditorUseName()));
         }

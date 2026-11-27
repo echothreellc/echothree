@@ -47,7 +47,7 @@ public class IconUsageTypesHandler
 
             form.set(getAttrsMap(attrs));
 
-            iconService.createIconUsageType(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, iconService.createIconUsageType(initialDataParser.getUserVisit(), form));
             
             initialDataParser.pushHandler(new IconUsageTypeHandler(initialDataParser, this, iconUsageTypeName));
         }

@@ -54,7 +54,7 @@ public class PartySkillsHandler
             commandForm.setPartyName(partyName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(employeeService.createPartySkill(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, employeeService.createPartySkill(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

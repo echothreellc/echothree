@@ -49,7 +49,8 @@ public class InventoryCostingMethodHandler
             commandForm.setInventoryCostingMethodName(inventoryCostingMethodName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(inventoryService.createInventoryCostingMethodDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm,
+                    inventoryService.createInventoryCostingMethodDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

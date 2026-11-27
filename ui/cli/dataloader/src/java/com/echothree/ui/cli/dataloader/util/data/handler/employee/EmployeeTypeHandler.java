@@ -54,7 +54,7 @@ public class EmployeeTypeHandler
             commandForm.setEmployeeTypeName(employeeTypeName);
             commandForm.set(getAttrsMap(attrs));
             
-            employeeService.createEmployeeTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, employeeService.createEmployeeTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

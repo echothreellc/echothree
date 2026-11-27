@@ -52,7 +52,7 @@ public class EntityMultipleListItemAttributesHandler
             commandForm.setEntityAttributeName(entityAttributeName);
             commandForm.set(getAttrsMap(attrs));
             
-            coreService.createEntityMultipleListItemAttribute(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createEntityMultipleListItemAttribute(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

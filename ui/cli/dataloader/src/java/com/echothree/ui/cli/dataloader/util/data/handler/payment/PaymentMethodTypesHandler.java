@@ -46,7 +46,7 @@ public class PaymentMethodTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(paymentService.createPaymentMethodType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, paymentService.createPaymentMethodType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new PaymentMethodTypeHandler(initialDataParser, this, commandForm.getPaymentMethodTypeName()));
         }

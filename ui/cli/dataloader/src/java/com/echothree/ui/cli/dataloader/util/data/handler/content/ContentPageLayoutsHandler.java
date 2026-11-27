@@ -45,7 +45,8 @@ public class ContentPageLayoutsHandler
 
             createContentPageLayoutForm.set(getAttrsMap(attrs));
 
-            contentService.createContentPageLayout(initialDataParser.getUserVisit(), createContentPageLayoutForm);
+            checkCommandResult(createContentPageLayoutForm,
+                    contentService.createContentPageLayout(initialDataParser.getUserVisit(), createContentPageLayoutForm));
 
             initialDataParser.pushHandler(new ContentPageLayoutHandler(initialDataParser, this,
                     createContentPageLayoutForm.getContentPageLayoutName()));

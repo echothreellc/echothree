@@ -45,7 +45,7 @@ public class ResponsibilityTypesHandler
 
             form.set(getAttrsMap(attrs));
 
-            employeeService.createResponsibilityType(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, employeeService.createResponsibilityType(initialDataParser.getUserVisit(), form));
 
             initialDataParser.pushHandler(new ResponsibilityTypeHandler(initialDataParser, this, form.getResponsibilityTypeName()));
         }

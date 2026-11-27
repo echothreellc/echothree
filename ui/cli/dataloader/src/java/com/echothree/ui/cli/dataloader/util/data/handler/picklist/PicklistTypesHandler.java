@@ -50,7 +50,7 @@ public class PicklistTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(picklistService.createPicklistType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, picklistService.createPicklistType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new PicklistTypeHandler(initialDataParser, this, commandForm.getPicklistTypeName()));
         }

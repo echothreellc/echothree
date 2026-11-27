@@ -62,7 +62,8 @@ public class ContentPageHandler
             createContentPageDescriptionForm.setContentPageName(contentPageName);
             createContentPageDescriptionForm.set(getAttrsMap(attrs));
 
-            contentService.createContentPageDescription(initialDataParser.getUserVisit(), createContentPageDescriptionForm);
+            checkCommandResult(createContentPageDescriptionForm,
+                    contentService.createContentPageDescription(initialDataParser.getUserVisit(), createContentPageDescriptionForm));
         } else if(localName.equals("contentPageArea")) {
             contentPageAreaAttrs = getAttrsMap(attrs);
             contentPageAreaAttrs.keySet().removeAll(Set.of("ContentCollectionName", "ContentSectionName", "ContentPageName", "ContentPageAreaClob"));
@@ -97,7 +98,8 @@ public class ContentPageHandler
             createContentPageAreaForm.setContentPageAreaClob(contentPageAreaClob == null? null: new String(contentPageAreaClob));
             createContentPageAreaForm.set(contentPageAreaAttrs);
             
-            contentService.createContentPageArea(initialDataParser.getUserVisit(), createContentPageAreaForm);
+            checkCommandResult(createContentPageAreaForm,
+                    contentService.createContentPageArea(initialDataParser.getUserVisit(), createContentPageAreaForm));
             
             inContentPageArea = false;
             contentPageAreaAttrs = null;

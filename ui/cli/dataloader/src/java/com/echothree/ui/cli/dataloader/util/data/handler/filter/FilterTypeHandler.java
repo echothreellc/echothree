@@ -52,7 +52,7 @@ public class FilterTypeHandler
             commandForm.setFilterTypeName(filterTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            filterService.createFilterTypeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, filterService.createFilterTypeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("filter")) {
             var commandForm = FilterFormFactory.getCreateFilterForm();
 
@@ -60,7 +60,7 @@ public class FilterTypeHandler
             commandForm.setFilterTypeName(filterTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            filterService.createFilter(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, filterService.createFilter(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new FilterHandler(initialDataParser, this, filterKindName, filterTypeName,
                     commandForm.getFilterName()));

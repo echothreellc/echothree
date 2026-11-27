@@ -53,7 +53,7 @@ public class OrderAliasTypeHandler
             commandForm.setOrderAliasTypeName(orderAliasTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(orderService.createOrderAliasTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, orderService.createOrderAliasTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

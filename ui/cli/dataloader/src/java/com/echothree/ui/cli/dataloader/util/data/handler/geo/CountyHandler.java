@@ -57,14 +57,14 @@ public class CountyHandler
             commandForm.setGeoCodeName(countyGeoCodeName);
             commandForm.set(getAttrsMap(attrs));
             
-            geoService.createGeoCodeDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, geoService.createGeoCodeDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("geoCodeTax")) {
             var commandForm = TaxFormFactory.getCreateGeoCodeTaxForm();
             
             commandForm.setGeoCodeName(countyGeoCodeName);
             commandForm.set(getAttrsMap(attrs));
             
-            taxService.createGeoCodeTax(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, taxService.createGeoCodeTax(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("entityAttributes")) {
             initialDataParser.pushHandler(new EntityAttributesHandler(initialDataParser, this, countyEntityRef));
         }

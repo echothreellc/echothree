@@ -74,10 +74,10 @@ public class WorkflowsHandler
                         var createWorkflowCommandResult = workflowService.createWorkflow(initialDataParser.getUserVisit(), createForm);
 
                         if(createWorkflowCommandResult.hasErrors()) {
-                            getLogger().error(createWorkflowCommandResult.toString());
+                            checkCommandResult(createForm, createWorkflowCommandResult);
                         }
                     } else {
-                        getLogger().error(commandResult.toString());
+                        checkCommandResult(editForm, commandResult);
                     }
                 } else {
                     var executionResult = commandResult.getExecutionResult();
@@ -89,7 +89,7 @@ public class WorkflowsHandler
 
                         commandResult = workflowService.editWorkflow(initialDataParser.getUserVisit(), editForm);
                         if(commandResult.hasErrors()) {
-                            getLogger().error(commandResult.toString());
+                            checkCommandResult(editForm, commandResult);
                         }
                     }
                 }

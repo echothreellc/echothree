@@ -45,7 +45,8 @@ public class ItemPriceTypesHandler
 
             createItemPriceTypeForm.set(getAttrsMap(attrs));
 
-            itemService.createItemPriceType(initialDataParser.getUserVisit(), createItemPriceTypeForm);
+            checkCommandResult(createItemPriceTypeForm,
+                    itemService.createItemPriceType(initialDataParser.getUserVisit(), createItemPriceTypeForm));
 
             initialDataParser.pushHandler(new ItemPriceTypeHandler(initialDataParser, this, createItemPriceTypeForm.getItemPriceTypeName()));
         }

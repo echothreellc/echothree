@@ -47,7 +47,8 @@ public class PartyRelationshipTypesHandler
 
             createPartyRelationshipTypeForm.set(getAttrsMap(attrs));
 
-            partyService.createPartyRelationshipType(initialDataParser.getUserVisit(), createPartyRelationshipTypeForm);
+            checkCommandResult(createPartyRelationshipTypeForm,
+                    partyService.createPartyRelationshipType(initialDataParser.getUserVisit(), createPartyRelationshipTypeForm));
             
             initialDataParser.pushHandler(new PartyRelationshipTypeHandler(initialDataParser, this, partyRelationshipTypeName));
         }

@@ -54,7 +54,7 @@ public class GlAccountCategoryHandler
             commandForm.setGlAccountCategoryName(glAccountCategoryName);
             commandForm.set(getAttrsMap(attrs));
             
-            accountingService.createGlAccountCategoryDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, accountingService.createGlAccountCategoryDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

@@ -49,7 +49,8 @@ public class InventoryAdjustmentTypeHandler
             commandForm.setInventoryAdjustmentTypeName(inventoryAdjustmentTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(inventoryService.createInventoryAdjustmentTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm,
+                    inventoryService.createInventoryAdjustmentTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

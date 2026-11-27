@@ -54,7 +54,7 @@ public class LanguageHandler
             commandForm.setLanguageIsoName(languageIsoName);
             commandForm.set(getAttrsMap(attrs));
 
-            partyService.createLanguageDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, partyService.createLanguageDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

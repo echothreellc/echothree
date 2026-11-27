@@ -49,14 +49,16 @@ public class ContentWebAddressHandler
             createContentWebAddressDescriptionForm.setContentWebAddressName(contentWebAddressName);
             createContentWebAddressDescriptionForm.set(getAttrsMap(attrs));
 
-            contentService.createContentWebAddressDescription(initialDataParser.getUserVisit(), createContentWebAddressDescriptionForm);
+            checkCommandResult(createContentWebAddressDescriptionForm,
+                    contentService.createContentWebAddressDescription(initialDataParser.getUserVisit(), createContentWebAddressDescriptionForm));
         } else if(localName.equals("contentWebAddressServer")) {
             var createContentWebAddressServerForm = ContentFormFactory.getCreateContentWebAddressServerForm();
 
             createContentWebAddressServerForm.setContentWebAddressName(contentWebAddressName);
             createContentWebAddressServerForm.set(getAttrsMap(attrs));
 
-            contentService.createContentWebAddressServer(initialDataParser.getUserVisit(), createContentWebAddressServerForm);
+            checkCommandResult(createContentWebAddressServerForm,
+                    contentService.createContentWebAddressServer(initialDataParser.getUserVisit(), createContentWebAddressServerForm));
         }
     }
     

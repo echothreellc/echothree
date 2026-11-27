@@ -57,7 +57,7 @@ public class UnitOfMeasureTypeHandler
             form.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
             form.set(getAttrsMap(attrs));
 
-            checkCommandResult(uomService.createUnitOfMeasureTypeDescription(initialDataParser.getUserVisit(), form));
+            checkCommandResult(form, uomService.createUnitOfMeasureTypeDescription(initialDataParser.getUserVisit(), form));
         } else if(localName.equals("unitOfMeasureTypeVolume")) {
             var form = UomFormFactory.getCreateUnitOfMeasureTypeVolumeForm();
 
@@ -65,7 +65,7 @@ public class UnitOfMeasureTypeHandler
             form.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
             form.set(getAttrsMap(attrs));
 
-            uomService.createUnitOfMeasureTypeVolume(initialDataParser.getUserVisit(), form);
+            checkCommandResult(form, uomService.createUnitOfMeasureTypeVolume(initialDataParser.getUserVisit(), form));
         }
     }
     

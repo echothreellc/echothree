@@ -54,7 +54,7 @@ public class IndexHandler
             commandForm.setIndexName(indexName);
             commandForm.set(getAttrsMap(attrs));
 
-            indexService.createIndexDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, indexService.createIndexDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

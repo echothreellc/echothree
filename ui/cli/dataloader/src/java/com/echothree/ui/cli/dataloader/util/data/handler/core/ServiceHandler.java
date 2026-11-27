@@ -54,7 +54,7 @@ public class ServiceHandler
             commandForm.setServiceName(serviceName);
             commandForm.set(getAttrsMap(attrs));
 
-            coreService.createServiceDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, coreService.createServiceDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
 

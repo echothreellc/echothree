@@ -55,7 +55,8 @@ public class ItemAccountingCategoryHandler
             commandForm.setItemAccountingCategoryName(itemAccountingCategoryName);
             commandForm.set(getAttrsMap(attrs));
             
-            accountingService.createItemAccountingCategoryDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm,
+                    accountingService.createItemAccountingCategoryDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

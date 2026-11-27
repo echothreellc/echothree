@@ -57,7 +57,7 @@ public class ShipmentTimeTypeHandler
             commandForm.setShipmentTimeTypeName(shipmentTimeTypeName);
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(shipmentService.createShipmentTimeTypeDescription(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, shipmentService.createShipmentTimeTypeDescription(initialDataParser.getUserVisit(), commandForm));
         }
     }
     

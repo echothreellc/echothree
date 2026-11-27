@@ -60,7 +60,7 @@ public class PurchaseInvoicesHandler
             var commandResult = purchaseService.createPurchaseInvoice(initialDataParser.getUserVisit(), form);
             
             if(commandResult.hasErrors()) {
-                System.err.println(commandResult);
+                checkCommandResult(form, commandResult);
             } else {
                 var executionResult = commandResult.getExecutionResult();
                 var result = executionResult.getResult();

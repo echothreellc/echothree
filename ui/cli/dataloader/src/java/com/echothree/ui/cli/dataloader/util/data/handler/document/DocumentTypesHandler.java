@@ -50,7 +50,7 @@ public class DocumentTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            checkCommandResult(documentService.createDocumentType(initialDataParser.getUserVisit(), commandForm));
+            checkCommandResult(commandForm, documentService.createDocumentType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new DocumentTypeHandler(initialDataParser, this, commandForm.getDocumentTypeName()));
         }

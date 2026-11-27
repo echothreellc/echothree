@@ -71,28 +71,28 @@ public class CustomerHandler
             commandForm.setPartyName(partyName);
             commandForm.set(getAttrsMap(attrs));
 
-            partyService.createPartyAlias(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, partyService.createPartyAlias(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("partyCreditLimit")) {
             var commandForm = TermFormFactory.getCreatePartyCreditLimitForm();
             
             commandForm.setPartyName(partyName);
             commandForm.set(getAttrsMap(attrs));
             
-            termService.createPartyCreditLimit(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, termService.createPartyCreditLimit(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("subscription")) {
             var commandForm = SubscriptionFormFactory.getCreateSubscriptionForm();
             
             commandForm.setPartyName(partyName);
             commandForm.set(getAttrsMap(attrs));
             
-            subscriptionService.createSubscription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, subscriptionService.createSubscription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("associate")) {
             var commandForm = AssociateFormFactory.getCreateAssociateForm();
             
             commandForm.setPartyName(partyName);
             commandForm.set(getAttrsMap(attrs));
             
-            associateService.createAssociate(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, associateService.createAssociate(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new AssociateHandler(initialDataParser, this, commandForm.getAssociateProgramName(),commandForm.getAssociateName()));
         } else if(localName.equals("profile")) {
@@ -101,7 +101,7 @@ public class CustomerHandler
             commandForm.setPartyName(partyName);
             commandForm.set(getAttrsMap(attrs));
             
-            partyService.createProfile(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, partyService.createProfile(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("wishlists")) {
             initialDataParser.pushHandler(new WishlistsHandler(initialDataParser, this, partyName));
         } else if(localName.equals("contactMechanisms")) {

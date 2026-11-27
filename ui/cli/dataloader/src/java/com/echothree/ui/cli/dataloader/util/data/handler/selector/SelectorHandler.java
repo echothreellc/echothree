@@ -56,7 +56,7 @@ public class SelectorHandler
             commandForm.setSelectorName(selectorName);
             commandForm.set(getAttrsMap(attrs));
             
-            selectorService.createSelectorDescription(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, selectorService.createSelectorDescription(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("selectorNode")) {
             var commandForm = SelectorFormFactory.getCreateSelectorNodeForm();
             
@@ -65,7 +65,7 @@ public class SelectorHandler
             commandForm.setSelectorName(selectorName);
             commandForm.set(getAttrsMap(attrs));
             
-            selectorService.createSelectorNode(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, selectorService.createSelectorNode(initialDataParser.getUserVisit(), commandForm));
             
             initialDataParser.pushHandler(new SelectorNodeHandler(initialDataParser, this, selectorKindName, selectorTypeName,
                     selectorName, commandForm.getSelectorNodeName()));

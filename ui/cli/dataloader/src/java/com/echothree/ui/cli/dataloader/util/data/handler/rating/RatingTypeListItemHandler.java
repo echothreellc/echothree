@@ -59,7 +59,8 @@ public class RatingTypeListItemHandler
             createRatingTypeListItemDescriptionForm.setRatingTypeListItemName(ratingTypeListItemName);
             createRatingTypeListItemDescriptionForm.set(getAttrsMap(attrs));
 
-            ratingService.createRatingTypeListItemDescription(initialDataParser.getUserVisit(), createRatingTypeListItemDescriptionForm);
+            checkCommandResult(createRatingTypeListItemDescriptionForm,
+                    ratingService.createRatingTypeListItemDescription(initialDataParser.getUserVisit(), createRatingTypeListItemDescriptionForm));
         }
     }
     

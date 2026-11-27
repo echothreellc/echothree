@@ -45,7 +45,7 @@ public class FilterAdjustmentTypesHandler
 
             commandForm.set(getAttrsMap(attrs));
 
-            filterService.createFilterAdjustmentType(initialDataParser.getUserVisit(), commandForm);
+            checkCommandResult(commandForm, filterService.createFilterAdjustmentType(initialDataParser.getUserVisit(), commandForm));
 
             initialDataParser.pushHandler(new FilterAdjustmentTypeHandler(initialDataParser, this, commandForm.getFilterAdjustmentTypeName()));
         }
