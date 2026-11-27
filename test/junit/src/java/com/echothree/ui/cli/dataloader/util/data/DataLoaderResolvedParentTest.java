@@ -142,6 +142,110 @@ class DataLoaderResolvedParentTest
     }
 
     @Test
+    void reconcilesWorkflowDestinationsAndEntrancesAndSkipsRejectedChildren() throws Exception {
+        var service = WorkflowUtil.getHome();
+        var workflowName = newTestName();
+        var createForm = WorkflowFormFactory.getCreateWorkflowForm();
+        createForm.setWorkflowName(workflowName);
+        createForm.setSortOrder("7");
+        requireSuccess(service.createWorkflow(userVisitPK, createForm));
+
+        try {
+            var initialXml = """
+                    <initialData>
+                        <workflows>
+                            <workflow workflowName="%s" commandAction="none">
+                                <workflowStep workflowStepName="REVIEW" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1"/>
+                                <workflowStep workflowStepName="APPROVED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="2"/>
+                                <workflowDestination workflowStepName="REVIEW" workflowDestinationName="NEXT" isDefault="true" sortOrder="1">
+                                    <workflowDestinationDescription languageIsoName="en" description="From review"/>
+                                </workflowDestination>
+                                <workflowDestination workflowStepName="APPROVED" workflowDestinationName="NEXT" isDefault="false" sortOrder="2">
+                                    <workflowDestinationDescription languageIsoName="en" description="From approved"/>
+                                </workflowDestination>
+                                <workflowEntrance workflowEntranceName="START" isDefault="true" sortOrder="1">
+                                    <workflowEntranceDescription languageIsoName="en" description="Start here"/>
+                                </workflowEntrance>
+                            </workflow>
+                        </workflows>
+                    </initialData>
+                    """.formatted(workflowName);
+            loadXml(initialXml);
+            loadXml(initialXml);
+
+            var getDestinationForm = WorkflowFormFactory.getGetWorkflowDestinationForm();
+            getDestinationForm.setWorkflowName(workflowName);
+            getDestinationForm.setWorkflowStepName("REVIEW");
+            getDestinationForm.setWorkflowDestinationName("NEXT");
+            var getDestinationDescriptionForm = WorkflowFormFactory.getGetWorkflowDestinationDescriptionForm();
+            getDestinationDescriptionForm.set(getDestinationForm.get());
+            getDestinationDescriptionForm.setLanguageIsoName("en");
+            assertEquals("From review", requireSuccess(service.getWorkflowDestinationDescription(userVisitPK, getDestinationDescriptionForm))
+                    .getWorkflowDestinationDescription().getDescription());
+
+            var getEntranceForm = WorkflowFormFactory.getGetWorkflowEntranceForm();
+            getEntranceForm.setWorkflowName(workflowName);
+            getEntranceForm.setWorkflowEntranceName("START");
+            var getEntranceDescriptionForm = WorkflowFormFactory.getGetWorkflowEntranceDescriptionForm();
+            getEntranceDescriptionForm.set(getEntranceForm.get());
+            getEntranceDescriptionForm.setLanguageIsoName("en");
+            assertEquals("Start here", requireSuccess(service.getWorkflowEntranceDescription(userVisitPK, getEntranceDescriptionForm))
+                    .getWorkflowEntranceDescription().getDescription());
+
+            var updateXml = """
+                    <initialData>
+                        <workflows>
+                            <workflow workflowName="%s" commandAction="none">
+                                <workflowDestination workflowStepName="REVIEW" workflowDestinationName="NEXT" sortOrder="%s">
+                                    <workflowDestinationDescription languageIsoName="en" description="%s"/>
+                                </workflowDestination>
+                                <workflowEntrance workflowEntranceName="START" %s>
+                                    <workflowEntranceDescription languageIsoName="en" %s/>
+                                </workflowEntrance>
+                            </workflow>
+                        </workflows>
+                    </initialData>
+                    """;
+            loadXml(updateXml.formatted(workflowName, "3", "Updated review destination",
+                    "sortOrder=\"4\"", "description=\"Updated entrance\""));
+            var destination = requireSuccess(service.getWorkflowDestination(userVisitPK, getDestinationForm)).getWorkflowDestination();
+            assertEquals(Integer.valueOf(3), destination.getSortOrder());
+            assertTrue(destination.getIsDefault());
+            var entrance = requireSuccess(service.getWorkflowEntrance(userVisitPK, getEntranceForm)).getWorkflowEntrance();
+            assertEquals(Integer.valueOf(4), entrance.getSortOrder());
+            assertTrue(entrance.getIsDefault());
+            assertEquals("Updated entrance", requireSuccess(service.getWorkflowEntranceDescription(userVisitPK, getEntranceDescriptionForm))
+                    .getWorkflowEntranceDescription().getDescription());
+
+            loadXml(updateXml.formatted(workflowName, "not-a-number", "Must not be loaded", "sortOrder=\"5\"", ""));
+            assertEquals(Integer.valueOf(3),
+                    requireSuccess(service.getWorkflowDestination(userVisitPK, getDestinationForm)).getWorkflowDestination().getSortOrder());
+            assertEquals("Updated review destination",
+                    requireSuccess(service.getWorkflowDestinationDescription(userVisitPK, getDestinationDescriptionForm))
+                            .getWorkflowDestinationDescription().getDescription());
+            getDestinationDescriptionForm.setWorkflowStepName("APPROVED");
+            assertEquals("From approved", requireSuccess(service.getWorkflowDestinationDescription(userVisitPK, getDestinationDescriptionForm))
+                    .getWorkflowDestinationDescription().getDescription());
+            assertEquals(Integer.valueOf(5),
+                    requireSuccess(service.getWorkflowEntrance(userVisitPK, getEntranceForm)).getWorkflowEntrance().getSortOrder());
+            assertEquals("Updated entrance", requireSuccess(service.getWorkflowEntranceDescription(userVisitPK, getEntranceDescriptionForm))
+                    .getWorkflowEntranceDescription().getDescription());
+
+            loadXml(updateXml.formatted(workflowName, "3", "Updated review destination",
+                    "commandAction=\"none\" sortOrder=\"6\"", "description=\"Updated through a read-only entrance\""));
+            assertEquals(Integer.valueOf(5),
+                    requireSuccess(service.getWorkflowEntrance(userVisitPK, getEntranceForm)).getWorkflowEntrance().getSortOrder());
+            assertEquals("Updated through a read-only entrance",
+                    requireSuccess(service.getWorkflowEntranceDescription(userVisitPK, getEntranceDescriptionForm))
+                            .getWorkflowEntranceDescription().getDescription());
+        } finally {
+            var deleteForm = WorkflowFormFactory.getDeleteWorkflowForm();
+            deleteForm.setWorkflowName(workflowName);
+            assertNoErrors(service.deleteWorkflow(userVisitPK, deleteForm));
+        }
+    }
+
+    @Test
     void loadsItemAliasTypeDescriptionUnderAnUnchangedParentByUuid() throws Exception {
         var service = ItemUtil.getHome();
         var itemAliasTypeName = newTestName();

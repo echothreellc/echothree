@@ -22,7 +22,6 @@ import com.echothree.control.user.workflow.common.form.WorkflowFormFactory;
 import com.echothree.control.user.workflow.common.spec.WorkflowSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
@@ -58,56 +57,16 @@ public class WorkflowDestinationHandler
             throws SAXException {
         switch(localName) {
             case "workflowDestinationDescription" -> {
-                var spec = WorkflowSpecFactory.getWorkflowDestinationDescriptionSpec();
-                var editForm = WorkflowFormFactory.getEditWorkflowDestinationDescriptionForm();
+                var attrsMap = getAttrsMap(attrs);
+                attrsMap.putIfAbsent("WorkflowName", workflowName);
+                attrsMap.putIfAbsent("WorkflowStepName", workflowStepName);
+                attrsMap.putIfAbsent("WorkflowDestinationName", workflowDestinationName);
 
-                spec.setWorkflowName(workflowName);
-                spec.setWorkflowStepName(workflowStepName);
-                spec.setWorkflowDestinationName(workflowDestinationName);
-                spec.set(getAttrsMap(attrs));
-
-                var commandAction = getCommandAction(spec);
-                getLogger().debug("Found: {}", commandAction);
-                if(commandAction == null || commandAction.equals("create")) {
-                    var attrsMap = getAttrsMap(attrs);
-
-                    editForm.setSpec(spec);
-                    editForm.setEditMode(EditMode.LOCK);
-
-                    var commandResult = workflowService.editWorkflowDestinationDescription(initialDataParser.getUserVisit(), editForm);
-
-                    if(commandResult.hasErrors()) {
-                        if(commandResult.containsExecutionError(ExecutionErrors.UnknownWorkflowDestinationDescription.name())) {
-                            var createForm = WorkflowFormFactory.getCreateWorkflowDestinationDescriptionForm();
-
-                            spec.setWorkflowName(workflowName);
-                            spec.setWorkflowStepName(workflowStepName);
-                            spec.setWorkflowDestinationName(workflowDestinationName);
-                            createForm.set(spec.get());
-
-                            getLogger().debug("Creating: {}", spec.getWorkflowName());
-                            var createWorkflowDestinationDescriptionCommandResult = workflowService.createWorkflowDestinationDescription(initialDataParser.getUserVisit(), createForm);
-
-                            if(createWorkflowDestinationDescriptionCommandResult.hasErrors()) {
-                                checkCommandResult(createForm, createWorkflowDestinationDescriptionCommandResult);
-                            }
-                        } else {
-                            checkCommandResult(editForm, commandResult);
-                        }
-                    } else {
-                        var executionResult = commandResult.getExecutionResult();
-                        var result = executionResult.getResult();
-
-                        getLogger().debug("Checking for modifications: {}", spec.getWorkflowName());
-                        if(result != null) {
-                            updateEditFormValues(editForm, attrsMap, result);
-
-                            commandResult = workflowService.editWorkflowDestinationDescription(initialDataParser.getUserVisit(), editForm);
-                            if(commandResult.hasErrors()) {
-                                checkCommandResult(editForm, commandResult);
-                            }
-                        }
-                    }
+                if(shouldEdit(attrsMap)) {
+                    editOrCreate(attrsMap, WorkflowSpecFactory.getWorkflowDestinationDescriptionSpec(),
+                            WorkflowFormFactory.getEditWorkflowDestinationDescriptionForm(), workflowService::editWorkflowDestinationDescription,
+                            WorkflowFormFactory.getCreateWorkflowDestinationDescriptionForm(), workflowService::createWorkflowDestinationDescription,
+                            ExecutionErrors.UnknownWorkflowDestinationDescription);
                 }
             }
             case "workflowDestinationSelector" -> {

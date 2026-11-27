@@ -22,7 +22,6 @@ import com.echothree.control.user.workflow.common.form.WorkflowFormFactory;
 import com.echothree.control.user.workflow.common.spec.WorkflowSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import java.util.Map;
 import javax.naming.NamingException;
@@ -56,110 +55,8 @@ public class WorkflowHandler
         switch(localName) {
             case "workflowDescription" -> loadWorkflowDescription(getWorkflowAttributes(attrs));
             case "workflowStep" -> loadWorkflowStep(getWorkflowAttributes(attrs));
-            case "workflowDestination" -> {
-                var spec = WorkflowSpecFactory.getWorkflowDestinationUniversalSpec();
-                var editForm = WorkflowFormFactory.getEditWorkflowDestinationForm();
-
-                spec.setWorkflowName(workflowName);
-                spec.set(getAttrsMap(attrs));
-
-                var commandAction = getCommandAction(spec);
-                getLogger().debug("Found: {}", commandAction);
-                if(commandAction == null || commandAction.equals("create")) {
-                    var attrsMap = getAttrsMap(attrs);
-
-                    editForm.setSpec(spec);
-                    editForm.setEditMode(EditMode.LOCK);
-
-                    var commandResult = workflowService.editWorkflowDestination(initialDataParser.getUserVisit(), editForm);
-
-                    if(commandResult.hasErrors()) {
-                        if(commandResult.containsExecutionError(ExecutionErrors.UnknownWorkflowDestinationName.name())) {
-                            var createForm = WorkflowFormFactory.getCreateWorkflowDestinationForm();
-
-                            spec.setWorkflowName(workflowName);
-                            createForm.set(spec.get());
-
-                            getLogger().debug("Creating: {}", spec.getWorkflowDestinationName());
-                            var createWorkflowDestinationCommandResult = workflowService.createWorkflowDestination(initialDataParser.getUserVisit(), createForm);
-
-                            if(createWorkflowDestinationCommandResult.hasErrors()) {
-                                checkCommandResult(createForm, createWorkflowDestinationCommandResult);
-                            }
-                        } else {
-                            checkCommandResult(editForm, commandResult);
-                        }
-                    } else {
-                        var executionResult = commandResult.getExecutionResult();
-                        var result = executionResult.getResult();
-
-                        getLogger().debug("Checking for modifications: {}", spec.getWorkflowDestinationName());
-                        if(result != null) {
-                            updateEditFormValues(editForm, attrsMap, result);
-
-                            commandResult = workflowService.editWorkflowDestination(initialDataParser.getUserVisit(), editForm);
-                            if(commandResult.hasErrors()) {
-                                checkCommandResult(editForm, commandResult);
-                            }
-                        }
-                    }
-                }
-
-                initialDataParser.pushHandler(new WorkflowDestinationHandler(initialDataParser, this, workflowName,
-                        spec.getWorkflowStepName(), spec.getWorkflowDestinationName()));
-            }
-            case "workflowEntrance" -> {
-                var spec = WorkflowSpecFactory.getWorkflowEntranceUniversalSpec();
-                var editForm = WorkflowFormFactory.getEditWorkflowEntranceForm();
-
-                spec.setWorkflowName(workflowName);
-                spec.set(getAttrsMap(attrs));
-
-                var commandAction = getCommandAction(spec);
-                getLogger().debug("Found: {}", commandAction);
-                if(commandAction == null || commandAction.equals("create")) {
-                    var attrsMap = getAttrsMap(attrs);
-
-                    editForm.setSpec(spec);
-                    editForm.setEditMode(EditMode.LOCK);
-
-                    var commandResult = workflowService.editWorkflowEntrance(initialDataParser.getUserVisit(), editForm);
-
-                    if(commandResult.hasErrors()) {
-                        if(commandResult.containsExecutionError(ExecutionErrors.UnknownWorkflowEntranceName.name())) {
-                            var createForm = WorkflowFormFactory.getCreateWorkflowEntranceForm();
-
-                            spec.setWorkflowName(workflowName);
-                            createForm.set(spec.get());
-
-                            getLogger().debug("Creating: {}", spec.getWorkflowEntranceName());
-                            var createWorkflowEntranceCommandResult = workflowService.createWorkflowEntrance(initialDataParser.getUserVisit(), createForm);
-
-                            if(createWorkflowEntranceCommandResult.hasErrors()) {
-                                checkCommandResult(createForm, createWorkflowEntranceCommandResult);
-                            }
-                        } else {
-                            checkCommandResult(editForm, commandResult);
-                        }
-                    } else {
-                        var executionResult = commandResult.getExecutionResult();
-                        var result = executionResult.getResult();
-
-                        getLogger().debug("Checking for modifications: {}", spec.getWorkflowEntranceName());
-                        if(result != null) {
-                            updateEditFormValues(editForm, attrsMap, result);
-
-                            commandResult = workflowService.editWorkflowEntrance(initialDataParser.getUserVisit(), editForm);
-                            if(commandResult.hasErrors()) {
-                                checkCommandResult(editForm, commandResult);
-                            }
-                        }
-                    }
-                }
-
-                initialDataParser.pushHandler(new WorkflowEntranceHandler(initialDataParser, this, workflowName,
-                        spec.getWorkflowEntranceName()));
-            }
+            case "workflowDestination" -> loadWorkflowDestination(getWorkflowAttributes(attrs));
+            case "workflowEntrance" -> loadWorkflowEntrance(getWorkflowAttributes(attrs));
             case "workflowEntityType" -> {
                 var commandForm = WorkflowFormFactory.getCreateWorkflowEntityTypeForm();
 
@@ -212,6 +109,69 @@ public class WorkflowHandler
                 throw new SAXException("Workflow step name is missing for child elements");
             }
             initialDataParser.pushHandler(new WorkflowStepHandler(initialDataParser, this, stepWorkflowName, workflowStepName));
+        } else {
+            skipCurrentElement();
+        }
+    }
+
+    private void loadWorkflowDestination(Map<String, Object> attrsMap) throws SAXException {
+        var destinationWorkflowName = (String)attrsMap.get("WorkflowName");
+        var workflowStepName = (String)attrsMap.get("WorkflowStepName");
+        var workflowDestinationName = (String)attrsMap.get("WorkflowDestinationName");
+        var processChildren = true;
+
+        if(shouldEdit(attrsMap)) {
+            var outcome = editOrCreate(attrsMap, WorkflowSpecFactory.getWorkflowDestinationUniversalSpec(),
+                    WorkflowFormFactory.getEditWorkflowDestinationForm(), workflowService::editWorkflowDestination,
+                    WorkflowFormFactory.getCreateWorkflowDestinationForm(), workflowService::createWorkflowDestination,
+                    ExecutionErrors.UnknownWorkflowDestinationName);
+            processChildren = outcome.successful();
+
+            if(outcome.lockedEdit() != null) {
+                workflowDestinationName = outcome.lockedEdit().getWorkflowDestinationName();
+            } else if(outcome.createdRecord() != null) {
+                destinationWorkflowName = outcome.createdRecord().getWorkflowName();
+                workflowStepName = outcome.createdRecord().getWorkflowStepName();
+                workflowDestinationName = outcome.createdRecord().getWorkflowDestinationName();
+            }
+        }
+
+        if(processChildren) {
+            if(workflowStepName == null || workflowDestinationName == null) {
+                throw new SAXException("Workflow step and destination names are required for destination child elements");
+            }
+            initialDataParser.pushHandler(new WorkflowDestinationHandler(initialDataParser, this,
+                    destinationWorkflowName, workflowStepName, workflowDestinationName));
+        } else {
+            skipCurrentElement();
+        }
+    }
+
+    private void loadWorkflowEntrance(Map<String, Object> attrsMap) throws SAXException {
+        var entranceWorkflowName = (String)attrsMap.get("WorkflowName");
+        var workflowEntranceName = (String)attrsMap.get("WorkflowEntranceName");
+        var processChildren = true;
+
+        if(shouldEdit(attrsMap)) {
+            var outcome = editOrCreate(attrsMap, WorkflowSpecFactory.getWorkflowEntranceUniversalSpec(),
+                    WorkflowFormFactory.getEditWorkflowEntranceForm(), workflowService::editWorkflowEntrance,
+                    WorkflowFormFactory.getCreateWorkflowEntranceForm(), workflowService::createWorkflowEntrance,
+                    ExecutionErrors.UnknownWorkflowEntranceName);
+            processChildren = outcome.successful();
+
+            if(outcome.lockedEdit() != null) {
+                workflowEntranceName = outcome.lockedEdit().getWorkflowEntranceName();
+            } else if(outcome.createdRecord() != null) {
+                entranceWorkflowName = outcome.createdRecord().getWorkflowName();
+                workflowEntranceName = outcome.createdRecord().getWorkflowEntranceName();
+            }
+        }
+
+        if(processChildren) {
+            if(workflowEntranceName == null) {
+                throw new SAXException("Workflow entrance name is missing for child elements");
+            }
+            initialDataParser.pushHandler(new WorkflowEntranceHandler(initialDataParser, this, entranceWorkflowName, workflowEntranceName));
         } else {
             skipCurrentElement();
         }
