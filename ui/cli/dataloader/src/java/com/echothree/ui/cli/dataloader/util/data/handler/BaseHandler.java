@@ -16,6 +16,7 @@
 
 package com.echothree.ui.cli.dataloader.util.data.handler;
 
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.util.common.command.BaseEditResult;
 import com.echothree.util.common.command.CommandResult;
@@ -24,12 +25,18 @@ import com.echothree.util.common.form.BaseEdit;
 import com.echothree.util.common.form.BaseEditForm;
 import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.form.BaseSpec;
+import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.message.Message;
 import com.echothree.util.common.message.Messages;
+import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.StringJoiner;
+import java.util.function.BiFunction;
 import javax.naming.NamingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,6 +101,148 @@ public abstract class BaseHandler {
         }
         
         return logger;
+    }
+
+    protected <E extends BaseEdit, F extends BaseEditForm<?, E>, R extends BaseEditResult<E>, C extends BaseForm>
+            boolean editOrCreate(F editForm, BiFunction<UserVisitPK, F, CommandResult<R>> editCommand,
+            C createForm, BiFunction<UserVisitPK, C, CommandResult<?>> createCommand,
+            ExecutionErrors missingRecordError, Class<E> editType) throws SAXException {
+        var userVisit = initialDataParser.getUserVisit();
+        editForm.setEditMode(EditMode.LOCK);
+
+        var lockResult = editCommand.apply(userVisit, editForm);
+        boolean successful;
+        if(lockResult.hasErrors()) {
+            if(lockResult.containsExecutionError(missingRecordError.name()) && !lockResult.hasSecurityMessages()
+                    && !lockResult.hasValidationErrors()
+                    && lockResult.getExecutionResult().getExecutionErrors().size(Messages.EXECUTION_ERROR) == 1) {
+                var createResult = createCommand.apply(userVisit, createForm);
+                checkCommandResult(createForm, createResult);
+                successful = !createResult.hasErrors();
+            } else {
+                checkCommandResult(editForm, lockResult);
+                successful = false;
+            }
+        } else {
+            successful = completeEdit(userVisit, editForm, editCommand, lockResult, createForm.get(), editType);
+        }
+
+        return successful;
+    }
+
+    private <E extends BaseEdit, F extends BaseEditForm<?, E>, R extends BaseEditResult<E>>
+            boolean completeEdit(UserVisitPK userVisit, F editForm, BiFunction<UserVisitPK, F, CommandResult<R>> editCommand,
+            CommandResult<R> lockResult, Map<String, Object> suppliedValues, Class<E> editType) throws SAXException {
+        boolean successful = true;
+        boolean abandonLock = true;
+
+        try {
+            checkCommandResult(editForm, lockResult);
+            var lockedRecord = lockResult.getResult();
+            var edit = lockedRecord == null ? null : lockedRecord.getEdit();
+            if(edit == null) {
+                throw new SAXException(editForm.getFormName() + " returned no edit payload after LOCK");
+            }
+
+            if(applyEditFields(edit, editType, suppliedValues, editForm.getSpec())) {
+                editForm.setEdit(edit);
+                editForm.setEditMode(EditMode.UPDATE);
+
+                var updateResult = editCommand.apply(userVisit, editForm);
+                successful = !updateResult.hasErrors();
+                abandonLock = !successful && !updateResult.containsExecutionError(ExecutionErrors.EntityLockStale.name());
+                checkCommandResult(editForm, updateResult);
+            }
+        } catch(SAXException | RuntimeException | Error failure) {
+            if(abandonLock) {
+                abandonEditAfterFailure(userVisit, editForm, editCommand, failure);
+            }
+            throw failure;
+        }
+
+        if(abandonLock) {
+            var abandoned = abandonEdit(userVisit, editForm, editCommand);
+            successful = successful && abandoned;
+        }
+
+        return successful;
+    }
+
+    protected static <F extends BaseForm> void setFormFields(F form, Class<F> formType, Map<String, Object> suppliedValues) {
+        for(var fieldName : getStringFormFields(formType)) {
+            if(suppliedValues.containsKey(fieldName)) {
+                form.set(fieldName, suppliedValues.get(fieldName));
+            }
+        }
+    }
+
+    private static List<String> getStringFormFields(Class<? extends BaseForm> formType) {
+        return Arrays.stream(formType.getMethods())
+                .filter(method -> method.getDeclaringClass() != BaseForm.class && Modifier.isAbstract(method.getModifiers())
+                        && method.getReturnType() == void.class && method.getParameterCount() == 1
+                        && method.getParameterTypes()[0] == String.class)
+                .map(method -> method.getName())
+                .filter(methodName -> methodName.startsWith("set") && methodName.length() > 3)
+                .map(methodName -> methodName.substring(3))
+                .distinct()
+                .toList();
+    }
+
+    private static <E extends BaseEdit> boolean applyEditFields(E edit, Class<E> editType, Map<String, Object> suppliedValues,
+            BaseSpec spec) {
+        var identityFields = spec.get();
+        var changed = false;
+
+        for(var fieldName : getStringFormFields(editType)) {
+            var suppliedValue = suppliedValues.get(fieldName);
+            if(suppliedValues.containsKey(fieldName) && !identityFields.containsKey(fieldName)
+                    && !Objects.equals(edit.get(fieldName), suppliedValue)) {
+                edit.set(fieldName, suppliedValue);
+                changed = true;
+            }
+        }
+
+        return changed;
+    }
+
+    @SuppressWarnings("ReferenceEquality") // Throwable.addSuppressed rejects self-suppression by identity.
+    private <F extends BaseEditForm<?, ?>, R extends BaseEditResult<?>> void abandonEditAfterFailure(UserVisitPK userVisit,
+            F editForm, BiFunction<UserVisitPK, F, CommandResult<R>> editCommand, Throwable failure) {
+        try {
+            abandonEdit(userVisit, editForm, editCommand);
+        } catch(RuntimeException | Error abandonFailure) {
+            if(abandonFailure != failure) {
+                failure.addSuppressed(abandonFailure);
+            }
+        }
+    }
+
+    private <F extends BaseEditForm<?, ?>, R extends BaseEditResult<?>> boolean abandonEdit(UserVisitPK userVisit,
+            F editForm, BiFunction<UserVisitPK, F, CommandResult<R>> editCommand) {
+        editForm.setEdit(null);
+        editForm.setEditMode(EditMode.ABANDON);
+
+        var abandonResult = editCommand.apply(userVisit, editForm);
+        checkCommandResult(editForm, abandonResult);
+        return !abandonResult.hasErrors();
+    }
+
+    protected void skipCurrentElement() {
+        initialDataParser.pushHandler(new BaseHandler(initialDataParser, this) {
+            private int depth = 1;
+
+            @Override
+            public void startElement(String namespaceURI, String localName, String qName, Attributes attrs) {
+                depth++;
+            }
+
+            @Override
+            public void endElement(String namespaceURI, String localName, String qName) {
+                if(--depth == 0) {
+                    initialDataParser.popHandler();
+                }
+            }
+        });
     }
 
     protected <S extends BaseSpec, E extends BaseEdit> void updateEditFormValues(final BaseEditForm<S, E> baseEditForm,

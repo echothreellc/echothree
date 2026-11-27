@@ -18,11 +18,13 @@ package com.echothree.ui.cli.dataloader.util.data.handler.workflow;
 
 import com.echothree.control.user.workflow.common.WorkflowService;
 import com.echothree.control.user.workflow.common.WorkflowUtil;
+import com.echothree.control.user.workflow.common.edit.WorkflowEdit;
+import com.echothree.control.user.workflow.common.form.CreateWorkflowForm;
 import com.echothree.control.user.workflow.common.form.WorkflowFormFactory;
 import com.echothree.control.user.workflow.common.spec.WorkflowSpecFactory;
+import com.echothree.control.user.workflow.common.spec.WorkflowUniversalSpec;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
@@ -49,53 +51,28 @@ public class WorkflowsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("workflow")) {
+            var attrsMap = getAttrsMap(attrs);
             var spec = WorkflowSpecFactory.getWorkflowUniversalSpec();
-            var editForm = WorkflowFormFactory.getEditWorkflowForm();
 
-            spec.set(getAttrsMap(attrs));
+            setFormFields(spec, WorkflowUniversalSpec.class, attrsMap);
 
-            var commandAction = getCommandAction(spec);
-            getLogger().debug("Found: {}", commandAction);
+            var commandAction = (String)attrsMap.get("CommandAction");
+            var processChildren = true;
             if(commandAction == null || commandAction.equals("create")) {
-                var attrsMap = getAttrsMap(attrs);
+                var editForm = WorkflowFormFactory.getEditWorkflowForm();
+                var createForm = WorkflowFormFactory.getCreateWorkflowForm();
 
                 editForm.setSpec(spec);
-                editForm.setEditMode(EditMode.LOCK);
-
-                var commandResult = workflowService.editWorkflow(initialDataParser.getUserVisit(), editForm);
-
-                if(commandResult.hasErrors()) {
-                    if(commandResult.containsExecutionError(ExecutionErrors.UnknownWorkflowName.name())) {
-                        var createForm = WorkflowFormFactory.getCreateWorkflowForm();
-
-                        createForm.set(spec.get());
-
-                        getLogger().debug("Creating: {}", spec.getWorkflowName());
-                        var createWorkflowCommandResult = workflowService.createWorkflow(initialDataParser.getUserVisit(), createForm);
-
-                        if(createWorkflowCommandResult.hasErrors()) {
-                            checkCommandResult(createForm, createWorkflowCommandResult);
-                        }
-                    } else {
-                        checkCommandResult(editForm, commandResult);
-                    }
-                } else {
-                    var executionResult = commandResult.getExecutionResult();
-                    var result = executionResult.getResult();
-
-                    getLogger().debug("Checking for modifications: {}", spec.getWorkflowName());
-                    if(result != null) {
-                        updateEditFormValues(editForm, attrsMap, result);
-
-                        commandResult = workflowService.editWorkflow(initialDataParser.getUserVisit(), editForm);
-                        if(commandResult.hasErrors()) {
-                            checkCommandResult(editForm, commandResult);
-                        }
-                    }
-                }
+                setFormFields(createForm, CreateWorkflowForm.class, attrsMap);
+                processChildren = editOrCreate(editForm, workflowService::editWorkflow, createForm, workflowService::createWorkflow,
+                        ExecutionErrors.UnknownWorkflowName, WorkflowEdit.class);
             }
-            
-            initialDataParser.pushHandler(new WorkflowHandler(initialDataParser, this, spec.getWorkflowName()));
+
+            if(processChildren) {
+                initialDataParser.pushHandler(new WorkflowHandler(initialDataParser, this, spec.getWorkflowName()));
+            } else {
+                skipCurrentElement();
+            }
         }
     }
     
