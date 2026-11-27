@@ -18,13 +18,10 @@ package com.echothree.ui.cli.dataloader.util.data.handler.security;
 
 import com.echothree.control.user.security.common.SecurityService;
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.edit.SecurityRoleEdit;
-import com.echothree.control.user.security.common.edit.SecurityRoleGroupDescriptionEdit;
 import com.echothree.control.user.security.common.form.SecurityFormFactory;
 import com.echothree.control.user.security.common.spec.SecuritySpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
@@ -55,136 +52,29 @@ public class SecurityRoleGroupHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("securityRoleGroupDescription")) {
-            var spec = SecuritySpecFactory.getSecurityRoleGroupDescriptionSpec();
-            var editForm = SecurityFormFactory.getEditSecurityRoleGroupDescriptionForm();
+            var attrsMap = getAttrsMap(attrs);
+            attrsMap.putIfAbsent("SecurityRoleGroupName", securityRoleGroupName);
 
-            spec.setSecurityRoleGroupName(securityRoleGroupName);
-            spec.set(getAttrsMap(attrs));
-
-            editForm.setSpec(spec);
-            editForm.setEditMode(EditMode.LOCK);
-
-            var commandResult = securityService.editSecurityRoleGroupDescription(initialDataParser.getUserVisit(), editForm);
-            
-            if(commandResult.hasErrors()) {
-                if(commandResult.containsExecutionError(ExecutionErrors.UnknownSecurityRoleGroupDescription.name())) {
-                    var createForm = SecurityFormFactory.getCreateSecurityRoleGroupDescriptionForm();
-
-                    createForm.set(spec.get());
-
-                    var createSecurityRoleGroupDescriptionCommandResult = securityService.createSecurityRoleGroupDescription(initialDataParser.getUserVisit(), createForm);
-                    
-                    if(createSecurityRoleGroupDescriptionCommandResult.hasErrors()) {
-                        checkCommandResult(createForm, createSecurityRoleGroupDescriptionCommandResult);
-                    }
-                } else {
-                    checkCommandResult(editForm, commandResult);
-                }
-            } else {
-                var executionResult = commandResult.getExecutionResult();
-                var result = executionResult.getResult();
-
-                if(result != null) {
-                    var edit = (SecurityRoleGroupDescriptionEdit)result.getEdit();
-                    var description = attrs.getValue("description");
-                    var changed = false;
-                    
-                    if(!edit.getDescription().equals(description)) {
-                        edit.setDescription(description);
-                        changed = true;
-                    }
-
-                    if(changed) {
-                        editForm.setEdit(edit);
-                        editForm.setEditMode(EditMode.UPDATE);
-                        
-                        commandResult = securityService.editSecurityRoleGroupDescription(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            checkCommandResult(editForm, commandResult);
-                        }
-                    } else {
-                        editForm.setEdit(null);
-                        editForm.setEditMode(EditMode.ABANDON);
-                        
-                        commandResult = securityService.editSecurityRoleGroupDescription(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            checkCommandResult(editForm, commandResult);
-                        }
-                    }
-                }
-            }
+            editOrCreate(attrsMap, SecuritySpecFactory.getSecurityRoleGroupDescriptionSpec(),
+                    SecurityFormFactory.getEditSecurityRoleGroupDescriptionForm(), securityService::editSecurityRoleGroupDescription,
+                    SecurityFormFactory.getCreateSecurityRoleGroupDescriptionForm(), securityService::createSecurityRoleGroupDescription,
+                    ExecutionErrors.UnknownSecurityRoleGroupDescription);
         } else if(localName.equals("securityRole")) {
-            var spec = SecuritySpecFactory.getSecurityRoleSpec();
-            var editForm = SecurityFormFactory.getEditSecurityRoleForm();
+            var attrsMap = getAttrsMap(attrs);
+            attrsMap.putIfAbsent("SecurityRoleGroupName", securityRoleGroupName);
 
-            spec.setSecurityRoleGroupName(securityRoleGroupName);
-            spec.set(getAttrsMap(attrs));
+            var outcome = editOrCreate(attrsMap, SecuritySpecFactory.getSecurityRoleSpec(),
+                    SecurityFormFactory.getEditSecurityRoleForm(), securityService::editSecurityRole,
+                    SecurityFormFactory.getCreateSecurityRoleForm(), securityService::createSecurityRole,
+                    ExecutionErrors.UnknownSecurityRoleName);
 
-            editForm.setSpec(spec);
-            editForm.setEditMode(EditMode.LOCK);
-
-            var commandResult = securityService.editSecurityRole(initialDataParser.getUserVisit(), editForm);
-            
-            if(commandResult.hasErrors()) {
-                if(commandResult.containsExecutionError(ExecutionErrors.UnknownSecurityRoleName.name())) {
-                    var createForm = SecurityFormFactory.getCreateSecurityRoleForm();
-
-                    createForm.setSecurityRoleGroupName(securityRoleGroupName);
-                    createForm.set(getAttrsMap(attrs));
-
-                    var createSecurityRoleCommandResult = securityService.createSecurityRole(initialDataParser.getUserVisit(), createForm);
-                    
-                    if(createSecurityRoleCommandResult.hasErrors()) {
-                        checkCommandResult(createForm, createSecurityRoleCommandResult);
-                    }
-                } else {
-                    checkCommandResult(editForm, commandResult);
-                }
+            if(outcome.successful()) {
+                var resolvedSecurityRoleGroupName = (String)attrsMap.get("SecurityRoleGroupName");
+                var securityRoleName = (String)attrsMap.get("SecurityRoleName");
+                initialDataParser.pushHandler(new SecurityRoleHandler(initialDataParser, this, resolvedSecurityRoleGroupName, securityRoleName));
             } else {
-                var executionResult = commandResult.getExecutionResult();
-                var result = executionResult.getResult();
-
-                if(result != null) {
-                    var edit = (SecurityRoleEdit)result.getEdit();
-                    var isDefault = attrs.getValue("isDefault");
-                    var sortOrder = attrs.getValue("sortOrder");
-                    var changed = false;
-                    
-                    if(!edit.getIsDefault().equals(isDefault)) {
-                        edit.setIsDefault(isDefault);
-                        changed = true;
-                    }
-
-                    if(!edit.getSortOrder().equals(sortOrder)) {
-                        edit.setSortOrder(sortOrder);
-                        changed = true;
-                    }
-
-                    if(changed) {
-                        editForm.setEdit(edit);
-                        editForm.setEditMode(EditMode.UPDATE);
-                        
-                        commandResult = securityService.editSecurityRole(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            checkCommandResult(editForm, commandResult);
-                        }
-                    } else {
-                        editForm.setEdit(null);
-                        editForm.setEditMode(EditMode.ABANDON);
-                        
-                        commandResult = securityService.editSecurityRole(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            checkCommandResult(editForm, commandResult);
-                        }
-                    }
-                }
+                skipCurrentElement();
             }
-            
-            initialDataParser.pushHandler(new SecurityRoleHandler(initialDataParser, this, securityRoleGroupName, spec.getSecurityRoleName()));
         }
     }
     

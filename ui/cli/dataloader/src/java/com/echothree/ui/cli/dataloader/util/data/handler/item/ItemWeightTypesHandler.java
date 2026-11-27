@@ -22,7 +22,6 @@ import com.echothree.control.user.item.common.form.ItemFormFactory;
 import com.echothree.control.user.item.common.spec.ItemSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
@@ -49,73 +48,27 @@ public class ItemWeightTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("itemWeightType")) {
-            var spec = ItemSpecFactory.getItemWeightTypeUniversalSpec();
-            var editForm = ItemFormFactory.getEditItemWeightTypeForm();
+            var attrsMap = getAttrsMap(attrs);
 
-            spec.set(getAttrsMap(attrs));
+            var outcome = editOrCreate(attrsMap, ItemSpecFactory.getItemWeightTypeUniversalSpec(),
+                    ItemFormFactory.getEditItemWeightTypeForm(), itemService::editItemWeightType,
+                    ItemFormFactory.getCreateItemWeightTypeForm(), itemService::createItemWeightType,
+                    ExecutionErrors.UnknownItemWeightTypeName);
 
-            editForm.setSpec(spec);
-            editForm.setEditMode(EditMode.LOCK);
-
-            var commandResult = itemService.editItemWeightType(initialDataParser.getUserVisit(), editForm);
-
-            if(commandResult.hasErrors()) {
-                if(commandResult.containsExecutionError(ExecutionErrors.UnknownItemWeightTypeName.name())) {
-                    var createForm = ItemFormFactory.getCreateItemWeightTypeForm();
-
-                    createForm.set(spec.get());
-
-                    var createItemWeightTypeCommandResult = itemService.createItemWeightType(initialDataParser.getUserVisit(), createForm);
-
-                    if(createItemWeightTypeCommandResult.hasErrors()) {
-                        checkCommandResult(createForm, createItemWeightTypeCommandResult);
-                    }
-                } else {
-                    checkCommandResult(editForm, commandResult);
+            if(outcome.successful()) {
+                var itemWeightTypeName = (String)attrsMap.get("ItemWeightTypeName");
+                if(outcome.lockedEdit() != null) {
+                    itemWeightTypeName = outcome.lockedEdit().getItemWeightTypeName();
+                } else if(outcome.createdRecord() != null) {
+                    itemWeightTypeName = outcome.createdRecord().getItemWeightTypeName();
                 }
+                if(itemWeightTypeName == null) {
+                    throw new SAXException("Item weight type name is missing for child elements");
+                }
+                initialDataParser.pushHandler(new ItemWeightTypeHandler(initialDataParser, this, itemWeightTypeName));
             } else {
-                var executionResult = commandResult.getExecutionResult();
-                var result = executionResult.getResult();
-
-                if(result != null) {
-                    var edit = result.getEdit();
-                    var isDefault = attrs.getValue("isDefault");
-                    var sortOrder = attrs.getValue("sortOrder");
-                    var changed = false;
-
-                    if(!edit.getIsDefault().equals(isDefault)) {
-                        edit.setIsDefault(isDefault);
-                        changed = true;
-                    }
-
-                    if(!edit.getSortOrder().equals(sortOrder)) {
-                        edit.setSortOrder(sortOrder);
-                        changed = true;
-                    }
-
-                    if(changed) {
-                        editForm.setEdit(edit);
-                        editForm.setEditMode(EditMode.UPDATE);
-
-                        commandResult = itemService.editItemWeightType(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            checkCommandResult(editForm, commandResult);
-                        }
-                    } else {
-                        editForm.setEdit(null);
-                        editForm.setEditMode(EditMode.ABANDON);
-
-                        commandResult = itemService.editItemWeightType(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            checkCommandResult(editForm, commandResult);
-                        }
-                    }
-                }
+                skipCurrentElement();
             }
-            
-            initialDataParser.pushHandler(new ItemWeightTypeHandler(initialDataParser, this, spec.getItemWeightTypeName()));
         }
     }
     

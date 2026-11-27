@@ -21,7 +21,6 @@ import com.echothree.control.user.inventory.common.InventoryUtil;
 import com.echothree.control.user.inventory.common.form.InventoryFormFactory;
 import com.echothree.control.user.item.common.ItemService;
 import com.echothree.control.user.item.common.ItemUtil;
-import com.echothree.control.user.item.common.edit.ItemDescriptionEdit;
 import com.echothree.control.user.item.common.form.ItemFormFactory;
 import com.echothree.control.user.item.common.spec.ItemSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
@@ -31,16 +30,13 @@ import com.echothree.ui.cli.dataloader.util.data.handler.core.EntityAliasesHandl
 import com.echothree.ui.cli.dataloader.util.data.handler.core.EntityAttributesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.rating.RatingsHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.tag.EntityTagsHandler;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.type.ByteArray;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
 import java.util.Map;
-import java.util.Set;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -83,7 +79,8 @@ public class ItemHandler
             checkCommandResult(commandForm, itemService.createItemAlias(initialDataParser.getUserVisit(), commandForm));
         } else if(localName.equals("itemDescription")) {
             itemDescriptionAttrs = getAttrsMap(attrs);
-            itemDescriptionAttrs.keySet().removeAll(Set.of("ItemName", "ClobDescription", "BlobDescription"));
+            itemDescriptionAttrs.put("ItemName", itemName);
+            itemDescriptionAttrs.remove("BlobDescription");
 
             inItemDescription = true;
         } else if(localName.equals("itemUnitOfMeasureType")) {
@@ -207,171 +204,7 @@ public class ItemHandler
     public void endElement(String namespaceURI, String localName, String qName)
             throws SAXException {
         if(localName.equals("itemDescription")) {
-            var itemDescriptionTypeName = (String)itemDescriptionAttrs.get("ItemDescriptionTypeName");
-            var languageIsoName = (String)itemDescriptionAttrs.get("LanguageIsoName");
-            var mimeTypeName = (String)itemDescriptionAttrs.get("MimeTypeName");
-            var itemImageTypeName = (String)itemDescriptionAttrs.get("ItemImageTypeName");
-            var stringDescription = (String)itemDescriptionAttrs.get("StringDescription");
-            var itemDescriptionPath = (String)itemDescriptionAttrs.remove("Path");
-
-            var spec = ItemSpecFactory.getItemDescriptionSpec();
-            var editForm = ItemFormFactory.getEditItemDescriptionForm();
-
-            spec.setItemName(itemName);
-            spec.setItemDescriptionTypeName(itemDescriptionTypeName);
-            spec.setLanguageIsoName(languageIsoName);
-
-            editForm.setSpec(spec);
-            editForm.setEditMode(EditMode.LOCK);
-
-            var commandResult = itemService.editItemDescription(initialDataParser.getUserVisit(), editForm);
-            
-            if(commandResult.hasErrors()) {
-                if(commandResult.containsExecutionError(ExecutionErrors.UnknownItemDescription.name())) {
-                    var createForm = ItemFormFactory.getCreateItemDescriptionForm();
-
-                    createForm.setItemName(itemName);
-                    createForm.setClobDescription(clobDescription == null ? null : new String(clobDescription));
-                    createForm.set(itemDescriptionAttrs);
-
-                    if(itemDescriptionPath != null) {
-                        var file = new File(itemDescriptionPath);
-                        var length = file.length();
-
-                        if(length < Integer.MAX_VALUE) {
-                            try {
-                                InputStream is = new FileInputStream(file);
-                                var bytes = new byte[(int)length];
-                                var offset = 0;
-                                var numRead = 0;
-
-                                while(offset < bytes.length && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
-                                    offset += numRead;
-                                }
-
-                                // Ensure all the bytes have been read in
-                                if(offset < bytes.length) {
-                                    throw new SAXException("Could not completely read file " + file.getName());
-                                }
-
-                                // Close the input stream and return bytes
-                                is.close();
-
-                                createForm.setBlobDescription(new ByteArray(bytes));
-                            } catch(FileNotFoundException fnfe) {
-                                throw new SAXException(fnfe);
-                            } catch(IOException ioe) {
-                                throw new SAXException(ioe);
-                            }
-                        }
-                    }
-
-                    var createItemDescriptionCommandResult = itemService.createItemDescription(initialDataParser.getUserVisit(), createForm);
-                    
-                    if(createItemDescriptionCommandResult.hasErrors()) {
-                        checkCommandResult(createForm, createItemDescriptionCommandResult);
-                    }
-                } else {
-                    checkCommandResult(editForm, commandResult);
-                }
-            } else {
-                var executionResult = commandResult.getExecutionResult();
-                var result = executionResult.getResult();
-
-                if(result != null) {
-                    var edit = (ItemDescriptionEdit)result.getEdit();
-                    var changed = false;
-
-                    var currentMimeTypeName = edit.getMimeTypeName();
-                    if((currentMimeTypeName == null && mimeTypeName != null)
-                            || (currentMimeTypeName != null && mimeTypeName == null)
-                            || ((currentMimeTypeName != null && mimeTypeName != null ) && !currentMimeTypeName.equals(mimeTypeName))) {
-                        edit.setMimeTypeName(mimeTypeName);
-                        changed = true;
-                    }
-
-                    var currentItemImageTypeName = edit.getItemImageTypeName();
-                    if((currentItemImageTypeName == null && itemImageTypeName != null)
-                            || (currentItemImageTypeName != null && itemImageTypeName == null)
-                            || ((currentItemImageTypeName != null && itemImageTypeName != null ) && !currentItemImageTypeName.equals(itemImageTypeName))) {
-                        edit.setItemImageTypeName(itemImageTypeName);
-                        changed = true;
-                    }
-
-                    var currentClobDescription = edit.getClobDescription();
-                    var wrappedClobDescription = clobDescription == null ? null : new String(clobDescription);
-                    if((currentClobDescription == null && wrappedClobDescription != null)
-                            || (currentClobDescription != null && wrappedClobDescription == null)
-                            || ((currentClobDescription != null && wrappedClobDescription != null ) && !currentClobDescription.equals(wrappedClobDescription))) {
-                        edit.setClobDescription(wrappedClobDescription);
-                        changed = true;
-                    }
-
-                    var currentStringDescription = edit.getStringDescription();
-                    if((currentStringDescription == null && stringDescription != null)
-                            || (currentStringDescription != null && stringDescription == null)
-                            || ((currentStringDescription != null && stringDescription != null ) && !currentStringDescription.equals(stringDescription))) {
-                        edit.setStringDescription(stringDescription);
-                        changed = true;
-                    }
-
-                    // If there's a BLOB, we'll always assume it's changed. They're not returned as
-                    // part of the edit.
-                    if(itemDescriptionPath != null) {
-                        var file = new File(itemDescriptionPath);
-                        var length = file.length();
-
-                        if(length < Integer.MAX_VALUE) {
-                            try {
-                                InputStream is = new FileInputStream(file);
-                                var bytes = new byte[(int)length];
-                                var offset = 0;
-                                var numRead = 0;
-
-                                while(offset < bytes.length && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
-                                    offset += numRead;
-                                }
-
-                                // Ensure all the bytes have been read in
-                                if(offset < bytes.length) {
-                                    throw new SAXException("Could not completely read file " + file.getName());
-                                }
-
-                                // Close the input stream and return bytes
-                                is.close();
-
-                                edit.setBlobDescription(new ByteArray(bytes));
-                                changed = true;
-                            } catch(FileNotFoundException fnfe) {
-                                throw new SAXException(fnfe);
-                            } catch(IOException ioe) {
-                                throw new SAXException(ioe);
-                            }
-                        }
-                    }
-                    
-                    if(changed) {
-                        editForm.setEdit(edit);
-                        editForm.setEditMode(EditMode.UPDATE);
-                        
-                        commandResult = itemService.editItemDescription(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            checkCommandResult(editForm, commandResult);
-                        }
-                    } else {
-                        editForm.setEdit(null);
-                        editForm.setEditMode(EditMode.ABANDON);
-                        
-                        commandResult = itemService.editItemDescription(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            checkCommandResult(editForm, commandResult);
-                        }
-                    }
-                }
-            }
-            
+            loadItemDescription();
             inItemDescription = false;
             itemDescriptionAttrs = null;
             clobDescription = null;
@@ -380,4 +213,29 @@ public class ItemHandler
         }
     }
     
+    private void loadItemDescription() throws SAXException {
+        // An item description replaces its previous content and media attributes.
+        itemDescriptionAttrs.putIfAbsent("MimeTypeName", null);
+        itemDescriptionAttrs.putIfAbsent("ItemImageTypeName", null);
+        itemDescriptionAttrs.putIfAbsent("StringDescription", null);
+        itemDescriptionAttrs.put("ClobDescription", clobDescription == null ? null : new String(clobDescription));
+
+        var fileName = (String)itemDescriptionAttrs.remove("Path");
+        if(fileName != null) {
+            try {
+                var path = Path.of(fileName);
+                if(Files.size(path) < Integer.MAX_VALUE) {
+                    itemDescriptionAttrs.put("BlobDescription", new ByteArray(Files.readAllBytes(path)));
+                }
+            } catch(IOException | InvalidPathException failure) {
+                throw new SAXException("Could not read item description file " + fileName, failure);
+            }
+        }
+
+        editOrCreate(itemDescriptionAttrs, ItemSpecFactory.getItemDescriptionSpec(),
+                ItemFormFactory.getEditItemDescriptionForm(), itemService::editItemDescription,
+                ItemFormFactory.getCreateItemDescriptionForm(), itemService::createItemDescription,
+                ExecutionErrors.UnknownItemDescription);
+    }
+
 }

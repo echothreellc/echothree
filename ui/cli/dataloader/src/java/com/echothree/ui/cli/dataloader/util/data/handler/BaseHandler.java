@@ -29,6 +29,7 @@ import com.echothree.util.common.form.BaseSpec;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.message.Message;
 import com.echothree.util.common.message.Messages;
+import com.echothree.util.common.persistence.type.ByteArray;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -180,21 +181,21 @@ public abstract class BaseHandler {
     }
 
     protected static void setFormFields(BaseForm form, Map<String, Object> suppliedValues) {
-        for(var fieldName : getStringFormFields(form)) {
+        for(var fieldName : getFormFields(form)) {
             if(suppliedValues.containsKey(fieldName)) {
                 form.set(fieldName, suppliedValues.get(fieldName));
             }
         }
     }
 
-    private static List<String> getStringFormFields(BaseForm form) {
+    private static List<String> getFormFields(BaseForm form) {
         // Form factories expose the domain setters through the proxy's interfaces.
         return Arrays.stream(form.getClass().getInterfaces())
                 .filter(BaseForm.class::isAssignableFrom)
                 .flatMap(formType -> Arrays.stream(formType.getMethods()))
                 .filter(method -> method.getDeclaringClass() != BaseForm.class && Modifier.isAbstract(method.getModifiers())
                         && method.getReturnType() == void.class && method.getParameterCount() == 1
-                        && method.getParameterTypes()[0] == String.class)
+                        && (method.getParameterTypes()[0] == String.class || method.getParameterTypes()[0] == ByteArray.class))
                 .map(method -> method.getName())
                 .filter(methodName -> methodName.startsWith("set") && methodName.length() > 3)
                 .map(methodName -> methodName.substring(3))
@@ -206,7 +207,7 @@ public abstract class BaseHandler {
         var identityFields = spec.get();
         var changed = false;
 
-        for(var fieldName : getStringFormFields(edit)) {
+        for(var fieldName : getFormFields(edit)) {
             var suppliedValue = suppliedValues.get(fieldName);
             if(suppliedValues.containsKey(fieldName) && !identityFields.containsKey(fieldName)
                     && !Objects.equals(edit.get(fieldName), suppliedValue)) {
@@ -261,37 +262,6 @@ public abstract class BaseHandler {
                 }
             }
         });
-    }
-
-    protected <S extends BaseSpec, E extends BaseEdit> void updateEditFormValues(final BaseEditForm<S, E> baseEditForm,
-            final Map<String, Object> attrsMap, final BaseEditResult<E> result) {
-        var edit = result.getEdit();
-        var currentValues = edit.get();
-        var changed = false;
-
-        for(var key : currentValues.keySet()) {
-            var currentValue = currentValues.get(key);
-
-            if(attrsMap.containsKey(key)) {
-                var xmlValue = attrsMap.get(key);
-
-                if(!xmlValue.equals(currentValue)) {
-                    getLogger().debug("Updating key: \"{}\" from value \"{}\"\" to value \"{}\"", key, currentValue, xmlValue);
-                    edit.set(key, xmlValue);
-                    changed = true;
-                }
-            }
-        }
-
-        if(changed) {
-            getLogger().debug("Updating.");
-            baseEditForm.setEdit(edit);
-            baseEditForm.setEditMode(EditMode.UPDATE);
-        } else {
-            getLogger().debug("Abandoning.");
-            baseEditForm.setEdit(null);
-            baseEditForm.setEditMode(EditMode.ABANDON);
-        }
     }
 
     protected void checkCommandResult(BaseForm commandForm, CommandResult<?> commandResult) {
@@ -371,8 +341,4 @@ public abstract class BaseHandler {
         return attrsMap;
     }
 
-    protected String getCommandAction(final BaseSpec spec) {
-        return (String)spec.get("CommandAction");
-    }
-    
 }

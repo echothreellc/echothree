@@ -18,12 +18,10 @@ package com.echothree.ui.cli.dataloader.util.data.handler.index;
 
 import com.echothree.control.user.index.common.IndexService;
 import com.echothree.control.user.index.common.IndexUtil;
-import com.echothree.control.user.index.common.edit.IndexTypeEdit;
 import com.echothree.control.user.index.common.form.IndexFormFactory;
 import com.echothree.control.user.index.common.spec.IndexSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
@@ -50,89 +48,22 @@ public class IndexTypesHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("indexType")) {
-            var spec = IndexSpecFactory.getIndexTypeSpec();
-            var editForm = IndexFormFactory.getEditIndexTypeForm();
+            var attrsMap = getAttrsMap(attrs);
+            // The XML loader treats omitted association fields as explicit clears.
+            attrsMap.putIfAbsent("ComponentVendorName", null);
+            attrsMap.putIfAbsent("EntityTypeName", null);
 
-            spec.set(getAttrsMap(attrs));
+            var outcome = editOrCreate(attrsMap, IndexSpecFactory.getIndexTypeSpec(),
+                    IndexFormFactory.getEditIndexTypeForm(), indexService::editIndexType,
+                    IndexFormFactory.getCreateIndexTypeForm(), indexService::createIndexType,
+                    ExecutionErrors.UnknownIndexTypeName);
 
-            editForm.setSpec(spec);
-            editForm.setEditMode(EditMode.LOCK);
-
-            var commandResult = indexService.editIndexType(initialDataParser.getUserVisit(), editForm);
-            
-            if(commandResult.hasErrors()) {
-                if(commandResult.containsExecutionError(ExecutionErrors.UnknownIndexTypeName.name())) {
-                    var createForm = IndexFormFactory.getCreateIndexTypeForm();
-
-                    createForm.set(getAttrsMap(attrs));
-
-                    var createIndexTypeCommandResult = indexService.createIndexType(initialDataParser.getUserVisit(), createForm);
-                    
-                    if(createIndexTypeCommandResult.hasErrors()) {
-                        checkCommandResult(createForm, createIndexTypeCommandResult);
-                    }
-                } else {
-                    checkCommandResult(editForm, commandResult);
-                }
+            if(outcome.successful()) {
+                var indexTypeName = (String)attrsMap.get("IndexTypeName");
+                initialDataParser.pushHandler(new IndexTypeHandler(initialDataParser, this, indexTypeName));
             } else {
-                var executionResult = commandResult.getExecutionResult();
-                var result = executionResult.getResult();
-
-                if(result != null) {
-                    var edit = (IndexTypeEdit)result.getEdit();
-                    var editComponentVendorName = edit.getComponentVendorName();
-                    var editEntityTypeName = edit.getEntityTypeName();
-                    var componentVendorName = attrs.getValue("componentVendorName");
-                    var entityTypeName = attrs.getValue("entityTypeName");
-                    var isDefault = attrs.getValue("isDefault");
-                    var sortOrder = attrs.getValue("sortOrder");
-                    var changed = false;
-                    
-                    if((editComponentVendorName == null && componentVendorName != null) || (editComponentVendorName != null && componentVendorName == null)
-                        || (editComponentVendorName != null && componentVendorName != null && !editComponentVendorName.equals(componentVendorName))) {
-                        edit.setComponentVendorName(componentVendorName);
-                        changed = true;
-                    }
-                    
-                    if((editEntityTypeName == null && entityTypeName != null) || (editEntityTypeName != null && entityTypeName == null)
-                        || (editEntityTypeName != null && entityTypeName != null && !editEntityTypeName.equals(entityTypeName))) {
-                        edit.setEntityTypeName(entityTypeName);
-                        changed = true;
-                    }
-                    
-                    if(!edit.getIsDefault().equals(isDefault)) {
-                        edit.setIsDefault(isDefault);
-                        changed = true;
-                    }
-
-                    if(!edit.getSortOrder().equals(sortOrder)) {
-                        edit.setSortOrder(sortOrder);
-                        changed = true;
-                    }
-
-                    if(changed) {
-                        editForm.setEdit(edit);
-                        editForm.setEditMode(EditMode.UPDATE);
-                        
-                        commandResult = indexService.editIndexType(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            checkCommandResult(editForm, commandResult);
-                        }
-                    } else {
-                        editForm.setEdit(null);
-                        editForm.setEditMode(EditMode.ABANDON);
-                        
-                        commandResult = indexService.editIndexType(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            checkCommandResult(editForm, commandResult);
-                        }
-                    }
-                }
+                skipCurrentElement();
             }
-            
-            initialDataParser.pushHandler(new IndexTypeHandler(initialDataParser, this, spec.getIndexTypeName()));
         }
     }
 

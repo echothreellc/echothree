@@ -18,23 +18,40 @@ package com.echothree.ui.cli.dataloader.util.data;
 
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
+import com.echothree.control.user.index.common.IndexUtil;
+import com.echothree.control.user.index.common.form.IndexFormFactory;
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.form.ItemFormFactory;
+import com.echothree.control.user.security.common.SecurityUtil;
+import com.echothree.control.user.security.common.form.SecurityFormFactory;
+import com.echothree.control.user.sequence.common.SequenceUtil;
+import com.echothree.control.user.sequence.common.form.SequenceFormFactory;
 import com.echothree.control.user.workflow.common.WorkflowUtil;
 import com.echothree.control.user.workflow.common.form.WorkflowFormFactory;
+import com.echothree.model.control.item.common.ItemOptions;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.client.test.UserVisitTestCase;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.CommandResult;
+import java.awt.image.BufferedImage;
 import java.io.StringReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Set;
 import java.util.UUID;
+import javax.imageio.ImageIO;
 import javax.xml.parsers.SAXParserFactory;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag("integration")
@@ -284,6 +301,224 @@ class DataLoaderResolvedParentTest
             var deleteForm = ItemFormFactory.getDeleteItemAliasTypeForm();
             deleteForm.setItemAliasTypeName(itemAliasTypeName);
             assertNoErrors(service.deleteItemAliasType(userVisitPK, deleteForm));
+        }
+    }
+
+    @Test
+    void loadsCoreMetadataAndUpdatesDescriptionsOnRerun() throws Exception {
+        var service = CoreUtil.getHome();
+        var componentVendorName = newTestName();
+        var xml = """
+                <initialData>
+                    <componentVendors>
+                        <componentVendor componentVendorName="%s" description="%s">
+                            <entityType entityTypeName="LoaderFixture" %s>
+                                <entityTypeDescription languageIsoName="en" description="%s"/>
+                            </entityType>
+                        </componentVendor>
+                    </componentVendors>
+                </initialData>
+                """;
+
+        try {
+            loadXml(xml.formatted(componentVendorName, "Loader test vendor",
+                    "keepAllHistory=\"false\" isExtensible=\"false\" sortOrder=\"1\"", "Initial entity description"));
+            loadXml(xml.formatted(componentVendorName, "Updated vendor",
+                    "sortOrder=\"2\"", "Updated entity description"));
+
+            var getVendorForm = CoreFormFactory.getGetComponentVendorForm();
+            getVendorForm.setComponentVendorName(componentVendorName);
+            assertEquals("Updated vendor", requireSuccess(service.getComponentVendor(userVisitPK, getVendorForm))
+                    .getComponentVendor().getDescription());
+            var getEntityTypeForm = CoreFormFactory.getGetEntityTypeForm();
+            getEntityTypeForm.setComponentVendorName(componentVendorName);
+            getEntityTypeForm.setEntityTypeName("LoaderFixture");
+            assertEquals(Integer.valueOf(2), requireSuccess(service.getEntityType(userVisitPK, getEntityTypeForm))
+                    .getEntityType().getSortOrder());
+            var getDescriptionForm = CoreFormFactory.getGetEntityTypeDescriptionForm();
+            getDescriptionForm.set(getEntityTypeForm.get());
+            getDescriptionForm.setLanguageIsoName("en");
+            assertEquals("Updated entity description", requireSuccess(service.getEntityTypeDescription(userVisitPK, getDescriptionForm))
+                    .getEntityTypeDescription().getDescription());
+        } finally {
+            var deleteForm = CoreFormFactory.getDeleteComponentVendorForm();
+            deleteForm.setComponentVendorName(componentVendorName);
+            assertNoErrors(service.deleteComponentVendor(userVisitPK, deleteForm));
+        }
+    }
+
+    @Test
+    void skipsIndexFieldChangesWhenIndexTypeRejectsAnIncompleteAssociation() throws Exception {
+        var service = IndexUtil.getHome();
+        var indexTypeName = newTestName();
+        var xml = """
+                <initialData>
+                    <indexTypes>
+                        <indexType indexTypeName="%s" %s sortOrder="%s">
+                            <indexTypeDescription languageIsoName="en" description="Loader test index"/>
+                            <indexField indexFieldName="FIELD" %s>
+                                <indexFieldDescription languageIsoName="en" description="%s"/>
+                            </indexField>
+                        </indexType>
+                    </indexTypes>
+                </initialData>
+                """;
+        var association = "componentVendorName=\"ECHO_THREE\" entityTypeName=\"Party\"";
+        try {
+            loadXml(xml.formatted(indexTypeName, association + " isDefault=\"false\"", "1",
+                    "isDefault=\"true\" sortOrder=\"1\"", "Initial field"));
+            loadXml(xml.formatted(indexTypeName, "componentVendorName=\"ECHO_THREE\"", "2", "sortOrder=\"2\"", "Must be skipped"));
+
+            var getDescriptionForm = IndexFormFactory.getGetIndexFieldDescriptionForm();
+            getDescriptionForm.setIndexTypeName(indexTypeName);
+            getDescriptionForm.setIndexFieldName("FIELD");
+            getDescriptionForm.setLanguageIsoName("en");
+            assertEquals("Initial field", requireSuccess(service.getIndexFieldDescription(userVisitPK, getDescriptionForm))
+                    .getIndexFieldDescription().getDescription());
+
+            loadXml(xml.formatted(indexTypeName, association, "3", "sortOrder=\"3\"", "Updated field"));
+            assertEquals("Updated field", requireSuccess(service.getIndexFieldDescription(userVisitPK, getDescriptionForm))
+                    .getIndexFieldDescription().getDescription());
+        } finally {
+            var deleteForm = IndexFormFactory.getDeleteIndexTypeForm();
+            deleteForm.setIndexTypeName(indexTypeName);
+            assertNoErrors(service.deleteIndexType(userVisitPK, deleteForm));
+        }
+    }
+
+    @Test
+    void omittingSecurityRoleGroupParentMovesItBackToRoot() throws Exception {
+        var service = SecurityUtil.getHome();
+        var parentName = newTestName();
+        var childName = newTestName();
+        var xml = """
+                <initialData>
+                    <securityRoleGroups>
+                        <securityRoleGroup securityRoleGroupName="%s" isDefault="false" sortOrder="1"/>
+                        <securityRoleGroup securityRoleGroupName="%s" %s>
+                            <securityRoleGroupDescription languageIsoName="en" description="Child group"/>
+                            <securityRole securityRoleName="LOADER_TEST" isDefault="false" sortOrder="1">
+                                <securityRoleDescription languageIsoName="en" description="%s"/>
+                            </securityRole>
+                        </securityRoleGroup>
+                    </securityRoleGroups>
+                </initialData>
+                """;
+
+        try {
+            loadXml(xml.formatted(parentName, childName,
+                    "parentSecurityRoleGroupName=\"%s\" isDefault=\"false\" sortOrder=\"1\"".formatted(parentName), "Initial role"));
+            var getGroupForm = SecurityFormFactory.getGetSecurityRoleGroupForm();
+            getGroupForm.setSecurityRoleGroupName(childName);
+            assertEquals(parentName, requireSuccess(service.getSecurityRoleGroup(userVisitPK, getGroupForm))
+                    .getSecurityRoleGroup().getParentSecurityRoleGroup().getSecurityRoleGroupName());
+
+            loadXml(xml.formatted(parentName, childName, "sortOrder=\"2\"", "Updated role"));
+            assertEquals("ROOT", requireSuccess(service.getSecurityRoleGroup(userVisitPK, getGroupForm))
+                    .getSecurityRoleGroup().getParentSecurityRoleGroup().getSecurityRoleGroupName());
+            var getDescriptionForm = SecurityFormFactory.getGetSecurityRoleDescriptionForm();
+            getDescriptionForm.setSecurityRoleGroupName(childName);
+            getDescriptionForm.setSecurityRoleName("LOADER_TEST");
+            getDescriptionForm.setLanguageIsoName("en");
+            assertEquals("Updated role", requireSuccess(service.getSecurityRoleDescription(userVisitPK, getDescriptionForm))
+                    .getSecurityRoleDescription().getDescription());
+        } finally {
+            var deleteForm = SecurityFormFactory.getDeleteSecurityRoleGroupForm();
+            deleteForm.setSecurityRoleGroupName(childName);
+            try {
+                assertNoErrors(service.deleteSecurityRoleGroup(userVisitPK, deleteForm));
+            } finally {
+                deleteForm.setSecurityRoleGroupName(parentName);
+                assertNoErrors(service.deleteSecurityRoleGroup(userVisitPK, deleteForm));
+            }
+        }
+    }
+
+    @Test
+    void updatesSequenceSuffixAndChunkSizeAndClearsAnOmittedPrefix() throws Exception {
+        var service = SequenceUtil.getHome();
+        var sequenceTypeName = newTestName();
+        var xml = """
+                <initialData>
+                    <sequenceTypes>
+                        <sequenceType sequenceTypeName="%s" %s>
+                            <sequenceTypeDescription languageIsoName="en" description="%s"/>
+                        </sequenceType>
+                    </sequenceTypes>
+                </initialData>
+                """;
+        try {
+            loadXml(xml.formatted(sequenceTypeName, """
+                    prefix="START" suffix="END" chunkSize="10" sequenceEncoderTypeName="NONE"
+                    sequenceChecksumTypeName="MOD_10" isDefault="false" sortOrder="1"
+                    """, "Initial sequence type"));
+            loadXml(xml.formatted(sequenceTypeName, "suffix=\"LAST\" chunkSize=\"20\"", "Updated sequence type"));
+
+            var getTypeForm = SequenceFormFactory.getGetSequenceTypeForm();
+            getTypeForm.setSequenceTypeName(sequenceTypeName);
+            var sequenceType = requireSuccess(service.getSequenceType(userVisitPK, getTypeForm)).getSequenceType();
+            assertNull(sequenceType.getPrefix());
+            assertEquals("LAST", sequenceType.getSuffix());
+            assertEquals(Integer.valueOf(20), sequenceType.getChunkSize());
+            assertEquals("Updated sequence type", sequenceType.getDescription());
+        } finally {
+            var deleteForm = SequenceFormFactory.getDeleteSequenceTypeForm();
+            deleteForm.setSequenceTypeName(sequenceTypeName);
+            assertNoErrors(service.deleteSequenceType(userVisitPK, deleteForm));
+        }
+    }
+
+    @Test
+    void createsAndUpdatesAnItemDescriptionFromBinaryFiles(@TempDir Path directory) throws Exception {
+        var service = ItemUtil.getHome();
+        var descriptionTypeName = newTestName();
+        var createTypeForm = ItemFormFactory.getCreateItemDescriptionTypeForm();
+        createTypeForm.setItemDescriptionTypeName(descriptionTypeName);
+        createTypeForm.setMimeTypeUsageTypeName("IMAGE");
+        createTypeForm.setUseParentIfMissing("false");
+        createTypeForm.setCheckContentWebAddress("false");
+        createTypeForm.setIncludeInIndex("false");
+        createTypeForm.setIndexDefault("false");
+        createTypeForm.setIsDefault("false");
+        createTypeForm.setSortOrder("0");
+        createTypeForm.setScaleFromParent("false");
+        requireSuccess(service.createItemDescriptionType(userVisitPK, createTypeForm));
+
+        try {
+            var xml = """
+                    <initialData>
+                        <items>
+                            <item itemName="MINIMAL" commandAction="none">
+                                <itemDescription itemDescriptionTypeName="%s" languageIsoName="en" mimeTypeName="image/png"
+                                        itemImageTypeName="LINE_ART" path="%s"/>
+                            </item>
+                        </items>
+                    </initialData>
+                    """;
+            var firstImage = directory.resolve("first.png");
+            var secondImage = directory.resolve("second.png");
+            assertTrue(ImageIO.write(new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB), "png", firstImage.toFile()));
+            assertTrue(ImageIO.write(new BufferedImage(2, 2, BufferedImage.TYPE_INT_RGB), "png", secondImage.toFile()));
+            var getDescriptionForm = ItemFormFactory.getGetItemDescriptionForm();
+            getDescriptionForm.setItemName("MINIMAL");
+            getDescriptionForm.setItemDescriptionTypeName(descriptionTypeName);
+            getDescriptionForm.setLanguageIsoName("en");
+            getDescriptionForm.setOptions(Set.of(ItemOptions.ItemDescriptionIncludeBlob));
+
+            loadXml(xml.formatted(descriptionTypeName, firstImage));
+            assertArrayEquals(Files.readAllBytes(firstImage), requireSuccess(service.getItemDescription(userVisitPK, getDescriptionForm))
+                    .getItemDescription().getBlobDescription().byteArrayValue());
+
+            var missingImage = directory.resolve("missing.png");
+            var failure = assertThrows(SAXException.class, () -> loadXml(xml.formatted(descriptionTypeName, missingImage)));
+            assertTrue(failure.getMessage().contains(missingImage.toString()));
+            loadXml(xml.formatted(descriptionTypeName, secondImage));
+            assertArrayEquals(Files.readAllBytes(secondImage), requireSuccess(service.getItemDescription(userVisitPK, getDescriptionForm))
+                    .getItemDescription().getBlobDescription().byteArrayValue());
+        } finally {
+            var deleteForm = ItemFormFactory.getDeleteItemDescriptionTypeForm();
+            deleteForm.setItemDescriptionTypeName(descriptionTypeName);
+            assertNoErrors(service.deleteItemDescriptionType(userVisitPK, deleteForm));
         }
     }
 

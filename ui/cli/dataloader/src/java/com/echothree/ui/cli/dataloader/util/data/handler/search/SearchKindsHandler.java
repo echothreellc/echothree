@@ -18,12 +18,10 @@ package com.echothree.ui.cli.dataloader.util.data.handler.search;
 
 import com.echothree.control.user.search.common.SearchService;
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.edit.SearchKindEdit;
 import com.echothree.control.user.search.common.form.SearchFormFactory;
 import com.echothree.control.user.search.common.spec.SearchSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
@@ -50,73 +48,19 @@ public class SearchKindsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("searchKind")) {
-            var spec = SearchSpecFactory.getSearchKindSpec();
-            var editForm = SearchFormFactory.getEditSearchKindForm();
+            var attrsMap = getAttrsMap(attrs);
 
-            spec.set(getAttrsMap(attrs));
+            var outcome = editOrCreate(attrsMap, SearchSpecFactory.getSearchKindSpec(),
+                    SearchFormFactory.getEditSearchKindForm(), searchService::editSearchKind,
+                    SearchFormFactory.getCreateSearchKindForm(), searchService::createSearchKind,
+                    ExecutionErrors.UnknownSearchKindName);
 
-            editForm.setSpec(spec);
-            editForm.setEditMode(EditMode.LOCK);
-
-            var commandResult = searchService.editSearchKind(initialDataParser.getUserVisit(), editForm);
-            
-            if(commandResult.hasErrors()) {
-                if(commandResult.containsExecutionError(ExecutionErrors.UnknownSearchKindName.name())) {
-                    var createForm = SearchFormFactory.getCreateSearchKindForm();
-
-                    createForm.set(getAttrsMap(attrs));
-
-                    var createSearchKindCommandResult = searchService.createSearchKind(initialDataParser.getUserVisit(), createForm);
-                    
-                    if(createSearchKindCommandResult.hasErrors()) {
-                        checkCommandResult(createForm, createSearchKindCommandResult);
-                    }
-                } else {
-                    checkCommandResult(editForm, commandResult);
-                }
+            if(outcome.successful()) {
+                var searchKindName = (String)attrsMap.get("SearchKindName");
+                initialDataParser.pushHandler(new SearchKindHandler(initialDataParser, this, searchKindName));
             } else {
-                var executionResult = commandResult.getExecutionResult();
-                var result = executionResult.getResult();
-
-                if(result != null) {
-                    var edit = (SearchKindEdit)result.getEdit();
-                    var isDefault = attrs.getValue("isDefault");
-                    var sortOrder = attrs.getValue("sortOrder");
-                    var changed = false;
-                    
-                    if(!edit.getIsDefault().equals(isDefault)) {
-                        edit.setIsDefault(isDefault);
-                        changed = true;
-                    }
-
-                    if(!edit.getSortOrder().equals(sortOrder)) {
-                        edit.setSortOrder(sortOrder);
-                        changed = true;
-                    }
-
-                    if(changed) {
-                        editForm.setEdit(edit);
-                        editForm.setEditMode(EditMode.UPDATE);
-                        
-                        commandResult = searchService.editSearchKind(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            checkCommandResult(editForm, commandResult);
-                        }
-                    } else {
-                        editForm.setEdit(null);
-                        editForm.setEditMode(EditMode.ABANDON);
-                        
-                        commandResult = searchService.editSearchKind(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            checkCommandResult(editForm, commandResult);
-                        }
-                    }
-                }
+                skipCurrentElement();
             }
-            
-            initialDataParser.pushHandler(new SearchKindHandler(initialDataParser, this, spec.getSearchKindName()));
         }
     }
 

@@ -18,12 +18,10 @@ package com.echothree.ui.cli.dataloader.util.data.handler.security;
 
 import com.echothree.control.user.security.common.SecurityService;
 import com.echothree.control.user.security.common.SecurityUtil;
-import com.echothree.control.user.security.common.edit.SecurityRoleDescriptionEdit;
 import com.echothree.control.user.security.common.form.SecurityFormFactory;
 import com.echothree.control.user.security.common.spec.SecuritySpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
@@ -56,67 +54,14 @@ public class SecurityRoleHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("securityRoleDescription")) {
-            var spec = SecuritySpecFactory.getSecurityRoleDescriptionSpec();
-            var editForm = SecurityFormFactory.getEditSecurityRoleDescriptionForm();
+            var attrsMap = getAttrsMap(attrs);
+            attrsMap.putIfAbsent("SecurityRoleGroupName", securityRoleGroupName);
+            attrsMap.putIfAbsent("SecurityRoleName", securityRoleName);
 
-            spec.setSecurityRoleGroupName(securityRoleGroupName);
-            spec.setSecurityRoleName(securityRoleName);
-            spec.set(getAttrsMap(attrs));
-
-            editForm.setSpec(spec);
-            editForm.setEditMode(EditMode.LOCK);
-
-            var commandResult = securityService.editSecurityRoleDescription(initialDataParser.getUserVisit(), editForm);
-            
-            if(commandResult.hasErrors()) {
-                if(commandResult.containsExecutionError(ExecutionErrors.UnknownSecurityRoleDescription.name())) {
-                    var createForm = SecurityFormFactory.getCreateSecurityRoleDescriptionForm();
-
-                    createForm.set(spec.get());
-
-                    var createSecurityRoleDescriptionCommandResult = securityService.createSecurityRoleDescription(initialDataParser.getUserVisit(), createForm);
-                    
-                    if(createSecurityRoleDescriptionCommandResult.hasErrors()) {
-                        checkCommandResult(createForm, createSecurityRoleDescriptionCommandResult);
-                    }
-                } else {
-                    checkCommandResult(editForm, commandResult);
-                }
-            } else {
-                var executionResult = commandResult.getExecutionResult();
-                var result = executionResult.getResult();
-
-                if(result != null) {
-                    var edit = (SecurityRoleDescriptionEdit)result.getEdit();
-                    var description = attrs.getValue("description");
-                    var changed = false;
-                    
-                    if(!edit.getDescription().equals(description)) {
-                        edit.setDescription(description);
-                        changed = true;
-                    }
-
-                    if(changed) {
-                        editForm.setEdit(edit);
-                        editForm.setEditMode(EditMode.UPDATE);
-                        
-                        commandResult = securityService.editSecurityRoleDescription(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            checkCommandResult(editForm, commandResult);
-                        }
-                    } else {
-                        editForm.setEdit(null);
-                        editForm.setEditMode(EditMode.ABANDON);
-                        
-                        commandResult = securityService.editSecurityRoleDescription(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            checkCommandResult(editForm, commandResult);
-                        }
-                    }
-                }
-            }
+            editOrCreate(attrsMap, SecuritySpecFactory.getSecurityRoleDescriptionSpec(),
+                    SecurityFormFactory.getEditSecurityRoleDescriptionForm(), securityService::editSecurityRoleDescription,
+                    SecurityFormFactory.getCreateSecurityRoleDescriptionForm(), securityService::createSecurityRoleDescription,
+                    ExecutionErrors.UnknownSecurityRoleDescription);
         }
     }
     

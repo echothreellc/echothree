@@ -34,7 +34,6 @@ import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.comment.CommentTypeHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.message.MessageTypeHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.rating.RatingTypeHandler;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
@@ -73,52 +72,15 @@ public class EntityTypeHandler
     throws SAXException {
         switch(localName) {
             case "entityTypeDescription" -> {
-                var spec = CoreSpecFactory.getEntityTypeDescriptionSpec();
-                var editForm = CoreFormFactory.getEditEntityTypeDescriptionForm();
+                var attrsMap = getAttrsMap(attrs);
+                attrsMap.putIfAbsent("ComponentVendorName", componentVendorName);
+                attrsMap.putIfAbsent("EntityTypeName", entityTypeName);
 
-                spec.setComponentVendorName(componentVendorName);
-                spec.setEntityTypeName(entityTypeName);
-                spec.set(getAttrsMap(attrs));
-
-                var commandAction = getCommandAction(spec);
-                getLogger().debug("Found: {}", commandAction);
-                if(commandAction == null || commandAction.equals("create")) {
-                    var attrsMap = getAttrsMap(attrs);
-
-                    editForm.setSpec(spec);
-                    editForm.setEditMode(EditMode.LOCK);
-
-                    var commandResult = coreService.editEntityTypeDescription(initialDataParser.getUserVisit(), editForm);
-
-                    if(commandResult.hasErrors()) {
-                        if(commandResult.containsExecutionError(ExecutionErrors.UnknownEntityTypeDescription.name())) {
-                            var createForm = CoreFormFactory.getCreateEntityTypeDescriptionForm();
-
-                            createForm.set(spec.get());
-
-                            getLogger().debug("Creating: {}", spec.getEntityTypeName());
-                            var createEntityTypeDescriptionCommandResult = coreService.createEntityTypeDescription(initialDataParser.getUserVisit(), createForm);
-
-                            if(createEntityTypeDescriptionCommandResult.hasErrors()) {
-                                checkCommandResult(createForm, createEntityTypeDescriptionCommandResult);
-                            }
-                        } else {
-                            checkCommandResult(editForm, commandResult);
-                        }
-                    } else {
-                        var executionResult = commandResult.getExecutionResult();
-                        var result = executionResult.getResult();
-
-                        getLogger().debug("Checking for modifications: {}", spec.getEntityTypeName());
-                        if(result != null) {
-                            updateEditFormValues(editForm, attrsMap, result);
-
-                            commandResult = coreService.editEntityTypeDescription(initialDataParser.getUserVisit(), editForm);
-                            if(commandResult.hasErrors()) {
-                                checkCommandResult(editForm, commandResult);
-                            }
-                        }
-                    }
+                if(shouldEdit(attrsMap)) {
+                    editOrCreate(attrsMap, CoreSpecFactory.getEntityTypeDescriptionSpec(),
+                            CoreFormFactory.getEditEntityTypeDescriptionForm(), coreService::editEntityTypeDescription,
+                            CoreFormFactory.getCreateEntityTypeDescriptionForm(), coreService::createEntityTypeDescription,
+                            ExecutionErrors.UnknownEntityTypeDescription);
                 }
             }
             case "entityAliasType" -> {

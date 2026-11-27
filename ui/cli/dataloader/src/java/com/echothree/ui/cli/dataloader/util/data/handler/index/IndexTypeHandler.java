@@ -18,13 +18,10 @@ package com.echothree.ui.cli.dataloader.util.data.handler.index;
 
 import com.echothree.control.user.index.common.IndexService;
 import com.echothree.control.user.index.common.IndexUtil;
-import com.echothree.control.user.index.common.edit.IndexFieldEdit;
-import com.echothree.control.user.index.common.edit.IndexTypeDescriptionEdit;
 import com.echothree.control.user.index.common.form.IndexFormFactory;
 import com.echothree.control.user.index.common.spec.IndexSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
@@ -54,137 +51,29 @@ public class IndexTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("indexTypeDescription")) {
-            var spec = IndexSpecFactory.getIndexTypeDescriptionSpec();
-            var editForm = IndexFormFactory.getEditIndexTypeDescriptionForm();
+            var attrsMap = getAttrsMap(attrs);
+            attrsMap.putIfAbsent("IndexTypeName", indexTypeName);
 
-            spec.setIndexTypeName(indexTypeName);
-            spec.set(getAttrsMap(attrs));
-
-            editForm.setSpec(spec);
-            editForm.setEditMode(EditMode.LOCK);
-
-            var commandResult = indexService.editIndexTypeDescription(initialDataParser.getUserVisit(), editForm);
-            
-            if(commandResult.hasErrors()) {
-                if(commandResult.containsExecutionError(ExecutionErrors.UnknownIndexTypeDescription.name())) {
-                    var createForm = IndexFormFactory.getCreateIndexTypeDescriptionForm();
-
-                    createForm.setIndexTypeName(indexTypeName);
-                    createForm.set(getAttrsMap(attrs));
-
-                    var createIndexTypeDescriptionCommandResult = indexService.createIndexTypeDescription(initialDataParser.getUserVisit(), createForm);
-                    
-                    if(createIndexTypeDescriptionCommandResult.hasErrors()) {
-                        checkCommandResult(createForm, createIndexTypeDescriptionCommandResult);
-                    }
-                } else {
-                    checkCommandResult(editForm, commandResult);
-                }
-            } else {
-                var executionResult = commandResult.getExecutionResult();
-                var result = executionResult.getResult();
-
-                if(result != null) {
-                    var edit = (IndexTypeDescriptionEdit)result.getEdit();
-                    var description = attrs.getValue("description");
-                    var changed = false;
-                    
-                    if(!edit.getDescription().equals(description)) {
-                        edit.setDescription(description);
-                        changed = true;
-                    }
-
-                    if(changed) {
-                        editForm.setEdit(edit);
-                        editForm.setEditMode(EditMode.UPDATE);
-                        
-                        commandResult = indexService.editIndexTypeDescription(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            checkCommandResult(editForm, commandResult);
-                        }
-                    } else {
-                        editForm.setEdit(null);
-                        editForm.setEditMode(EditMode.ABANDON);
-                        
-                        commandResult = indexService.editIndexTypeDescription(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            checkCommandResult(editForm, commandResult);
-                        }
-                    }
-                }
-            }
+            editOrCreate(attrsMap, IndexSpecFactory.getIndexTypeDescriptionSpec(),
+                    IndexFormFactory.getEditIndexTypeDescriptionForm(), indexService::editIndexTypeDescription,
+                    IndexFormFactory.getCreateIndexTypeDescriptionForm(), indexService::createIndexTypeDescription,
+                    ExecutionErrors.UnknownIndexTypeDescription);
         } else if(localName.equals("indexField")) {
-            var spec = IndexSpecFactory.getIndexFieldSpec();
-            var editForm = IndexFormFactory.getEditIndexFieldForm();
+            var attrsMap = getAttrsMap(attrs);
+            attrsMap.putIfAbsent("IndexTypeName", indexTypeName);
 
-            spec.setIndexTypeName(indexTypeName);
-            spec.set(getAttrsMap(attrs));
+            var outcome = editOrCreate(attrsMap, IndexSpecFactory.getIndexFieldSpec(),
+                    IndexFormFactory.getEditIndexFieldForm(), indexService::editIndexField,
+                    IndexFormFactory.getCreateIndexFieldForm(), indexService::createIndexField,
+                    ExecutionErrors.UnknownIndexFieldName);
 
-            editForm.setSpec(spec);
-            editForm.setEditMode(EditMode.LOCK);
-
-            var commandResult = indexService.editIndexField(initialDataParser.getUserVisit(), editForm);
-
-            if(commandResult.hasErrors()) {
-                if(commandResult.containsExecutionError(ExecutionErrors.UnknownIndexFieldName.name())) {
-                    var createForm = IndexFormFactory.getCreateIndexFieldForm();
-
-                    createForm.setIndexTypeName(indexTypeName);
-                    createForm.set(getAttrsMap(attrs));
-
-                    var createIndexFieldCommandResult = indexService.createIndexField(initialDataParser.getUserVisit(), createForm);
-                    
-                    if(createIndexFieldCommandResult.hasErrors()) {
-                        checkCommandResult(createForm, createIndexFieldCommandResult);
-                    }
-                } else {
-                    checkCommandResult(editForm, commandResult);
-                }
+            if(outcome.successful()) {
+                var resolvedIndexTypeName = (String)attrsMap.get("IndexTypeName");
+                var indexFieldName = (String)attrsMap.get("IndexFieldName");
+                initialDataParser.pushHandler(new IndexFieldHandler(initialDataParser, this, resolvedIndexTypeName, indexFieldName));
             } else {
-                var executionResult = commandResult.getExecutionResult();
-                var result = executionResult.getResult();
-
-                if(result != null) {
-                    var edit = (IndexFieldEdit)result.getEdit();
-                    var isDefault = attrs.getValue("isDefault");
-                    var sortOrder = attrs.getValue("sortOrder");
-                    var changed = false;
-                    
-                    if(!edit.getIsDefault().equals(isDefault)) {
-                        edit.setIsDefault(isDefault);
-                        changed = true;
-                    }
-
-                    if(!edit.getSortOrder().equals(sortOrder)) {
-                        edit.setSortOrder(sortOrder);
-                        changed = true;
-                    }
-
-                    if(changed) {
-                        editForm.setEdit(edit);
-                        editForm.setEditMode(EditMode.UPDATE);
-                        
-                        commandResult = indexService.editIndexField(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            checkCommandResult(editForm, commandResult);
-                        }
-                    } else {
-                        editForm.setEdit(null);
-                        editForm.setEditMode(EditMode.ABANDON);
-                        
-                        commandResult = indexService.editIndexField(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            checkCommandResult(editForm, commandResult);
-                        }
-                    }
-                }
+                skipCurrentElement();
             }
-            
-            initialDataParser.pushHandler(new IndexFieldHandler(initialDataParser, this, indexTypeName, spec.getIndexFieldName()));
         }
     }
     

@@ -18,12 +18,10 @@ package com.echothree.ui.cli.dataloader.util.data.handler.search;
 
 import com.echothree.control.user.search.common.SearchService;
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.edit.SearchKindDescriptionEdit;
 import com.echothree.control.user.search.common.form.SearchFormFactory;
 import com.echothree.control.user.search.common.spec.SearchSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
@@ -53,67 +51,13 @@ public class SearchKindHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("searchKindDescription")) {
-            var spec = SearchSpecFactory.getSearchKindDescriptionSpec();
-            var editForm = SearchFormFactory.getEditSearchKindDescriptionForm();
+            var attrsMap = getAttrsMap(attrs);
+            attrsMap.putIfAbsent("SearchKindName", searchKindName);
 
-            spec.setSearchKindName(searchKindName);
-            spec.set(getAttrsMap(attrs));
-
-            editForm.setSpec(spec);
-            editForm.setEditMode(EditMode.LOCK);
-
-            var commandResult = searchService.editSearchKindDescription(initialDataParser.getUserVisit(), editForm);
-            
-            if(commandResult.hasErrors()) {
-                if(commandResult.containsExecutionError(ExecutionErrors.UnknownSearchKindDescription.name())) {
-                    var createForm = SearchFormFactory.getCreateSearchKindDescriptionForm();
-
-                    createForm.setSearchKindName(searchKindName);
-                    createForm.set(getAttrsMap(attrs));
-
-                    var createSearchKindDescriptionCommandResult = searchService.createSearchKindDescription(initialDataParser.getUserVisit(), createForm);
-                    
-                    if(createSearchKindDescriptionCommandResult.hasErrors()) {
-                        checkCommandResult(createForm, createSearchKindDescriptionCommandResult);
-                    }
-                } else {
-                    checkCommandResult(editForm, commandResult);
-                }
-            } else {
-                var executionResult = commandResult.getExecutionResult();
-                var result = executionResult.getResult();
-
-                if(result != null) {
-                    var edit = (SearchKindDescriptionEdit)result.getEdit();
-                    var description = attrs.getValue("description");
-                    var changed = false;
-                    
-                    if(!edit.getDescription().equals(description)) {
-                        edit.setDescription(description);
-                        changed = true;
-                    }
-
-                    if(changed) {
-                        editForm.setEdit(edit);
-                        editForm.setEditMode(EditMode.UPDATE);
-                        
-                        commandResult = searchService.editSearchKindDescription(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            checkCommandResult(editForm, commandResult);
-                        }
-                    } else {
-                        editForm.setEdit(null);
-                        editForm.setEditMode(EditMode.ABANDON);
-                        
-                        commandResult = searchService.editSearchKindDescription(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            checkCommandResult(editForm, commandResult);
-                        }
-                    }
-                }
-            }
+            editOrCreate(attrsMap, SearchSpecFactory.getSearchKindDescriptionSpec(),
+                    SearchFormFactory.getEditSearchKindDescriptionForm(), searchService::editSearchKindDescription,
+                    SearchFormFactory.getCreateSearchKindDescriptionForm(), searchService::createSearchKindDescription,
+                    ExecutionErrors.UnknownSearchKindDescription);
         } else if(localName.equals("searchType")) {
             var commandForm = SearchFormFactory.getCreateSearchTypeForm();
 

@@ -18,12 +18,10 @@ package com.echothree.ui.cli.dataloader.util.data.handler.sequence;
 
 import com.echothree.control.user.sequence.common.SequenceService;
 import com.echothree.control.user.sequence.common.SequenceUtil;
-import com.echothree.control.user.sequence.common.edit.SequenceTypeDescriptionEdit;
 import com.echothree.control.user.sequence.common.form.SequenceFormFactory;
 import com.echothree.control.user.sequence.common.spec.SequenceSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
@@ -53,67 +51,13 @@ public class SequenceTypeHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("sequenceTypeDescription")) {
-            var spec = SequenceSpecFactory.getSequenceTypeDescriptionSpec();
-            var editForm = SequenceFormFactory.getEditSequenceTypeDescriptionForm();
+            var attrsMap = getAttrsMap(attrs);
+            attrsMap.putIfAbsent("SequenceTypeName", sequenceTypeName);
 
-            spec.setSequenceTypeName(sequenceTypeName);
-            spec.set(getAttrsMap(attrs));
-
-            editForm.setSpec(spec);
-            editForm.setEditMode(EditMode.LOCK);
-
-            var commandResult = sequenceService.editSequenceTypeDescription(initialDataParser.getUserVisit(), editForm);
-            
-            if(commandResult.hasErrors()) {
-                if(commandResult.containsExecutionError(ExecutionErrors.UnknownSequenceTypeDescription.name())) {
-                    var createForm = SequenceFormFactory.getCreateSequenceTypeDescriptionForm();
-
-                    createForm.setSequenceTypeName(sequenceTypeName);
-                    createForm.set(getAttrsMap(attrs));
-
-                    var createSequenceTypeDescriptionCommandResult = sequenceService.createSequenceTypeDescription(initialDataParser.getUserVisit(), createForm);
-                    
-                    if(createSequenceTypeDescriptionCommandResult.hasErrors()) {
-                        checkCommandResult(createForm, createSequenceTypeDescriptionCommandResult);
-                    }
-                } else {
-                    checkCommandResult(editForm, commandResult);
-                }
-            } else {
-                var executionResult = commandResult.getExecutionResult();
-                var result = executionResult.getResult();
-
-                if(result != null) {
-                    var edit = (SequenceTypeDescriptionEdit)result.getEdit();
-                    var description = attrs.getValue("description");
-                    var changed = false;
-                    
-                    if(!edit.getDescription().equals(description)) {
-                        edit.setDescription(description);
-                        changed = true;
-                    }
-
-                    if(changed) {
-                        editForm.setEdit(edit);
-                        editForm.setEditMode(EditMode.UPDATE);
-                        
-                        commandResult = sequenceService.editSequenceTypeDescription(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            checkCommandResult(editForm, commandResult);
-                        }
-                    } else {
-                        editForm.setEdit(null);
-                        editForm.setEditMode(EditMode.ABANDON);
-                        
-                        commandResult = sequenceService.editSequenceTypeDescription(initialDataParser.getUserVisit(), editForm);
-
-                        if(commandResult.hasErrors()) {
-                            checkCommandResult(editForm, commandResult);
-                        }
-                    }
-                }
-            }
+            editOrCreate(attrsMap, SequenceSpecFactory.getSequenceTypeDescriptionSpec(),
+                    SequenceFormFactory.getEditSequenceTypeDescriptionForm(), sequenceService::editSequenceTypeDescription,
+                    SequenceFormFactory.getCreateSequenceTypeDescriptionForm(), sequenceService::createSequenceTypeDescription,
+                    ExecutionErrors.UnknownSequenceTypeDescription);
         } else if(localName.equals("sequence")) {
             var commandForm = SequenceFormFactory.getCreateSequenceForm();
 
