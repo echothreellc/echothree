@@ -25,10 +25,10 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.VoidResult;
 import com.echothree.util.server.cdi.CommandScopeExtension;
+import com.echothree.util.server.persistence.ThreadSession;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
@@ -90,8 +90,16 @@ public class AuthenticationBean
                 userControl.associatePartyToUserVisit(userVisit, party, null, null);
                 userVisitPK = userVisit.getPrimaryKey();
             }
-        } catch (PersistenceDatabaseException pde) {
-            throw pde;
+
+            ThreadSession.currentSession().flush();
+        } catch (RuntimeException | Error failure) {
+            try {
+                ThreadSession.currentSession().markRollbackOnly();
+            } catch(RuntimeException rollbackFailure) {
+                failure.addSuppressed(rollbackFailure);
+            }
+
+            throw failure;
         } finally {
             CommandScopeExtension.getCommandScopeContext().pop();
         }

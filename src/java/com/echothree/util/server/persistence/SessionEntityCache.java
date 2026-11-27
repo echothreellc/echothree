@@ -220,9 +220,19 @@ public class SessionEntityCache {
             sessionEntityCacheStatistics.finalReadWriteCount = entitiesReadWrite.size();
             sessionEntityCacheStatistics.finalReadOnlyCount = entitiesReadOnly.size();
         }
+    }
 
-        entitiesReadOnly = null;
-        entitiesReadWrite = null;
+    /** Flush without detaching entities that an enclosing command may still be using. */
+    void flush() {
+        if(parentSessionEntityCache != null) {
+            parentSessionEntityCache.flush();
+        }
+        flushEntities();
+    }
+
+    boolean hasPendingChanges() {
+        return entitiesReadWrite.values().stream().anyMatch(BaseEntity::hasBeenModified)
+                || (parentSessionEntityCache != null && parentSessionEntityCache.hasPendingChanges());
     }
 
     private void dumpStats() {
@@ -255,7 +265,9 @@ public class SessionEntityCache {
 
         flushEntities();
 
-        
+        entitiesReadOnly = null;
+        entitiesReadWrite = null;
+
         if(LogSessionEntityCacheStatistics) {
             addStatisticsToRootCache(this, sessionEntityCacheStatistics);
 

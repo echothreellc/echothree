@@ -501,7 +501,6 @@ public abstract class BaseCommand
         } else {
             CommandScopeExtension.getCommandScopeContext().activate();
         }
-        setupSession();
 
         SecurityResult securityResult;
         ValidationResult validationResult = null;
@@ -510,6 +509,8 @@ public abstract class BaseCommand
 
         try {
             BaseResult baseResult = null;
+
+            setupSession();
 
 //            if(licenseCheckLogic.permitExecution(session)) {
                 checkUserVisit();
@@ -599,9 +600,23 @@ public abstract class BaseCommand
                     }
                 }
             }
+
+            session.flush();
+        } catch(RuntimeException | Error failure) {
+            if(session != null) {
+                try {
+                    session.markRollbackOnly();
+                } catch(RuntimeException rollbackFailure) {
+                    failure.addSuppressed(rollbackFailure);
+                }
+            }
+            throw failure;
         } finally {
-            teardownSession();
-            CommandScopeExtension.getCommandScopeContext().pop();
+            try {
+                teardownSession();
+            } finally {
+                CommandScopeExtension.getCommandScopeContext().pop();
+            }
         }
 
         // The Session for this Thread must NOT be utilized by anything after teardownSession() has been called.
