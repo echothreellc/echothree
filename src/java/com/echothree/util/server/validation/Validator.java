@@ -33,11 +33,12 @@ import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.fieldtype.*;
 import com.google.common.base.Splitter;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,6 +61,7 @@ public class Validator {
     public static final String ERROR_MAXIMUM_VALUE             = "MaximumValue";
     public static final String ERROR_NO_VALUE_ALLOWED          = "NoValueAllowed";
     public static final String ERROR_UNKNOWN_CURRENCY_ISO_NAME = "UnknownCurrencyIsoName";
+    public static final String ERROR_UNKNOWN_PARTY_NAME        = "UnknownPartyName";
     public static final String ERROR_UNKNOWN_VENDOR_NAME       = "UnknownVendorName";
     public static final String ERROR_INTERNAL_ERROR            = "InternalError";
     public static final String ERROR_EXCESS_FRACTIONAL_DIGITS = "ExcessFractionalDigits";
@@ -185,7 +187,7 @@ public class Validator {
 
     public Messages validateField(BaseForm form, FieldDefinition fieldDefinition) {
         var validationMessages = new Messages();
-        var splitFieldName = Splitter.on(':').trimResults().omitEmptyStrings().splitToList(fieldDefinition.getFieldName()).toArray(new String[0]);
+        var splitFieldName = splitFieldName(fieldDefinition);
         var fieldName = splitFieldName[0];
         var originalFieldValue = form == null ? null : (String)form.get(fieldName);
         var fieldValue = originalFieldValue;
@@ -326,11 +328,70 @@ public class Validator {
         }
     }
     
+    private static String[] splitFieldName(FieldDefinition fieldDefinition) {
+        return Splitter.on(':').trimResults().omitEmptyStrings().splitToList(fieldDefinition.getFieldName()).toArray(new String[0]);
+    }
+
+    private enum FieldValidationState {
+        VALIDATING, VALID, INVALID
+    }
+
+    private FieldValidationState validateFieldWithDependencies(BaseForm form, String fieldName,
+            Map<String, List<FieldDefinition>> fieldsByName, Map<String, FieldValidationState> fieldStates,
+            Messages formValidationMessages) {
+        var fieldState = fieldStates.get(fieldName);
+
+        if(fieldState == FieldValidationState.VALIDATING) {
+            log.error("Circular validation dependency for field {}", fieldName);
+
+            formValidationMessages.add(fieldName, new Message(ERROR_INTERNAL_ERROR));
+            fieldState = FieldValidationState.INVALID;
+            fieldStates.put(fieldName, fieldState);
+        } else if(fieldState == null) {
+            fieldStates.put(fieldName, FieldValidationState.VALIDATING);
+            fieldState = FieldValidationState.VALID;
+
+            for(var fieldDefinition : fieldsByName.get(fieldName)) {
+                var fieldValidator = fieldTypes.get(fieldDefinition.getFieldType());
+                var dependenciesValid = true;
+
+                if(!isCurrencySpecified() && fieldValidator != null && BaseCurrencyFieldType.class.isAssignableFrom(fieldValidator)) {
+                    // Some commands validate the currency in an earlier pass.
+                    dependenciesValid = BaseCurrencyFieldType.validateFieldDependencies(form, splitFieldName(fieldDefinition), dependency ->
+                            !fieldsByName.containsKey(dependency)
+                                    || validateFieldWithDependencies(form, dependency, fieldsByName, fieldStates, formValidationMessages)
+                                            == FieldValidationState.VALID);
+                }
+
+                if(dependenciesValid) {
+                    var validationMessages = validateField(form, fieldDefinition);
+
+                    if(validationMessages != null) {
+                        formValidationMessages.add(validationMessages);
+                        fieldState = FieldValidationState.INVALID;
+                    }
+                } else {
+                    fieldState = FieldValidationState.INVALID;
+                }
+            }
+            fieldStates.put(fieldName, fieldState);
+        }
+
+        return fieldState;
+    }
+
     public ValidationResult validate(BaseForm form, List<FieldDefinition> fieldDefinitions) {
         var formValidationMessages = new Messages();
-        
-        fieldDefinitions.stream().map((fieldDefinition) ->
-                validateField(form, fieldDefinition)).filter(Objects::nonNull).forEach(formValidationMessages::add);
+        Map<String, List<FieldDefinition>> fieldsByName = new LinkedHashMap<>();
+        Map<String, FieldValidationState> fieldStates = new HashMap<>();
+
+        for(var fieldDefinition : fieldDefinitions) {
+            var fieldName = splitFieldName(fieldDefinition)[0];
+
+            fieldsByName.computeIfAbsent(fieldName, name -> new ArrayList<>()).add(fieldDefinition);
+        }
+        fieldsByName.keySet().forEach(fieldName ->
+                validateFieldWithDependencies(form, fieldName, fieldsByName, fieldStates, formValidationMessages));
         
         if(form != null) {
             validatePreferredClobMimeTypeName(formValidationMessages, form);

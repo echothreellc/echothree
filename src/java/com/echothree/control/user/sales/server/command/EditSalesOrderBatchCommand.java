@@ -143,7 +143,7 @@ public class EditSalesOrderBatchCommand
         edit.setCurrencyIsoName(orderBatch.getCurrency().getCurrencyIsoName());
         edit.setPaymentMethodName(salesOrderBatch.getPaymentMethod().getLastDetail().getPaymentMethodName());
         edit.setCount(count == null ? null : count.toString());
-        edit.setAmount(AmountUtils.getInstance().formatCostUnit(orderBatch.getCurrency(), orderBatch.getAmount()));
+        edit.setAmount(AmountUtils.getInstance().formatPriceLine(orderBatch.getCurrency(), orderBatch.getAmount()));
     }
 
      Currency currency;

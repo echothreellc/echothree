@@ -47,7 +47,6 @@ import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -57,7 +56,6 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.string.AmountUtils;
-import com.echothree.util.server.validation.Validator;
 import java.util.List;
 import org.apache.commons.codec.language.Soundex;
 import javax.enterprise.context.Dependent;
@@ -91,8 +89,11 @@ public class EditVendorCommand
                 new FieldDefinition("VendorTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("MinimumPurchaseOrderLines", FieldType.UNSIGNED_INTEGER, false, null, null),
                 new FieldDefinition("MaximumPurchaseOrderLines", FieldType.UNSIGNED_INTEGER, false, null, null),
-                new FieldDefinition("MinimumPurchaseOrderAmount", FieldType.UNSIGNED_COST_LINE, false, null, null),
-                new FieldDefinition("MaximumPurchaseOrderAmount", FieldType.UNSIGNED_COST_LINE, false, null, null),
+                // A currency change requires limits in the new effective currency. Blank amounts clear the limits.
+                new FieldDefinition("MinimumPurchaseOrderAmount:CurrencyIsoName,PreferredCurrencyIsoName:DefaultCurrencyIfOmitted,true",
+                        FieldType.UNSIGNED_COST_LINE, false, null, null),
+                new FieldDefinition("MaximumPurchaseOrderAmount:CurrencyIsoName,PreferredCurrencyIsoName:DefaultCurrencyIfOmitted,true",
+                        FieldType.UNSIGNED_COST_LINE, false, null, null),
                 new FieldDefinition("UseItemPurchasingCategories", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("DefaultItemAliasTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CancellationPolicyName", FieldType.ENTITY_NAME, false, null, null),
@@ -145,19 +146,6 @@ public class EditVendorCommand
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
-    @Override
-    protected void setupValidatorForEdit(Validator validator, BaseForm specForm) {
-        var vendorName = spec.getVendorName();
-        
-        if(vendorName != null) {
-            var vendor = vendorControl.getVendorByNameForUpdate(vendorName);
-            
-            if(vendor != null) {
-                validator.setCurrency(partyControl.getPreferredCurrency(vendor.getParty()));
-            }
-        }
-    }
-
     @Override
     public EditVendorResult getResult() {
         return VendorResultFactory.getEditVendorResult();
